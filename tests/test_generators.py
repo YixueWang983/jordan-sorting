@@ -33,6 +33,13 @@ class GeneratorTests(unittest.TestCase):
         self.assertEqual(seq, [1, 6, 2, 5, 3, 4])
         self.assertTrue(oracle(seq)["valid"])
 
+    def test_nested_generator_outputs_valid_cases_for_small_even_n(self):
+        for n in [2, 4, 6, 8, 10]:
+            seq = generate_nested(n)
+            result = oracle(seq)
+
+            self.assertTrue(result["valid"], seq)
+
     def test_generate_nested_odd_size(self):
         seq = generate_nested(5)
 
