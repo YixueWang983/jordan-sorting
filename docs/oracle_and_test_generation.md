@@ -83,7 +83,7 @@ The oracle converts each pair into an interval using the ranks of the two elemen
 For a sequence `seq`, define:
 
 ```text
-rank_map(seq)[value] = zero-based index of value in sorted(seq)
+rank_map(seq)[value] = one-based position of value in sorted(seq)
 ```
 
 For a pair `{a, b}`, the corresponding interval is:
@@ -97,11 +97,11 @@ Example:
 ```text
 seq = [4, 1, 3, 2]
 sorted(seq) = [1, 2, 3, 4]
-rank_map = {1: 0, 2: 1, 3: 2, 4: 3}
+rank_map = {1: 1, 2: 2, 3: 3, 4: 4}
 ```
 
-The pair `{4, 1}` becomes interval `[0, 3]`.
-The pair `{3, 2}` becomes interval `[1, 2]`.
+The pair `{4, 1}` becomes interval `[1, 4]`.
+The pair `{3, 2}` becomes interval `[2, 3]`.
 
 ## 5. Laminarity and Crossing
 
@@ -238,14 +238,14 @@ Example:
 Upper intervals:
 
 ```text
-{1, 3} -> [0, 2]
-{2, 4} -> [1, 3]
+{1, 3} -> [1, 3]
+{2, 4} -> [2, 4]
 ```
 
 These intervals cross because:
 
 ```text
-0 < 1 < 2 < 3
+1 < 2 < 3 < 4
 ```
 
 Expected result:
@@ -267,14 +267,14 @@ Example:
 Lower intervals:
 
 ```text
-{1, 3} -> [0, 2]
-{2, 4} -> [1, 3]
+{1, 3} -> [1, 3]
+{2, 4} -> [2, 4]
 ```
 
 These intervals cross because:
 
 ```text
-0 < 1 < 2 < 3
+1 < 2 < 3 < 4
 ```
 
 Expected result:

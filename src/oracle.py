@@ -14,9 +14,9 @@ def lower_pairs(seq):
 
 
 def rank_map(seq):
-    """Map each value to its zero-based rank in sorted order."""
+    """Map each value to its one-based rank in sorted order."""
     values = list(seq)
-    return {value: index for index, value in enumerate(sorted(values))}
+    return {value: index for index, value in enumerate(sorted(values), start=1)}
 
 
 def pair_to_interval(pair, rank):

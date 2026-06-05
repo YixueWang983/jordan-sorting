@@ -30,15 +30,15 @@ class OracleTests(unittest.TestCase):
         seq = [4, 1, 3, 2]
         rank = rank_map(seq)
 
-        self.assertEqual(rank, {1: 0, 2: 1, 3: 2, 4: 3})
-        self.assertEqual(pair_to_interval((4, 1), rank), (0, 3))
-        self.assertEqual(pair_to_interval((3, 2), rank), (1, 2))
+        self.assertEqual(rank, {1: 1, 2: 2, 3: 3, 4: 4})
+        self.assertEqual(pair_to_interval((4, 1), rank), (1, 4))
+        self.assertEqual(pair_to_interval((3, 2), rank), (2, 3))
 
     def test_crossing_detection(self):
-        self.assertTrue(crosses((0, 2), (1, 3)))
-        self.assertTrue(crosses((1, 3), (0, 2)))
-        self.assertFalse(crosses((0, 1), (2, 3)))
-        self.assertFalse(crosses((0, 3), (1, 2)))
+        self.assertTrue(crosses((1, 3), (2, 4)))
+        self.assertTrue(crosses((2, 4), (1, 3)))
+        self.assertFalse(crosses((1, 2), (3, 4)))
+        self.assertFalse(crosses((1, 4), (2, 3)))
 
     def test_empty_and_singleton_are_valid(self):
         self.assertTrue(oracle([])["valid"])
