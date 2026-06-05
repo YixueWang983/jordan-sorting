@@ -14,7 +14,7 @@ def lower_pairs(seq):
 
 
 def rank_map(seq):
-    """把每个元素映射到它在排序结果中的 1-based rank。"""
+    """把每个元素映射到它在排序结果中的 1-based rank。输出是排序后在有序列表中的顺序"""
     values = list(seq)
     return {value: index for index, value in enumerate(sorted(values), start=1)}
 

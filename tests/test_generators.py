@@ -64,8 +64,21 @@ class GeneratorTests(unittest.TestCase):
         self.assertEqual(sorted(seq), list(range(1, 9)))
         self.assertEqual(len(set(seq)), 8)
 
+    def test_generate_random_permutation_is_reproducible(self):
+        seq1 = generate_random_permutation(8, seed=11)
+        seq2 = generate_random_permutation(8, seed=11)
+
+        self.assertEqual(seq1, seq2)
+
     def test_mutate_by_swap(self):
         self.assertEqual(mutate_by_swap([1, 2, 3], i=0, j=2), [3, 2, 1])
+
+    def test_mutate_by_swap_does_not_modify_original(self):
+        original = [1, 2, 3]
+        mutated = mutate_by_swap(original, i=0, j=2)
+
+        self.assertEqual(original, [1, 2, 3])
+        self.assertEqual(mutated, [3, 2, 1])
 
     def test_small_handmade_valid_cases(self):
         for seq in generate_small_handmade_valid_cases():
