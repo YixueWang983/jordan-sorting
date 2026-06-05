@@ -40,6 +40,10 @@ class OracleTests(unittest.TestCase):
         self.assertFalse(crosses((0, 1), (2, 3)))
         self.assertFalse(crosses((0, 3), (1, 2)))
 
+    def test_empty_and_singleton_are_valid(self):
+        self.assertTrue(oracle([])["valid"])
+        self.assertTrue(oracle([1])["valid"])
+
     def test_flat_valid_case(self):
         result = oracle([1, 2, 3, 4, 5, 6])
 
