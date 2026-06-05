@@ -1,4 +1,4 @@
-"""Unit tests for the Jordan-sorting oracle."""
+"""Jordan-sorting oracle 的单元测试。"""
 
 import random
 import sys

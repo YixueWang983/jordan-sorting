@@ -1,2 +1,1 @@
-"""Baseline sorting algorithms and timing helpers."""
-
+"""Baseline 排序算法和计时辅助函数。"""

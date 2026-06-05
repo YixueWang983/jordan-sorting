@@ -1,4 +1,4 @@
-"""Unit tests for test instance generators."""
+"""测试实例生成器的单元测试。"""
 
 import sys
 import unittest
