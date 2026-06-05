@@ -166,6 +166,9 @@ Day 3 status: mostly completed early.
 - [ ] Implement `load_test_case(path)`.
 - [ ] Implement `generate_dataset(family, sizes, repetitions)`.
 - [ ] Create a small `data/` directory with JSON test cases.
+- [ ] Design an incremental valid generator.  
+  Idea added on 2026-06-05.  
+  Start from a known valid Jordan sequence, append one new element at a time, and certify the result with the oracle after each extension. This may become the first practical `random_valid` strategy. It is not expected to sample uniformly from all valid Jordan sequences.
 
 Day 4 status: next recommended task.
 
@@ -218,12 +221,21 @@ Day 7 status: not started.
   Done on 2026-06-05.  
   File: `docs/week1_todo.pdf`.
 
+## Open Generator Ideas
+
+- [ ] Incremental valid extension generator.  
+  Added on 2026-06-05.  
+  Instead of generating a random permutation and filtering, start from a certified valid sequence and extend it until the desired length. At each step, append a new element, choose its sorted-order rank carefully, relabel if needed, and run the oracle. Keep the extension only if the resulting sequence remains valid.
+
+- [ ] Document limitations of the incremental generator.  
+  Added on 2026-06-05.  
+  The generator should be described as constructive and oracle-certified, but not uniform over all valid Jordan sequences.
+
 ## Current Test Status
 
 As of 2026-06-05:
 
 ```text
-Ran 19 tests
+Ran 21 tests
 OK
 ```
-
