@@ -1,0 +1,338 @@
+# Oracle and Test Instance Generation for Jordan Sorting
+
+## 1. Purpose
+
+The first implementation milestone is not the full Jordan-sorting algorithm. The first milestone is a correctness oracle and a small collection of test-instance generators.
+
+The oracle has three jobs:
+
+1. Decide whether a given sequence satisfies the upper-pair and lower-pair laminarity conditions.
+2. Return the expected sorted order for valid inputs.
+3. Give a clear reason when an input is rejected.
+
+This creates a minimal working loop for Week 1:
+
+```text
+generate sequence -> oracle checks valid/invalid -> expected sorted order -> save test case -> run baselines
+```
+
+The oracle will later be used to check the reference implementation of the simplified Jordan-sorting framework.
+
+## 2. Jordan Sequences and Assumptions
+
+A Jordan sequence is a finite sequence of elements:
+
+```text
+x1, x2, x3, ..., xn
+```
+
+For the first implementation, the sequence is assumed to contain distinct comparable values. If a sequence contains duplicate values, the oracle rejects it. This keeps the rank map unambiguous.
+
+The expected sorted order is computed with ordinary sorting. This sorted order is not the Jordan-sorting algorithm itself. It is used only as a reference result for correctness checking.
+
+## 3. Upper and Lower Pairs
+
+Upper pairs are formed from consecutive elements starting at the first element:
+
+```text
+{x1, x2}, {x3, x4}, {x5, x6}, ...
+```
+
+Lower pairs are formed from consecutive elements starting at the second element:
+
+```text
+{x2, x3}, {x4, x5}, {x6, x7}, ...
+```
+
+If the sequence length is odd, the final unpaired element is ignored for whichever pair family has no partner for it.
+
+For example, for:
+
+```text
+[4, 1, 3, 2, 5]
+```
+
+the upper pairs are:
+
+```text
+{4, 1}, {3, 2}
+```
+
+and the lower pairs are:
+
+```text
+{1, 3}, {2, 5}
+```
+
+## 4. Rank Intervals
+
+The oracle converts each pair into an interval using the ranks of the two elements in sorted order.
+
+For a sequence `seq`, define:
+
+```text
+rank_map(seq)[value] = zero-based index of value in sorted(seq)
+```
+
+For a pair `{a, b}`, the corresponding interval is:
+
+```text
+[min(rank(a), rank(b)), max(rank(a), rank(b))]
+```
+
+Example:
+
+```text
+seq = [4, 1, 3, 2]
+sorted(seq) = [1, 2, 3, 4]
+rank_map = {1: 0, 2: 1, 3: 2, 4: 3}
+```
+
+The pair `{4, 1}` becomes interval `[0, 3]`.
+The pair `{3, 2}` becomes interval `[1, 2]`.
+
+## 5. Laminarity and Crossing
+
+A family of intervals is laminar if every two intervals are either disjoint or nested.
+
+Two intervals `[a, b]` and `[c, d]`, with `a <= b` and `c <= d`, are disjoint if:
+
+```text
+b < c or d < a
+```
+
+They are nested if:
+
+```text
+a <= c <= d <= b
+```
+
+or:
+
+```text
+c <= a <= b <= d
+```
+
+They cross if one starts inside the other but ends outside it:
+
+```text
+a < c < b < d
+```
+
+or:
+
+```text
+c < a < d < b
+```
+
+Crossing intervals make the corresponding upper or lower family invalid.
+
+The upper family and lower family are checked separately. An interval from the upper family is not compared against an interval from the lower family for laminarity.
+
+## 6. Correctness Oracle
+
+The oracle should expose a function:
+
+```python
+oracle(seq)
+```
+
+The result should have this shape:
+
+```python
+{
+    "valid": True,
+    "sorted": [1, 2, 3, 4, 5, 6],
+    "upper_ok": True,
+    "lower_ok": True,
+    "reason": None,
+}
+```
+
+For an invalid sequence, the result should identify the failed condition:
+
+```python
+{
+    "valid": False,
+    "sorted": [1, 2, 3, 4],
+    "upper_ok": False,
+    "lower_ok": True,
+    "reason": "upper crossing",
+}
+```
+
+The first implementation can use an `O(n^2)` laminarity check. The priority is correctness and clear failure reports, not performance.
+
+Suggested functions for `src/oracle.py`:
+
+```python
+upper_pairs(seq)
+lower_pairs(seq)
+rank_map(seq)
+pair_to_interval(pair, rank)
+crosses(interval1, interval2)
+is_laminar(pairs, rank)
+oracle(seq)
+```
+
+## 7. Test Instance Families
+
+The first generator module should include simple valid and invalid families.
+
+### Flat Valid Cases
+
+These cases have mostly disjoint intervals.
+
+Example:
+
+```text
+[1, 2, 3, 4, 5, 6]
+```
+
+Expected result:
+
+```text
+valid
+```
+
+### Nested Valid Cases
+
+These cases are intended to create nested intervals.
+
+Example:
+
+```text
+[1, 6, 2, 5, 3, 4]
+```
+
+Expected result:
+
+```text
+valid
+```
+
+Generated nested cases should still be checked with the oracle. The generator should not assume that the construction is automatically valid for every size.
+
+### Invalid Upper-Crossing Cases
+
+These cases deliberately create crossing intervals in the upper family.
+
+Example:
+
+```text
+[1, 3, 2, 4]
+```
+
+Upper intervals:
+
+```text
+{1, 3} -> [0, 2]
+{2, 4} -> [1, 3]
+```
+
+These intervals cross because:
+
+```text
+0 < 1 < 2 < 3
+```
+
+Expected result:
+
+```text
+invalid, upper crossing
+```
+
+### Invalid Lower-Crossing Cases
+
+These cases deliberately create crossing intervals in the lower family.
+
+Example:
+
+```text
+[5, 1, 3, 2, 4]
+```
+
+Lower intervals:
+
+```text
+{1, 3} -> [0, 2]
+{2, 4} -> [1, 3]
+```
+
+These intervals cross because:
+
+```text
+0 < 1 < 2 < 3
+```
+
+Expected result:
+
+```text
+invalid, lower crossing
+```
+
+### Random Permutations
+
+Random permutations are useful for negative testing. They will often be invalid, but the generator must always run the oracle and record the actual result.
+
+### Mutation-Based Invalid Cases
+
+A mutation-based generator can start from a valid sequence and swap two positions. The mutated sequence should then be checked with the oracle. If it is still valid, the generator can retry or record it as a valid mutation.
+
+## 8. Initial Examples for Unit Tests
+
+The following examples should become the first unit tests.
+
+| Name | Sequence | Expected result |
+| --- | --- | --- |
+| flat valid | `[1, 2, 3, 4, 5, 6]` | valid |
+| nested valid | `[1, 6, 2, 5, 3, 4]` | valid |
+| invalid upper crossing | `[1, 3, 2, 4]` | invalid upper crossing |
+| invalid lower crossing | `[5, 1, 3, 2, 4]` | invalid lower crossing |
+| duplicate rejection | `[1, 2, 2, 3]` | invalid duplicate values |
+
+## 9. JSON Test Case Format
+
+Later in Week 1, generated cases can be stored as JSON:
+
+```json
+{
+  "id": "flat_n16_001",
+  "n": 16,
+  "type": "flat_valid",
+  "sequence": [1, 2, 3, 4, 5, 6],
+  "oracle": {
+    "valid": true,
+    "sorted": [1, 2, 3, 4, 5, 6],
+    "upper_ok": true,
+    "lower_ok": true,
+    "reason": null
+  }
+}
+```
+
+The saved oracle result makes each test case self-describing and easier to debug later.
+
+## 10. Day 2 Implementation Checklist
+
+Day 2 should focus on `src/oracle.py` and `tests/test_oracle.py`.
+
+Implementation checklist:
+
+- `upper_pairs(seq)`
+- `lower_pairs(seq)`
+- `rank_map(seq)`
+- `pair_to_interval(pair, rank)`
+- `crosses(interval1, interval2)`
+- `is_laminar(pairs, rank)`
+- `oracle(seq)`
+
+Test checklist:
+
+- flat valid case
+- nested valid case
+- invalid upper crossing
+- invalid lower crossing
+- random permutation sanity check
+- duplicated values rejection
+
