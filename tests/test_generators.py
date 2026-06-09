@@ -33,6 +33,7 @@ from generators import (  # noqa: E402
     load_test_case,
     make_case_id,
     make_test_case,
+    require_non_negative_n,
     safe_extension_ranks,
     mutate_by_swap,
     save_test_case,
@@ -41,11 +42,22 @@ from oracle import oracle  # noqa: E402
 
 
 class GeneratorTests(unittest.TestCase):
+    def test_require_non_negative_n_rejects_negative_n(self):
+        with self.assertRaises(ValueError):
+            require_non_negative_n(-1)
+
+    def test_require_non_negative_n_accepts_zero(self):
+        self.assertIsNone(require_non_negative_n(0))
+
     def test_generate_flat(self):
         seq = generate_flat(6)
 
         self.assertEqual(seq, [1, 2, 3, 4, 5, 6])
         self.assertTrue(oracle(seq)["valid"])
+
+    def test_generate_flat_rejects_negative_n(self):
+        with self.assertRaises(ValueError):
+            generate_flat(-1)
 
     def test_generate_nested_even_size(self):
         seq = generate_nested(6)
@@ -65,6 +77,10 @@ class GeneratorTests(unittest.TestCase):
 
         self.assertEqual(seq, [1, 5, 2, 4, 3])
         self.assertTrue(oracle(seq)["valid"])
+
+    def test_generate_nested_rejects_negative_n(self):
+        with self.assertRaises(ValueError):
+            generate_nested(-1)
 
     def test_generate_invalid_upper_crossing(self):
         seq = generate_invalid_upper_crossing(8)
@@ -96,6 +112,10 @@ class GeneratorTests(unittest.TestCase):
         self.assertEqual(sorted(seq), list(range(1, 9)))
         self.assertEqual(len(set(seq)), 8)
 
+    def test_generate_random_permutation_rejects_negative_n(self):
+        with self.assertRaises(ValueError):
+            generate_random_permutation(-1, seed=11)
+
     def test_generate_random_permutation_is_reproducible(self):
         seq1 = generate_random_permutation(8, seed=11)
         seq2 = generate_random_permutation(8, seed=11)
@@ -115,9 +135,13 @@ class GeneratorTests(unittest.TestCase):
 
         self.assertEqual(seq1, seq2)
 
-    def test_generate_random_invalid_raises_after_max_attempts(self):
+    def test_generate_random_invalid_rejects_small_n(self):
         with self.assertRaises(ValueError):
             generate_random_invalid(1, seed=11, max_attempts=3)
+
+    def test_generate_random_invalid_rejects_non_positive_max_attempts(self):
+        with self.assertRaises(ValueError):
+            generate_random_invalid(8, seed=11, max_attempts=0)
 
     def test_insert_rank_at_end(self):
         self.assertEqual(insert_rank_at_end([1, 2, 3], 1), [2, 3, 4, 1])
@@ -181,6 +205,20 @@ class GeneratorTests(unittest.TestCase):
         self.assertEqual(original, [1, 2, 3])
         self.assertEqual(mutated, [3, 2, 1])
 
+    def test_mutate_by_swap_rejects_partial_indices(self):
+        with self.assertRaises(ValueError):
+            mutate_by_swap([1, 2, 3], i=0)
+
+        with self.assertRaises(ValueError):
+            mutate_by_swap([1, 2, 3], j=2)
+
+    def test_mutate_by_swap_rejects_out_of_range_indices(self):
+        with self.assertRaises(IndexError):
+            mutate_by_swap([1, 2, 3], i=-1, j=2)
+
+        with self.assertRaises(IndexError):
+            mutate_by_swap([1, 2, 3], i=0, j=3)
+
     def test_generate_mutation_based_invalid_is_certified_invalid(self):
         base = generate_nested(8)
         seq = generate_mutation_based_invalid(base, seed=1)
@@ -207,6 +245,14 @@ class GeneratorTests(unittest.TestCase):
     def test_generate_mutation_based_invalid_raises_after_max_attempts(self):
         with self.assertRaises(ValueError):
             generate_mutation_based_invalid([1], seed=11, max_attempts=3)
+
+    def test_generate_mutation_based_invalid_rejects_invalid_base(self):
+        with self.assertRaises(ValueError):
+            generate_mutation_based_invalid(generate_invalid_upper_crossing(4), seed=11)
+
+    def test_generate_mutation_based_invalid_rejects_non_positive_max_attempts(self):
+        with self.assertRaises(ValueError):
+            generate_mutation_based_invalid(generate_nested(8), seed=11, max_attempts=0)
 
     def test_generate_mutation_based_invalid_case_is_certified_invalid(self):
         seq = generate_mutation_based_invalid_case(8, seed=11)

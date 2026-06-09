@@ -282,6 +282,10 @@ Day 7 status: not started.
   Added on 2026-06-05.  
   Baselines can start with timing and comparison-style counters. The ordinary-list backend should later record split and traversal work, so the thesis can explain exactly where it loses the linear-time bound.
 
+- [ ] Add generator-level instrumentation for `incremental_valid`.  
+  Added on 2026-06-09.  
+  Before large-scale experiments, record attempts, fallback count, and oracle calls while generating incremental valid sequences. This can help explain generator cost and quality in the thesis.
+
 ## Open Visualization Ideas
 
 - [ ] Lightweight interval visualization script.  

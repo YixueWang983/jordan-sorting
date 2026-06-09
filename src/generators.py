@@ -28,13 +28,21 @@ SUPPORTED_FAMILIES = {
 }
 
 
+def require_non_negative_n(n):
+    """拒绝负数规模，避免非法 size 静默生成空序列。"""
+    if n < 0:
+        raise ValueError("n must be non-negative")
+
+
 def generate_flat(n):
     """生成 flat 序列 [1, 2, ..., n]。"""
+    require_non_negative_n(n)
     return list(range(1, n + 1))
 
 
 def generate_nested(n):
     """生成 [1, n, 2, n-1, ...] 形式的 nested 候选序列。"""
+    require_non_negative_n(n)
     values = []
     left = 1
     right = n
@@ -63,6 +71,7 @@ def generate_invalid_lower_crossing(n):
 
 def generate_random_permutation(n, seed=None):
     """生成 [1, 2, ..., n] 的随机排列。"""
+    require_non_negative_n(n)
     values = list(range(1, n + 1))
     random.Random(seed).shuffle(values)
     return values
@@ -70,6 +79,11 @@ def generate_random_permutation(n, seed=None):
 
 def generate_random_invalid(n, seed=None, max_attempts=1000):
     """生成一个由 oracle 认证为 invalid 的随机排列。"""
+    if n < 4:
+        raise ValueError("random invalid sequence requires n >= 4")
+    if max_attempts < 1:
+        raise ValueError("max_attempts must be positive")
+
     for attempt in range(max_attempts):
         attempt_seed = None if seed is None else seed + attempt
         values = generate_random_permutation(n, seed=attempt_seed)
@@ -103,8 +117,7 @@ def safe_extension_ranks(seq):
 
 def generate_incremental_valid(n, seed=None, max_attempts_per_step=20):
     """生成一个由 oracle 逐步认证的 incremental valid sequence。"""
-    if n < 0:
-        raise ValueError("n must be non-negative")
+    require_non_negative_n(n)
     if max_attempts_per_step < 0:
         raise ValueError("max_attempts_per_step must be non-negative")
 
@@ -141,16 +154,30 @@ def mutate_by_swap(seq, i=None, j=None, seed=None):
     if len(values) < 2:
         return values
 
-    if i is None or j is None:
+    if (i is None) != (j is None):
+        raise ValueError("i and j must either both be provided or both be None")
+
+    if i is None:
         i, j = random.Random(seed).sample(range(len(values)), 2)
+
+    if not 0 <= i < len(values):
+        raise IndexError("i out of range")
+    if not 0 <= j < len(values):
+        raise IndexError("j out of range")
 
     values[i], values[j] = values[j], values[i]
     return values
 
 
 def generate_mutation_based_invalid(seq, seed=None, max_attempts=1000):
-    """从给定序列出发，生成一个由 oracle 认证为 invalid 的 swap mutation。"""
+    """从给定 valid 序列出发，生成一个由 oracle 认证为 invalid 的 swap mutation。"""
     values = list(seq)
+    base_result = oracle(values)
+    if not base_result["valid"]:
+        raise ValueError(f"base sequence must be valid, reason={base_result['reason']}")
+    if max_attempts < 1:
+        raise ValueError("max_attempts must be positive")
+
     for attempt in range(max_attempts):
         attempt_seed = None if seed is None else seed + attempt
         candidate = mutate_by_swap(values, seed=attempt_seed)
