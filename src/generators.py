@@ -13,6 +13,7 @@ INVALID_UPPER_CROSSING = "invalid_upper_crossing"
 INVALID_LOWER_CROSSING = "invalid_lower_crossing"
 RANDOM_PERMUTATION = "random_permutation"
 RANDOM_INVALID = "random_invalid"
+MUTATION_BASED_INVALID = "mutation_based_invalid"
 
 SUPPORTED_FAMILIES = {
     FLAT_VALID,
@@ -85,6 +86,17 @@ def mutate_by_swap(seq, i=None, j=None, seed=None):
 
     values[i], values[j] = values[j], values[i]
     return values
+
+
+def generate_mutation_based_invalid(seq, seed=None, max_attempts=1000):
+    """从给定序列出发，生成一个由 oracle 认证为 invalid 的 swap mutation。"""
+    values = list(seq)
+    for attempt in range(max_attempts):
+        attempt_seed = None if seed is None else seed + attempt
+        candidate = mutate_by_swap(values, seed=attempt_seed)
+        if not oracle(candidate)["valid"]:
+            return candidate
+    raise ValueError("failed to generate invalid mutation")
 
 
 def generate_small_handmade_valid_cases():

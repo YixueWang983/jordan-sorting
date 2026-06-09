@@ -13,6 +13,7 @@ from generators import (  # noqa: E402
     FLAT_VALID,
     INVALID_LOWER_CROSSING,
     INVALID_UPPER_CROSSING,
+    MUTATION_BASED_INVALID,
     NESTED_VALID,
     RANDOM_INVALID,
     RANDOM_PERMUTATION,
@@ -20,6 +21,7 @@ from generators import (  # noqa: E402
     generate_dataset,
     generate_invalid_lower_crossing,
     generate_invalid_upper_crossing,
+    generate_mutation_based_invalid,
     generate_nested,
     generate_random_invalid,
     generate_random_permutation,
@@ -122,12 +124,43 @@ class GeneratorTests(unittest.TestCase):
         self.assertEqual(original, [1, 2, 3])
         self.assertEqual(mutated, [3, 2, 1])
 
+    def test_generate_mutation_based_invalid_is_certified_invalid(self):
+        base = generate_nested(8)
+        seq = generate_mutation_based_invalid(base, seed=1)
+        result = oracle(seq)
+
+        self.assertEqual(sorted(seq), list(range(1, 9)))
+        self.assertFalse(result["valid"])
+
+    def test_generate_mutation_based_invalid_is_reproducible(self):
+        base = generate_nested(8)
+        seq1 = generate_mutation_based_invalid(base, seed=1)
+        seq2 = generate_mutation_based_invalid(base, seed=1)
+
+        self.assertEqual(seq1, seq2)
+
+    def test_generate_mutation_based_invalid_does_not_modify_original(self):
+        base = generate_nested(8)
+        original = list(base)
+
+        generate_mutation_based_invalid(base, seed=1)
+
+        self.assertEqual(base, original)
+
+    def test_generate_mutation_based_invalid_raises_after_max_attempts(self):
+        with self.assertRaises(ValueError):
+            generate_mutation_based_invalid([1], seed=11, max_attempts=3)
+
     def test_small_handmade_valid_cases(self):
         for seq in generate_small_handmade_valid_cases():
             self.assertTrue(oracle(seq)["valid"], seq)
 
     def test_make_case_id(self):
         self.assertEqual(make_case_id(FLAT_VALID, 16, 3), "flat_valid_n16_003")
+        self.assertEqual(
+            make_case_id(MUTATION_BASED_INVALID, 8, 1),
+            "mutation_based_invalid_n8_001",
+        )
 
     def test_make_test_case_contains_oracle_result(self):
         case = make_test_case([1, 2, 3, 4], FLAT_VALID, "flat_valid_n4_001")

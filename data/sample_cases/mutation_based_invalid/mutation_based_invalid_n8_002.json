@@ -1,0 +1,32 @@
+{
+  "id": "mutation_based_invalid_n8_002",
+  "n": 8,
+  "family": "mutation_based_invalid",
+  "seed": 9002,
+  "sequence": [
+    5,
+    8,
+    2,
+    7,
+    3,
+    6,
+    4,
+    1
+  ],
+  "oracle": {
+    "valid": false,
+    "sorted": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "upper_ok": false,
+    "lower_ok": true,
+    "reason": "upper crossing"
+  }
+}

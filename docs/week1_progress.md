@@ -158,6 +158,10 @@ Day 2 status: completed early.
 - [x] `mutate_by_swap(seq)`  
   Done on 2026-06-05.
 
+- [x] `generate_mutation_based_invalid(seq)`  
+  Done on 2026-06-09.  
+  Uses oracle-certified swap mutations and is distinct from low-level mutation candidates.
+
 - [x] Generator tests.  
   Done on 2026-06-05.
 
@@ -277,6 +281,6 @@ Day 7 status: not started.
 As of 2026-06-09:
 
 ```text
-Ran 36 tests
+Ran 40 tests
 OK
 ```

@@ -16,3 +16,5 @@ These files are small examples for checking the data format. Larger experimental
 `random_permutation` is a neutral random family: cases may be valid or invalid depending on the oracle result.
 
 `random_invalid` is filtered by the oracle and only stores cases certified as invalid.
+
+`mutation_based_invalid` starts from a valid base sequence, applies swap mutations, and stores only cases certified invalid by the oracle.

@@ -311,6 +311,10 @@ The `random_invalid` family uses rejection sampling. It repeatedly generates ran
 
 A mutation-based generator can start from a valid sequence and swap two positions. The mutated sequence should then be checked with the oracle. If it is still valid, the generator can retry or record it as a valid mutation.
 
+The low-level `mutate_by_swap` helper only creates mutation candidates; it does not guarantee invalidity.
+
+The `mutation_based_invalid` generator is the certified version. It repeatedly applies swap mutations to a base sequence and returns only a sequence that the oracle marks invalid.
+
 ## 8. Initial Examples for Unit Tests
 
 The following examples should become the first unit tests.
