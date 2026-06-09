@@ -49,6 +49,7 @@ class OracleTests(unittest.TestCase):
 
         self.assertTrue(result["valid"])
         self.assertEqual(result["sorted"], [1, 2, 3, 4, 5, 6])
+        self.assertTrue(result["distinct_values"])
         self.assertTrue(result["upper_ok"])
         self.assertTrue(result["lower_ok"])
         self.assertIsNone(result["reason"])
@@ -81,8 +82,17 @@ class OracleTests(unittest.TestCase):
     def test_duplicate_values_rejected(self):
         result = oracle([1, 2, 2, 3])
 
-        self.assertFalse(result["valid"])
-        self.assertEqual(result["reason"], "duplicate values")
+        self.assertEqual(
+            result,
+            {
+                "valid": False,
+                "sorted": [1, 2, 2, 3],
+                "distinct_values": False,
+                "upper_ok": None,
+                "lower_ok": None,
+                "reason": "duplicate values",
+            },
+        )
 
     def test_random_permutation_sanity_check(self):
         seq = list(range(1, 9))
@@ -91,6 +101,7 @@ class OracleTests(unittest.TestCase):
 
         self.assertEqual(result["sorted"], list(range(1, 9)))
         self.assertIn(result["valid"], [True, False])
+        self.assertTrue(result["distinct_values"])
         self.assertIsInstance(result["upper_ok"], bool)
         self.assertIsInstance(result["lower_ok"], bool)
 

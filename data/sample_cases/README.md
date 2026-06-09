@@ -13,6 +13,8 @@ Each JSON file stores:
 
 These files are small examples for checking the data format. Larger experimental datasets can be generated later.
 
+The oracle result includes `distinct_values`. Duplicate-value rejection is recorded separately from upper/lower laminarity failures.
+
 `random_permutation` is a neutral random family: cases may be valid or invalid depending on the oracle result.
 
 `random_invalid` is filtered by the oracle and only stores cases certified as invalid.

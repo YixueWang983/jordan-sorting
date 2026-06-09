@@ -17,6 +17,7 @@
       3,
       4
     ],
+    "distinct_values": true,
     "upper_ok": true,
     "lower_ok": true,
     "reason": null

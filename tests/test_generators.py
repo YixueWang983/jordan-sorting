@@ -171,6 +171,7 @@ class GeneratorTests(unittest.TestCase):
         self.assertIsNone(case["seed"])
         self.assertEqual(case["sequence"], [1, 2, 3, 4])
         self.assertTrue(case["oracle"]["valid"])
+        self.assertTrue(case["oracle"]["distinct_values"])
         self.assertEqual(case["oracle"]["sorted"], [1, 2, 3, 4])
 
     def test_save_and_load_test_case_round_trip(self):

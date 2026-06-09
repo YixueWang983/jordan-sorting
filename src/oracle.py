@@ -53,8 +53,9 @@ def oracle(seq):
         return {
             "valid": False,
             "sorted": sorted_values,
-            "upper_ok": False,
-            "lower_ok": False,
+            "distinct_values": False,
+            "upper_ok": None,
+            "lower_ok": None,
             "reason": "duplicate values",
         }
 
@@ -73,6 +74,7 @@ def oracle(seq):
     return {
         "valid": upper_ok and lower_ok,
         "sorted": sorted_values,
+        "distinct_values": True,
         "upper_ok": upper_ok,
         "lower_ok": lower_ok,
         "reason": reason,

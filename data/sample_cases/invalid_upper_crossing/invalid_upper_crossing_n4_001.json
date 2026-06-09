@@ -17,6 +17,7 @@
       3,
       4
     ],
+    "distinct_values": true,
     "upper_ok": false,
     "lower_ok": true,
     "reason": "upper crossing"

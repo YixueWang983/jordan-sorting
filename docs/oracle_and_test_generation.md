@@ -155,6 +155,7 @@ The result should have this shape:
 {
     "valid": True,
     "sorted": [1, 2, 3, 4, 5, 6],
+    "distinct_values": True,
     "upper_ok": True,
     "lower_ok": True,
     "reason": None,
@@ -167,11 +168,27 @@ For an invalid sequence, the result should identify the failed condition:
 {
     "valid": False,
     "sorted": [1, 2, 3, 4],
+    "distinct_values": True,
     "upper_ok": False,
     "lower_ok": True,
     "reason": "upper crossing",
 }
 ```
+
+If the sequence contains duplicate values, the oracle rejects it before checking upper or lower laminarity:
+
+```python
+{
+    "valid": False,
+    "sorted": [1, 2, 2, 3],
+    "distinct_values": False,
+    "upper_ok": None,
+    "lower_ok": None,
+    "reason": "duplicate values",
+}
+```
+
+This keeps duplicate-value rejection separate from upper/lower crossing failures.
 
 The first implementation can use an `O(n^2)` laminarity check. The priority is correctness and clear failure reports, not performance.
 
@@ -341,6 +358,7 @@ Later in Week 1, generated cases can be stored as JSON:
   "oracle": {
     "valid": true,
     "sorted": [1, 2, 3, 4, 5, 6],
+    "distinct_values": true,
     "upper_ok": true,
     "lower_ok": true,
     "reason": null

@@ -37,6 +37,10 @@ generate sequence -> oracle checks valid/invalid -> expected sorted order -> sav
 - [x] Create project directory.  
   Done on 2026-06-05.
 
+- [x] Distinguish duplicate-value rejection from laminarity failures.  
+  Done on 2026-06-09.  
+  Duplicate inputs now report `distinct_values: False` and leave `upper_ok` / `lower_ok` as `None`.
+
 - [x] Create project structure.  
   Done on 2026-06-05.
 
