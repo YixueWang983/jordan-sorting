@@ -1,0 +1,28 @@
+{
+  "id": "flat_valid_n6_001",
+  "n": 6,
+  "family": "flat_valid",
+  "seed": null,
+  "sequence": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "oracle": {
+    "valid": true,
+    "sorted": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "upper_ok": true,
+    "lower_ok": true,
+    "reason": null
+  }
+}

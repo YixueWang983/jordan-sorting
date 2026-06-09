@@ -1,6 +1,6 @@
 # Week 1 Progress Checklist
 
-Last updated: 2026-06-05
+Last updated: 2026-06-09
 
 ## Week 1 Goal
 
@@ -161,16 +161,27 @@ Day 3 status: mostly completed early.
 
 ## Day 4 - Input Families and JSON Saving Format
 
-- [ ] Define input families in code.
-- [ ] Implement `save_test_case(seq, family, path)`.
-- [ ] Implement `load_test_case(path)`.
-- [ ] Implement `generate_dataset(family, sizes, repetitions)`.
-- [ ] Create a small `data/` directory with JSON test cases.
+- [x] Define input families in code.  
+  Done on 2026-06-09.
+
+- [x] Implement `save_test_case(seq, family, path)`.  
+  Done on 2026-06-09.
+
+- [x] Implement `load_test_case(path)`.  
+  Done on 2026-06-09.
+
+- [x] Implement `generate_dataset(family, sizes, repetitions)`.  
+  Done on 2026-06-09.
+
+- [x] Create a small `data/` directory with JSON test cases.  
+  Done on 2026-06-09.  
+  Sample files are stored under `data/sample_cases/`.
+
 - [ ] Design an incremental valid generator.  
   Idea added on 2026-06-05.  
   Start from a known valid Jordan sequence, append one new element at a time, and certify the result with the oracle after each extension. This may become the first practical `random_valid` strategy. It is not expected to sample uniformly from all valid Jordan sequences.
 
-Day 4 status: next recommended task.
+Day 4 status: core JSON pipeline completed; incremental valid generator remains a later design task.
 
 ## Day 5 - Baselines Skeleton
 
@@ -259,9 +270,9 @@ Day 7 status: not started.
 
 ## Current Test Status
 
-As of 2026-06-05:
+As of 2026-06-09:
 
 ```text
-Ran 21 tests
+Ran 28 tests
 OK
 ```

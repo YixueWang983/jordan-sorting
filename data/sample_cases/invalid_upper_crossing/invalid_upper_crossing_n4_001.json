@@ -1,0 +1,24 @@
+{
+  "id": "invalid_upper_crossing_n4_001",
+  "n": 4,
+  "family": "invalid_upper_crossing",
+  "seed": null,
+  "sequence": [
+    1,
+    3,
+    2,
+    4
+  ],
+  "oracle": {
+    "valid": false,
+    "sorted": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "upper_ok": false,
+    "lower_ok": true,
+    "reason": "upper crossing"
+  }
+}

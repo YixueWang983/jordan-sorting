@@ -1,0 +1,28 @@
+{
+  "id": "random_permutation_n6_001",
+  "n": 6,
+  "family": "random_permutation",
+  "seed": 6012,
+  "sequence": [
+    4,
+    1,
+    3,
+    2,
+    6,
+    5
+  ],
+  "oracle": {
+    "valid": false,
+    "sorted": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "upper_ok": true,
+    "lower_ok": false,
+    "reason": "lower crossing"
+  }
+}

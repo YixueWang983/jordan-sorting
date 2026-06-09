@@ -311,7 +311,8 @@ Later in Week 1, generated cases can be stored as JSON:
 {
   "id": "flat_n16_001",
   "n": 16,
-  "type": "flat_valid",
+  "family": "flat_valid",
+  "seed": null,
   "sequence": [1, 2, 3, 4, 5, 6],
   "oracle": {
     "valid": true,
@@ -324,6 +325,8 @@ Later in Week 1, generated cases can be stored as JSON:
 ```
 
 The saved oracle result makes each test case self-describing and easier to debug later.
+
+The first implementation uses `family` rather than `type` for the generator category. This avoids confusion with Python's built-in `type` name. The `seed` field is optional in meaning but always present in saved files; deterministic generators store `null`, while random generators store the seed used to produce the sequence.
 
 ## 10. Day 2 Implementation Checklist
 

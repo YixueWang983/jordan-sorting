@@ -1,0 +1,24 @@
+{
+  "id": "random_permutation_n4_002",
+  "n": 4,
+  "family": "random_permutation",
+  "seed": 4013,
+  "sequence": [
+    4,
+    3,
+    2,
+    1
+  ],
+  "oracle": {
+    "valid": true,
+    "sorted": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "upper_ok": true,
+    "lower_ok": true,
+    "reason": null
+  }
+}

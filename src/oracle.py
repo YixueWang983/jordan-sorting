@@ -14,7 +14,7 @@ def lower_pairs(seq):
 
 
 def rank_map(seq):
-    """把每个元素映射到它在排序结果中的 1-based rank。输出是排序后在有序列表中的顺序"""
+    """把每个元素映射到它在排序结果中的 1-based rank，也就是有序列表中的顺序。"""
     values = list(seq)
     return {value: index for index, value in enumerate(sorted(values), start=1)}
 
@@ -35,7 +35,7 @@ def crosses(interval1, interval2):
 
 
 def is_laminar(pairs, rank):
-    """如果一组 pairs 对应的 intervals 是 laminar family，则返回 True。"""
+    """用 O(n^2) 的简单层级检查判断 intervals 是否为 laminar family。"""
     intervals = [pair_to_interval(pair, rank) for pair in pairs]
     for i, first in enumerate(intervals):
         for second in intervals[i + 1 :]:

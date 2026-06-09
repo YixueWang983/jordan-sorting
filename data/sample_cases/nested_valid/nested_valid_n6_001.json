@@ -1,0 +1,28 @@
+{
+  "id": "nested_valid_n6_001",
+  "n": 6,
+  "family": "nested_valid",
+  "seed": null,
+  "sequence": [
+    1,
+    6,
+    2,
+    5,
+    3,
+    4
+  ],
+  "oracle": {
+    "valid": true,
+    "sorted": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "upper_ok": true,
+    "lower_ok": true,
+    "reason": null
+  }
+}
