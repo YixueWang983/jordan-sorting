@@ -254,6 +254,14 @@ Expected result:
 invalid, upper crossing
 ```
 
+The scalable generator uses the same crossing prefix and appends a simple increasing tail:
+
+```text
+[1, 3, 2, 4] + [5, 6, ..., n]
+```
+
+This keeps the upper crossing while allowing experiments to request different sequence lengths.
+
 ### Invalid Lower-Crossing Cases
 
 These cases deliberately create crossing intervals in the lower family.
@@ -282,6 +290,14 @@ Expected result:
 ```text
 invalid, lower crossing
 ```
+
+The scalable generator uses this crossing prefix and appends a simple increasing tail:
+
+```text
+[1, 2, 4, 3, 5] + [6, 7, ..., n]
+```
+
+The lower intervals `{2, 4}` and `{3, 5}` cross, while the tail keeps the construction easy to inspect.
 
 ### Random Permutations
 

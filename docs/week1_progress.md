@@ -142,10 +142,10 @@ Day 2 status: completed early.
 - [x] `generate_small_handmade_valid_cases()`  
   Done on 2026-06-05.
 
-- [x] `generate_invalid_upper_crossing()`  
+- [x] `generate_invalid_upper_crossing(n)`  
   Done on 2026-06-05.
 
-- [x] `generate_invalid_lower_crossing()`  
+- [x] `generate_invalid_lower_crossing(n)`  
   Done on 2026-06-05.
 
 - [x] `generate_random_permutation(n)`  
@@ -273,6 +273,6 @@ Day 7 status: not started.
 As of 2026-06-09:
 
 ```text
-Ran 28 tests
+Ran 32 tests
 OK
 ```

@@ -58,16 +58,28 @@ class GeneratorTests(unittest.TestCase):
         self.assertTrue(oracle(seq)["valid"])
 
     def test_generate_invalid_upper_crossing(self):
-        result = oracle(generate_invalid_upper_crossing())
+        seq = generate_invalid_upper_crossing(8)
+        result = oracle(seq)
 
+        self.assertEqual(seq, [1, 3, 2, 4, 5, 6, 7, 8])
         self.assertFalse(result["valid"])
         self.assertEqual(result["reason"], "upper crossing")
 
     def test_generate_invalid_lower_crossing(self):
-        result = oracle(generate_invalid_lower_crossing())
+        seq = generate_invalid_lower_crossing(8)
+        result = oracle(seq)
 
+        self.assertEqual(seq, [1, 2, 4, 3, 5, 6, 7, 8])
         self.assertFalse(result["valid"])
         self.assertEqual(result["reason"], "lower crossing")
+
+    def test_invalid_upper_crossing_requires_at_least_four_elements(self):
+        with self.assertRaises(ValueError):
+            generate_invalid_upper_crossing(3)
+
+    def test_invalid_lower_crossing_requires_at_least_five_elements(self):
+        with self.assertRaises(ValueError):
+            generate_invalid_lower_crossing(4)
 
     def test_generate_random_permutation(self):
         seq = generate_random_permutation(8, seed=11)
@@ -152,11 +164,44 @@ class GeneratorTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             families = [INVALID_UPPER_CROSSING, INVALID_LOWER_CROSSING]
             for family in families:
-                paths = generate_dataset(family, sizes=[4], repetitions=1, output_dir=tmpdir)
+                min_size = 5 if family == INVALID_LOWER_CROSSING else 4
+                paths = generate_dataset(family, sizes=[min_size], repetitions=1, output_dir=tmpdir)
                 case = load_test_case(paths[0])
 
                 self.assertEqual(case["family"], family)
                 self.assertFalse(case["oracle"]["valid"])
+
+    def test_invalid_dataset_generation_respects_requested_sizes(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            paths = generate_dataset(
+                INVALID_UPPER_CROSSING,
+                sizes=[4, 8],
+                repetitions=1,
+                output_dir=tmpdir,
+            )
+            cases = [load_test_case(path) for path in paths]
+
+            self.assertEqual([case["n"] for case in cases], [4, 8])
+            self.assertEqual(
+                [case["id"] for case in cases],
+                ["invalid_upper_crossing_n4_001", "invalid_upper_crossing_n8_001"],
+            )
+
+    def test_invalid_lower_dataset_generation_respects_requested_sizes(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            paths = generate_dataset(
+                INVALID_LOWER_CROSSING,
+                sizes=[5, 8],
+                repetitions=1,
+                output_dir=tmpdir,
+            )
+            cases = [load_test_case(path) for path in paths]
+
+            self.assertEqual([case["n"] for case in cases], [5, 8])
+            self.assertEqual(
+                [case["id"] for case in cases],
+                ["invalid_lower_crossing_n5_001", "invalid_lower_crossing_n8_001"],
+            )
 
     def test_nested_dataset_family_is_certified_valid(self):
         with tempfile.TemporaryDirectory() as tmpdir:

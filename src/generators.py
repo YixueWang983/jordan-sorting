@@ -41,14 +41,18 @@ def generate_nested(n):
     return values
 
 
-def generate_invalid_upper_crossing():
-    """生成一个 upper family 发生 crossing 的小序列。"""
-    return [1, 3, 2, 4]
+def generate_invalid_upper_crossing(n):
+    """生成长度为 n 且 upper family 发生 crossing 的序列。"""
+    if n < 4:
+        raise ValueError("upper crossing requires n >= 4")
+    return [1, 3, 2, 4] + list(range(5, n + 1))
 
 
-def generate_invalid_lower_crossing():
-    """生成一个 lower family 发生 crossing 的小序列。"""
-    return [5, 1, 3, 2, 4]
+def generate_invalid_lower_crossing(n):
+    """生成长度为 n 且 lower family 发生 crossing 的序列。"""
+    if n < 5:
+        raise ValueError("lower crossing requires n >= 5")
+    return [1, 2, 4, 3, 5] + list(range(6, n + 1))
 
 
 def generate_random_permutation(n, seed=None):
@@ -125,9 +129,9 @@ def generate_sequence(family, n, seed=None):
     if family == NESTED_VALID:
         return generate_nested(n)
     if family == INVALID_UPPER_CROSSING:
-        return generate_invalid_upper_crossing()
+        return generate_invalid_upper_crossing(n)
     if family == INVALID_LOWER_CROSSING:
-        return generate_invalid_lower_crossing()
+        return generate_invalid_lower_crossing(n)
     if family == RANDOM_PERMUTATION:
         return generate_random_permutation(n, seed=seed)
     raise ValueError(f"unsupported family: {family}")
