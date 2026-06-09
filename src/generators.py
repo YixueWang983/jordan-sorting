@@ -12,6 +12,7 @@ NESTED_VALID = "nested_valid"
 INVALID_UPPER_CROSSING = "invalid_upper_crossing"
 INVALID_LOWER_CROSSING = "invalid_lower_crossing"
 RANDOM_PERMUTATION = "random_permutation"
+RANDOM_INVALID = "random_invalid"
 
 SUPPORTED_FAMILIES = {
     FLAT_VALID,
@@ -19,6 +20,7 @@ SUPPORTED_FAMILIES = {
     INVALID_UPPER_CROSSING,
     INVALID_LOWER_CROSSING,
     RANDOM_PERMUTATION,
+    RANDOM_INVALID,
 }
 
 
@@ -60,6 +62,16 @@ def generate_random_permutation(n, seed=None):
     values = list(range(1, n + 1))
     random.Random(seed).shuffle(values)
     return values
+
+
+def generate_random_invalid(n, seed=None, max_attempts=1000):
+    """生成一个由 oracle 认证为 invalid 的随机排列。"""
+    for attempt in range(max_attempts):
+        attempt_seed = None if seed is None else seed + attempt
+        values = generate_random_permutation(n, seed=attempt_seed)
+        if not oracle(values)["valid"]:
+            return values
+    raise ValueError("failed to generate random invalid sequence")
 
 
 def mutate_by_swap(seq, i=None, j=None, seed=None):
@@ -134,6 +146,8 @@ def generate_sequence(family, n, seed=None):
         return generate_invalid_lower_crossing(n)
     if family == RANDOM_PERMUTATION:
         return generate_random_permutation(n, seed=seed)
+    if family == RANDOM_INVALID:
+        return generate_random_invalid(n, seed=seed)
     raise ValueError(f"unsupported family: {family}")
 
 
@@ -147,7 +161,7 @@ def generate_dataset(family, sizes, repetitions, output_dir, seed=0):
     for n in sizes:
         for index in range(1, repetitions + 1):
             case_seed = None
-            if family == RANDOM_PERMUTATION:
+            if family in {RANDOM_PERMUTATION, RANDOM_INVALID}:
                 case_seed = seed + n * 1000 + index
 
             seq = generate_sequence(family, n, seed=case_seed)

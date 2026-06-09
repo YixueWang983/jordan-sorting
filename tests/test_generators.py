@@ -14,12 +14,14 @@ from generators import (  # noqa: E402
     INVALID_LOWER_CROSSING,
     INVALID_UPPER_CROSSING,
     NESTED_VALID,
+    RANDOM_INVALID,
     RANDOM_PERMUTATION,
     generate_flat,
     generate_dataset,
     generate_invalid_lower_crossing,
     generate_invalid_upper_crossing,
     generate_nested,
+    generate_random_invalid,
     generate_random_permutation,
     generate_small_handmade_valid_cases,
     load_test_case,
@@ -93,6 +95,23 @@ class GeneratorTests(unittest.TestCase):
 
         self.assertEqual(seq1, seq2)
 
+    def test_generate_random_invalid_is_certified_invalid(self):
+        seq = generate_random_invalid(8, seed=11)
+        result = oracle(seq)
+
+        self.assertEqual(sorted(seq), list(range(1, 9)))
+        self.assertFalse(result["valid"])
+
+    def test_generate_random_invalid_is_reproducible(self):
+        seq1 = generate_random_invalid(8, seed=11)
+        seq2 = generate_random_invalid(8, seed=11)
+
+        self.assertEqual(seq1, seq2)
+
+    def test_generate_random_invalid_raises_after_max_attempts(self):
+        with self.assertRaises(ValueError):
+            generate_random_invalid(1, seed=11, max_attempts=3)
+
     def test_mutate_by_swap(self):
         self.assertEqual(mutate_by_swap([1, 2, 3], i=0, j=2), [3, 2, 1])
 
@@ -159,6 +178,22 @@ class GeneratorTests(unittest.TestCase):
 
             self.assertEqual([case["seed"] for case in cases], [8012, 8013])
             self.assertNotEqual(cases[0]["sequence"], cases[1]["sequence"])
+
+    def test_random_invalid_dataset_family_is_certified_invalid(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            paths = generate_dataset(
+                RANDOM_INVALID,
+                sizes=[8],
+                repetitions=2,
+                output_dir=tmpdir,
+                seed=11,
+            )
+            cases = [load_test_case(path) for path in paths]
+
+            self.assertEqual([case["family"] for case in cases], [RANDOM_INVALID, RANDOM_INVALID])
+            self.assertEqual([case["seed"] for case in cases], [8012, 8013])
+            for case in cases:
+                self.assertFalse(case["oracle"]["valid"])
 
     def test_invalid_dataset_families_are_certified_invalid(self):
         with tempfile.TemporaryDirectory() as tmpdir:

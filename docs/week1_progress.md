@@ -151,6 +151,10 @@ Day 2 status: completed early.
 - [x] `generate_random_permutation(n)`  
   Done on 2026-06-05.
 
+- [x] `generate_random_invalid(n)`  
+  Done on 2026-06-09.  
+  Uses oracle-certified rejection sampling and is distinct from neutral `random_permutation`.
+
 - [x] `mutate_by_swap(seq)`  
   Done on 2026-06-05.
 
@@ -197,7 +201,7 @@ Day 5 status: not started.
 
 - [ ] Implement `experiments/run_small_tests.py`.
 - [ ] Use sizes `[8, 16, 32, 64, 128, 256, 512]`.
-- [ ] Use families `flat_valid`, `nested_valid`, `invalid_crossing`, `random_invalid`.
+- [ ] Use families `flat_valid`, `nested_valid`, `invalid_upper_crossing`, `invalid_lower_crossing`, `random_invalid`.
 - [ ] Record oracle valid/invalid results.
 - [ ] Record baseline timings.
 - [ ] Output `results/week1_baseline_results.csv`.
@@ -273,6 +277,6 @@ Day 7 status: not started.
 As of 2026-06-09:
 
 ```text
-Ran 32 tests
+Ran 36 tests
 OK
 ```

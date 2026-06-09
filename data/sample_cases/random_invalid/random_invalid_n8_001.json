@@ -1,0 +1,32 @@
+{
+  "id": "random_invalid_n8_001",
+  "n": 8,
+  "family": "random_invalid",
+  "seed": 8012,
+  "sequence": [
+    7,
+    4,
+    1,
+    2,
+    8,
+    6,
+    5,
+    3
+  ],
+  "oracle": {
+    "valid": false,
+    "sorted": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "upper_ok": false,
+    "lower_ok": false,
+    "reason": "upper and lower crossing"
+  }
+}

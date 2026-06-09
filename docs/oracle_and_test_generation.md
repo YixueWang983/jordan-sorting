@@ -303,6 +303,10 @@ The lower intervals `{2, 4}` and `{3, 5}` cross, while the tail keeps the constr
 
 Random permutations are useful for negative testing. They will often be invalid, but the generator must always run the oracle and record the actual result.
 
+The `random_permutation` family is neutral: it does not guarantee validity or invalidity.
+
+The `random_invalid` family uses rejection sampling. It repeatedly generates random permutations and returns only a sequence certified invalid by the oracle.
+
 ### Mutation-Based Invalid Cases
 
 A mutation-based generator can start from a valid sequence and swap two positions. The mutated sequence should then be checked with the oracle. If it is still valid, the generator can retry or record it as a valid mutation.
