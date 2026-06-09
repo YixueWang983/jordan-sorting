@@ -303,6 +303,10 @@ Day 7 status: not started.
   Added on 2026-06-05.  
   Time alone will not be enough for a strong experimental chapter. Candidate metrics include comparisons, oracle interval checks, generator attempts, rejected candidates, split counts, split region sizes, traversal steps, node visits, merge counts, relabel operations, tree rotations, and finger-search steps.
 
+- [ ] Add post-generation structural classification.  
+  Added on 2026-06-09.  
+  Classify generated valid sequences after generation instead of forcing generators to target a prescribed nesting ratio. Candidate structural metrics include interval nesting depth, nesting count, nesting ratio, average interval length, and flat/shallow/deep/mixed category labels. This keeps generators simple while still allowing the thesis to analyze what kinds of valid sequences were actually produced.
+
 - [ ] Integrate metrics into baselines and future Jordan-sorting implementations.  
   Added on 2026-06-05.  
   Baselines can start with timing and comparison-style counters. The ordinary-list backend should later record split and traversal work, so the thesis can explain exactly where it loses the linear-time bound.
