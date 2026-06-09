@@ -24,9 +24,9 @@ generate sequence -> oracle checks valid/invalid -> expected sorted order -> sav
   Completed on 2026-06-05.  
   Added flat, nested candidate, invalid upper crossing, invalid lower crossing, random permutation, swap mutation, and small handmade valid cases.
 
-- [ ] `src/baselines.py`  
-  Not started.  
-  Next step after JSON test-case saving format.
+- [x] `src/baselines.py`  
+  Completed on 2026-06-09.  
+  Added Python sort, merge sort, quick sort, laminarity-check-plus-sort, timing helper, and baseline unit tests.
 
 - [ ] Small experiment CSV + Week 1 summary  
   Not started.  
@@ -205,13 +205,31 @@ Day 4 status: completed.
 
 ## Day 5 - Baselines Skeleton
 
-- [ ] `python_sort(seq)`.
-- [ ] `merge_sort(seq)`.
-- [ ] `quick_sort(seq)`.
-- [ ] `sort_plus_laminarity_check(seq)`.
-- [ ] `time_function(func, seq)`.
+- [x] `python_sort(seq)`.  
+  Done on 2026-06-09.  
+  Uses Python's built-in `sorted` as the optimized practical baseline.
 
-Day 5 status: not started.
+- [x] `merge_sort(seq)`.  
+  Done on 2026-06-09.  
+  Implements a transparent classical merge-sort baseline.
+
+- [x] `quick_sort(seq)`.  
+  Done on 2026-06-09.  
+  Uses a deterministic middle pivot for reproducible experiments.
+
+- [x] `sort_plus_laminarity_check(seq)`.  
+  Done on 2026-06-09.  
+  Runs the oracle before returning the sorted output, so experiments can measure the cost of a naive structure-check-plus-sort pipeline.
+
+- [x] `time_function(func, seq)`.  
+  Done on 2026-06-09.  
+  Measures elapsed time with `perf_counter_ns` and runs functions on an input copy to protect reusable test cases.
+
+- [x] Baseline unit tests.  
+  Done on 2026-06-09.  
+  Added tests for correctness, empty/singleton inputs, duplicate values, input preservation, oracle reporting, and timing output.
+
+Day 5 status: completed.
 
 ## Day 6 - Small Experiments
 
@@ -301,6 +319,6 @@ Day 7 status: not started.
 As of 2026-06-09:
 
 ```text
-Ran 64 tests
+Ran 74 tests
 OK
 ```
