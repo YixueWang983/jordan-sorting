@@ -348,6 +348,8 @@ The low-level `mutate_by_swap` helper only creates mutation candidates; it does 
 
 The `mutation_based_invalid` generator is the certified version. It repeatedly applies swap mutations to a base sequence and returns only a sequence that the oracle marks invalid.
 
+For dataset generation, `mutation_based_invalid` first builds an `incremental_valid` base sequence of the requested length and then applies the certified mutation wrapper. This makes it usable as a standard family in `generate_dataset`.
+
 ## 8. Initial Examples for Unit Tests
 
 The following examples should become the first unit tests.

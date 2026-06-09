@@ -23,6 +23,7 @@ SUPPORTED_FAMILIES = {
     INVALID_LOWER_CROSSING,
     RANDOM_PERMUTATION,
     RANDOM_INVALID,
+    MUTATION_BASED_INVALID,
     INCREMENTAL_VALID,
 }
 
@@ -158,6 +159,15 @@ def generate_mutation_based_invalid(seq, seed=None, max_attempts=1000):
     raise ValueError("failed to generate invalid mutation")
 
 
+def generate_mutation_based_invalid_case(n, seed=None):
+    """从 incremental valid base 出发，生成长度为 n 的 mutation-based invalid case。"""
+    if n < 4:
+        raise ValueError("mutation-based invalid cases require n >= 4")
+
+    base = generate_incremental_valid(n, seed=seed)
+    return generate_mutation_based_invalid(base, seed=seed)
+
+
 def generate_small_handmade_valid_cases():
     """返回用于调试和论文示例的小型 valid cases。"""
     return [
@@ -221,6 +231,8 @@ def generate_sequence(family, n, seed=None):
         return generate_random_invalid(n, seed=seed)
     if family == INCREMENTAL_VALID:
         return generate_incremental_valid(n, seed=seed)
+    if family == MUTATION_BASED_INVALID:
+        return generate_mutation_based_invalid_case(n, seed=seed)
     raise ValueError(f"unsupported family: {family}")
 
 
@@ -234,7 +246,12 @@ def generate_dataset(family, sizes, repetitions, output_dir, seed=0):
     for n in sizes:
         for index in range(1, repetitions + 1):
             case_seed = None
-            if family in {RANDOM_PERMUTATION, RANDOM_INVALID, INCREMENTAL_VALID}:
+            if family in {
+                RANDOM_PERMUTATION,
+                RANDOM_INVALID,
+                INCREMENTAL_VALID,
+                MUTATION_BASED_INVALID,
+            }:
                 case_seed = seed + n * 1000 + index
 
             seq = generate_sequence(family, n, seed=case_seed)

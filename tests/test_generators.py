@@ -24,6 +24,7 @@ from generators import (  # noqa: E402
     generate_invalid_lower_crossing,
     generate_invalid_upper_crossing,
     generate_mutation_based_invalid,
+    generate_mutation_based_invalid_case,
     generate_nested,
     generate_random_invalid,
     generate_random_permutation,
@@ -207,6 +208,17 @@ class GeneratorTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             generate_mutation_based_invalid([1], seed=11, max_attempts=3)
 
+    def test_generate_mutation_based_invalid_case_is_certified_invalid(self):
+        seq = generate_mutation_based_invalid_case(8, seed=11)
+        result = oracle(seq)
+
+        self.assertEqual(sorted(seq), list(range(1, 9)))
+        self.assertFalse(result["valid"])
+
+    def test_generate_mutation_based_invalid_case_rejects_small_n(self):
+        with self.assertRaises(ValueError):
+            generate_mutation_based_invalid_case(3, seed=11)
+
     def test_small_handmade_valid_cases(self):
         for seq in generate_small_handmade_valid_cases():
             self.assertTrue(oracle(seq)["valid"], seq)
@@ -305,6 +317,24 @@ class GeneratorTests(unittest.TestCase):
 
                 self.assertEqual(case["family"], INCREMENTAL_VALID)
                 self.assertTrue(case["oracle"]["valid"])
+                self.assertEqual(sorted(case["sequence"]), case["oracle"]["sorted"])
+
+    def test_mutation_based_invalid_dataset_family_is_certified_invalid(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            paths = generate_dataset(
+                MUTATION_BASED_INVALID,
+                sizes=[8, 16],
+                repetitions=2,
+                output_dir=tmpdir,
+                seed=11,
+            )
+
+            self.assertEqual(len(paths), 4)
+            for path in paths:
+                case = load_test_case(path)
+
+                self.assertEqual(case["family"], MUTATION_BASED_INVALID)
+                self.assertFalse(case["oracle"]["valid"])
                 self.assertEqual(sorted(case["sequence"]), case["oracle"]["sorted"])
 
     def test_invalid_dataset_families_are_certified_invalid(self):

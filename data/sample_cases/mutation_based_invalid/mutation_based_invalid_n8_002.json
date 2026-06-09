@@ -2,16 +2,16 @@
   "id": "mutation_based_invalid_n8_002",
   "n": 8,
   "family": "mutation_based_invalid",
-  "seed": 9002,
+  "seed": 8013,
   "sequence": [
-    5,
-    8,
-    2,
-    7,
+    1,
     3,
     6,
+    5,
+    2,
+    8,
     4,
-    1
+    7
   ],
   "oracle": {
     "valid": false,
@@ -27,7 +27,7 @@
     ],
     "distinct_values": true,
     "upper_ok": false,
-    "lower_ok": true,
-    "reason": "upper crossing"
+    "lower_ok": false,
+    "reason": "upper and lower crossing"
   }
 }

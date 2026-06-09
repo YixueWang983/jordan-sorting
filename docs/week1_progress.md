@@ -170,6 +170,10 @@ Day 2 status: completed early.
   Done on 2026-06-09.  
   Uses oracle-certified swap mutations and is distinct from low-level mutation candidates.
 
+- [x] `generate_mutation_based_invalid_case(n)`  
+  Done on 2026-06-09.  
+  Makes `mutation_based_invalid` available as a standard dataset family.
+
 - [x] Generator tests.  
   Done on 2026-06-05.
 
@@ -213,7 +217,7 @@ Day 5 status: not started.
 
 - [ ] Implement `experiments/run_small_tests.py`.
 - [ ] Use sizes `[8, 16, 32, 64, 128, 256, 512]`.
-- [ ] Use families `flat_valid`, `nested_valid`, `incremental_valid`, `invalid_upper_crossing`, `invalid_lower_crossing`, `random_invalid`.
+- [ ] Use families `flat_valid`, `nested_valid`, `incremental_valid`, `invalid_upper_crossing`, `invalid_lower_crossing`, `random_invalid`, `mutation_based_invalid`.
 - [ ] Record oracle valid/invalid results.
 - [ ] Record baseline timings.
 - [ ] Output `results/week1_baseline_results.csv`.
@@ -289,6 +293,6 @@ Day 7 status: not started.
 As of 2026-06-09:
 
 ```text
-Ran 50 tests
+Ran 53 tests
 OK
 ```
