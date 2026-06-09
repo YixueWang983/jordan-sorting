@@ -287,6 +287,22 @@ Day 7 status: not started.
   Added on 2026-06-09.  
   Add a third invalid family for high-crossing stress tests. Current invalid families cover localized crossing prefixes and mutation-based invalid cases. A dense invalid family should deliberately create many upper/lower crossings, then use the oracle and future `stats.py` metrics to certify and count the crossing density. This can support a clearer invalid-data taxonomy in the thesis: localized invalid, mutation-based invalid, and dense invalid.
 
+- [ ] Position-controlled invalid generators.  
+  Added on 2026-06-09.  
+  Generate invalid cases where a small crossing appears near the beginning, middle, or end of the sequence. This differs from dense invalid generation: the goal is to keep the invalidity localized while testing whether the oracle and future algorithms behave consistently when the error appears in different positions.
+
+- [ ] Near-valid invalid cases.  
+  Added on 2026-06-09.  
+  Generate invalid cases that differ only slightly from a valid sequence, such as one small swap or one localized crossing. These cases can help test robustness on sequences that are close to valid rather than obviously broken.
+
+- [ ] Generator audit script.  
+  Added on 2026-06-09.  
+  Add a lightweight audit script that samples each generator family and reports valid/invalid ratios, invalid-reason distribution, requested versus actual sizes, duplicate generated cases, and generator failures. This is separate from timing experiments and should help verify dataset quality.
+
+- [ ] Treat generator family names as construction labels.  
+  Added on 2026-06-09.  
+  Keep generator names focused on how a sequence is produced, while `stats.py` or a classifier determines the observed structure after generation. For example, `generate_nested(n)` can remain a construction family, but whether the result is flat, shallow, deep, or mixed should be measured after generation.
+
 - [x] Document limitations of the incremental generator.  
   Completed on 2026-06-09.  
   The generator is described as constructive and oracle-certified, but not uniform over all valid Jordan sequences.
@@ -297,6 +313,14 @@ Day 7 status: not started.
   Added on 2026-06-05.  
   Consider adding Python's `hypothesis` library after the basic generators and JSON dataset format are stable. It could generate edge cases automatically, test mutation rules, and shrink failures to minimal counterexamples. This is likely most useful once dynamic family trees, splitting, and more complex generator logic exist.
 
+- [ ] Add odd/even generator boundary tests.  
+  Added on 2026-06-09.  
+  Add targeted tests for small and parity-sensitive sizes, such as `n = 0, 1, 2, 3, 4, 5`, plus representative odd and even sizes. Upper and lower pair families handle the final unpaired element differently, so parity tests should remain explicit.
+
+- [ ] Add non-`1..n` relabeling tests.  
+  Added on 2026-06-09.  
+  Add tests that relabel generated sequences to non-consecutive or non-positive values, such as `[10, 30, 20, 50]`, to ensure oracle and future algorithms rely on sorted-order rank rather than assuming each value is already its rank.
+
 ## Open Instrumentation Ideas
 
 - [ ] Design detailed metrics for `stats.py`.  
@@ -306,6 +330,14 @@ Day 7 status: not started.
 - [ ] Add post-generation structural classification.  
   Added on 2026-06-09.  
   Classify generated valid sequences after generation instead of forcing generators to target a prescribed nesting ratio. Candidate structural metrics include interval nesting depth, nesting count, nesting ratio, average interval length, and flat/shallow/deep/mixed category labels. This keeps generators simple while still allowing the thesis to analyze what kinds of valid sequences were actually produced.
+
+- [ ] Standardize experiment seed management.  
+  Added on 2026-06-09.  
+  Define a stable seed policy for dataset generation, such as deriving each case seed from a base seed, family index, size, and repetition. This prevents experimental outputs from changing accidentally when family order or repetition order changes.
+
+- [ ] Enrich generated-case metadata.  
+  Added on 2026-06-09.  
+  Store or report fields such as requested size, actual size, generator name, seed, attempts, fallbacks, source family, and mutation type where available. This will make experiments easier to debug and easier to explain in the thesis.
 
 - [ ] Integrate metrics into baselines and future Jordan-sorting implementations.  
   Added on 2026-06-05.  
