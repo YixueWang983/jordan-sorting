@@ -14,6 +14,7 @@ INVALID_LOWER_CROSSING = "invalid_lower_crossing"
 RANDOM_PERMUTATION = "random_permutation"
 RANDOM_INVALID = "random_invalid"
 MUTATION_BASED_INVALID = "mutation_based_invalid"
+INCREMENTAL_VALID = "incremental_valid"
 
 SUPPORTED_FAMILIES = {
     FLAT_VALID,
@@ -22,6 +23,7 @@ SUPPORTED_FAMILIES = {
     INVALID_LOWER_CROSSING,
     RANDOM_PERMUTATION,
     RANDOM_INVALID,
+    INCREMENTAL_VALID,
 }
 
 
@@ -73,6 +75,63 @@ def generate_random_invalid(n, seed=None, max_attempts=1000):
         if not oracle(values)["valid"]:
             return values
     raise ValueError("failed to generate random invalid sequence")
+
+
+def insert_rank_at_end(seq, new_rank):
+    """在末尾追加一个具有指定 sorted-order rank 的新元素。"""
+    values = list(seq)
+    n = len(values)
+
+    if not 1 <= new_rank <= n + 1:
+        raise ValueError(f"new_rank must be in [1, {n + 1}]")
+
+    shifted = [value + 1 if value >= new_rank else value for value in values]
+    shifted.append(new_rank)
+    return shifted
+
+
+def safe_extension_ranks(seq):
+    """返回追加后保证不会引入 crossing 的 adjacent ranks。"""
+    values = list(seq)
+    if not values:
+        return [1]
+
+    last_rank = values[-1]
+    return [last_rank, last_rank + 1]
+
+
+def generate_incremental_valid(n, seed=None, max_attempts_per_step=20):
+    """生成一个由 oracle 逐步认证的 incremental valid sequence。"""
+    if n < 0:
+        raise ValueError("n must be non-negative")
+    if max_attempts_per_step < 0:
+        raise ValueError("max_attempts_per_step must be non-negative")
+
+    rng = random.Random(seed)
+    seq = []
+
+    while len(seq) < n:
+        accepted = False
+
+        for _ in range(max_attempts_per_step):
+            new_rank = rng.randint(1, len(seq) + 1)
+            candidate = insert_rank_at_end(seq, new_rank)
+            if oracle(candidate)["valid"]:
+                seq = candidate
+                accepted = True
+                break
+
+        if not accepted:
+            new_rank = rng.choice(safe_extension_ranks(seq))
+            candidate = insert_rank_at_end(seq, new_rank)
+            result = oracle(candidate)
+            if not result["valid"]:
+                raise RuntimeError(
+                    f"safe extension failed unexpectedly: {candidate}, reason={result['reason']}"
+                )
+            seq = candidate
+
+    return seq
 
 
 def mutate_by_swap(seq, i=None, j=None, seed=None):
@@ -160,6 +219,8 @@ def generate_sequence(family, n, seed=None):
         return generate_random_permutation(n, seed=seed)
     if family == RANDOM_INVALID:
         return generate_random_invalid(n, seed=seed)
+    if family == INCREMENTAL_VALID:
+        return generate_incremental_valid(n, seed=seed)
     raise ValueError(f"unsupported family: {family}")
 
 
@@ -173,7 +234,7 @@ def generate_dataset(family, sizes, repetitions, output_dir, seed=0):
     for n in sizes:
         for index in range(1, repetitions + 1):
             case_seed = None
-            if family in {RANDOM_PERMUTATION, RANDOM_INVALID}:
+            if family in {RANDOM_PERMUTATION, RANDOM_INVALID, INCREMENTAL_VALID}:
                 case_seed = seed + n * 1000 + index
 
             seq = generate_sequence(family, n, seed=case_seed)

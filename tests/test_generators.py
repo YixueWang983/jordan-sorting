@@ -13,12 +13,14 @@ from generators import (  # noqa: E402
     FLAT_VALID,
     INVALID_LOWER_CROSSING,
     INVALID_UPPER_CROSSING,
+    INCREMENTAL_VALID,
     MUTATION_BASED_INVALID,
     NESTED_VALID,
     RANDOM_INVALID,
     RANDOM_PERMUTATION,
     generate_flat,
     generate_dataset,
+    generate_incremental_valid,
     generate_invalid_lower_crossing,
     generate_invalid_upper_crossing,
     generate_mutation_based_invalid,
@@ -26,9 +28,11 @@ from generators import (  # noqa: E402
     generate_random_invalid,
     generate_random_permutation,
     generate_small_handmade_valid_cases,
+    insert_rank_at_end,
     load_test_case,
     make_case_id,
     make_test_case,
+    safe_extension_ranks,
     mutate_by_swap,
     save_test_case,
 )
@@ -114,6 +118,58 @@ class GeneratorTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             generate_random_invalid(1, seed=11, max_attempts=3)
 
+    def test_insert_rank_at_end(self):
+        self.assertEqual(insert_rank_at_end([1, 2, 3], 1), [2, 3, 4, 1])
+        self.assertEqual(insert_rank_at_end([1, 2, 3], 2), [1, 3, 4, 2])
+        self.assertEqual(insert_rank_at_end([1, 2, 3], 4), [1, 2, 3, 4])
+
+    def test_insert_rank_at_end_rejects_invalid_rank(self):
+        with self.assertRaises(ValueError):
+            insert_rank_at_end([1, 2, 3], 0)
+
+        with self.assertRaises(ValueError):
+            insert_rank_at_end([1, 2, 3], 5)
+
+    def test_safe_extension_ranks(self):
+        self.assertEqual(safe_extension_ranks([]), [1])
+        self.assertEqual(safe_extension_ranks([1, 4, 2, 3]), [3, 4])
+
+    def test_generate_incremental_valid_outputs_valid_cases(self):
+        for n in range(0, 50):
+            seq = generate_incremental_valid(n, seed=17)
+            result = oracle(seq)
+
+            self.assertEqual(sorted(seq), list(range(1, n + 1)))
+            self.assertTrue(result["valid"], seq)
+
+    def test_generate_incremental_valid_uses_safe_fallback(self):
+        seq = generate_incremental_valid(32, seed=11, max_attempts_per_step=0)
+
+        self.assertEqual(sorted(seq), list(range(1, 33)))
+        self.assertTrue(oracle(seq)["valid"])
+
+    def test_generate_incremental_valid_rejects_negative_n(self):
+        with self.assertRaises(ValueError):
+            generate_incremental_valid(-1)
+
+    def test_generate_incremental_valid_rejects_negative_attempts(self):
+        with self.assertRaises(ValueError):
+            generate_incremental_valid(4, max_attempts_per_step=-1)
+
+    def test_generate_incremental_valid_is_reproducible(self):
+        seq1 = generate_incremental_valid(32, seed=11)
+        seq2 = generate_incremental_valid(32, seed=11)
+
+        self.assertEqual(seq1, seq2)
+
+    def test_generate_incremental_valid_produces_some_variety(self):
+        sequences = {
+            tuple(generate_incremental_valid(32, seed=seed))
+            for seed in range(10)
+        }
+
+        self.assertGreater(len(sequences), 1)
+
     def test_mutate_by_swap(self):
         self.assertEqual(mutate_by_swap([1, 2, 3], i=0, j=2), [3, 2, 1])
 
@@ -160,6 +216,10 @@ class GeneratorTests(unittest.TestCase):
         self.assertEqual(
             make_case_id(MUTATION_BASED_INVALID, 8, 1),
             "mutation_based_invalid_n8_001",
+        )
+        self.assertEqual(
+            make_case_id(INCREMENTAL_VALID, 8, 1),
+            "incremental_valid_n8_001",
         )
 
     def test_make_test_case_contains_oracle_result(self):
@@ -228,6 +288,24 @@ class GeneratorTests(unittest.TestCase):
             self.assertEqual([case["seed"] for case in cases], [8012, 8013])
             for case in cases:
                 self.assertFalse(case["oracle"]["valid"])
+
+    def test_incremental_valid_dataset_family_is_certified_valid(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            paths = generate_dataset(
+                INCREMENTAL_VALID,
+                sizes=[8, 16],
+                repetitions=2,
+                output_dir=tmpdir,
+                seed=11,
+            )
+
+            self.assertEqual(len(paths), 4)
+            for path in paths:
+                case = load_test_case(path)
+
+                self.assertEqual(case["family"], INCREMENTAL_VALID)
+                self.assertTrue(case["oracle"]["valid"])
+                self.assertEqual(sorted(case["sequence"]), case["oracle"]["sorted"])
 
     def test_invalid_dataset_families_are_certified_invalid(self):
         with tempfile.TemporaryDirectory() as tmpdir:

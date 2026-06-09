@@ -1,0 +1,33 @@
+{
+  "id": "incremental_valid_n8_002",
+  "n": 8,
+  "family": "incremental_valid",
+  "seed": 8013,
+  "sequence": [
+    1,
+    8,
+    6,
+    5,
+    2,
+    3,
+    4,
+    7
+  ],
+  "oracle": {
+    "valid": true,
+    "sorted": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "distinct_values": true,
+    "upper_ok": true,
+    "lower_ok": true,
+    "reason": null
+  }
+}

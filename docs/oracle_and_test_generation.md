@@ -324,6 +324,22 @@ The `random_permutation` family is neutral: it does not guarantee validity or in
 
 The `random_invalid` family uses rejection sampling. It repeatedly generates random permutations and returns only a sequence certified invalid by the oracle.
 
+### Incremental Valid Cases
+
+The `incremental_valid` family constructs valid sequences incrementally. It maintains a normalized permutation of `1..m` and extends it to length `m + 1`.
+
+At each step, it chooses a candidate sorted-order rank `k`, shifts every existing value greater than or equal to `k` by one, appends `k`, and accepts the candidate only if the oracle certifies it as valid.
+
+If random rank insertions fail within a bounded number of attempts, the generator uses a guaranteed-safe fallback. Let `r` be the rank of the last element in the current sequence. Inserting rank `r` or `r + 1` makes the new pair span the adjacent interval `[r, r + 1]`. No other integer interval can strictly cross the inside of this unit interval, and the relabeling of old values is order-preserving. Therefore, this fallback preserves validity.
+
+This gives the generator the following invariant:
+
+```text
+After every extension step, the sequence is a permutation of 1..m and is oracle-valid.
+```
+
+This generator is constructive and oracle-certified, but it is not intended to sample uniformly from all valid Jordan sequences.
+
 ### Mutation-Based Invalid Cases
 
 A mutation-based generator can start from a valid sequence and swap two positions. The mutated sequence should then be checked with the oracle. If it is still valid, the generator can retry or record it as a valid mutation.
