@@ -238,6 +238,9 @@ Day 5 status: completed.
 - [ ] Use families `flat_valid`, `nested_valid`, `incremental_valid`, `invalid_upper_crossing`, `invalid_lower_crossing`, `random_invalid`, `mutation_based_invalid`.
 - [ ] Record oracle valid/invalid results.
 - [ ] Record baseline timings.
+- [ ] Run repeated timings in `experiments/run_small_tests.py`.  
+  Added on 2026-06-09.  
+  Keep `time_function(func, seq)` as a single-run helper. The experiment runner should handle repetitions, such as 5 or 10 runs per algorithm/case, and record or summarize min, median, and mean timings.
 - [ ] Output `results/week1_baseline_results.csv`.
 
 Day 6 status: not started.

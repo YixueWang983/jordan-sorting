@@ -64,12 +64,12 @@ def quick_sort(seq):
 
 
 def sort_plus_laminarity_check(seq):
-    """先运行 oracle 检查 Jordan 结构，再返回普通排序结果。"""
+    """先运行 oracle 检查 Jordan 结构，再返回 oracle 中的普通排序结果。"""
     values = list(seq)
     oracle_result = oracle(values)
 
     return {
-        "sorted": python_sort(values),
+        "sorted": oracle_result["sorted"],
         "oracle": oracle_result,
         "valid": oracle_result["valid"],
         "reason": oracle_result["reason"],
