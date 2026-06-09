@@ -212,6 +212,13 @@ class GeneratorTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             mutate_by_swap([1, 2, 3], j=2)
 
+    def test_mutate_by_swap_rejects_partial_indices_even_for_short_sequences(self):
+        with self.assertRaises(ValueError):
+            mutate_by_swap([1], i=0)
+
+        with self.assertRaises(ValueError):
+            mutate_by_swap([], j=0)
+
     def test_mutate_by_swap_rejects_out_of_range_indices(self):
         with self.assertRaises(IndexError):
             mutate_by_swap([1, 2, 3], i=-1, j=2)

@@ -151,11 +151,12 @@ def generate_incremental_valid(n, seed=None, max_attempts_per_step=20):
 def mutate_by_swap(seq, i=None, j=None, seed=None):
     """返回交换了两个位置之后的序列副本。"""
     values = list(seq)
-    if len(values) < 2:
-        return values
 
     if (i is None) != (j is None):
         raise ValueError("i and j must either both be provided or both be None")
+
+    if len(values) < 2:
+        return values
 
     if i is None:
         i, j = random.Random(seed).sample(range(len(values)), 2)
