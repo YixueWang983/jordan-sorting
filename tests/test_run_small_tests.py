@@ -90,6 +90,38 @@ class RunSmallTestsRunnerTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             validate_coverage(rows, config)
 
+    def test_validate_coverage_rejects_missing_algorithm(self):
+        config = replace(
+            SMOKE_CONFIG,
+            algorithms=["python_sort", "missing_algorithm"],
+        )
+        rows = [
+            {
+                "family": FLAT_VALID,
+                "algorithm": "python_sort",
+                "n": 8,
+            }
+        ]
+
+        with self.assertRaises(RuntimeError):
+            validate_coverage(rows, config)
+
+    def test_validate_coverage_rejects_missing_size(self):
+        config = replace(
+            SMOKE_CONFIG,
+            sizes=[8, 16],
+        )
+        rows = [
+            {
+                "family": FLAT_VALID,
+                "algorithm": "python_sort",
+                "n": 8,
+            }
+        ]
+
+        with self.assertRaises(RuntimeError):
+            validate_coverage(rows, config)
+
     def test_smoke_experiment_writes_csv(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             temp_path = Path(temp_dir)

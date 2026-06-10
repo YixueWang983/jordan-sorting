@@ -223,7 +223,7 @@ def write_csv(rows, output_csv):
 
 
 def validate_rows(rows):
-    """检查实验结果是否满足 Week 1 Day 6 完成条件。"""
+    """检查写入 CSV 前的内存 rows 是否满足 Week 1 Day 6 完成条件。"""
     failed_rows = [
         row
         for row in rows
