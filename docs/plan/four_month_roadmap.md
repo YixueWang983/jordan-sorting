@@ -495,5 +495,5 @@ Finish Day 5: implement src/baselines.py.
 After that:
 
 ```text
-Finish Day 6: run experiments/run_small_tests.py and generate the first CSV.
+Finish Week 1 Day 6: run experiments/run_small_tests.py and generate the first CSV.
 ```

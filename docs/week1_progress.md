@@ -1,6 +1,6 @@
 # Week 1 Progress Checklist
 
-Last updated: 2026-06-09
+Last updated: 2026-06-10
 
 ## Week 1 Goal
 
@@ -231,19 +231,39 @@ Day 4 status: completed.
 
 Day 5 status: completed.
 
-## Day 6 - Small Experiments
+## Week 1 Day 6 - Small Experiments
 
-- [ ] Implement `experiments/run_small_tests.py`.
-- [ ] Use sizes `[8, 16, 32, 64, 128, 256, 512]`.
-- [ ] Use families `flat_valid`, `nested_valid`, `incremental_valid`, `invalid_upper_crossing`, `invalid_lower_crossing`, `random_invalid`, `mutation_based_invalid`.
-- [ ] Record oracle valid/invalid results.
-- [ ] Record baseline timings.
-- [ ] Run repeated timings in `experiments/run_small_tests.py`.  
-  Added on 2026-06-09.  
-  Keep `time_function(func, seq)` as a single-run helper. The experiment runner should handle repetitions, such as 5 or 10 runs per algorithm/case, and record or summarize min, median, and mean timings.
-- [ ] Output `results/week1_baseline_results.csv`.
+- [x] Implement `experiments/run_small_tests.py`.  
+  Done on 2026-06-10.  
+  Supports `--smoke` mode and full mode.
 
-Day 6 status: not started.
+- [x] Use sizes `[8, 16, 32, 64, 128, 256, 512]`.  
+  Done on 2026-06-10.
+
+- [x] Use families `flat_valid`, `nested_valid`, `incremental_valid`, `invalid_upper_crossing`, `invalid_lower_crossing`, `random_invalid`, `mutation_based_invalid`.  
+  Done on 2026-06-10.
+
+- [x] Record oracle valid/invalid results.  
+  Done on 2026-06-10.  
+  CSV rows include `oracle_valid`, `oracle_reason`, `distinct_values`, `upper_ok`, and `lower_ok`.
+
+- [x] Record baseline timings.  
+  Done on 2026-06-10.  
+  CSV rows include `algorithm`, `run_index`, `time_ns`, `sorted_correct`, and `error`.
+
+- [x] Run repeated timings in `experiments/run_small_tests.py`.  
+  Done on 2026-06-10.  
+  Full mode runs 5 timing repetitions per algorithm/case while keeping `time_function(func, seq)` as a single-run helper.
+
+- [x] Output `results/week1_baseline_results.csv`.  
+  Done on 2026-06-10.  
+  Full mode wrote 2940 raw timing rows. Smoke mode wrote `results/week1_baseline_smoke_results.csv`.
+
+- [x] Validate full experiment results.  
+  Done on 2026-06-10.  
+  Full mode completed with empty `error` fields, all `sorted_correct = True`, all valid families oracle-valid, and all invalid families oracle-invalid.
+
+Week 1 Day 6 status: completed.
 
 ## Day 7 - Week 1 Summary
 
@@ -279,9 +299,9 @@ Longer-term generator, testing, instrumentation, and visualization ideas have be
 
 ## Current Test Status
 
-As of 2026-06-09:
+As of 2026-06-10:
 
 ```text
-Ran 74 tests
+Ran 80 tests
 OK
 ```
