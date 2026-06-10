@@ -388,9 +388,9 @@ The saved oracle result makes each test case self-describing and easier to debug
 
 The first implementation uses `family` rather than `type` for the generator category. This avoids confusion with Python's built-in `type` name. The `seed` field is optional in meaning but always present in saved files; deterministic generators store `null`, while random generators store the seed used to produce the sequence.
 
-## 10. Day 2 Implementation Checklist
+## 10. Week 1 Day 2 Implementation Checklist
 
-Day 2 should focus on `src/oracle.py` and `tests/test_oracle.py`.
+Week 1 Day 2 should focus on `src/oracle.py` and `tests/test_oracle.py`.
 
 Implementation checklist:
 

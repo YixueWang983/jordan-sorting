@@ -28,11 +28,15 @@ generate sequence -> oracle checks valid/invalid -> expected sorted order -> sav
   Completed on 2026-06-09.  
   Added Python sort, merge sort, quick sort, laminarity-check-plus-sort, timing helper, and baseline unit tests.
 
-- [ ] Small experiment CSV + Week 1 summary  
-  Not started.  
-  Planned after baselines are implemented.
+- [x] Small experiment CSV  
+  Completed on 2026-06-10.  
+  Generated locally by `experiments/run_small_tests.py` and stored as `results/week1_baseline_results.csv`.
 
-## Day 1 - Project Structure + Definitions
+- [ ] Week 1 summary  
+  Not started.  
+  Planned after Week 1 Day 6 baseline experiments.
+
+## Week 1 Day 1 - Project Structure + Definitions
 
 - [x] Create project directory.  
   Done on 2026-06-05.
@@ -84,9 +88,9 @@ docs/
 - [x] Define oracle output format.  
   Done on 2026-06-05.
 
-Day 1 status: completed.
+Week 1 Day 1 status: completed.
 
-## Day 2 - Correctness Oracle
+## Week 1 Day 2 - Correctness Oracle
 
 - [x] `upper_pairs(seq)`  
   Done on 2026-06-05.
@@ -132,9 +136,9 @@ Day 1 status: completed.
 - [x] Unit tests for empty and singleton sequences.  
   Done on 2026-06-05.
 
-Day 2 status: completed early.
+Week 1 Day 2 status: completed early.
 
-## Day 3 - Minimal Test Generators
+## Week 1 Day 3 - Minimal Test Generators
 
 - [x] `generate_flat(n)`  
   Done on 2026-06-05.
@@ -177,9 +181,9 @@ Day 2 status: completed early.
 - [x] Generator tests.  
   Done on 2026-06-05.
 
-Day 3 status: mostly completed early.
+Week 1 Day 3 status: mostly completed early.
 
-## Day 4 - Input Families and JSON Saving Format
+## Week 1 Day 4 - Input Families and JSON Saving Format
 
 - [x] Define input families in code.  
   Done on 2026-06-09.
@@ -201,9 +205,9 @@ Day 3 status: mostly completed early.
   Completed on 2026-06-09.  
   Starts from an empty valid sequence, appends one rank at a time, uses oracle certification after each extension, and falls back to an adjacent-rank insertion that preserves validity.
 
-Day 4 status: completed.
+Week 1 Day 4 status: completed.
 
-## Day 5 - Baselines Skeleton
+## Week 1 Day 5 - Baselines Skeleton
 
 - [x] `python_sort(seq)`.  
   Done on 2026-06-09.  
@@ -229,7 +233,7 @@ Day 4 status: completed.
   Done on 2026-06-09.  
   Added tests for correctness, empty/singleton inputs, duplicate values, input preservation, oracle reporting, and timing output.
 
-Day 5 status: completed.
+Week 1 Day 5 status: completed.
 
 ## Week 1 Day 6 - Small Experiments
 

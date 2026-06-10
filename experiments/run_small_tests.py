@@ -255,6 +255,30 @@ def validate_rows(rows):
         )
 
 
+def validate_coverage(rows, config):
+    """检查实际结果是否覆盖了配置要求的 family、size 和 algorithm。"""
+    actual_families = {row["family"] for row in rows}
+    expected_families = set(config.families)
+    if actual_families != expected_families:
+        raise RuntimeError(
+            f"family coverage mismatch: expected {expected_families}, got {actual_families}"
+        )
+
+    actual_algorithms = {row["algorithm"] for row in rows}
+    expected_algorithms = set(config.algorithms)
+    if actual_algorithms != expected_algorithms:
+        raise RuntimeError(
+            f"algorithm coverage mismatch: expected {expected_algorithms}, got {actual_algorithms}"
+        )
+
+    actual_sizes = {int(row["n"]) for row in rows}
+    expected_sizes = set(config.sizes)
+    if actual_sizes != expected_sizes:
+        raise RuntimeError(
+            f"size coverage mismatch: expected {expected_sizes}, got {actual_sizes}"
+        )
+
+
 def expected_row_count(config):
     """返回当前配置应该产生的 raw timing 行数。"""
     return (
@@ -271,6 +295,7 @@ def run_experiment(config):
     rows = make_result_rows(config)
     write_csv(rows, config.output_csv)
     validate_rows(rows)
+    validate_coverage(rows, config)
 
     expected_rows = expected_row_count(config)
     if len(rows) != expected_rows:

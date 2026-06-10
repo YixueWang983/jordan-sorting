@@ -18,6 +18,7 @@ from experiments.run_small_tests import (  # noqa: E402
     extract_sorted_output,
     run_algorithm_once,
     run_experiment,
+    validate_coverage,
     validate_rows,
 )
 
@@ -72,6 +73,22 @@ class RunSmallTestsRunnerTests(unittest.TestCase):
 
         with self.assertRaises(RuntimeError):
             validate_rows(rows)
+
+    def test_validate_coverage_rejects_missing_family(self):
+        config = replace(
+            SMOKE_CONFIG,
+            families=[FLAT_VALID, "missing_family"],
+        )
+        rows = [
+            {
+                "family": FLAT_VALID,
+                "algorithm": "python_sort",
+                "n": 8,
+            }
+        ]
+
+        with self.assertRaises(RuntimeError):
+            validate_coverage(rows, config)
 
     def test_smoke_experiment_writes_csv(self):
         with tempfile.TemporaryDirectory() as temp_dir:

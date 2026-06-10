@@ -486,10 +486,10 @@ Mitigation:
 
 ## Immediate Next Step
 
-The current repository has completed Week 1 Day 1-Day 4. The next task is:
+The current repository has completed Week 1 Day 1 through Week 1 Day 4. The next task is:
 
 ```text
-Finish Day 5: implement src/baselines.py.
+Finish Week 1 Day 5: implement src/baselines.py.
 ```
 
 After that:
