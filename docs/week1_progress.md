@@ -269,15 +269,24 @@ Week 1 Day 5 status: completed.
 
 Week 1 Day 6 status: completed.
 
-## Day 7 - Week 1 Summary
+## Week 1 Day 7 - Week 1 Summary
 
-- [ ] Write `docs/week1_summary.md`.
-- [ ] Summarize implemented components.
-- [ ] Summarize what works.
-- [ ] List open issues.
-- [ ] List next steps.
+- [x] Write `docs/week1_summary.md`.  
+  Done on 2026-06-11.
 
-Day 7 status: not started.
+- [x] Summarize implemented components.  
+  Done on 2026-06-11.
+
+- [x] Summarize what works.  
+  Done on 2026-06-11.
+
+- [x] List open issues.  
+  Done on 2026-06-11.
+
+- [x] List next steps.  
+  Done on 2026-06-11.
+
+Week 1 Day 7 status: completed.
 
 ## Extra Work Completed
 
@@ -303,9 +312,9 @@ Longer-term generator, testing, instrumentation, and visualization ideas have be
 
 ## Current Test Status
 
-As of 2026-06-10:
+As of 2026-06-11:
 
 ```text
-Ran 80 tests
+Ran 83 tests
 OK
 ```

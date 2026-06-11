@@ -1,0 +1,133 @@
+# Results
+
+This folder stores selected experiment outputs that are useful to keep in the repository.
+
+Most generated result files are ignored by Git because they can be reproduced. The Week 1 baseline CSV files are small and are committed so the first experimental loop is visible from GitHub.
+
+## Files
+
+```text
+week1_baseline_results.csv
+week1_baseline_smoke_results.csv
+```
+
+`week1_baseline_results.csv` is the full Week 1 baseline experiment output.
+
+`week1_baseline_smoke_results.csv` is a minimal smoke-test output used to confirm that the experiment runner works end to end.
+
+## Reproduction Commands
+
+Run the smoke experiment:
+
+```bash
+python experiments/run_small_tests.py --smoke
+```
+
+Run the full Week 1 baseline experiment:
+
+```bash
+python experiments/run_small_tests.py
+```
+
+## Full Experiment Configuration
+
+```text
+sizes:
+[8, 16, 32, 64, 128, 256, 512]
+
+families:
+flat_valid
+nested_valid
+incremental_valid
+invalid_upper_crossing
+invalid_lower_crossing
+random_invalid
+mutation_based_invalid
+
+algorithms:
+python_sort
+merge_sort
+quick_sort
+sort_plus_laminarity_check
+
+cases_per_size:
+3
+
+timing_runs:
+5
+```
+
+This gives:
+
+```text
+7 families x 7 sizes x 3 cases x 4 algorithms x 5 timing runs = 2940 raw timing rows
+```
+
+## CSV Schema
+
+```text
+case_id
+family
+n
+seed
+oracle_valid
+oracle_reason
+distinct_values
+upper_ok
+lower_ok
+algorithm
+run_index
+time_ns
+sorted_correct
+error
+```
+
+## Field Meanings
+
+`case_id`  
+Stable identifier for the generated test case.
+
+`family`  
+The generator family that produced the sequence, such as `flat_valid` or `random_invalid`.
+
+`n`  
+Length of the generated sequence.
+
+`seed`  
+Seed used for randomized generator families. Deterministic families leave this field empty.
+
+`oracle_valid`  
+Whether the oracle classified the sequence as a valid Jordan sequence.
+
+`oracle_reason`  
+Reason for oracle invalidity. Empty for valid cases. Examples include `upper crossing`, `lower crossing`, and `duplicate values`.
+
+`distinct_values`  
+Whether the input sequence contains no duplicate values.
+
+`upper_ok`  
+Whether the upper pair family passed the laminarity check. Empty when the oracle rejected duplicate values before laminarity checking.
+
+`lower_ok`  
+Whether the lower pair family passed the laminarity check. Empty when the oracle rejected duplicate values before laminarity checking.
+
+`algorithm`  
+Baseline algorithm used for this timing row.
+
+`run_index`  
+Repeated timing run number for the same case and algorithm.
+
+`time_ns`  
+Elapsed time in nanoseconds. Empty only if an algorithm run raised an exception.
+
+`sorted_correct`  
+Whether the algorithm's sorted output matched `oracle["sorted"]`. This is a sorting-output check, not a validity-decision check.
+
+`error`  
+Empty for successful runs. If an algorithm raises an exception, this field stores the exception type and message.
+
+## Important Note
+
+The CSV does not store the full sequence directly. It records `case_id`, and the generated JSON case files store the actual sequence. The JSON files are reproducible intermediate files and are not committed.
+
+Week 1 timing results are preliminary. They show that the experiment pipeline works; they should not be interpreted as final performance claims about Jordan sorting.

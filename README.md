@@ -1,23 +1,31 @@
 # Jordan Sorting
 
-Implementation and experimental evaluation of the simplified Jordan-sorting framework.
+Implementation and experimental evaluation of a simplified Jordan-sorting framework.
 
-This project is part of a master's thesis preparation. The current milestone is to build:
+This repository is part of a master's thesis preparation project. The long-term goal is to study and implement a simplified reference version of Jordan sorting, then compare it with ordinary sorting baselines and explain the gap between a straightforward implementation and the theoretical linear-time framework.
 
-- a correctness oracle,
-- controlled test-instance generators,
-- sorting baselines,
-- and later a reference implementation of the simplified 1990 Jordan-sorting framework.
+## Current Status
 
-## Current Focus
+Week 1 is complete.
 
-The first milestone is not the full Jordan-sorting algorithm. The first milestone is:
+The repository now contains the first reproducible experimental loop:
 
-1. define upper and lower pairs,
-2. implement laminarity checks,
-3. build an oracle based on standard sorting,
-4. generate valid and invalid test instances,
-5. prepare baseline sorting algorithms.
+```text
+generate sequence -> oracle checks valid/invalid -> save JSON case -> run baselines -> write experiment CSV
+```
+
+Implemented so far:
+
+- correctness oracle for upper/lower laminarity checks,
+- controlled valid and invalid test-instance generators,
+- JSON test-case save/load and dataset generation pipeline,
+- baseline sorting algorithms,
+- repeated timing helper,
+- Week 1 baseline experiment runner,
+- committed Week 1 baseline CSV results,
+- unit tests for oracle, generators, baselines, and experiment runner.
+
+The full Week 1 summary is in [docs/week1_summary.md](docs/week1_summary.md).
 
 ## Project Structure
 
@@ -31,28 +39,156 @@ src/
 tests/
   test_oracle.py
   test_generators.py
-
-docs/
-  oracle_and_test_generation.md
-  notes.md
+  test_baselines.py
+  test_run_small_tests.py
 
 experiments/
   run_small_tests.py
+
+results/
+  week1_baseline_results.csv
+  week1_baseline_smoke_results.csv
+  README.md
+
+docs/
+  oracle_and_test_generation.md
+  week1_progress.md
+  week1_summary.md
+  future_work_todo.md
+  notes.md
+  plan/
+  papers/
 ```
 
-## Current Status
+## Core Concepts
 
-The repository currently contains:
+The current oracle treats a sequence as a candidate Jordan sequence by:
 
-- a first correctness oracle for upper/lower laminarity checks,
-- small valid and invalid test-instance generators,
-- unit tests for the oracle and generators,
-- and a design note for oracle and test generation.
+1. extracting upper pairs `(x1, x2), (x3, x4), ...`,
+2. extracting lower pairs `(x2, x3), (x4, x5), ...`,
+3. converting values to sorted-order ranks,
+4. converting pairs to rank intervals,
+5. checking each interval family for crossings.
+
+The oracle returns:
+
+```text
+valid
+sorted
+distinct_values
+upper_ok
+lower_ok
+reason
+```
+
+## Generator Families
+
+Week 1 includes these generator families:
+
+```text
+flat_valid
+nested_valid
+incremental_valid
+invalid_upper_crossing
+invalid_lower_crossing
+random_invalid
+mutation_based_invalid
+```
+
+Generator family names describe how a sequence is produced. Later structural labels such as flat, shallow, deep, or mixed should be measured after generation by `stats.py` or a classifier.
+
+## Baseline Algorithms
+
+Week 1 includes:
+
+```text
+python_sort
+merge_sort
+quick_sort
+sort_plus_laminarity_check
+```
+
+`python_sort` is the practical optimized baseline. `merge_sort` and `quick_sort` are transparent classical baselines. `sort_plus_laminarity_check` measures a naive oracle-check-plus-sort pipeline.
 
 ## Running Tests
 
-The current test suite uses Python's built-in `unittest` module:
+Run all tests from the repository root:
 
 ```bash
 python -m unittest discover -s tests
 ```
+
+Current status:
+
+```text
+Ran 83 tests
+OK
+```
+
+## Running Week 1 Experiments
+
+Run the smoke experiment:
+
+```bash
+python experiments/run_small_tests.py --smoke
+```
+
+Run the full Week 1 baseline experiment:
+
+```bash
+python experiments/run_small_tests.py
+```
+
+The full experiment writes:
+
+```text
+results/week1_baseline_results.csv
+```
+
+The smoke experiment writes:
+
+```text
+results/week1_baseline_smoke_results.csv
+```
+
+The full Week 1 baseline experiment contains 2940 raw timing rows:
+
+```text
+7 families x 7 sizes x 3 cases x 4 algorithms x 5 timing runs
+```
+
+See [results/README.md](results/README.md) for the CSV schema and field meanings.
+
+## Documentation
+
+Important project documents:
+
+- [docs/week1_summary.md](docs/week1_summary.md): Week 1 completed work, experiment configuration, validation results, limitations, and next steps.
+- [docs/week1_progress.md](docs/week1_progress.md): checklist-style Week 1 progress tracker.
+- [docs/oracle_and_test_generation.md](docs/oracle_and_test_generation.md): definitions and design notes for the oracle and generators.
+- [docs/future_work_todo.md](docs/future_work_todo.md): follow-up ideas that should not block the Week 1 loop.
+- [docs/plan/four_month_roadmap.md](docs/plan/four_month_roadmap.md): compressed 3-4 month thesis execution plan.
+
+## Known Limitations
+
+- The oracle currently uses an `O(n^2)` pairwise interval crossing check.
+- The baseline CSV stores raw timing rows only; summary statistics and plots are not generated yet.
+- The timing results are preliminary and should not be interpreted as final performance claims.
+- No simplified Jordan-sorting implementation exists yet.
+- No level-linked search trees or heterogeneous finger trees are implemented.
+- Visualization is still future work.
+
+## Next Steps
+
+Immediate cleanup:
+
+- keep README and Week 1 summary synchronized,
+- optionally generate a baseline summary CSV with min, median, and mean timing values,
+- optionally add a lightweight interval visualization script.
+
+Next major phase:
+
+- write `docs/simplified_algorithm_design.md`,
+- define upper/lower family-tree data structures,
+- define the reference simplified sorting pipeline,
+- add oracle-based differential tests for the future implementation.
