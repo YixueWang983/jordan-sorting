@@ -7,3 +7,6 @@ This folder stores the approved thesis scope and research-question documents.
 
 - `four_month_roadmap.md`  
   Compressed 3-4 month execution plan for the thesis implementation and writing schedule. It defines the minimum 12-week deliverable, the 16-week high-quality target, phase gates, risks, fallback options, and the immediate next coding task.
+
+- `week2_plan.md`  
+  Detailed Week 2 execution plan. It focuses on notation, simplified algorithm design scope, family-tree data structures, structural metrics, and a clearly marked reference skeleton.

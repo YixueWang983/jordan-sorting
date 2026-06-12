@@ -25,7 +25,7 @@ Implemented so far:
 - committed Week 1 baseline CSV results,
 - unit tests for oracle, generators, baselines, and experiment runner.
 
-The full Week 1 summary is in [docs/week1_summary.md](docs/week1_summary.md).
+The full Week 1 summary is in [docs/progress/week1_summary.md](docs/progress/week1_summary.md).
 
 ## Project Structure
 
@@ -51,10 +51,14 @@ results/
   README.md
 
 docs/
-  oracle_and_test_generation.md
-  week1_progress.md
-  week1_summary.md
-  future_work_todo.md
+  README.md
+  design/
+    oracle_and_test_generation.md
+  progress/
+    week1_progress.md
+    week1_summary.md
+  backlog/
+    future_work_todo.md
   notes.md
   plan/
   papers/
@@ -163,10 +167,11 @@ See [results/README.md](results/README.md) for the CSV schema and field meanings
 
 Important project documents:
 
-- [docs/week1_summary.md](docs/week1_summary.md): Week 1 completed work, experiment configuration, validation results, limitations, and next steps.
-- [docs/week1_progress.md](docs/week1_progress.md): checklist-style Week 1 progress tracker.
-- [docs/oracle_and_test_generation.md](docs/oracle_and_test_generation.md): definitions and design notes for the oracle and generators.
-- [docs/future_work_todo.md](docs/future_work_todo.md): follow-up ideas that should not block the Week 1 loop.
+- [docs/README.md](docs/README.md): guide to the documentation structure.
+- [docs/progress/week1_summary.md](docs/progress/week1_summary.md): Week 1 completed work, experiment configuration, validation results, limitations, and next steps.
+- [docs/progress/week1_progress.md](docs/progress/week1_progress.md): checklist-style Week 1 progress tracker.
+- [docs/design/oracle_and_test_generation.md](docs/design/oracle_and_test_generation.md): definitions and design notes for the oracle and generators.
+- [docs/backlog/future_work_todo.md](docs/backlog/future_work_todo.md): follow-up ideas that should not block the Week 1 loop.
 - [docs/plan/four_month_roadmap.md](docs/plan/four_month_roadmap.md): compressed 3-4 month thesis execution plan.
 
 ## Known Limitations
@@ -188,7 +193,7 @@ Immediate cleanup:
 
 Next major phase:
 
-- write `docs/simplified_algorithm_design.md`,
+- write `docs/design/simplified_algorithm_design.md`,
 - define upper/lower family-tree data structures,
 - define the reference simplified sorting pipeline,
 - add oracle-based differential tests for the future implementation.

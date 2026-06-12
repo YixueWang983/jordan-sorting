@@ -58,18 +58,28 @@ src/
 tests/
   test_oracle.py
   test_generators.py
+  test_baselines.py
+  test_run_small_tests.py
 
 experiments/
   run_small_tests.py
 
 docs/
-  oracle_and_test_generation.md
+  README.md
+  design/
+    oracle_and_test_generation.md
+  progress/
+    week1_progress.md
+    week1_summary.md
+  backlog/
+    future_work_todo.md
+  plan/
+  papers/
   notes.md
   week1_todo.pdf
-  week1_progress.md
 ```
 
-- [x] Write `docs/oracle_and_test_generation.md`.  
+- [x] Write `docs/design/oracle_and_test_generation.md`.  
   Done on 2026-06-05.
 
 - [x] Define Jordan sequence.  

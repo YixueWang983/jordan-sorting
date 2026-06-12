@@ -102,8 +102,8 @@ Recommended first sizes:
 
 Required documentation:
 
-- `docs/week1_summary.md`
-- `docs/notation.md` or `docs/paper_notes.md`
+- `docs/progress/week1_summary.md`
+- `docs/design/notation.md` or `docs/design/paper_notes.md`
 - updated progress checklist
 
 Optional but useful:
@@ -144,7 +144,7 @@ This is the highest-risk phase. The priority is correctness and explanation, not
 Primary deliverable:
 
 ```text
-docs/simplified_algorithm_design.md
+docs/design/simplified_algorithm_design.md
 ```
 
 The design document should define:
@@ -238,7 +238,7 @@ simplified_jordan_sort(seq)["sorted"] == sorted(seq)
 
 Gate 2 pass criteria:
 
-- `docs/simplified_algorithm_design.md` exists,
+- `docs/design/simplified_algorithm_design.md` exists,
 - `simplified_jordan_sort(seq)` runs,
 - valid generated cases sort correctly,
 - invalid generated cases are rejected or clearly marked,

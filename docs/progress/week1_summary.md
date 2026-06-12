@@ -315,7 +315,7 @@ Optional follow-up cleanup:
 
 ### Phase 2 / Week 2-3 Preparation
 
-- Write `docs/simplified_algorithm_design.md`.
+- Write `docs/design/simplified_algorithm_design.md`.
 - Define data structures for upper and lower family trees.
 - Define sibling-list representation.
 - Define the reference simplified sorting pipeline.
