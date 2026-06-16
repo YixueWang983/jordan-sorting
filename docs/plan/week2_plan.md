@@ -93,10 +93,17 @@ It does not implement heterogeneous finger trees.
 
 Completion criteria:
 
-- notation document exists,
-- design document exists,
-- scope and non-goals are explicit,
-- the design separates reference implementation from the full theoretical algorithm.
+- [x] notation document exists.  
+  Done on 2026-06-16.
+
+- [x] design document exists.  
+  Done on 2026-06-16.
+
+- [x] scope and non-goals are explicit.  
+  Done on 2026-06-16.
+
+- [x] the design separates reference implementation from the full theoretical algorithm.  
+  Done on 2026-06-16.
 
 ## Week 2 Day 2: Family Tree Data Structures
 

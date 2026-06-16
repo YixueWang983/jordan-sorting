@@ -17,8 +17,6 @@ Current files:
 - `oracle_and_test_generation.md`  
   Week 1 design notes for the oracle, upper/lower pairs, rank intervals, laminarity checks, generator families, and JSON test-case format.
 
-Planned files:
-
 - `notation.md`  
   Reusable terminology for the project and thesis.
 

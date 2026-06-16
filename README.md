@@ -193,7 +193,7 @@ Immediate cleanup:
 
 Next major phase:
 
-- write `docs/design/simplified_algorithm_design.md`,
+- extend `docs/design/simplified_algorithm_design.md` as the implementation evolves,
 - define upper/lower family-tree data structures,
 - define the reference simplified sorting pipeline,
 - add oracle-based differential tests for the future implementation.
