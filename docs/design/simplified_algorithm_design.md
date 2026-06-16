@@ -114,7 +114,7 @@ The recommended return format is:
 Field meanings:
 
 `valid`  
-Whether the input is oracle-valid.
+Whether the input candidate is oracle-valid as a Jordan sequence.
 
 `sorted`  
 The sorted output. In the first reference skeleton, this is `oracle_result["sorted"]`.
@@ -174,6 +174,8 @@ reason
 ```
 
 not by whether `sorted` is present.
+
+For invalid inputs, `families` is `None` because family-tree construction is defined only for oracle-valid candidate sequences. The function still returns `sorted` for comparison and debugging.
 
 ## Valid Input Behavior
 
@@ -242,6 +244,8 @@ class FamilyTree:
 
 The first version should not use an artificial root.
 
+Although the name is `FamilyTree`, the structure can be forest-like. A flat or partially flat family can have multiple root-level intervals.
+
 Root-level intervals are stored in:
 
 ```python
@@ -260,6 +264,8 @@ Root-level siblings are represented by:
 FamilyTree.roots
 ```
 
+Both `FamilyTree.roots` and each node's `children` list should be ordered by increasing interval left endpoint, with the right endpoint as a deterministic tie-breaker if needed.
+
 The sequence-level entry point should be:
 
 ```python
@@ -275,6 +281,15 @@ build_family_tree(intervals)
 ```
 
 may defensively reject crossing intervals if called directly.
+
+When naming helper functions, avoid confusing pair families with generator families. In family-tree code, `pair_family` should mean only:
+
+```text
+upper
+lower
+```
+
+Dataset generator families are separate labels such as `flat_valid`, `incremental_valid`, or `random_invalid`.
 
 ## Structural Stats
 

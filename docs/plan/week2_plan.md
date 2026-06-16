@@ -61,6 +61,7 @@ docs/design/simplified_algorithm_design.md
 
 `docs/design/notation.md` should be a reusable terminology document. It should define:
 
+- candidate sequence,
 - Jordan sequence,
 - upper pair,
 - lower pair,
@@ -118,7 +119,7 @@ The first implementation should focus on:
 
 - `interval_contains(...)`
 - `proper_interval_contains(...)`
-- `build_intervals(seq, family)`
+- `build_family_intervals(seq, pair_family)`
 - `build_family_tree(intervals)`
 - `build_family_trees(seq)`
 - `compute_depths(...)`
@@ -142,6 +143,10 @@ class FamilyTree:
 ```
 
 Do not add an artificial root in the first version. Root-level intervals are stored in `FamilyTree.roots`. Sibling lists are represented by each node's ordered `children` list; root-level siblings are represented by `roots`.
+
+Although the structure is named `FamilyTree`, it can have multiple roots. In that sense, the representation is forest-like, with `roots` acting as the top-level sibling list.
+
+In family-tree code, `pair_family` means only `upper` or `lower`. This should not be confused with dataset generator families such as `flat_valid`, `incremental_valid`, or `random_invalid`.
 
 Responsibility boundary:
 

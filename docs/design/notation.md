@@ -32,11 +32,29 @@ values = list(seq)
 
 This prevents helper functions from mutating the caller's original input.
 
-## Jordan Sequence
+## Candidate Sequence
 
 Definition:
 
-In this project, a valid Jordan sequence is a sequence whose upper pair family and lower pair family are both laminar after converting pairs to sorted-order rank intervals.
+A candidate sequence is an input sequence that may or may not satisfy the project's Jordan-sequence validity condition.
+
+In this project, most public functions accept candidate sequences. The oracle decides whether a candidate is valid.
+
+Example:
+
+```text
+[1, 3, 2, 4]      candidate sequence
+```
+
+Implementation note:
+
+Use `candidate sequence` or `invalid candidate` when discussing inputs that may be rejected. Avoid calling a rejected input an invalid Jordan sequence, because a valid Jordan sequence is already a candidate that passed the oracle.
+
+## Valid Jordan Sequence
+
+Definition:
+
+In this project, a valid Jordan sequence is a candidate sequence whose upper pair family and lower pair family are both laminar after converting pairs to sorted-order rank intervals.
 
 Implementation note:
 
@@ -47,6 +65,8 @@ valid = upper family is laminar and lower family is laminar
 ```
 
 This is the project's current correctness condition. It is not yet the full Jordan-sorting algorithm.
+
+An invalid candidate is rejected because of duplicate values, an upper crossing, a lower crossing, or both.
 
 ## Distinct Values
 
@@ -266,7 +286,13 @@ are disjoint.
 
 Definition:
 
-One interval nests inside another if it is fully contained in the other interval.
+One interval properly nests inside another if it is strictly contained in the other interval.
+
+For intervals `[a, b]` and `[c, d]`, `[c, d]` properly nests inside `[a, b]` if:
+
+```text
+a < c and d < b
+```
 
 Example:
 
@@ -310,7 +336,7 @@ Crossing intervals make the corresponding upper or lower family invalid.
 
 Definition:
 
-A family of intervals is laminar if every pair of intervals is either disjoint or nested.
+A family of intervals is laminar if every pair of intervals is either disjoint or properly nested.
 
 Example:
 
@@ -338,6 +364,8 @@ A family tree represents the nesting structure of a laminar interval family.
 
 An interval's parent is the smallest interval that properly contains it. Intervals with no parent are root-level intervals.
 
+Strictly speaking, a family tree may be forest-like because a laminar family can have multiple root-level intervals. The project keeps the name `FamilyTree`, but its representation allows multiple roots.
+
 Example:
 
 ```text
@@ -361,11 +389,15 @@ class FamilyTree:
 
 The first version will not use an artificial root. Root-level intervals are stored in `FamilyTree.roots`.
 
+The root-level intervals form the top-level sibling list. Any artificial root used later for printing or visualization should be treated as a debugging convenience, not as a real interval from the input.
+
 ## Sibling List
 
 Definition:
 
 Sibling intervals are intervals with the same parent. Root-level intervals are siblings of each other.
+
+Sibling lists are ordered by increasing left endpoint. Ties should not normally occur inside one pair family with distinct input values, but if an implementation needs a deterministic tie-breaker it can use the right endpoint.
 
 Implementation note:
 
@@ -375,6 +407,8 @@ In the first family-tree representation:
 - non-root siblings are represented by a node's ordered `children` list.
 
 Sibling order should be deterministic, normally by interval start rank and then end rank.
+
+Do not confuse this with future `prev_sibling` or `next_sibling` links. Week 2 only needs ordered Python lists.
 
 ## Split
 
@@ -412,3 +446,5 @@ Generator family and structural category are different concepts:
 - structural category describes what the generated sequence looks like after analysis.
 
 For example, `nested_valid` is a generator family name, not a structural category name.
+
+Similarly, `family` can mean different things in different contexts. In interval code, pair family should mean only `upper` or `lower`. In dataset code, generator family means labels such as `flat_valid`, `incremental_valid`, or `random_invalid`.
