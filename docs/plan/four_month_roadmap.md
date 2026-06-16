@@ -1,6 +1,6 @@
 # Four-Month Thesis Roadmap
 
-Last updated: 2026-06-09
+Last updated: 2026-06-16
 
 ## Goal
 
@@ -28,16 +28,16 @@ The final thesis project should include:
 
 ```text
 Weeks 1-2:
-Finish the experimental framework.
+Finish the experimental framework and start the simplified-reference phase.
 
 Week 3:
-Write the simplified algorithm design.
+Strengthen the reference skeleton with algorithm-facing operations, validation, and early instrumentation.
 
 Week 4:
-Implement the simplified reference version.
+Extend the simplified reference implementation and differential tests.
 
 Week 5:
-Test, debug, and validate on generated datasets.
+Debug, validate, and prepare the first simplified-reference experiments.
 
 Weeks 6-8:
 Run experiments, collect metrics, and draft analysis.
@@ -118,6 +118,13 @@ Gate 1 pass criteria:
 - Week 1 summary exists,
 - basic notation notes exist.
 
+Current status:
+
+```text
+Week 1 is complete.
+Week 2 has started the simplified-reference phase earlier than the original roadmap.
+```
+
 Gate 1 fallback:
 
 - If visualization is unfinished, continue to Phase 2.
@@ -128,7 +135,7 @@ Gate 1 fallback:
 Target time:
 
 ```text
-Weeks 3-5
+Weeks 2-5
 ```
 
 Main goal:
@@ -139,27 +146,34 @@ Build a correct and explainable simplified Jordan-sorting reference version.
 
 This is the highest-risk phase. The priority is correctness and explanation, not linear-time performance.
 
-### Week 3: Design First
+### Week 2: Design and Skeleton Foundations
+
+Week 2 now covers the first simplified-reference foundations:
+
+- terminology and validity predicate,
+- family-tree data structures,
+- structural metrics,
+- reference skeleton,
+- tests and Week 2 summary.
+
+This means the original Week 3 design work has been pulled forward into Week 2.
+
+### Week 3: Algorithm-Facing Operations
 
 Primary deliverable:
 
 ```text
-docs/design/simplified_algorithm_design.md
+strengthened simplified reference implementation
 ```
 
-The design document should define:
+Week 3 should build on the Week 2 skeleton by adding more algorithm-facing behavior without claiming theoretical linear time.
 
-- input assumptions,
-- output format,
-- valid-input behavior,
-- invalid-input behavior,
-- upper and lower interval families,
-- family-tree representation,
-- sibling lists,
-- split operation,
+The implementation work should clarify:
+
 - traversal or reconstruction logic,
-- correctness checks,
-- pseudocode,
+- explicit skeleton-to-reference transition steps,
+- additional oracle-based differential checks,
+- early instrumentation hooks,
 - limitations of the ordinary-list backend.
 
 Important design questions:
@@ -486,14 +500,14 @@ Mitigation:
 
 ## Immediate Next Step
 
-The current repository has completed Week 1 Day 1 through Week 1 Day 4. The next task is:
+Current task:
 
 ```text
-Finish Week 1 Day 5: implement src/baselines.py.
+Finish Week 2 Day 2: implement src/family_tree.py and tests/test_family_tree.py.
 ```
 
-After that:
+The Week 2 Day 2 implementation should follow the fixed design contract:
 
 ```text
-Finish Week 1 Day 6: run experiments/run_small_tests.py and generate the first CSV.
+IntervalNode -> FamilyTree -> roots/children/depth -> defensive crossing rejection.
 ```

@@ -1,6 +1,6 @@
 # Week 2 Plan
 
-Last updated: 2026-06-11
+Last updated: 2026-06-16
 
 ## Goal
 
@@ -136,8 +136,18 @@ First representation decision:
 
 ```python
 @dataclass
+class IntervalNode:
+    id: int
+    interval: tuple[int, int]
+    pair_index: int
+    parent: int | None
+    children: list[int]
+    depth: int
+
+
+@dataclass
 class FamilyTree:
-    family: str
+    pair_family: str
     nodes: list[IntervalNode]
     roots: list[int]
 ```
@@ -152,6 +162,17 @@ Responsibility boundary:
 
 - `build_family_trees(seq)` rejects invalid sequences using the oracle before constructing trees.
 - `build_family_tree(intervals)` may also defensively reject crossing intervals if called directly.
+- direct interval-level inputs reject malformed intervals, duplicate intervals, shared endpoints, and crossings.
+
+Parent construction rule:
+
+1. for each interval, find all proper containers,
+2. choose the smallest proper container as the parent,
+3. use root-level status if no container exists,
+4. order roots and children by `(left, right, pair_index)`,
+5. compute root depth as `0` and child depth as parent depth plus one.
+
+The first implementation may use an `O(k^2)` scan.
 
 Testing should cover:
 
@@ -161,6 +182,68 @@ Testing should cover:
 - multi-level nesting,
 - invalid crossing sequences rejected by the sequence-level entry point.
 - direct interval-level crossing inputs rejected defensively by the tree builder.
+
+Recommended concrete tests:
+
+1. flat upper family:
+
+```python
+seq = [1, 2, 3, 4, 5, 6]
+```
+
+Expected upper roots:
+
+```text
+3 root nodes, all depth 0
+```
+
+2. nested upper family:
+
+```python
+seq = [1, 6, 2, 5, 3, 4]
+```
+
+Expected upper intervals:
+
+```text
+(1, 6), (2, 5), (3, 4)
+```
+
+Expected parent chain:
+
+```text
+0 -> 1 -> 2
+```
+
+3. nested lower family:
+
+```python
+seq = [1, 6, 2, 5, 3, 4]
+```
+
+Expected lower intervals:
+
+```text
+(2, 6), (3, 5)
+```
+
+Expected parent chain:
+
+```text
+0 -> 1
+```
+
+4. direct crossing reject:
+
+```python
+intervals = [(1, 3), (2, 4)]
+```
+
+Expected behavior:
+
+```text
+raises ValueError
+```
 
 Completion criteria:
 
@@ -192,13 +275,19 @@ First version return shape:
 ```python
 {
     "valid": bool,
-    "upper_interval_count": int,
-    "lower_interval_count": int,
-    "upper_nesting_count": int,
-    "lower_nesting_count": int,
-    "nesting_count": int,
-    "nesting_density": float,
-    "max_depth": int,
+    "reason": str | None,
+    "upper_interval_count": int | None,
+    "lower_interval_count": int | None,
+    "total_interval_count": int | None,
+    "upper_root_count": int | None,
+    "lower_root_count": int | None,
+    "upper_nesting_count": int | None,
+    "lower_nesting_count": int | None,
+    "nesting_count": int | None,
+    "nesting_density": float | None,
+    "upper_max_depth": int | None,
+    "lower_max_depth": int | None,
+    "max_depth": int | None,
     "category": str,
 }
 ```
@@ -221,7 +310,7 @@ Low nesting should not be called flat.
 Completion criteria:
 
 - `structure_profile(seq)` works for valid and invalid cases,
-- invalid cases are marked as `invalid`,
+- invalid cases are marked as `invalid` with structural fields set to `None`,
 - flat and nested examples receive conservative categories,
 - tests cover generated examples and edge cases.
 
@@ -292,7 +381,7 @@ First version logic:
 1. `values = list(seq)`
 2. `oracle_result = oracle(values)`
 3. if invalid, return `valid=False` with reason, oracle-sorted output, and `families=None`
-4. if valid, build upper/lower family structures
+4. if valid, build upper/lower family structures with `build_family_trees(values, oracle_result=oracle_result)`
 5. compute `structure_profile`
 6. set `sorted = oracle_result["sorted"]`
 7. return trace

@@ -8,6 +8,8 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 Week 1 is complete.
 
+Week 2 Day 1 is complete.
+
 The repository now contains the first reproducible experimental loop:
 
 ```text
@@ -26,6 +28,13 @@ Implemented so far:
 - unit tests for oracle, generators, baselines, and experiment runner.
 
 The full Week 1 summary is in [docs/progress/week1_summary.md](docs/progress/week1_summary.md).
+
+Week 2 has started the simplified-reference phase:
+
+- [docs/design/notation.md](docs/design/notation.md) defines candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and split terminology.
+- [docs/design/simplified_algorithm_design.md](docs/design/simplified_algorithm_design.md) defines the reference-skeleton scope, API contract, invalid-input behavior, family-tree representation, structural stats contract, trace format, error policy, and non-claims.
+
+No simplified Jordan-sorting implementation exists yet.
 
 ## Project Structure
 
@@ -53,7 +62,9 @@ results/
 docs/
   README.md
   design/
+    notation.md
     oracle_and_test_generation.md
+    simplified_algorithm_design.md
   progress/
     week1_progress.md
     week1_summary.md
@@ -61,6 +72,10 @@ docs/
     future_work_todo.md
   notes.md
   plan/
+    README.md
+    four_month_roadmap.md
+    week2_plan.md
+    thesis_scope_and_research_questions.pdf
   papers/
 ```
 
@@ -171,6 +186,8 @@ Important project documents:
 - [docs/progress/week1_summary.md](docs/progress/week1_summary.md): Week 1 completed work, experiment configuration, validation results, limitations, and next steps.
 - [docs/progress/week1_progress.md](docs/progress/week1_progress.md): checklist-style Week 1 progress tracker.
 - [docs/design/oracle_and_test_generation.md](docs/design/oracle_and_test_generation.md): definitions and design notes for the oracle and generators.
+- [docs/design/notation.md](docs/design/notation.md): reusable terminology for candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and structural categories.
+- [docs/design/simplified_algorithm_design.md](docs/design/simplified_algorithm_design.md): Week 2 reference-skeleton design, including API contract, family-tree representation, stats contract, trace format, and error policy.
 - [docs/backlog/future_work_todo.md](docs/backlog/future_work_todo.md): follow-up ideas that should not block the Week 1 loop.
 - [docs/plan/four_month_roadmap.md](docs/plan/four_month_roadmap.md): compressed 3-4 month thesis execution plan.
 
@@ -185,15 +202,12 @@ Important project documents:
 
 ## Next Steps
 
-Immediate cleanup:
+Immediate next task:
 
-- keep README and Week 1 summary synchronized,
+- finish Week 2 Day 2 by implementing `src/family_tree.py` and `tests/test_family_tree.py`.
+
+Later cleanup:
+
+- create a Markdown version of the approved thesis scope and research questions,
 - optionally generate a baseline summary CSV with min, median, and mean timing values,
 - optionally add a lightweight interval visualization script.
-
-Next major phase:
-
-- extend `docs/design/simplified_algorithm_design.md` as the implementation evolves,
-- define upper/lower family-tree data structures,
-- define the reference simplified sorting pipeline,
-- add oracle-based differential tests for the future implementation.

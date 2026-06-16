@@ -62,6 +62,11 @@ Current files:
 - `week2_plan.md`
 - `thesis_scope_and_research_questions.pdf`
 
+Planned files:
+
+- `thesis_scope_and_research_questions.md`  
+  Markdown version of the approved thesis scope, research questions, goals, planned contributions, implementation scope, and experimental scope.
+
 ## Papers
 
 Path:

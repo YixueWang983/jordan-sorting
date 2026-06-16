@@ -236,10 +236,56 @@ The planned representation is:
 
 ```python
 @dataclass
+class IntervalNode:
+    id: int
+    interval: tuple[int, int]
+    pair_index: int
+    parent: int | None
+    children: list[int]
+    depth: int
+
+
+@dataclass
 class FamilyTree:
-    family: str
+    pair_family: str
     nodes: list[IntervalNode]
     roots: list[int]
+```
+
+Field meanings:
+
+`IntervalNode.id`  
+Stable index into `FamilyTree.nodes`.
+
+`IntervalNode.interval`  
+The rank interval `(left, right)`.
+
+`IntervalNode.pair_index`  
+The zero-based index of the pair inside the upper or lower pair family.
+
+`IntervalNode.parent`  
+The parent node id, or `None` for root-level intervals.
+
+`IntervalNode.children`  
+Ordered child node ids.
+
+`IntervalNode.depth`  
+Root-level depth is `0`.
+
+`FamilyTree.pair_family`  
+Either `upper` or `lower`.
+
+The serialized node shape should be stable:
+
+```python
+{
+    "id": 0,
+    "interval": [1, 6],
+    "pair_index": 0,
+    "parent": None,
+    "children": [1],
+    "depth": 0,
+}
 ```
 
 The first version should not use an artificial root.
@@ -269,10 +315,10 @@ Both `FamilyTree.roots` and each node's `children` list should be ordered by inc
 The sequence-level entry point should be:
 
 ```python
-build_family_trees(seq)
+build_family_trees(seq, oracle_result=None)
 ```
 
-It should use the oracle to reject invalid sequences before constructing family trees.
+It should use the oracle to reject invalid sequences before constructing family trees. If `oracle_result` is provided, it can reuse that result instead of calling the oracle again.
 
 The raw interval-level builder:
 
@@ -282,6 +328,17 @@ build_family_tree(intervals)
 
 may defensively reject crossing intervals if called directly.
 
+For direct interval-level inputs, the first builder accepts only normalized intervals `(left, right)` with `left < right`.
+
+It rejects:
+
+- malformed intervals,
+- duplicate intervals,
+- intervals with shared endpoints,
+- crossing intervals.
+
+This matches the assumptions of intervals generated from distinct candidate sequences.
+
 When naming helper functions, avoid confusing pair families with generator families. In family-tree code, `pair_family` should mean only:
 
 ```text
@@ -290,6 +347,41 @@ lower
 ```
 
 Dataset generator families are separate labels such as `flat_valid`, `incremental_valid`, or `random_invalid`.
+
+## Family Tree Construction Rule
+
+Input: a validated laminar interval family.
+
+For each interval `I`:
+
+1. find every interval `J` that properly contains `I`,
+2. choose the containing interval `J` with the smallest interval length as `I`'s parent,
+3. if no such `J` exists, mark `I` as root-level,
+4. sort root ids by `(left, right, pair_index)`,
+5. sort each node's children by `(left, right, pair_index)`,
+6. compute root depth as `0` and child depth as `parent depth + 1`.
+
+The first implementation may use an `O(k^2)` scan over intervals. Week 2 does not claim linear-time family-tree construction.
+
+## Error Policy
+
+`simplified_jordan_sort(seq)`:
+
+- does not raise for oracle-invalid candidates,
+- returns `valid=False`, `reason`, and `families=None`.
+
+`build_family_trees(seq, oracle_result=None)`:
+
+- raises `ValueError` for oracle-invalid candidates.
+
+`build_family_tree(intervals)`:
+
+- raises `ValueError` for malformed, duplicate, shared-endpoint, or crossing intervals.
+
+`interval_contains(...)` and `proper_interval_contains(...)`:
+
+- are pure predicates,
+- do not call the oracle.
 
 ## Structural Stats
 
@@ -306,16 +398,46 @@ The first profile shape should include:
 ```python
 {
     "valid": bool,
-    "upper_interval_count": int,
-    "lower_interval_count": int,
-    "upper_nesting_count": int,
-    "lower_nesting_count": int,
-    "nesting_count": int,
-    "nesting_density": float,
-    "max_depth": int,
+    "reason": str | None,
+    "upper_interval_count": int | None,
+    "lower_interval_count": int | None,
+    "total_interval_count": int | None,
+    "upper_root_count": int | None,
+    "lower_root_count": int | None,
+    "upper_nesting_count": int | None,
+    "lower_nesting_count": int | None,
+    "nesting_count": int | None,
+    "nesting_density": float | None,
+    "upper_max_depth": int | None,
+    "lower_max_depth": int | None,
+    "max_depth": int | None,
     "category": str,
 }
 ```
+
+For invalid candidates, the first version should use a conservative contract:
+
+```python
+{
+    "valid": False,
+    "reason": oracle_result["reason"],
+    "upper_interval_count": None,
+    "lower_interval_count": None,
+    "total_interval_count": None,
+    "upper_root_count": None,
+    "lower_root_count": None,
+    "upper_nesting_count": None,
+    "lower_nesting_count": None,
+    "nesting_count": None,
+    "nesting_density": None,
+    "upper_max_depth": None,
+    "lower_max_depth": None,
+    "max_depth": None,
+    "category": "invalid",
+}
+```
+
+This keeps invalid candidates from being mistaken for inputs with valid family-tree structure.
 
 Suggested structural categories:
 
@@ -345,8 +467,8 @@ The first version can use a list of dictionaries:
 [
     {"step": "copy_input", "n": 8},
     {"step": "oracle", "valid": True, "reason": None},
-    {"step": "build_family_trees"},
-    {"step": "structure_profile"},
+    {"step": "build_family_trees", "upper_nodes": 3, "lower_nodes": 2},
+    {"step": "structure_profile", "category": "strict_flat"},
     {"step": "return_oracle_sorted_output"},
 ]
 ```
@@ -419,10 +541,16 @@ def simplified_jordan_sort(seq):
         },
     ]
 
-    stats = structure_profile(values)
-
     if not oracle_result["valid"]:
-        trace.append({"step": "reject_invalid_input"})
+        stats = structure_profile(values)
+        trace.append({
+            "step": "structure_profile",
+            "category": stats["category"],
+        })
+        trace.append({
+            "step": "reject_invalid_input",
+            "reason": oracle_result["reason"],
+        })
         return {
             "valid": False,
             "sorted": oracle_result["sorted"],
@@ -434,8 +562,17 @@ def simplified_jordan_sort(seq):
             "implementation": "reference_skeleton",
         }
 
-    families = build_family_trees(values)
-    trace.append({"step": "build_family_trees"})
+    families = build_family_trees(values, oracle_result=oracle_result)
+    trace.append({
+        "step": "build_family_trees",
+        "upper_nodes": len(families["upper"].nodes),
+        "lower_nodes": len(families["lower"].nodes),
+    })
+    stats = structure_profile(values)
+    trace.append({
+        "step": "structure_profile",
+        "category": stats["category"],
+    })
     trace.append({"step": "return_oracle_sorted_output"})
 
     return {

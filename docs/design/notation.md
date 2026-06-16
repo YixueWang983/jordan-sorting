@@ -54,17 +54,28 @@ Use `candidate sequence` or `invalid candidate` when discussing inputs that may 
 
 Definition:
 
-In this project, a valid Jordan sequence is a candidate sequence whose upper pair family and lower pair family are both laminar after converting pairs to sorted-order rank intervals.
+In this project, a candidate sequence is oracle-valid as a Jordan sequence if and only if:
+
+```text
+V(seq) =
+    distinct_values(seq)
+    and laminar(upper_rank_intervals(seq))
+    and laminar(lower_rank_intervals(seq))
+```
+
+In words, a valid Jordan sequence is a candidate sequence with distinct values whose upper pair family and lower pair family are both laminar after converting pairs to sorted-order rank intervals.
 
 Implementation note:
 
-The current oracle uses this simplified validity condition:
+Duplicate values are rejected before rank intervals are built, because duplicate values make the one-based rank map ambiguous.
+
+The current oracle uses this operational validity predicate:
 
 ```text
-valid = upper family is laminar and lower family is laminar
+valid = distinct values and upper family is laminar and lower family is laminar
 ```
 
-This is the project's current correctness condition. It is not yet the full Jordan-sorting algorithm.
+This is the project's current correctness condition. It is not a claim that this predicate alone implements the full theoretical Jordan-sorting algorithm.
 
 An invalid candidate is rejected because of duplicate values, an upper crossing, a lower crossing, or both.
 
@@ -381,8 +392,18 @@ Week 2 will use:
 
 ```python
 @dataclass
+class IntervalNode:
+    id: int
+    interval: tuple[int, int]
+    pair_index: int
+    parent: int | None
+    children: list[int]
+    depth: int
+
+
+@dataclass
 class FamilyTree:
-    family: str
+    pair_family: str
     nodes: list[IntervalNode]
     roots: list[int]
 ```
