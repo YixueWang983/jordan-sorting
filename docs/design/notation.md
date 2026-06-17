@@ -412,6 +412,8 @@ The first version will not use an artificial root. Root-level intervals are stor
 
 The root-level intervals form the top-level sibling list. Any artificial root used later for printing or visualization should be treated as a debugging convenience, not as a real interval from the input.
 
+`FamilyTree.nodes` preserves input interval order. For sequence-derived intervals, this means pair order. The structural ordering is represented by `roots` and `children`.
+
 ## Sibling List
 
 Definition:

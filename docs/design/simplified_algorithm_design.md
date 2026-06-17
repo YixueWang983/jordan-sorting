@@ -275,6 +275,8 @@ Root-level depth is `0`.
 `FamilyTree.pair_family`  
 Either `upper` or `lower`.
 
+`FamilyTree.nodes` preserves the input interval order. For intervals produced from a sequence, this means pair order. Only `roots` and `children` lists are sorted by `(left, right, pair_index)`.
+
 The serialized node shape should be stable:
 
 ```python
@@ -323,12 +325,14 @@ It should use the oracle to reject invalid sequences before constructing family 
 The raw interval-level builder:
 
 ```python
-build_family_tree(intervals)
+build_family_tree(intervals, pair_family)
 ```
 
-may defensively reject crossing intervals if called directly.
+may defensively reject crossing intervals if called directly. The `pair_family` argument must be either `upper` or `lower`.
 
 For direct interval-level inputs, the first builder accepts only normalized intervals `(left, right)` with `left < right`.
+
+For direct interval-level inputs, `pair_index` is assigned from the input order with `enumerate(intervals)`.
 
 It rejects:
 
@@ -347,6 +351,25 @@ lower
 ```
 
 Dataset generator families are separate labels such as `flat_valid`, `incremental_valid`, or `random_invalid`.
+
+## Interval Predicates
+
+The interval helpers should use these definitions:
+
+```python
+def interval_contains(outer, inner):
+    outer_left, outer_right = outer
+    inner_left, inner_right = inner
+    return outer_left <= inner_left and inner_right <= outer_right
+
+
+def proper_interval_contains(outer, inner):
+    outer_left, outer_right = outer
+    inner_left, inner_right = inner
+    return outer_left < inner_left and inner_right < outer_right
+```
+
+The family-tree builder uses `proper_interval_contains` for parent selection.
 
 ## Family Tree Construction Rule
 
@@ -374,7 +397,7 @@ The first implementation may use an `O(k^2)` scan over intervals. Week 2 does no
 
 - raises `ValueError` for oracle-invalid candidates.
 
-`build_family_tree(intervals)`:
+`build_family_tree(intervals, pair_family)`:
 
 - raises `ValueError` for malformed, duplicate, shared-endpoint, or crossing intervals.
 

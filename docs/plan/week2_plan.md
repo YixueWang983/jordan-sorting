@@ -120,8 +120,8 @@ The first implementation should focus on:
 - `interval_contains(...)`
 - `proper_interval_contains(...)`
 - `build_family_intervals(seq, pair_family)`
-- `build_family_tree(intervals)`
-- `build_family_trees(seq)`
+- `build_family_tree(intervals, pair_family)`
+- `build_family_trees(seq, oracle_result=None)`
 - `compute_depths(...)`
 
 The goal is to make this chain work:
@@ -158,11 +158,31 @@ Although the structure is named `FamilyTree`, it can have multiple roots. In tha
 
 In family-tree code, `pair_family` means only `upper` or `lower`. This should not be confused with dataset generator families such as `flat_valid`, `incremental_valid`, or `random_invalid`.
 
+`FamilyTree.nodes` preserves the input interval order. For sequence-derived intervals, this means pair order. Only `roots` and `children` are sorted by `(left, right, pair_index)`.
+
+The interval predicates should be:
+
+```python
+def interval_contains(outer, inner):
+    outer_left, outer_right = outer
+    inner_left, inner_right = inner
+    return outer_left <= inner_left and inner_right <= outer_right
+
+
+def proper_interval_contains(outer, inner):
+    outer_left, outer_right = outer
+    inner_left, inner_right = inner
+    return outer_left < inner_left and inner_right < outer_right
+```
+
+The family-tree builder uses `proper_interval_contains` for parent selection.
+
 Responsibility boundary:
 
-- `build_family_trees(seq)` rejects invalid sequences using the oracle before constructing trees.
-- `build_family_tree(intervals)` may also defensively reject crossing intervals if called directly.
+- `build_family_trees(seq, oracle_result=None)` rejects invalid sequences using the oracle before constructing trees.
+- `build_family_tree(intervals, pair_family)` may also defensively reject crossing intervals if called directly.
 - direct interval-level inputs reject malformed intervals, duplicate intervals, shared endpoints, and crossings.
+- direct interval-level inputs assign `pair_index` from input order with `enumerate(intervals)`.
 
 Parent construction rule:
 
@@ -237,6 +257,30 @@ Expected parent chain:
 
 ```python
 intervals = [(1, 3), (2, 4)]
+```
+
+Expected behavior:
+
+```text
+raises ValueError
+```
+
+5. duplicate interval reject:
+
+```python
+intervals = [(1, 4), (1, 4)]
+```
+
+Expected behavior:
+
+```text
+raises ValueError
+```
+
+6. shared endpoint reject:
+
+```python
+intervals = [(1, 4), (1, 3)]
 ```
 
 Expected behavior:
