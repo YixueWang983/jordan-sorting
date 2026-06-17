@@ -23,6 +23,23 @@ from simplified_jordan import simplified_jordan_sort  # noqa: E402
 
 
 class SimplifiedJordanTests(unittest.TestCase):
+    def test_reference_skeleton_return_contract_keys(self):
+        result = simplified_jordan_sort([1, 6, 2, 5, 3, 4])
+
+        self.assertEqual(
+            set(result.keys()),
+            {
+                "valid",
+                "sorted",
+                "reason",
+                "oracle",
+                "families",
+                "stats",
+                "trace",
+                "implementation",
+            },
+        )
+
     def test_reference_skeleton_matches_oracle_sorted_output(self):
         cases = [
             [],
@@ -125,6 +142,14 @@ class SimplifiedJordanTests(unittest.TestCase):
         )
         self.assertFalse(result["valid"])
         self.assertEqual(result["reason"], "upper crossing")
+
+    def test_reference_skeleton_rejects_duplicate_values_with_reason(self):
+        result = simplified_jordan_sort([1, 2, 2, 3])
+
+        self.assertFalse(result["valid"])
+        self.assertEqual(result["reason"], "duplicate values")
+        self.assertIsNone(result["families"])
+        self.assertEqual(result["stats"]["reason"], "duplicate values")
 
     def test_reference_skeleton_handles_day2_day3_cases(self):
         cases = [
