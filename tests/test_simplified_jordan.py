@@ -152,6 +152,8 @@ class SimplifiedJordanTests(unittest.TestCase):
                 "return_reference_sorted_output",
             ],
         )
+        self.assertEqual(result["trace"][4]["backend"], "ordinary_list")
+        self.assertEqual(result["trace"][5]["backend"], "oracle_sorted")
 
     def test_reference_skeleton_records_trace_for_invalid_input(self):
         result = simplified_jordan_sort([1, 3, 2, 4])
