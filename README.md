@@ -34,6 +34,8 @@ Week 2 has started the simplified-reference phase:
 - [docs/design/notation.md](docs/design/notation.md) defines candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and split terminology.
 - [docs/design/simplified_algorithm_design.md](docs/design/simplified_algorithm_design.md) defines the reference-skeleton scope, API contract, invalid-input behavior, family-tree representation, structural stats contract, trace format, error policy, and non-claims.
 
+Week 2 Day 3 is now complete: `structure_profile(seq)` in [src/stats.py](src/stats.py) reports interval/root counts, nesting counts, max-depth, nesting density, and a conservative structure category.
+
 No simplified Jordan-sorting implementation exists yet.
 
 ## Project Structure
@@ -52,6 +54,7 @@ tests/
   test_baselines.py
   test_run_small_tests.py
   test_family_tree.py
+  test_stats.py
 
 experiments/
   run_small_tests.py
@@ -142,7 +145,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 100 tests
+Ran 106 tests
 OK
 ```
 

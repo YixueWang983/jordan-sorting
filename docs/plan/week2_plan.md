@@ -184,6 +184,12 @@ Responsibility boundary:
 - direct interval-level inputs reject malformed intervals, duplicate intervals, shared endpoints, and crossings.
 - direct interval-level inputs assign `pair_index` from input order with `enumerate(intervals)`.
 
+Non-blocking note (P2.1):
+
+- `build_family_intervals(seq, pair_family)` does not currently add duplicate-sequence guards.
+  The sequence-level entrypoint `build_family_trees(seq, oracle_result=None)` already checks validity via
+  `oracle` first. If this helper becomes a public API in the future, add duplicate validation then.
+
 Parent construction rule:
 
 1. for each interval, find all proper containers,
@@ -561,14 +567,14 @@ Week 2 is complete if:
 Current task:
 
 ```text
-Week 2 Day 2: Family Tree Data Structures
+Week 2 Day 3: Structural Metrics
 ```
 
 Implement:
 
 ```text
-src/family_tree.py
-tests/test_family_tree.py
+src/stats.py
+tests/test_stats.py
 ```
 
 Use the fixed contracts:
