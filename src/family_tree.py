@@ -100,7 +100,7 @@ def _validate_direct_intervals(intervals):
 
 def _interval_sort_key(node):
     left, right = node.interval
-    return (left, right, node.id)
+    return (left, right, node.pair_index)
 
 
 def build_family_intervals(seq, pair_family):
