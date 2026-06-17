@@ -216,10 +216,9 @@ Important project documents:
 
 Immediate next task:
 
-- finish Week 2 Day 7 by writing [docs/progress/week2_summary.md](docs/progress/week2_summary.md), including:
-  - what was designed and what remains a skeleton,
-  - known limitations,
-  - and a Week 3 implementation plan.
+- finish Week 2 Day 6 by running the full test suite, checking documentation/code consistency, and doing final Day5/Day6 cleanup before writing:
+
+  - [docs/progress/week2_summary.md](docs/progress/week2_summary.md)
 
 Later cleanup:
 

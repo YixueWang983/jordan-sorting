@@ -567,17 +567,19 @@ Week 2 is complete if:
 Current task:
 
 ```text
-Week 2 Day 7: Week 2 Summary
+Week 2 Day 6: Tests + Documentation Pass
 ```
 
 Implement:
 
 ```text
-docs/progress/week2_summary.md
+tests/test_simplified_jordan.py
+docs/design/simplified_algorithm_design.md
+README.md
 ```
 
 Focus on:
 
-- design-skeleton boundary that Week 3 will extend,
-- confirmed Day 5 achievements and known limitations,
-- concise testing status before Algorithm-day implementation work.
+- running the full test suite,
+- checking documentation and code alignment for Week 2 Day1-5 outputs,
+- final cleanup before Day 7 summary.
