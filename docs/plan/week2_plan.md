@@ -567,17 +567,17 @@ Week 2 is complete if:
 Current task:
 
 ```text
-Week 2 Day 7: Week2 Summary + documentation closure
+Week 2 Day 6: Tests + Documentation Pass (final consistency pass)
 ```
 
 Expected outputs:
 
 ```text
-docs/progress/week2_summary.md
+No new artifact yet; keep Week2 Day7 summary for next step.
 ```
 
 Focus on:
 
-- locking the Week2 Day6 contract tests,
+- lock Day6 contract tests,
 - explicit skeleton-vs-final distinction,
 - preparing the handoff state for Week 3.
