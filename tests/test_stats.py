@@ -9,6 +9,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from stats import (  # noqa: E402
+    _classify_valid_profile,
     INVALID_CATEGORY,
     LOW_NESTING_VALID,
     MEDIUM_NESTING_VALID,
@@ -113,8 +114,17 @@ class StatsTests(unittest.TestCase):
         self.assertGreater(profile["nesting_count"], 0)
         self.assertEqual(profile["upper_interval_count"], 2)
         self.assertEqual(profile["lower_interval_count"], 1)
-        self.assertIn(profile["category"], {LOW_NESTING_VALID, MEDIUM_NESTING_VALID, NESTED_HEAVY_VALID})
-        self.assertNotEqual(profile["category"], STRICT_FLAT)
+        self.assertEqual(profile["category"], LOW_NESTING_VALID)
+
+    def test_classify_nested_heavy_valid(self):
+        self.assertEqual(
+            _classify_valid_profile(
+                nesting_count=10,
+                total_interval_count=10,
+                max_depth=5,
+            ),
+            NESTED_HEAVY_VALID,
+        )
 
 
 if __name__ == "__main__":

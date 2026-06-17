@@ -209,7 +209,7 @@ Important project documents:
 
 Immediate next task:
 
-- finish Week 2 Day 2 by implementing `src/family_tree.py` and `tests/test_family_tree.py`.
+- finish Week 2 Day 4 by extending `docs/design/simplified_algorithm_design.md` with the final API, trace, stats, and fallback behavior for the reference skeleton.
 
 Later cleanup:
 

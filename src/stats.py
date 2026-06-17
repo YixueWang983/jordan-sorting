@@ -59,10 +59,11 @@ def _classify_valid_profile(nesting_count, total_interval_count, max_depth):
     return NESTED_HEAVY_VALID
 
 
-def structure_profile(seq):
+def structure_profile(seq, oracle_result=None):
     """返回 candidate sequence 的结构统计 profile。"""
     values = list(seq)
-    oracle_result = oracle(values)
+    if oracle_result is None:
+        oracle_result = oracle(values)
 
     if not oracle_result["valid"]:
         return _invalid_profile(oracle_result["reason"])
