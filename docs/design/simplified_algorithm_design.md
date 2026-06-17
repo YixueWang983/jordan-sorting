@@ -203,6 +203,10 @@ The first valid result should have:
 }
 ```
 
+For this week, each family is returned as a serializable dict produced by
+`family_tree_to_dict(...)` (i.e. no dataclass instances are exposed in public
+outputs).
+
 ## Relation to the Current Oracle
 
 The oracle remains the source of truth for Week 2.
@@ -565,7 +569,7 @@ def simplified_jordan_sort(seq):
     ]
 
     if not oracle_result["valid"]:
-        stats = structure_profile(values)
+        stats = structure_profile(values, oracle_result=oracle_result)
         trace.append({
             "step": "structure_profile",
             "category": stats["category"],
@@ -591,7 +595,7 @@ def simplified_jordan_sort(seq):
         "upper_nodes": len(families["upper"].nodes),
         "lower_nodes": len(families["lower"].nodes),
     })
-    stats = structure_profile(values)
+    stats = structure_profile(values, oracle_result=oracle_result)
     trace.append({
         "step": "structure_profile",
         "category": stats["category"],
@@ -603,7 +607,10 @@ def simplified_jordan_sort(seq):
         "sorted": oracle_result["sorted"],
         "reason": None,
         "oracle": oracle_result,
-        "families": families,
+        "families": {
+            "upper": family_tree_to_dict(families["upper"]),
+            "lower": family_tree_to_dict(families["lower"]),
+        },
         "stats": stats,
         "trace": trace,
         "implementation": "reference_skeleton",

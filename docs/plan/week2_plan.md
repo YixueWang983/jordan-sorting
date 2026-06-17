@@ -567,21 +567,17 @@ Week 2 is complete if:
 Current task:
 
 ```text
-Week 2 Day 4: Simplified Algorithm API Design
+Week 2 Day 7: Week 2 Summary
 ```
 
 Implement:
 
 ```text
-docs/design/simplified_algorithm_design.md
+docs/progress/week2_summary.md
 ```
 
 Focus on:
 
-- final API contract for `simplified_jordan_sort(seq)`
-- return format
-- invalid input behavior
-- trace format
-- stats integration
-- fallback behavior
-- explicit skeleton boundary
+- design-skeleton boundary that Week 3 will extend,
+- confirmed Day 5 achievements and known limitations,
+- concise testing status before Algorithm-day implementation work.

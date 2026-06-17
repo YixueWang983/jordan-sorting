@@ -34,9 +34,15 @@ Week 2 has started the simplified-reference phase:
 - [docs/design/notation.md](docs/design/notation.md) defines candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and split terminology.
 - [docs/design/simplified_algorithm_design.md](docs/design/simplified_algorithm_design.md) defines the reference-skeleton scope, API contract, invalid-input behavior, family-tree representation, structural stats contract, trace format, error policy, and non-claims.
 
-Week 2 Day 3 is now complete: `structure_profile(seq)` in [src/stats.py](src/stats.py) reports interval/root counts, nesting counts, max-depth, nesting density, and a conservative structure category.
+Week 2 Day 5 is now complete: `simplified_jordan_sort(seq)` in [src/simplified_jordan.py](src/simplified_jordan.py) is a reference skeleton that:
 
-No simplified Jordan-sorting implementation exists yet.
+- runs the oracle,
+- returns oracle-sorted output,
+- builds upper/lower family trees for valid candidates,
+- emits structural stats,
+- records an execution trace,
+- marks invalid candidates without raising,
+- and clearly sets `implementation` to `"reference_skeleton"`.
 
 ## Project Structure
 
@@ -47,6 +53,7 @@ src/
   baselines.py
   stats.py
   family_tree.py
+  simplified_jordan.py
 
 tests/
   test_oracle.py
@@ -55,6 +62,7 @@ tests/
   test_run_small_tests.py
   test_family_tree.py
   test_stats.py
+  test_simplified_jordan.py
 
 experiments/
   run_small_tests.py
@@ -145,7 +153,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 106 tests
+Ran 114 tests
 OK
 ```
 
@@ -201,7 +209,6 @@ Important project documents:
 - The oracle currently uses an `O(n^2)` pairwise interval crossing check.
 - The baseline CSV stores raw timing rows only; summary statistics and plots are not generated yet.
 - The timing results are preliminary and should not be interpreted as final performance claims.
-- No simplified Jordan-sorting implementation exists yet.
 - No level-linked search trees or heterogeneous finger trees are implemented.
 - Visualization is still future work.
 
@@ -209,7 +216,10 @@ Important project documents:
 
 Immediate next task:
 
-- finish Week 2 Day 4 by extending `docs/design/simplified_algorithm_design.md` with the final API, trace, stats, and fallback behavior for the reference skeleton.
+- finish Week 2 Day 7 by writing [docs/progress/week2_summary.md](docs/progress/week2_summary.md), including:
+  - what was designed and what remains a skeleton,
+  - known limitations,
+  - and a Week 3 implementation plan.
 
 Later cleanup:
 
