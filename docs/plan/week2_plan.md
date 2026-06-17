@@ -567,20 +567,21 @@ Week 2 is complete if:
 Current task:
 
 ```text
-Week 2 Day 3: Structural Metrics
+Week 2 Day 4: Simplified Algorithm API Design
 ```
 
 Implement:
 
 ```text
-src/stats.py
-tests/test_stats.py
+docs/design/simplified_algorithm_design.md
 ```
 
-Use the fixed contracts:
+Focus on:
 
-- `IntervalNode`
-- `FamilyTree`
-- `build_family_intervals(seq, pair_family)`
-- `build_family_tree(intervals, pair_family)`
-- `build_family_trees(seq, oracle_result=None)`
+- final API contract for `simplified_jordan_sort(seq)`
+- return format
+- invalid input behavior
+- trace format
+- stats integration
+- fallback behavior
+- explicit skeleton boundary
