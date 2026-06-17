@@ -567,19 +567,17 @@ Week 2 is complete if:
 Current task:
 
 ```text
-Week 2 Day 6: Tests + Documentation Pass
+Week 2 Day 7: Week2 Summary + documentation closure
 ```
 
-Implement:
+Expected outputs:
 
 ```text
-tests/test_simplified_jordan.py
-docs/design/simplified_algorithm_design.md
-README.md
+docs/progress/week2_summary.md
 ```
 
 Focus on:
 
-- running the full test suite,
-- checking documentation and code alignment for Week 2 Day1-5 outputs,
-- final cleanup before Day 7 summary.
+- locking the Week2 Day6 contract tests,
+- explicit skeleton-vs-final distinction,
+- preparing the handoff state for Week 3.

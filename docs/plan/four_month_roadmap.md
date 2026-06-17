@@ -122,7 +122,8 @@ Current status:
 
 ```text
 Week 1 is complete.
-Week 2 has started the simplified-reference phase earlier than the original roadmap.
+Week 2 foundations and skeleton outputs are complete.
+The current target is Week 3 reference-pipeline strengthening.
 ```
 
 Gate 1 fallback:
@@ -503,11 +504,12 @@ Mitigation:
 Current task:
 
 ```text
-Finish Week 2 Day 2: implement src/family_tree.py and tests/test_family_tree.py.
+Finish Week 2 Day 7 documentation closure (week2_summary), then start
+Week 3 Day 1 reference pipeline strengthening.
 ```
 
-The Week 2 Day 2 implementation should follow the fixed design contract:
+Week 3 reference pipeline should follow the fixed Day 1 contract:
 
 ```text
-IntervalNode -> FamilyTree -> roots/children/depth -> defensive crossing rejection.
+interval -> family_tree -> pipeline trace/backend metadata -> structure-aware experiment support.
 ```

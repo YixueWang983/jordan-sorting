@@ -13,3 +13,7 @@ This folder stores the approved thesis scope and research-question documents.
 
 - `week2_plan.md`  
   Detailed Week 2 execution plan. It focuses on notation, simplified algorithm design scope, family-tree data structures, structural metrics, and a clearly marked reference skeleton.
+
+- `week3_plan.md`  
+  Week 3 execution plan for converting the Week 2 skeleton into a more explicit
+  reference pipeline with stronger experiment support.

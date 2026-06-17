@@ -9,7 +9,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from stats import (  # noqa: E402
-    _classify_valid_profile,
+    classify_valid_profile,
     INVALID_CATEGORY,
     LOW_NESTING_VALID,
     MEDIUM_NESTING_VALID,
@@ -123,6 +123,16 @@ class StatsTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             structure_profile([1, 6, 2, 5, 3, 4], family_trees={})
 
+    def test_structure_profile_rejects_missing_upper_or_lower_tree(self):
+        with self.assertRaises(ValueError):
+            structure_profile([1, 2, 3, 4], family_trees={"upper": object()})
+
+    def test_structure_profile_ignores_family_trees_for_invalid_input(self):
+        profile = structure_profile([1, 3, 2, 4], family_trees={})
+
+        self.assertFalse(profile["valid"])
+        self.assertEqual(profile["category"], "invalid")
+
     def test_low_nesting_is_not_called_flat_when_nesting_exists(self):
         profile = structure_profile([1, 4, 2, 3])
 
@@ -134,7 +144,7 @@ class StatsTests(unittest.TestCase):
 
     def test_classify_nested_heavy_valid(self):
         self.assertEqual(
-            _classify_valid_profile(
+            classify_valid_profile(
                 nesting_count=10,
                 total_interval_count=10,
                 max_depth=5,

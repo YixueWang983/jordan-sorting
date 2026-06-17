@@ -43,8 +43,15 @@ def _max_depth(tree):
     return max(node.depth for node in tree.nodes)
 
 
-def _classify_valid_profile(nesting_count, total_interval_count, max_depth):
-    """按简化分类返回结构类型。"""
+def classify_valid_profile(nesting_count, total_interval_count, max_depth):
+    """Classify a valid profile by nesting shape.
+
+    Returns one of:
+    - ``strict_flat``
+    - ``low_nesting_valid``
+    - ``medium_nesting_valid``
+    - ``nested_heavy_valid``
+    """
     if nesting_count == 0:
         return STRICT_FLAT
 
@@ -57,6 +64,10 @@ def _classify_valid_profile(nesting_count, total_interval_count, max_depth):
     if max_depth <= 3 and nesting_density <= 0.70:
         return MEDIUM_NESTING_VALID
     return NESTED_HEAVY_VALID
+
+
+# Backward-compatible alias: existing tests and callers may import this name.
+_classify_valid_profile = classify_valid_profile
 
 
 def structure_profile(seq, oracle_result=None, family_trees=None):
@@ -101,7 +112,7 @@ def structure_profile(seq, oracle_result=None, family_trees=None):
     lower_max_depth = _max_depth(lower_tree)
     max_depth = max(upper_max_depth, lower_max_depth)
 
-    category = _classify_valid_profile(
+    category = classify_valid_profile(
         nesting_count=nesting_count,
         total_interval_count=total_interval_count,
         max_depth=max_depth,
