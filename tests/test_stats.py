@@ -17,6 +17,7 @@ from stats import (  # noqa: E402
     STRICT_FLAT,
     structure_profile,
 )
+from family_tree import build_family_trees  # noqa: E402
 
 
 class StatsTests(unittest.TestCase):
@@ -106,6 +107,21 @@ class StatsTests(unittest.TestCase):
         self.assertEqual(profile["lower_max_depth"], 1)
         self.assertEqual(profile["max_depth"], 2)
         self.assertEqual(profile["category"], MEDIUM_NESTING_VALID)
+
+    def test_structure_profile_accepts_prebuilt_family_trees(self):
+        seq = [1, 6, 2, 5, 3, 4]
+        trees = build_family_trees(seq)
+        profile = structure_profile(seq, family_trees=trees)
+
+        self.assertTrue(profile["valid"])
+        self.assertEqual(profile["upper_interval_count"], 3)
+        self.assertEqual(profile["lower_interval_count"], 2)
+        self.assertEqual(profile["max_depth"], 2)
+        self.assertEqual(profile["category"], MEDIUM_NESTING_VALID)
+
+    def test_structure_profile_rejects_invalid_family_trees(self):
+        with self.assertRaises(ValueError):
+            structure_profile([1, 6, 2, 5, 3, 4], family_trees={})
 
     def test_low_nesting_is_not_called_flat_when_nesting_exists(self):
         profile = structure_profile([1, 4, 2, 3])

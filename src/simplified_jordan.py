@@ -58,7 +58,11 @@ def simplified_jordan_sort(seq):
         }
     )
 
-    stats = structure_profile(values, oracle_result=oracle_result)
+    stats = structure_profile(
+        values,
+        oracle_result=oracle_result,
+        family_trees=families,
+    )
     trace.append(
         {
             "step": "structure_profile",

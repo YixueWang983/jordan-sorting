@@ -59,7 +59,7 @@ def _classify_valid_profile(nesting_count, total_interval_count, max_depth):
     return NESTED_HEAVY_VALID
 
 
-def structure_profile(seq, oracle_result=None):
+def structure_profile(seq, oracle_result=None, family_trees=None):
     """返回 candidate sequence 的结构统计 profile。"""
     values = list(seq)
     if oracle_result is None:
@@ -68,7 +68,17 @@ def structure_profile(seq, oracle_result=None):
     if not oracle_result["valid"]:
         return _invalid_profile(oracle_result["reason"])
 
-    trees = build_family_trees(values, oracle_result=oracle_result)
+    if family_trees is None:
+        trees = build_family_trees(values, oracle_result=oracle_result)
+    else:
+        if (
+            not isinstance(family_trees, dict)
+            or UPPER not in family_trees
+            or LOWER not in family_trees
+        ):
+            raise ValueError("family_trees must be a dict with upper and lower entries")
+        trees = family_trees
+
     upper_tree = trees[UPPER]
     lower_tree = trees[LOWER]
 
