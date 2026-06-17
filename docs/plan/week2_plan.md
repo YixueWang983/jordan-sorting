@@ -556,12 +556,25 @@ Week 2 is complete if:
 7. `tests/test_simplified_jordan.py` validates skeleton behavior against the oracle.
 8. `docs/progress/week2_summary.md` explains what is design, what is skeleton, and what remains for Week 3.
 
-## Immediate First Step
+## Immediate Next Step
 
-Start with:
+Current task:
 
 ```text
-Week 2 Day 1: Notation + Design Scope
+Week 2 Day 2: Family Tree Data Structures
 ```
 
-Do not start by implementing the full algorithm. First define the words, boundaries, and return contract.
+Implement:
+
+```text
+src/family_tree.py
+tests/test_family_tree.py
+```
+
+Use the fixed contracts:
+
+- `IntervalNode`
+- `FamilyTree`
+- `build_family_intervals(seq, pair_family)`
+- `build_family_tree(intervals, pair_family)`
+- `build_family_trees(seq, oracle_result=None)`
