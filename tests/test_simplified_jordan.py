@@ -52,6 +52,17 @@ class SimplifiedJordanTests(unittest.TestCase):
             },
         )
 
+    def test_reference_skeleton_backend_is_isolated_per_result(self):
+        first = simplified_jordan_sort([1, 6, 2, 5, 3, 4])
+        second = simplified_jordan_sort([1, 6, 2, 5, 3, 4])
+
+        first["backend"]["linear_time_claim"] = True
+
+        self.assertFalse(
+            second["backend"]["linear_time_claim"],
+            "backend dict should be copied per result",
+        )
+
     def test_reference_skeleton_matches_oracle_sorted_output(self):
         cases = [
             [],
