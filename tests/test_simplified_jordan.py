@@ -37,6 +37,18 @@ class SimplifiedJordanTests(unittest.TestCase):
                 "stats",
                 "trace",
                 "implementation",
+                "implementation_stage",
+                "backend",
+            },
+        )
+        self.assertEqual(result["implementation"], "reference_skeleton")
+        self.assertEqual(result["implementation_stage"], "week2_interface_skeleton")
+        self.assertEqual(
+            result["backend"],
+            {
+                "name": "ordinary_list",
+                "uses_oracle_sorted_output": True,
+                "linear_time_claim": False,
             },
         )
 
@@ -78,6 +90,18 @@ class SimplifiedJordanTests(unittest.TestCase):
                 self.assertEqual(result["sorted"], sorted(seq))
                 self.assertEqual(result["stats"]["category"], "invalid")
                 self.assertEqual(result["implementation"], "reference_skeleton")
+                self.assertEqual(
+                    result["implementation_stage"],
+                    "week2_interface_skeleton",
+                )
+                self.assertEqual(
+                    result["backend"],
+                    {
+                        "name": "ordinary_list",
+                        "uses_oracle_sorted_output": True,
+                        "linear_time_claim": False,
+                    },
+                )
 
     def test_reference_skeleton_returns_family_structures(self):
         result = simplified_jordan_sort([1, 6, 2, 5, 3, 4])
@@ -123,7 +147,9 @@ class SimplifiedJordanTests(unittest.TestCase):
                 "oracle",
                 "build_family_trees",
                 "structure_profile",
-                "return_oracle_sorted_output",
+                "prepare_reference_backend",
+                "extract_rank_order",
+                "return_reference_sorted_output",
             ],
         )
 
@@ -150,6 +176,7 @@ class SimplifiedJordanTests(unittest.TestCase):
         self.assertEqual(result["reason"], "duplicate values")
         self.assertIsNone(result["families"])
         self.assertEqual(result["stats"]["reason"], "duplicate values")
+        self.assertEqual(result["oracle"]["reason"], "duplicate values")
 
     def test_reference_skeleton_handles_day2_day3_cases(self):
         cases = [
