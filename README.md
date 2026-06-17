@@ -153,7 +153,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 118 tests
+Ran 120 tests
 OK
 ```
 
@@ -209,7 +209,9 @@ Important project documents:
 - The oracle currently uses an `O(n^2)` pairwise interval crossing check.
 - The baseline CSV stores raw timing rows only; summary statistics and plots are not generated yet.
 - The timing results are preliminary and should not be interpreted as final performance claims.
-- `simplified_jordan_sort(seq)` is currently a reference skeleton; it returns `oracle_result["sorted"]` and does not yet implement real simplified Jordan-sorting operations.
+- `simplified_jordan_sort(seq)` is currently a **reference skeleton**.
+  It returns `oracle_result["sorted"]`, and the current implementation
+  does not yet implement the real simplified Jordan-sorting operations.
 - No level-linked search trees or heterogeneous finger trees are implemented.
 - Visualization is still future work.
 

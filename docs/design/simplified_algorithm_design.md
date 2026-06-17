@@ -108,6 +108,12 @@ The recommended return format is:
     "stats": dict,
     "trace": list,
     "implementation": "reference_skeleton",
+    "implementation_stage": "week2_interface_skeleton",
+    "backend": {
+        "name": "ordinary_list",
+        "uses_oracle_sorted_output": True,
+        "linear_time_claim": False,
+    },
 }
 ```
 
@@ -143,6 +149,26 @@ reference_skeleton
 
 until the implementation is replaced by real simplified sorting operations.
 
+`implementation_stage`
+
+Current value:
+
+```text
+week2_interface_skeleton
+```
+
+`backend`
+
+Current backend metadata:
+
+```python
+{
+    "name": "ordinary_list",
+    "uses_oracle_sorted_output": True,
+    "linear_time_claim": False,
+}
+```
+
 ## Invalid Input Behavior
 
 Invalid inputs should not construct family trees.
@@ -159,6 +185,12 @@ For invalid input, return:
     "stats": structure_profile(values),
     "trace": [...],
     "implementation": "reference_skeleton",
+    "implementation_stage": "week2_interface_skeleton",
+    "backend": {
+        "name": "ordinary_list",
+        "uses_oracle_sorted_output": True,
+        "linear_time_claim": False,
+    },
 }
 ```
 
@@ -206,6 +238,9 @@ The first valid result should have:
 For this week, each family is returned as a serializable dict produced by
 `family_tree_to_dict(...)` (i.e. no dataclass instances are exposed in public
 outputs).
+
+Backend trace steps are recorded only for oracle-valid candidates.
+Invalid candidates stop after `reject_invalid_input`.
 
 ## Relation to the Current Oracle
 
@@ -496,7 +531,9 @@ The first version can use a list of dictionaries:
     {"step": "oracle", "valid": True, "reason": None},
     {"step": "build_family_trees", "upper_nodes": 3, "lower_nodes": 2},
     {"step": "structure_profile", "category": "strict_flat"},
-    {"step": "return_oracle_sorted_output"},
+    {"step": "prepare_reference_backend", "backend": "ordinary_list"},
+    {"step": "extract_rank_order", "backend": "oracle_sorted"},
+    {"step": "return_reference_sorted_output"},
 ]
 ```
 
@@ -587,6 +624,12 @@ def simplified_jordan_sort(seq):
             "stats": stats,
             "trace": trace,
             "implementation": "reference_skeleton",
+            "implementation_stage": "week2_interface_skeleton",
+            "backend": {
+                "name": "ordinary_list",
+                "uses_oracle_sorted_output": True,
+                "linear_time_claim": False,
+            },
         }
 
     families = build_family_trees(values, oracle_result=oracle_result)
@@ -600,7 +643,9 @@ def simplified_jordan_sort(seq):
         "step": "structure_profile",
         "category": stats["category"],
     })
-    trace.append({"step": "return_oracle_sorted_output"})
+    trace.append({"step": "prepare_reference_backend", "backend": "ordinary_list"})
+    trace.append({"step": "extract_rank_order", "backend": "oracle_sorted"})
+    trace.append({"step": "return_reference_sorted_output"})
 
     return {
         "valid": True,
@@ -614,6 +659,12 @@ def simplified_jordan_sort(seq):
         "stats": stats,
         "trace": trace,
         "implementation": "reference_skeleton",
+        "implementation_stage": "week2_interface_skeleton",
+        "backend": {
+            "name": "ordinary_list",
+            "uses_oracle_sorted_output": True,
+            "linear_time_claim": False,
+        },
     }
 ```
 

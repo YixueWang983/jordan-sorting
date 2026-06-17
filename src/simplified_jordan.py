@@ -32,7 +32,7 @@ def _build_result(valid, sorted_result, reason, oracle_result, families, stats, 
         "trace": trace,
         "implementation": IMPLEMENTATION,
         "implementation_stage": IMPLEMENTATION_STAGE,
-        "backend": BACKEND_REFERENCE,
+        "backend": dict(BACKEND_REFERENCE),
     }
 
 
