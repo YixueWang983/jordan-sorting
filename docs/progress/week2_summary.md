@@ -91,7 +91,7 @@ Week 2 的目标是把 Week1 的实验基础设施转成可以承载“简化 Jo
 ## Test Status
 
 ```text
-Ran 129 tests in 0.2s
+Ran 130 tests in 0.2s
 OK
 ```
 

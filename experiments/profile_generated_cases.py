@@ -46,6 +46,7 @@ DEFAULT_SIZES = [8, 16, 32]
 DEFAULT_REPETITIONS = 3
 DEFAULT_SEED = 20260610
 SUMMARY_OUTPUT = "results/generator_structure_profile.csv"
+DEFAULT_CASES_DIR = Path("results/generator_audit_cases")
 
 SUMMARY_FIELDS = [
     "family",
@@ -75,8 +76,8 @@ def csv_value(value):
     return value
 
 
-def _build_case_profiles(families, sizes, repetitions, seed):
-    output_dir = Path("/tmp/jordan-audit-cases")
+def _build_case_profiles(families, sizes, repetitions, seed, cases_dir):
+    output_dir = Path(cases_dir)
     rows = []
     for family in families:
         paths = generate_dataset(
@@ -174,9 +175,16 @@ def profile_and_write(
     sizes,
     repetitions,
     output_csv,
+    cases_dir=DEFAULT_CASES_DIR,
     seed=DEFAULT_SEED,
 ):
-    case_profiles = _build_case_profiles(families, sizes, repetitions, seed)
+    case_profiles = _build_case_profiles(
+        families=families,
+        sizes=sizes,
+        repetitions=repetitions,
+        seed=seed,
+        cases_dir=cases_dir,
+    )
     summary_rows = _normalize_family_category_row(case_profiles)
 
     output_path = Path(output_csv)
@@ -195,6 +203,7 @@ class ProfileExperimentConfig:
     sizes: list[int]
     repetitions: int
     output_csv: Path
+    cases_dir: Path
     seed: int = DEFAULT_SEED
 
 
@@ -231,6 +240,12 @@ def parse_args():
         default=Path(SUMMARY_OUTPUT),
         help=f"output summary CSV, default: {SUMMARY_OUTPUT}",
     )
+    parser.add_argument(
+        "--cases-dir",
+        type=Path,
+        default=DEFAULT_CASES_DIR,
+        help=f"directory for generated audit cases, default: {DEFAULT_CASES_DIR}",
+    )
     return parser.parse_args()
 
 
@@ -241,6 +256,7 @@ def run():
         sizes=args.sizes,
         repetitions=args.repetitions,
         output_csv=args.output_csv,
+        cases_dir=args.cases_dir,
         seed=args.seed,
     )
     if config.repetitions < 1:
@@ -251,6 +267,7 @@ def run():
         sizes=config.sizes,
         repetitions=config.repetitions,
         output_csv=config.output_csv,
+        cases_dir=config.cases_dir,
         seed=config.seed,
     )
     print(f"wrote {len(rows)} summary rows to {config.output_csv}")

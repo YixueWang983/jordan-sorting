@@ -33,6 +33,15 @@ same source raw CSV.
 distribute across structural categories and invalid reasons. This file is also
 intentionally not committed by default.
 
+By default, generated audit cases are written to:
+
+```text
+results/generator_audit_cases
+```
+
+This case directory is kept for reproducibility and can be changed via
+`--cases-dir`.
+
 ## Reproduction Commands
 
 Run the smoke experiment:
@@ -54,7 +63,8 @@ python experiments/profile_generated_cases.py \
   --families flat_valid nested_valid incremental_valid invalid_upper_crossing invalid_lower_crossing random_invalid mutation_based_invalid \
   --sizes 8 16 32 \
   --repetitions 3 \
-  --output-csv results/generator_structure_profile.csv
+  --output-csv results/generator_structure_profile.csv \
+  --cases-dir results/generator_audit_cases
 ```
 
 ## Full Experiment Configuration

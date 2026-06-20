@@ -89,6 +89,25 @@ class ExperimentScriptsTests(unittest.TestCase):
             self.assertEqual(csv_rows[0]["n"], "8")
             self.assertEqual(int(csv_rows[0]["total_cases"]), 2)
 
+    def test_profile_and_write_accepts_custom_cases_dir(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            out_csv = Path(tmpdir) / "generator_structure_profile.csv"
+            cases_dir = Path(tmpdir) / "case_audit"
+
+            rows = profile_and_write(
+                families=["flat_valid"],
+                sizes=[8],
+                repetitions=1,
+                output_csv=out_csv,
+                cases_dir=cases_dir,
+                seed=11,
+            )
+
+            self.assertEqual(len(rows), 1)
+            self.assertTrue(out_csv.exists())
+            self.assertTrue(cases_dir.exists())
+            self.assertTrue(cases_dir.is_dir())
+
     def test_profile_distribution_normalization(self):
         rows = [
             {
