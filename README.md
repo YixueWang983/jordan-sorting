@@ -76,6 +76,9 @@ results/
   week1_baseline_results.csv
   week1_baseline_smoke_results.csv
   README.md
+  # generated via scripts (reproducible, not committed by default):
+  #   - week1_baseline_summary.csv
+  #   - generator_structure_profile.csv
 
 docs/
   README.md
