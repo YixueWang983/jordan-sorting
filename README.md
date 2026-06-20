@@ -153,7 +153,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 128 tests
+Ran 129 tests
 OK
 ```
 
