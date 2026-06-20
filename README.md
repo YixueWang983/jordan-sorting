@@ -6,9 +6,7 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
-Week 1 is complete.
-
-Week 2 Day 1 is complete.
+Week 1, Week 2, and Week 3 are complete.
 
 The repository now contains the first reproducible experimental loop:
 
@@ -43,6 +41,13 @@ Week 2 Day 5 is now complete: `simplified_jordan_sort(seq)` in [src/simplified_j
 - records an execution trace,
 - marks invalid candidates without raising,
 - and clearly sets `implementation` to `"reference_skeleton"`.
+
+Week 3 is now complete, with:
+
+- `family_tree_to_debug_lines(tree)` helper and structural examples,
+- optional structural columns in `run_small_tests.py` (`--with-structure`),
+- experimental summary/audit scripts for structural coverage,
+- and stable documented scope boundaries for the reference skeleton.
 
 ## Project Structure
 
@@ -156,6 +161,9 @@ Current status:
 Ran 131 tests
 OK
 ```
+
+Note: a full Week 3 run is reproducible from the current scripts; all generated
+artifact outputs are committed only when explicitly tracked.
 
 ## Running Week 1 Experiments
 

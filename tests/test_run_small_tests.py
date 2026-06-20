@@ -184,6 +184,7 @@ class RunSmallTestsRunnerTests(unittest.TestCase):
             temp_path = Path(temp_dir)
             output_csv = temp_path / "smoke_results.csv"
             structure_csv = temp_path / "smoke_results_structural.csv"
+            structure_base_output = temp_path / "smoke_results_auto_structural.csv"
             config = replace(
                 SMOKE_CONFIG,
                 cases_dir=temp_path / "cases",
@@ -223,6 +224,35 @@ class RunSmallTestsRunnerTests(unittest.TestCase):
                 for field in STRUCTURAL_FIELDS:
                     self.assertIn(field, structure_reader.fieldnames)
 
+            self.assertFalse(structure_base_output.exists())
 
-if __name__ == "__main__":
-    unittest.main()
+            with patch.object(run_small_tests, "SMOKE_CONFIG", config):
+                with patch(
+                    "sys.argv",
+                    [
+                        "run_small_tests.py",
+                        "--smoke",
+                        "--with-structure",
+                        "--output-csv",
+                        str(structure_base_output),
+                    ],
+                ):
+                    with redirect_stdout(io.StringIO()):
+                        run_small_tests.main()
+
+            automatic_structure_csv = Path(
+                str(structure_base_output).replace(".csv", "_with_structure_fields.csv")
+            )
+
+            self.assertTrue(automatic_structure_csv.exists())
+
+            with automatic_structure_csv.open(newline="", encoding="utf-8") as file:
+                structure_reader = csv.DictReader(file)
+                for field in STRUCTURAL_FIELDS:
+                    self.assertIn(field, structure_reader.fieldnames)
+
+            self.assertFalse(structure_base_output.exists())
+
+
+    if __name__ == "__main__":
+        unittest.main()

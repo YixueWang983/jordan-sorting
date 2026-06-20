@@ -174,6 +174,21 @@ def _result_fields(include_structure: bool):
     return fields
 
 
+def _resolve_structural_output_csv(
+    base_output_csv: Path | None,
+    explicit_output_csv: Path | None,
+):
+    """Resolve structural output path for `--with-structure`.
+
+    Keep structural outputs separate from base-mode outputs by default.
+    """
+    if explicit_output_csv is not None:
+        return explicit_output_csv
+    if base_output_csv is None:
+        return None
+    return Path(str(base_output_csv).replace(".csv", "_with_structure_fields.csv"))
+
+
 def run_algorithm_once(algorithm_name, sequence, oracle_sorted):
     """运行一次 baseline，并返回 timing、correctness 和 error 信息。"""
     try:
@@ -391,7 +406,10 @@ def main():
     csv_path = args.output_csv if args.output_csv else None
 
     if args.with_structure:
-        output_csv = args.structural_output_csv or csv_path
+        output_csv = _resolve_structural_output_csv(
+            base_output_csv=csv_path or config.output_csv,
+            explicit_output_csv=args.structural_output_csv,
+        )
         rows = run_experiment(
             config,
             include_structure=True,

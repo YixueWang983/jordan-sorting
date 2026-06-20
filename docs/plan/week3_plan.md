@@ -168,6 +168,7 @@ Main output:
 
 - `experiments/summarize_results.py` (or `experiments/` helper)
 - `results/week1_baseline_summary.csv`
+  - reproducible generated output (not committed by default unless explicitly tracked)
 
 Recommended work:
 
@@ -190,6 +191,7 @@ Main output:
 
 - `experiments/profile_generated_cases.py` (or dedicated script)
 - `results/generator_structure_profile.csv`
+  - reproducible generated output (not committed by default unless explicitly tracked)
 
 Recommended work:
 
