@@ -2,6 +2,7 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+# results/ generated artifacts are intentionally ignored except explicitly tracked small files.
 results/*
 !results/README.md
 !results/week1_baseline_results.csv

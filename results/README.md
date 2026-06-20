@@ -2,6 +2,9 @@
 
 This folder stores selected experiment outputs that are useful to keep in the repository.
 
+**Result policy:** keep only fixed small artifacts under version control by default;
+large/reproducible outputs are generated on demand and intentionally ignored by git.
+
 Most generated result files are ignored by Git because they can be reproduced.
 The Week 1 baseline CSV files are small and are committed so the first experimental
 loop is visible from GitHub.
