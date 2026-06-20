@@ -292,7 +292,7 @@ python experiments/run_small_tests.py
 - The current `flat_valid` family is a canonical flat construction, not a sampler over all flat instances.
 - The current `nested_valid` family is a construction family; structural depth should be measured after generation.
 - The `incremental_valid` generator is oracle-certified but not uniform over all valid Jordan sequences.
-- The baseline CSV stores raw timing rows only; no summary statistics or plots are generated yet.
+- The baseline summary CSV is available via `experiments/summarize_results.py` and stores aggregated timing rows.
 - The timing results are preliminary and should not be interpreted as final performance claims.
 - No simplified Jordan-sorting implementation exists yet.
 - No level-linked search trees or heterogeneous finger trees are implemented.
@@ -308,7 +308,7 @@ Completed cleanup items:
 
 Optional follow-up cleanup:
 
-- Generate a baseline summary CSV with min, median, and mean timing values.
+- Generate a baseline summary CSV with min, median, and mean timing values (implemented, reproducible; not committed by default).
 - Add a lightweight interval visualization script for small examples.
 
 ## Next Steps
