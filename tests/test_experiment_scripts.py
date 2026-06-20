@@ -1,6 +1,8 @@
 """Tests for experiment helper scripts."""
 
 import sys
+import tempfile
+import csv
 from pathlib import Path
 import unittest
 
@@ -9,7 +11,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from experiments.profile_generated_cases import _normalize_family_category_row
-from experiments.summarize_results import _median, summarize
+from experiments.summarize_results import _median, summarize, write_summary
 
 
 class ExperimentScriptsTests(unittest.TestCase):
@@ -35,6 +37,34 @@ class ExperimentScriptsTests(unittest.TestCase):
         self.assertEqual(summary_rows[0]["median_time_ns"], 300)
         self.assertEqual(summary_rows[0]["mean_time_ns"], 300.0)
         self.assertTrue(summary_rows[0]["all_correct"])
+
+    def test_write_summary_outputs_csv(self):
+        summary_rows = [
+            {
+                "algorithm": "python_sort",
+                "family": "flat_valid",
+                "n": 8,
+                "run_count": 3,
+                "min_time_ns": 100,
+                "median_time_ns": 300,
+                "mean_time_ns": 300.0,
+                "max_time_ns": 500,
+                "all_correct": True,
+            }
+        ]
+        with tempfile.TemporaryDirectory() as tmpdir:
+            out_csv = Path(tmpdir) / "week1_baseline_summary.csv"
+            write_summary(summary_rows, out_csv)
+
+            with out_csv.open(newline="", encoding="utf-8") as handle:
+                rows = list(csv.DictReader(handle))
+
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["algorithm"], "python_sort")
+            self.assertEqual(rows[0]["family"], "flat_valid")
+            self.assertEqual(rows[0]["n"], "8")
+            self.assertEqual(rows[0]["run_count"], "3")
+            self.assertEqual(rows[0]["all_correct"], "True")
 
     def test_profile_distribution_normalization(self):
         rows = [

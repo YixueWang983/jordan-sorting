@@ -9,11 +9,16 @@ Most generated result files are ignored by Git because they can be reproduced. T
 ```text
 week1_baseline_results.csv
 week1_baseline_smoke_results.csv
+week1_baseline_summary.csv
 ```
 
 `week1_baseline_results.csv` is the full Week 1 baseline experiment output.
 
 `week1_baseline_smoke_results.csv` is a minimal smoke-test output used to confirm that the experiment runner works end to end.
+
+`week1_baseline_summary.csv` is generated from `week1_baseline_results.csv` via
+`experiments/summarize_results.py` and contains one row per
+`(algorithm, family, n)` combination with run count and timing aggregates.
 
 ## Reproduction Commands
 
@@ -61,6 +66,14 @@ This gives:
 
 ```text
 7 families x 7 sizes x 3 cases x 4 algorithms x 5 timing runs = 2940 raw timing rows
+```
+
+Summary command:
+
+```bash
+python experiments/summarize_results.py \
+  --input-csv results/week1_baseline_results.csv \
+  --output-csv results/week1_baseline_summary.csv
 ```
 
 ## CSV Schema
@@ -125,6 +138,20 @@ Whether the algorithm's sorted output matched `oracle["sorted"]`. This is a sort
 
 `error`  
 Empty for successful runs. If an algorithm raises an exception, this field stores the exception type and message.
+
+### Summary schema (generated file)
+
+```text
+algorithm
+family
+n
+run_count
+min_time_ns
+median_time_ns
+mean_time_ns
+max_time_ns
+all_correct
+```
 
 ## Important Note
 
