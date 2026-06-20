@@ -567,13 +567,14 @@ Week 2 is complete if:
 Current task:
 
 ```text
-Week 2 Day 6: Tests + Documentation Pass (final consistency pass)
+Week 3 Day 1: Reference Pipeline Strengthening
 ```
 
 Expected outputs:
 
 ```text
-No new artifact yet; keep Week2 Day7 summary for next step.
+No new Week 2 artifact.
+Use docs/progress/week2_summary.md as the completed handoff.
 ```
 
 Focus on:

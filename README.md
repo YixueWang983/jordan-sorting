@@ -219,9 +219,9 @@ Important project documents:
 
 Immediate next task:
 
-- finish Week 2 Day 6 by running the full test suite, checking documentation/code consistency, and doing final Day5/Day6 cleanup before writing:
+- start Week 3 (reference pipeline strengthening) by following:
 
-  - [docs/progress/week2_summary.md](docs/progress/week2_summary.md)
+  - [docs/plan/week3_plan.md](docs/plan/week3_plan.md)
 
 Later cleanup:
 

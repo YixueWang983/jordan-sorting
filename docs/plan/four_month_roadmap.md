@@ -504,8 +504,8 @@ Mitigation:
 Current task:
 
 ```text
-Finish Week 2 Day 6: finalize contract consistency checks (tests + docs/code alignment),
-then prepare for Week 2 Day 7 documentation closure.
+Finish Week 2 Day 7 (`docs/progress/week2_summary.md`) and start Week 3 Day 1
+reference pipeline strengthening.
 ```
 
 Week 3 reference pipeline should follow the fixed Day 1 contract:
