@@ -2,7 +2,9 @@
 
 This folder stores selected experiment outputs that are useful to keep in the repository.
 
-Most generated result files are ignored by Git because they can be reproduced. The Week 1 baseline CSV files are small and are committed so the first experimental loop is visible from GitHub.
+Most generated result files are ignored by Git because they can be reproduced. The
+Week 1 baseline CSV files are small and are committed so the first experimental
+loop is visible from GitHub.
 
 ## Files
 
@@ -18,7 +20,9 @@ week1_baseline_summary.csv
 
 `week1_baseline_summary.csv` is generated from `week1_baseline_results.csv` via
 `experiments/summarize_results.py` and contains one row per
-`(algorithm, family, n)` combination with run count and timing aggregates.
+`(algorithm, family, n)` combination with run count and timing aggregates. This
+file is typically generated on demand and may be regenerated for the same
+source raw CSV.
 
 ## Reproduction Commands
 
