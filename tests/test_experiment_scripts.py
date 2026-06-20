@@ -1,8 +1,8 @@
 """Tests for experiment helper scripts."""
 
 import sys
-import tempfile
 import csv
+import tempfile
 from pathlib import Path
 import unittest
 
@@ -11,6 +11,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from experiments.profile_generated_cases import _normalize_family_category_row
+from experiments.profile_generated_cases import profile_and_write
 from experiments.summarize_results import _median, summarize, write_summary
 
 
@@ -65,6 +66,28 @@ class ExperimentScriptsTests(unittest.TestCase):
             self.assertEqual(rows[0]["n"], "8")
             self.assertEqual(rows[0]["run_count"], "3")
             self.assertEqual(rows[0]["all_correct"], "True")
+
+    def test_profile_and_write_outputs_csv(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            out_csv = Path(tmpdir) / "generator_structure_profile.csv"
+            rows = profile_and_write(
+                families=["flat_valid"],
+                sizes=[8],
+                repetitions=2,
+                output_csv=out_csv,
+                seed=11,
+            )
+
+            self.assertEqual(len(rows), 1)
+            self.assertTrue(out_csv.exists())
+
+            with out_csv.open(newline="", encoding="utf-8") as handle:
+                csv_rows = list(csv.DictReader(handle))
+
+            self.assertEqual(len(csv_rows), 1)
+            self.assertEqual(csv_rows[0]["family"], "flat_valid")
+            self.assertEqual(csv_rows[0]["n"], "8")
+            self.assertEqual(int(csv_rows[0]["total_cases"]), 2)
 
     def test_profile_distribution_normalization(self):
         rows = [

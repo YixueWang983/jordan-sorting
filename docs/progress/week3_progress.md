@@ -51,3 +51,10 @@ Last updated: 2026-06-20
   对 `run_experiment`/`make_result_rows`/`write_csv` 做轻量扩展，
   默认行为不变；结构字段通过独立文件名输出：
   `week1_baseline_results_with_structure_fields.csv`（或 CLI 指定路径）。
+
+## Day 6: Dataset Structural Audit
+
+- 已执行结构审计脚本 `experiments/profile_generated_cases.py`，
+  生成 `results/generator_structure_profile.csv`，用于汇总每个家族和不同长度下：
+  - 结构类别分布（strict/low/medium/nested heavy/invalid）；
+  - invalid 原因分布（重复、upper crossing、lower crossing、上/下都 crossing）。
