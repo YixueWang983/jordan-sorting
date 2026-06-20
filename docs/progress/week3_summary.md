@@ -31,7 +31,7 @@ Last updated: 2026-06-20
 
 ## What has been proven safe and tested
 
-- 127 tests pass after Week 3 implementation additions.
+- 129 tests pass after Week 3 implementation additions.
 - New tests cover:
   - debug dump utility;
   - structural examples support in docs;
@@ -54,3 +54,12 @@ Last updated: 2026-06-20
   - structural profiles (`src/stats.py`),
   - stable result/trace shape (`src/simplified_jordan.py`).
 
+## Day 7 completion record
+
+- `docs/progress/week3_summary.md` created as the Week 3 wrap-up artifact.
+- `Week3 Day7` closes the week with:
+  - stabilized Week 3 contracts,
+  - debug and structural documentation support,
+  - experiment structural summary tooling,
+  - baseline summary utility.
+- Next step is Week 4 planning and implementation.
