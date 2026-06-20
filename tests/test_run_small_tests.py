@@ -1,11 +1,16 @@
 """Week 1 baseline 实验 runner 的单元测试。"""
 
 import csv
+from unittest.mock import patch
 import sys
 import tempfile
 import unittest
+import io
 from dataclasses import replace
 from pathlib import Path
+from contextlib import redirect_stdout
+
+from experiments import run_small_tests
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -13,7 +18,9 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from experiments.run_small_tests import (  # noqa: E402
     FLAT_VALID,
+    CSV_FIELDS,
     SMOKE_CONFIG,
+    STRUCTURAL_FIELDS,
     expected_row_count,
     extract_sorted_output,
     run_algorithm_once,
@@ -171,6 +178,50 @@ class RunSmallTestsRunnerTests(unittest.TestCase):
             self.assertEqual(csv_rows[0]["error"], "")
             self.assertEqual(csv_rows[0]["category"], "strict_flat")
             self.assertEqual(csv_rows[0]["upper_root_count"], "4")
+
+    def test_smoke_cli_structure_flag_controls_output_columns(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            output_csv = temp_path / "smoke_results.csv"
+            structure_csv = temp_path / "smoke_results_structural.csv"
+            config = replace(
+                SMOKE_CONFIG,
+                cases_dir=temp_path / "cases",
+                output_csv=output_csv,
+            )
+
+            with patch.object(run_small_tests, "SMOKE_CONFIG", config):
+                with patch("sys.argv", ["run_small_tests.py", "--smoke", "--output-csv", str(output_csv)]):
+                    with redirect_stdout(io.StringIO()):
+                        run_small_tests.main()
+
+            with output_csv.open(newline="", encoding="utf-8") as file:
+                base_reader = csv.DictReader(file)
+                self.assertEqual(base_reader.fieldnames, CSV_FIELDS)
+
+                base_row = next(base_reader)
+                self.assertNotIn("upper_interval_count", base_row)
+
+            with patch.object(run_small_tests, "SMOKE_CONFIG", config):
+                with patch(
+                    "sys.argv",
+                    [
+                        "run_small_tests.py",
+                        "--smoke",
+                        "--with-structure",
+                        "--output-csv",
+                        str(output_csv),
+                        "--structural-output-csv",
+                        str(structure_csv),
+                    ],
+                ):
+                    with redirect_stdout(io.StringIO()):
+                        run_small_tests.main()
+
+            with structure_csv.open(newline="", encoding="utf-8") as file:
+                structure_reader = csv.DictReader(file)
+                for field in STRUCTURAL_FIELDS:
+                    self.assertIn(field, structure_reader.fieldnames)
 
 
 if __name__ == "__main__":

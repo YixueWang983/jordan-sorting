@@ -36,7 +36,7 @@ Last updated: 2026-06-20
 
 ## What has been proven safe and tested
 
-- 130 tests pass after Week 3 implementation additions.
+- 131 tests pass after Week 3 implementation additions.
 - New tests cover:
   - debug dump utility;
   - structural examples support in docs;
