@@ -27,7 +27,7 @@ Implemented so far:
 
 The full Week 1 summary is in [docs/progress/week1_summary.md](docs/progress/week1_summary.md).
 
-Week 2 has started the simplified-reference phase:
+Week 2 completed the simplified-reference phase:
 
 - [docs/design/notation.md](docs/design/notation.md) defines candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and split terminology.
 - [docs/design/simplified_algorithm_design.md](docs/design/simplified_algorithm_design.md) defines the reference-skeleton scope, API contract, invalid-input behavior, family-tree representation, structural stats contract, trace format, error policy, and non-claims.

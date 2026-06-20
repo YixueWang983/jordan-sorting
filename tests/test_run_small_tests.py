@@ -254,5 +254,6 @@ class RunSmallTestsRunnerTests(unittest.TestCase):
             self.assertFalse(structure_base_output.exists())
 
 
-    if __name__ == "__main__":
-        unittest.main()
+
+if __name__ == "__main__":
+    unittest.main()
