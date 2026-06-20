@@ -217,3 +217,21 @@ def family_tree_to_dict(tree):
         "nodes": [node_to_dict(node) for node in tree.nodes],
         "roots": list(tree.roots),
     }
+
+
+def family_tree_to_debug_lines(tree):
+    """将 family tree 转换为可读的缩进行列表，用于调试/文档示例。"""
+
+    lines = []
+
+    def visit(node_id, depth):
+        node = tree.nodes[node_id]
+        indent = "  " * depth
+        lines.append(f"{indent}[{node.interval[0]}, {node.interval[1]}]")
+        for child_id in node.children:
+            visit(child_id, depth + 1)
+
+    for root_id in tree.roots:
+        visit(root_id, 0)
+
+    return lines

@@ -29,6 +29,7 @@ from generators import (  # noqa: E402
     generate_dataset,
     load_test_case,
 )
+from stats import structure_profile
 
 
 CSV_FIELDS = [
@@ -46,6 +47,18 @@ CSV_FIELDS = [
     "time_ns",
     "sorted_correct",
     "error",
+]
+
+STRUCTURAL_FIELDS = [
+    "upper_interval_count",
+    "lower_interval_count",
+    "total_interval_count",
+    "upper_root_count",
+    "lower_root_count",
+    "nesting_count",
+    "nesting_density",
+    "max_depth",
+    "category",
 ]
 
 
@@ -154,6 +167,13 @@ def extract_sorted_output(algorithm_name, result):
     return result
 
 
+def _result_fields(include_structure: bool):
+    fields = list(CSV_FIELDS)
+    if include_structure:
+        fields.extend(STRUCTURAL_FIELDS)
+    return fields
+
+
 def run_algorithm_once(algorithm_name, sequence, oracle_sorted):
     """运行一次 baseline，并返回 timing、correctness 和 error 信息。"""
     try:
@@ -172,7 +192,7 @@ def run_algorithm_once(algorithm_name, sequence, oracle_sorted):
         }
 
 
-def make_result_rows(config):
+def make_result_rows(config, include_structure=False):
     """生成 case、运行 baseline，并返回 raw CSV rows。"""
     rows = []
     case_paths = generate_case_paths(config)
@@ -182,6 +202,11 @@ def make_result_rows(config):
         oracle_result = case["oracle"]
         sequence = case["sequence"]
         oracle_sorted = oracle_result["sorted"]
+        profile = (
+            structure_profile(sequence, oracle_result=oracle_result)
+            if include_structure
+            else None
+        )
 
         for algorithm_name in config.algorithms:
             for run_index in range(1, config.timing_runs + 1):
@@ -191,33 +216,48 @@ def make_result_rows(config):
                     oracle_sorted=oracle_sorted,
                 )
 
-                rows.append(
-                    {
-                        "case_id": case["id"],
-                        "family": case["family"],
-                        "n": case["n"],
-                        "seed": csv_value(case["seed"]),
-                        "oracle_valid": oracle_result["valid"],
-                        "oracle_reason": csv_value(oracle_result["reason"]),
-                        "distinct_values": oracle_result["distinct_values"],
-                        "upper_ok": csv_value(oracle_result["upper_ok"]),
-                        "lower_ok": csv_value(oracle_result["lower_ok"]),
-                        "algorithm": algorithm_name,
-                        "run_index": run_index,
-                        "time_ns": run_result["time_ns"],
-                        "sorted_correct": run_result["sorted_correct"],
-                        "error": run_result["error"],
-                    }
-                )
+                row = {
+                    "case_id": case["id"],
+                    "family": case["family"],
+                    "n": case["n"],
+                    "seed": csv_value(case["seed"]),
+                    "oracle_valid": oracle_result["valid"],
+                    "oracle_reason": csv_value(oracle_result["reason"]),
+                    "distinct_values": oracle_result["distinct_values"],
+                    "upper_ok": csv_value(oracle_result["upper_ok"]),
+                    "lower_ok": csv_value(oracle_result["lower_ok"]),
+                    "algorithm": algorithm_name,
+                    "run_index": run_index,
+                    "time_ns": run_result["time_ns"],
+                    "sorted_correct": run_result["sorted_correct"],
+                    "error": run_result["error"],
+                }
+
+                if include_structure and profile is not None:
+                    row.update(
+                        {
+                            "upper_interval_count": profile["upper_interval_count"],
+                            "lower_interval_count": profile["lower_interval_count"],
+                            "total_interval_count": profile["total_interval_count"],
+                            "upper_root_count": profile["upper_root_count"],
+                            "lower_root_count": profile["lower_root_count"],
+                            "nesting_count": profile["nesting_count"],
+                            "nesting_density": profile["nesting_density"],
+                            "max_depth": profile["max_depth"],
+                            "category": profile["category"],
+                        }
+                    )
+
+                rows.append(row)
 
     return rows
 
 
-def write_csv(rows, output_csv):
+def write_csv(rows, output_csv, include_structure=False):
     """把实验结果写入 CSV。"""
     output_csv.parent.mkdir(parents=True, exist_ok=True)
     with output_csv.open("w", newline="", encoding="utf-8") as file:
-        writer = csv.DictWriter(file, fieldnames=CSV_FIELDS)
+        writer = csv.DictWriter(file, fieldnames=_result_fields(include_structure))
         writer.writeheader()
         writer.writerows(rows)
 
@@ -290,10 +330,22 @@ def expected_row_count(config):
     )
 
 
-def run_experiment(config):
+def run_experiment(config, include_structure=False, output_csv=None):
     """运行一次实验配置，写 CSV，并返回所有结果行。"""
-    rows = make_result_rows(config)
-    write_csv(rows, config.output_csv)
+    csv_path = (
+        output_csv
+        if output_csv is not None
+        else config.output_csv
+        if not include_structure
+        else Path(
+            str(config.output_csv).replace(
+                ".csv", "_with_structure_fields.csv",
+            )
+        )
+    )
+
+    rows = make_result_rows(config, include_structure=include_structure)
+    write_csv(rows, csv_path, include_structure=include_structure)
     validate_rows(rows)
     validate_coverage(rows, config)
 
@@ -312,6 +364,23 @@ def parse_args():
         action="store_true",
         help="run the minimal smoke-test configuration",
     )
+    parser.add_argument(
+        "--with-structure",
+        action="store_true",
+        help="include structure_profile columns in output",
+    )
+    parser.add_argument(
+        "--output-csv",
+        type=Path,
+        default=None,
+        help="override output CSV path (base mode)",
+    )
+    parser.add_argument(
+        "--structural-output-csv",
+        type=Path,
+        default=None,
+        help="override output CSV path for structural mode",
+    )
     return parser.parse_args()
 
 
@@ -319,9 +388,32 @@ def main():
     """命令行入口。"""
     args = parse_args()
     config = SMOKE_CONFIG if args.smoke else FULL_CONFIG
-    rows = run_experiment(config)
+    csv_path = args.output_csv if args.output_csv else None
+
+    if args.with_structure:
+        output_csv = args.structural_output_csv or csv_path
+        rows = run_experiment(
+            config,
+            include_structure=True,
+            output_csv=output_csv,
+        )
+        output = (
+            output_csv
+            if output_csv is not None
+            else Path(str(config.output_csv).replace(".csv", "_with_structure_fields.csv"))
+        )
+    else:
+        rows = run_experiment(config, output_csv=csv_path)
+        output = csv_path or config.output_csv
+
+    output_path = str(output)
+    try:
+        output_path = str(output.relative_to(PROJECT_ROOT))
+    except ValueError:
+        pass
+
     print(
-        f"wrote {len(rows)} rows to {config.output_csv.relative_to(PROJECT_ROOT)}"
+        f"wrote {len(rows)} rows to {output_path}"
     )
 
 

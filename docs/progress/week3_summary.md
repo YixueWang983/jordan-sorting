@@ -1,0 +1,56 @@
+# Week 3 Summary
+
+Last updated: 2026-06-20
+
+## What is stabilized in Week 3
+
+- Contract/trace stability for the reference skeleton is fixed in
+  `src/simplified_jordan.py`:
+  - top-level result keys are fixed;
+  - trace step sequence is fixed and explicit;
+  - `implementation`, `implementation_stage`, and `backend` metadata are included;
+  - backend metadata is per-result copied via `dict(...)`.
+- Family-tree inspection helper is added:
+  - `family_tree_to_debug_lines(tree)` in `src/family_tree.py`;
+  - deterministic textual dump used for inspection/debug.
+- Structural documentation examples are added:
+  - `docs/design/structural_examples.md` (flat / nested / invalid crossing).
+- Dataset/experiment tooling expansion (Week 3 support):
+  - `experiments/profile_generated_cases.py` produces structural distribution summary of generated families;
+  - `experiments/summarize_results.py` creates aggregated timing summaries from baseline raw CSV;
+  - `experiments/run_small_tests.py` supports optional structural columns via `--with-structure`.
+
+## What is still scaffold/skeleton
+
+- `simplified_jordan_sort()` is still a **reference skeleton**:
+  - it delegates sorting to `oracle_result["sorted"]`,
+  - it validates by family trees and emits stats,
+  - it is not yet the core Jordan-sorting operation from the paper.
+- `run_small_tests.py` structural output is optional and intentionally not yet default.
+- No large visualization or interactive rendering pipeline has been added in Week 3.
+
+## What has been proven safe and tested
+
+- 127 tests pass after Week 3 implementation additions.
+- New tests cover:
+  - debug dump utility;
+  - structural examples support in docs;
+  - structural summary script helpers;
+  - structural experiment columns in the runner.
+- Existing `run_small_tests` smoke/full behavior remains backward compatible without `--with-structure`.
+
+## What is not yet done
+
+- No full linear-time Jordan-sorting algorithm is implemented yet.
+- No level-linked search tree / finger tree engine is implemented.
+- No dynamic-tree update engine is yet integrated.
+- No large-scale plotting or charting pipeline is in place.
+
+## Week 4 handoff
+
+- Keep the current `simplified_jordan_sort` contract as the API boundary.
+- Continue by implementing algorithm-facing operations on top of:
+  - family trees (`src/family_tree.py`),
+  - structural profiles (`src/stats.py`),
+  - stable result/trace shape (`src/simplified_jordan.py`).
+

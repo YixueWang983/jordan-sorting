@@ -153,7 +153,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 121 tests
+Ran 127 tests
 OK
 ```
 
@@ -202,6 +202,9 @@ Important project documents:
 - [docs/design/notation.md](docs/design/notation.md): reusable terminology for candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and structural categories.
 - [docs/design/simplified_algorithm_design.md](docs/design/simplified_algorithm_design.md): Week 2 reference-skeleton design, including API contract, family-tree representation, stats contract, trace format, and error policy.
 - [docs/progress/week2_summary.md](docs/progress/week2_summary.md): Week 2 completion summary, limitations, and Week 3 handoff.
+- [docs/progress/week3_progress.md](docs/progress/week3_progress.md): Week 3 execution notes (contract audit, debug helper, script scaffolding).
+- [docs/progress/week3_summary.md](docs/progress/week3_summary.md): Week 3 completion summary and Week 4 handoff.
+- [docs/design/structural_examples.md](docs/design/structural_examples.md): concrete structural examples for papers and debugging.
 - [docs/backlog/future_work_todo.md](docs/backlog/future_work_todo.md): follow-up ideas that should not block the Week 1 loop.
 - [docs/plan/four_month_roadmap.md](docs/plan/four_month_roadmap.md): compressed 3-4 month thesis execution plan.
 - [docs/plan/week3_plan.md](docs/plan/week3_plan.md): Week 3 plan for reference pipeline strengthening and experimental support expansion.
@@ -209,7 +212,7 @@ Important project documents:
 ## Known Limitations
 
 - The oracle currently uses an `O(n^2)` pairwise interval crossing check.
-- The baseline CSV stores raw timing rows only; summary statistics and plots are not generated yet.
+- Timing results support raw baseline rows; additional structure summaries are now also available.
 - The timing results are preliminary and should not be interpreted as final performance claims.
 - `simplified_jordan_sort(seq)` is currently a **reference skeleton**.
   It returns `oracle_result["sorted"]`, and the current implementation
@@ -221,9 +224,10 @@ Important project documents:
 
 Immediate next task:
 
-- start Week 3 (reference pipeline strengthening) by following:
+- start Week 4 by building algorithm-facing operations on top of the stabilized Week 2/3 contracts:
 
-  - [docs/plan/week3_plan.md](docs/plan/week3_plan.md)
+  - [docs/plan/four_month_roadmap.md](docs/plan/four_month_roadmap.md)
+  - [docs/progress/week3_summary.md](docs/progress/week3_summary.md)
 
 Later cleanup:
 

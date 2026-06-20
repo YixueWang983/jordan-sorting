@@ -145,6 +145,33 @@ class RunSmallTestsRunnerTests(unittest.TestCase):
             self.assertEqual(csv_rows[0]["sorted_correct"], "True")
             self.assertEqual(csv_rows[0]["error"], "")
 
+    def test_smoke_experiment_with_structure_fields(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            config = replace(
+                SMOKE_CONFIG,
+                cases_dir=temp_path / "cases",
+                output_csv=temp_path / "week1_baseline_smoke_results.csv",
+            )
+            output_csv = temp_path / "week1_baseline_smoke_structural.csv"
+
+            rows = run_experiment(
+                config,
+                include_structure=True,
+                output_csv=output_csv,
+            )
+
+            self.assertEqual(len(rows), 1)
+            self.assertTrue(output_csv.exists())
+
+            with output_csv.open(newline="", encoding="utf-8") as file:
+                csv_rows = list(csv.DictReader(file))
+
+            self.assertEqual(csv_rows[0]["algorithm"], "python_sort")
+            self.assertEqual(csv_rows[0]["error"], "")
+            self.assertEqual(csv_rows[0]["category"], "strict_flat")
+            self.assertEqual(csv_rows[0]["upper_root_count"], "4")
+
 
 if __name__ == "__main__":
     unittest.main()

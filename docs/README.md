@@ -23,6 +23,9 @@ Current files:
 - `simplified_algorithm_design.md`  
   Design document for the simplified Jordan-sorting reference implementation.
 
+- `structural_examples.md`  
+  Concrete flat / nested / invalid structural examples used for debug and thesis drafts.
+
 ## Progress Documents
 
 Path:
@@ -43,6 +46,12 @@ Current files:
 
 - `week2_summary.md`  
   Week 2 completion summary, including design/skeleton boundary and Week3 handoff.
+
+- `week3_progress.md`  
+  Week 3 execution note log for contract audit and debug utility rollout.
+
+- `week3_summary.md`  
+  Week 3 completion summary and Week 4 handoff.
 
 ## Plan Documents
 

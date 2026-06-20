@@ -15,6 +15,7 @@ from family_tree import (  # noqa: E402
     build_family_tree,
     build_family_trees,
     family_tree_to_dict,
+    family_tree_to_debug_lines,
     interval_contains,
     proper_interval_contains,
 )
@@ -179,6 +180,30 @@ class FamilyTreeTests(unittest.TestCase):
                     "children": [],
                     "depth": 1,
                 },
+            ],
+        )
+
+    def test_family_tree_to_debug_lines_nested_tree(self):
+        tree = build_family_tree([(1, 6), (2, 5), (3, 4)], UPPER)
+
+        self.assertEqual(
+            family_tree_to_debug_lines(tree),
+            [
+                "[1, 6]",
+                "  [2, 5]",
+                "    [3, 4]",
+            ],
+        )
+
+    def test_family_tree_to_debug_lines_multiple_roots(self):
+        tree = build_family_tree([(1, 2), (3, 4), (5, 6)], UPPER)
+
+        self.assertEqual(
+            family_tree_to_debug_lines(tree),
+            [
+                "[1, 2]",
+                "[3, 4]",
+                "[5, 6]",
             ],
         )
 
