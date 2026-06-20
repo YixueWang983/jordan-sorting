@@ -40,6 +40,15 @@ Main output:
 
 Recommended work:
 
+Note:
+
+Most of these steps were stabilized during Week2 Day5/Day6:
+`prepare_reference_backend`, `extract_rank_order`, `return_reference_sorted_output`,
+`implementation_stage`, and `backend` metadata already exist.
+
+For Week3 Day1, use this day to audit and lock these contracts in tests/docs, and
+prepare any minimal helper functions if needed.
+
 1. Keep the existing return fields from Week 2.
 2. Add explicit pipeline step traces (stable sequence):
 
@@ -219,4 +228,3 @@ Include:
 - experiment rows can include structural fields,
 - summary/audit scripts can reproduce structural distributions,
 - Week 3 summary exists.
-

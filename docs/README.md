@@ -41,9 +41,8 @@ Current files:
 - `week1_summary.md`  
   Completed Week 1 summary, including implemented components, experiment configuration, validation results, limitations, and next steps.
 
-Planned files:
-
-- `week2_summary.md`
+- `week2_summary.md`  
+  Week 2 completion summary, including design/skeleton boundary and Week3 handoff.
 
 ## Plan Documents
 
@@ -60,6 +59,7 @@ Current files:
 - `README.md`
 - `four_month_roadmap.md`
 - `week2_plan.md`
+- `week3_plan.md`
 - `thesis_scope_and_research_questions.pdf`
 
 Planned files:
