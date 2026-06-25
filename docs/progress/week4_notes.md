@@ -49,8 +49,14 @@ Last updated: 2026-06-25
 
 ## Day 3
 
-- [ ] 在 `simplified_jordan.py` 中接入 `operation_state` trace 与阶段细化（计划中）。
-- [ ] 保证 trace 与最终 sorted 路径的版本化一致。
+- [x] 在 `simplified_jordan.py` 接入 `jordan_operations` 的 operation-state trace。
+- [x] valid path trace 现在包含：
+  - `build_rank_map`
+  - `extract_pair_families`
+  - `convert_pairs_to_rank_intervals`
+- [x] `implementation_stage` 升级为 `week4_algorithm_facing_reference`（实现语义更新，top-level 契约不变）。
+- [x] 验证 tests: `Ran 140 tests`（`OK`）。
+- [ ] 继续补充 Day3 的 additional differential 断言（待补充）。
 
 ## Day 4
 

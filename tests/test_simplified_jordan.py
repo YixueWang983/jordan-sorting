@@ -42,7 +42,7 @@ class SimplifiedJordanTests(unittest.TestCase):
             },
         )
         self.assertEqual(result["implementation"], "reference_skeleton")
-        self.assertEqual(result["implementation_stage"], "week2_interface_skeleton")
+        self.assertEqual(result["implementation_stage"], "week4_algorithm_facing_reference")
         self.assertEqual(
             result["backend"],
             {
@@ -103,7 +103,7 @@ class SimplifiedJordanTests(unittest.TestCase):
                 self.assertEqual(result["implementation"], "reference_skeleton")
                 self.assertEqual(
                     result["implementation_stage"],
-                    "week2_interface_skeleton",
+                    "week4_algorithm_facing_reference",
                 )
                 self.assertEqual(
                     result["backend"],
@@ -156,6 +156,9 @@ class SimplifiedJordanTests(unittest.TestCase):
             [
                 "copy_input",
                 "oracle",
+                "build_rank_map",
+                "extract_pair_families",
+                "convert_pairs_to_rank_intervals",
                 "build_family_trees",
                 "structure_profile",
                 "prepare_reference_backend",
@@ -163,8 +166,15 @@ class SimplifiedJordanTests(unittest.TestCase):
                 "return_reference_sorted_output",
             ],
         )
-        self.assertEqual(result["trace"][4]["backend"], "ordinary_list")
-        self.assertEqual(result["trace"][5]["backend"], "oracle_sorted")
+        self.assertFalse(result["trace"][2]["skipped"])
+        self.assertEqual(result["trace"][2]["distinct_values"], True)
+        self.assertEqual(result["trace"][2]["n"], 6)
+        self.assertEqual(result["trace"][3]["upper_pair_count"], 3)
+        self.assertEqual(result["trace"][3]["lower_pair_count"], 2)
+        self.assertEqual(result["trace"][4]["upper_interval_count"], 3)
+        self.assertEqual(result["trace"][4]["lower_interval_count"], 2)
+        self.assertEqual(result["trace"][7]["backend"], "ordinary_list")
+        self.assertEqual(result["trace"][8]["backend"], "oracle_sorted")
 
     def test_reference_skeleton_records_trace_for_invalid_input(self):
         result = simplified_jordan_sort([1, 3, 2, 4])

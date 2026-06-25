@@ -6,12 +6,16 @@ from family_tree import (
     build_family_trees,
     family_tree_to_dict,
 )
+from jordan_operations import (
+    build_operation_state,
+    operation_state_to_trace_fields,
+)
 from oracle import oracle
 from stats import structure_profile
 
 
 IMPLEMENTATION = "reference_skeleton"
-IMPLEMENTATION_STAGE = "week2_interface_skeleton"
+IMPLEMENTATION_STAGE = "week4_algorithm_facing_reference"
 BACKEND_REFERENCE = {
     "name": "ordinary_list",
     "uses_oracle_sorted_output": True,
@@ -49,7 +53,7 @@ def simplified_jordan_sort(seq):
         "stats": dict,
         "trace": list,
         "implementation": "reference_skeleton",
-        "implementation_stage": "week2_interface_skeleton",
+        "implementation_stage": "week4_algorithm_facing_reference",
         "backend": {
             "name": "ordinary_list",
             "uses_oracle_sorted_output": True,
@@ -96,6 +100,9 @@ def simplified_jordan_sort(seq):
             stats,
             trace,
         )
+
+    operation_state = build_operation_state(values, oracle_result=oracle_result)
+    trace.extend(operation_state_to_trace_fields(operation_state))
 
     families = build_family_trees(values, oracle_result=oracle_result)
     trace.append(
