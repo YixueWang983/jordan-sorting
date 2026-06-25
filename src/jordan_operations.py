@@ -51,7 +51,11 @@ def build_rank_intervals(seq, rank=None):
 
 
 def build_operation_state(seq, oracle_result=None):
-    """Build a compact operation-state snapshot for a candidate sequence."""
+    """Build a compact operation-state snapshot for a candidate sequence.
+
+    If provided, ``oracle_result`` must follow ``oracle.oracle(seq)`` return
+    contract (it must include at least ``distinct_values``).
+    """
     values = list(seq)
     if oracle_result is None:
         from oracle import oracle
