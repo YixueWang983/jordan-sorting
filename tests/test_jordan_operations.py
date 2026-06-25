@@ -40,6 +40,11 @@ class JordanOperationsTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             build_rank_intervals([1, 2, 2, 3])
 
+    def test_build_rank_intervals_rejects_duplicates_when_rank_provided(self):
+        rank = {1: 1, 2: 2, 3: 3}
+        with self.assertRaises(ValueError):
+            build_rank_intervals([1, 2, 2, 3], rank=rank)
+
     def test_build_operation_state_empty_and_singleton(self):
         for seq in ([], [1]):
             state = build_operation_state(seq)

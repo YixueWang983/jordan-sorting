@@ -36,11 +36,12 @@ def build_rank_intervals(seq, rank=None):
     """
     values = list(seq)
 
+    if len(values) != len(set(values)):
+        raise ValueError(
+            "rank cannot be inferred from a sequence with duplicate values"
+        )
+
     if rank is None:
-        if len(values) != len(set(values)):
-            raise ValueError(
-                "rank cannot be inferred from a sequence with duplicate values"
-            )
         rank = rank_map(values)
 
     pair_families = extract_pair_families(values)
