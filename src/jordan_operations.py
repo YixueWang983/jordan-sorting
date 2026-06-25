@@ -92,7 +92,11 @@ def build_operation_state(seq, oracle_result=None):
 def operation_state_to_trace_fields(state):
     """Convert an operation state into compact trace entries."""
     fields = [
-        {"step": "build_rank_map", "n": state["n"]},
+        {
+            "step": "build_rank_map",
+            "n": state["n"],
+            "skipped": state["rank_map"] is None,
+        },
         {
             "step": "extract_pair_families",
             "upper_pair_count": len(state["upper_pairs"]),

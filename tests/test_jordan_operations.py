@@ -85,7 +85,9 @@ class JordanOperationsTests(unittest.TestCase):
 
     def test_operation_state_to_trace_fields(self):
         state = build_operation_state([1, 6, 2, 5, 3, 4], oracle([1, 6, 2, 5, 3, 4]))
+        dup_state = build_operation_state([1, 2, 2, 3], oracle([1, 2, 2, 3]))
         trace_fields = operation_state_to_trace_fields(state)
+        dup_trace_fields = operation_state_to_trace_fields(dup_state)
 
         self.assertEqual(
             trace_fields,
@@ -94,6 +96,7 @@ class JordanOperationsTests(unittest.TestCase):
                     "step": "build_rank_map",
                     "n": 6,
                     "distinct_values": True,
+                    "skipped": False,
                 },
                 {
                     "step": "extract_pair_families",
@@ -104,6 +107,28 @@ class JordanOperationsTests(unittest.TestCase):
                     "step": "convert_pairs_to_rank_intervals",
                     "upper_interval_count": 3,
                     "lower_interval_count": 2,
+                },
+            ],
+        )
+        self.assertEqual(
+            dup_trace_fields,
+            [
+                {
+                    "step": "build_rank_map",
+                    "n": 4,
+                    "distinct_values": False,
+                    "skipped": True,
+                },
+                {
+                    "step": "extract_pair_families",
+                    "upper_pair_count": 2,
+                    "lower_pair_count": 1,
+                },
+                {
+                    "step": "convert_pairs_to_rank_intervals",
+                    "upper_interval_count": None,
+                    "lower_interval_count": None,
+                    "skipped": True,
                 },
             ],
         )
