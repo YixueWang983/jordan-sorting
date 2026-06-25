@@ -1,56 +1,61 @@
-# Week 4 Day 1 Notes（scope freeze）
+# Week 4 Notes
 
 Last updated: 2026-06-25
 
-## Scope freeze for Week 4
+## Week 4 scope freeze
 
-本周聚焦：把 `reference_skeleton` 变成更“算法可读”的 reference pipeline。
+本周目标是把 `reference_skeleton` 变成更“算法可读”的 reference pipeline。  
+不做完整 Jordan 排序，不引入高级数据结构，不新增复杂性能承诺，优先稳定中间结构与实验可复现行为。
 
-- 不实现完整 Jordan 排序；
-- 不引入 level-linked / finger-tree 等高级结构；
-- 不新增复杂性能承诺；
-- 先把中间结构（rank / pair / interval / tree / profile / trace）接口和可复现行为稳定下来；
-- 保持与现有实验与现有测试向后兼容。
+## Day 1
 
-保持的顶层返回字段（不会在 Day1 改动）：
+### Completed
 
-```text
-valid, sorted, reason, oracle, families, stats, trace,
-implementation, implementation_stage, backend
-```
+- [x] 复核 Week 4 目标边界：保持 reference-skeleton 定位、以结构化 trace + 可复现 pipeline 为主。
+- [x] 明确 non-goals：
+  - 完整 Jordan 排序
+  - level-linked tree / finger tree
+  - 线性时间承诺
+- [x] 复核复用链：`upper_pairs / lower_pairs / rank_map / pair_to_interval / build_family_intervals / build_family_trees / structure_profile`
+- [x] 先行固定返回字段契约：
+  `valid, sorted, reason, oracle, families, stats, trace, implementation, implementation_stage, backend`
+- [x] 全量测试通过：
+  - `Ran 140 tests`（`OK`）
+- [x] 检视文件：
+  - `src/oracle.py`
+  - `src/family_tree.py`
+  - `src/stats.py`
+  - `src/simplified_jordan.py`
+  - `experiments/run_small_tests.py`
+  - `tests/test_simplified_jordan.py`
 
-## Day1 tasks completed
+## Day 2
 
-- [x] 跑全量测试：`python -m unittest discover -s tests`
-  - 结果：`Ran 139 tests`，全部通过（`OK`）。
-- [x] 复核现有接口边界：`reference_skeleton` 定位不变，不宣称完整线性时间实现。
-- [x] 复核复用链：`upper_pairs / lower_pairs / rank_map / pair_to_interval / build_family_intervals / build_family_trees / structure_profile`。
-- [x] 复核并冻结 Week 4 任务边界（见本文件）。
+### Completed
 
-## Repository files reviewed in this day
-
-- [x] `src/oracle.py`
-- [x] `src/family_tree.py`
-- [x] `src/stats.py`
-- [x] `src/simplified_jordan.py`
-- [x] `experiments/run_small_tests.py`
-- [x] `tests/test_simplified_jordan.py`
-
-## Next day plan（Day2）
-
-- 新增 `src/jordan_operations.py`，提供：
+- [x] 新增 `src/jordan_operations.py`，提供操作层状态构建与 trace 转换能力：
   - `build_operation_state`
   - `extract_pair_families`
   - `build_rank_intervals`
   - `operation_state_to_trace_fields`
-- 增加 `tests/test_jordan_operations.py` 的边界测试（empty/singleton/odd/even/flat/nested/重复值）。
-
-## Day2 progress（today）
-
-- [x] 新增 `src/jordan_operations.py`，提供操作层快照和 trace 转换能力。
 - [x] 新增 `tests/test_jordan_operations.py`，覆盖：
   - empty / singleton
-  - odd / even
+  - odd / even 长度
   - flat / nested
   - 非 1..n 有效排列
-  - 重复值行为
+  - duplicate 值行为
+- [x] 统一文档边界：`src/jordan_operations.py` 明确不是第二个 oracle，依赖 `oracle.oracle(seq)` 的返回约定。
+- [x] `build_rank_intervals` 增强鲁棒性：即使显式传 `rank`，对 duplicate 输入也会拒绝。
+
+## Day 3
+
+- [ ] 在 `simplified_jordan.py` 中接入 `operation_state` trace 与阶段细化（计划中）。
+- [ ] 保证 trace 与最终 sorted 路径的版本化一致。
+
+## Day 4
+
+- [ ] 扩展 `simplified_jordan_sort` 的 differential 与边界测试（计划中）。
+
+## Day 5~7
+
+- [ ] 继续按 `docs/plan/week4_plan.md` 完成实验接入、结构化输出与 week4 summary。
