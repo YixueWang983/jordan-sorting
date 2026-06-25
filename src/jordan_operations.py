@@ -1,4 +1,15 @@
-"""Algorithm-facing operation helpers for the week 4 reference pipeline."""
+"""Algorithm-facing operation helpers for the week 4 reference pipeline.
+
+This module is intentionally not a second oracle:
+
+- it does not classify validity;
+- it does not run laminarity/crossing checks;
+- it does not replace oracle behavior.
+
+Instead, it prepares operation-level artifacts (pairs, ranks, intervals, and
+trace fields) for `simplified_jordan_sort` once oracle information is already
+available.
+"""
 
 from oracle import (
     lower_pairs,
