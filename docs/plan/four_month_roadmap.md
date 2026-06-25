@@ -123,7 +123,7 @@ Current status:
 ```text
 Week 1 is complete.
 Week 2 foundations and skeleton outputs are complete.
-The current target is Week 3 reference-pipeline strengthening.
+The current target is Week 4 algorithm-facing reference operations.
 ```
 
 Gate 1 fallback:

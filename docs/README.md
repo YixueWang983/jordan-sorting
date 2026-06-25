@@ -53,6 +53,9 @@ Current files:
 - `week3_summary.md`  
   Week 3 completion summary and Week 4 handoff.
 
+- `week4_notes.md`  
+  Week 4 Day 1 notes and scope freeze record.
+
 ## Plan Documents
 
 Path:
@@ -69,12 +72,16 @@ Current files:
 - `four_month_roadmap.md`
 - `week2_plan.md`
 - `week3_plan.md`
+- `week4_plan.md`
 - `thesis_scope_and_research_questions.pdf`
 
 Planned files:
 
 - `thesis_scope_and_research_questions.md`  
   Markdown version of the approved thesis scope, research questions, goals, planned contributions, implementation scope, and experimental scope.
+
+- `week4_summary.md`  
+  Week 4 completion summary.
 
 ## Papers
 

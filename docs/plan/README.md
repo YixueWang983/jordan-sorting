@@ -17,3 +17,7 @@ This folder stores the approved thesis scope and research-question documents.
 - `week3_plan.md`  
   Week 3 execution plan for converting the Week 2 skeleton into a more explicit
   reference pipeline with stronger experiment support.
+
+- `week4_plan.md`  
+  Week 4 execution plan for building an algorithm-facing reference pipeline, adding
+  differential checks, and preparing seminar-oriented Week 4 outputs.
