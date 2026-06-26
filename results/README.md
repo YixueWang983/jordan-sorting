@@ -68,7 +68,7 @@ python experiments/run_small_tests.py
 Run the Week 4 reference experiment:
 
 ```bash
-python experiments/run_small_tests.py --week4-reference --with-structure
+python experiments/run_small_tests.py --week4-reference
 ```
 
 Run the dataset-structure audit:
@@ -116,12 +116,72 @@ This gives:
 7 families x 7 sizes x 3 cases x 4 algorithms x 5 timing runs = 2940 raw timing rows
 ```
 
-Summary command:
+## Week 4 Reference Experiment Configuration
+
+```text
+sizes:
+[8, 16, 32, 64, 128, 256, 512]
+
+families:
+flat_valid
+nested_valid
+incremental_valid
+invalid_upper_crossing
+invalid_lower_crossing
+random_invalid
+mutation_based_invalid
+
+algorithms:
+python_sort
+merge_sort
+quick_sort
+sort_plus_laminarity_check
+simplified_jordan_reference
+
+cases_per_size:
+3
+
+timing_runs:
+5
+```
+
+This gives:
+
+```text
+7 families x 7 sizes x 3 cases x 5 algorithms x 5 timing runs = 3675 raw timing rows
+```
+
+Week 4 raw rows include the following structural fields by default:
+
+```text
+upper_interval_count
+lower_interval_count
+total_interval_count
+upper_root_count
+lower_root_count
+nesting_count
+nesting_density
+max_depth
+category
+```
+
+The Week 4 reference result includes structural columns by default and is intended for
+reproducibility and reference-pipeline checks, not as a proof of a linear-time Jordan-sorting implementation.
+
+### Week 1 summary command:
 
 ```bash
 python experiments/summarize_results.py \
   --input-csv results/week1_baseline_results.csv \
   --output-csv results/week1_baseline_summary.csv
+```
+
+### Week 4 summary command:
+
+```bash
+python experiments/summarize_results.py \
+  --input-csv results/week4_reference_results.csv \
+  --output-csv results/week4_reference_summary.csv
 ```
 
 ## CSV Schema

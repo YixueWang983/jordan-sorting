@@ -72,7 +72,7 @@ Last updated: 2026-06-26
 
 - [x] Day5 完成：完成实验接入（reference pipeline）和 `WEEK4` 测试接入。
 - [x] Day6：生成并检查 `results/week4_reference_results.csv`，共 3675 行，含结构字段且无 `error`，`sorted_correct` 全为 `True`。
-- [ ] Day7：整理 Week 4 summary，明确 reference pipeline 的实验边界与 non-linear-time 边界。
+- [x] Day7：整理 Week 4 summary，明确 reference pipeline 的实验边界与 non-linear-time 边界。
 
 ## Day 5
 
@@ -89,3 +89,7 @@ Last updated: 2026-06-26
   - 默认配置不包含 `simplified_jordan_reference`；
   - `--with-simplified` 需要显式输出路径或使用 `--week4-reference`；
   - `--week4-reference` 写入独立 `week4_reference_results.csv`，并包含结构字段。
+
+## Day 7
+
+- [x] 完成 `docs/progress/week4_summary.md`

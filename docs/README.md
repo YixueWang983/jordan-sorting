@@ -55,6 +55,8 @@ Current files:
 
 - `week4_notes.md`  
   Week 4 Day 1 notes and scope freeze record.
+- `week4_summary.md`  
+  Week 4 completion summary and reference-pipeline handoff notes.
 
 ## Plan Documents
 
@@ -79,9 +81,6 @@ Planned files:
 
 - `thesis_scope_and_research_questions.md`  
   Markdown version of the approved thesis scope, research questions, goals, planned contributions, implementation scope, and experimental scope.
-
-- `week4_summary.md`  
-  Week 4 completion summary.
 
 ## Papers
 
