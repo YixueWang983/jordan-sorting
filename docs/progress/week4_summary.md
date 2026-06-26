@@ -55,7 +55,7 @@ python experiments/run_small_tests.py --week4-reference
 
 ## 非线性时间边界（明确不做）
 
-当前周四不承诺：
+当前 Week 4 不承诺：
 
 - level-linked search trees
 - finger trees / heterogeneous finger trees
@@ -66,4 +66,3 @@ python experiments/run_small_tests.py --week4-reference
 
 - Week4 形成了可复现、可解释的参考 pipeline 与实验基线接口。
 - 下一步可在该接口上进入更接近真实算法流程的实现：将 operation state 的 trace 化输出作为基础，逐步替换排序后端的来源。
-
