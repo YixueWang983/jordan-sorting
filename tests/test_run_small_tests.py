@@ -45,6 +45,14 @@ class RunSmallTestsRunnerTests(unittest.TestCase):
             [1, 2, 3],
         )
 
+    def test_extract_sorted_output_handles_simplified_jordan_reference_result(self):
+        result = {"sorted": [1, 2, 3], "valid": True}
+
+        self.assertEqual(
+            extract_sorted_output("simplified_jordan_reference", result),
+            [1, 2, 3],
+        )
+
     def test_expected_row_count(self):
         config = replace(
             SMOKE_CONFIG,
@@ -226,32 +234,43 @@ class RunSmallTestsRunnerTests(unittest.TestCase):
 
             self.assertFalse(structure_base_output.exists())
 
+    def test_smoke_cli_with_simplified_reference(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            output_csv = temp_path / "smoke_results.csv"
+            config = replace(
+                SMOKE_CONFIG,
+                cases_dir=temp_path / "cases",
+                output_csv=output_csv,
+                algorithms=["python_sort"],
+            )
+
             with patch.object(run_small_tests, "SMOKE_CONFIG", config):
                 with patch(
                     "sys.argv",
                     [
                         "run_small_tests.py",
                         "--smoke",
-                        "--with-structure",
+                        "--with-simplified",
                         "--output-csv",
-                        str(structure_base_output),
+                        str(output_csv),
                     ],
                 ):
                     with redirect_stdout(io.StringIO()):
                         run_small_tests.main()
 
-            automatic_structure_csv = Path(
-                str(structure_base_output).replace(".csv", "_with_structure_fields.csv")
+            with output_csv.open(newline="", encoding="utf-8") as file:
+                rows = list(csv.DictReader(file))
+
+            self.assertEqual(len(rows), 2)
+            algorithms = {row["algorithm"] for row in rows}
+            self.assertEqual(
+                algorithms,
+                {"python_sort", "simplified_jordan_reference"},
             )
-
-            self.assertTrue(automatic_structure_csv.exists())
-
-            with automatic_structure_csv.open(newline="", encoding="utf-8") as file:
-                structure_reader = csv.DictReader(file)
-                for field in STRUCTURAL_FIELDS:
-                    self.assertIn(field, structure_reader.fieldnames)
-
-            self.assertFalse(structure_base_output.exists())
+            for row in rows:
+                self.assertEqual(row["sorted_correct"], "True")
+                self.assertEqual(row["error"], "")
 
 
 

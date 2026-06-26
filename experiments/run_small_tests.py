@@ -3,7 +3,7 @@
 import argparse
 import csv
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 
@@ -30,6 +30,7 @@ from generators import (  # noqa: E402
     load_test_case,
 )
 from stats import structure_profile
+from simplified_jordan import simplified_jordan_sort
 
 
 CSV_FIELDS = [
@@ -67,6 +68,7 @@ ALGORITHMS = {
     "merge_sort": merge_sort,
     "quick_sort": quick_sort,
     "sort_plus_laminarity_check": sort_plus_laminarity_check,
+    "simplified_jordan_reference": simplified_jordan_sort,
 }
 
 
@@ -162,7 +164,7 @@ def generate_case_paths(config):
 
 def extract_sorted_output(algorithm_name, result):
     """从不同 baseline 的返回值中取出排序结果。"""
-    if algorithm_name == "sort_plus_laminarity_check":
+    if algorithm_name in {"sort_plus_laminarity_check", "simplified_jordan_reference"}:
         return result["sorted"]
     return result
 
@@ -385,6 +387,11 @@ def parse_args():
         help="include structure_profile columns in output",
     )
     parser.add_argument(
+        "--with-simplified",
+        action="store_true",
+        help="add simplified_jordan_reference to baseline algorithm list",
+    )
+    parser.add_argument(
         "--output-csv",
         type=Path,
         default=None,
@@ -403,6 +410,12 @@ def main():
     """命令行入口。"""
     args = parse_args()
     config = SMOKE_CONFIG if args.smoke else FULL_CONFIG
+    if args.with_simplified and "simplified_jordan_reference" not in config.algorithms:
+        config = replace(
+            config,
+            algorithms=config.algorithms + ["simplified_jordan_reference"],
+        )
+
     csv_path = args.output_csv if args.output_csv else None
 
     if args.with_structure:

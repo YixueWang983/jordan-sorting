@@ -70,4 +70,12 @@ Last updated: 2026-06-25
 
 ## Day 5~7
 
-- [ ] 继续按 `docs/plan/week4_plan.md` 完成实验接入、结构化输出与 week4 summary。
+- [ ] Day5 继续：完成实验接入（reference pipeline）和 week4 summary。
+
+## Day 5
+
+- [x] 在 `experiments/run_small_tests.py` 增加可选算法：
+  - `simplified_jordan_reference(seq) -> simplified_jordan_sort(seq)`
+  - 通过 `--with-simplified` 接入实验算法列表，不影响默认模式。
+- [x] 更新 `extract_sorted_output`，让简化 reference 的返回结果提取 `sorted`。
+- [x] 在 `tests/test_run_small_tests.py` 增加覆盖 `simplified_jordan_reference` 的导出与 CLI 流程测试。
