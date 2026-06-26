@@ -213,10 +213,26 @@ class SimplifiedJordanTests(unittest.TestCase):
                     oracle_result = oracle(seq)
 
                     self.assertTrue(result["valid"], f"family={family}, n={n}")
+                    self.assertTrue(oracle_result["valid"], f"oracle invalid: family={family}, n={n}, seq={seq}")
+                    self.assertIsNone(oracle_result["reason"])
                     self.assertIsNone(result["reason"], f"family={family}, n={n}")
                     self.assertIsNotNone(result["families"], f"family={family}, n={n}")
+                    self.assertTrue(result["stats"]["valid"], f"family={family}, n={n}")
+                    self.assertNotEqual(result["stats"]["category"], "invalid", f"family={family}, n={n}")
                     self.assertEqual(result["sorted"], sorted(seq))
                     self.assertEqual(result["sorted"], oracle_result["sorted"])
+                    self.assertEqual(result["stats"]["upper_interval_count"], len(result["families"]["upper"]["nodes"]))
+                    self.assertEqual(result["stats"]["lower_interval_count"], len(result["families"]["lower"]["nodes"]))
+                    self.assertEqual(
+                        result["stats"]["total_interval_count"],
+                        len(result["families"]["upper"]["nodes"]) + len(result["families"]["lower"]["nodes"]),
+                    )
+                    self.assertEqual(result["stats"]["reason"], None)
+                    self.assertEqual(
+                        result["trace"][2]["distinct_values"],
+                        True,
+                        f"family={family}, n={n}",
+                    )
 
     def test_reference_skeleton_invalid_cases_keep_reasons(self):
         invalid_cases = [
@@ -226,6 +242,12 @@ class SimplifiedJordanTests(unittest.TestCase):
             (generate_sequence(MUTATION_BASED_INVALID, 8, seed=13), None),
             ([1, 2, 2, 3], "duplicate values"),
         ]
+        allowed_reasons = {
+            "upper crossing",
+            "lower crossing",
+            "upper and lower crossing",
+            "duplicate values",
+        }
 
         for seq, expected_reason in invalid_cases:
             with self.subTest(seq=seq):
@@ -234,14 +256,35 @@ class SimplifiedJordanTests(unittest.TestCase):
                 self.assertFalse(result["valid"])
                 self.assertIsNone(result["families"])
                 self.assertEqual(result["stats"]["category"], "invalid")
+                self.assertIn(result["reason"], allowed_reasons)
+                self.assertIn(result["stats"]["reason"], allowed_reasons)
                 if expected_reason is not None:
                     self.assertEqual(result["reason"], expected_reason)
                     self.assertEqual(result["stats"]["reason"], expected_reason)
                 else:
-                    self.assertIsNotNone(result["reason"])
+                    self.assertIn(result["reason"], allowed_reasons)
                     self.assertIsNotNone(result["stats"]["reason"])
 
-    def test_reference_skeleton_handles_day2_day3_cases(self):
+    def test_reference_skeleton_records_trace_counts_for_boundary_lengths(self):
+        cases = [
+            ([], 0, 0),
+            ([1], 0, 0),
+            ([1, 2], 1, 0),
+            ([1, 2, 3], 1, 1),
+            ([1, 2, 3, 4, 5], 2, 2),
+        ]
+
+        for seq, upper_count, lower_count in cases:
+            with self.subTest(seq=seq):
+                result = simplified_jordan_sort(seq)
+
+                self.assertTrue(result["valid"])
+                self.assertEqual(result["trace"][3]["upper_pair_count"], upper_count)
+                self.assertEqual(result["trace"][3]["lower_pair_count"], lower_count)
+                self.assertEqual(result["trace"][4]["upper_interval_count"], upper_count)
+                self.assertEqual(result["trace"][4]["lower_interval_count"], lower_count)
+
+    def test_reference_skeleton_handles_representative_valid_families(self):
         cases = [
             ("flat", FLAT_VALID),
             ("nested", NESTED_VALID),
