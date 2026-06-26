@@ -276,12 +276,25 @@ class SimplifiedJordanTests(unittest.TestCase):
         for seq, upper_count, lower_count in cases:
             with self.subTest(seq=seq):
                 result = simplified_jordan_sort(seq)
+                trace_steps = [entry["step"] for entry in result["trace"]]
+
+                def find_step(step_name):
+                    for entry in result["trace"]:
+                        if entry["step"] == step_name:
+                            return entry
+                    raise AssertionError(f"missing trace step: {step_name}")
+
+                self.assertIn("build_rank_map", trace_steps)
+                self.assertIn("convert_pairs_to_rank_intervals", trace_steps)
+
+                pair_entry = find_step("extract_pair_families")
+                interval_entry = find_step("convert_pairs_to_rank_intervals")
 
                 self.assertTrue(result["valid"])
-                self.assertEqual(result["trace"][3]["upper_pair_count"], upper_count)
-                self.assertEqual(result["trace"][3]["lower_pair_count"], lower_count)
-                self.assertEqual(result["trace"][4]["upper_interval_count"], upper_count)
-                self.assertEqual(result["trace"][4]["lower_interval_count"], lower_count)
+                self.assertEqual(pair_entry["upper_pair_count"], upper_count)
+                self.assertEqual(pair_entry["lower_pair_count"], lower_count)
+                self.assertEqual(interval_entry["upper_interval_count"], upper_count)
+                self.assertEqual(interval_entry["lower_interval_count"], lower_count)
 
     def test_reference_skeleton_handles_representative_valid_families(self):
         cases = [
