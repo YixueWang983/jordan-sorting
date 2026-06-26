@@ -20,7 +20,7 @@ Last updated: 2026-06-26
 - [x] 先行固定返回字段契约：
   `valid, sorted, reason, oracle, families, stats, trace, implementation, implementation_stage, backend`
 - [x] 全量测试通过：
-  - `Ran 143 tests`（`OK`）
+  - `Ran 152 tests`（`OK`）
 - [x] 检视文件：
   - `src/oracle.py`
   - `src/family_tree.py`
@@ -55,7 +55,7 @@ Last updated: 2026-06-26
   - `extract_pair_families`
   - `convert_pairs_to_rank_intervals`
 - [x] `implementation_stage` 升级为 `week4_algorithm_facing_reference`（实现语义更新，top-level 契约不变）。
-- [x] 验证 tests: `Ran 143 tests`（`OK`）。
+- [x] 验证 tests: `Ran 152 tests`（`OK`）。
 - [x] Day3 的 additional differential 断言已完成补充。
 
 ## Day 4
@@ -66,7 +66,7 @@ Last updated: 2026-06-26
   - 保持 `stats["category"] == "invalid"`。
   - 额外检验 `stats` 中 interval counts 与序列化 family tree node counts 一致；
   - 对小规模有效长度（`[]` 到 `[1,2,3,4,5]`）做 boundary trace count 验证。
-- [x] 回归全量测试：`Ran 143 tests`（`OK`），验证 trace 与 stage 升级兼容。
+- [x] 回归全量测试：`Ran 152 tests`（`OK`），验证 trace 与 stage 升级兼容。
 
 ## Day 5~7
 
