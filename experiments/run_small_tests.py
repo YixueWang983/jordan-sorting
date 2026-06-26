@@ -64,17 +64,12 @@ STRUCTURAL_FIELDS = [
 
 
 def simplified_jordan_reference(sequence):
-    """Week 4 的实验入口：返回 simplified_jordan_sort 的结果。"""
+    """Experiment-facing wrapper for the Week 4 reference pipeline.
+
+    This keeps the experiment algorithm name separate from the implementation
+    entry-point.
+    """
     return simplified_jordan_sort(sequence)
-
-
-def _resolve_reference_output_csv(output_csv: Path | None, with_simplified: bool):
-    """在启用 simplified reference 时，返回一个不覆盖 Week1 baseline 的默认路径。"""
-    if output_csv is not None:
-        return output_csv
-    if not with_simplified:
-        return None
-    return PROJECT_ROOT / "results" / "week4_reference_results.csv"
 
 
 ALGORITHMS = {
@@ -155,24 +150,28 @@ FULL_CONFIG = ExperimentConfig(
 
 WEEK4_REFERENCE_CONFIG = ExperimentConfig(
     name="week4_reference",
-    sizes=[8, 16, 32, 64, 128],
+    sizes=FULL_CONFIG.sizes,
     families=[
         FLAT_VALID,
         NESTED_VALID,
         INCREMENTAL_VALID,
         INVALID_UPPER_CROSSING,
         INVALID_LOWER_CROSSING,
+        RANDOM_INVALID,
         MUTATION_BASED_INVALID,
     ],
     algorithms=[
         "python_sort",
+        "merge_sort",
+        "quick_sort",
         "sort_plus_laminarity_check",
         "simplified_jordan_reference",
     ],
-    cases_per_size=2,
-    timing_runs=3,
+    cases_per_size=3,
+    timing_runs=5,
     cases_dir=PROJECT_ROOT / "results" / "week4_reference_cases",
     output_csv=PROJECT_ROOT / "results" / "week4_reference_results.csv",
+    seed=FULL_CONFIG.seed,
 )
 
 
@@ -213,19 +212,25 @@ def _result_fields(include_structure: bool):
     return fields
 
 
-def _resolve_structural_output_csv(
+def _resolve_output_csv(
+    config: ExperimentConfig,
+    include_structure: bool,
     base_output_csv: Path | None,
-    explicit_output_csv: Path | None,
+    explicit_structural_output_csv: Path | None,
 ):
-    """Resolve structural output path for `--with-structure`.
+    """Resolve output paths while protecting Week 1 baseline outputs."""
+    if include_structure:
+        if explicit_structural_output_csv is not None:
+            return explicit_structural_output_csv
+        if base_output_csv is not None:
+            return base_output_csv
+        if config.name == "week4_reference":
+            return config.output_csv
+        return Path(str(config.output_csv).replace(".csv", "_with_structure_fields.csv"))
 
-    Keep structural outputs separate from base-mode outputs by default.
-    """
-    if explicit_output_csv is not None:
-        return explicit_output_csv
-    if base_output_csv is None:
-        return None
-    return Path(str(base_output_csv).replace(".csv", "_with_structure_fields.csv"))
+    if base_output_csv is not None:
+        return base_output_csv
+    return config.output_csv
 
 
 def run_algorithm_once(algorithm_name, sequence, oracle_sorted):
@@ -413,10 +418,16 @@ def run_experiment(config, include_structure=False, output_csv=None):
 def parse_args():
     """解析命令行参数。"""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
+    mode_group = parser.add_mutually_exclusive_group()
+    mode_group.add_argument(
         "--smoke",
         action="store_true",
         help="run the minimal smoke-test configuration",
+    )
+    mode_group.add_argument(
+        "--week4-reference",
+        action="store_true",
+        help="run the Week 4 reference experiment configuration",
     )
     parser.add_argument(
         "--with-structure",
@@ -427,11 +438,6 @@ def parse_args():
         "--with-simplified",
         action="store_true",
         help="add simplified_jordan_reference to baseline algorithm list",
-    )
-    parser.add_argument(
-        "--week4-reference",
-        action="store_true",
-        help="run the Week 4 reference-oriented configuration",
     )
     parser.add_argument(
         "--output-csv",
@@ -452,35 +458,40 @@ def main():
     """命令行入口。"""
     args = parse_args()
     config = WEEK4_REFERENCE_CONFIG if args.week4_reference else SMOKE_CONFIG if args.smoke else FULL_CONFIG
+
+    if (
+        args.with_simplified
+        and not args.week4_reference
+        and args.output_csv is None
+        and args.structural_output_csv is None
+    ):
+        raise SystemExit(
+            "--with-simplified without an explicit output path would risk mixing "
+            "Week 4 results with Week 1 baseline outputs. "
+            "Use --week4-reference or pass --output-csv / --structural-output-csv."
+        )
+
     if args.with_simplified and "simplified_jordan_reference" not in config.algorithms:
         config = replace(
             config,
             algorithms=config.algorithms + ["simplified_jordan_reference"],
         )
 
-    csv_path = _resolve_reference_output_csv(
-        output_csv=args.output_csv,
-        with_simplified=args.with_simplified,
+    include_structure = args.with_structure or args.week4_reference
+
+    output_csv = _resolve_output_csv(
+        config=config,
+        include_structure=include_structure,
+        base_output_csv=args.output_csv,
+        explicit_structural_output_csv=args.structural_output_csv,
     )
 
-    if args.with_structure:
-        output_csv = _resolve_structural_output_csv(
-            base_output_csv=csv_path or config.output_csv,
-            explicit_output_csv=args.structural_output_csv,
-        )
-        rows = run_experiment(
-            config,
-            include_structure=True,
-            output_csv=output_csv,
-        )
-        output = (
-            output_csv
-            if output_csv is not None
-            else Path(str(config.output_csv).replace(".csv", "_with_structure_fields.csv"))
-        )
-    else:
-        rows = run_experiment(config, output_csv=csv_path)
-        output = csv_path or config.output_csv
+    rows = run_experiment(
+        config,
+        include_structure=include_structure,
+        output_csv=output_csv,
+    )
+    output = output_csv
 
     output_path = str(output)
     try:

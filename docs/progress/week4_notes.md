@@ -79,3 +79,11 @@ Last updated: 2026-06-25
   - 通过 `--with-simplified` 接入实验算法列表，不影响默认模式。
 - [x] 更新 `extract_sorted_output`，让简化 reference 的返回结果提取 `sorted`。
 - [x] 在 `tests/test_run_small_tests.py` 增加覆盖 `simplified_jordan_reference` 的导出与 CLI 流程测试。
+- [x] 补充 `WEEK4_REFERENCE_CONFIG`（`results/week4_reference_cases` / `results/week4_reference_results.csv`）与 `--week4-reference` 模式。
+- [x] 明确输出隔离策略：默认模式仍写 `results/week1_baseline_results.csv`，并不包含 `simplified_jordan_reference`。
+- [x] `--with-simplified` 在未显式指定输出路径时直接拒绝，避免与 Week 1 baseline 覆盖混淆。
+- [x] 默认的 `--week4-reference` 运行包含 structural fields，便于 Week 4 的 correctness/trace/structure 比较。
+- [x] 追加测试：
+  - 默认配置不包含 `simplified_jordan_reference`；
+  - `--with-simplified` 需要显式输出路径或使用 `--week4-reference`；
+  - `--week4-reference` 写入独立 `week4_reference_results.csv`，并包含结构字段。

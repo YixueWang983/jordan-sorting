@@ -20,7 +20,8 @@ from experiments.run_small_tests import (  # noqa: E402
     FLAT_VALID,
     CSV_FIELDS,
     FULL_CONFIG,
-    _resolve_reference_output_csv,
+    WEEK4_REFERENCE_CONFIG,
+    _resolve_output_csv,
     SMOKE_CONFIG,
     STRUCTURAL_FIELDS,
     expected_row_count,
@@ -143,12 +144,105 @@ class RunSmallTestsRunnerTests(unittest.TestCase):
         self.assertNotIn("simplified_jordan_reference", SMOKE_CONFIG.algorithms)
         self.assertNotIn("simplified_jordan_reference", FULL_CONFIG.algorithms)
 
-    def test_resolve_reference_output_csv_defaults_to_week4_results(self):
+    def test_resolve_output_csv_defaults(self):
         self.assertEqual(
-            _resolve_reference_output_csv(None, with_simplified=True),
-            run_small_tests.PROJECT_ROOT / "results" / "week4_reference_results.csv",
+            _resolve_output_csv(
+                config=FULL_CONFIG,
+                include_structure=False,
+                base_output_csv=None,
+                explicit_structural_output_csv=None,
+            ),
+            FULL_CONFIG.output_csv,
         )
-        self.assertIsNone(_resolve_reference_output_csv(None, with_simplified=False))
+
+        self.assertEqual(
+            _resolve_output_csv(
+                config=FULL_CONFIG,
+                include_structure=True,
+                base_output_csv=None,
+                explicit_structural_output_csv=None,
+            ),
+            Path(str(FULL_CONFIG.output_csv).replace(".csv", "_with_structure_fields.csv"),
+            ),
+        )
+
+        self.assertEqual(
+            _resolve_output_csv(
+                config=WEEK4_REFERENCE_CONFIG,
+                include_structure=True,
+                base_output_csv=None,
+                explicit_structural_output_csv=None,
+            ),
+            WEEK4_REFERENCE_CONFIG.output_csv,
+        )
+
+        custom_structural_output = Path("/tmp/custom_week4_structural.csv")
+        self.assertEqual(
+            _resolve_output_csv(
+                config=FULL_CONFIG,
+                include_structure=True,
+                base_output_csv=Path("/tmp/test.csv"),
+                explicit_structural_output_csv=custom_structural_output,
+            ),
+            custom_structural_output,
+        )
+
+        self.assertEqual(
+            _resolve_output_csv(
+                config=FULL_CONFIG,
+                include_structure=True,
+                base_output_csv=Path("/tmp/test.csv"),
+                explicit_structural_output_csv=None,
+            ),
+            Path("/tmp/test.csv"),
+        )
+
+    def test_cli_with_simplified_requires_explicit_output_or_week4_reference(self):
+        with patch("sys.argv", ["run_small_tests.py", "--smoke", "--with-simplified"]):
+            with self.assertRaises(SystemExit) as context:
+                run_small_tests.main()
+
+        self.assertIn("--week4-reference", str(context.exception))
+
+    def test_cli_with_simplified_with_week4_reference(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            output_csv = temp_path / "week4_reference_results.csv"
+            config = replace(
+                WEEK4_REFERENCE_CONFIG,
+                sizes=[8],
+                families=[FLAT_VALID],
+                algorithms=["python_sort", "simplified_jordan_reference"],
+                cases_per_size=1,
+                timing_runs=1,
+                cases_dir=temp_path / "week4_reference_cases",
+                output_csv=output_csv,
+            )
+
+            with patch.object(run_small_tests, "WEEK4_REFERENCE_CONFIG", config):
+                with patch("sys.argv", ["run_small_tests.py", "--week4-reference"]):
+                    with redirect_stdout(io.StringIO()):
+                        run_small_tests.main()
+
+            self.assertTrue(output_csv.exists())
+
+            with output_csv.open(newline="", encoding="utf-8") as file:
+                rows = list(csv.DictReader(file))
+
+            self.assertEqual(len(rows), 2)
+            algorithms = {row["algorithm"] for row in rows}
+            self.assertEqual(
+                algorithms,
+                {"python_sort", "simplified_jordan_reference"},
+            )
+            self.assertEqual(rows[0]["algorithm"], "python_sort")
+            self.assertEqual(rows[0]["sorted_correct"], "True")
+            self.assertEqual(rows[0]["error"], "")
+
+            with output_csv.open(newline="", encoding="utf-8") as file:
+                reader = csv.DictReader(file)
+                for field in STRUCTURAL_FIELDS:
+                    self.assertIn(field, reader.fieldnames)
 
     def test_smoke_experiment_writes_csv(self):
         with tempfile.TemporaryDirectory() as temp_dir:
