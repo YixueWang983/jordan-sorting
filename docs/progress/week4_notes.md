@@ -71,7 +71,7 @@ Last updated: 2026-06-26
 ## Day 5~7
 
 - [x] Day5 完成：完成实验接入（reference pipeline）和 `WEEK4` 测试接入。
-- [ ] Day6：生成并检查 `results/week4_reference_results.csv`。
+- [x] Day6：生成并检查 `results/week4_reference_results.csv`，共 3675 行，含结构字段且无 `error`，`sorted_correct` 全为 `True`。
 - [ ] Day7：整理 Week 4 summary，明确 reference pipeline 的实验边界与 non-linear-time 边界。
 
 ## Day 5
