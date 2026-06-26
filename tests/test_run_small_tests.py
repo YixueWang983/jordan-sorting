@@ -19,6 +19,8 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from experiments.run_small_tests import (  # noqa: E402
     FLAT_VALID,
     CSV_FIELDS,
+    FULL_CONFIG,
+    _resolve_reference_output_csv,
     SMOKE_CONFIG,
     STRUCTURAL_FIELDS,
     expected_row_count,
@@ -136,6 +138,17 @@ class RunSmallTestsRunnerTests(unittest.TestCase):
 
         with self.assertRaises(RuntimeError):
             validate_coverage(rows, config)
+
+    def test_default_configs_do_not_include_simplified_reference(self):
+        self.assertNotIn("simplified_jordan_reference", SMOKE_CONFIG.algorithms)
+        self.assertNotIn("simplified_jordan_reference", FULL_CONFIG.algorithms)
+
+    def test_resolve_reference_output_csv_defaults_to_week4_results(self):
+        self.assertEqual(
+            _resolve_reference_output_csv(None, with_simplified=True),
+            run_small_tests.PROJECT_ROOT / "results" / "week4_reference_results.csv",
+        )
+        self.assertIsNone(_resolve_reference_output_csv(None, with_simplified=False))
 
     def test_smoke_experiment_writes_csv(self):
         with tempfile.TemporaryDirectory() as temp_dir:

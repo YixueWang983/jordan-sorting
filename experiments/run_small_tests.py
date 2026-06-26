@@ -63,12 +63,26 @@ STRUCTURAL_FIELDS = [
 ]
 
 
+def simplified_jordan_reference(sequence):
+    """Week 4 的实验入口：返回 simplified_jordan_sort 的结果。"""
+    return simplified_jordan_sort(sequence)
+
+
+def _resolve_reference_output_csv(output_csv: Path | None, with_simplified: bool):
+    """在启用 simplified reference 时，返回一个不覆盖 Week1 baseline 的默认路径。"""
+    if output_csv is not None:
+        return output_csv
+    if not with_simplified:
+        return None
+    return PROJECT_ROOT / "results" / "week4_reference_results.csv"
+
+
 ALGORITHMS = {
     "python_sort": python_sort,
     "merge_sort": merge_sort,
     "quick_sort": quick_sort,
     "sort_plus_laminarity_check": sort_plus_laminarity_check,
-    "simplified_jordan_reference": simplified_jordan_sort,
+    "simplified_jordan_reference": simplified_jordan_reference,
 }
 
 
@@ -136,6 +150,29 @@ FULL_CONFIG = ExperimentConfig(
     timing_runs=5,
     cases_dir=PROJECT_ROOT / "results" / "week1_baseline_cases",
     output_csv=PROJECT_ROOT / "results" / "week1_baseline_results.csv",
+)
+
+
+WEEK4_REFERENCE_CONFIG = ExperimentConfig(
+    name="week4_reference",
+    sizes=[8, 16, 32, 64, 128],
+    families=[
+        FLAT_VALID,
+        NESTED_VALID,
+        INCREMENTAL_VALID,
+        INVALID_UPPER_CROSSING,
+        INVALID_LOWER_CROSSING,
+        MUTATION_BASED_INVALID,
+    ],
+    algorithms=[
+        "python_sort",
+        "sort_plus_laminarity_check",
+        "simplified_jordan_reference",
+    ],
+    cases_per_size=2,
+    timing_runs=3,
+    cases_dir=PROJECT_ROOT / "results" / "week4_reference_cases",
+    output_csv=PROJECT_ROOT / "results" / "week4_reference_results.csv",
 )
 
 
@@ -392,6 +429,11 @@ def parse_args():
         help="add simplified_jordan_reference to baseline algorithm list",
     )
     parser.add_argument(
+        "--week4-reference",
+        action="store_true",
+        help="run the Week 4 reference-oriented configuration",
+    )
+    parser.add_argument(
         "--output-csv",
         type=Path,
         default=None,
@@ -409,14 +451,17 @@ def parse_args():
 def main():
     """命令行入口。"""
     args = parse_args()
-    config = SMOKE_CONFIG if args.smoke else FULL_CONFIG
+    config = WEEK4_REFERENCE_CONFIG if args.week4_reference else SMOKE_CONFIG if args.smoke else FULL_CONFIG
     if args.with_simplified and "simplified_jordan_reference" not in config.algorithms:
         config = replace(
             config,
             algorithms=config.algorithms + ["simplified_jordan_reference"],
         )
 
-    csv_path = args.output_csv if args.output_csv else None
+    csv_path = _resolve_reference_output_csv(
+        output_csv=args.output_csv,
+        with_simplified=args.with_simplified,
+    )
 
     if args.with_structure:
         output_csv = _resolve_structural_output_csv(
