@@ -21,3 +21,6 @@ This folder stores the approved thesis scope and research-question documents.
 - `week4_plan.md`  
   Week 4 execution plan for building an algorithm-facing reference pipeline, adding
   differential checks, and preparing seminar-oriented Week 4 outputs.
+- `week5_plan.md`  
+  Week 5 execution plan for debugging and validating the simplified-reference
+  experimental workflow, and preparing thesis-facing narrative artifacts.

@@ -6,7 +6,7 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
-Week 1, Week 2, and Week 3 are complete.
+Week 1, Week 2, Week 3, and Week 4 are complete.
 
 The repository now contains the first reproducible experimental loop:
 
@@ -49,6 +49,14 @@ Week 3 is now complete, with:
 - experimental summary/audit scripts for structural coverage,
 - and stable documented scope boundaries for the reference skeleton.
 
+Week 4 is now complete, with:
+
+- `simplified_jordan_reference` 的实验接入（`--week4-reference`）和独立输出策略；
+- `week4_reference_results.csv` 的可复现生成；
+- 参考 pipeline 在 `3675` 行原始实验中的 `error=""` 与 `sorted_correct=True` 前置检查通过。
+
+Week 5 的目标是把这些结果整理成论文可直接复用的验证链条。
+
 ## Project Structure
 
 ```text
@@ -58,6 +66,7 @@ src/
   baselines.py
   stats.py
   family_tree.py
+  jordan_operations.py
   simplified_jordan.py
 
 tests/
@@ -68,9 +77,12 @@ tests/
   test_family_tree.py
   test_stats.py
   test_simplified_jordan.py
+  test_jordan_operations.py
 
 experiments/
   run_small_tests.py
+  summarize_results.py
+  profile_generated_cases.py
 
 results/
   week1_baseline_results.csv
@@ -161,11 +173,11 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 139 tests
+Ran 152 tests
 OK
 ```
 
-Note: a full Week 3 run is reproducible from the current scripts; all generated
+Note: a full Week 4 reference run is reproducible from the current scripts; all generated
 artifact outputs are committed only when explicitly tracked.
 
 ## Running Week 1 Experiments
@@ -215,10 +227,15 @@ Important project documents:
 - [docs/progress/week2_summary.md](docs/progress/week2_summary.md): Week 2 completion summary, limitations, and Week 3 handoff.
 - [docs/progress/week3_progress.md](docs/progress/week3_progress.md): Week 3 execution notes (contract audit, debug helper, script scaffolding).
 - [docs/progress/week3_summary.md](docs/progress/week3_summary.md): Week 3 completion summary and Week 4 handoff.
+- [docs/progress/week4_notes.md](docs/progress/week4_notes.md): Week 4 execution notes and milestone log.
+- [docs/progress/week4_summary.md](docs/progress/week4_summary.md): Week 4 completion summary and reference-pipeline boundary statement.
+- [docs/progress/week5_progress.md](docs/progress/week5_progress.md): Week 5 execution log and checkpoint record.
 - [docs/design/structural_examples.md](docs/design/structural_examples.md): concrete structural examples for papers and debugging.
 - [docs/backlog/future_work_todo.md](docs/backlog/future_work_todo.md): follow-up ideas that should not block the Week 1 loop.
 - [docs/plan/four_month_roadmap.md](docs/plan/four_month_roadmap.md): compressed 3-4 month thesis execution plan.
 - [docs/plan/week3_plan.md](docs/plan/week3_plan.md): Week 3 plan for reference pipeline strengthening and experimental support expansion.
+- [docs/plan/week4_plan.md](docs/plan/week4_plan.md): Week 4 execution plan and checkpoint criteria.
+- [docs/plan/week5_plan.md](docs/plan/week5_plan.md): Week 5 plan for validation and thesis-facing experimental artifacts.
 
 ## Known Limitations
 
@@ -235,10 +252,10 @@ Important project documents:
 
 Immediate next task:
 
-- start Week 4 by building algorithm-facing operations on top of the stabilized Week 2/3 contracts:
+- start Week 5 by completing the first reference-pipeline validation pass:
 
   - [docs/plan/four_month_roadmap.md](docs/plan/four_month_roadmap.md)
-  - [docs/progress/week3_summary.md](docs/progress/week3_summary.md)
+  - [docs/plan/week5_plan.md](docs/plan/week5_plan.md)
 
 Later cleanup:
 

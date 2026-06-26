@@ -55,8 +55,12 @@ Current files:
 
 - `week4_notes.md`  
   Week 4 Day 1 notes and scope freeze record.
+
 - `week4_summary.md`  
   Week 4 completion summary and reference-pipeline handoff notes.
+
+- `week5_progress.md`  
+  Week 5 execution log and checkpoint record.
 
 ## Plan Documents
 
@@ -75,6 +79,7 @@ Current files:
 - `week2_plan.md`
 - `week3_plan.md`
 - `week4_plan.md`
+- `week5_plan.md`
 - `thesis_scope_and_research_questions.pdf`
 
 Planned files:
