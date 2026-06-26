@@ -244,6 +244,67 @@ class RunSmallTestsRunnerTests(unittest.TestCase):
                 for field in STRUCTURAL_FIELDS:
                     self.assertIn(field, reader.fieldnames)
 
+    def test_structural_output_csv_requires_structural_mode(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            structural_output = temp_path / "structural.csv"
+
+            with patch(
+                "sys.argv",
+                [
+                    "run_small_tests.py",
+                    "--structural-output-csv",
+                    str(structural_output),
+                ],
+            ):
+                with self.assertRaises(SystemExit) as context:
+                    run_small_tests.main()
+
+        self.assertIn("--with-structure", str(context.exception))
+
+    def test_with_simplified_cannot_use_inactive_structural_output_override(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            structural_output = temp_path / "structural.csv"
+
+            with patch(
+                "sys.argv",
+                [
+                    "run_small_tests.py",
+                    "--with-simplified",
+                    "--structural-output-csv",
+                    str(structural_output),
+                ],
+            ):
+                with self.assertRaises(SystemExit) as context:
+                    run_small_tests.main()
+
+        self.assertIn("--with-structure", str(context.exception))
+
+    def test_run_experiment_week4_reference_structure_uses_config_output_by_default(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            output_csv = temp_path / "week4_reference_results.csv"
+            unexpected_csv = (
+                temp_path / "week4_reference_results_with_structure_fields.csv"
+            )
+            config = replace(
+                WEEK4_REFERENCE_CONFIG,
+                sizes=[8],
+                families=[FLAT_VALID],
+                algorithms=["python_sort"],
+                cases_per_size=1,
+                timing_runs=1,
+                cases_dir=temp_path / "week4_reference_cases",
+                output_csv=output_csv,
+            )
+
+            rows = run_experiment(config, include_structure=True)
+
+            self.assertEqual(len(rows), 1)
+            self.assertTrue(output_csv.exists())
+            self.assertFalse(unexpected_csv.exists())
+
     def test_smoke_experiment_writes_csv(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             temp_path = Path(temp_dir)

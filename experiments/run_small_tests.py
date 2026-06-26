@@ -391,16 +391,11 @@ def expected_row_count(config):
 
 def run_experiment(config, include_structure=False, output_csv=None):
     """运行一次实验配置，写 CSV，并返回所有结果行。"""
-    csv_path = (
-        output_csv
-        if output_csv is not None
-        else config.output_csv
-        if not include_structure
-        else Path(
-            str(config.output_csv).replace(
-                ".csv", "_with_structure_fields.csv",
-            )
-        )
+    csv_path = output_csv or _resolve_output_csv(
+        config=config,
+        include_structure=include_structure,
+        base_output_csv=None,
+        explicit_structural_output_csv=None,
     )
 
     rows = make_result_rows(config, include_structure=include_structure)
@@ -459,11 +454,22 @@ def main():
     args = parse_args()
     config = WEEK4_REFERENCE_CONFIG if args.week4_reference else SMOKE_CONFIG if args.smoke else FULL_CONFIG
 
+    include_structure = args.with_structure or args.week4_reference
+
+    if args.structural_output_csv is not None and not include_structure:
+        raise SystemExit(
+            "--structural-output-csv requires --with-structure or --week4-reference."
+        )
+
+    has_explicit_output_override = (
+        args.output_csv is not None
+        or args.structural_output_csv is not None
+    )
+
     if (
         args.with_simplified
         and not args.week4_reference
-        and args.output_csv is None
-        and args.structural_output_csv is None
+        and not has_explicit_output_override
     ):
         raise SystemExit(
             "--with-simplified without an explicit output path would risk mixing "
@@ -476,8 +482,6 @@ def main():
             config,
             algorithms=config.algorithms + ["simplified_jordan_reference"],
         )
-
-    include_structure = args.with_structure or args.week4_reference
 
     output_csv = _resolve_output_csv(
         config=config,
