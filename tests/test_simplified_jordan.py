@@ -201,6 +201,46 @@ class SimplifiedJordanTests(unittest.TestCase):
         self.assertEqual(result["stats"]["reason"], "duplicate values")
         self.assertEqual(result["oracle"]["reason"], "duplicate values")
 
+    def test_reference_skeleton_differential_small_lengths(self):
+        lengths = [0, 1, 2, 3, 4, 5, 8, 16, 32, 64]
+        families = [FLAT_VALID, NESTED_VALID, INCREMENTAL_VALID]
+
+        for n in lengths:
+            for family in families:
+                with self.subTest(n=n, family=family):
+                    seq = generate_sequence(family, n, seed=2026)
+                    result = simplified_jordan_sort(seq)
+                    oracle_result = oracle(seq)
+
+                    self.assertTrue(result["valid"], f"family={family}, n={n}")
+                    self.assertIsNone(result["reason"], f"family={family}, n={n}")
+                    self.assertIsNotNone(result["families"], f"family={family}, n={n}")
+                    self.assertEqual(result["sorted"], sorted(seq))
+                    self.assertEqual(result["sorted"], oracle_result["sorted"])
+
+    def test_reference_skeleton_invalid_cases_keep_reasons(self):
+        invalid_cases = [
+            (generate_sequence(INVALID_UPPER_CROSSING, 8), "upper crossing"),
+            (generate_sequence(INVALID_LOWER_CROSSING, 8), "lower crossing"),
+            (generate_sequence(RANDOM_INVALID, 8, seed=11), None),
+            (generate_sequence(MUTATION_BASED_INVALID, 8, seed=13), None),
+            ([1, 2, 2, 3], "duplicate values"),
+        ]
+
+        for seq, expected_reason in invalid_cases:
+            with self.subTest(seq=seq):
+                result = simplified_jordan_sort(seq)
+
+                self.assertFalse(result["valid"])
+                self.assertIsNone(result["families"])
+                self.assertEqual(result["stats"]["category"], "invalid")
+                if expected_reason is not None:
+                    self.assertEqual(result["reason"], expected_reason)
+                    self.assertEqual(result["stats"]["reason"], expected_reason)
+                else:
+                    self.assertIsNotNone(result["reason"])
+                    self.assertIsNotNone(result["stats"]["reason"])
+
     def test_reference_skeleton_handles_day2_day3_cases(self):
         cases = [
             ("flat", FLAT_VALID),
