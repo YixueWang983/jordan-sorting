@@ -1,6 +1,6 @@
 # Week 4 Notes
 
-Last updated: 2026-06-25
+Last updated: 2026-06-26
 
 ## Week 4 scope freeze
 
@@ -70,7 +70,9 @@ Last updated: 2026-06-25
 
 ## Day 5~7
 
-- [ ] Day5 继续：完成实验接入（reference pipeline）和 week4 summary。
+- [x] Day5 完成：完成实验接入（reference pipeline）和 `WEEK4` 测试接入。
+- [ ] Day6：生成并检查 `results/week4_reference_results.csv`。
+- [ ] Day7：整理 Week 4 summary，明确 reference pipeline 的实验边界与 non-linear-time 边界。
 
 ## Day 5
 
