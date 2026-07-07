@@ -24,3 +24,6 @@ This folder stores the approved thesis scope and research-question documents.
 - `week5_plan.md`  
   Week 5 execution plan for debugging and validating the simplified-reference
   experimental workflow, and preparing thesis-facing narrative artifacts.
+- `week6_plan.md`  
+  Week 6 execution plan for experimental revalidation, result interpretation,
+  and thesis-facing evidence packing.

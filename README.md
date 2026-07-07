@@ -8,6 +8,8 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 Week 1, Week 2, Week 3, and Week 4 are complete.
 
+Week 5 verification and Week 6 experimental interpretation are complete for this stage.
+
 The repository now contains the first reproducible experimental loop:
 
 ```text
@@ -55,7 +57,8 @@ Week 4 is now complete, with:
 - `week4_reference_results.csv` 的可复现生成；
 - 参考 pipeline 在 `3675` 行原始实验中的 `error=""` 与 `sorted_correct=True` 前置检查通过。
 
-Week 5 的目标是把这些结果整理成论文可直接复用的验证链条。
+Week 5 的目标是把这些结果整理成论文可直接复用的验证链条。  
+Week 6 已经完成该阶段的复核与收口：结果重跑、错误检查、结构字段确认和文档交接。
 
 ## Project Structure
 
@@ -101,6 +104,9 @@ docs/
   progress/
     week1_progress.md
     week1_summary.md
+    week5_progress.md
+    week6_progress.md
+    week6_summary.md
   backlog/
     future_work_todo.md
   notes.md
@@ -109,6 +115,10 @@ docs/
     four_month_roadmap.md
     week2_plan.md
     thesis_scope_and_research_questions.pdf
+    week3_plan.md
+    week4_plan.md
+    week5_plan.md
+    week6_plan.md
   papers/
 ```
 
@@ -230,12 +240,15 @@ Important project documents:
 - [docs/progress/week4_notes.md](docs/progress/week4_notes.md): Week 4 execution notes and milestone log.
 - [docs/progress/week4_summary.md](docs/progress/week4_summary.md): Week 4 completion summary and reference-pipeline boundary statement.
 - [docs/progress/week5_progress.md](docs/progress/week5_progress.md): Week 5 execution log and checkpoint record.
+- [docs/progress/week6_progress.md](docs/progress/week6_progress.md): Week 6 execution log and checkpoint record.
+- [docs/progress/week6_summary.md](docs/progress/week6_summary.md): Week 6 summary and Week 7 handoff constraints.
 - [docs/design/structural_examples.md](docs/design/structural_examples.md): concrete structural examples for papers and debugging.
 - [docs/backlog/future_work_todo.md](docs/backlog/future_work_todo.md): follow-up ideas that should not block the Week 1 loop.
 - [docs/plan/four_month_roadmap.md](docs/plan/four_month_roadmap.md): compressed 3-4 month thesis execution plan.
 - [docs/plan/week3_plan.md](docs/plan/week3_plan.md): Week 3 plan for reference pipeline strengthening and experimental support expansion.
 - [docs/plan/week4_plan.md](docs/plan/week4_plan.md): Week 4 execution plan and checkpoint criteria.
 - [docs/plan/week5_plan.md](docs/plan/week5_plan.md): Week 5 plan for validation and thesis-facing experimental artifacts.
+- [docs/plan/week6_plan.md](docs/plan/week6_plan.md): Week 6 plan for result revalidation and evidence packaging.
 
 ## Known Limitations
 
@@ -252,10 +265,10 @@ Important project documents:
 
 Immediate next task:
 
-- start Week 5 by completing the first reference-pipeline validation pass:
+- complete Week 6 summary handoff and start Week 7 writing prep:
 
+  - [docs/progress/week6_summary.md](docs/progress/week6_summary.md)
   - [docs/plan/four_month_roadmap.md](docs/plan/four_month_roadmap.md)
-  - [docs/plan/week5_plan.md](docs/plan/week5_plan.md)
 
 Later cleanup:
 

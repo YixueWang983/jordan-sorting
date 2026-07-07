@@ -21,6 +21,7 @@ Generated on demand:
 - `week1_baseline_summary.csv`
 - `generator_structure_profile.csv`
 - `week4_reference_results.csv`
+- `week4_reference_summary.csv`
 
 `week1_baseline_results.csv` is the full Week 1 baseline experiment output.
 
@@ -41,6 +42,10 @@ intentionally not committed by default.
 `python experiments/run_small_tests.py --week4-reference` and contains structural
 fields for the Week 4 reference pipeline experiments. It is also intentionally
 not committed by default and may be regenerated as needed.
+
+`week4_reference_summary.csv` is generated from `week4_reference_results.csv` via
+`experiments/summarize_results.py` and contains grouped timing aggregates with
+`all_correct` checks for each `(algorithm, family, n)` group.
 
 By default, generated audit cases are written to:
 

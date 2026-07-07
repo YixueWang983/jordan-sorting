@@ -1,6 +1,6 @@
 # Four-Month Thesis Roadmap
 
-Last updated: 2026-06-16
+Last updated: 2026-07-08
 
 ## Goal
 
@@ -123,7 +123,8 @@ Current status:
 ```text
 Week 1 is complete.
 Week 2 foundations and skeleton outputs are complete.
-The current target is Week 4 algorithm-facing reference operations.
+Week 5 verification and Week 6 experimental revalidation are complete.
+The current target is Week 7 writing and analysis.
 ```
 
 Gate 1 fallback:

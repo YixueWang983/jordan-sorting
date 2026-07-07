@@ -62,6 +62,12 @@ Current files:
 - `week5_progress.md`  
   Week 5 execution log and checkpoint record.
 
+- `week6_progress.md`  
+  Week 6 execution log and verification checkpoint.
+
+- `week6_summary.md`  
+  Week 6 completion summary and Week 7 handoff constraints.
+
 ## Plan Documents
 
 Path:
@@ -80,6 +86,7 @@ Current files:
 - `week3_plan.md`
 - `week4_plan.md`
 - `week5_plan.md`
+- `week6_plan.md`
 - `thesis_scope_and_research_questions.pdf`
 
 Planned files:
