@@ -65,7 +65,7 @@ Last updated: 2026-07-08
 ### Completed
 
 - [x] 完成 week6 计划文件 `docs/plan/week6_plan.md` 创建。
-- [x] 将 week6 进度/总结与核心状态入口同步（见下一步 root/docs/README 计划说明更新）。
+- [x] 将 week6 进度/总结与核心状态入口同步到 root README、docs README 和 plan README。
 
 ## Day 6: Week 6 收口
 

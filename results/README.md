@@ -208,6 +208,20 @@ sorted_correct
 error
 ```
 
+Week 4 reference rows additionally include:
+
+```text
+upper_interval_count
+lower_interval_count
+total_interval_count
+upper_root_count
+lower_root_count
+nesting_count
+nesting_density
+max_depth
+category
+```
+
 ## Field Meanings
 
 `case_id`  

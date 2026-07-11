@@ -57,8 +57,8 @@ Week 4 is now complete, with:
 - `week4_reference_results.csv` 的可复现生成；
 - 参考 pipeline 在 `3675` 行原始实验中的 `error=""` 与 `sorted_correct=True` 前置检查通过。
 
-Week 5 的目标是把这些结果整理成论文可直接复用的验证链条。  
-Week 6 已经完成该阶段的复核与收口：结果重跑、错误检查、结构字段确认和文档交接。
+Week 5 completed the first thesis-facing validation chain.  
+Week 6 completed revalidation, interpretation, and handoff: result reruns, error checks, structural-field checks, and documentation sync.
 
 ## Project Structure
 
@@ -94,6 +94,8 @@ results/
   # generated via scripts (reproducible, not committed by default):
   #   - week1_baseline_summary.csv
   #   - generator_structure_profile.csv
+  #   - week4_reference_results.csv
+  #   - week4_reference_summary.csv
 
 docs/
   README.md

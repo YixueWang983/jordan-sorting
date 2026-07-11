@@ -50,6 +50,31 @@ Week 6 目标是把 Week 4 的实验结果从“可运行”推进到“可复�
 - 新增 `docs/plan/week6_plan.md` 与 `docs/progress/week6_progress.md`；
 - 更新阶段计划：Week 5 的“结果验证任务”已转接到 Week 6 的“复核 + 解释 + 收口”。
 
+## Thesis-facing Interpretation
+
+### 可以讲
+
+- 当前实验链路已经可复现：从生成测试序列、运行 oracle、执行 baseline/reference pipeline，到输出 raw CSV 和 summary CSV，均有脚本支持。
+- `simplified_jordan_reference` 已经可以作为实验中的 reference-pipeline 对照项，与普通排序 baseline 一起运行。
+- Week 4 reference 实验覆盖 `7` 个 generator family、`7` 个 size、`5` 个 algorithm，总计 `3675` 行 raw timing records。
+- 所有 Week 4 reference raw rows 都满足 `error=""` 与 `sorted_correct=True`，说明当前 reference pipeline 在排序输出上与 oracle/ordinary sorted order 一致。
+- Structural fields 已经进入 Week 4 reference result，可以支持后续按 `category`, `nesting_density`, `max_depth` 等结构指标解释实验样本。
+- Summary CSV 已经能按 `(algorithm, family, n)` 聚合 timing rows，并记录 `run_count` 与 `all_correct`。
+
+### 不能讲
+
+- 不能声称当前实现已经完成理论上的 linear-time Jordan sorting。
+- 不能声称 `simplified_jordan_reference` 已经实现 level-linked search trees、heterogeneous finger trees 或真实 dynamic split/merge engine。
+- 不能把当前 timing 结果解释为理论复杂度证明；它们只能作为 ordinary-list reference pipeline 和 baseline 的工程实验观察。
+- 不能把 generator family 名称直接等同于 structural category；结构类别仍应由 `structure_profile` 计算得到。
+
+### 下一步推进
+
+- Week 7 应优先把 Week 6 的结果事实整理成论文结果章节草稿，而不是继续扩大代码范围。
+- 需要把 raw timing/summary 结果转化为少量可解释表格：例如每个 algorithm/family/size 的 median timing、正确性状态和结构类别分布。
+- 需要为论文正文补清楚 reference pipeline 的边界：它是 correctness-oriented and explainable，不是 theoretical linear-time implementation。
+- 后续如果要推进真正算法实现，应另起阶段，并保持现有 reference pipeline 作为 regression oracle。
+
 ## 结论
 
 - Week 6 已完成可复核实验闭环，形成可复用的 reference-pipeline 验证记录；
