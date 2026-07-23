@@ -1,6 +1,6 @@
 # Four-Month Thesis Roadmap
 
-Last updated: 2026-07-08
+Last updated: 2026-07-23
 
 ## Goal
 
@@ -124,7 +124,8 @@ Current status:
 Week 1 is complete.
 Week 2 foundations and skeleton outputs are complete.
 Week 5 verification and Week 6 experimental revalidation are complete.
-The current target is Week 7 writing and analysis.
+Week 7 experiment-design hardening and pilot analysis are complete.
+The current target is Week 8 thesis-facing analysis and next experiment design.
 ```
 
 Gate 1 fallback:

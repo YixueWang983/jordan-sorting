@@ -72,13 +72,19 @@ def _normalize_interval(interval):
     return (left, right)
 
 
-def _validate_direct_intervals(intervals):
+def _increment_metric(metrics, field, amount=1):
+    if metrics is not None:
+        setattr(metrics, field, getattr(metrics, field) + amount)
+
+
+def _validate_direct_intervals(intervals, metrics=None):
     normalized = [_normalize_interval(interval) for interval in intervals]
 
     seen_intervals = set()
     seen_endpoints = set()
 
     for interval in normalized:
+        _increment_metric(metrics, "interval_validation_checks")
         if interval in seen_intervals:
             raise ValueError("duplicate interval")
 
@@ -92,6 +98,7 @@ def _validate_direct_intervals(intervals):
 
     for i, first in enumerate(normalized):
         for second in normalized[i + 1 :]:
+            _increment_metric(metrics, "interval_validation_checks")
             if crosses(first, second):
                 raise ValueError("crossing intervals")
 
@@ -115,10 +122,10 @@ def build_family_intervals(seq, pair_family):
     return [pair_to_interval(pair, rank) for pair in pairs]
 
 
-def build_family_tree(intervals, pair_family):
+def build_family_tree(intervals, pair_family, metrics=None):
     """根据 rank intervals 构造 family tree。"""
     validate_pair_family(pair_family)
-    normalized = _validate_direct_intervals(intervals)
+    normalized = _validate_direct_intervals(intervals, metrics=metrics)
 
     nodes = [
         IntervalNode(
@@ -131,14 +138,17 @@ def build_family_tree(intervals, pair_family):
         )
         for index, interval in enumerate(normalized)
     ]
+    _increment_metric(metrics, "nodes_created", len(nodes))
 
     for node in nodes:
-        containers = [
-            candidate
-            for candidate in nodes
-            if candidate.id != node.id
-            and proper_interval_contains(candidate.interval, node.interval)
-        ]
+        containers = []
+        for candidate in nodes:
+            if candidate.id == node.id:
+                continue
+            _increment_metric(metrics, "parent_candidate_checks")
+            _increment_metric(metrics, "containment_checks")
+            if proper_interval_contains(candidate.interval, node.interval):
+                containers.append(candidate)
 
         if containers:
             parent = min(
@@ -160,14 +170,15 @@ def build_family_tree(intervals, pair_family):
         node.children.sort(key=lambda node_id: _interval_sort_key(nodes[node_id]))
 
     tree = FamilyTree(pair_family=pair_family, nodes=nodes, roots=roots)
-    compute_depths(tree)
+    compute_depths(tree, metrics=metrics)
     return tree
 
 
-def compute_depths(tree):
+def compute_depths(tree, metrics=None):
     """计算并写入节点深度：root 深度为 0。"""
 
     def visit(node_id, depth):
+        _increment_metric(metrics, "nodes_visited")
         node = tree.nodes[node_id]
         node.depth = depth
         for child_id in node.children:
@@ -179,7 +190,7 @@ def compute_depths(tree):
     return tree
 
 
-def build_family_trees(seq, oracle_result=None):
+def build_family_trees(seq, oracle_result=None, metrics=None):
     """从原始序列构造 upper/lower 两棵家族树（仅对 valid 序列）。"""
     values = list(seq)
 
@@ -193,8 +204,8 @@ def build_family_trees(seq, oracle_result=None):
     lower_intervals = build_family_intervals(values, LOWER)
 
     return {
-        UPPER: build_family_tree(upper_intervals, UPPER),
-        LOWER: build_family_tree(lower_intervals, LOWER),
+        UPPER: build_family_tree(upper_intervals, UPPER, metrics=metrics),
+        LOWER: build_family_tree(lower_intervals, LOWER, metrics=metrics),
     }
 
 

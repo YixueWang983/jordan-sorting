@@ -1,6 +1,6 @@
 # Notation
 
-Last updated: 2026-06-16
+Last updated: 2026-07-23
 
 This document defines the project notation used by the oracle, generators, future family-tree structures, and the simplified Jordan-sorting reference implementation.
 
@@ -471,3 +471,85 @@ Generator family and structural category are different concepts:
 For example, `nested_valid` is a generator family name, not a structural category name.
 
 Similarly, `family` can mean different things in different contexts. In interval code, pair family should mean only `upper` or `lower`. In dataset code, generator family means labels such as `flat_valid`, `incremental_valid`, or `random_invalid`.
+
+## Structural Metrics
+
+### Legacy Nesting Density
+
+Definition:
+
+`nesting_density` is a backward-compatible field whose current implementation
+means:
+
+```text
+nesting_density = parented intervals / total intervals
+```
+
+It does not count all containment pairs. Week 7 keeps this field unchanged so
+older CSV files and tests keep their meaning.
+
+Preferred name:
+
+```text
+parented_interval_ratio
+```
+
+### Containment Pair Count
+
+Definition:
+
+A containment pair is an unordered pair of intervals from the same pair family
+where one interval strictly contains the other.
+
+For intervals `[a, b]` and `[c, d]`, containment holds if:
+
+```text
+a < c and d < b
+```
+
+or symmetrically:
+
+```text
+c < a and b < d
+```
+
+The project records:
+
+```text
+upper_containment_pair_count
+lower_containment_pair_count
+containment_pair_count
+```
+
+### Containment Pair Density
+
+Definition:
+
+Let `m_u` be the number of upper intervals and `m_l` the number of lower
+intervals.
+
+```text
+containment_pair_density =
+    containment_pair_count / (C(m_u, 2) + C(m_l, 2))
+```
+
+If the denominator is zero, the density is defined as `0.0`.
+
+This is the preferred density metric for Week 7 and later experimental
+interpretation.
+
+### Crossing Pair Count
+
+Definition:
+
+Crossing pair count measures invalid severity inside upper and lower pair
+families:
+
+```text
+upper_crossing_pair_count
+lower_crossing_pair_count
+total_crossing_pair_count
+```
+
+Duplicate-value candidates do not receive crossing counts because their rank
+interval interpretation is not reliable.

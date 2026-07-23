@@ -27,3 +27,6 @@ This folder stores the approved thesis scope and research-question documents.
 - `week6_plan.md`  
   Week 6 execution plan for experimental revalidation, result interpretation,
   and thesis-facing evidence packing.
+- `week7_plan.md`  
+  Week 7 execution plan for experiment-design hardening, structural metric
+  clarification, operation counters, generator audit, and pilot analysis.

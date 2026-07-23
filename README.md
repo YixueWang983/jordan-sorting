@@ -8,7 +8,8 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 Week 1, Week 2, Week 3, and Week 4 are complete.
 
-Week 5 verification and Week 6 experimental interpretation are complete for this stage.
+Week 5 verification, Week 6 experimental interpretation, and Week 7 pilot
+experiment design hardening are complete for this stage.
 
 The repository now contains the first reproducible experimental loop:
 
@@ -60,6 +61,14 @@ Week 4 is now complete, with:
 Week 5 completed the first thesis-facing validation chain.  
 Week 6 completed revalidation, interpretation, and handoff: result reruns, error checks, structural-field checks, and documentation sync.
 
+Week 7 completed experiment-design hardening:
+
+- mathematically clearer containment/crossing metrics,
+- experiment-only operation counters,
+- generator coverage audit,
+- warm-up/median/IQR pilot benchmark protocol,
+- and a small pilot analysis with case-level and group-level summaries.
+
 ## Project Structure
 
 ```text
@@ -70,6 +79,7 @@ src/
   stats.py
   family_tree.py
   jordan_operations.py
+  instrumentation.py
   simplified_jordan.py
 
 tests/
@@ -81,11 +91,16 @@ tests/
   test_stats.py
   test_simplified_jordan.py
   test_jordan_operations.py
+  test_instrumentation.py
+  test_generator_coverage_audit.py
+  test_run_week7_pilot.py
 
 experiments/
   run_small_tests.py
   summarize_results.py
   profile_generated_cases.py
+  audit_generator_coverage.py
+  run_week7_pilot.py
 
 results/
   week1_baseline_results.csv
@@ -96,6 +111,10 @@ results/
   #   - generator_structure_profile.csv
   #   - week4_reference_results.csv
   #   - week4_reference_summary.csv
+  #   - week7_generator_coverage_audit.csv
+  #   - week7_pilot_raw.csv
+  #   - week7_pilot_case_summary.csv
+  #   - week7_pilot_group_summary.csv
 
 docs/
   README.md
@@ -109,6 +128,10 @@ docs/
     week5_progress.md
     week6_progress.md
     week6_summary.md
+    week7_progress.md
+    week7_summary.md
+  analysis/
+    week7_pilot_interpretation.md
   backlog/
     future_work_todo.md
   notes.md
@@ -121,6 +144,7 @@ docs/
     week4_plan.md
     week5_plan.md
     week6_plan.md
+    week7_plan.md
   papers/
 ```
 
@@ -185,7 +209,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 152 tests
+Ran 167 tests
 OK
 ```
 
@@ -244,13 +268,19 @@ Important project documents:
 - [docs/progress/week5_progress.md](docs/progress/week5_progress.md): Week 5 execution log and checkpoint record.
 - [docs/progress/week6_progress.md](docs/progress/week6_progress.md): Week 6 execution log and checkpoint record.
 - [docs/progress/week6_summary.md](docs/progress/week6_summary.md): Week 6 summary and Week 7 handoff constraints.
+- [docs/progress/week7_progress.md](docs/progress/week7_progress.md): Week 7 execution log for metrics, counters, audit, and pilot work.
+- [docs/progress/week7_summary.md](docs/progress/week7_summary.md): Week 7 summary and Week 8 handoff constraints.
 - [docs/design/structural_examples.md](docs/design/structural_examples.md): concrete structural examples for papers and debugging.
+- [docs/design/experimental_questions_and_metrics.md](docs/design/experimental_questions_and_metrics.md): Week 7 experiment questions and metric definitions.
+- [docs/design/benchmark_protocol.md](docs/design/benchmark_protocol.md): Week 7 pilot timing protocol.
+- [docs/analysis/week7_pilot_interpretation.md](docs/analysis/week7_pilot_interpretation.md): initial Week 7 pilot interpretation.
 - [docs/backlog/future_work_todo.md](docs/backlog/future_work_todo.md): follow-up ideas that should not block the Week 1 loop.
 - [docs/plan/four_month_roadmap.md](docs/plan/four_month_roadmap.md): compressed 3-4 month thesis execution plan.
 - [docs/plan/week3_plan.md](docs/plan/week3_plan.md): Week 3 plan for reference pipeline strengthening and experimental support expansion.
 - [docs/plan/week4_plan.md](docs/plan/week4_plan.md): Week 4 execution plan and checkpoint criteria.
 - [docs/plan/week5_plan.md](docs/plan/week5_plan.md): Week 5 plan for validation and thesis-facing experimental artifacts.
 - [docs/plan/week6_plan.md](docs/plan/week6_plan.md): Week 6 plan for result revalidation and evidence packaging.
+- [docs/plan/week7_plan.md](docs/plan/week7_plan.md): Week 7 plan for experiment-design hardening and pilot analysis.
 
 ## Known Limitations
 
@@ -267,9 +297,9 @@ Important project documents:
 
 Immediate next task:
 
-- complete Week 6 summary handoff and start Week 7 writing prep:
+- start Week 8 from the measured Week 7 gaps:
 
-  - [docs/progress/week6_summary.md](docs/progress/week6_summary.md)
+  - [docs/progress/week7_summary.md](docs/progress/week7_summary.md)
   - [docs/plan/four_month_roadmap.md](docs/plan/four_month_roadmap.md)
 
 Later cleanup:

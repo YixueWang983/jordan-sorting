@@ -34,17 +34,28 @@ def crosses(interval1, interval2):
     return (a < c < b < d) or (c < a < d < b)
 
 
-def is_laminar(pairs, rank):
+def _increment_metric(metrics, field, amount=1):
+    if metrics is not None:
+        setattr(metrics, field, getattr(metrics, field) + amount)
+
+
+def is_laminar(pairs, rank, metrics=None, pair_family=None):
     """用 O(n^2) 的简单层级检查判断 intervals 是否为 laminar family。"""
     intervals = [pair_to_interval(pair, rank) for pair in pairs]
     for i, first in enumerate(intervals):
         for second in intervals[i + 1 :]:
+            _increment_metric(metrics, "laminar_pair_checks")
+            if pair_family == "upper":
+                _increment_metric(metrics, "upper_pair_checks")
+            elif pair_family == "lower":
+                _increment_metric(metrics, "lower_pair_checks")
             if crosses(first, second):
+                _increment_metric(metrics, "crossings_found")
                 return False
     return True
 
 
-def oracle(seq):
+def oracle(seq, metrics=None):
     """检查序列是否同时满足 upper 和 lower family 的 laminarity。"""
     values = list(seq)
     sorted_values = sorted(values)
@@ -60,8 +71,8 @@ def oracle(seq):
         }
 
     rank = rank_map(values)
-    upper_ok = is_laminar(upper_pairs(values), rank)
-    lower_ok = is_laminar(lower_pairs(values), rank)
+    upper_ok = is_laminar(upper_pairs(values), rank, metrics=metrics, pair_family="upper")
+    lower_ok = is_laminar(lower_pairs(values), rank, metrics=metrics, pair_family="lower")
 
     reason = None
     if not upper_ok and not lower_ok:

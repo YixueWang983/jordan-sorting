@@ -26,6 +26,12 @@ Current files:
 - `structural_examples.md`  
   Concrete flat / nested / invalid structural examples used for debug and thesis drafts.
 
+- `experimental_questions_and_metrics.md`  
+  Week 7 research questions, metric definitions, and interpretation boundaries.
+
+- `benchmark_protocol.md`  
+  Week 7 timing protocol for pilot benchmarking.
+
 ## Progress Documents
 
 Path:
@@ -68,6 +74,12 @@ Current files:
 - `week6_summary.md`  
   Week 6 completion summary and Week 7 handoff constraints.
 
+- `week7_progress.md`  
+  Week 7 execution log for metrics, instrumentation, audit, and pilot analysis.
+
+- `week7_summary.md`  
+  Week 7 completion summary and Week 8 handoff constraints.
+
 ## Plan Documents
 
 Path:
@@ -87,6 +99,7 @@ Current files:
 - `week4_plan.md`
 - `week5_plan.md`
 - `week6_plan.md`
+- `week7_plan.md`
 - `thesis_scope_and_research_questions.pdf`
 
 Planned files:
@@ -123,6 +136,21 @@ Use this folder for future work ideas that should not block the current weekly p
 Current files:
 
 - `future_work_todo.md`
+
+## Analysis
+
+Path:
+
+```text
+docs/analysis/
+```
+
+Use this folder for small pilot interpretations and thesis-facing analysis
+drafts that are derived from generated results.
+
+Current files:
+
+- `week7_pilot_interpretation.md`
 
 ## Other Files
 
