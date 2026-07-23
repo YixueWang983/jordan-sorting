@@ -103,6 +103,42 @@ class RunWeek7PilotTests(unittest.TestCase):
             self.assertTrue(all(row["validity_correct"] is True for row in simplified_rows))
             self.assertTrue(all(row["reason_correct"] is True for row in simplified_rows))
 
+    def test_group_summary_handles_algorithm_with_no_successful_timings(self):
+        def always_fails(_seq):
+            raise RuntimeError("intentional test failure")
+
+        ALGORITHMS["always_fails"] = always_fails
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                config = self._config(tmpdir)
+                rows = make_raw_rows(config)
+                case_rows = summarize_by_case(rows)
+                group_rows = summarize_by_group(case_rows)
+
+                failing_case_rows = [
+                    row for row in case_rows if row["algorithm"] == "always_fails"
+                ]
+                failing_group_rows = [
+                    row for row in group_rows if row["algorithm"] == "always_fails"
+                ]
+
+                self.assertTrue(failing_case_rows)
+                self.assertTrue(failing_group_rows)
+                self.assertTrue(
+                    all(row["median_time_ns"] == "" for row in failing_case_rows)
+                )
+                self.assertTrue(
+                    all(row["median_case_time_ns"] == "" for row in failing_group_rows)
+                )
+                self.assertTrue(
+                    all(row["all_cases_correct"] is False for row in failing_group_rows)
+                )
+                self.assertTrue(
+                    all(int(row["total_error_count"]) > 0 for row in failing_group_rows)
+                )
+        finally:
+            del ALGORITHMS["always_fails"]
+
 
 if __name__ == "__main__":
     unittest.main()

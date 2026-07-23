@@ -436,7 +436,11 @@ def summarize_by_group(case_rows):
 
     summaries = []
     for (family, n, algorithm), rows in sorted(grouped.items()):
-        case_medians = [float(row["median_time_ns"]) for row in rows]
+        case_medians = [
+            float(row["median_time_ns"])
+            for row in rows
+            if row["median_time_ns"] not in {"", None}
+        ]
         q1, q3, iqr = _quartiles(case_medians)
 
         def avg(field):
@@ -457,7 +461,9 @@ def summarize_by_group(case_rows):
                 "q1_case_time_ns": q1,
                 "q3_case_time_ns": q3,
                 "iqr_case_time_ns": iqr,
-                "mean_case_time_ns": statistics.mean(case_medians),
+                "mean_case_time_ns": statistics.mean(case_medians)
+                if case_medians
+                else "",
                 "all_cases_correct": all(_as_bool(row["all_correct"]) for row in rows),
                 "total_error_count": sum(int(row["error_count"]) for row in rows),
                 "avg_containment_pair_density": avg("containment_pair_density"),

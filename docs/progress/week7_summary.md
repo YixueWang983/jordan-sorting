@@ -153,8 +153,13 @@ results/week7_pilot_raw.csv: 450 rows
 results/week7_pilot_case_summary.csv: 90 rows
 results/week7_pilot_group_summary.csv: 63 rows
 results/week7_environment.json
-docs/analysis/week7_pilot_interpretation.md
 docs/analysis/week7_pilot_auto_report.md
+```
+
+人工解释文件：
+
+```text
+docs/analysis/week7_pilot_interpretation.md
 ```
 
 Raw pilot rows 满足：
@@ -192,7 +197,7 @@ overall_correct = True
 全量测试通过：
 
 ```text
-Ran 168 tests
+Ran 169 tests
 OK
 ```
 

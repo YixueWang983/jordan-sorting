@@ -53,6 +53,9 @@ Raw rows are grouped in two stages:
 2. `(family, n, algorithm)` group summary over case medians.
 
 This avoids treating different generated cases as identical runtime samples.
+If every measured run for a case fails, the case summary keeps an empty timing
+statistic and a positive `error_count`. The group summary must still emit a row
+with empty timing aggregates instead of crashing.
 
 ## Interpretation Rules
 
