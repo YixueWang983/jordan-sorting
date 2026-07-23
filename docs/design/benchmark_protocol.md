@@ -17,6 +17,9 @@ operation counters are ready for thesis-scale analysis.
 - Disable GC only during the timed function call.
 - Run warm-up calls before measured calls.
 - Record raw measured calls, then summarize by case before summarizing by group.
+- Time the plain algorithm implementation. Diagnostic operation counters are
+  collected once per case outside the timed region so counter overhead is not
+  mixed into runtime measurements.
 
 Default protocol:
 
@@ -73,3 +76,17 @@ The current implementation is a correctness-oriented reference pipeline using an
 ordinary-list backend and oracle-sorted output. Pilot timing does not prove a
 linear-time Jordan-sorting implementation.
 
+## Correctness Fields
+
+Week 7 pilot rows distinguish several checks:
+
+```text
+output_correct
+validity_correct
+reason_correct
+overall_correct
+```
+
+`sorted_correct` is retained as a backward-compatible alias for output
+correctness. Invalid inputs should not be judged only by sorted-output equality;
+validity and reason checks are recorded for algorithms that expose them.

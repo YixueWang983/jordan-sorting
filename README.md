@@ -132,6 +132,7 @@ docs/
     week7_summary.md
   analysis/
     week7_pilot_interpretation.md
+    week7_pilot_auto_report.md
   backlog/
     future_work_todo.md
   notes.md
@@ -209,7 +210,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 167 tests
+Ran 168 tests
 OK
 ```
 

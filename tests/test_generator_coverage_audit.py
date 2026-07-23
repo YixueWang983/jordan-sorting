@@ -61,6 +61,10 @@ class GeneratorCoverageAuditTests(unittest.TestCase):
         self.assertEqual(rows[0]["invalid_reason"], "upper crossing")
         self.assertGreaterEqual(rows[0]["upper_crossing_pair_count"], 1)
         self.assertGreaterEqual(rows[0]["total_crossing_pair_count"], 1)
+        self.assertGreater(rows[0]["crossing_pair_density"], 0)
+        self.assertEqual(rows[0]["structural_category"], "invalid")
+        self.assertFalse(rows[0]["has_duplicate_values"])
+        self.assertEqual(len(rows[0]["sequence_hash"]), 64)
 
     def test_write_audit_creates_csv(self):
         rows = audit_generator_coverage(
@@ -75,8 +79,8 @@ class GeneratorCoverageAuditTests(unittest.TestCase):
 
             self.assertTrue(output_csv.exists())
             self.assertIn("containment_pair_density", output_csv.read_text())
+            self.assertIn("has_duplicate_values", output_csv.read_text())
 
 
 if __name__ == "__main__":
     unittest.main()
-

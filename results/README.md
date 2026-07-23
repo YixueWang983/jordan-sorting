@@ -27,6 +27,7 @@ Generated on demand:
 - `week7_pilot_case_summary.csv`
 - `week7_pilot_group_summary.csv`
 - `week7_environment.json`
+- `docs/analysis/week7_pilot_auto_report.md`
 
 `week1_baseline_results.csv` is the full Week 1 baseline experiment output.
 
@@ -63,6 +64,11 @@ thesis-scale experiment artifacts.
 
 `week7_environment.json` records the Python/platform/config metadata for the
 Week 7 pilot run.
+
+`docs/analysis/week7_pilot_auto_report.md` is an automatically generated report from
+`experiments/run_week7_pilot.py`. Manual analysis notes live under
+`docs/analysis/week7_pilot_interpretation.md` and are not overwritten by the
+runner.
 
 By default, generated audit cases are written to:
 
@@ -269,6 +275,10 @@ category
 Week 7 pilot rows additionally include diagnostic metric fields such as:
 
 ```text
+output_correct
+validity_correct
+reason_correct
+overall_correct
 parented_interval_ratio
 containment_pair_density
 total_crossing_pair_count
@@ -278,6 +288,10 @@ nodes_created
 nodes_visited
 trace_event_count
 ```
+
+For `simplified_jordan_reference`, runtime is measured on the plain reference
+pipeline. Diagnostic counters are collected once per case outside the timed
+region, so instrumentation overhead is not included in `time_ns`.
 
 ## Field Meanings
 
@@ -319,6 +333,22 @@ Elapsed time in nanoseconds. Empty only if an algorithm run raised an exception.
 
 `sorted_correct`  
 Whether the algorithm's sorted output matched `oracle["sorted"]`. This is a sorting-output check, not a validity-decision check.
+
+`output_correct`  
+Same sorting-output check as `sorted_correct`; added in Week 7 to make the
+correctness taxonomy explicit.
+
+`validity_correct`  
+Whether an algorithm that reports validity matched the oracle validity decision.
+Empty for algorithms that do not report validity, such as `python_sort`.
+
+`reason_correct`  
+Whether an algorithm that reports invalidity reasons matched the oracle reason.
+Empty for algorithms that do not report reasons.
+
+`overall_correct`  
+Combined Week 7 correctness flag. It requires output correctness and, when the
+algorithm reports them, validity and reason correctness.
 
 `error`  
 Empty for successful runs. If an algorithm raises an exception, this field stores the exception type and message.

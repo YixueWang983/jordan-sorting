@@ -19,14 +19,24 @@ Metric mapping:
 
 ```text
 sorted_correct -> H1
+output_correct -> H1 sorted-output check
+validity_correct -> H1 validity-decision check
+reason_correct -> H1 invalid-reason check
+overall_correct -> H1 combined check
 oracle_valid   -> H1 input class
 error          -> H1 failure diagnosis
 ```
 
 ### H2: Structure Sensitivity
 
-For fixed `n`, more containment and deeper family trees should be visible in
-diagnostic operation counts.
+H2 is split into two pilot-level questions:
+
+```text
+H2a: structural metrics should distinguish flat, nested, and incremental inputs.
+H2b: the current ordinary-list implementation may not exploit those structural
+     differences, so selected operation counts may be driven mainly by input
+     size and quadratic scans.
+```
 
 Metric mapping:
 
@@ -35,7 +45,7 @@ max_depth                  -> H2 structural variable
 parented_interval_ratio    -> H2 legacy-compatible nesting signal
 containment_pair_count     -> H2 structural containment count
 containment_pair_density   -> H2 normalized containment signal
-containment_checks         -> H2 implementation cost signal
+containment_checks         -> H2b ordinary-builder cost signal
 nodes_visited              -> H2 tree traversal signal
 ```
 
@@ -142,6 +152,10 @@ Correctness metrics:
 
 ```text
 sorted_correct
+output_correct
+validity_correct
+reason_correct
+overall_correct
 error
 oracle_valid
 ```
@@ -158,6 +172,5 @@ instrumentation counters
 ## Interpretation Boundaries
 
 The current implementation is a correctness-oriented reference pipeline. Timing
-and operation counters can describe this implementation, but they do not prove
-the theoretical linear-time Jordan-sorting bound.
-
+and selected operation counters can describe this implementation, but they do not
+prove the theoretical linear-time Jordan-sorting bound.

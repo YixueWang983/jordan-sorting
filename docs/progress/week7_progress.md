@@ -94,6 +94,7 @@ results/week7_pilot_case_summary.csv: 90 rows
 results/week7_pilot_group_summary.csv: 63 rows
 results/week7_environment.json
 docs/analysis/week7_pilot_interpretation.md
+docs/analysis/week7_pilot_auto_report.md
 ```
 
 All pilot raw rows had:
@@ -101,6 +102,7 @@ All pilot raw rows had:
 ```text
 error = ""
 sorted_correct = True
+overall_correct = True
 ```
 
 ## Day 7: Review and Handoff
@@ -110,7 +112,7 @@ sorted_correct = True
 - [x] Ran full unit test suite:
 
 ```text
-Ran 167 tests
+Ran 168 tests
 OK
 ```
 

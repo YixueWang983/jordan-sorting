@@ -12,9 +12,10 @@ This pilot is a controlled engineering observation, not a final performance clai
 
 ## Initial Observations
 
-- The pilot records correctness, timing, structural metrics, and operation counters together.
+- The pilot records correctness, timing, structural metrics, and selected operation counters together.
 - The pilot suggests that future analysis should compare runtime against containment density and max depth at the case-summary level.
 - The pilot keeps `simplified_jordan_reference` as a reference pipeline using oracle-sorted output.
+- The pilot now times the plain reference pipeline; diagnostic counters are collected once per case outside the timed region.
 - In this pilot, valid flat, nested, and incremental cases with the same `n`
   show different `containment_pair_density` and `max_depth` values, but the
   current ordinary family-tree builder still performs a deterministic quadratic
@@ -30,6 +31,9 @@ This pilot is a controlled engineering observation, not a final performance clai
 - The timing observations should be interpreted through case summaries and IQR,
   not by mixing all raw rows from different generated cases into one homogeneous
   sample.
+- The automatically generated pilot report is written to
+  `docs/analysis/week7_pilot_auto_report.md`; this manual interpretation file is
+  not overwritten by the runner.
 
 ## Boundaries
 

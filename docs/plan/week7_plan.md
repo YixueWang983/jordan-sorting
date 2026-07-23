@@ -187,6 +187,7 @@ Outputs:
 - `results/week7_pilot_group_summary.csv`
 - `results/week7_environment.json`
 - `docs/analysis/week7_pilot_interpretation.md`
+- `docs/analysis/week7_pilot_auto_report.md`
 
 Pilot statements must use cautious language:
 
@@ -219,4 +220,3 @@ Completion criteria:
 - generator coverage is measured from actual generated data,
 - pilot timing uses warm-up, median, IQR, and case-level aggregation,
 - Week 8 next steps are based on measured gaps rather than family names alone.
-

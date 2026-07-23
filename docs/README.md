@@ -151,6 +151,7 @@ drafts that are derived from generated results.
 Current files:
 
 - `week7_pilot_interpretation.md`
+- `week7_pilot_auto_report.md`
 
 ## Other Files
 

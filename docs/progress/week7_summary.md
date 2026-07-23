@@ -77,7 +77,7 @@ rank-interval interpretation。
 - `instrumented_reference_run(seq)`
 
 Instrumentation 不改变 `simplified_jordan_sort(seq)` 的 public return contract。
-当前 counters 包括：
+当前 counters 覆盖 selected validation and family-tree construction operations：
 
 ```text
 laminar_pair_checks
@@ -92,7 +92,8 @@ nodes_visited
 trace_event_count
 ```
 
-Trace 仍然用于描述流程；operation counters 才用于诊断计算成本。
+Trace 仍然用于描述流程；operation counters 用于诊断部分计算成本，但不代表
+total computational cost。
 
 ### 4) Benchmark protocol
 
@@ -153,6 +154,7 @@ results/week7_pilot_case_summary.csv: 90 rows
 results/week7_pilot_group_summary.csv: 63 rows
 results/week7_environment.json
 docs/analysis/week7_pilot_interpretation.md
+docs/analysis/week7_pilot_auto_report.md
 ```
 
 Raw pilot rows 满足：
@@ -160,6 +162,7 @@ Raw pilot rows 满足：
 ```text
 error = ""
 sorted_correct = True
+overall_correct = True
 ```
 
 ## Pilot Interpretation
@@ -179,12 +182,17 @@ sorted_correct = True
 - 当前 operation counters 能帮助定位 ordinary implementation 的二次扫描成本；
 - 后续 generator 设计应基于 measured structural gaps，而不是只依据 family 名称。
 
+因此 Week 7 将 H2 拆成更准确的两个说法：
+
+- H2a：结构指标可以区分 flat、nested 和 incremental inputs；
+- H2b：当前 ordinary-list implementation 没有利用这些结构差异，成本主要由输入规模和二次扫描策略决定。
+
 ## 测试状态
 
 全量测试通过：
 
 ```text
-Ran 167 tests
+Ran 168 tests
 OK
 ```
 

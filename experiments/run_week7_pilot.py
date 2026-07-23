@@ -31,6 +31,7 @@ from generators import (  # noqa: E402
 )
 from instrumentation import instrumented_reference_run  # noqa: E402
 from oracle import oracle  # noqa: E402
+from simplified_jordan import simplified_jordan_sort  # noqa: E402
 from stats import structure_profile  # noqa: E402
 
 
@@ -57,15 +58,15 @@ DEFAULT_RAW_CSV = PROJECT_ROOT / "results" / "week7_pilot_raw.csv"
 DEFAULT_CASE_SUMMARY_CSV = PROJECT_ROOT / "results" / "week7_pilot_case_summary.csv"
 DEFAULT_GROUP_SUMMARY_CSV = PROJECT_ROOT / "results" / "week7_pilot_group_summary.csv"
 DEFAULT_ENVIRONMENT_JSON = PROJECT_ROOT / "results" / "week7_environment.json"
-DEFAULT_INTERPRETATION_MD = (
-    PROJECT_ROOT / "docs" / "analysis" / "week7_pilot_interpretation.md"
-)
+DEFAULT_AUTO_REPORT_MD = PROJECT_ROOT / "docs" / "analysis" / "week7_pilot_auto_report.md"
 
 ALGORITHMS = {
     "python_sort": python_sort,
     "sort_plus_laminarity_check": sort_plus_laminarity_check,
-    "simplified_jordan_reference": instrumented_reference_run,
+    "simplified_jordan_reference": simplified_jordan_sort,
 }
+
+NO_DECISION = object()
 
 RAW_FIELDS = [
     "case_id",
@@ -83,6 +84,10 @@ RAW_FIELDS = [
     "run_index",
     "time_ns",
     "sorted_correct",
+    "output_correct",
+    "validity_correct",
+    "reason_correct",
+    "overall_correct",
     "error",
     "laminar_pair_checks",
     "upper_pair_checks",
@@ -152,13 +157,21 @@ class PilotConfig:
     case_summary_csv: Path
     group_summary_csv: Path
     environment_json: Path
-    interpretation_md: Path
+    auto_report_md: Path
 
 
 def csv_value(value):
     if value is None:
         return ""
     return value
+
+
+def _as_bool(value):
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.strip().lower() == "true"
+    return bool(value)
 
 
 def repetitions_for_family(family, randomized_cases):
@@ -183,6 +196,7 @@ def build_cases(config):
                 sequence = generate_sequence(family, n, seed=case_seed)
                 oracle_result = oracle(sequence)
                 profile = structure_profile(sequence, oracle_result=oracle_result)
+                diagnostics = instrumented_reference_run(sequence)["metrics"]
                 cases.append(
                     {
                         "case_id": make_case_id(family, len(sequence), index),
@@ -192,6 +206,7 @@ def build_cases(config):
                         "sequence": sequence,
                         "oracle": oracle_result,
                         "profile": profile,
+                        "diagnostics": diagnostics,
                     }
                 )
     return cases
@@ -203,14 +218,14 @@ def _extract_sorted_output(algorithm_name, result):
     if algorithm_name == "sort_plus_laminarity_check":
         return result["sorted"]
     if algorithm_name == "simplified_jordan_reference":
-        return result["result"]["sorted"]
+        return result["sorted"]
     raise ValueError(f"unknown algorithm: {algorithm_name}")
 
 
-def _extract_metrics(algorithm_name, result):
-    if algorithm_name == "simplified_jordan_reference":
-        return result["metrics"]
-    return {}
+def _extract_validity_result(algorithm_name, result):
+    if algorithm_name in {"sort_plus_laminarity_check", "simplified_jordan_reference"}:
+        return result["valid"], result["reason"]
+    return NO_DECISION, NO_DECISION
 
 
 def _time_once(func, sequence):
@@ -227,24 +242,48 @@ def _time_once(func, sequence):
     return result, end - start
 
 
-def run_timed_algorithm(algorithm_name, sequence, oracle_sorted, run_index):
+def run_timed_algorithm(algorithm_name, sequence, oracle_result, run_index):
     func = ALGORITHMS[algorithm_name]
     try:
         result, time_ns = _time_once(func, sequence)
         sorted_output = _extract_sorted_output(algorithm_name, result)
-        metrics = _extract_metrics(algorithm_name, result)
+        validity_result, reason_result = _extract_validity_result(
+            algorithm_name,
+            result,
+        )
+        output_correct = sorted_output == oracle_result["sorted"]
+        validity_correct = (
+            ""
+            if validity_result is NO_DECISION
+            else validity_result == oracle_result["valid"]
+        )
+        reason_correct = (
+            ""
+            if reason_result is NO_DECISION
+            else reason_result == oracle_result["reason"]
+        )
+        overall_correct = output_correct and (
+            validity_correct in {"", True}
+        ) and (reason_correct in {"", True})
         return {
             "run_index": run_index,
             "time_ns": time_ns,
-            "sorted_correct": sorted_output == oracle_sorted,
+            "sorted_correct": output_correct,
+            "output_correct": output_correct,
+            "validity_correct": validity_correct,
+            "reason_correct": reason_correct,
+            "overall_correct": overall_correct,
             "error": "",
-            **metrics,
         }
     except Exception as exc:
         return {
             "run_index": run_index,
             "time_ns": "",
             "sorted_correct": False,
+            "output_correct": False,
+            "validity_correct": False,
+            "reason_correct": False,
+            "overall_correct": False,
             "error": f"{type(exc).__name__}: {exc}",
         }
 
@@ -281,7 +320,7 @@ def make_raw_rows(config):
                 run_timed_algorithm(
                     algorithm_name,
                     case["sequence"],
-                    case["oracle"]["sorted"],
+                    case["oracle"],
                     run_index=0,
                 )
 
@@ -291,10 +330,12 @@ def make_raw_rows(config):
                     **run_timed_algorithm(
                         algorithm_name,
                         case["sequence"],
-                        case["oracle"]["sorted"],
+                        case["oracle"],
                         run_index=run_index,
                     ),
                 }
+                if algorithm_name == "simplified_jordan_reference":
+                    row.update(case["diagnostics"])
                 rows.append({field: csv_value(row.get(field)) for field in RAW_FIELDS})
     return rows
 
@@ -375,7 +416,7 @@ def summarize_by_case(raw_rows):
                 "iqr_time_ns": iqr,
                 "mean_time_ns": statistics.mean(times) if times else "",
                 "stdev_time_ns": statistics.stdev(times) if len(times) > 1 else 0,
-                "all_correct": all(row["sorted_correct"] == "True" for row in rows),
+                "all_correct": all(_as_bool(row["overall_correct"]) for row in rows),
                 "error_count": error_count,
                 "category": first["category"],
                 "max_depth": first["max_depth"],
@@ -417,7 +458,7 @@ def summarize_by_group(case_rows):
                 "q3_case_time_ns": q3,
                 "iqr_case_time_ns": iqr,
                 "mean_case_time_ns": statistics.mean(case_medians),
-                "all_cases_correct": all(row["all_correct"] is True for row in rows),
+                "all_cases_correct": all(_as_bool(row["all_correct"]) for row in rows),
                 "total_error_count": sum(int(row["error_count"]) for row in rows),
                 "avg_containment_pair_density": avg("containment_pair_density"),
                 "avg_max_depth": avg("max_depth"),
@@ -457,14 +498,14 @@ def write_environment(config):
     config.environment_json.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
 
 
-def write_interpretation(config, group_rows):
-    config.interpretation_md.parent.mkdir(parents=True, exist_ok=True)
+def write_auto_report(config, group_rows):
+    config.auto_report_md.parent.mkdir(parents=True, exist_ok=True)
     algorithms = ", ".join(sorted({row["algorithm"] for row in group_rows}))
     families = ", ".join(config.families)
-    config.interpretation_md.write_text(
+    config.auto_report_md.write_text(
         "\n".join(
             [
-                "# Week 7 Pilot Interpretation",
+                "# Week 7 Pilot Auto Report",
                 "",
                 "This pilot is a controlled engineering observation, not a final performance claim.",
                 "",
@@ -478,9 +519,9 @@ def write_interpretation(config, group_rows):
                 "",
                 "## Initial Observations",
                 "",
-                "- The pilot records correctness, timing, structural metrics, and operation counters together.",
+                "- The pilot records correctness, timing, structural metrics, and selected operation counters together.",
                 "- The pilot suggests that future analysis should compare runtime against containment density and max depth at the case-summary level.",
-                "- The pilot keeps `simplified_jordan_reference` as a reference pipeline using oracle-sorted output.",
+                "- The pilot times plain `simplified_jordan_reference`; diagnostic counters are collected once per case outside the timed region.",
                 "",
                 "## Boundaries",
                 "",
@@ -503,7 +544,7 @@ def run_pilot(config):
     write_csv(case_rows, config.case_summary_csv, SUMMARY_FIELDS)
     write_csv(group_rows, config.group_summary_csv, GROUP_FIELDS)
     write_environment(config)
-    write_interpretation(config, group_rows)
+    write_auto_report(config, group_rows)
 
     return raw_rows, case_rows, group_rows
 
@@ -529,7 +570,7 @@ def parse_args():
         "--environment-json", type=Path, default=DEFAULT_ENVIRONMENT_JSON
     )
     parser.add_argument(
-        "--interpretation-md", type=Path, default=DEFAULT_INTERPRETATION_MD
+        "--auto-report-md", type=Path, default=DEFAULT_AUTO_REPORT_MD
     )
     return parser.parse_args()
 
@@ -547,7 +588,7 @@ def main():
         case_summary_csv=args.case_summary_csv,
         group_summary_csv=args.group_summary_csv,
         environment_json=args.environment_json,
-        interpretation_md=args.interpretation_md,
+        auto_report_md=args.auto_report_md,
     )
     raw_rows, case_rows, group_rows = run_pilot(config)
     print(
@@ -559,4 +600,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -2,6 +2,8 @@
 
 import argparse
 import csv
+import hashlib
+import json
 import sys
 from pathlib import Path
 
@@ -57,7 +59,10 @@ FIELDS = [
     "upper_crossing_pair_count",
     "lower_crossing_pair_count",
     "total_crossing_pair_count",
-    "duplicate_sequence",
+    "crossing_pair_density",
+    "structural_category",
+    "has_duplicate_values",
+    "sequence_hash",
 ]
 
 
@@ -77,6 +82,29 @@ def seed_for_case(family, n, index, base_seed):
     if family in RANDOMIZED_FAMILIES:
         return base_seed + n * 1000 + index
     return None
+
+
+def sequence_hash(seq):
+    payload = json.dumps(list(seq), separators=(",", ":"))
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def crossing_pair_density(seq, profile):
+    total_crossing = profile["total_crossing_pair_count"]
+    if total_crossing is None:
+        return None
+
+    # Crossing counts are available only for distinct-value candidates. The
+    # matching denominator is the same within-family pair universe used by
+    # containment_pair_density.
+    upper_count = len(seq) // 2
+    lower_count = max((len(seq) - 1) // 2, 0)
+
+    denominator = upper_count * (upper_count - 1) // 2
+    denominator += lower_count * (lower_count - 1) // 2
+    if denominator == 0:
+        return 0.0
+    return total_crossing / denominator
 
 
 def audit_generator_coverage(
@@ -118,7 +146,12 @@ def audit_generator_coverage(
                         "total_crossing_pair_count": csv_value(
                             profile["total_crossing_pair_count"]
                         ),
-                        "duplicate_sequence": len(seq) != len(set(seq)),
+                        "crossing_pair_density": csv_value(
+                            crossing_pair_density(seq, profile)
+                        ),
+                        "structural_category": profile["category"],
+                        "has_duplicate_values": len(seq) != len(set(seq)),
+                        "sequence_hash": sequence_hash(seq),
                     }
                 )
     return rows
@@ -176,4 +209,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
