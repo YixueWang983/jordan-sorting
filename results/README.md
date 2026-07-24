@@ -162,6 +162,13 @@ python experiments/validate_experiment_outputs.py \
   --run-dir results/runs/week8_timing_dry_run
 ```
 
+Validate a Week 8+ generator audit run directory:
+
+```bash
+python experiments/validate_generator_audit_outputs.py \
+  --run-dir results/runs/week8_generator_audit_dry_run
+```
+
 Run the Week 8 generator coverage dry run:
 
 ```bash
@@ -172,7 +179,7 @@ python experiments/audit_generator_coverage.py \
   --randomized-repetitions 3
 ```
 
-## Full Experiment Configuration
+## Week 1 Baseline Configuration
 
 ```text
 sizes:
@@ -204,6 +211,73 @@ This gives:
 
 ```text
 7 families x 7 sizes x 3 cases x 4 algorithms x 5 timing runs = 2940 raw timing rows
+```
+
+This is the historical Week 1 baseline configuration. It is not the frozen
+Week 9 formal performance configuration.
+
+## Frozen Week 9 Formal Performance Configuration
+
+```text
+sizes:
+[64, 128, 256, 512, 1024]
+
+families:
+flat_valid
+nested_valid
+incremental_valid
+invalid_upper_crossing
+invalid_lower_crossing
+random_invalid
+mutation_based_invalid
+
+algorithms:
+python_sort
+sort_plus_laminarity_check
+simplified_jordan_reference
+
+deterministic cases:
+1 per family/size
+
+randomized cases:
+5 per family/size
+
+warm-up runs:
+5
+
+measured runs:
+20
+
+seed:
+20260723
+```
+
+Expected rows:
+
+```text
+95 cases
+5700 raw rows
+285 case-summary rows
+105 group-summary rows
+```
+
+Suggested command:
+
+```bash
+python experiments/run_week7_pilot.py \
+  --run-id week9_formal_reference \
+  --sizes 64 128 256 512 1024 \
+  --randomized-cases 5 \
+  --warmup-runs 5 \
+  --measured-runs 20 \
+  --algorithms python_sort sort_plus_laminarity_check simplified_jordan_reference
+```
+
+Then validate:
+
+```bash
+python experiments/validate_experiment_outputs.py \
+  --run-dir results/runs/week9_formal_reference
 ```
 
 ## Week 4 Reference Experiment Configuration

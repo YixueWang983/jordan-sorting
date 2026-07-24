@@ -5,6 +5,7 @@ import csv
 import hashlib
 import json
 import random
+import subprocess
 import sys
 from collections import Counter
 from datetime import datetime, timezone
@@ -129,6 +130,14 @@ def csv_value(value):
     return value
 
 
+def _as_bool(value):
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.strip().lower() == "true"
+    return bool(value)
+
+
 def repetitions_for_family(family, randomized_repetitions):
     if family in RANDOMIZED_FAMILIES:
         return randomized_repetitions
@@ -152,6 +161,28 @@ def file_sha256(path):
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _git_output(args):
+    try:
+        result = subprocess.run(
+            ["git", *args],
+            cwd=PROJECT_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return ""
+    return result.stdout.strip()
+
+
+def git_commit_sha():
+    return _git_output(["rev-parse", "HEAD"])
+
+
+def git_dirty():
+    return bool(_git_output(["status", "--short"]))
 
 
 def _empty_metadata():
@@ -434,10 +465,12 @@ def summarize_audit_rows(rows):
                     if hashes
                     else 0.0
                 ),
-                "valid_count": sum(1 for row in group_rows if row["valid"]),
-                "invalid_count": sum(1 for row in group_rows if not row["valid"]),
+                "valid_count": sum(1 for row in group_rows if _as_bool(row["valid"])),
+                "invalid_count": sum(
+                    1 for row in group_rows if not _as_bool(row["valid"])
+                ),
                 "duplicate_value_count": sum(
-                    1 for row in group_rows if row["has_duplicate_values"]
+                    1 for row in group_rows if _as_bool(row["has_duplicate_values"])
                 ),
                 "avg_crossing_pair_density": avg("crossing_pair_density"),
                 "min_max_depth": minimum("max_depth"),
@@ -491,8 +524,9 @@ def write_audit_summary(rows, output_csv):
         writer.writerows(rows)
 
 
-def write_audit_config(path, families, sizes, randomized_repetitions, seed):
+def write_audit_config(path, run_id, families, sizes, randomized_repetitions, seed):
     data = {
+        "run_id": run_id,
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "families": families,
         "sizes": sizes,
@@ -504,14 +538,21 @@ def write_audit_config(path, families, sizes, randomized_repetitions, seed):
     output_path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
 
 
-def write_audit_manifest(path, config_json, output_csv, summary_csv):
+def write_audit_manifest(path, run_id, config_json, output_csv, summary_csv, rows, summary_rows):
     files = {
         "audit_config_json": Path(config_json),
         "coverage_audit_csv": Path(output_csv),
         "coverage_summary_csv": Path(summary_csv),
     }
     data = {
+        "run_id": run_id,
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "git_commit_sha": git_commit_sha(),
+        "git_dirty": git_dirty(),
+        "row_counts": {
+            "coverage_audit": len(rows),
+            "coverage_summary": len(summary_rows),
+        },
         "files": {
             label: {
                 "path": str(file_path),
@@ -579,6 +620,13 @@ def main():
     summary_csv = args.summary_csv or (run_dir / "coverage_summary.csv")
     config_json = args.config_json or (run_dir / "audit_config.json")
     manifest_json = args.manifest_json or (run_dir / "audit_manifest.json")
+    output_paths = [output_csv, summary_csv, config_json, manifest_json]
+    if not args.overwrite:
+        existing = [path for path in output_paths if Path(path).exists()]
+        if existing:
+            raise ValueError(
+                f"audit output files already exist: {[str(path) for path in existing]}"
+            )
 
     rows = audit_generator_coverage(
         families=args.families,
@@ -588,6 +636,7 @@ def main():
     )
     write_audit_config(
         config_json,
+        run_id=run_id,
         families=args.families,
         sizes=args.sizes,
         randomized_repetitions=args.randomized_repetitions,
@@ -598,9 +647,12 @@ def main():
     write_audit_summary(summary_rows, summary_csv)
     write_audit_manifest(
         manifest_json,
+        run_id=run_id,
         config_json=config_json,
         output_csv=output_csv,
         summary_csv=summary_csv,
+        rows=rows,
+        summary_rows=summary_rows,
     )
     print(
         f"wrote {len(rows)} audit rows to {output_csv}; "

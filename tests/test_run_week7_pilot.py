@@ -196,6 +196,7 @@ class RunWeek7PilotTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             run_dir = Path(tmpdir) / "existing"
             run_dir.mkdir()
+            (run_dir / "raw.csv").write_text("existing\n", encoding="utf-8")
             args = SimpleNamespace(
                 families=[FLAT_VALID],
                 sizes=[8],
@@ -210,6 +211,34 @@ class RunWeek7PilotTests(unittest.TestCase):
                 run_dir=run_dir,
                 overwrite=False,
                 raw_csv=None,
+                case_summary_csv=None,
+                group_summary_csv=None,
+                environment_json=None,
+                auto_report_md=None,
+            )
+
+            with self.assertRaises(ValueError):
+                build_config_from_args(args)
+
+    def test_build_config_from_args_rejects_existing_explicit_output_path(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            run_dir = Path(tmpdir) / "run"
+            raw_csv = Path(tmpdir) / "existing_raw.csv"
+            raw_csv.write_text("existing\n", encoding="utf-8")
+            args = SimpleNamespace(
+                families=[FLAT_VALID],
+                sizes=[8],
+                algorithms=["python_sort"],
+                randomized_cases=1,
+                warmup_runs=0,
+                measured_runs=1,
+                seed=17,
+                algorithm_order_seed=None,
+                case_order_seed=None,
+                run_id="test",
+                run_dir=run_dir,
+                overwrite=False,
+                raw_csv=raw_csv,
                 case_summary_csv=None,
                 group_summary_csv=None,
                 environment_json=None,

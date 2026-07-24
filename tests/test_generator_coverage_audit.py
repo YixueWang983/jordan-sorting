@@ -164,6 +164,7 @@ class GeneratorCoverageAuditTests(unittest.TestCase):
             manifest_json = Path(tmpdir) / "audit_manifest.json"
             write_audit_config(
                 config_json,
+                run_id="audit_test",
                 families=[FLAT_VALID],
                 sizes=[8],
                 randomized_repetitions=1,
@@ -173,9 +174,12 @@ class GeneratorCoverageAuditTests(unittest.TestCase):
             write_audit_summary(summarize_audit_rows(rows), summary_csv)
             write_audit_manifest(
                 manifest_json,
+                run_id="audit_test",
                 config_json=config_json,
                 output_csv=output_csv,
                 summary_csv=summary_csv,
+                rows=rows,
+                summary_rows=summarize_audit_rows(rows),
             )
 
             self.assertTrue(output_csv.exists())

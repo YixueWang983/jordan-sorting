@@ -150,6 +150,48 @@ class ValidateExperimentOutputsTests(unittest.TestCase):
 
         self._assert_tamper_is_rejected(mutate)
 
+    def test_validate_outputs_rejects_tampered_schedule_fields(self):
+        def mutate(config):
+            rows = self._read_rows(config.raw_csv)
+            rows[0]["case_execution_position"] = "999"
+            rows[0]["run_index"] = "99"
+            rows[0]["measured_round"] = "99"
+            self._write_rows(config.raw_csv, rows)
+
+        self._assert_tamper_is_rejected(mutate)
+
+    def test_validate_outputs_rejects_mismatched_measured_round(self):
+        def mutate(config):
+            rows = self._read_rows(config.raw_csv)
+            rows[0]["measured_round"] = "2"
+            self._write_rows(config.raw_csv, rows)
+
+        self._assert_tamper_is_rejected(mutate)
+
+    def test_validate_outputs_rejects_incomplete_algorithm_positions(self):
+        def mutate(config):
+            rows = self._read_rows(config.raw_csv)
+            rows[0]["algorithm_position"] = rows[1]["algorithm_position"]
+            self._write_rows(config.raw_csv, rows)
+
+        self._assert_tamper_is_rejected(mutate)
+
+    def test_validate_outputs_rejects_negative_timing(self):
+        def mutate(config):
+            rows = self._read_rows(config.raw_csv)
+            rows[0]["time_ns"] = "-1"
+            self._write_rows(config.raw_csv, rows)
+
+        self._assert_tamper_is_rejected(mutate)
+
+    def test_validate_outputs_rejects_malformed_summary_error_count(self):
+        def mutate(config):
+            rows = self._read_rows(config.case_summary_csv)
+            rows[0]["error_count"] = "not-a-number"
+            self._write_rows(config.case_summary_csv, rows)
+
+        self._assert_tamper_is_rejected(mutate)
+
 
 if __name__ == "__main__":
     unittest.main()

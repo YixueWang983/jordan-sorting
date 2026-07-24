@@ -113,6 +113,7 @@ experiments/
   audit_generator_coverage.py
   run_week7_pilot.py
   validate_experiment_outputs.py
+  validate_generator_audit_outputs.py
 
 results/
   week1_baseline_results.csv
@@ -231,7 +232,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 186 tests
+Ran 197 tests
 OK
 ```
 

@@ -191,6 +191,14 @@ After the first Week 8 review, the experiment gate was tightened further:
   `audit_manifest.json`.
 - Generator audit summaries include category, invalid-reason, depth, density,
   and fallback distributions.
+- Timing validation now checks scheduling fields: `case_execution_position`,
+  `run_index`, `measured_round`, and `algorithm_position`.
+- Timing validation now rejects malformed summary numeric fields rather than
+  crashing.
+- Generator audit output now has a separate validator:
+  `experiments/validate_generator_audit_outputs.py`.
+- Results documentation now labels the old 2940-row setup as the historical
+  Week 1 baseline and lists the frozen Week 9 formal configuration separately.
 
 ## Frozen Boundaries
 

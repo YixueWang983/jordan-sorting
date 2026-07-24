@@ -53,6 +53,32 @@ def _require(condition, message, errors):
         errors.append(message)
 
 
+def _parse_int(value, field, errors, allow_empty=False):
+    if value in {"", None}:
+        if allow_empty:
+            return None
+        errors.append(f"{field} is empty")
+        return None
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        errors.append(f"{field} is not an integer: {value}")
+        return None
+
+
+def _parse_float(value, field, errors, allow_empty=False):
+    if value in {"", None}:
+        if allow_empty:
+            return None
+        errors.append(f"{field} is empty")
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        errors.append(f"{field} is not numeric: {value}")
+        return None
+
+
 def _stringify_csv_value(value):
     if value is None:
         return ""
@@ -100,6 +126,9 @@ def _validate_schema(rows, expected_fields, label, errors):
 def _validate_raw_rows(raw_rows, config, errors):
     expected_cases = _expected_case_count(config)
     expected_raw = expected_cases * len(config["algorithms"]) * config["measured_runs"]
+    expected_run_indices = set(range(1, config["measured_runs"] + 1))
+    expected_algorithm_positions = set(range(1, len(config["algorithms"]) + 1))
+    expected_case_positions = set(range(1, expected_cases + 1))
     _require(
         len(raw_rows) == expected_raw,
         f"raw row count {len(raw_rows)} != expected {expected_raw}",
@@ -118,27 +147,108 @@ def _validate_raw_rows(raw_rows, config, errors):
     _require(errors_with_messages == 0, f"raw rows contain {errors_with_messages} errors", errors)
     _require(incorrect == 0, f"raw rows contain {incorrect} incorrect outputs", errors)
 
+    case_positions = {}
+    seen_case_position_owners = {}
     for row in raw_rows:
+        n = _parse_int(row["n"], "n", errors)
+        case_position = _parse_int(
+            row["case_execution_position"],
+            "case_execution_position",
+            errors,
+        )
+        run_index = _parse_int(row["run_index"], "run_index", errors)
+        measured_round = _parse_int(row["measured_round"], "measured_round", errors)
+        algorithm_position = _parse_int(
+            row["algorithm_position"],
+            "algorithm_position",
+            errors,
+        )
+        _require(n is None or n > 0, f"n must be positive: {row['n']}", errors)
+        _require(
+            run_index in expected_run_indices,
+            f"run_index out of range for {row['case_id']}: {row['run_index']}",
+            errors,
+        )
+        _require(
+            measured_round == run_index,
+            f"measured_round must equal run_index for {row['case_id']}",
+            errors,
+        )
+        _require(
+            algorithm_position in expected_algorithm_positions,
+            f"algorithm_position out of range for {row['case_id']}: {row['algorithm_position']}",
+            errors,
+        )
+        if case_position is not None:
+            case_positions.setdefault(row["case_id"], case_position)
+            _require(
+                case_positions[row["case_id"]] == case_position,
+                f"case_execution_position changed within case {row['case_id']}",
+                errors,
+            )
+            owner = seen_case_position_owners.setdefault(
+                case_position,
+                row["case_id"],
+            )
+            _require(
+                owner == row["case_id"],
+                f"case_execution_position {case_position} is shared by multiple cases",
+                errors,
+            )
+
         if not row["error"]:
-            _require(row["time_ns"] != "", f"missing time_ns for {row['case_id']}", errors)
+            time_ns = _parse_int(row["time_ns"], "time_ns", errors)
+            _require(
+                time_ns is None or time_ns >= 0,
+                f"time_ns must be non-negative for {row['case_id']}",
+                errors,
+            )
+        else:
+            _parse_int(row["time_ns"], "time_ns", errors, allow_empty=True)
         for field in ["containment_pair_density", "parented_interval_ratio"]:
-            value = row[field]
-            if value != "":
-                try:
-                    numeric = float(value)
-                except ValueError:
-                    errors.append(f"{field} is not numeric: {value}")
-                    continue
+            numeric = _parse_float(row[field], field, errors, allow_empty=True)
+            if numeric is not None:
                 _require(
                     0.0 <= numeric <= 1.0,
-                    f"{field} out of range: {value}",
+                    f"{field} out of range: {row[field]}",
                     errors,
                 )
+        for field in [
+            "max_depth",
+            "total_crossing_pair_count",
+            "laminar_pair_checks",
+            "upper_pair_checks",
+            "lower_pair_checks",
+            "crossings_found",
+            "interval_validation_checks",
+            "containment_checks",
+            "parent_candidate_checks",
+            "nodes_created",
+            "nodes_visited",
+            "trace_event_count",
+        ]:
+            value = _parse_int(row[field], field, errors, allow_empty=True)
+            _require(
+                value is None or value >= 0,
+                f"{field} must be non-negative for {row['case_id']}",
+                errors,
+            )
+
+    _require(
+        set(case_positions.values()) == expected_case_positions,
+        "case_execution_position values must be exactly 1..case_count",
+        errors,
+    )
 
     grouped = {}
     for row in raw_rows:
-        grouped.setdefault((row["case_id"], row["run_index"]), []).append(row["algorithm"])
-    for (case_id, run_index), algorithms_for_round in grouped.items():
+        grouped.setdefault((row["case_id"], row["run_index"]), []).append(row)
+    for (case_id, run_index), rows_for_round in grouped.items():
+        algorithms_for_round = [row["algorithm"] for row in rows_for_round]
+        positions_for_round = {
+            _parse_int(row["algorithm_position"], "algorithm_position", errors)
+            for row in rows_for_round
+        }
         _require(
             len(algorithms_for_round) == len(config["algorithms"]),
             f"{case_id} round {run_index} has duplicate or missing algorithm rows",
@@ -147,6 +257,11 @@ def _validate_raw_rows(raw_rows, config, errors):
         _require(
             set(algorithms_for_round) == set(config["algorithms"]),
             f"{case_id} round {run_index} missing algorithms",
+            errors,
+        )
+        _require(
+            positions_for_round == expected_algorithm_positions,
+            f"{case_id} round {run_index} algorithm positions are incomplete",
             errors,
         )
 
@@ -167,6 +282,55 @@ def _validate_summaries(case_rows, group_rows, config, errors):
         f"group-summary row count {len(group_rows)} != expected {expected_group_rows}",
         errors,
     )
+    for row in case_rows:
+        _parse_int(row["n"], "case-summary n", errors)
+        _parse_int(row["measured_run_count"], "measured_run_count", errors)
+        _parse_int(row["error_count"], "error_count", errors)
+        for field in [
+            "median_time_ns",
+            "q1_time_ns",
+            "q3_time_ns",
+            "iqr_time_ns",
+            "mean_time_ns",
+            "stdev_time_ns",
+            "max_depth",
+            "parented_interval_ratio",
+            "containment_pair_density",
+            "total_crossing_pair_count",
+            "median_containment_checks",
+            "median_laminar_pair_checks",
+            "median_trace_event_count",
+        ]:
+            value = _parse_float(row[field], field, errors, allow_empty=True)
+            _require(
+                value is None or value >= 0,
+                f"{field} must be non-negative in case summary",
+                errors,
+            )
+
+    for row in group_rows:
+        _parse_int(row["n"], "group-summary n", errors)
+        _parse_int(row["case_count"], "case_count", errors)
+        _parse_int(row["total_error_count"], "total_error_count", errors)
+        for field in [
+            "median_case_time_ns",
+            "q1_case_time_ns",
+            "q3_case_time_ns",
+            "iqr_case_time_ns",
+            "mean_case_time_ns",
+            "avg_containment_pair_density",
+            "avg_max_depth",
+            "avg_total_crossing_pair_count",
+            "median_containment_checks",
+            "median_laminar_pair_checks",
+        ]:
+            value = _parse_float(row[field], field, errors, allow_empty=True)
+            _require(
+                value is None or value >= 0,
+                f"{field} must be non-negative in group summary",
+                errors,
+            )
+
     _require(
         all(_as_bool(row["all_correct"]) for row in case_rows),
         "case summary contains all_correct=False",
@@ -178,12 +342,28 @@ def _validate_summaries(case_rows, group_rows, config, errors):
         errors,
     )
     _require(
-        sum(int(row["error_count"]) for row in case_rows) == 0,
+        sum(
+            value
+            for value in [
+                _parse_int(row["error_count"], "error_count", errors)
+                for row in case_rows
+            ]
+            if value is not None
+        )
+        == 0,
         "case summary contains errors",
         errors,
     )
     _require(
-        sum(int(row["total_error_count"]) for row in group_rows) == 0,
+        sum(
+            value
+            for value in [
+                _parse_int(row["total_error_count"], "total_error_count", errors)
+                for row in group_rows
+            ]
+            if value is not None
+        )
+        == 0,
         "group summary contains errors",
         errors,
     )

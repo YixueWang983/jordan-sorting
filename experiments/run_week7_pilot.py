@@ -234,6 +234,21 @@ def git_dirty():
     return bool(_git_output(["status", "--short"]))
 
 
+def cpu_model():
+    if platform.system() == "Darwin":
+        try:
+            result = subprocess.run(
+                ["sysctl", "-n", "machdep.cpu.brand_string"],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            return result.stdout.strip()
+        except (OSError, subprocess.CalledProcessError):
+            return platform.processor()
+    return platform.processor()
+
+
 def file_sha256(path):
     digest = hashlib.sha256()
     with Path(path).open("rb") as handle:
@@ -279,6 +294,26 @@ def validate_config(config):
     ]
     if len({path.resolve() for path in output_paths}) != len(output_paths):
         raise ValueError("output paths must be distinct")
+    return config
+
+
+def validate_no_overwrite(config, overwrite=False):
+    """Reject existing output files unless overwrite is explicit."""
+    if overwrite:
+        return config
+
+    output_paths = [
+        config.raw_csv,
+        config.case_summary_csv,
+        config.group_summary_csv,
+        config.environment_json,
+        config.auto_report_md,
+        config.config_json,
+        config.manifest_json,
+    ]
+    existing = [path for path in output_paths if Path(path).exists()]
+    if existing:
+        raise ValueError(f"output files already exist: {[str(path) for path in existing]}")
     return config
 
 
@@ -629,6 +664,7 @@ def write_environment(config):
         "platform": platform.platform(),
         "machine": platform.machine(),
         "processor": platform.processor(),
+        "cpu_model": cpu_model(),
         "logical_cpu_count": os.cpu_count(),
         "perf_counter_resolution": time.get_clock_info("perf_counter").resolution,
         "gc_initial_state": gc.isenabled(),
@@ -814,10 +850,6 @@ def build_config_from_args(args):
         args.environment_json,
         args.auto_report_md,
     ]
-    using_default_run_dir = not any(explicit_paths)
-    if using_default_run_dir and run_dir.exists() and not args.overwrite:
-        raise ValueError(f"run directory already exists: {run_dir}")
-
     config = PilotConfig(
         families=args.families,
         sizes=args.sizes,
@@ -846,7 +878,9 @@ def build_config_from_args(args):
         config_json=run_dir / "config.json",
         manifest_json=run_dir / "manifest.json",
     )
-    return validate_config(config)
+    validate_config(config)
+    validate_no_overwrite(config, overwrite=args.overwrite)
+    return config
 
 
 def main():
