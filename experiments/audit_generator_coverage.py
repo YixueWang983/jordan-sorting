@@ -6,6 +6,8 @@ import hashlib
 import json
 import random
 import sys
+from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -56,6 +58,7 @@ DEFAULT_RANDOMIZED_REPETITIONS = 30
 DEFAULT_SEED = 20260723
 DEFAULT_OUTPUT_CSV = PROJECT_ROOT / "results" / "week7_generator_coverage_audit.csv"
 DEFAULT_SUMMARY_CSV = PROJECT_ROOT / "results" / "week8_generator_coverage_summary.csv"
+DEFAULT_RUNS_DIR = PROJECT_ROOT / "results" / "runs"
 
 FIELDS = [
     "family",
@@ -99,10 +102,24 @@ SUMMARY_FIELDS = [
     "invalid_count",
     "duplicate_value_count",
     "avg_crossing_pair_density",
+    "min_max_depth",
+    "median_max_depth",
+    "max_max_depth",
+    "min_containment_pair_density",
+    "median_containment_pair_density",
+    "max_containment_pair_density",
+    "min_crossing_pair_density",
+    "median_crossing_pair_density",
+    "max_crossing_pair_density",
     "avg_total_attempts",
     "avg_oracle_calls",
     "avg_fallback_count",
+    "min_fallback_count",
+    "median_fallback_count",
+    "max_fallback_count",
     "avg_mutation_attempts",
+    "category_distribution",
+    "invalid_reason_distribution",
 ]
 
 
@@ -127,6 +144,14 @@ def seed_for_case(family, n, index, base_seed):
 def sequence_hash(seq):
     payload = json.dumps(list(seq), separators=(",", ":"))
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def file_sha256(path):
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def _empty_metadata():
@@ -356,6 +381,21 @@ def _numeric(row, field):
     return float(value)
 
 
+def _median(values):
+    if not values:
+        return ""
+    ordered = sorted(values)
+    midpoint = len(ordered) // 2
+    if len(ordered) % 2 == 1:
+        return ordered[midpoint]
+    return (ordered[midpoint - 1] + ordered[midpoint]) / 2
+
+
+def _distribution(values):
+    counts = Counter(value for value in values if value not in {"", None})
+    return json.dumps(dict(sorted(counts.items())), sort_keys=True)
+
+
 def summarize_audit_rows(rows):
     """Summarize generator audit rows by family and size."""
     grouped = {}
@@ -369,6 +409,18 @@ def summarize_audit_rows(rows):
         def avg(field):
             values = [_numeric(row, field) for row in group_rows if _numeric(row, field) is not None]
             return sum(values) / len(values) if values else ""
+
+        def minimum(field):
+            values = [_numeric(row, field) for row in group_rows if _numeric(row, field) is not None]
+            return min(values) if values else ""
+
+        def median(field):
+            values = [_numeric(row, field) for row in group_rows if _numeric(row, field) is not None]
+            return _median(values)
+
+        def maximum(field):
+            values = [_numeric(row, field) for row in group_rows if _numeric(row, field) is not None]
+            return max(values) if values else ""
 
         summaries.append(
             {
@@ -388,10 +440,34 @@ def summarize_audit_rows(rows):
                     1 for row in group_rows if row["has_duplicate_values"]
                 ),
                 "avg_crossing_pair_density": avg("crossing_pair_density"),
+                "min_max_depth": minimum("max_depth"),
+                "median_max_depth": median("max_depth"),
+                "max_max_depth": maximum("max_depth"),
+                "min_containment_pair_density": minimum(
+                    "containment_pair_density"
+                ),
+                "median_containment_pair_density": median(
+                    "containment_pair_density"
+                ),
+                "max_containment_pair_density": maximum(
+                    "containment_pair_density"
+                ),
+                "min_crossing_pair_density": minimum("crossing_pair_density"),
+                "median_crossing_pair_density": median("crossing_pair_density"),
+                "max_crossing_pair_density": maximum("crossing_pair_density"),
                 "avg_total_attempts": avg("total_attempts"),
                 "avg_oracle_calls": avg("oracle_calls"),
                 "avg_fallback_count": avg("fallback_count"),
+                "min_fallback_count": minimum("fallback_count"),
+                "median_fallback_count": median("fallback_count"),
+                "max_fallback_count": maximum("fallback_count"),
                 "avg_mutation_attempts": avg("mutation_attempts"),
+                "category_distribution": _distribution(
+                    row["structural_category"] for row in group_rows
+                ),
+                "invalid_reason_distribution": _distribution(
+                    row["invalid_reason"] for row in group_rows
+                ),
             }
         )
     return summaries
@@ -413,6 +489,40 @@ def write_audit_summary(rows, output_csv):
         writer = csv.DictWriter(handle, fieldnames=SUMMARY_FIELDS)
         writer.writeheader()
         writer.writerows(rows)
+
+
+def write_audit_config(path, families, sizes, randomized_repetitions, seed):
+    data = {
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "families": families,
+        "sizes": sizes,
+        "randomized_repetitions": randomized_repetitions,
+        "seed": seed,
+    }
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+
+
+def write_audit_manifest(path, config_json, output_csv, summary_csv):
+    files = {
+        "audit_config_json": Path(config_json),
+        "coverage_audit_csv": Path(output_csv),
+        "coverage_summary_csv": Path(summary_csv),
+    }
+    data = {
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "files": {
+            label: {
+                "path": str(file_path),
+                "sha256": file_sha256(file_path),
+            }
+            for label, file_path in files.items()
+        },
+    }
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
 
 
 def parse_args():
@@ -437,8 +547,13 @@ def parse_args():
         help="cases per randomized family-size pair",
     )
     parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
-    parser.add_argument("--output-csv", type=Path, default=DEFAULT_OUTPUT_CSV)
-    parser.add_argument("--summary-csv", type=Path, default=DEFAULT_SUMMARY_CSV)
+    parser.add_argument("--run-id", default=None)
+    parser.add_argument("--run-dir", type=Path, default=None)
+    parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument("--output-csv", type=Path, default=None)
+    parser.add_argument("--summary-csv", type=Path, default=None)
+    parser.add_argument("--config-json", type=Path, default=None)
+    parser.add_argument("--manifest-json", type=Path, default=None)
     return parser.parse_args()
 
 
@@ -446,6 +561,24 @@ def main():
     args = parse_args()
     if args.randomized_repetitions < 1:
         raise ValueError("randomized-repetitions must be positive")
+    if any(n <= 0 for n in args.sizes):
+        raise ValueError("sizes must be positive")
+
+    run_id = args.run_id or "week8_generator_coverage_audit"
+    run_dir = args.run_dir or (DEFAULT_RUNS_DIR / run_id)
+    explicit_outputs = [
+        args.output_csv,
+        args.summary_csv,
+        args.config_json,
+        args.manifest_json,
+    ]
+    if not any(explicit_outputs) and run_dir.exists() and not args.overwrite:
+        raise ValueError(f"run directory already exists: {run_dir}")
+
+    output_csv = args.output_csv or (run_dir / "coverage_audit.csv")
+    summary_csv = args.summary_csv or (run_dir / "coverage_summary.csv")
+    config_json = args.config_json or (run_dir / "audit_config.json")
+    manifest_json = args.manifest_json or (run_dir / "audit_manifest.json")
 
     rows = audit_generator_coverage(
         families=args.families,
@@ -453,12 +586,25 @@ def main():
         randomized_repetitions=args.randomized_repetitions,
         seed=args.seed,
     )
-    write_audit(rows, args.output_csv)
+    write_audit_config(
+        config_json,
+        families=args.families,
+        sizes=args.sizes,
+        randomized_repetitions=args.randomized_repetitions,
+        seed=args.seed,
+    )
+    write_audit(rows, output_csv)
     summary_rows = summarize_audit_rows(rows)
-    write_audit_summary(summary_rows, args.summary_csv)
+    write_audit_summary(summary_rows, summary_csv)
+    write_audit_manifest(
+        manifest_json,
+        config_json=config_json,
+        output_csv=output_csv,
+        summary_csv=summary_csv,
+    )
     print(
-        f"wrote {len(rows)} audit rows to {args.output_csv}; "
-        f"wrote {len(summary_rows)} summary rows to {args.summary_csv}"
+        f"wrote {len(rows)} audit rows to {output_csv}; "
+        f"wrote {len(summary_rows)} summary rows to {summary_csv}"
     )
 
 

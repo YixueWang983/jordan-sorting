@@ -14,7 +14,8 @@ schema, and thesis positioning should not need disruptive changes.
 
 ## Required Outcomes
 
-1. Freeze thesis contribution and implementation boundaries.
+1. Prepare a proposed thesis contribution and implementation-boundary freeze
+   pending supervisor confirmation.
 2. Map theoretical Jordan-sorting concepts to current code and missing pieces.
 3. Harden the benchmark runner for dry runs and future formal experiments.
 4. Upgrade generator coverage audit with parity, metadata, hashes, and duplicate
@@ -29,7 +30,7 @@ Output:
 
 Completion criteria:
 
-- thesis contributions are stated in a few clear claims;
+- thesis contributions are stated in a few clear proposed claims;
 - non-contributions are explicit;
 - success is not defined as implementing full linear-time Jordan sorting;
 - supervisor confirmation questions are listed.
@@ -58,12 +59,14 @@ Outputs:
 Requirements:
 
 - randomized block scheduling per measured round;
+- randomized case execution order;
 - fresh input copied before timing;
 - enhanced environment manifest;
 - CLI validation for sizes, runs, families, algorithms, and output paths;
 - default output directory `results/runs/<run_id>/`;
 - no silent overwrite of existing run directories;
 - output validation script.
+- manifest SHA-256 validation for generated files.
 
 ## Day 4: Generator Coverage Audit v2
 
@@ -77,6 +80,7 @@ Requirements:
 - generation metadata for incremental, random invalid, and mutation invalid
   families;
 - duplicate generated-case analysis via `sequence_hash`;
+- audit run config and manifest files;
 - distinction between `has_duplicate_values` and duplicate generated cases.
 
 ## Day 5: Final Experiment Specification
@@ -131,4 +135,3 @@ Completion criteria:
 
 - Week 9 can start final experiments without changing core CSV schema or metric
   definitions.
-

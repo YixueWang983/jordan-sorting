@@ -38,6 +38,7 @@ class RunWeek7PilotTests(unittest.TestCase):
             measured_runs=2,
             seed=17,
             algorithm_order_seed=19,
+            case_order_seed=31,
             run_id="test_run",
             run_dir=root,
             raw_csv=root / "raw.csv",
@@ -71,6 +72,10 @@ class RunWeek7PilotTests(unittest.TestCase):
             self.assertEqual({row["measured_round"] for row in rows}, {1, 2})
             self.assertEqual(
                 {row["algorithm_position"] for row in rows},
+                {1, 2, 3},
+            )
+            self.assertEqual(
+                {row["case_execution_position"] for row in rows},
                 {1, 2, 3},
             )
             self.assertIn("containment_pair_density", rows[0])
@@ -148,6 +153,7 @@ class RunWeek7PilotTests(unittest.TestCase):
                     measured_runs=config.measured_runs,
                     seed=config.seed,
                     algorithm_order_seed=config.algorithm_order_seed,
+                    case_order_seed=config.case_order_seed,
                     run_id=config.run_id,
                     run_dir=config.run_dir,
                     raw_csv=config.raw_csv,
@@ -199,6 +205,7 @@ class RunWeek7PilotTests(unittest.TestCase):
                 measured_runs=1,
                 seed=17,
                 algorithm_order_seed=None,
+                case_order_seed=None,
                 run_id="existing",
                 run_dir=run_dir,
                 overwrite=False,
@@ -223,6 +230,7 @@ class RunWeek7PilotTests(unittest.TestCase):
                 measured_runs=1,
                 seed=17,
                 algorithm_order_seed=None,
+                case_order_seed=None,
                 run_id="test",
                 run_dir=Path(tmpdir) / "run",
                 overwrite=False,

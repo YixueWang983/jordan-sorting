@@ -1,6 +1,8 @@
-# Final Scope and Contributions
+# Proposed Final Scope and Contributions
 
 Last updated: 2026-07-24
+
+Status: proposed scope freeze, pending supervisor confirmation.
 
 ## Thesis Position
 
@@ -67,3 +69,13 @@ The thesis is successful if:
 5. Should the final title include `Reference Framework` to avoid implying a full
    theoretical implementation?
 
+## Current Gate
+
+Week 9 formal experiments should start only after the supervisor accepts the
+core boundary:
+
+```text
+The project implements and evaluates a correctness-oriented reference framework
+whose sorted output is `oracle_result["sorted"]`; it does not implement the full
+linear-time Jordan-sorting algorithm.
+```

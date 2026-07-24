@@ -4,8 +4,11 @@ Last updated: 2026-07-24
 
 ## Goal
 
-Week 8 froze the current thesis scope, experiment specification, output schema,
-and formal-experiment preparation workflow.
+Week 8 produced a proposed scope freeze, froze the experiment specification for
+implementation purposes, and prepared the formal-experiment workflow.
+
+The scope still requires supervisor confirmation before Week 9 formal
+experiments are treated as thesis evidence.
 
 This week deliberately did not run final thesis-scale experiments and did not
 expand the reference skeleton into a claimed linear-time Jordan-sorting
@@ -13,7 +16,7 @@ implementation.
 
 ## Completed Work
 
-### Scope Freeze
+### Proposed Scope Freeze
 
 Added:
 
@@ -113,10 +116,10 @@ Command:
 
 ```bash
 python experiments/audit_generator_coverage.py \
+  --run-id week8_generator_audit_dry_run \
+  --overwrite \
   --sizes 31 32 33 63 64 65 \
-  --randomized-repetitions 3 \
-  --output-csv results/runs/week8_generator_audit_dry_run/coverage_audit.csv \
-  --summary-csv results/runs/week8_generator_audit_dry_run/coverage_summary.csv
+  --randomized-repetitions 3
 ```
 
 Result:
@@ -169,6 +172,26 @@ errors: []
 The dry run confirms that the formal-experiment pipeline can generate,
 summarize, manifest, and validate benchmark outputs end to end.
 
+## Post-Review Fixes
+
+After the first Week 8 review, the experiment gate was tightened further:
+
+- `validate_experiment_outputs.py` now verifies manifest SHA-256 values for
+  generated files.
+- The validator checks raw, case-summary, and group-summary row counts against
+  the manifest.
+- The validator checks `run_id` consistency across config, environment, and
+  manifest files.
+- The validator checks manifest/environment commit SHA consistency.
+- Case and group summaries are recomputed from raw rows and compared with saved
+  summary CSVs.
+- The runner now records and randomizes case execution order via
+  `case_order_seed` and `case_execution_position`.
+- Generator audit output now includes `audit_config.json` and
+  `audit_manifest.json`.
+- Generator audit summaries include category, invalid-reason, depth, density,
+  and fallback distributions.
+
 ## Frozen Boundaries
 
 The current implementation still does not claim:
@@ -190,8 +213,10 @@ Week 9 may start formal experiments if:
 1. the full unit-test suite passes;
 2. `git diff --check` passes;
 3. dry-run validation remains clean;
-4. no core CSV semantic changes are introduced without updating
+4. the supervisor accepts the reference-framework boundary or explicitly agrees
+   that formal experiments may proceed before final title/scope wording is
+   settled;
+5. no core CSV semantic changes are introduced without updating
    `docs/design/final_experiment_spec.md`;
-5. generated result CSVs are either committed intentionally or explicitly marked
+6. generated result CSVs are either committed intentionally or explicitly marked
    as reproducible local artifacts.
-

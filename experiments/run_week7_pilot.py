@@ -83,6 +83,7 @@ RAW_FIELDS = [
     "family",
     "n",
     "seed",
+    "case_execution_position",
     "oracle_valid",
     "oracle_reason",
     "category",
@@ -167,6 +168,7 @@ class PilotConfig:
     measured_runs: int
     seed: int
     algorithm_order_seed: int
+    case_order_seed: int
     run_id: str
     run_dir: Path
     raw_csv: Path
@@ -402,6 +404,7 @@ def _metadata_fields(case, algorithm_name):
         "family": case["family"],
         "n": case["n"],
         "seed": csv_value(case["seed"]),
+        "case_execution_position": case["case_execution_position"],
         "oracle_valid": oracle_result["valid"],
         "oracle_reason": csv_value(oracle_result["reason"]),
         "category": profile["category"],
@@ -426,6 +429,9 @@ def algorithm_order_for_round(algorithms, seed, case_index, measured_round):
 def make_raw_rows(config):
     rows = []
     cases = build_cases(config)
+    random.Random(config.case_order_seed).shuffle(cases)
+    for position, case in enumerate(cases, start=1):
+        case["case_execution_position"] = position
 
     for case in cases:
         warmup_order = algorithm_order_for_round(
@@ -636,6 +642,7 @@ def write_environment(config):
             "measured_runs": config.measured_runs,
             "seed": config.seed,
             "algorithm_order_seed": config.algorithm_order_seed,
+            "case_order_seed": config.case_order_seed,
         },
     }
     config.environment_json.parent.mkdir(parents=True, exist_ok=True)
@@ -653,6 +660,7 @@ def config_to_dict(config):
         "measured_runs": config.measured_runs,
         "seed": config.seed,
         "algorithm_order_seed": config.algorithm_order_seed,
+        "case_order_seed": config.case_order_seed,
         "outputs": {
             "run_dir": str(config.run_dir),
             "raw_csv": str(config.raw_csv),
@@ -775,6 +783,7 @@ def parse_args():
     parser.add_argument("--measured-runs", type=int, default=DEFAULT_MEASURED_RUNS)
     parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
     parser.add_argument("--algorithm-order-seed", type=int, default=None)
+    parser.add_argument("--case-order-seed", type=int, default=None)
     parser.add_argument("--run-id", default=None)
     parser.add_argument("--run-dir", type=Path, default=None)
     parser.add_argument("--overwrite", action="store_true")
@@ -821,6 +830,11 @@ def build_config_from_args(args):
             args.algorithm_order_seed
             if args.algorithm_order_seed is not None
             else args.seed + 7919
+        ),
+        case_order_seed=(
+            args.case_order_seed
+            if args.case_order_seed is not None
+            else args.seed + 1543
         ),
         run_id=run_id,
         run_dir=run_dir,
