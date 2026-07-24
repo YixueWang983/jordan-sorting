@@ -266,10 +266,14 @@ Suggested command:
 ```bash
 python experiments/run_week7_pilot.py \
   --run-id week9_formal_reference \
+  --families flat_valid nested_valid incremental_valid invalid_upper_crossing invalid_lower_crossing random_invalid mutation_based_invalid \
   --sizes 64 128 256 512 1024 \
   --randomized-cases 5 \
   --warmup-runs 5 \
   --measured-runs 20 \
+  --seed 20260723 \
+  --algorithm-order-seed 20268642 \
+  --case-order-seed 20262266 \
   --algorithms python_sort sort_plus_laminarity_check simplified_jordan_reference
 ```
 
@@ -278,6 +282,33 @@ Then validate:
 ```bash
 python experiments/validate_experiment_outputs.py \
   --run-dir results/runs/week9_formal_reference
+```
+
+## Frozen Week 9 Formal Coverage Configuration
+
+Suggested command:
+
+```bash
+python experiments/audit_generator_coverage.py \
+  --run-id week9_formal_coverage \
+  --families flat_valid nested_valid incremental_valid invalid_upper_crossing invalid_lower_crossing random_invalid mutation_based_invalid \
+  --sizes 31 32 33 63 64 65 127 128 129 255 256 257 \
+  --randomized-repetitions 30 \
+  --seed 20260723
+```
+
+Expected rows:
+
+```text
+1128 coverage-audit rows
+84 coverage-summary rows
+```
+
+Then validate:
+
+```bash
+python experiments/validate_generator_audit_outputs.py \
+  --run-dir results/runs/week9_formal_coverage
 ```
 
 ## Week 4 Reference Experiment Configuration

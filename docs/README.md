@@ -33,7 +33,7 @@ Current files:
   Week 7 timing protocol for pilot benchmarking.
 
 - `final_scope_and_contributions.md`
-  Week 8 proposed scope freeze, contribution claims, non-contributions, success
+  Week 8 supervisor-confirmed scope freeze, contribution claims, non-contributions, success
   criteria, and supervisor confirmation questions.
 
 - `theory_to_implementation_mapping.md`

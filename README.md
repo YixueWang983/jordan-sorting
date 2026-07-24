@@ -70,15 +70,16 @@ Week 7 completed experiment-design hardening:
 - warm-up/median/IQR pilot benchmark protocol,
 - and a small pilot analysis with case-level and group-level summaries.
 
-Week 8 prepared a proposed scope freeze and formal-experiment gate:
+Week 8 completed the supervisor-confirmed scope freeze and formal-experiment
+gate:
 
 - final scope, contribution, and non-contribution documents;
 - theory-to-code mapping for implemented and missing Jordan-sorting pieces;
 - hardened benchmark runner with run directories, manifests, and output validation;
 - generator coverage audit v2 with parity sizes, generation metadata, hashes, and duplicate-case summaries;
 - dry-run validation for the Week 9 formal experiment gate.
-- supervisor confirmation is still required before treating formal experiments
-  as thesis evidence.
+- the reference-framework boundary was confirmed by the supervisor on
+  2026-07-24.
 
 ## Project Structure
 

@@ -1,8 +1,8 @@
-# Proposed Final Scope and Contributions
+# Final Scope and Contributions
 
 Last updated: 2026-07-24
 
-Status: proposed scope freeze, pending supervisor confirmation.
+Status: scope confirmed by the supervisor on 2026-07-24.
 
 ## Thesis Position
 
@@ -56,22 +56,29 @@ The thesis is successful if:
 7. every conclusion is supported by code, CSV outputs, generated reports, or
    cited papers.
 
-## Supervisor Confirmation Questions
+## Supervisor Decision Record
 
-1. Is an oracle-sorted-output reference framework acceptable for the thesis
-   scope if the non-linear-time boundary is made explicit?
-2. Must the implementation recover sorted order from family-tree operations, or
-   is that a future-work boundary?
-3. Can the ordinary-list quadratic implementation be used as an experimental
-   object for explaining the gap to the theory?
-4. Can polygon clipping remain a paper-context discussion without implementing a
-   clipping pipeline?
-5. Should the final title include `Reference Framework` to avoid implying a full
-   theoretical implementation?
+On 2026-07-24, the supervisor accepted the reference-framework boundary for the
+current thesis scope.
+
+Confirmed scope:
+
+1. The project may evaluate a correctness-oriented reference framework rather
+   than a complete theoretical linear-time implementation.
+2. It is acceptable that sorted output comes from `oracle_result["sorted"]`, as
+   long as this boundary is explicit in the thesis.
+3. The ordinary-list implementation may be used as an experimental object for
+   explaining the gap between a straightforward implementation and the
+   theoretical framework.
+4. Polygon clipping may remain paper context and future work; no clipping
+   pipeline is required for the current implementation.
+5. The thesis wording should avoid implying that level-linked search trees,
+   heterogeneous finger trees, or a full dynamic split/update engine have been
+   implemented.
 
 ## Current Gate
 
-Week 9 formal experiments should start only after the supervisor accepts the
+Week 9 formal experiments may start because the supervisor has accepted the
 core boundary:
 
 ```text

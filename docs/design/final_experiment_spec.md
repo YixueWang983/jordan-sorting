@@ -7,8 +7,8 @@ Last updated: 2026-07-24
 This document freezes the experiment questions, variables, correctness criteria,
 and aggregation rules for the next formal experiment stage.
 
-The formal scope is proposed and frozen for implementation purposes, pending
-supervisor confirmation of the reference-framework boundary.
+The reference-framework boundary and formal experiment scope were confirmed by
+the supervisor on 2026-07-24.
 
 ## Research Questions
 
@@ -161,6 +161,12 @@ randomized repetitions:
 
 seed:
 20260723
+
+Formal run id:
+week9_formal_coverage
+
+Default output directory:
+results/runs/week9_formal_coverage/
 ```
 
 Expected row counts:
@@ -255,6 +261,49 @@ Default output directory:
 
 ```text
 results/runs/week9_formal_reference/
+```
+
+### Formal Commands
+
+Coverage audit:
+
+```bash
+python experiments/audit_generator_coverage.py \
+  --run-id week9_formal_coverage \
+  --families flat_valid nested_valid incremental_valid invalid_upper_crossing invalid_lower_crossing random_invalid mutation_based_invalid \
+  --sizes 31 32 33 63 64 65 127 128 129 255 256 257 \
+  --randomized-repetitions 30 \
+  --seed 20260723
+```
+
+Coverage validation:
+
+```bash
+python experiments/validate_generator_audit_outputs.py \
+  --run-dir results/runs/week9_formal_coverage
+```
+
+Performance experiment:
+
+```bash
+python experiments/run_week7_pilot.py \
+  --run-id week9_formal_reference \
+  --families flat_valid nested_valid incremental_valid invalid_upper_crossing invalid_lower_crossing random_invalid mutation_based_invalid \
+  --sizes 64 128 256 512 1024 \
+  --randomized-cases 5 \
+  --warmup-runs 5 \
+  --measured-runs 20 \
+  --seed 20260723 \
+  --algorithm-order-seed 20268642 \
+  --case-order-seed 20262266 \
+  --algorithms python_sort sort_plus_laminarity_check simplified_jordan_reference
+```
+
+Performance validation:
+
+```bash
+python experiments/validate_experiment_outputs.py \
+  --run-dir results/runs/week9_formal_reference
 ```
 
 ### Formal Machine

@@ -4,11 +4,12 @@ Last updated: 2026-07-24
 
 ## Goal
 
-Week 8 produced a proposed scope freeze, froze the experiment specification for
-implementation purposes, and prepared the formal-experiment workflow.
+Week 8 froze the thesis scope, froze the experiment specification, and prepared
+the formal-experiment workflow.
 
-The scope still requires supervisor confirmation before Week 9 formal
-experiments are treated as thesis evidence.
+The supervisor confirmed the reference-framework boundary on 2026-07-24, so the
+formal experiments can be treated as thesis evidence if the technical validation
+gate remains clean.
 
 This week deliberately did not run final thesis-scale experiments and did not
 expand the reference skeleton into a claimed linear-time Jordan-sorting
@@ -16,7 +17,7 @@ implementation.
 
 ## Completed Work
 
-### Proposed Scope Freeze
+### Scope Freeze
 
 Added:
 
@@ -30,7 +31,7 @@ These documents separate:
 - implemented reference-framework contributions;
 - non-contributions;
 - theoretical Jordan-sorting concepts that are discussed but not implemented;
-- supervisor confirmation questions.
+- supervisor decision record.
 
 ### Experiment Specification Freeze
 
@@ -221,9 +222,7 @@ Week 9 may start formal experiments if:
 1. the full unit-test suite passes;
 2. `git diff --check` passes;
 3. dry-run validation remains clean;
-4. the supervisor accepts the reference-framework boundary or explicitly agrees
-   that formal experiments may proceed before final title/scope wording is
-   settled;
+4. the supervisor-confirmed reference-framework boundary remains unchanged;
 5. no core CSV semantic changes are introduced without updating
    `docs/design/final_experiment_spec.md`;
 6. generated result CSVs are either committed intentionally or explicitly marked
