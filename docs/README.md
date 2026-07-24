@@ -14,23 +14,35 @@ Use this folder for technical design notes and implementation-facing definitions
 
 Current files:
 
-- `oracle_and_test_generation.md`  
+- `oracle_and_test_generation.md`
   Week 1 design notes for the oracle, upper/lower pairs, rank intervals, laminarity checks, generator families, and JSON test-case format.
 
-- `notation.md`  
+- `notation.md`
   Reusable terminology for the project and thesis.
 
-- `simplified_algorithm_design.md`  
+- `simplified_algorithm_design.md`
   Design document for the simplified Jordan-sorting reference implementation.
 
-- `structural_examples.md`  
+- `structural_examples.md`
   Concrete flat / nested / invalid structural examples used for debug and thesis drafts.
 
-- `experimental_questions_and_metrics.md`  
+- `experimental_questions_and_metrics.md`
   Week 7 research questions, metric definitions, and interpretation boundaries.
 
-- `benchmark_protocol.md`  
+- `benchmark_protocol.md`
   Week 7 timing protocol for pilot benchmarking.
+
+- `final_scope_and_contributions.md`
+  Week 8 frozen thesis scope, contribution claims, non-contributions, success
+  criteria, and supervisor confirmation questions.
+
+- `theory_to_implementation_mapping.md`
+  Week 8 mapping from theoretical Jordan-sorting concepts to current code,
+  explicit gaps, and non-implemented algorithmic structures.
+
+- `final_experiment_spec.md`
+  Week 8 frozen experiment questions, variables, correctness fields,
+  aggregation rules, CSV semantics, and non-claims.
 
 ## Progress Documents
 
@@ -44,41 +56,45 @@ Use this folder for weekly checklists and weekly summaries.
 
 Current files:
 
-- `week1_progress.md`  
+- `week1_progress.md`
   Checklist-style Week 1 progress tracker.
 
-- `week1_summary.md`  
+- `week1_summary.md`
   Completed Week 1 summary, including implemented components, experiment configuration, validation results, limitations, and next steps.
 
-- `week2_summary.md`  
+- `week2_summary.md`
   Week 2 completion summary, including design/skeleton boundary and Week3 handoff.
 
-- `week3_progress.md`  
+- `week3_progress.md`
   Week 3 execution note log for contract audit and debug utility rollout.
 
-- `week3_summary.md`  
+- `week3_summary.md`
   Week 3 completion summary and Week 4 handoff.
 
-- `week4_notes.md`  
+- `week4_notes.md`
   Week 4 Day 1 notes and scope freeze record.
 
-- `week4_summary.md`  
+- `week4_summary.md`
   Week 4 completion summary and reference-pipeline handoff notes.
 
-- `week5_progress.md`  
+- `week5_progress.md`
   Week 5 execution log and checkpoint record.
 
-- `week6_progress.md`  
+- `week6_progress.md`
   Week 6 execution log and verification checkpoint.
 
-- `week6_summary.md`  
+- `week6_summary.md`
   Week 6 completion summary and Week 7 handoff constraints.
 
-- `week7_progress.md`  
+- `week7_progress.md`
   Week 7 execution log for metrics, instrumentation, audit, and pilot analysis.
 
-- `week7_summary.md`  
+- `week7_summary.md`
   Week 7 completion summary and Week 8 handoff constraints.
+
+- `week8_summary.md`
+  Week 8 scope freeze, benchmark hardening, generator audit v2, dry-run
+  validation, and Week 9 gate.
 
 ## Plan Documents
 
@@ -100,11 +116,12 @@ Current files:
 - `week5_plan.md`
 - `week6_plan.md`
 - `week7_plan.md`
+- `week8_plan.md`
 - `thesis_scope_and_research_questions.pdf`
 
 Planned files:
 
-- `thesis_scope_and_research_questions.md`  
+- `thesis_scope_and_research_questions.md`
   Markdown version of the approved thesis scope, research questions, goals, planned contributions, implementation scope, and experimental scope.
 
 ## Papers
@@ -153,10 +170,26 @@ Current files:
 - `week7_pilot_interpretation.md`
 - `week7_pilot_auto_report.md`
 
+## Thesis Drafts
+
+Path:
+
+```text
+docs/thesis/
+```
+
+Use this folder for thesis-facing prose drafts promoted from implementation and
+experiment notes.
+
+Current files:
+
+- `experimental_methodology_draft.md`
+- `implementation_draft.md`
+
 ## Other Files
 
-- `notes.md`  
+- `notes.md`
   General notes that have not yet been promoted into a structured design or plan document.
 
-- `week1_todo.pdf`  
+- `week1_todo.pdf`
   Original Week 1 TODO PDF copied into the project.

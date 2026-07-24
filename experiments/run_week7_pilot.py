@@ -3,13 +3,17 @@
 import argparse
 import csv
 import gc
+import hashlib
 import json
+import os
 import platform
 import random
 import statistics
+import subprocess
 import sys
 import time
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -54,6 +58,12 @@ DEFAULT_RANDOMIZED_CASES = 5
 DEFAULT_WARMUP_RUNS = 5
 DEFAULT_MEASURED_RUNS = 20
 DEFAULT_SEED = 20260723
+DEFAULT_ALGORITHM_NAMES = [
+    "python_sort",
+    "sort_plus_laminarity_check",
+    "simplified_jordan_reference",
+]
+DEFAULT_RUNS_DIR = PROJECT_ROOT / "results" / "runs"
 DEFAULT_RAW_CSV = PROJECT_ROOT / "results" / "week7_pilot_raw.csv"
 DEFAULT_CASE_SUMMARY_CSV = PROJECT_ROOT / "results" / "week7_pilot_case_summary.csv"
 DEFAULT_GROUP_SUMMARY_CSV = PROJECT_ROOT / "results" / "week7_pilot_group_summary.csv"
@@ -82,6 +92,8 @@ RAW_FIELDS = [
     "total_crossing_pair_count",
     "algorithm",
     "run_index",
+    "measured_round",
+    "algorithm_position",
     "time_ns",
     "sorted_correct",
     "output_correct",
@@ -149,21 +161,33 @@ GROUP_FIELDS = [
 class PilotConfig:
     families: list[str]
     sizes: list[int]
+    algorithms: list[str]
     randomized_cases: int
     warmup_runs: int
     measured_runs: int
     seed: int
+    algorithm_order_seed: int
+    run_id: str
+    run_dir: Path
     raw_csv: Path
     case_summary_csv: Path
     group_summary_csv: Path
     environment_json: Path
     auto_report_md: Path
+    config_json: Path
+    manifest_json: Path
 
 
 def csv_value(value):
     if value is None:
         return ""
     return value
+
+
+def timestamp_run_id(prefix="week8_formal_prep"):
+    """Return a UTC timestamp run id that is safe for filenames."""
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    return f"{prefix}_{stamp}"
 
 
 def _as_bool(value):
@@ -186,6 +210,76 @@ def seed_for_case(family, n, index, base_seed):
     return None
 
 
+def _git_output(args):
+    try:
+        result = subprocess.run(
+            ["git", *args],
+            cwd=PROJECT_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return ""
+    return result.stdout.strip()
+
+
+def git_commit_sha():
+    return _git_output(["rev-parse", "HEAD"])
+
+
+def git_dirty():
+    return bool(_git_output(["status", "--short"]))
+
+
+def file_sha256(path):
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def validate_config(config):
+    unknown_families = sorted(set(config.families) - set(DEFAULT_FAMILIES))
+    if unknown_families:
+        raise ValueError(f"unknown families: {unknown_families}")
+
+    unknown_algorithms = sorted(set(config.algorithms) - set(ALGORITHMS))
+    if unknown_algorithms:
+        raise ValueError(f"unknown algorithms: {unknown_algorithms}")
+
+    if len(config.families) != len(set(config.families)):
+        raise ValueError("families must not contain duplicates")
+    if len(config.algorithms) != len(set(config.algorithms)):
+        raise ValueError("algorithms must not contain duplicates")
+    if not config.families:
+        raise ValueError("at least one family is required")
+    if not config.sizes:
+        raise ValueError("at least one size is required")
+    if any(n <= 0 for n in config.sizes):
+        raise ValueError("sizes must be positive")
+    if config.randomized_cases < 1:
+        raise ValueError("randomized_cases must be positive")
+    if config.warmup_runs < 0:
+        raise ValueError("warmup_runs must be non-negative")
+    if config.measured_runs < 1:
+        raise ValueError("measured_runs must be positive")
+
+    output_paths = [
+        config.raw_csv,
+        config.case_summary_csv,
+        config.group_summary_csv,
+        config.environment_json,
+        config.auto_report_md,
+        config.config_json,
+        config.manifest_json,
+    ]
+    if len({path.resolve() for path in output_paths}) != len(output_paths):
+        raise ValueError("output paths must be distinct")
+    return config
+
+
 def build_cases(config):
     cases = []
     for family in config.families:
@@ -200,6 +294,7 @@ def build_cases(config):
                 cases.append(
                     {
                         "case_id": make_case_id(family, len(sequence), index),
+                        "case_index": len(cases),
                         "family": family,
                         "n": len(sequence),
                         "seed": case_seed,
@@ -229,12 +324,13 @@ def _extract_validity_result(algorithm_name, result):
 
 
 def _time_once(func, sequence):
+    values = list(sequence)
     was_enabled = gc.isenabled()
     if was_enabled:
         gc.disable()
     try:
         start = time.perf_counter_ns()
-        result = func(list(sequence))
+        result = func(values)
         end = time.perf_counter_ns()
     finally:
         if was_enabled:
@@ -242,7 +338,13 @@ def _time_once(func, sequence):
     return result, end - start
 
 
-def run_timed_algorithm(algorithm_name, sequence, oracle_result, run_index):
+def run_timed_algorithm(
+    algorithm_name,
+    sequence,
+    oracle_result,
+    run_index,
+    algorithm_position="",
+):
     func = ALGORITHMS[algorithm_name]
     try:
         result, time_ns = _time_once(func, sequence)
@@ -267,6 +369,8 @@ def run_timed_algorithm(algorithm_name, sequence, oracle_result, run_index):
         ) and (reason_correct in {"", True})
         return {
             "run_index": run_index,
+            "measured_round": run_index,
+            "algorithm_position": algorithm_position,
             "time_ns": time_ns,
             "sorted_correct": output_correct,
             "output_correct": output_correct,
@@ -278,6 +382,8 @@ def run_timed_algorithm(algorithm_name, sequence, oracle_result, run_index):
     except Exception as exc:
         return {
             "run_index": run_index,
+            "measured_round": run_index,
+            "algorithm_position": algorithm_position,
             "time_ns": "",
             "sorted_correct": False,
             "output_correct": False,
@@ -307,15 +413,28 @@ def _metadata_fields(case, algorithm_name):
     }
 
 
+def algorithm_order_for_round(algorithms, seed, case_index, measured_round):
+    """Return a balanced per-round algorithm order for one case."""
+    ordered = list(algorithms)
+    random.Random(seed + case_index * 1009).shuffle(ordered)
+    if not ordered:
+        return ordered
+    shift = (measured_round - 1) % len(ordered)
+    return ordered[shift:] + ordered[:shift]
+
+
 def make_raw_rows(config):
-    rng = random.Random(config.seed)
     rows = []
     cases = build_cases(config)
 
     for case in cases:
-        algorithms = list(ALGORITHMS)
-        rng.shuffle(algorithms)
-        for algorithm_name in algorithms:
+        warmup_order = algorithm_order_for_round(
+            config.algorithms,
+            config.algorithm_order_seed,
+            case["case_index"],
+            measured_round=1,
+        )
+        for algorithm_name in warmup_order:
             for _ in range(config.warmup_runs):
                 run_timed_algorithm(
                     algorithm_name,
@@ -324,7 +443,14 @@ def make_raw_rows(config):
                     run_index=0,
                 )
 
-            for run_index in range(1, config.measured_runs + 1):
+        for run_index in range(1, config.measured_runs + 1):
+            round_order = algorithm_order_for_round(
+                config.algorithms,
+                config.algorithm_order_seed,
+                case["case_index"],
+                measured_round=run_index,
+            )
+            for algorithm_position, algorithm_name in enumerate(round_order, start=1):
                 row = {
                     **_metadata_fields(case, algorithm_name),
                     **run_timed_algorithm(
@@ -332,6 +458,7 @@ def make_raw_rows(config):
                         case["sequence"],
                         case["oracle"],
                         run_index=run_index,
+                        algorithm_position=algorithm_position,
                     ),
                 }
                 if algorithm_name == "simplified_jordan_reference":
@@ -487,21 +614,98 @@ def write_csv(rows, output_csv, fields):
 
 def write_environment(config):
     data = {
+        "run_id": config.run_id,
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+        "git_commit_sha": git_commit_sha(),
+        "git_dirty": git_dirty(),
         "python_version": sys.version,
+        "python_implementation": platform.python_implementation(),
         "platform": platform.platform(),
+        "machine": platform.machine(),
         "processor": platform.processor(),
+        "logical_cpu_count": os.cpu_count(),
+        "perf_counter_resolution": time.get_clock_info("perf_counter").resolution,
+        "gc_initial_state": gc.isenabled(),
+        "pythonhashseed": os.environ.get("PYTHONHASHSEED", ""),
         "config": {
             "families": config.families,
             "sizes": config.sizes,
+            "algorithms": config.algorithms,
             "randomized_cases": config.randomized_cases,
             "warmup_runs": config.warmup_runs,
             "measured_runs": config.measured_runs,
             "seed": config.seed,
-            "algorithms": list(ALGORITHMS),
+            "algorithm_order_seed": config.algorithm_order_seed,
         },
     }
     config.environment_json.parent.mkdir(parents=True, exist_ok=True)
     config.environment_json.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+
+
+def config_to_dict(config):
+    return {
+        "run_id": config.run_id,
+        "families": config.families,
+        "sizes": config.sizes,
+        "algorithms": config.algorithms,
+        "randomized_cases": config.randomized_cases,
+        "warmup_runs": config.warmup_runs,
+        "measured_runs": config.measured_runs,
+        "seed": config.seed,
+        "algorithm_order_seed": config.algorithm_order_seed,
+        "outputs": {
+            "run_dir": str(config.run_dir),
+            "raw_csv": str(config.raw_csv),
+            "case_summary_csv": str(config.case_summary_csv),
+            "group_summary_csv": str(config.group_summary_csv),
+            "environment_json": str(config.environment_json),
+            "auto_report_md": str(config.auto_report_md),
+            "config_json": str(config.config_json),
+            "manifest_json": str(config.manifest_json),
+        },
+    }
+
+
+def write_config(config):
+    config.config_json.parent.mkdir(parents=True, exist_ok=True)
+    config.config_json.write_text(
+        json.dumps(config_to_dict(config), indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+
+def write_manifest(config, raw_rows, case_rows, group_rows):
+    files = {
+        "raw_csv": config.raw_csv,
+        "case_summary_csv": config.case_summary_csv,
+        "group_summary_csv": config.group_summary_csv,
+        "environment_json": config.environment_json,
+        "config_json": config.config_json,
+        "auto_report_md": config.auto_report_md,
+    }
+    data = {
+        "run_id": config.run_id,
+        "git_commit_sha": git_commit_sha(),
+        "git_dirty": git_dirty(),
+        "row_counts": {
+            "raw": len(raw_rows),
+            "case_summary": len(case_rows),
+            "group_summary": len(group_rows),
+        },
+        "files": {
+            name: {
+                "path": str(path),
+                "sha256": file_sha256(path),
+            }
+            for name, path in files.items()
+            if Path(path).exists()
+        },
+    }
+    config.manifest_json.parent.mkdir(parents=True, exist_ok=True)
+    config.manifest_json.write_text(
+        json.dumps(data, indent=2) + "\n",
+        encoding="utf-8",
+    )
 
 
 def write_auto_report(config, group_rows):
@@ -511,12 +715,13 @@ def write_auto_report(config, group_rows):
     config.auto_report_md.write_text(
         "\n".join(
             [
-                "# Week 7 Pilot Auto Report",
+                "# Benchmark Auto Report",
                 "",
                 "This pilot is a controlled engineering observation, not a final performance claim.",
                 "",
                 "## Configuration",
                 "",
+                f"- Run id: {config.run_id}",
                 f"- Families: {families}",
                 f"- Sizes: {config.sizes}",
                 f"- Algorithms: {algorithms}",
@@ -542,15 +747,18 @@ def write_auto_report(config, group_rows):
 
 
 def run_pilot(config):
+    validate_config(config)
     raw_rows = make_raw_rows(config)
     case_rows = summarize_by_case(raw_rows)
     group_rows = summarize_by_group(case_rows)
 
+    write_config(config)
     write_csv(raw_rows, config.raw_csv, RAW_FIELDS)
     write_csv(case_rows, config.case_summary_csv, SUMMARY_FIELDS)
     write_csv(group_rows, config.group_summary_csv, GROUP_FIELDS)
     write_environment(config)
     write_auto_report(config, group_rows)
+    write_manifest(config, raw_rows, case_rows, group_rows)
 
     return raw_rows, case_rows, group_rows
 
@@ -559,43 +767,77 @@ def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--families", nargs="*", default=DEFAULT_FAMILIES)
     parser.add_argument("--sizes", nargs="*", type=int, default=DEFAULT_SIZES)
+    parser.add_argument("--algorithms", nargs="*", default=DEFAULT_ALGORITHM_NAMES)
     parser.add_argument(
         "--randomized-cases", type=int, default=DEFAULT_RANDOMIZED_CASES
     )
     parser.add_argument("--warmup-runs", type=int, default=DEFAULT_WARMUP_RUNS)
     parser.add_argument("--measured-runs", type=int, default=DEFAULT_MEASURED_RUNS)
     parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
-    parser.add_argument("--raw-csv", type=Path, default=DEFAULT_RAW_CSV)
+    parser.add_argument("--algorithm-order-seed", type=int, default=None)
+    parser.add_argument("--run-id", default=None)
+    parser.add_argument("--run-dir", type=Path, default=None)
+    parser.add_argument("--overwrite", action="store_true")
+    parser.add_argument("--raw-csv", type=Path, default=None)
     parser.add_argument(
-        "--case-summary-csv", type=Path, default=DEFAULT_CASE_SUMMARY_CSV
+        "--case-summary-csv", type=Path, default=None
     )
     parser.add_argument(
-        "--group-summary-csv", type=Path, default=DEFAULT_GROUP_SUMMARY_CSV
+        "--group-summary-csv", type=Path, default=None
     )
     parser.add_argument(
-        "--environment-json", type=Path, default=DEFAULT_ENVIRONMENT_JSON
+        "--environment-json", type=Path, default=None
     )
     parser.add_argument(
-        "--auto-report-md", type=Path, default=DEFAULT_AUTO_REPORT_MD
+        "--auto-report-md", type=Path, default=None
     )
     return parser.parse_args()
 
 
-def main():
-    args = parse_args()
+def build_config_from_args(args):
+    run_id = args.run_id or timestamp_run_id()
+    run_dir = args.run_dir or (DEFAULT_RUNS_DIR / run_id)
+
+    explicit_paths = [
+        args.raw_csv,
+        args.case_summary_csv,
+        args.group_summary_csv,
+        args.environment_json,
+        args.auto_report_md,
+    ]
+    using_default_run_dir = not any(explicit_paths)
+    if using_default_run_dir and run_dir.exists() and not args.overwrite:
+        raise ValueError(f"run directory already exists: {run_dir}")
+
     config = PilotConfig(
         families=args.families,
         sizes=args.sizes,
+        algorithms=args.algorithms,
         randomized_cases=args.randomized_cases,
         warmup_runs=args.warmup_runs,
         measured_runs=args.measured_runs,
         seed=args.seed,
-        raw_csv=args.raw_csv,
-        case_summary_csv=args.case_summary_csv,
-        group_summary_csv=args.group_summary_csv,
-        environment_json=args.environment_json,
-        auto_report_md=args.auto_report_md,
+        algorithm_order_seed=(
+            args.algorithm_order_seed
+            if args.algorithm_order_seed is not None
+            else args.seed + 7919
+        ),
+        run_id=run_id,
+        run_dir=run_dir,
+        raw_csv=args.raw_csv or (run_dir / "raw.csv"),
+        case_summary_csv=args.case_summary_csv or (run_dir / "case_summary.csv"),
+        group_summary_csv=args.group_summary_csv or (run_dir / "group_summary.csv"),
+        environment_json=args.environment_json or (run_dir / "environment.json"),
+        auto_report_md=args.auto_report_md or (run_dir / "auto_report.md"),
+        config_json=run_dir / "config.json",
+        manifest_json=run_dir / "manifest.json",
     )
+    return validate_config(config)
+
+
+def main():
+    args = parse_args()
+    config = build_config_from_args(args)
     raw_rows, case_rows, group_rows = run_pilot(config)
     print(
         "wrote "

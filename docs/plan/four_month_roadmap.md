@@ -1,6 +1,6 @@
 # Four-Month Thesis Roadmap
 
-Last updated: 2026-07-23
+Last updated: 2026-07-24
 
 ## Goal
 
@@ -40,10 +40,11 @@ Week 5:
 Debug, validate, and prepare the first simplified-reference experiments.
 
 Weeks 6-8:
-Run experiments, collect metrics, and draft analysis.
+Revalidate experiments, harden pilot methodology, freeze scope, and prepare the
+formal experiment workflow.
 
 Weeks 9-11:
-Write the thesis body.
+Run formal experiments and write the thesis body.
 
 Week 12:
 Finalize experiments, figures, terminology, and submission draft.

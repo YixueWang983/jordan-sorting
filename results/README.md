@@ -27,6 +27,7 @@ Generated on demand:
 - `week7_pilot_case_summary.csv`
 - `week7_pilot_group_summary.csv`
 - `week7_environment.json`
+- `runs/<run_id>/`
 - `docs/analysis/week7_pilot_auto_report.md`
 
 `week1_baseline_results.csv` is the full Week 1 baseline experiment output.
@@ -64,6 +65,23 @@ thesis-scale experiment artifacts.
 
 `week7_environment.json` records the Python/platform/config metadata for the
 Week 7 pilot run.
+
+`runs/<run_id>/` is the Week 8+ default output layout for dry runs and future
+formal experiments. Each run directory contains:
+
+```text
+config.json
+environment.json
+raw.csv
+case_summary.csv
+group_summary.csv
+manifest.json
+auto_report.md
+validation_report.json
+```
+
+Run directories are reproducible generated artifacts and are not committed by
+default.
 
 `docs/analysis/week7_pilot_auto_report.md` is an automatically generated report from
 `experiments/run_week7_pilot.py`. Manual analysis notes live under
@@ -120,6 +138,36 @@ Run the Week 7 pilot benchmark:
 
 ```bash
 python experiments/run_week7_pilot.py
+```
+
+Run the Week 8 timing dry run:
+
+```bash
+python experiments/run_week7_pilot.py \
+  --run-id week8_timing_dry_run \
+  --overwrite \
+  --sizes 64 128 256 \
+  --randomized-cases 2 \
+  --warmup-runs 2 \
+  --measured-runs 7 \
+  --algorithms python_sort sort_plus_laminarity_check simplified_jordan_reference
+```
+
+Validate a Week 8+ run directory:
+
+```bash
+python experiments/validate_experiment_outputs.py \
+  --run-dir results/runs/week8_timing_dry_run
+```
+
+Run the Week 8 generator coverage dry run:
+
+```bash
+python experiments/audit_generator_coverage.py \
+  --sizes 31 32 33 63 64 65 \
+  --randomized-repetitions 3 \
+  --output-csv results/runs/week8_generator_audit_dry_run/coverage_audit.csv \
+  --summary-csv results/runs/week8_generator_audit_dry_run/coverage_summary.csv
 ```
 
 ## Full Experiment Configuration
@@ -223,6 +271,44 @@ The pilot protocol uses warm-up runs, measured runs, median, Q1, Q3, IQR, and
 case-level aggregation before group-level aggregation. It is designed for
 experimental-method validation, not final performance claims.
 
+## Week 8 Dry-Run Outputs
+
+The Week 8 timing dry run writes:
+
+```text
+results/runs/week8_timing_dry_run/raw.csv
+results/runs/week8_timing_dry_run/case_summary.csv
+results/runs/week8_timing_dry_run/group_summary.csv
+results/runs/week8_timing_dry_run/config.json
+results/runs/week8_timing_dry_run/environment.json
+results/runs/week8_timing_dry_run/manifest.json
+results/runs/week8_timing_dry_run/auto_report.md
+results/runs/week8_timing_dry_run/validation_report.json
+```
+
+The local dry run produced:
+
+```text
+630 raw rows
+90 case-summary rows
+63 group-summary rows
+validator: valid=true, errors=[]
+```
+
+The Week 8 generator audit dry run writes:
+
+```text
+results/runs/week8_generator_audit_dry_run/coverage_audit.csv
+results/runs/week8_generator_audit_dry_run/coverage_summary.csv
+```
+
+The local audit dry run produced:
+
+```text
+78 audit rows
+42 summary rows
+```
+
 ### Week 1 summary command:
 
 ```bash
@@ -239,7 +325,7 @@ python experiments/summarize_results.py \
   --output-csv results/week4_reference_summary.csv
 ```
 
-## CSV Schema
+## Week 1 CSV Schema
 
 ```text
 case_id
@@ -256,6 +342,22 @@ run_index
 time_ns
 sorted_correct
 error
+```
+
+## Week 7/8 Raw Benchmark Schema
+
+The hardened benchmark runner writes a wider raw schema that includes structural
+metrics, correctness decomposition, timing, and selected diagnostic counters.
+The canonical field list is defined in:
+
+```text
+experiments/run_week7_pilot.py::RAW_FIELDS
+```
+
+Validation is performed with:
+
+```bash
+python experiments/validate_experiment_outputs.py --run-dir <run-dir>
 ```
 
 Week 4 reference rows additionally include:

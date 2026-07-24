@@ -8,8 +8,9 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 Week 1, Week 2, Week 3, and Week 4 are complete.
 
-Week 5 verification, Week 6 experimental interpretation, and Week 7 pilot
-experiment design hardening are complete for this stage.
+Week 5 verification, Week 6 experimental interpretation, Week 7 pilot
+experiment design hardening, and Week 8 formal-experiment preparation are
+complete for this stage.
 
 The repository now contains the first reproducible experimental loop:
 
@@ -69,6 +70,14 @@ Week 7 completed experiment-design hardening:
 - warm-up/median/IQR pilot benchmark protocol,
 - and a small pilot analysis with case-level and group-level summaries.
 
+Week 8 froze the current thesis scope and formal-experiment preparation:
+
+- final scope, contribution, and non-contribution documents;
+- theory-to-code mapping for implemented and missing Jordan-sorting pieces;
+- hardened benchmark runner with run directories, manifests, and output validation;
+- generator coverage audit v2 with parity sizes, generation metadata, hashes, and duplicate-case summaries;
+- dry-run validation for the Week 9 formal experiment gate.
+
 ## Project Structure
 
 ```text
@@ -101,6 +110,7 @@ experiments/
   profile_generated_cases.py
   audit_generator_coverage.py
   run_week7_pilot.py
+  validate_experiment_outputs.py
 
 results/
   week1_baseline_results.csv
@@ -115,6 +125,7 @@ results/
   #   - week7_pilot_raw.csv
   #   - week7_pilot_case_summary.csv
   #   - week7_pilot_group_summary.csv
+  #   - runs/<run_id>/
 
 docs/
   README.md
@@ -122,6 +133,9 @@ docs/
     notation.md
     oracle_and_test_generation.md
     simplified_algorithm_design.md
+    final_scope_and_contributions.md
+    final_experiment_spec.md
+    theory_to_implementation_mapping.md
   progress/
     week1_progress.md
     week1_summary.md
@@ -130,6 +144,10 @@ docs/
     week6_summary.md
     week7_progress.md
     week7_summary.md
+    week8_summary.md
+  thesis/
+    experimental_methodology_draft.md
+    implementation_draft.md
   analysis/
     week7_pilot_interpretation.md
     week7_pilot_auto_report.md
@@ -146,6 +164,7 @@ docs/
     week5_plan.md
     week6_plan.md
     week7_plan.md
+    week8_plan.md
   papers/
 ```
 
@@ -210,7 +229,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 169 tests
+Ran 177 tests
 OK
 ```
 
@@ -258,6 +277,8 @@ Important project documents:
 - [docs/README.md](docs/README.md): guide to the documentation structure.
 - [docs/progress/week1_summary.md](docs/progress/week1_summary.md): Week 1 completed work, experiment configuration, validation results, limitations, and next steps.
 - [docs/progress/week1_progress.md](docs/progress/week1_progress.md): checklist-style Week 1 progress tracker.
+- [docs/progress/week8_summary.md](docs/progress/week8_summary.md): Week 8 scope freeze, dry-run validation, and Week 9 gate.
+- [docs/design/final_experiment_spec.md](docs/design/final_experiment_spec.md): frozen experiment variables, correctness checks, aggregation rules, and non-claims.
 - [docs/design/oracle_and_test_generation.md](docs/design/oracle_and_test_generation.md): definitions and design notes for the oracle and generators.
 - [docs/design/notation.md](docs/design/notation.md): reusable terminology for candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and structural categories.
 - [docs/design/simplified_algorithm_design.md](docs/design/simplified_algorithm_design.md): Week 2 reference-skeleton design, including API contract, family-tree representation, stats contract, trace format, and error policy.
