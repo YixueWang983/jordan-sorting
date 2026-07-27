@@ -153,10 +153,82 @@ class PaperJordanBoundarySelectionTests(unittest.TestCase):
                 left = step1_select_predecessor_boundary(state, 4)
                 right = step2_select_successor_boundary(state, 4)
 
-                self.assertIn(left.pair_id, {2, UPPER_DUMMY_PAIR_ID})
-                self.assertIn(right.pair_id, {2, UPPER_DUMMY_PAIR_ID})
-                self.assertFalse(left.adjusted_for_z1)
-                self.assertFalse(right.adjusted_for_z1)
+                self.assertEqual(
+                    left,
+                    self._expected_boundary(values, iteration=4, direction=-1),
+                )
+                self.assertEqual(
+                    right,
+                    self._expected_boundary(values, iteration=4, direction=1),
+                )
+
+    def test_odd_boundaries_cover_all_five_point_permutations(self):
+        for values in itertools.permutations([1, 2, 3, 4, 5]):
+            with self.subTest(values=values):
+                state = initialize_paper_jordan_state(values)
+                self._add_processed_point_four_in_value_order(state)
+
+                left = step1_select_predecessor_boundary(state, 5)
+                right = step2_select_successor_boundary(state, 5)
+
+                self.assertEqual(
+                    left,
+                    self._expected_boundary(values, iteration=5, direction=-1),
+                )
+                self.assertEqual(
+                    right,
+                    self._expected_boundary(values, iteration=5, direction=1),
+                )
+
+    def test_finite_boundary_rejects_inconsistent_live_ownership(self):
+        def change_parent(state):
+            state.pairs[2].parent_pair_id = LOWER_DUMMY_PAIR_ID
+
+        def change_list_id(state):
+            sibling_list = state.sibling_backend.get_list(
+                state.pairs[2].sibling_list_id
+            )
+            sibling_list.list_id += 100
+
+        for name, mutate in (
+            ("parent mapping", change_parent),
+            ("list id mapping", change_list_id),
+        ):
+            with self.subTest(name=name):
+                state = initialize_paper_jordan_state([1, 4, 2, 3])
+                mutate(state)
+
+                with self.assertRaises(RuntimeError):
+                    step1_select_predecessor_boundary(state, 4)
+
+    def test_dummy_boundary_rejects_wrong_family_identity_or_ownership(self):
+        def use_lower_dummy_id(state):
+            state.upper_dummy_pair_id = LOWER_DUMMY_PAIR_ID
+
+        def replace_state_dummy(state):
+            state.pairs[UPPER_DUMMY_PAIR_ID] = PairRecord(
+                UPPER_DUMMY_PAIR_ID,
+                None,
+                None,
+                None,
+                UPPER,
+                is_dummy=True,
+            )
+
+        def add_ordinary_ownership(state):
+            state.pairs[UPPER_DUMMY_PAIR_ID].parent_pair_id = LOWER_DUMMY_PAIR_ID
+
+        for name, mutate in (
+            ("wrong family", use_lower_dummy_id),
+            ("backend identity", replace_state_dummy),
+            ("ordinary ownership", add_ordinary_ownership),
+        ):
+            with self.subTest(name=name):
+                state = initialize_paper_jordan_state([2, 3, 1, 4])
+                mutate(state)
+
+                with self.assertRaises(RuntimeError):
+                    step1_select_predecessor_boundary(state, 4)
 
     def test_odd_step1_skips_z1_and_selects_lower_pair(self):
         state = initialize_paper_jordan_state([3, 2, 1, 4, 5])
@@ -241,6 +313,70 @@ class PaperJordanBoundarySelectionTests(unittest.TestCase):
 
         self.assertTrue(state.partial_order.validate_links())
         self.assertTrue(state.sibling_backend.validate_invariants())
+
+    def _add_processed_point_four_in_value_order(self, state):
+        point_4 = state.point(4)
+        ordered_ids = state.partial_order.to_point_ids()
+
+        for anchor_point_id in ordered_ids:
+            if point_4.value < state.point_value(anchor_point_id):
+                state.partial_order.insert_before(anchor_point_id, point_4)
+                break
+        else:
+            state.partial_order.insert_after(ordered_ids[-1], point_4)
+
+        pair_4 = PairRecord(4, 4, 3, 4, UPPER)
+        state.sibling_backend.register_pair(pair_4)
+        state.sibling_backend.make_list(pair_4.pair_id, state.upper_dummy_pair_id)
+        state.pairs[pair_4.pair_id] = pair_4
+        state.pair_by_end_index[pair_4.end_index] = pair_4.pair_id
+        state.processed_count = 4
+
+        self.assertTrue(state.partial_order.validate_links())
+        self.assertTrue(state.sibling_backend.validate_invariants())
+
+    def _expected_boundary(self, values, iteration, direction):
+        processed_ids = range(1, iteration)
+        ordered_ids = sorted(processed_ids, key=lambda point_id: values[point_id - 1])
+        previous_position = ordered_ids.index(iteration - 1)
+        neighbor_position = previous_position + direction
+        adjusted_for_z1 = False
+
+        if 0 <= neighbor_position < len(ordered_ids):
+            neighbor_point_id = ordered_ids[neighbor_position]
+        else:
+            neighbor_point_id = None
+
+        if iteration % 2 == 1 and neighbor_point_id == 1:
+            neighbor_position += direction
+            adjusted_for_z1 = True
+            if 0 <= neighbor_position < len(ordered_ids):
+                neighbor_point_id = ordered_ids[neighbor_position]
+            else:
+                neighbor_point_id = None
+
+        if neighbor_point_id is None:
+            dummy_pair_id = (
+                UPPER_DUMMY_PAIR_ID if iteration % 2 == 0 else LOWER_DUMMY_PAIR_ID
+            )
+            return BoundarySelection(
+                None,
+                dummy_pair_id,
+                True,
+                adjusted_for_z1,
+            )
+
+        if neighbor_point_id >= 2 and neighbor_point_id % 2 == iteration % 2:
+            pair_id = neighbor_point_id
+        else:
+            pair_id = neighbor_point_id + 1
+
+        return BoundarySelection(
+            neighbor_point_id,
+            pair_id,
+            False,
+            adjusted_for_z1,
+        )
 
 
 if __name__ == "__main__":

@@ -128,8 +128,6 @@ tests/
   test_partial_sorted_list.py
   test_sibling_list_backend.py
   test_paper_jordan.py
-  test_partial_sorted_list.py
-  test_sibling_list_backend.py
 
 experiments/
   run_small_tests.py
@@ -261,7 +259,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 251 tests
+Ran 254 tests
 OK
 ```
 
@@ -354,8 +352,7 @@ Important project documents:
 
 Immediate next task:
 
-- review Week 9 Day 3 initialization and Step 1/2 boundary selection;
-- after approval, begin Day 4 Step 3(a) and Step 3(b);
+- begin Week 9 Day 4 Step 3(a) and Step 3(b);
 - do not implement Step 3(c) or the complete loop before the Day 4 gate passes.
 
 Later cleanup:

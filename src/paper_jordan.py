@@ -205,6 +205,10 @@ def select_processed_same_family_pair(state, point_id, iteration):
     if pair.parent_pair_id is None or pair.sibling_list_id is None:
         raise RuntimeError("selected processed pair has no live sibling-list ownership")
     sibling_list = state.sibling_backend.get_list(pair.sibling_list_id)
+    if sibling_list.list_id != pair.sibling_list_id:
+        raise RuntimeError("selected pair and sibling-list IDs disagree")
+    if sibling_list.owner_parent_pair_id != pair.parent_pair_id:
+        raise RuntimeError("selected pair and sibling-list parent mappings disagree")
     if sibling_list.pair_ids.count(pair_id) != 1:
         raise RuntimeError("selected processed pair is absent from its sibling list")
 
@@ -329,9 +333,14 @@ def _boundary_selection(
     adjusted_for_z1,
 ):
     if neighbor is expected_sentinel:
+        validated_dummy_pair_id = _validated_dummy_pair_id(
+            state,
+            iteration,
+            dummy_pair_id,
+        )
         return BoundarySelection(
             neighbor_point_id=None,
-            pair_id=dummy_pair_id,
+            pair_id=validated_dummy_pair_id,
             used_dummy_pair=True,
             adjusted_for_z1=adjusted_for_z1,
         )
@@ -345,6 +354,25 @@ def _boundary_selection(
         used_dummy_pair=False,
         adjusted_for_z1=adjusted_for_z1,
     )
+
+
+def _validated_dummy_pair_id(state, iteration, dummy_pair_id):
+    expected_family = pair_family_for_end_index(iteration)
+    try:
+        dummy = state.pairs[dummy_pair_id]
+        backend_dummy = state.sibling_backend.get_pair(dummy_pair_id)
+    except (KeyError, TypeError) as exc:
+        raise RuntimeError("family dummy pair is missing from state or backend") from exc
+
+    if backend_dummy is not dummy:
+        raise RuntimeError("state and sibling backend disagree about the family dummy")
+    if dummy.pair_id != dummy_pair_id or not dummy.is_dummy:
+        raise RuntimeError("configured family boundary is not the expected dummy pair")
+    if dummy.family != expected_family:
+        raise RuntimeError("configured dummy pair belongs to the wrong family")
+    if dummy.parent_pair_id is not None or dummy.sibling_list_id is not None:
+        raise RuntimeError("family dummy pair cannot have ordinary ownership")
+    return dummy.pair_id
 
 
 def _record_boundary_pair_trace(state, step, iteration, selection):

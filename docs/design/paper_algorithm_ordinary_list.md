@@ -1891,7 +1891,8 @@ This specification is ready for Day 2 data-structure implementation when:
 
 Current status: the Day 1 specification and Day 2 data structures are
 implemented. Day 3 adds `PaperJordanState` initialization and executable Step
-1/2 boundary selection. Step 3 and the complete paper loop remain unimplemented
+1/2 boundary selection and is approved after focused ownership, dummy, and
+permutation checks. Step 3 and the complete paper loop remain unimplemented
 until their later focused gates pass.
 
 ## Day 3 Implementation Record
@@ -1912,20 +1913,33 @@ finite initial pair.
 
 Boundary selection accepts only the next unprocessed paper index. A finite
 selection is checked against the original point incidence, pair-family parity,
-the processed-prefix boundary, and live sibling-list ownership. Infinity
-neighbors return the corresponding family dummy. For odd iterations, an
-immediate `z1` neighbor is skipped with a second predecessor or successor
-access before selecting the lower-family pair.
+the processed-prefix boundary, and both directions of live sibling-list
+ownership:
+
+```text
+pair.sibling_list_id == sibling_list.list_id
+pair.parent_pair_id == sibling_list.owner_parent_pair_id
+pair ID occurs exactly once in sibling_list.pair_ids
+```
+
+Infinity neighbors return the corresponding family dummy only after checking
+that the state and backend reference the same dummy object, its family matches
+the current iteration, `is_dummy` is true, and it has no ordinary parent/list
+ownership. For odd iterations, an immediate `z1` neighbor is skipped with a
+second predecessor or successor access before selecting the lower-family pair.
 
 Focused tests cover:
 
 - all six initial three-point orders;
-- all 24 four-point permutations for even Step 1/2 boundaries;
+- exact `BoundarySelection` results for all 24 four-point permutations;
+- exact odd Step 1/2 results for all 120 five-point permutations;
 - negative and positive infinity dummy fallback;
 - same-family selection through both endpoints of `P2` and `P3`;
 - rejection of `z1` as a finite lower-family selection;
 - odd-index predecessor and successor `z1` adjustment;
 - adjusted finite-pair and adjusted dummy outcomes;
+- rejection of inconsistent pair/list IDs and parent mappings;
+- rejection of wrong-family, identity-mismatched, or ordinarily owned dummies;
 - trace order, counters, and next-iteration validation.
 
 No Step 3 function, main paper loop, oracle call, rank map, or ordinary sorting

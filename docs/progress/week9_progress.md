@@ -360,7 +360,7 @@ Performance boundary recorded during Day 2 review:
 
 ## Day 3: Initialization, Step 1, and Step 2
 
-Status: implementation complete; awaiting review before Day 4.
+Status: approved after finite-ownership and dummy-fallback review fixes.
 
 Added:
 
@@ -383,12 +383,16 @@ Implemented:
 - Step 2 successor-side boundary selection;
 - upper/lower dummy fallback at the matching infinity sentinel;
 - odd-index `z1` adjustment on both predecessor and successor paths;
+- bidirectional finite pair/list ownership validation;
+- dummy family, state/backend identity, type, and ordinary-ownership checks;
 - explicit trace events and local operation counters.
 
-Focused tests cover all six initial three-point orders, all 24 four-point
-permutations, both infinity dummies, both endpoints of `P2` and `P3`, the
-missing lower-family pair at `z1`, odd predecessor/successor adjustments,
-adjusted finite and dummy outcomes, trace ordering, and iteration guards.
+Focused tests cover all six initial three-point orders, exact boundary results
+for all 24 four-point and all 120 five-point permutations, both infinity
+dummies, both endpoints of `P2` and `P3`, the missing lower-family pair at
+`z1`, odd predecessor/successor adjustments, adjusted finite and dummy
+outcomes, corrupted pair/list ownership, corrupted dummy identity/family/
+ownership, trace ordering, and iteration guards.
 
 Purity/scope check:
 
@@ -404,18 +408,17 @@ Day 3 verification:
 
 ```text
 python -m unittest tests.test_paper_jordan:
-    Ran 17 tests
+    Ran 20 tests
     OK
 
 python -m unittest discover -s tests:
-    Ran 251 tests
+    Ran 254 tests
     OK
 ```
 
 ## Next Step
 
-Review Day 3 initialization and boundary-selection helpers. After approval,
-begin Day 4:
+Day 3 is approved. The next implementation stage is Day 4:
 
 ```text
 Step 3(a) pair insertion
