@@ -335,6 +335,32 @@ class PaperJordanSortValidTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "deterministic replay"):
             paper_jordan.validate_paper_jordan_state(state)
 
+    def test_invariant_audit_rejects_replaced_points_tuple(self):
+        state = _run_paper_jordan_valid([2, 3, 1, 4])
+        state.points = tuple(
+            paper_jordan.PointRef(point.paper_index, point.value + 100)
+            for point in state.points
+        )
+
+        with self.assertRaisesRegex(RuntimeError, "backend point values differ"):
+            paper_jordan.validate_paper_jordan_state(state)
+
+    def test_invariant_audit_rejects_replaced_future_point(self):
+        state = paper_jordan._run_paper_jordan_state_values(
+            [2, 3, 1, 4, 5],
+            stop_after=4,
+        )
+        changed_points = list(state.points)
+        future_point = changed_points[4]
+        changed_points[4] = paper_jordan.PointRef(
+            future_point.paper_index,
+            future_point.value + 100,
+        )
+        state.points = tuple(changed_points)
+
+        with self.assertRaisesRegex(RuntimeError, "backend point values differ"):
+            paper_jordan.validate_paper_jordan_state(state)
+
     def test_comparable_non_numeric_values_are_supported(self):
         values = ["b", "c", "a", "d"]
 

@@ -147,6 +147,10 @@ class OrdinarySiblingListBackend:
         """返回当前 backend 中全部 pair ID 的不可变快照。"""
         return tuple(self._pairs)
 
+    def point_value(self, point_id):
+        """通过 backend 初始化时固定的只读数据源查询 point value。"""
+        return self._point_value(point_id)
+
     def audit_snapshot(self):
         """返回可用于确定性重放比较的不可变 backend 状态。"""
         pair_records = tuple(

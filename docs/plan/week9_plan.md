@@ -390,6 +390,8 @@ Do not begin experiment integration unless:
 - parent pairs are not in their own child lists;
 - sentinels are used only for boundaries;
 - state and backend contain exactly the two dummies and processed finite pairs;
+- all point values agree with the backend initialization source, and processed
+  partial-order nodes share PointRef identity with state points;
 - every stage result has the expected dataclass type and semantic payload;
 - trace events use the exact initialization-plus-seven-events-per-round order;
 - trace payloads agree with stage results and reconstructed prefix state;

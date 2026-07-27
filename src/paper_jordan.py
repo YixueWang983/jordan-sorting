@@ -306,6 +306,21 @@ def _validate_point_records(state):
     for paper_index, point in enumerate(state.points, start=1):
         if not isinstance(point, PointRef) or point.paper_index != paper_index:
             raise RuntimeError("point records do not match one-based paper indices")
+        try:
+            backend_value = state.sibling_backend.point_value(paper_index)
+        except (IndexError, KeyError, TypeError) as exc:
+            raise RuntimeError("backend point-value source is incomplete") from exc
+        if point.value != backend_value:
+            raise RuntimeError("state and backend point values differ")
+        if paper_index <= state.processed_count:
+            try:
+                ordered_point = state.partial_order.get_point(paper_index)
+            except KeyError as exc:
+                raise RuntimeError("processed point is missing from partial order") from exc
+            if ordered_point is not point:
+                raise RuntimeError(
+                    "partial order and state points do not share PointRef identity"
+                )
 
 
 def _validate_configured_dummy(state, dummy_pair_id, expected_family):

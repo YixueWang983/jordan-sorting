@@ -599,6 +599,9 @@ Implemented:
 - moved the unique Step 1/2/3 runner into
   `_run_paper_jordan_state_values(...)`; production sorting, diagnostics, and
   replay all use this one control-flow implementation;
+- established the replay input trust root by comparing every state point value
+  with the backend's initialization-time data source and requiring processed
+  partial-order entries to share exact `PointRef` identity;
 - invoked full diagnostics after initialization and every completed iteration
   only when an invariant callback is supplied;
 - added `experiments/validate_paper_algorithm.py`;
@@ -618,6 +621,8 @@ coordinated Step 3(a) parent/list forgery
 coordinated Step 3(b) input/output list-ID forgery
 coordinated Step 3(c) child-pair substitution
 coordinated split-size and metric forgery
+replacement of the complete state.points tuple
+replacement of one unprocessed future point
 ```
 
 The validator performs:
@@ -667,11 +672,11 @@ python -m unittest tests.test_paper_jordan \
     tests.test_paper_jordan_sort \
     tests.test_sibling_list_backend \
     tests.test_validate_paper_algorithm:
-    Ran 105 tests
+    Ran 108 tests
     OK
 
 python -m unittest discover -s tests:
-    Ran 315 tests
+    Ran 318 tests
     OK
 
 python experiments/validate_paper_algorithm.py --max-n 8:

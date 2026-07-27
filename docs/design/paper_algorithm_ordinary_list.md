@@ -2183,6 +2183,19 @@ list ID. Coordinated changes to Step 3(a) ownership, Step 3(b) list IDs or
 sizes, Step 3(c) child choice, trace, and metrics are therefore rejected
 against replayed algorithm state.
 
+Replay input is accepted only after a point-data trust-root check:
+
+```text
+every state point keeps its one-based paper index
+every state point value equals the backend's initialization-time value
+every processed partial-order point is the identical PointRef object
+future points are checked against the backend even before insertion
+```
+
+The backend exposes only a read-only `point_value(point_id)` query for this
+audit. Replacing the whole `state.points` tuple or changing one unprocessed
+future point is rejected before replay.
+
 Replay calls `_run_paper_jordan_state_values(..., stop_after=processed_count)`.
 Production sorting and the public compatibility wrapper call that same
 function. An AST regression test requires every directional Step 1/2/3 call

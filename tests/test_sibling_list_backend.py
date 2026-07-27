@@ -92,6 +92,11 @@ class SiblingListBackendTests(unittest.TestCase):
         self.assertNotEqual(before, after)
         self.assertIsInstance(after, tuple)
 
+    def test_point_value_uses_backend_initialization_source(self):
+        self.values[1] = 17
+
+        self.assertEqual(self.backend.point_value(1), 17)
+
     def test_unregister_unowned_pair_supports_transaction_rollback(self):
         pair = self.register_finite_pair(2, 1, 2)
 
