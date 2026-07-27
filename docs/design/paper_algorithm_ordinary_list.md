@@ -839,19 +839,30 @@ This ownership transition must receive direct tests before full-loop use.
 If `N` has no children:
 
 ```text
-insert z_i immediately after z_(i-1)
+base_anchor = z_(i-1)
 ```
 
 Otherwise:
 
 ```text
 C = rightmost child pair of N
-anchor = right_endpoint_id(C)
-insert z_i immediately after anchor
+base_anchor = right_endpoint_id(C)
 ```
 
-The anchor is the geometric right endpoint of the rightmost child. It is not
-necessarily `C.second`, because `C.second` is defined by curve order.
+Then apply the odd-index `z1` adjustment:
+
+```text
+output_anchor = base_anchor
+
+if i is odd and base_anchor < z1 < z_i:
+    output_anchor = z1
+
+insert z_i immediately after output_anchor
+```
+
+When children exist, the base anchor is the geometric right endpoint of the
+rightmost child. It is not necessarily `C.second`, because `C.second` is
+defined by curve order.
 
 This is the executable interpretation of the paper's `z_m`. A literal reading
 of `z_m` as the second curve-order endpoint fails for the oracle-valid and
@@ -862,8 +873,14 @@ produces the correct order.
 
 The earlier 1986 algorithm supports this interpretation. It stores both
 endpoints in sorted family lists and inserts the new point after the boundary
-item `u_q`. In the ordinary pair-list reconstruction, `right_endpoint_id(C)`
-is that boundary item for the rightmost acquired child.
+item `u_q`. In the ordinary pair-list reconstruction,
+`right_endpoint_id(C)` is that base boundary item for the rightmost acquired
+child.
+
+The same 1986 description records a special case: when `i` is odd and `z1`
+lies between the ordinary boundary anchor and `z_i`, the new point belongs next
+to `z1`. The 1990 Step 1 and Step 2 adjustments repair boundary-pair selection,
+but they do not by themselves repair this final output anchor.
 
 ## Step 3: Decreasing Orientation
 
@@ -930,27 +947,37 @@ left:
 If `N` has no children:
 
 ```text
-insert z_i immediately before z_(i-1)
+base_anchor = z_(i-1)
 ```
 
 Otherwise:
 
 ```text
 C = leftmost child pair of N
-anchor = left_endpoint_id(C)
-insert z_i immediately before anchor
+base_anchor = left_endpoint_id(C)
 ```
 
-The anchor is the geometric left endpoint of the leftmost child, not
-necessarily its second curve-order endpoint. The sequence `[2,3,4,1]` is the
-minimal reflected counterexample: inserting `z4=1` before `z2=3` is wrong,
-while inserting it before the child's geometric left endpoint `z1=2` is
-correct.
+Apply the reflected odd-index adjustment:
 
-The simplified 1990 algorithm handles the special role of `z1` in lower-family
-boundary selection through the Step 1 and Step 2 adjustments. This
-reconstruction therefore does not add the separate 1986 `x1` insertion
-anomaly. Odd-index tests must verify that the 1990 adjustments are sufficient.
+```text
+output_anchor = base_anchor
+
+if i is odd and z_i < z1 < base_anchor:
+    output_anchor = z1
+
+insert z_i immediately before output_anchor
+```
+
+When children exist, the base anchor is the geometric left endpoint of the
+leftmost child, not necessarily its second curve-order endpoint. The sequence
+`[2,3,4,1]` is the minimal endpoint-orientation counterexample: inserting
+`z4=1` before `z2=3` is wrong, while inserting it before the child's geometric
+left endpoint `z1=2` is correct.
+
+The sequence `[1,2,3,4,6,7,0]` independently shows why the second anchor stage
+is necessary. At `i=7`, the geometric base anchor is `2`, but the original
+point `z1=1` lies between the new point `0` and `2`; insertion before `z1`
+produces the correct order.
 
 ## End-to-End Pseudocode
 
@@ -1027,7 +1054,9 @@ sibling_list_id
 sibling_list_size
 split_left_size
 split_right_size
+base_output_anchor_point_id
 output_anchor_point_id
+z1_anchor_adjusted
 output_insertion_side
 ```
 
@@ -1073,6 +1102,7 @@ sibling_list_splits
 split_items_scanned
 split_items_moved
 output_insertions
+z1_anchor_adjustments
 invariant_checks
 trace_event_count
 ```
@@ -1539,13 +1569,49 @@ U1 = [
 ]
 ```
 
-The partial order is:
+That state is reachable only if the odd-index insertion at `i=7` is handled
+explicitly. Immediately before `i=7`:
+
+```text
+partial order: 1, 2, 3, 4, 6, 7
+lower dummy child list L1: [P3={2,3}, P5={4,6}]
+```
+
+The new lower pair is:
+
+```text
+P7={z6=7,z7=0}
+orientation = decreasing
+```
+
+Mirrored Step 3(a) creates a singleton list for `P7`. Mirrored Step 3(b)
+transfers `[P3,P5]` to `P7`. The ordinary geometric base anchor is:
+
+```text
+leftmost child = P3={2,3}
+base_anchor = left_endpoint(P3) = 2
+```
+
+Using only that base anchor would insert `0` before `2` and produce the
+incorrect partial order:
+
+```text
+1, 0, 2, 3, 4, 6, 7
+```
+
+Because `i=7` is odd and:
+
+```text
+z7=0 < z1=1 < base_anchor=2
+```
+
+the output anchor changes to `z1`. Inserting `z7=0` before `z1=1` produces:
 
 ```text
 0, 1, 2, 3, 4, 6, 7
 ```
 
-The new upper pair is:
+Now the `i=8` precondition is established. The new upper pair is:
 
 ```text
 P8={z7=0,z8=5}
@@ -1589,7 +1655,59 @@ Final partial order:
 ```
 
 This trace fixes the case in which both split outputs are nonempty and both
-the old and new parent retain live child lists.
+the old and new parent retain live child lists. It also demonstrates that the
+two-sided split trace depends on the odd-index `z1` output-anchor adjustment.
+
+## Nontrivial Trace G: Increasing Odd-Index `z1` Adjustment
+
+Sequence:
+
+```text
+[6, 5, 4, 3, 1, 0, 7]
+```
+
+This oracle-valid candidate is the order reflection of the first seven points
+in Trace F. Before `i=7`:
+
+```text
+partial order: 0, 1, 3, 4, 5, 6
+lower dummy child list L1: [P5={3,1}, P3={5,4}]
+```
+
+The new lower pair is:
+
+```text
+P7={z6=0,z7=7}
+orientation = increasing
+```
+
+Step 3(a) creates a singleton list for `P7`, and Step 3(b) transfers both lower
+children to it. The rightmost child is `P3={5,4}`, so:
+
+```text
+base_anchor = right_endpoint(P3) = 5
+```
+
+Using only the base anchor would insert `7` after `5` and produce:
+
+```text
+0, 1, 3, 4, 5, 7, 6
+```
+
+Because `i=7` is odd and:
+
+```text
+base_anchor=5 < z1=6 < z7=7
+```
+
+the output anchor changes to `z1`. Inserting `z7=7` after `z1=6` produces:
+
+```text
+0, 1, 3, 4, 5, 6, 7
+```
+
+Traces F and G cover the decreasing and increasing forms of the odd-index
+`z1` output-anchor adjustment.
 
 ## Test Matrix
 
@@ -1599,7 +1717,8 @@ the old and new parent retain live child lists.
 | parity | `P2/P4` upper, `P3/P5` lower |
 | same-family pair selection | point as first endpoint, point as second endpoint |
 | endpoint helpers | increasing pair, decreasing pair, left/right identity |
-| `z1` exception | lower-family predecessor and successor cases |
+| `z1` boundary exception | lower-family predecessor and successor cases |
+| odd Step 3(c) | outside: `[1,2,3,4,5]` / `[5,4,3,2,1]`; adjusted: Trace G / Trace F |
 | sentinels | negative and positive infinity, both family dummies |
 | small inputs | `n=0`, `n=1`, both orders for `n=2`, all six orders for `n=3` |
 | partial order | before/after insertion, duplicate rejection, link consistency |
@@ -1611,7 +1730,7 @@ the old and new parent retain live child lists.
 | Step 2 | even, odd, `z1` adjustment, positive sentinel |
 | Step 3(a) | singleton creation, shared-parent boundary insertion |
 | Step 3(b) | no children, one child, multiple children, empty side, two nonempty sides, ownership transfer |
-| Step 3(c) | no child plus all four parent/child orientation combinations |
+| Step 3(c) | no child, all four parent/child orientations, odd-index `z1` adjustment in both directions |
 | full loop | flat, nested, incremental, odd/even lengths |
 | independence | no oracle output, no rank map, no full sorting |
 
@@ -1622,6 +1741,7 @@ the old and new parent retain live child lists.
 | predecessor of `z_(i-1)` | previous linked node in `SortedOrderList` | left boundary and negative sentinel |
 | successor of `z_(i-1)` | next linked node in `SortedOrderList` | right boundary and positive sentinel |
 | pair containing `v` or `w` | processed incident pair whose end-index parity matches `i` | first-endpoint, second-endpoint, and `z1` exception |
+| odd-index output anomaly | after choosing the geometric base anchor, replace it by `z1` when `z1` lies strictly between the base anchor and `z_i` | increasing and decreasing reflected cases |
 | `{-infinity,+infinity}` | one distinct dummy pair per family | both family boundaries |
 | pair's first/second endpoint | curve-order identity only | all four parent/child orientation combinations |
 | pair's left/right endpoint | endpoint selected by x-coordinate comparison | reversed child orientation |
@@ -1682,11 +1802,11 @@ correctness evidence:
    list.
 6. A two-nonempty-side split updates both parent ownership collections in one
    atomic transition.
-7. The Step 1 and Step 2 `z1` adjustments are sufficient for odd-index
-   processing; the separate anomaly described by the 1986 algorithm is not
-   independently added.
+7. Odd-index processing uses a separate output-anchor adjustment when `z1`
+   lies strictly between the geometric base anchor and `z_i`. This is distinct
+   from the Step 1 and Step 2 boundary-pair adjustments.
 
-Focused executable tests must cover Traces B through F and odd-index cases
+Focused executable tests must cover Traces B through G and odd-index cases
 before the full loop is declared correct.
 
 ## Day 1 Acceptance Record
@@ -1701,10 +1821,12 @@ This specification is ready for Day 2 data-structure implementation when:
 - curve-order and geometric endpoint identities are kept separate;
 - all four parent/child orientation combinations use the correct geometric
   Step 3(c) anchor;
+- odd-index `z1` output-anchor adjustment is explicit in both orientations;
 - the proposed mirrored Step 3 interpretation is treated as testable, not
   silently assumed;
 - empty-side and two-nonempty-side ownership transitions are explicit;
 - no unresolved item is hidden by oracle-sorted output.
 
-Current status: revised after the Step 3(c) counterexamples and awaiting review.
-Day 2 source implementation has not started.
+Current status: revised after the endpoint-orientation and odd-index `z1`
+counterexamples and awaiting review. Day 2 source implementation has not
+started.

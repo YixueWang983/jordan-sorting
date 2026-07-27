@@ -16,7 +16,8 @@ docs/plan/week9_plan.md
 
 ## Day 1: Freeze the Executable Specification
 
-Status: revised after Step 3(c) counterexamples; awaiting review before Day 2.
+Status: revised after Step 3(c) endpoint and odd-index counterexamples;
+awaiting review before Day 2.
 
 - [x] Read and map paper Sections 2 and 3.
 - [x] Fix one-based paper indexing versus zero-based Python storage.
@@ -43,6 +44,8 @@ Status: revised after Step 3(c) counterexamples; awaiting review before Day 2.
 - [x] Resolve the Step 3(c) anchor against minimal orientation counterexamples.
 - [x] Add all four parent/child orientation combinations.
 - [x] Add a split trace whose left and right outputs are both nonempty.
+- [x] Add the odd-index `z1` output-anchor adjustment in both orientations.
+- [x] Repair Trace F by deriving its `i=7` precondition instead of assuming it.
 - [x] Restore mandatory ownership for every live sibling list.
 
 Primary output:
@@ -129,6 +132,8 @@ amortized `O(1)`, insertion at the front is `O(k)`, and split is `O(k)`.
 5. Empty split outputs are represented by `None`, not persistent empty lists.
 6. A two-nonempty-side split preserves the retained side's parent and transfers
    every acquired pair to the new parent atomically.
+7. Odd-index processing changes the output anchor to `z1` when `z1` lies
+   strictly between the geometric base anchor and the new point.
 
 The design traces fix the intended interpretation. Direct executable tests are
 still required before the complete Step 3 algorithm is declared correct.
@@ -182,6 +187,42 @@ The candidate `[1,2,3,4,6,7,0,5]` provides a two-nonempty-output split:
 
 `SiblingList.owner_parent_pair_id` is mandatory for every live list. Temporary
 unowned partitions exist only inside `SplitPlan`.
+
+## Third Review: Odd-Index `z1` Output Anchor
+
+The third review showed that Step 1 and Step 2's `z1` boundary adjustment does
+not eliminate the separate output-anchor anomaly described by the 1986
+algorithm.
+
+For:
+
+```text
+[1,2,3,4,6,7,0]
+```
+
+the decreasing `i=7` step has geometric base anchor `2`. Inserting `0` before
+`2` gives `[1,0,2,3,4,6,7]`. Because `z1=1` lies between `0` and `2`, the
+output anchor must change to `z1`, producing the correct partial order.
+
+The reflected increasing case is:
+
+```text
+[6,5,4,3,1,0,7]
+```
+
+Its base anchor is `5`, but `z1=6` lies between `5` and `7`; insertion after
+`z1` produces the correct order.
+
+Step 3(c) now has two stages:
+
+```text
+1. choose the geometric base anchor;
+2. when i is odd and z1 lies between that anchor and z_i, replace the output
+   anchor by z1.
+```
+
+Trace F now derives the correct sorted state after `i=7` before demonstrating
+the two-nonempty-output split at `i=8`.
 
 ## Next Step
 

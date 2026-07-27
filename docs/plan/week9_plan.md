@@ -184,6 +184,7 @@ docs/design/paper_algorithm_ordinary_list.md
 - sibling-list and output-list insertion are not conflated;
 - unresolved Step 3 ownership questions are visible;
 - Step 3(c) is checked against all four parent/child orientation combinations;
+- odd-index `z1` output-anchor adjustment is specified in both directions;
 - at least one split trace has two nonempty outputs;
 - no main algorithm code is written before this document is coherent.
 
@@ -219,6 +220,11 @@ child sibling-list ids
 Geometric endpoint helpers select the smaller or larger endpoint by comparison;
 they must not treat the curve-order second endpoint as the geometric right
 endpoint.
+
+Step 3(c) first selects this geometric base anchor. For odd paper indices, the
+output anchor changes to `z1` when `z1` lies strictly between the base anchor
+and the new point. This output adjustment is separate from the Step 1 and Step
+2 boundary-pair adjustment.
 
 ### Ordinary Sibling-List Backend
 
