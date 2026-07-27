@@ -82,13 +82,19 @@ gate:
   2026-07-24.
 
 Week 9 has started the ordinary-list reconstruction of the high-level 1990
-paper algorithm. Day 1 freezes the implementation-facing specification before
-algorithm code:
+paper algorithm. Days 1-3 now provide the frozen executable specification,
+ordinary core data structures, initialization, and Step 1/2 boundary
+selection:
 
 - the existing `simplified_jordan_reference` remains a separate baseline;
 - the new core must recover output from a maintained partial sorted order;
 - the new core may not use oracle-sorted output, a global rank map, or full
   sorting;
+- `PaperJordanState` initializes `z1`, `z2`, `z3`, `P2`, `P3`, both dummy
+  roots, and their sibling-list ownership;
+- predecessor/successor boundary selection supports family dummies,
+  processed same-family incident pairs, and the odd-index `z1` adjustment;
+- Step 3 and the complete paper loop are intentionally not implemented yet;
 - heterogeneous finger trees and a linear-time claim remain out of scope.
 
 ## Project Structure
@@ -105,6 +111,7 @@ src/
   simplified_jordan.py
   partial_sorted_list.py
   sibling_list_backend.py
+  paper_jordan.py
 
 tests/
   test_oracle.py
@@ -118,6 +125,9 @@ tests/
   test_instrumentation.py
   test_generator_coverage_audit.py
   test_run_week7_pilot.py
+  test_partial_sorted_list.py
+  test_sibling_list_backend.py
+  test_paper_jordan.py
   test_partial_sorted_list.py
   test_sibling_list_backend.py
 
@@ -251,7 +261,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 234 tests
+Ran 251 tests
 OK
 ```
 
@@ -344,8 +354,9 @@ Important project documents:
 
 Immediate next task:
 
-- review both Week 9 Day 2 data structures and their focused tests;
-- after approval, begin Week 9 Day 3 initialization, Step 1, and Step 2.
+- review Week 9 Day 3 initialization and Step 1/2 boundary selection;
+- after approval, begin Day 4 Step 3(a) and Step 3(b);
+- do not implement Step 3(c) or the complete loop before the Day 4 gate passes.
 
 Later cleanup:
 

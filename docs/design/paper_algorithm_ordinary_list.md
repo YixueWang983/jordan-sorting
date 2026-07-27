@@ -1889,6 +1889,44 @@ This specification is ready for Day 2 data-structure implementation when:
 - empty-side and two-nonempty-side ownership transitions are explicit;
 - no unresolved item is hidden by oracle-sorted output.
 
-Current status: revised after the endpoint-orientation and odd-index `z1`
-counterexamples and awaiting review. Day 2 source implementation has not
-started.
+Current status: the Day 1 specification and Day 2 data structures are
+implemented. Day 3 adds `PaperJordanState` initialization and executable Step
+1/2 boundary selection. Step 3 and the complete paper loop remain unimplemented
+until their later focused gates pass.
+
+## Day 3 Implementation Record
+
+The ordinary-list reconstruction now exposes:
+
+```text
+initialize_paper_jordan_state(seq)
+select_processed_same_family_pair(state, point_id, iteration)
+step1_select_predecessor_boundary(state, iteration)
+step2_select_successor_boundary(state, iteration)
+```
+
+Initialization uses a fixed comparison procedure for the first three points;
+it does not call `sorted`, the oracle, or a rank map. It creates `P2`, `P3`,
+the upper/lower dummy roots, and one owned singleton sibling list for each
+finite initial pair.
+
+Boundary selection accepts only the next unprocessed paper index. A finite
+selection is checked against the original point incidence, pair-family parity,
+the processed-prefix boundary, and live sibling-list ownership. Infinity
+neighbors return the corresponding family dummy. For odd iterations, an
+immediate `z1` neighbor is skipped with a second predecessor or successor
+access before selecting the lower-family pair.
+
+Focused tests cover:
+
+- all six initial three-point orders;
+- all 24 four-point permutations for even Step 1/2 boundaries;
+- negative and positive infinity dummy fallback;
+- same-family selection through both endpoints of `P2` and `P3`;
+- rejection of `z1` as a finite lower-family selection;
+- odd-index predecessor and successor `z1` adjustment;
+- adjusted finite-pair and adjusted dummy outcomes;
+- trace order, counters, and next-iteration validation.
+
+No Step 3 function, main paper loop, oracle call, rank map, or ordinary sorting
+call is present in the Day 3 source.

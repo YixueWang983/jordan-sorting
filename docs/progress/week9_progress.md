@@ -245,7 +245,7 @@ the two-nonempty-output split at `i=8`.
 
 ## Day 2: Core Data Structures
 
-Status: review blockers fixed; awaiting re-review before Day 3.
+Status: approved after ownership review fixes.
 
 Completed first component:
 
@@ -358,15 +358,69 @@ Performance boundary recorded during Day 2 review:
   controlled by an explicit correctness/debug mode and executed separately
   outside the measured region.
 
-## Next Step
+## Day 3: Initialization, Step 1, and Step 2
 
-Review both Day 2 data structures. After approval, begin Day 3:
+Status: implementation complete; awaiting review before Day 4.
+
+Added:
 
 ```text
-initialization
-Step 1 predecessor-side boundary selection
-Step 2 successor-side boundary selection
+src/paper_jordan.py
+tests/test_paper_jordan.py
 ```
 
-Do not implement Step 3 or the full paper loop before the Day 3 boundary
-selection helpers pass their focused tests.
+Implemented:
+
+- `PaperJordanState` with immutable input points, processed-prefix count,
+  partial sorted order, pair mappings, sibling backend, family dummies, trace,
+  and counters;
+- fixed-comparison initialization of `z1`, `z2`, and `z3` without `sorted`;
+- initial upper `P2` and lower `P3` with live singleton-list ownership;
+- `BoundarySelection`;
+- pair-family parity helper;
+- processed same-family incident-pair selection using original paper indices;
+- Step 1 predecessor-side boundary selection;
+- Step 2 successor-side boundary selection;
+- upper/lower dummy fallback at the matching infinity sentinel;
+- odd-index `z1` adjustment on both predecessor and successor paths;
+- explicit trace events and local operation counters.
+
+Focused tests cover all six initial three-point orders, all 24 four-point
+permutations, both infinity dummies, both endpoints of `P2` and `P3`, the
+missing lower-family pair at `z1`, odd predecessor/successor adjustments,
+adjusted finite and dummy outcomes, trace ordering, and iteration guards.
+
+Purity/scope check:
+
+```text
+src/paper_jordan.py contains no oracle call
+src/paper_jordan.py contains no rank_map call
+src/paper_jordan.py contains no sorted() call
+src/paper_jordan.py contains no Step 3 implementation
+src/paper_jordan.py contains no complete paper loop
+```
+
+Day 3 verification:
+
+```text
+python -m unittest tests.test_paper_jordan:
+    Ran 17 tests
+    OK
+
+python -m unittest discover -s tests:
+    Ran 251 tests
+    OK
+```
+
+## Next Step
+
+Review Day 3 initialization and boundary-selection helpers. After approval,
+begin Day 4:
+
+```text
+Step 3(a) pair insertion
+Step 3(b) sibling-list split and ownership transfer
+```
+
+Do not implement Step 3(c) or the full paper loop before the Day 4 focused
+tests pass.
