@@ -216,6 +216,7 @@ docs/
     week8_plan.md
     refined_thesis_direction_after_week8.md
     week9_plan.md
+    week10_plan.md
   papers/
 ```
 
@@ -333,6 +334,7 @@ Important project documents:
 - [docs/progress/week9_summary.md](docs/progress/week9_summary.md): Week 9 paper-algorithm implementation, validation, integration pilot, and Week 10 handoff.
 - [docs/design/paper_algorithm_ordinary_list.md](docs/design/paper_algorithm_ordinary_list.md): implementation-facing state, pseudocode, invariants, and worked trace for the 1990 paper algorithm.
 - [docs/plan/week9_plan.md](docs/plan/week9_plan.md): detailed Day 1-Day 7 ordinary-list implementation plan.
+- [docs/plan/week10_plan.md](docs/plan/week10_plan.md): timing-contamination study, execution-policy design, controlled pilot, and Week 11 experiment gate.
 - [docs/design/final_experiment_spec.md](docs/design/final_experiment_spec.md): frozen experiment variables, correctness checks, aggregation rules, and non-claims.
 - [docs/design/oracle_and_test_generation.md](docs/design/oracle_and_test_generation.md): definitions and design notes for the oracle and generators.
 - [docs/design/notation.md](docs/design/notation.md): reusable terminology for candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and structural categories.

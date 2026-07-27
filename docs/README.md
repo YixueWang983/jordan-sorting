@@ -133,6 +133,7 @@ Current files:
 - `week8_plan.md`
 - `refined_thesis_direction_after_week8.md`
 - `week9_plan.md`
+- `week10_plan.md`
 - `thesis_scope_and_research_questions.pdf`
 
 Planned files:

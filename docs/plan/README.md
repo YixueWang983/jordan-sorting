@@ -43,3 +43,8 @@ This folder stores the approved thesis scope and research-question documents.
 - `week9_plan.md`
   Detailed daily execution plan for specifying, implementing, validating, and
   lightly integrating the ordinary-list reconstruction of the 1990 algorithm.
+
+- `week10_plan.md`
+  Daily plan for decomposing paper-algorithm timing contamination, adding fixed
+  execution policies without duplicating the main loop, running a controlled
+  overhead pilot, and freezing the Week 11 timing gate.
