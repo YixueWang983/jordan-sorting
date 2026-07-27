@@ -245,7 +245,7 @@ the two-nonempty-output split at `i=8`.
 
 ## Day 2: Core Data Structures
 
-Status: implementation complete; awaiting review before Day 3.
+Status: review blockers fixed; awaiting re-review before Day 3.
 
 Completed first component:
 
@@ -301,6 +301,9 @@ Implemented:
 - stale/forged plan rejection;
 - rollback if an unexpected final invariant check fails;
 - global pair/list/parent ownership and order validation;
+- rejection of unowned finite parents in list creation and split commits;
+- descendant-parent rejection before split publication;
+- global acyclic parent-chain validation to the same-family dummy root;
 - enforcement of at most two child sibling lists per parent.
 
 Backend tests cover:
@@ -312,11 +315,16 @@ Backend tests cover:
 - rejection of pairs already owned elsewhere;
 - non-destructive split planning;
 - noncontiguous split-key rejection;
-- empty-left, empty-right, and two-nonempty-output commits;
+- empty-left, empty-right, empty-acquired-side, and two-nonempty-output commits;
+- both `LEFT` and `RIGHT` acquisition for two-nonempty outputs;
 - Trace F-style acquired/retained ownership;
 - straddling-pair rejection without mutation;
 - third-child-list rejection without mutation;
-- stale and forged split plans.
+- stale and forged split plans;
+- rejection of unowned finite owners and split parents;
+- rejection of descendant split parents without mutation;
+- direct detection of a deliberately corrupted family-tree cycle;
+- complete rollback after a forced final invariant failure.
 
 Day 2 verification:
 
@@ -326,11 +334,11 @@ python -m unittest tests/test_partial_sorted_list.py:
     OK
 
 python -m unittest tests/test_sibling_list_backend.py:
-    Ran 17 tests
+    Ran 24 tests
     OK
 
 python -m unittest discover -s tests:
-    Ran 227 tests
+    Ran 234 tests
     OK
 
 python -m compileall -q src experiments tests:

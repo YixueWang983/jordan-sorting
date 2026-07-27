@@ -480,10 +480,15 @@ child sibling-list IDs are ordered from left to right
 pair.parent_pair_id == sibling_list.owner_parent_pair_id
 pair.sibling_list_id identifies the unique list containing the pair
 every live owned list appears in exactly one parent's child-list collection
+every finite parent already belongs to a live sibling list
+every owned finite pair's parent chain reaches its same-family dummy root
+pair parent chains are acyclic
 ```
 
 Attempting to attach a third child sibling list to one parent is an invariant
-error. The implementation must not silently truncate or reorder ownership.
+error. An unowned finite pair cannot act as a parent, and a split cannot attach
+an acquired pair below one of its own descendants. The implementation must not
+silently truncate, reorder, detach, or cycle ownership.
 
 ## Ordinary Sibling-List Operations
 
@@ -501,6 +506,8 @@ Postconditions:
 - the pair receives that list as its unique owner;
 - the owner parent records the new child list;
 - no existing list already owns the pair.
+- the owner is either the registered family dummy or a finite pair already
+  connected to that dummy through live ownership links.
 
 When an owner already has one child list, the new list is inserted into
 `child_sibling_list_ids` according to its first pair's left-endpoint key. The
@@ -579,10 +586,10 @@ commit_split(
 ```
 
 `SplitCommitResult` contains `left_list_id` and `right_list_id`; an empty side
-is represented by `None`. A stale or forged plan, a third child list, or any
-ownership mismatch is rejected before publication. If the final invariant
-check raises unexpectedly, all affected pair/list/parent fields are rolled
-back.
+is represented by `None`. A stale or forged plan, a third child list, an
+unowned finite new parent, a descendant new parent, or any ownership mismatch
+is rejected before publication. If the final invariant check raises
+unexpectedly, all affected pair/list/parent fields are rolled back.
 
 ### Algorithm `split_pairs_at_value`
 
@@ -631,7 +638,9 @@ The adapter commits one atomic ownership transaction:
 7. update every acquired pair's `parent_pair_id` to the new parent;
 8. preserve the retained pairs' old `parent_pair_id`;
 9. retire the input list ID;
-10. verify uniqueness, ordering, and the two-list maximum for both parents.
+10. verify uniqueness, ordering, and the two-list maximum for both parents;
+11. verify that every owned finite pair reaches its same-family dummy root
+    without repeating a pair ID.
 
 No public invariant check observes a half-applied transaction. If any
 precondition or final invariant fails, the operation raises before publishing

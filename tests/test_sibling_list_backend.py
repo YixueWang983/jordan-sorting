@@ -3,6 +3,7 @@
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -88,6 +89,19 @@ class SiblingListBackendTests(unittest.TestCase):
             [list_id],
         )
         self.assertTrue(self.backend.validate_invariants())
+
+    def test_make_list_rejects_unowned_finite_parent(self):
+        parent = self.register_finite_pair(2, 0, 5)
+        child = self.register_finite_pair(4, 1, 2)
+
+        with self.assertRaises(ValueError):
+            self.backend.make_list(child.pair_id, parent.pair_id)
+
+        self.assertIsNone(parent.parent_pair_id)
+        self.assertEqual(parent.child_sibling_list_ids, [])
+        self.assertIsNone(child.parent_pair_id)
+        self.assertIsNone(child.sibling_list_id)
+        self.assertTrue(self.backend.validate_invariants(require_all_owned=False))
 
     def test_parent_child_lists_are_ordered_and_limited_to_two(self):
         right_pair = self.register_finite_pair(2, 5, 6)
@@ -221,6 +235,98 @@ class SiblingListBackendTests(unittest.TestCase):
         )
         self.assertTrue(self.backend.validate_invariants())
 
+    def test_commit_split_with_two_nonempty_sides_can_acquire_right(self):
+        left = self.register_finite_pair(2, 1, 2)
+        right = self.register_finite_pair(4, 6, 7)
+        new_parent = self.register_finite_pair(6, 3, 8)
+        list_id = self.backend.make_list(left.pair_id, UPPER_DUMMY_ID)
+        self.backend.insert_at_boundary(right.pair_id, left.pair_id, AFTER)
+        new_parent_list = self.backend.make_list(
+            new_parent.pair_id,
+            UPPER_DUMMY_ID,
+        )
+
+        result = self.backend.split_pairs_at_value(
+            list_id,
+            boundary_value=4,
+            acquired_side=RIGHT,
+            new_parent_pair_id=new_parent.pair_id,
+        )
+
+        self.assertEqual(
+            self.backend.get_list(result.left_list_id).pair_ids,
+            [left.pair_id],
+        )
+        self.assertEqual(
+            self.backend.get_list(result.right_list_id).pair_ids,
+            [right.pair_id],
+        )
+        self.assertEqual(left.parent_pair_id, UPPER_DUMMY_ID)
+        self.assertEqual(right.parent_pair_id, new_parent.pair_id)
+        self.assertEqual(new_parent.child_sibling_list_ids, [result.right_list_id])
+        self.assertEqual(
+            self.backend.get_pair(UPPER_DUMMY_ID).child_sibling_list_ids,
+            [result.left_list_id, new_parent_list],
+        )
+        self.assertTrue(self.backend.validate_invariants())
+
+    def test_commit_split_rejects_unowned_finite_new_parent(self):
+        child = self.register_finite_pair(2, 1, 2)
+        new_parent = self.register_finite_pair(4, 0, 5)
+        list_id = self.backend.make_list(child.pair_id, UPPER_DUMMY_ID)
+
+        with self.assertRaises(ValueError):
+            self.backend.split_pairs_at_value(
+                list_id,
+                boundary_value=5,
+                acquired_side=LEFT,
+                new_parent_pair_id=new_parent.pair_id,
+            )
+
+        self.assertEqual(self.backend.get_list(list_id).pair_ids, [child.pair_id])
+        self.assertEqual(child.parent_pair_id, UPPER_DUMMY_ID)
+        self.assertIsNone(new_parent.parent_pair_id)
+        self.assertEqual(new_parent.child_sibling_list_ids, [])
+        self.assertTrue(self.backend.validate_invariants(require_all_owned=False))
+
+    def test_commit_split_rejects_descendant_new_parent_without_mutation(self):
+        old_owner = self.register_finite_pair(2, 0, 10)
+        acquired = self.register_finite_pair(4, 2, 8)
+        descendant = self.register_finite_pair(6, 3, 7)
+        self.backend.make_list(old_owner.pair_id, UPPER_DUMMY_ID)
+        acquired_list_id = self.backend.make_list(
+            acquired.pair_id,
+            old_owner.pair_id,
+        )
+        descendant_list_id = self.backend.make_list(
+            descendant.pair_id,
+            acquired.pair_id,
+        )
+        old_owner_children = list(old_owner.child_sibling_list_ids)
+        acquired_children = list(acquired.child_sibling_list_ids)
+
+        with self.assertRaises(ValueError):
+            self.backend.split_pairs_at_value(
+                acquired_list_id,
+                boundary_value=9,
+                acquired_side=LEFT,
+                new_parent_pair_id=descendant.pair_id,
+            )
+
+        self.assertEqual(
+            self.backend.get_list(acquired_list_id).pair_ids,
+            [acquired.pair_id],
+        )
+        self.assertEqual(
+            self.backend.get_list(descendant_list_id).pair_ids,
+            [descendant.pair_id],
+        )
+        self.assertEqual(acquired.parent_pair_id, old_owner.pair_id)
+        self.assertEqual(descendant.parent_pair_id, acquired.pair_id)
+        self.assertEqual(old_owner.child_sibling_list_ids, old_owner_children)
+        self.assertEqual(acquired.child_sibling_list_ids, acquired_children)
+        self.assertTrue(self.backend.validate_invariants())
+
     def test_split_supports_empty_right_output(self):
         child = self.register_finite_pair(2, 1, 2)
         new_parent = self.register_finite_pair(4, 0, 5)
@@ -257,6 +363,25 @@ class SiblingListBackendTests(unittest.TestCase):
         self.assertIsNotNone(result.right_list_id)
         self.assertEqual(child.parent_pair_id, new_parent.pair_id)
         self.assertEqual(new_parent.child_sibling_list_ids, [result.right_list_id])
+        self.assertTrue(self.backend.validate_invariants())
+
+    def test_split_supports_empty_acquired_side(self):
+        child = self.register_finite_pair(2, 8, 9)
+        new_parent = self.register_finite_pair(4, 0, 5)
+        list_id = self.backend.make_list(child.pair_id, UPPER_DUMMY_ID)
+        self.backend.make_list(new_parent.pair_id, UPPER_DUMMY_ID)
+
+        result = self.backend.split_pairs_at_value(
+            list_id,
+            boundary_value=5,
+            acquired_side=LEFT,
+            new_parent_pair_id=new_parent.pair_id,
+        )
+
+        self.assertIsNone(result.left_list_id)
+        self.assertIsNotNone(result.right_list_id)
+        self.assertEqual(child.parent_pair_id, UPPER_DUMMY_ID)
+        self.assertEqual(new_parent.child_sibling_list_ids, [])
         self.assertTrue(self.backend.validate_invariants())
 
     def test_split_rejects_straddling_pair_without_mutation(self):
@@ -316,6 +441,61 @@ class SiblingListBackendTests(unittest.TestCase):
         self.assertEqual(self.backend.get_list(split_list).pair_ids, [2])
         self.assertEqual(split_child.parent_pair_id, UPPER_DUMMY_ID)
         self.assertTrue(self.backend.validate_invariants())
+
+    def test_commit_split_rolls_back_when_final_invariant_check_fails(self):
+        child = self.register_finite_pair(2, 1, 2)
+        new_parent = self.register_finite_pair(4, 0, 5)
+        list_id = self.backend.make_list(child.pair_id, UPPER_DUMMY_ID)
+        new_parent_list_id = self.backend.make_list(
+            new_parent.pair_id,
+            UPPER_DUMMY_ID,
+        )
+        dummy_children = list(
+            self.backend.get_pair(UPPER_DUMMY_ID).child_sibling_list_ids
+        )
+
+        with patch.object(
+            self.backend,
+            "validate_invariants",
+            side_effect=RuntimeError("forced final invariant failure"),
+        ):
+            with self.assertRaises(RuntimeError):
+                self.backend.split_pairs_at_value(
+                    list_id,
+                    boundary_value=5,
+                    acquired_side=LEFT,
+                    new_parent_pair_id=new_parent.pair_id,
+                )
+
+        self.assertEqual(self.backend.get_list(list_id).pair_ids, [child.pair_id])
+        self.assertEqual(
+            self.backend.get_list(new_parent_list_id).pair_ids,
+            [new_parent.pair_id],
+        )
+        self.assertEqual(child.parent_pair_id, UPPER_DUMMY_ID)
+        self.assertEqual(child.sibling_list_id, list_id)
+        self.assertEqual(new_parent.child_sibling_list_ids, [])
+        self.assertEqual(
+            self.backend.get_pair(UPPER_DUMMY_ID).child_sibling_list_ids,
+            dummy_children,
+        )
+        self.assertTrue(self.backend.validate_invariants())
+
+    def test_validate_invariants_rejects_family_tree_cycle(self):
+        parent = self.register_finite_pair(2, 0, 10)
+        child = self.register_finite_pair(4, 2, 8)
+        parent_list_id = self.backend.make_list(parent.pair_id, UPPER_DUMMY_ID)
+        child_list_id = self.backend.make_list(child.pair_id, parent.pair_id)
+
+        dummy = self.backend.get_pair(UPPER_DUMMY_ID)
+        dummy.child_sibling_list_ids = []
+        child.child_sibling_list_ids = [parent_list_id]
+        parent.parent_pair_id = child.pair_id
+        self.backend.get_list(parent_list_id).owner_parent_pair_id = child.pair_id
+
+        self.assertEqual(parent.child_sibling_list_ids, [child_list_id])
+        with self.assertRaises(RuntimeError):
+            self.backend.validate_invariants()
 
     def test_stale_split_plan_is_rejected_without_retiring_live_list(self):
         first = self.register_finite_pair(2, 1, 2)

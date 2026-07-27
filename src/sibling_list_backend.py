@@ -120,6 +120,7 @@ class OrdinarySiblingListBackend:
         self._point_value = point_value
         self._pairs = {}
         self._lists = {}
+        self._dummy_pair_ids = {}
         self._next_list_id = 1
 
     def register_pair(self, pair):
@@ -128,7 +129,12 @@ class OrdinarySiblingListBackend:
             raise TypeError("pair must be a PairRecord")
         if pair.pair_id in self._pairs:
             raise ValueError(f"duplicate pair id: {pair.pair_id}")
+        if pair.is_dummy and pair.family in self._dummy_pair_ids:
+            raise ValueError(f"duplicate dummy pair for family: {pair.family}")
+
         self._pairs[pair.pair_id] = pair
+        if pair.is_dummy:
+            self._dummy_pair_ids[pair.family] = pair.pair_id
         return pair.pair_id
 
     def get_pair(self, pair_id):
@@ -148,6 +154,7 @@ class OrdinarySiblingListBackend:
         pair = self._require_unowned_finite_pair(pair_id)
         owner = self.get_pair(owner_parent_pair_id)
         self._require_same_family(pair, owner)
+        self._require_live_parent(owner)
 
         new_list_id = self._next_list_id
         new_list = SiblingList(new_list_id, owner.pair_id, [pair.pair_id])
@@ -183,6 +190,7 @@ class OrdinarySiblingListBackend:
         owner = self.get_pair(sibling_list.owner_parent_pair_id)
         self._require_same_family(pair, anchor)
         self._require_same_family(pair, owner)
+        self._require_live_parent(owner)
 
         pair_key = self._pair_left_key(pair.pair_id)
         anchor_key = self._pair_left_key(anchor.pair_id)
@@ -279,6 +287,9 @@ class OrdinarySiblingListBackend:
 
         acquired_ids = plan.left_pair_ids if acquired_side == LEFT else plan.right_pair_ids
         retained_ids = plan.right_pair_ids if acquired_side == LEFT else plan.left_pair_ids
+        self._require_live_parent(old_owner)
+        self._require_live_parent(new_parent)
+        self._reject_descendant_parent(new_parent, acquired_ids)
 
         next_list_id = self._next_list_id
         left_list_id = next_list_id if plan.left_pair_ids else None
@@ -414,6 +425,8 @@ class OrdinarySiblingListBackend:
             if pair.is_dummy:
                 if pair.parent_pair_id is not None or pair.sibling_list_id is not None:
                     raise RuntimeError("dummy pair cannot have ordinary ownership")
+                if self._dummy_pair_ids.get(pair.family) != pair.pair_id:
+                    raise RuntimeError("family dummy mapping is inconsistent")
             else:
                 has_parent = pair.parent_pair_id is not None
                 has_list = pair.sibling_list_id is not None
@@ -423,6 +436,10 @@ class OrdinarySiblingListBackend:
                     raise RuntimeError("finite pair is not owned")
                 if has_parent and pair_occurrences.get(pair.pair_id) != 1:
                     raise RuntimeError("finite pair must occur in exactly one list")
+                if not has_parent and pair.child_sibling_list_ids:
+                    raise RuntimeError("unowned finite pair cannot own child lists")
+                if has_parent:
+                    self._validate_parent_chain(pair)
 
             child_ids = pair.child_sibling_list_ids
             if len(child_ids) > 2 or len(child_ids) != len(set(child_ids)):
@@ -449,6 +466,65 @@ class OrdinarySiblingListBackend:
     def _require_same_family(self, first, second):
         if first.family != second.family:
             raise ValueError("pairs must belong to the same family")
+
+    def _require_live_parent(self, pair):
+        if pair.is_dummy:
+            if self._dummy_pair_ids.get(pair.family) != pair.pair_id:
+                raise ValueError("dummy pair is not the registered family root")
+            return
+
+        if pair.parent_pair_id is None or pair.sibling_list_id is None:
+            raise ValueError("finite parent must already belong to the family tree")
+
+        sibling_list = self.get_list(pair.sibling_list_id)
+        if sibling_list.pair_ids.count(pair.pair_id) != 1:
+            raise ValueError("finite parent is not present in its sibling list")
+        if sibling_list.owner_parent_pair_id != pair.parent_pair_id:
+            raise ValueError("finite parent ownership mapping is inconsistent")
+
+        try:
+            self._validate_parent_chain(pair)
+        except RuntimeError as exc:
+            raise ValueError("finite parent does not reach its family dummy root") from exc
+
+    def _validate_parent_chain(self, pair):
+        expected_dummy_id = self._dummy_pair_ids.get(pair.family)
+        if expected_dummy_id is None:
+            raise RuntimeError("family has no registered dummy root")
+
+        seen = set()
+        current = pair
+
+        while not current.is_dummy:
+            if current.pair_id in seen:
+                raise RuntimeError("cycle detected in pair parent chain")
+            seen.add(current.pair_id)
+
+            if current.parent_pair_id is None or current.sibling_list_id is None:
+                raise RuntimeError("parent chain contains an unowned finite pair")
+
+            sibling_list = self.get_list(current.sibling_list_id)
+            if sibling_list.pair_ids.count(current.pair_id) != 1:
+                raise RuntimeError("parent-chain pair is absent from its sibling list")
+            if sibling_list.owner_parent_pair_id != current.parent_pair_id:
+                raise RuntimeError("parent-chain ownership mapping is inconsistent")
+
+            parent = self.get_pair(current.parent_pair_id)
+            if parent.family != pair.family:
+                raise RuntimeError("parent chain crosses pair families")
+            current = parent
+
+        if current.pair_id != expected_dummy_id:
+            raise RuntimeError("parent chain reaches the wrong family dummy")
+
+    def _reject_descendant_parent(self, new_parent, acquired_pair_ids):
+        acquired_pair_ids = set(acquired_pair_ids)
+        current = new_parent
+
+        while not current.is_dummy:
+            if current.pair_id in acquired_pair_ids:
+                raise ValueError("new parent is a descendant of an acquired pair")
+            current = self.get_pair(current.parent_pair_id)
 
     def _pair_left_key(self, pair_id):
         pair = self.get_pair(pair_id)
