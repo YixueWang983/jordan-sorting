@@ -388,7 +388,7 @@ class OrdinarySiblingListBackend:
         return SplitCommitResult(left_list_id, right_list_id)
 
     def validate_invariants(self, require_all_owned=True):
-        """验证 pair/list/parent ownership、顺序和两列表上限。"""
+        """执行完整 correctness/debug 验证；该全局检查不属于计时路径。"""
         pair_occurrences = {}
         list_owner_occurrences = {}
 

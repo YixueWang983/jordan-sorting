@@ -1832,6 +1832,18 @@ ownership updates after split:
 Other bookkeeping may add ordinary dictionary or list costs. No total linear
 bound is claimed.
 
+The current correctness-first backend runs a complete `validate_invariants()`
+after each committed split. Validation follows every owned finite pair's
+parent chain to its family dummy. With `p` pairs and a chain depth of `O(p)`,
+one complete validation can therefore cost `O(p^2)` in the worst case.
+
+This audit cost is deliberately retained during the Week 9 correctness gate,
+but it is not part of the intended ordinary-list algorithm timing. Before
+performance experiments, the implementation must expose an explicit
+correctness/debug validation mode. Timed runs must exclude complete invariant
+validation, and an equivalent complete validation must run separately outside
+the measured region.
+
 The theoretical heterogeneous finger-tree backend remains a paper-level
 comparison point, not an implemented component.
 

@@ -348,6 +348,16 @@ git diff --check:
     passed
 ```
 
+Performance boundary recorded during Day 2 review:
+
+- `validate_invariants()` follows each owned finite pair to its family dummy;
+- a full validation is worst-case `O(p^2)` for `p` pairs;
+- `commit_split()` currently retains this check because Day 2 prioritizes
+  correctness and rollback safety;
+- before timing the paper-algorithm implementation, full validation must be
+  controlled by an explicit correctness/debug mode and executed separately
+  outside the measured region.
+
 ## Next Step
 
 Review both Day 2 data structures. After approval, begin Day 3:
