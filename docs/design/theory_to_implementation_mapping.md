@@ -1,6 +1,6 @@
 # Theory-to-Implementation Mapping
 
-Last updated: 2026-07-24
+Last updated: 2026-07-27
 
 ## Purpose
 
@@ -18,10 +18,10 @@ implemented, simplified, or out of scope.
 | rank intervals | `src/oracle.py`, `src/jordan_operations.py` | complete |
 | laminarity recognition | `src/oracle.py` | complete, `O(n^2)` |
 | family trees | `src/family_tree.py` | complete for static interval families |
-| sibling lists | ordered `children` lists and `roots` | simplified |
+| sibling lists | `src/sibling_list_backend.py` | complete ordinary-list backend |
 | containment relation | `src/family_tree.py`, `src/stats.py` | complete |
-| split/search/update | none | not implemented |
-| sorted-order recovery | `oracle_result["sorted"]` | theoretical version not implemented |
+| split/search/update | `src/sibling_list_backend.py`, `src/paper_jordan.py` | implemented with ordinary lists |
+| sorted-order recovery | `src/paper_jordan_sort.py` | implemented for pre-certified valid inputs |
 | level-linked structures | none | out of scope |
 | polygon clipping | paper-context discussion | out of scope |
 
@@ -39,7 +39,7 @@ structure profiling.
 
 ## Complexity Sources in the Current Code
 
-Current implementation stages:
+Current reference-framework stages:
 
 ```text
 oracle laminarity check       O(n^2)
@@ -48,6 +48,11 @@ parent candidate scan         O(n^2)
 containment-pair statistics   O(n^2)
 ordinary Python sorting       O(n log n)
 ```
+
+The paper ordinary-list path avoids global sorting and rank-map recovery, but
+its Python backend includes linear sibling scans/list materialization and
+correctness-first global ownership validation after committed splits. Its
+current runtime is therefore not evidence of the theoretical linear bound.
 
 The project therefore cannot use current runtime results to claim linear-time
 Jordan sorting. Runtime and operation counters describe the ordinary-list
@@ -64,13 +69,13 @@ and upper family laminar
 and lower family laminar
 ```
 
-Recognition is not the same as sorting. The current reference pipeline validates
-and structures the input, but sorted output is still taken from
-`oracle_result["sorted"]`.
+Recognition is not the same as sorting. The reference pipeline validates and
+structures the input, but takes sorted output from `oracle_result["sorted"]`.
+The separate paper ordinary-list implementation recovers sorted order from its
+maintained partial order, but assumes that validity has already been certified.
 
 ## Polygon Clipping Relationship
 
 The simplified Jordan-sorting paper relates the sorting framework to polygon
 clipping through boundary-order and structural-processing ideas. This thesis uses
 polygon clipping as context, but does not implement a clipping pipeline.
-

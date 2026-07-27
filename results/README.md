@@ -179,6 +179,51 @@ python experiments/audit_generator_coverage.py \
   --randomized-repetitions 3
 ```
 
+Run the Week 9 paper-algorithm integration pilot:
+
+```bash
+python experiments/run_week9_pilot.py \
+  --run-id week9_integration_pilot \
+  --run-dir results/runs/week9_integration_pilot
+```
+
+This creates isolated `sorting/` and `recognition/` run directories. The
+generated files are reproducible and are not committed by default.
+
+The frozen small pilot uses:
+
+```text
+sizes: 8, 16, 32
+randomized cases: 2
+warm-up runs: 1
+measured runs: 3
+seed: 20260727
+```
+
+Expected rows:
+
+```text
+sorting:
+    108 raw
+    36 case summary
+    27 group summary
+
+recognition:
+    180 raw
+    60 case summary
+    42 group summary
+```
+
+The sorting pilot compares `python_sort`, `simplified_jordan_reference`, and
+`simplified_jordan_paper_ordinary_list` on valid families. The recognition
+pilot separately covers valid and invalid families without invoking the
+valid-input-only paper sorter.
+
+Paper diagnostics are collected once per case outside timing. The timed paper
+path still includes trace/counter recording, ordinary-list split
+materialization, and sibling-backend commit validation. These outputs validate
+integration and correctness; they are not final performance evidence.
+
 ## Week 1 Baseline Configuration
 
 ```text

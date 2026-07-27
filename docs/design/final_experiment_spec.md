@@ -306,6 +306,29 @@ python experiments/validate_experiment_outputs.py \
   --run-dir results/runs/week9_formal_reference
 ```
 
+### Week 9 Paper-Algorithm Integration Pilot
+
+The frozen formal reference experiment above predates the paper ordinary-list
+implementation and is not silently redefined. Week 9 adds a separate,
+non-final integration pilot:
+
+```bash
+python experiments/run_week9_pilot.py \
+  --run-id week9_integration_pilot \
+  --run-dir results/runs/week9_integration_pilot
+```
+
+It uses sizes `8, 16, 32`, one warm-up, three measured runs, and two randomized
+cases. Sorting and recognition use separate configurations and output
+directories.
+
+This pilot may establish correctness, schema compatibility, manifests, and
+rough executability. It must not be used for final performance conclusions:
+the paper ordinary-list timed path still records trace/counters and runs
+correctness-first backend commit validation. A future formal paper-algorithm
+configuration requires an explicit timing-contamination study and a new scope
+freeze.
+
 ### Formal Machine
 
 The formal machine is the same local development machine unless explicitly

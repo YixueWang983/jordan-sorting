@@ -81,8 +81,8 @@ gate:
 - the reference-framework boundary was confirmed by the supervisor on
   2026-07-24.
 
-Week 9 has implemented and independently validated the ordinary-list
-reconstruction of the high-level 1990 paper algorithm through Day 6:
+Week 9 is complete. It implemented and independently validated the
+ordinary-list reconstruction of the high-level 1990 paper algorithm:
 
 - the existing `simplified_jordan_reference` remains a separate baseline;
 - the new core must recover output from a maintained partial sorted order;
@@ -104,6 +104,8 @@ reconstruction of the high-level 1990 paper algorithm through Day 6:
 - full state audits can run after every processed prefix outside timed paths;
 - `validate_paper_algorithm.py` exhaustively validates through `n=8` and also
   checks reproducible generated cases through `n=128`;
+- a separate Week 9 integration pilot keeps valid-input sorting distinct from
+  valid/invalid recognition and writes isolated manifests;
 - heterogeneous finger trees and a linear-time claim remain out of scope.
 
 ## Project Structure
@@ -140,6 +142,7 @@ tests/
   test_paper_jordan.py
   test_paper_jordan_sort.py
   test_validate_paper_algorithm.py
+  test_run_week9_pilot.py
 
 experiments/
   run_small_tests.py
@@ -150,6 +153,7 @@ experiments/
   validate_experiment_outputs.py
   validate_generator_audit_outputs.py
   validate_paper_algorithm.py
+  run_week9_pilot.py
 
 results/
   week1_baseline_results.csv
@@ -186,6 +190,7 @@ docs/
     week7_summary.md
     week8_summary.md
     week9_progress.md
+    week9_summary.md
   thesis/
     experimental_methodology_draft.md
     implementation_draft.md
@@ -272,7 +277,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 318 tests
+Ran 322 tests
 OK
 ```
 
@@ -322,6 +327,7 @@ Important project documents:
 - [docs/progress/week1_progress.md](docs/progress/week1_progress.md): checklist-style Week 1 progress tracker.
 - [docs/progress/week8_summary.md](docs/progress/week8_summary.md): Week 8 scope freeze, dry-run validation, and Week 9 gate.
 - [docs/progress/week9_progress.md](docs/progress/week9_progress.md): Week 9 daily execution record and current gate.
+- [docs/progress/week9_summary.md](docs/progress/week9_summary.md): Week 9 paper-algorithm implementation, validation, integration pilot, and Week 10 handoff.
 - [docs/design/paper_algorithm_ordinary_list.md](docs/design/paper_algorithm_ordinary_list.md): implementation-facing state, pseudocode, invariants, and worked trace for the 1990 paper algorithm.
 - [docs/plan/week9_plan.md](docs/plan/week9_plan.md): detailed Day 1-Day 7 ordinary-list implementation plan.
 - [docs/design/final_experiment_spec.md](docs/design/final_experiment_spec.md): frozen experiment variables, correctness checks, aggregation rules, and non-claims.
@@ -356,19 +362,24 @@ Important project documents:
 - Timing results support raw baseline rows; additional structure summaries are now also available.
 - The timing results are preliminary and should not be interpreted as final performance claims.
 - `simplified_jordan_sort(seq)` is currently a **reference skeleton**.
-  It returns `oracle_result["sorted"]`, and the current implementation
-  does not yet implement the real simplified Jordan-sorting operations.
-- No level-linked search trees or heterogeneous finger trees are implemented.
+  It remains an oracle-backed baseline and returns `oracle_result["sorted"]`.
+- `paper_jordan_sort_valid(seq)` implements the high-level paper control flow
+  with ordinary lists and recovers output from its maintained partial order,
+  but assumes pre-certified valid input.
+- Current paper-algorithm timing still includes trace/counter recording,
+  ordinary-list split materialization, and correctness-first backend commit
+  validation. The Week 9 pilot is not final performance evidence.
+- No level-linked or heterogeneous finger-tree backend is implemented.
 - Visualization is still future work.
 
 ## Next Steps
 
 Immediate next task:
 
-- review the Week 9 Day 6 correctness, invariant, and diagnostics checkpoint;
-- after approval, begin Day 7 integration and a deliberately small pilot;
-- keep diagnostic trace validation and full backend invariant checks outside
-  future timed performance regions.
+- measure how trace/counter recording and backend commit validation affect the
+  ordinary-list paper timing;
+- define a timing mode with equivalent untimed correctness audits;
+- freeze a paper-algorithm experiment configuration only after that study.
 
 Later cleanup:
 

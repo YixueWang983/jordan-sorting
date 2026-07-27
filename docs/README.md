@@ -34,7 +34,7 @@ Current files:
 
 - `final_scope_and_contributions.md`
   Week 8 supervisor-confirmed scope freeze, contribution claims, non-contributions, success
-  criteria, and supervisor confirmation questions.
+  criteria, and supervisor decision record.
 
 - `theory_to_implementation_mapping.md`
   Week 8 mapping from theoretical Jordan-sorting concepts to current code,
@@ -102,8 +102,13 @@ Current files:
   validation, and Week 9 gate.
 
 - `week9_progress.md`
-  Week 9 daily implementation log. Day 1 records the approved paper-algorithm
-  specification; Day 2 records the incremental data-structure implementation.
+  Week 9 daily implementation log from the executable specification through
+  the complete ordinary-list loop, adversarial state audit, and integration
+  pilot.
+
+- `week9_summary.md`
+  Week 9 completion summary, correctness evidence, pilot results, timing
+  boundary, and Week 10 handoff.
 
 ## Plan Documents
 

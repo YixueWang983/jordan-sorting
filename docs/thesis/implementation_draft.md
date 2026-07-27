@@ -1,6 +1,6 @@
 # Implementation Draft
 
-Last updated: 2026-07-24
+Last updated: 2026-07-27
 
 ## Oracle
 
@@ -69,6 +69,35 @@ the public return contract of `simplified_jordan_sort`.
 Counters cover selected validation and family-tree construction operations, not
 total computational cost.
 
+## Ordinary-List Paper Algorithm
+
+`paper_jordan_sort_valid(seq)` implements the high-level 1990 control flow for
+pre-certified valid inputs. It maintains an incremental sorted-order linked
+list and two parity-defined sibling-list families. Each iteration performs
+predecessor/successor boundary selection, inserts the new pair, applies any
+required sibling-list split and ownership transfer, and inserts the current
+point into the partial output.
+
+The output is:
+
+```text
+state.partial_order.to_list()
+```
+
+It is not taken from the oracle or the reference skeleton.
+
+The implementation uses ordinary Python lists rather than heterogeneous finger
+trees. Its correctness and operation semantics can therefore be evaluated,
+but its runtime cannot be presented as an implementation of the theoretical
+linear-time backend.
+
+## Paper-State Validation
+
+The diagnostics path shares the production Step 1/2/3 runner. It performs
+prefix invariants and deterministic replay outside timed regions, comparing
+stage records, traces, metrics, point data, partial output, and a canonical
+sibling-backend snapshot.
+
 ## Experiment Runner
 
 The pilot/formal benchmark runner generates cases outside timed regions, uses
@@ -76,12 +105,27 @@ fresh input copies, controls GC during timing, records correctness fields, write
 case/group summaries, writes environment metadata, and supports no-overwrite run
 directories.
 
+The Week 9 integration runner separates:
+
+```text
+valid-input sorting:
+    python_sort
+    simplified_jordan_reference
+    simplified_jordan_paper_ordinary_list
+
+recognition:
+    sort_plus_laminarity_check
+    simplified_jordan_reference
+```
+
 ## Implementation Limitations
 
 - No level-linked search trees.
 - No heterogeneous finger trees.
-- No dynamic split/update engine.
+- No specialized finger-tree split/update engine.
 - No polygon clipping pipeline.
 - No linear-time claim.
-- Sorted output is still oracle-sorted output.
-
+- The reference baseline still returns oracle-sorted output.
+- The paper ordinary-list sorter requires pre-certified valid input.
+- Current paper timing includes trace/counter and backend commit-validation
+  overhead.

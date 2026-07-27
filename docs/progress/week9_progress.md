@@ -579,7 +579,7 @@ git diff --check:
 
 ## Day 6: Correctness, Invariants, and Instrumentation
 
-Status: implementation complete; awaiting review before Day 7 integration.
+Status: approved; complete state-audit gate passed.
 
 Implemented:
 
@@ -694,7 +694,116 @@ git diff --check:
     passed
 ```
 
-## Next Step
+Adversarial review additionally confirmed rejection of:
 
-Review the Day 6 correctness and diagnostics checkpoint. After approval, begin
-Day 7 integration and a small pilot without running thesis-scale experiments.
+```text
+coordinated Step 3(a) forgery
+coordinated Step 3(b) forgery
+coordinated Step 3(c) forgery
+coordinated split-metric forgery
+replacement of the complete state.points tuple
+replacement of one future PointRef
+```
+
+## Day 7: Integration, Small Pilot, and Handoff
+
+Status: complete.
+
+Added:
+
+```text
+experiments/run_week9_pilot.py
+tests/test_run_week9_pilot.py
+```
+
+The experiment registry now exposes:
+
+```text
+simplified_jordan_paper_ordinary_list
+```
+
+Paper diagnostics run once per case outside the timed region. Their operation
+metrics are written only to paper-algorithm rows. The public sorting call is
+timed separately.
+
+The pilot deliberately separates two questions:
+
+```text
+sorting:
+    valid families only
+    python_sort
+    simplified_jordan_reference
+    simplified_jordan_paper_ordinary_list
+
+recognition:
+    all existing valid and invalid families
+    sort_plus_laminarity_check
+    simplified_jordan_reference
+```
+
+Frozen pilot controls:
+
+```text
+sizes: 8, 16, 32
+randomized cases: 2
+warm-up runs: 1
+measured runs: 3
+seed: 20260727
+```
+
+The clean integration run used commit `7d05901` and produced:
+
+```text
+sorting:
+    raw rows = 108
+    case-summary rows = 36
+    group-summary rows = 27
+
+recognition:
+    raw rows = 180
+    case-summary rows = 60
+    group-summary rows = 42
+```
+
+Both output validators reported:
+
+```text
+valid = true
+errors = []
+```
+
+Every raw row had an empty `error` field and `overall_correct = true`. All 36
+paper rows contained complete paper-operation metrics; recognition rows
+contained no paper metrics. Sorting and recognition use isolated run
+directories and manifests.
+
+Day 7 verification:
+
+```text
+python -m unittest discover -s tests:
+    Ran 322 tests
+    OK
+
+python -m compileall -q src experiments tests:
+    passed
+
+git diff --check:
+    passed
+```
+
+Timing boundary:
+
+```text
+complete deterministic replay diagnostics are outside timing
+trace and operation-counter recording remain inside paper timing
+sibling-backend commit validation remains inside paper timing
+ordinary Python list split materialization remains inside paper timing
+```
+
+The pilot is integration and correctness evidence. It is not a final runtime
+comparison and does not support a linear-time claim.
+
+## Week 9 Status
+
+Week 9 is complete. The next gate is a Week 10 timing-contamination study and
+experiment-spec freeze for the paper ordinary-list implementation.
