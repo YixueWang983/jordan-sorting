@@ -502,9 +502,9 @@ git diff --check:
     passed
 ```
 
-## Day 5: Independent Step 3(c) Output Insertion
+## Day 5: Step 3(c) and End-to-End Valid-Input Loop
 
-Status: implementation complete; awaiting review before the end-to-end loop.
+Status: implementation complete; awaiting review before Day 6.
 
 Implemented:
 
@@ -523,16 +523,39 @@ Focused coverage includes all four parent/child orientation combinations,
 inside/outside odd-index adjustment cases, both no-child directions, all 16
 oracle-valid four-point permutations, and stable trace fields.
 
+The second checkpoint adds:
+
+```text
+src/paper_jordan_sort.py
+tests/test_paper_jordan_sort.py
+paper_jordan_sort_valid(seq)
+```
+
+The production loop handles `n=0..3` explicitly and runs Step 1/2/3(a)/(b)/(c)
+for every later index. It returns only `state.partial_order.to_list()`.
+Repository differential tests enumerate all 672 oracle-valid permutations
+through `n=7`. An independent external fixture additionally checked all 1,392
+oracle-valid `n=8` permutations, bringing the reviewed fixture total to 2,064;
+that external expected order never feeds algorithm state.
+
+The adjustment metric is now split into:
+
+```text
+z1_boundary_adjustments
+z1_output_anchor_adjustments
+```
+
 Scope boundary:
 
 ```text
-Step 3(c) is callable only as an independent stage
-no production end-to-end paper loop exists
+paper_jordan_sort_valid assumes pre-certified valid input
+no validated recognition wrapper exists
 no experiment runner calls the paper implementation
-no oracle, rank_map, or global sorting is used by the core
+no oracle, rank_map, global sorting, or reference output is used by the core
+no linear-time claim is made for the ordinary-list backend
 ```
 
-Checkpoint verification:
+Day 5 verification:
 
 ```text
 python -m unittest tests.test_paper_jordan:
@@ -540,7 +563,11 @@ python -m unittest tests.test_paper_jordan:
     OK
 
 python -m unittest discover -s tests:
-    Ran 285 tests
+    Ran 293 tests
+    OK
+
+python -m unittest tests.test_paper_jordan_sort:
+    Ran 8 tests
     OK
 
 python -m compileall -q src experiments tests:
@@ -552,11 +579,11 @@ git diff --check:
 
 ## Next Step
 
-Review the independent Step 3(c) checkpoint. After approval:
+Review the end-to-end valid-input loop. After approval, begin Day 6:
 
 ```text
-assemble the complete paper loop
-handle n=0, n=1, n=2, and n=3 explicitly
-return output only from SortedOrderList
-add exhaustive valid-input differential tests
+online and external invariant audit
+formalize valid-input failure behavior
+instrumentation coverage and timing-boundary review
+standalone exhaustive validation script through n=8
 ```

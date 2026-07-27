@@ -43,7 +43,8 @@ METRIC_NAMES = (
     "split_items_copied",
     "split_items_transferred",
     "output_insertions",
-    "z1_anchor_adjustments",
+    "z1_boundary_adjustments",
+    "z1_output_anchor_adjustments",
     "invariant_checks",
     "trace_event_count",
 )
@@ -263,7 +264,7 @@ def step1_select_predecessor_boundary(state, iteration):
     if iteration % 2 == 1 and neighbor == 1:
         neighbor = state.partial_order.predecessor(1)
         state.metrics["predecessor_accesses"] += 1
-        state.metrics["z1_anchor_adjustments"] += 1
+        state.metrics["z1_boundary_adjustments"] += 1
         adjusted_for_z1 = True
 
     _record_trace(
@@ -305,7 +306,7 @@ def step2_select_successor_boundary(state, iteration):
     if iteration % 2 == 1 and neighbor == 1:
         neighbor = state.partial_order.successor(1)
         state.metrics["successor_accesses"] += 1
-        state.metrics["z1_anchor_adjustments"] += 1
+        state.metrics["z1_boundary_adjustments"] += 1
         adjusted_for_z1 = True
 
     _record_trace(
@@ -635,7 +636,7 @@ def _step3c(state, iteration, new_pair_id, orientation, insertion_side):
     state.processed_count = iteration
     state.metrics["output_insertions"] += 1
     if adjusted_for_z1:
-        state.metrics["z1_anchor_adjustments"] += 1
+        state.metrics["z1_output_anchor_adjustments"] += 1
     _record_trace(
         state,
         {

@@ -113,7 +113,10 @@ class PaperJordanInitializationTests(unittest.TestCase):
         self.assertEqual(state.metrics["boundary_pair_checks"], 0)
         self.assertEqual(state.metrics["split_items_copied"], 0)
         self.assertEqual(state.metrics["split_items_transferred"], 0)
+        self.assertEqual(state.metrics["z1_boundary_adjustments"], 0)
+        self.assertEqual(state.metrics["z1_output_anchor_adjustments"], 0)
         self.assertNotIn("split_items_moved", state.metrics)
+        self.assertNotIn("z1_anchor_adjustments", state.metrics)
         self.assertEqual(state.stage_results, {})
 
     def test_initialization_rejects_short_or_duplicate_prefix(self):
@@ -284,7 +287,7 @@ class PaperJordanBoundarySelectionTests(unittest.TestCase):
 
         self.assertEqual(result, BoundarySelection(2, 3, False, True))
         self.assertEqual(state.metrics["predecessor_accesses"], 2)
-        self.assertEqual(state.metrics["z1_anchor_adjustments"], 1)
+        self.assertEqual(state.metrics["z1_boundary_adjustments"], 1)
 
     def test_odd_step2_skips_z1_and_selects_lower_pair(self):
         state = initialize_paper_jordan_state([2, 3, 4, 1, 5])
@@ -294,7 +297,7 @@ class PaperJordanBoundarySelectionTests(unittest.TestCase):
 
         self.assertEqual(result, BoundarySelection(2, 3, False, True))
         self.assertEqual(state.metrics["successor_accesses"], 2)
-        self.assertEqual(state.metrics["z1_anchor_adjustments"], 1)
+        self.assertEqual(state.metrics["z1_boundary_adjustments"], 1)
 
     def test_odd_step1_can_adjust_from_z1_to_lower_dummy(self):
         state = initialize_paper_jordan_state([1, 3, 4, 2, 5])
@@ -785,7 +788,7 @@ class PaperJordanStep3Tests(unittest.TestCase):
                 state = self._prepare_six_point_state(values)
                 left = step1_select_predecessor_boundary(state, 7)
                 right = step2_select_successor_boundary(state, 7)
-                before_adjustments = state.metrics["z1_anchor_adjustments"]
+                before_adjustments = state.metrics["z1_output_anchor_adjustments"]
                 if orientation == INCREASING:
                     new_pair = step3a_increasing(state, 7, left)
                     step3b_increasing(state, 7, new_pair.pair_id, right)
@@ -799,7 +802,7 @@ class PaperJordanStep3Tests(unittest.TestCase):
                 self.assertEqual(result.output_anchor_point_id, 1)
                 self.assertTrue(result.adjusted_for_z1)
                 self.assertEqual(
-                    state.metrics["z1_anchor_adjustments"],
+                    state.metrics["z1_output_anchor_adjustments"],
                     before_adjustments + 1,
                 )
                 self.assertEqual(state.partial_order.to_list(), sorted(values))
@@ -817,14 +820,14 @@ class PaperJordanStep3Tests(unittest.TestCase):
             with self.subTest(values=values):
                 state = initialize_paper_jordan_state(values)
                 self._complete_iteration(state, 4)
-                before_adjustments = state.metrics["z1_anchor_adjustments"]
+                before_adjustments = state.metrics["z1_output_anchor_adjustments"]
 
                 result = self._complete_iteration(state, 5)
 
                 self.assertFalse(result.adjusted_for_z1)
                 self.assertNotEqual(result.output_anchor_point_id, 1)
                 self.assertEqual(
-                    state.metrics["z1_anchor_adjustments"],
+                    state.metrics["z1_output_anchor_adjustments"],
                     before_adjustments,
                 )
                 self.assertEqual(state.partial_order.to_list(), sorted(values))

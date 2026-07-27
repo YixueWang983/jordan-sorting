@@ -1153,9 +1153,22 @@ split_items_scanned
 split_items_copied
 split_items_transferred
 output_insertions
-z1_anchor_adjustments
+z1_boundary_adjustments
+z1_output_anchor_adjustments
 invariant_checks
 trace_event_count
+```
+
+The two `z1` counters remain separate:
+
+```text
+z1_boundary_adjustments:
+    Step 1/2 skips an immediate z1 predecessor/successor while selecting a
+    same-family boundary pair
+
+z1_output_anchor_adjustments:
+    Step 3(c) replaces the geometric base anchor with z1 before output
+    insertion
 ```
 
 The three split counters have distinct meanings:
@@ -2059,5 +2072,42 @@ ownership, repeat-call atomicity, stable trace fields, and all 16 oracle-valid
 four-point permutations. Oracle and `sorted` are used only for external test
 expectations.
 
-This checkpoint does not add `paper_jordan_sort_valid`, an end-to-end loop, or
-experiment integration.
+## Day 5 End-to-End Loop Record
+
+The second Day 5 checkpoint adds:
+
+```text
+src/paper_jordan_sort.py
+tests/test_paper_jordan_sort.py
+paper_jordan_sort_valid(seq)
+```
+
+The pure core copies the input once, handles lengths zero through two with
+fixed comparison logic, uses the existing three-point initializer for length
+three, and executes Step 1, Step 2, Step 3(a), Step 3(b), and Step 3(c) for
+each later paper index. Its only final output source is:
+
+```text
+state.partial_order.to_list()
+```
+
+The function assumes a pre-certified valid Jordan sequence with distinct,
+mutually comparable values. It does not call the oracle, rank map, Python
+`sorted`, the reference skeleton, or a static family-tree builder. Invalid
+candidate recognition remains a separate wrapper concern.
+
+Repository tests cover all small-input orders, representative flat/nested/
+incremental generators, the two odd-index worked traces, nonnumeric comparable
+values, input immutability, a syntax-tree purity audit, and every
+oracle-accepted permutation through `n=7`:
+
+```text
+n=4:  16
+n=5:  50
+n=6: 144
+n=7: 462
+total: 672
+```
+
+The loop is not connected to experiment runners. A validation wrapper, full
+Day 6 instrumentation audit, and performance integration remain pending.

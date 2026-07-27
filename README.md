@@ -98,7 +98,10 @@ and Step 3(a)/(b) pair/sibling ownership transitions:
   sibling-boundary insertion;
 - increasing/decreasing Step 3(b) supports skipped, one-sided, and two-sided
   split/ownership transfer;
-- Step 3(c) and the complete paper loop are intentionally not implemented yet;
+- increasing/decreasing Step 3(c) uses geometric child endpoints and the
+  odd-index `z1` output-anchor adjustment;
+- `paper_jordan_sort_valid(seq)` now runs the complete ordinary-list paper
+  control flow for pre-certified valid inputs;
 - heterogeneous finger trees and a linear-time claim remain out of scope.
 
 ## Project Structure
@@ -116,6 +119,7 @@ src/
   partial_sorted_list.py
   sibling_list_backend.py
   paper_jordan.py
+  paper_jordan_sort.py
 
 tests/
   test_oracle.py
@@ -132,6 +136,7 @@ tests/
   test_partial_sorted_list.py
   test_sibling_list_backend.py
   test_paper_jordan.py
+  test_paper_jordan_sort.py
 
 experiments/
   run_small_tests.py
@@ -263,7 +268,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 285 tests
+Ran 293 tests
 OK
 ```
 
@@ -356,9 +361,9 @@ Important project documents:
 
 Immediate next task:
 
-- review the independent Week 9 Day 5 Step 3(c) implementation;
-- after approval, assemble the end-to-end paper loop without oracle-sorted
-  output;
+- review the Week 9 Day 5 end-to-end `paper_jordan_sort_valid` loop;
+- after approval, begin the Day 6 correctness, invariant, and instrumentation
+  gate before any experiment integration;
 - keep diagnostic trace validation and full backend invariant checks outside
   future timed performance regions.
 
