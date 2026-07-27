@@ -16,7 +16,7 @@ docs/plan/week9_plan.md
 
 ## Day 1: Freeze the Executable Specification
 
-Status: completed and waiting for review.
+Status: approved for Day 2 data-structure work after review fixes.
 
 - [x] Read and map paper Sections 2 and 3.
 - [x] Fix one-based paper indexing versus zero-based Python storage.
@@ -33,6 +33,11 @@ Status: completed and waiting for review.
 - [x] Add a complete worked trace for `[1, 4, 2, 3]`.
 - [x] Add a test matrix and paper-to-implementation ambiguity table.
 - [x] Record unresolved Step 3 ownership interpretations explicitly.
+- [x] Specify atomic split ownership replacement and the two-child-list limit.
+- [x] Separate generic `split_by_key` from Jordan `split_pairs_at_value`.
+- [x] Correct Python-list front-insertion complexity.
+- [x] Add an existing-sibling-list insertion trace.
+- [x] Add increasing and decreasing split/ownership-transfer traces.
 
 Primary output:
 
@@ -68,7 +73,46 @@ main algorithm source files created: none
 
 No implementation or performance experiment was started on Day 1.
 
-## Open Interpretations for Later Focused Tests
+The 197 passing tests are regression evidence for the existing repository only.
+They do not validate the new Step 3 interpretation because Day 1 intentionally
+adds no algorithm code or executable Step 3 tests. Those tests are required
+before the later algorithm gate can pass.
+
+## Review Fixes
+
+The Day 1 review correctly identified that the original worked example did not
+exercise the dangerous Step 3 paths. The specification now includes:
+
+```text
+[1, 2, 3, 4]:
+    insert P4 after P2 in an existing sibling list
+
+[2, 3, 1, 4]:
+    increasing split; transfer P2 from the upper dummy to P4
+
+[3, 2, 4, 1]:
+    decreasing split; mirrored transfer and output insertion
+```
+
+All three candidates were checked as valid by the external oracle.
+
+The ownership contract now requires:
+
+```text
+at most two child sibling lists per parent
+ordered and unique child-list IDs
+pair.parent_pair_id == list.owner_parent_pair_id
+atomic retirement and replacement of split input lists
+explicit None handling for empty split sides
+```
+
+The generic backend exposes `split_by_key`; the algorithm adapter performs pair
+endpoint validation and commits the parent/list ownership transaction.
+
+Python-list complexity is now stated accurately: append at the back is
+amortized `O(1)`, insertion at the front is `O(k)`, and split is `O(k)`.
+
+## Interpretations Requiring Executable Tests
 
 1. Increasing Step 3(b) transfers the left split output to the new pair.
 2. Decreasing Step 3(b) transfers the right split output to the new pair.
@@ -76,8 +120,8 @@ No implementation or performance experiment was started on Day 1.
    leftmost child.
 4. Empty split outputs are represented by `None`, not persistent empty lists.
 
-These do not block Day 2 standalone data-structure work. They block declaring
-the complete Step 3 algorithm correct.
+The three new traces fix the intended interpretation. Direct executable tests
+are still required before the complete Step 3 algorithm is declared correct.
 
 ## Next Step
 

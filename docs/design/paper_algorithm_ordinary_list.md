@@ -398,7 +398,7 @@ Conceptual structure:
 @dataclass
 class SiblingList:
     list_id: int
-    owner_parent_pair_id: int
+    owner_parent_pair_id: int | None
     pair_ids: list[int]
 ```
 
@@ -407,6 +407,20 @@ A parent pair may temporarily own one or two sibling lists. Its
 
 Persistent empty sibling lists are not required. When a split side is empty,
 the backend returns `None` for that side.
+
+Ownership invariants:
+
+```text
+len(parent.child_sibling_list_ids) <= 2
+child sibling-list IDs are unique
+child sibling-list IDs are ordered from left to right
+pair.parent_pair_id == sibling_list.owner_parent_pair_id
+pair.sibling_list_id identifies the unique list containing the pair
+every live owned list appears in exactly one parent's child-list collection
+```
+
+Attempting to attach a third child sibling list to one parent is an invariant
+error. The implementation must not silently truncate or reorder ownership.
 
 ## Ordinary Sibling-List Operations
 
@@ -424,6 +438,10 @@ Postconditions:
 - the pair receives that list as its unique owner;
 - the owner parent records the new child list;
 - no existing list already owns the pair.
+
+When an owner already has one child list, the new list is inserted into
+`child_sibling_list_ids` according to its first pair's left-endpoint key. The
+result must contain no more than two list IDs.
 
 ### `insert_at_boundary`
 
@@ -452,21 +470,61 @@ Preconditions:
 This is the ordinary-backend interpretation of the restricted Section 3
 `insert(x, y)`. It is not arbitrary middle insertion.
 
-### `split`
+Additional postconditions:
+
+- `parent(new_pair) = parent(anchor_pair)`;
+- `new_pair.sibling_list_id = anchor_pair.sibling_list_id`;
+- the owner parent's child-list IDs do not change;
+- all pre-existing items retain their order and ownership.
+
+### Backend `split_by_key`
+
+The generic backend operation is:
+
+```python
+split_by_key(list_id, boundary_key, key_function) -> SplitPlan
+```
+
+It implements the Section 3 shape:
+
+```text
+left items:  key(item) <= boundary_key
+right items: key(item) > boundary_key
+```
+
+`SplitPlan` contains:
+
+```text
+retired list ID
+previous owner parent pair ID
+left pair IDs in original order
+right pair IDs in original order
+```
+
+It is a partition plan, not a complete Jordan ownership transition. The plan
+does not become visible as live state until the algorithm adapter commits it.
+
+### Algorithm `split_pairs_at_value`
 
 Conceptual API:
 
 ```python
-split(list_id, boundary_value) -> (left_list_id, right_list_id)
+split_pairs_at_value(
+    state,
+    list_id,
+    boundary_value,
+    acquired_side,
+    new_parent_pair_id,
+) -> (left_list_id, right_list_id)
 ```
 
-For every pair in the input list:
+Before calling `split_by_key`, this adapter checks every pair in the input list:
 
 ```text
-left output:
+left classification:
     both finite endpoint values are less than boundary_value
 
-right output:
+right classification:
     both finite endpoint values are greater than boundary_value
 ```
 
@@ -476,12 +534,38 @@ point `z_i`, because input values are distinct.
 If a pair straddles the boundary, the backend raises an invariant error. The
 paper's locality argument requires the selected list to partition cleanly.
 
-The input list is retired. Each nonempty output receives a live list ID.
-Relative order is preserved, and every moved pair receives its new
-`sibling_list_id`.
+After validation, `pair_left_endpoint` is a valid key for the generic split:
+every pair with a left key below the boundary has both endpoints below it, and
+every remaining pair has both endpoints above it.
 
-The algorithm layer, rather than the generic backend, decides which output is
-reassigned to the new pair and which remains with the old parent.
+The adapter commits one atomic ownership transaction:
+
+1. verify that the retired list occurs exactly once in the old parent's
+   `child_sibling_list_ids`;
+2. create live list IDs only for nonempty outputs;
+3. replace the retired list in the old parent with the nonempty retained side,
+   or remove it when the retained side is empty;
+4. attach the nonempty acquired side to the new parent at its left-to-right
+   position;
+5. update every output list's `owner_parent_pair_id`;
+6. update every output pair's `sibling_list_id`;
+7. update every acquired pair's `parent_pair_id` to the new parent;
+8. preserve the retained pairs' old `parent_pair_id`;
+9. retire the input list ID;
+10. verify uniqueness, ordering, and the two-list maximum for both parents.
+
+No public invariant check observes a half-applied transaction. If any
+precondition or final invariant fails, the operation raises before publishing
+the new state.
+
+Empty-side behavior:
+
+- an empty output has list ID `None`;
+- it is not inserted into a parent's child-list collection;
+- no pair mapping points to it;
+- if the retained side is empty, the retired list is removed from the old
+  parent without replacement;
+- if the acquired side is empty, the new parent receives no child list.
 
 ## Algorithm State
 
@@ -1036,6 +1120,256 @@ Final partial order:
 The result is obtained from the maintained linked order, not from a rank map or
 oracle-sorted output.
 
+## Nontrivial Trace A: Existing Sibling-List Insertion
+
+Sequence:
+
+```text
+[1, 2, 3, 4]
+```
+
+This candidate is oracle-valid. Initialization gives:
+
+```text
+partial order: z1=1, z2=2, z3=3
+upper dummy child list U1: [P2={z1=1,z2=2}]
+lower dummy child list L1: [P3={z2=2,z3=3}]
+```
+
+At `i=4`:
+
+```text
+previous = z3=3
+current = z4=4
+orientation = increasing
+family = upper
+```
+
+Step 1:
+
+```text
+predecessor(z3) = z2
+the upper pair containing z2 is P2
+A = P2
+P2 does not enclose z3 because z3 is right of both endpoints
+```
+
+Step 2:
+
+```text
+successor(z3) = POSITIVE_INFINITY
+B = UPPER_DUMMY_PAIR
+```
+
+Step 3(a):
+
+```text
+P2 is last in U1
+insert P4={z3=3,z4=4} after P2
+U1 becomes [P2, P4]
+parent(P4) = parent(P2) = UPPER_DUMMY_PAIR
+owner(P4) = U1
+```
+
+Step 3(b):
+
+```text
+B is the upper dummy and encloses z3
+split is skipped
+```
+
+Step 3(c):
+
+```text
+P4 has no children
+insert z4 immediately after z3
+```
+
+Final partial order:
+
+```text
+1, 2, 3, 4
+```
+
+This trace fixes the inherited-parent postcondition for
+`insert_at_boundary`.
+
+## Nontrivial Trace B: Increasing Split and Ownership Transfer
+
+Sequence:
+
+```text
+[2, 3, 1, 4]
+```
+
+This candidate is oracle-valid. Initialization gives:
+
+```text
+partial order: z3=1, z1=2, z2=3
+upper dummy child list U1: [P2={z1=2,z2=3}]
+lower dummy child list L1: [P3={z2=3,z3=1}]
+```
+
+At `i=4`:
+
+```text
+previous = z3=1
+current = z4=4
+orientation = increasing
+family = upper
+```
+
+Step 1:
+
+```text
+predecessor(z3) = NEGATIVE_INFINITY
+A = UPPER_DUMMY_PAIR
+```
+
+Step 2:
+
+```text
+successor(z3) = z1
+the upper pair containing z1 is P2
+B = P2
+P2 does not enclose z3
+```
+
+Step 3(a):
+
+```text
+A encloses every finite point
+create U2=[P4={z3=1,z4=4}] owned by the upper dummy
+
+transient owner view before the atomic split:
+upper dummy child lists contain U2=[P4] and U1=[P2]
+```
+
+Step 3(b):
+
+```text
+split U1 at boundary z4=4
+left pair IDs:  [P2] because both endpoints 2 and 3 are below 4
+right pair IDs: []
+acquired side:  left
+retained side:  right
+```
+
+Atomic ownership result:
+
+```text
+U1 is retired
+new list U3=[P2] is owned by P4
+parent(P2) changes from UPPER_DUMMY_PAIR to P4
+owner(P2) changes from U1 to U3
+upper dummy child lists become [U2]
+P4 child lists become [U3]
+```
+
+Step 3(c):
+
+```text
+rightmost child of P4 is P2
+P2.second is z2=3
+insert z4=4 immediately after z2
+```
+
+Final partial order:
+
+```text
+1, 2, 3, 4
+```
+
+This trace fixes increasing acquired-side ownership and the one-empty-side
+transaction.
+
+## Nontrivial Trace C: Decreasing Split and Ownership Transfer
+
+Sequence:
+
+```text
+[3, 2, 4, 1]
+```
+
+This candidate is oracle-valid and is the order-reflected counterpart of Trace
+B. Initialization gives:
+
+```text
+partial order: z2=2, z1=3, z3=4
+upper dummy child list U1: [P2={z1=3,z2=2}]
+lower dummy child list L1: [P3={z2=2,z3=4}]
+```
+
+At `i=4`:
+
+```text
+previous = z3=4
+current = z4=1
+orientation = decreasing
+family = upper
+```
+
+Step 1:
+
+```text
+predecessor(z3) = z1
+the upper pair containing z1 is P2
+A = P2
+P2 does not enclose z3
+```
+
+Step 2:
+
+```text
+successor(z3) = POSITIVE_INFINITY
+B = UPPER_DUMMY_PAIR
+```
+
+Mirrored Step 3(a):
+
+```text
+B encloses every finite point
+create U2=[P4={z3=4,z4=1}] owned by the upper dummy
+```
+
+Mirrored Step 3(b):
+
+```text
+split U1 at boundary z4=1
+left pair IDs:  []
+right pair IDs: [P2] because both endpoints 3 and 2 are above 1
+acquired side:  right
+retained side:  left
+```
+
+Atomic ownership result:
+
+```text
+U1 is retired
+new list U3=[P2] is owned by P4
+parent(P2) changes from UPPER_DUMMY_PAIR to P4
+owner(P2) changes from U1 to U3
+upper dummy child lists become [U2]
+P4 child lists become [U3]
+```
+
+Mirrored Step 3(c):
+
+```text
+leftmost child of P4 is P2
+P2.second is z2=2
+insert z4=1 immediately before z2
+```
+
+Final partial order:
+
+```text
+1, 2, 3, 4
+```
+
+This trace fixes the decreasing acquired side and mirrored output anchor for
+the reflected test pair.
+
 ## Test Matrix
 
 | Area | Required cases |
@@ -1091,7 +1425,8 @@ partial-order insertion:
     O(1) through node links
 
 ordinary sibling boundary insertion:
-    O(1) at Python-list ends when no ownership scan is needed
+    append after the final item is amortized O(1)
+    insert before the first item in a Python list is O(k)
 
 ordinary sibling split:
     O(length of scanned sibling list)
@@ -1109,19 +1444,20 @@ comparison point, not an implemented component.
 ## Open Questions Before Step 3 Implementation
 
 The following interpretations are now explicit but still require direct
-confirmation through mirrored examples and focused tests:
+confirmation through focused executable tests:
 
-1. In increasing Step 3(b), the left split output is reassigned to the new pair
-   and the right output remains with the old parent.
-2. In decreasing Step 3(b), the right split output is reassigned to the new pair
-   and the left output remains with the old parent.
-3. In decreasing Step 3(c), the reflected rule inserts `z_i` immediately before
-   the second curve-order endpoint of the leftmost child.
-4. When one split output is empty, the retired input list is replaced only by
-   the nonempty output and no persistent empty list is stored.
+1. Trace B fixes the increasing interpretation: the left output is acquired and
+   the right output is retained.
+2. Trace C fixes the decreasing interpretation: the right output is acquired
+   and the left output is retained.
+3. Trace C fixes the mirrored test interpretation: insert before the second
+   curve-order endpoint of the leftmost child.
+4. Traces B and C fix empty-side representation as `None`, with no persistent
+   empty list.
 
-These questions do not block implementation of the standalone list backend.
-They do block declaring the full Step 3 loop correct.
+These interpretations are sufficiently precise for backend API design. They
+must still be protected by direct Step 3 tests before the full loop is declared
+correct.
 
 ## Day 1 Acceptance Record
 
