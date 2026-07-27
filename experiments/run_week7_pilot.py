@@ -35,6 +35,11 @@ from generators import (  # noqa: E402
 )
 from instrumentation import instrumented_reference_run  # noqa: E402
 from oracle import oracle  # noqa: E402
+from paper_jordan import METRIC_NAMES as PAPER_METRIC_NAMES  # noqa: E402
+from paper_jordan_sort import (  # noqa: E402
+    paper_jordan_diagnostics_valid,
+    paper_jordan_sort_valid,
+)
 from simplified_jordan import simplified_jordan_sort  # noqa: E402
 from stats import structure_profile  # noqa: E402
 
@@ -63,6 +68,7 @@ DEFAULT_ALGORITHM_NAMES = [
     "sort_plus_laminarity_check",
     "simplified_jordan_reference",
 ]
+PAPER_ALGORITHM_NAME = "simplified_jordan_paper_ordinary_list"
 DEFAULT_RUNS_DIR = PROJECT_ROOT / "results" / "runs"
 DEFAULT_RAW_CSV = PROJECT_ROOT / "results" / "week7_pilot_raw.csv"
 DEFAULT_CASE_SUMMARY_CSV = PROJECT_ROOT / "results" / "week7_pilot_case_summary.csv"
@@ -74,9 +80,11 @@ ALGORITHMS = {
     "python_sort": python_sort,
     "sort_plus_laminarity_check": sort_plus_laminarity_check,
     "simplified_jordan_reference": simplified_jordan_sort,
+    PAPER_ALGORITHM_NAME: paper_jordan_sort_valid,
 }
 
 NO_DECISION = object()
+PAPER_METRIC_FIELDS = [f"paper_{name}" for name in PAPER_METRIC_NAMES]
 
 RAW_FIELDS = [
     "case_id",
@@ -112,6 +120,7 @@ RAW_FIELDS = [
     "nodes_created",
     "nodes_visited",
     "trace_event_count",
+    *PAPER_METRIC_FIELDS,
 ]
 
 SUMMARY_FIELDS = [
@@ -265,6 +274,17 @@ def validate_config(config):
     unknown_algorithms = sorted(set(config.algorithms) - set(ALGORITHMS))
     if unknown_algorithms:
         raise ValueError(f"unknown algorithms: {unknown_algorithms}")
+    if PAPER_ALGORITHM_NAME in config.algorithms:
+        invalid_families = sorted(set(config.families) - {
+            FLAT_VALID,
+            NESTED_VALID,
+            INCREMENTAL_VALID,
+        })
+        if invalid_families:
+            raise ValueError(
+                "paper ordinary-list algorithm requires valid-only families: "
+                f"{invalid_families}"
+            )
 
     if len(config.families) != len(set(config.families)):
         raise ValueError("families must not contain duplicates")
@@ -328,6 +348,21 @@ def build_cases(config):
                 oracle_result = oracle(sequence)
                 profile = structure_profile(sequence, oracle_result=oracle_result)
                 diagnostics = instrumented_reference_run(sequence)["metrics"]
+                paper_diagnostics = {}
+                if PAPER_ALGORITHM_NAME in config.algorithms:
+                    paper_result = paper_jordan_diagnostics_valid(sequence)
+                    if (
+                        not paper_result["invariants_valid"]
+                        or paper_result["output"] != oracle_result["sorted"]
+                    ):
+                        raise RuntimeError(
+                            f"paper diagnostics failed for {family}, n={n}, "
+                            f"seed={case_seed}"
+                        )
+                    paper_diagnostics = {
+                        f"paper_{name}": paper_result["metrics"][name]
+                        for name in PAPER_METRIC_NAMES
+                    }
                 cases.append(
                     {
                         "case_id": make_case_id(family, len(sequence), index),
@@ -339,13 +374,14 @@ def build_cases(config):
                         "oracle": oracle_result,
                         "profile": profile,
                         "diagnostics": diagnostics,
+                        "paper_diagnostics": paper_diagnostics,
                     }
                 )
     return cases
 
 
 def _extract_sorted_output(algorithm_name, result):
-    if algorithm_name == "python_sort":
+    if algorithm_name in {"python_sort", PAPER_ALGORITHM_NAME}:
         return result
     if algorithm_name == "sort_plus_laminarity_check":
         return result["sorted"]
@@ -504,6 +540,8 @@ def make_raw_rows(config):
                 }
                 if algorithm_name == "simplified_jordan_reference":
                     row.update(case["diagnostics"])
+                if algorithm_name == PAPER_ALGORITHM_NAME:
+                    row.update(case["paper_diagnostics"])
                 rows.append({field: csv_value(row.get(field)) for field in RAW_FIELDS})
     return rows
 
@@ -776,7 +814,8 @@ def write_auto_report(config, group_rows):
                 "",
                 "- The pilot records correctness, timing, structural metrics, and selected operation counters together.",
                 "- The pilot suggests that future analysis should compare runtime against containment density and max depth at the case-summary level.",
-                "- The pilot times plain `simplified_jordan_reference`; diagnostic counters are collected once per case outside the timed region.",
+                "- The pilot times configured plain algorithm entry points; complete diagnostics are collected once per case outside the timed region.",
+                "- Paper ordinary-list timing still includes trace recording and correctness-first backend commit validation.",
                 "",
                 "## Boundaries",
                 "",

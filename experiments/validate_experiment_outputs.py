@@ -13,6 +13,8 @@ sys.path.insert(0, str(PROJECT_ROOT / "experiments"))
 
 from run_week7_pilot import (  # noqa: E402
     GROUP_FIELDS,
+    PAPER_ALGORITHM_NAME,
+    PAPER_METRIC_FIELDS,
     RAW_FIELDS,
     SUMMARY_FIELDS,
     summarize_by_case,
@@ -151,6 +153,24 @@ def _validate_raw_rows(raw_rows, config, errors):
     seen_case_position_owners = {}
     for row in raw_rows:
         n = _parse_int(row["n"], "n", errors)
+        if row["algorithm"] == PAPER_ALGORITHM_NAME:
+            for field in PAPER_METRIC_FIELDS:
+                value = _parse_int(row[field], field, errors)
+                _require(
+                    value is None or value >= 0,
+                    f"{field} must be non-negative for paper rows",
+                    errors,
+                )
+        else:
+            unexpected_paper_metrics = [
+                field for field in PAPER_METRIC_FIELDS if row[field] not in {"", None}
+            ]
+            _require(
+                not unexpected_paper_metrics,
+                "non-paper row contains paper metrics: "
+                f"{unexpected_paper_metrics}",
+                errors,
+            )
         case_position = _parse_int(
             row["case_execution_position"],
             "case_execution_position",
