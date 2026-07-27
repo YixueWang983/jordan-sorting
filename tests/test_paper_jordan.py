@@ -1,4 +1,4 @@
-"""论文 Jordan 算法初始化与 Step 1/2 的聚焦测试。"""
+"""论文 Jordan 算法初始化与 Step 1/2/3 的聚焦测试。"""
 
 import itertools
 import sys
@@ -17,6 +17,7 @@ from paper_jordan import (  # noqa: E402
     SINGLETON_LIST,
     UPPER_DUMMY_PAIR_ID,
     BoundarySelection,
+    Step3CResult,
     initialize_paper_jordan_state,
     pair_encloses_point,
     pair_family_for_end_index,
@@ -27,6 +28,8 @@ from paper_jordan import (  # noqa: E402
     step3a_increasing,
     step3b_decreasing,
     step3b_increasing,
+    step3c_decreasing,
+    step3c_increasing,
 )
 from oracle import oracle  # noqa: E402
 from sibling_list_backend import (  # noqa: E402
@@ -422,7 +425,7 @@ class PaperJordanBoundarySelectionTests(unittest.TestCase):
         )
 
 
-class PaperJordanStep3ABTests(unittest.TestCase):
+class PaperJordanStep3Tests(unittest.TestCase):
     def test_enclosure_uses_strict_geometry_and_dummy_fallback(self):
         state = initialize_paper_jordan_state([1, 4, 2, 3])
 
@@ -696,6 +699,7 @@ class PaperJordanStep3ABTests(unittest.TestCase):
 
         new_pair = step3a_increasing(state, 4, left)
         result = step3b_increasing(state, 4, new_pair.pair_id, right)
+        output = step3c_increasing(state, 4, new_pair.pair_id)
 
         self.assertTrue(result.performed)
         self.assertIs(
@@ -706,6 +710,214 @@ class PaperJordanStep3ABTests(unittest.TestCase):
             state.stage_results[4]["step3b_split_sibling_list"],
             result,
         )
+        self.assertIs(
+            state.stage_results[4]["step3c_insert_output_point"],
+            output,
+        )
+
+    def test_step3c_no_child_uses_previous_point_in_both_directions(self):
+        cases = [
+            ([1, 4, 2, 3], INCREASING, AFTER),
+            ([4, 3, 2, 1], DECREASING, BEFORE),
+        ]
+
+        for values, orientation, insertion_side in cases:
+            with self.subTest(values=values):
+                state = initialize_paper_jordan_state(values)
+                left = step1_select_predecessor_boundary(state, 4)
+                right = step2_select_successor_boundary(state, 4)
+                if orientation == INCREASING:
+                    new_pair = step3a_increasing(state, 4, left)
+                    step3b_increasing(state, 4, new_pair.pair_id, right)
+                    result = step3c_increasing(state, 4, new_pair.pair_id)
+                else:
+                    new_pair = step3a_decreasing(state, 4, right)
+                    step3b_decreasing(state, 4, new_pair.pair_id, left)
+                    result = step3c_decreasing(state, 4, new_pair.pair_id)
+
+                self.assertEqual(result.child_pair_id, None)
+                self.assertEqual(result.base_anchor_point_id, 3)
+                self.assertEqual(result.output_anchor_point_id, 3)
+                self.assertEqual(result.insertion_side, insertion_side)
+                self.assertFalse(result.adjusted_for_z1)
+                self.assertEqual(state.partial_order.to_list(), sorted(values))
+                self.assertEqual(state.processed_count, 4)
+                self.assertEqual(state.metrics["output_insertions"], 1)
+                self.assertTrue(state.partial_order.validate_links())
+
+    def test_step3c_uses_geometric_endpoint_for_all_orientation_combinations(self):
+        cases = [
+            ([2, 3, 1, 4], INCREASING, 2),
+            ([3, 2, 1, 4], INCREASING, 1),
+            ([2, 3, 4, 1], DECREASING, 1),
+            ([3, 2, 4, 1], DECREASING, 2),
+        ]
+
+        for values, orientation, expected_anchor in cases:
+            with self.subTest(values=values):
+                state = initialize_paper_jordan_state(values)
+                left = step1_select_predecessor_boundary(state, 4)
+                right = step2_select_successor_boundary(state, 4)
+                if orientation == INCREASING:
+                    new_pair = step3a_increasing(state, 4, left)
+                    step3b_increasing(state, 4, new_pair.pair_id, right)
+                    result = step3c_increasing(state, 4, new_pair.pair_id)
+                else:
+                    new_pair = step3a_decreasing(state, 4, right)
+                    step3b_decreasing(state, 4, new_pair.pair_id, left)
+                    result = step3c_decreasing(state, 4, new_pair.pair_id)
+
+                self.assertEqual(result.child_pair_id, 2)
+                self.assertEqual(result.base_anchor_point_id, expected_anchor)
+                self.assertEqual(result.output_anchor_point_id, expected_anchor)
+                self.assertFalse(result.adjusted_for_z1)
+                self.assertEqual(state.partial_order.to_list(), sorted(values))
+                self.assertTrue(state.sibling_backend.validate_invariants())
+
+    def test_step3c_applies_odd_z1_adjustment_in_both_directions(self):
+        cases = [
+            ([6, 5, 4, 3, 1, 0, 7], INCREASING, 2),
+            ([1, 2, 3, 4, 6, 7, 0], DECREASING, 2),
+        ]
+
+        for values, orientation, expected_base_anchor in cases:
+            with self.subTest(values=values):
+                state = self._prepare_six_point_state(values)
+                left = step1_select_predecessor_boundary(state, 7)
+                right = step2_select_successor_boundary(state, 7)
+                before_adjustments = state.metrics["z1_anchor_adjustments"]
+                if orientation == INCREASING:
+                    new_pair = step3a_increasing(state, 7, left)
+                    step3b_increasing(state, 7, new_pair.pair_id, right)
+                    result = step3c_increasing(state, 7, new_pair.pair_id)
+                else:
+                    new_pair = step3a_decreasing(state, 7, right)
+                    step3b_decreasing(state, 7, new_pair.pair_id, left)
+                    result = step3c_decreasing(state, 7, new_pair.pair_id)
+
+                self.assertEqual(result.base_anchor_point_id, expected_base_anchor)
+                self.assertEqual(result.output_anchor_point_id, 1)
+                self.assertTrue(result.adjusted_for_z1)
+                self.assertEqual(
+                    state.metrics["z1_anchor_adjustments"],
+                    before_adjustments + 1,
+                )
+                self.assertEqual(state.partial_order.to_list(), sorted(values))
+                self.assertEqual(state.processed_count, 7)
+                self.assertTrue(state.partial_order.validate_links())
+                self.assertTrue(state.sibling_backend.validate_invariants())
+
+    def test_step3c_does_not_adjust_for_odd_z1_outside_anchor_interval(self):
+        cases = [
+            [1, 2, 3, 4, 5],
+            [5, 4, 3, 2, 1],
+        ]
+
+        for values in cases:
+            with self.subTest(values=values):
+                state = initialize_paper_jordan_state(values)
+                self._complete_iteration(state, 4)
+                before_adjustments = state.metrics["z1_anchor_adjustments"]
+
+                result = self._complete_iteration(state, 5)
+
+                self.assertFalse(result.adjusted_for_z1)
+                self.assertNotEqual(result.output_anchor_point_id, 1)
+                self.assertEqual(
+                    state.metrics["z1_anchor_adjustments"],
+                    before_adjustments,
+                )
+                self.assertEqual(state.partial_order.to_list(), sorted(values))
+                self.assertEqual(state.processed_count, 5)
+
+    def test_step3c_requires_step3b_without_changing_state(self):
+        state = initialize_paper_jordan_state([1, 2, 3, 4])
+        left = step1_select_predecessor_boundary(state, 4)
+        step2_select_successor_boundary(state, 4)
+        new_pair = step3a_increasing(state, 4, left)
+        before = self._state_snapshot(state)
+
+        with self.assertRaises(RuntimeError):
+            step3c_increasing(state, 4, new_pair.pair_id)
+
+        self.assertEqual(self._state_snapshot(state), before)
+
+    def test_step3c_rejects_wrong_child_owner_without_changing_state(self):
+        state = initialize_paper_jordan_state([2, 3, 1, 4])
+        left = step1_select_predecessor_boundary(state, 4)
+        right = step2_select_successor_boundary(state, 4)
+        new_pair = step3a_increasing(state, 4, left)
+        step3b_increasing(state, 4, new_pair.pair_id, right)
+        child_list_id = state.pairs[4].child_sibling_list_ids[0]
+        child_list = state.sibling_backend.get_list(child_list_id)
+        child_list.owner_parent_pair_id = UPPER_DUMMY_PAIR_ID
+        before = self._state_snapshot(state)
+
+        with self.assertRaises(RuntimeError):
+            step3c_increasing(state, 4, new_pair.pair_id)
+
+        self.assertEqual(self._state_snapshot(state), before)
+
+    def test_repeated_step3c_leaves_completed_state_unchanged(self):
+        state = initialize_paper_jordan_state([2, 3, 1, 4])
+        left = step1_select_predecessor_boundary(state, 4)
+        right = step2_select_successor_boundary(state, 4)
+        new_pair = step3a_increasing(state, 4, left)
+        step3b_increasing(state, 4, new_pair.pair_id, right)
+        first = step3c_increasing(state, 4, new_pair.pair_id)
+        completed = self._state_snapshot(state)
+
+        with self.assertRaises(RuntimeError):
+            step3c_increasing(state, 4, new_pair.pair_id)
+
+        self.assertEqual(self._state_snapshot(state), completed)
+        self.assertIsInstance(first, Step3CResult)
+        self.assertIs(
+            state.stage_results[4]["step3c_insert_output_point"],
+            first,
+        )
+
+    def test_step3c_records_stable_trace_fields(self):
+        state = initialize_paper_jordan_state([3, 2, 1, 4])
+        left = step1_select_predecessor_boundary(state, 4)
+        right = step2_select_successor_boundary(state, 4)
+        new_pair = step3a_increasing(state, 4, left)
+        step3b_increasing(state, 4, new_pair.pair_id, right)
+
+        result = step3c_increasing(state, 4, new_pair.pair_id)
+        event = state.trace[-1]
+
+        self.assertEqual(event["step"], "step3c_insert_output_point")
+        self.assertEqual(event["iteration"], 4)
+        self.assertEqual(event["orientation"], INCREASING)
+        self.assertEqual(event["pair_id"], 4)
+        self.assertEqual(event["child_pair_id"], 2)
+        self.assertEqual(event["base_anchor_point_id"], 1)
+        self.assertEqual(event["output_anchor_point_id"], 1)
+        self.assertEqual(event["insertion_side"], AFTER)
+        self.assertFalse(event["adjusted_for_z1"])
+        self.assertEqual(event["processed_count"], 4)
+        self.assertEqual(result.output_anchor_point_id, 1)
+
+    def test_step3abc_completes_every_oracle_valid_four_point_permutation(self):
+        valid_count = 0
+        for values in itertools.permutations([1, 2, 3, 4]):
+            if not oracle(values)["valid"]:
+                continue
+
+            valid_count += 1
+            with self.subTest(values=values):
+                state = initialize_paper_jordan_state(values)
+                result = self._complete_iteration(state, 4)
+
+                self.assertIsInstance(result, Step3CResult)
+                self.assertEqual(state.partial_order.to_list(), sorted(values))
+                self.assertEqual(state.processed_count, 4)
+                self.assertEqual(state.metrics["output_insertions"], 1)
+                self.assertTrue(state.partial_order.validate_links())
+                self.assertTrue(state.sibling_backend.validate_invariants())
+
+        self.assertEqual(valid_count, 16)
 
     def test_step3ab_trace_stops_before_output_insertion(self):
         state = initialize_paper_jordan_state([2, 3, 1, 4])
@@ -745,9 +957,39 @@ class PaperJordanStep3ABTests(unittest.TestCase):
         self.assertEqual(valid_count, 16)
 
     def _prepare_seven_point_state(self, values):
+        state = self._prepare_six_point_state(values)
+        self._insert_point_in_value_order(state, 7)
+
+        pair_7 = PairRecord(7, 7, 6, 7, LOWER)
+        state.sibling_backend.register_pair(pair_7)
+        state.sibling_backend.make_list(pair_7.pair_id, state.lower_dummy_pair_id)
+        state.pairs[pair_7.pair_id] = pair_7
+        state.pair_by_end_index[7] = pair_7.pair_id
+        state.processed_count = 7
+
+        self.assertEqual(
+            state.partial_order.to_list(),
+            sorted(values[:7]),
+        )
+        self.assertTrue(state.sibling_backend.validate_invariants())
+        return state
+
+    def _complete_iteration(self, state, iteration):
+        left = step1_select_predecessor_boundary(state, iteration)
+        right = step2_select_successor_boundary(state, iteration)
+        if state.point_value(iteration - 1) < state.point_value(iteration):
+            new_pair = step3a_increasing(state, iteration, left)
+            step3b_increasing(state, iteration, new_pair.pair_id, right)
+            return step3c_increasing(state, iteration, new_pair.pair_id)
+
+        new_pair = step3a_decreasing(state, iteration, right)
+        step3b_decreasing(state, iteration, new_pair.pair_id, left)
+        return step3c_decreasing(state, iteration, new_pair.pair_id)
+
+    def _prepare_six_point_state(self, values):
         state = initialize_paper_jordan_state(values)
 
-        for paper_index in range(4, 8):
+        for paper_index in range(4, 7):
             self._insert_point_in_value_order(state, paper_index)
 
         upper_list_id = state.pairs[2].sibling_list_id
@@ -766,16 +1008,11 @@ class PaperJordanStep3ABTests(unittest.TestCase):
             state.pairs[pair.pair_id] = pair
             state.pair_by_end_index[end_index] = pair.pair_id
 
-        pair_7 = PairRecord(7, 7, 6, 7, LOWER)
-        state.sibling_backend.register_pair(pair_7)
-        state.sibling_backend.make_list(pair_7.pair_id, state.lower_dummy_pair_id)
-        state.pairs[pair_7.pair_id] = pair_7
-        state.pair_by_end_index[7] = pair_7.pair_id
-        state.processed_count = 7
+        state.processed_count = 6
 
         self.assertEqual(
             state.partial_order.to_list(),
-            sorted(values[:7]),
+            sorted(values[:6]),
         )
         self.assertTrue(state.sibling_backend.validate_invariants())
         return state

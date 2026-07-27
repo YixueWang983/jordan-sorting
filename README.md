@@ -263,7 +263,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 276 tests
+Ran 285 tests
 OK
 ```
 
@@ -356,8 +356,9 @@ Important project documents:
 
 Immediate next task:
 
-- begin Week 9 Day 5 Step 3(c), mirrored output insertion, and the
-  end-to-end paper loop;
+- review the independent Week 9 Day 5 Step 3(c) implementation;
+- after approval, assemble the end-to-end paper loop without oracle-sorted
+  output;
 - keep diagnostic trace validation and full backend invariant checks outside
   future timed performance regions.
 

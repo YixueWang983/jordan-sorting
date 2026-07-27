@@ -1,4 +1,4 @@
-"""1990 Jordan-sorting 论文算法的初始化与 Step 1/2/3(a-b) 结构操作。"""
+"""1990 Jordan-sorting 论文算法的初始化与 Step 1/2/3 结构操作。"""
 
 from __future__ import annotations
 
@@ -19,6 +19,8 @@ from sibling_list_backend import (
     UPPER,
     OrdinarySiblingListBackend,
     PairRecord,
+    left_endpoint_id,
+    right_endpoint_id,
 )
 
 
@@ -82,6 +84,19 @@ class Step3BResult:
     right_list_id: int | None
     acquired_side: str | None
     reason: str | None
+
+
+@dataclass(frozen=True)
+class Step3CResult:
+    """Step 3(c) 选择输出 anchor 并插入当前点后的结果。"""
+
+    pair_id: int
+    orientation: str
+    child_pair_id: int | None
+    base_anchor_point_id: int
+    output_anchor_point_id: int
+    insertion_side: str
+    adjusted_for_z1: bool
 
 
 @dataclass
@@ -386,6 +401,28 @@ def step3b_decreasing(state, iteration, new_pair_id, left_boundary):
     )
 
 
+def step3c_increasing(state, iteration, new_pair_id):
+    """执行 increasing Step 3(c)：在输出 anchor 后插入 z_i。"""
+    return _step3c(
+        state,
+        iteration,
+        new_pair_id,
+        orientation=INCREASING,
+        insertion_side=AFTER,
+    )
+
+
+def step3c_decreasing(state, iteration, new_pair_id):
+    """执行 decreasing Step 3(c)：在输出 anchor 前插入 z_i。"""
+    return _step3c(
+        state,
+        iteration,
+        new_pair_id,
+        orientation=DECREASING,
+        insertion_side=BEFORE,
+    )
+
+
 def _step3a(
     state,
     iteration,
@@ -548,6 +585,74 @@ def _step3b(
         right_size=right_size,
     )
     _record_stage_result(state, "step3b_split_sibling_list", iteration, result)
+    return result
+
+
+def _step3c(state, iteration, new_pair_id, orientation, insertion_side):
+    _require_state(state)
+    _require_iteration_index(iteration, len(state.points))
+    _require_stage_absent(state, "step3c_insert_output_point", iteration)
+    _require_next_iteration(state, iteration)
+    _require_orientation(state, iteration, orientation)
+    _require_step3a_stage(state, iteration, new_pair_id)
+    _require_step3b_stage(state, iteration, new_pair_id, orientation)
+
+    new_pair = _validated_new_iteration_pair(state, iteration, new_pair_id)
+    child_pair_id, base_anchor_point_id = _step3c_base_anchor(
+        state,
+        new_pair,
+        orientation,
+    )
+    output_anchor_point_id = base_anchor_point_id
+    adjusted_for_z1 = False
+
+    if iteration % 2 == 1:
+        base_value = state.point_value(base_anchor_point_id)
+        first_value = state.point_value(1)
+        current_value = state.point_value(iteration)
+        if orientation == INCREASING:
+            adjusted_for_z1 = base_value < first_value < current_value
+        else:
+            adjusted_for_z1 = current_value < first_value < base_value
+        if adjusted_for_z1:
+            output_anchor_point_id = 1
+
+    current_point = state.point(iteration)
+    if insertion_side == AFTER:
+        state.partial_order.insert_after(output_anchor_point_id, current_point)
+    else:
+        state.partial_order.insert_before(output_anchor_point_id, current_point)
+
+    result = Step3CResult(
+        pair_id=new_pair.pair_id,
+        orientation=orientation,
+        child_pair_id=child_pair_id,
+        base_anchor_point_id=base_anchor_point_id,
+        output_anchor_point_id=output_anchor_point_id,
+        insertion_side=insertion_side,
+        adjusted_for_z1=adjusted_for_z1,
+    )
+    state.processed_count = iteration
+    state.metrics["output_insertions"] += 1
+    if adjusted_for_z1:
+        state.metrics["z1_anchor_adjustments"] += 1
+    _record_trace(
+        state,
+        {
+            "step": "step3c_insert_output_point",
+            "iteration": iteration,
+            "family": new_pair.family,
+            "orientation": orientation,
+            "pair_id": new_pair.pair_id,
+            "child_pair_id": child_pair_id,
+            "base_anchor_point_id": base_anchor_point_id,
+            "output_anchor_point_id": output_anchor_point_id,
+            "insertion_side": insertion_side,
+            "adjusted_for_z1": adjusted_for_z1,
+            "processed_count": state.processed_count,
+        },
+    )
+    _record_stage_result(state, "step3c_insert_output_point", iteration, result)
     return result
 
 
@@ -766,6 +871,51 @@ def _require_step3a_stage(state, iteration, new_pair_id):
     recorded = state.stage_results.get(iteration, {}).get("step3a_insert_pair")
     if not isinstance(recorded, Step3AResult) or recorded.pair_id != new_pair_id:
         raise RuntimeError("Step 3(a) must complete before Step 3(b)")
+
+
+def _require_step3b_stage(state, iteration, new_pair_id, orientation):
+    recorded = state.stage_results.get(iteration, {}).get(
+        "step3b_split_sibling_list"
+    )
+    if (
+        not isinstance(recorded, Step3BResult)
+        or recorded.pair_id != new_pair_id
+        or recorded.orientation != orientation
+    ):
+        raise RuntimeError("matching Step 3(b) must complete before Step 3(c)")
+
+
+def _step3c_base_anchor(state, new_pair, orientation):
+    child_list_ids = new_pair.child_sibling_list_ids
+    if not child_list_ids:
+        return None, new_pair.first_point_id
+
+    if orientation == INCREASING:
+        child_list_id = child_list_ids[-1]
+    else:
+        child_list_id = child_list_ids[0]
+
+    child_list = state.sibling_backend.get_list(child_list_id)
+    if child_list.owner_parent_pair_id != new_pair.pair_id:
+        raise RuntimeError("Step 3(c) child list has the wrong owner")
+    if not child_list.pair_ids:
+        raise RuntimeError("Step 3(c) child sibling list cannot be empty")
+
+    child_pair_id = (
+        child_list.pair_ids[-1]
+        if orientation == INCREASING
+        else child_list.pair_ids[0]
+    )
+    child_pair = _validated_live_finite_pair(state, child_pair_id)
+    if child_pair.parent_pair_id != new_pair.pair_id:
+        raise RuntimeError("Step 3(c) extreme child has the wrong parent")
+
+    if orientation == INCREASING:
+        anchor_point_id = right_endpoint_id(child_pair, state.point_value)
+    else:
+        anchor_point_id = left_endpoint_id(child_pair, state.point_value)
+    _require_processed_point(state, anchor_point_id)
+    return child_pair.pair_id, anchor_point_id
 
 
 def _record_stage_result(state, step, iteration, result):

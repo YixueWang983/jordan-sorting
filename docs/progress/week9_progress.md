@@ -502,13 +502,61 @@ git diff --check:
     passed
 ```
 
-## Next Step
+## Day 5: Independent Step 3(c) Output Insertion
 
-Begin Day 5:
+Status: implementation complete; awaiting review before the end-to-end loop.
+
+Implemented:
+
+- immutable `Step3CResult`;
+- increasing insertion after the selected output anchor;
+- decreasing insertion before the selected output anchor;
+- no-child fallback to `z_(i-1)`;
+- geometric extreme-child anchor selection;
+- odd-index `z1` output-anchor adjustment in both directions;
+- O(1) Step 3(a)/(b)/(c) stage guards;
+- successful advancement of `processed_count`;
+- output insertion, adjustment, trace, and stage-result instrumentation;
+- failure and repeat-call state atomicity tests.
+
+Focused coverage includes all four parent/child orientation combinations,
+inside/outside odd-index adjustment cases, both no-child directions, all 16
+oracle-valid four-point permutations, and stable trace fields.
+
+Scope boundary:
 
 ```text
-Step 3(c) output-anchor selection
-increasing/decreasing output insertion
-odd-index z1 output-anchor adjustment
-complete paper loop
+Step 3(c) is callable only as an independent stage
+no production end-to-end paper loop exists
+no experiment runner calls the paper implementation
+no oracle, rank_map, or global sorting is used by the core
+```
+
+Checkpoint verification:
+
+```text
+python -m unittest tests.test_paper_jordan:
+    Ran 49 tests
+    OK
+
+python -m unittest discover -s tests:
+    Ran 285 tests
+    OK
+
+python -m compileall -q src experiments tests:
+    passed
+
+git diff --check:
+    passed
+```
+
+## Next Step
+
+Review the independent Step 3(c) checkpoint. After approval:
+
+```text
+assemble the complete paper loop
+handle n=0, n=1, n=2, and n=3 explicitly
+return output only from SortedOrderList
+add exhaustive valid-input differential tests
 ```

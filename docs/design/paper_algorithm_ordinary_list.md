@@ -1914,8 +1914,9 @@ This specification is ready for Day 2 data-structure implementation when:
 Current status: the Day 1 specification and Day 2 data structures are
 implemented. Day 3 adds `PaperJordanState` initialization and executable Step
 1/2 boundary selection and is approved after focused ownership, dummy, and
-permutation checks. Day 4 adds Step 3(a)/(b). Step 3(c) and the complete paper
-loop remain unimplemented until their later focused gates pass.
+permutation checks. Day 4 adds Step 3(a)/(b). The first Day 5 checkpoint adds
+independent increasing/decreasing Step 3(c) output insertion. The complete
+paper loop remains unimplemented until this focused gate is reviewed.
 
 ## Day 3 Implementation Record
 
@@ -2022,3 +2023,41 @@ external validator and never feeds the core state.
 The current point `z_i` remains absent from `SortedOrderList`,
 `processed_count` remains `i-1`, and `output_insertions` remains zero. No Step
 3(c) function or complete paper loop is part of Day 4.
+
+## Day 5 Step 3(c) Implementation Record
+
+The first Day 5 checkpoint exposes:
+
+```text
+step3c_increasing(state, iteration, new_pair_id)
+step3c_decreasing(state, iteration, new_pair_id)
+```
+
+Both functions require matching Step 3(a) and Step 3(b) stage results. They
+select `z_(i-1)` when the new pair has no children. Otherwise, increasing uses
+the geometric right endpoint of the rightmost child pair and decreasing uses
+the geometric left endpoint of the leftmost child pair. For odd iterations,
+the output anchor changes to `z1` only when `z1` lies strictly between the base
+anchor and `z_i`.
+
+Insertion is delegated to `SortedOrderList.insert_after` or
+`SortedOrderList.insert_before`, whose local checks finish before link
+mutation. A successful call:
+
+```text
+inserts z_i exactly once
+sets processed_count = i
+increments output_insertions
+records any z1 output-anchor adjustment
+records an immutable Step3CResult and trace event
+```
+
+Focused tests cover no-child insertion in both directions, all four
+parent/child orientation combinations, odd-index adjustment in both
+directions, odd-index non-adjustment, missing Step 3(b), inconsistent child
+ownership, repeat-call atomicity, stable trace fields, and all 16 oracle-valid
+four-point permutations. Oracle and `sorted` are used only for external test
+expectations.
+
+This checkpoint does not add `paper_jordan_sort_valid`, an end-to-end loop, or
+experiment integration.
