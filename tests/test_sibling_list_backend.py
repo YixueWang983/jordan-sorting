@@ -74,6 +74,25 @@ class SiblingListBackendTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.backend.register_pair(PairRecord(2, 2, 1, 2, UPPER))
 
+    def test_unregister_unowned_pair_supports_transaction_rollback(self):
+        pair = self.register_finite_pair(2, 1, 2)
+
+        removed = self.backend.unregister_unowned_pair(pair.pair_id)
+
+        self.assertIs(removed, pair)
+        with self.assertRaises(KeyError):
+            self.backend.get_pair(pair.pair_id)
+
+    def test_unregister_unowned_pair_rejects_live_owned_pair(self):
+        pair = self.register_finite_pair(2, 1, 2)
+        self.backend.make_list(pair.pair_id, UPPER_DUMMY_ID)
+
+        with self.assertRaises(ValueError):
+            self.backend.unregister_unowned_pair(pair.pair_id)
+
+        self.assertIs(self.backend.get_pair(pair.pair_id), pair)
+        self.assertTrue(self.backend.validate_invariants())
+
     def test_make_list_assigns_pair_and_parent_ownership(self):
         pair = self.register_finite_pair(2, 1, 2)
 

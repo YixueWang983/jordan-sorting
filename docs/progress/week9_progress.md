@@ -394,14 +394,14 @@ dummies, both endpoints of `P2` and `P3`, the missing lower-family pair at
 outcomes, corrupted pair/list ownership, corrupted dummy identity/family/
 ownership, trace ordering, and iteration guards.
 
-Purity/scope check:
+Day 3 checkpoint purity/scope check:
 
 ```text
-src/paper_jordan.py contains no oracle call
-src/paper_jordan.py contains no rank_map call
-src/paper_jordan.py contains no sorted() call
-src/paper_jordan.py contains no Step 3 implementation
-src/paper_jordan.py contains no complete paper loop
+the Day 3 source contained no oracle call
+the Day 3 source contained no rank_map call
+the Day 3 source contained no sorted() call
+the Day 3 source contained no Step 3 implementation
+the Day 3 source contained no complete paper loop
 ```
 
 Day 3 verification:
@@ -416,14 +416,74 @@ python -m unittest discover -s tests:
     OK
 ```
 
-## Next Step
+## Day 4: Step 3(a) and Step 3(b)
 
-Day 3 is approved. The next implementation stage is Day 4:
+Status: implementation complete; awaiting review before Day 5.
+
+Implemented:
+
+- `Step3AResult` and `Step3BResult`;
+- increasing/decreasing orientation validation;
+- strict finite-pair enclosure and dummy enclosure;
+- Step 3(a) singleton-list creation;
+- increasing insertion after the left boundary;
+- decreasing insertion before the right boundary;
+- Step 3(a) registration rollback through
+  `unregister_unowned_pair`;
+- Step 3(b) skip when the opposite boundary encloses the previous point;
+- increasing acquisition of the left split side;
+- decreasing acquisition of the right split side;
+- one-sided and two-nonempty-side ownership transfers;
+- Step 1/2 boundary-source trace validation;
+- Step 3(a)-before-Step 3(b) stage validation;
+- split scan/move counters and explicit trace output.
+
+Focused tests reproduce Trace A, Trace B, Trace C, the decreasing boundary
+insertion mirror, Trace F, and Trace F's value-reflected counterpart. They also
+cover wrong orientation, wrong boundary side, failed-registration rollback,
+both skip paths, and both acquisition directions. A differential gate executes
+one structural iteration for all 16 oracle-valid four-point permutations and
+checks sibling-backend invariants without passing oracle output into the core.
+
+Scope boundary:
 
 ```text
-Step 3(a) pair insertion
-Step 3(b) sibling-list split and ownership transfer
+z_i is not inserted into SortedOrderList
+processed_count remains i - 1
+output_insertions remains 0
+no step3c function exists
+no complete paper loop exists
 ```
 
-Do not implement Step 3(c) or the full paper loop before the Day 4 focused
-tests pass.
+Day 4 verification:
+
+```text
+python -m unittest tests.test_paper_jordan:
+    Ran 37 tests
+    OK
+
+python -m unittest tests.test_sibling_list_backend:
+    Ran 26 tests
+    OK
+
+python -m unittest discover -s tests:
+    Ran 273 tests
+    OK
+
+python -m compileall -q src experiments tests:
+    passed
+
+git diff --check:
+    passed
+```
+
+## Next Step
+
+Review Day 4 structure transitions. After approval, begin Day 5:
+
+```text
+Step 3(c) output-anchor selection
+increasing/decreasing output insertion
+odd-index z1 output-anchor adjustment
+complete paper loop
+```

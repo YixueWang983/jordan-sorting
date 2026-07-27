@@ -1,4 +1,4 @@
-"""1990 Jordan-sorting 论文算法的初始化与 Step 1/2 边界选择。"""
+"""1990 Jordan-sorting 论文算法的初始化与 Step 1/2/3(a-b) 结构操作。"""
 
 from __future__ import annotations
 
@@ -11,7 +11,11 @@ from partial_sorted_list import (
     SortedOrderList,
 )
 from sibling_list_backend import (
+    AFTER,
+    BEFORE,
+    LEFT,
     LOWER,
+    RIGHT,
     UPPER,
     OrdinarySiblingListBackend,
     PairRecord,
@@ -20,6 +24,10 @@ from sibling_list_backend import (
 
 UPPER_DUMMY_PAIR_ID = -1
 LOWER_DUMMY_PAIR_ID = -2
+INCREASING = "increasing"
+DECREASING = "decreasing"
+SINGLETON_LIST = "singleton_list"
+BOUNDARY_INSERTION = "boundary_insertion"
 
 METRIC_NAMES = (
     "predecessor_accesses",
@@ -46,6 +54,33 @@ class BoundarySelection:
     pair_id: int
     used_dummy_pair: bool
     adjusted_for_z1: bool
+
+
+@dataclass(frozen=True)
+class Step3AResult:
+    """Step 3(a) 创建并插入新 pair 后的结构结果。"""
+
+    pair_id: int
+    orientation: str
+    insertion_mode: str
+    boundary_pair_id: int
+    parent_pair_id: int
+    sibling_list_id: int
+
+
+@dataclass(frozen=True)
+class Step3BResult:
+    """Step 3(b) 的 split/skip 结果，不包含 Step 3(c) 输出插入。"""
+
+    performed: bool
+    pair_id: int
+    orientation: str
+    boundary_pair_id: int
+    input_list_id: int | None
+    left_list_id: int | None
+    right_list_id: int | None
+    acquired_side: str | None
+    reason: str | None
 
 
 @dataclass
@@ -175,15 +210,7 @@ def select_processed_same_family_pair(state, point_id, iteration):
     _require_next_iteration(state, iteration)
     _require_processed_point(state, point_id)
 
-    candidate_end_index = None
-    if point_id >= 2 and point_id % 2 == iteration % 2:
-        candidate_end_index = point_id
-    elif (
-        point_id + 1 <= state.processed_count
-        and (point_id + 1) % 2 == iteration % 2
-    ):
-        candidate_end_index = point_id + 1
-
+    candidate_end_index = _same_family_end_index(state, point_id, iteration)
     if candidate_end_index is None:
         raise ValueError(
             "processed point has no finite same-family pair for this iteration"
@@ -200,17 +227,7 @@ def select_processed_same_family_pair(state, point_id, iteration):
         raise RuntimeError("processed same-family pair mapping is inconsistent")
     if point_id not in {pair.first_point_id, pair.second_point_id}:
         raise RuntimeError("selected pair does not contain the requested point")
-    if state.sibling_backend.get_pair(pair_id) is not pair:
-        raise RuntimeError("state and sibling backend disagree about the selected pair")
-    if pair.parent_pair_id is None or pair.sibling_list_id is None:
-        raise RuntimeError("selected processed pair has no live sibling-list ownership")
-    sibling_list = state.sibling_backend.get_list(pair.sibling_list_id)
-    if sibling_list.list_id != pair.sibling_list_id:
-        raise RuntimeError("selected pair and sibling-list IDs disagree")
-    if sibling_list.owner_parent_pair_id != pair.parent_pair_id:
-        raise RuntimeError("selected pair and sibling-list parent mappings disagree")
-    if sibling_list.pair_ids.count(pair_id) != 1:
-        raise RuntimeError("selected processed pair is absent from its sibling list")
+    _validated_live_finite_pair(state, pair_id)
 
     state.metrics["boundary_pair_checks"] += 1
     return pair.pair_id
@@ -296,6 +313,232 @@ def step2_select_successor_boundary(state, iteration):
     return selection
 
 
+def pair_encloses_point(state, pair_id, point_id):
+    """判断 finite pair 是否严格包围 processed point；dummy 始终包围。"""
+    _require_state(state)
+    _require_processed_point(state, point_id)
+    pair = _validated_state_backend_pair(state, pair_id)
+    if pair.is_dummy:
+        return True
+
+    first_value = state.point_value(pair.first_point_id)
+    second_value = state.point_value(pair.second_point_id)
+    point_value = state.point_value(point_id)
+    left_value = first_value if first_value < second_value else second_value
+    right_value = second_value if first_value < second_value else first_value
+    return left_value < point_value and point_value < right_value
+
+
+def step3a_increasing(state, iteration, left_boundary):
+    """执行 increasing Step 3(a)，但不插入输出点。"""
+    return _step3a(
+        state,
+        iteration,
+        left_boundary,
+        orientation=INCREASING,
+        insertion_side=AFTER,
+        boundary_trace_step="step1_select_boundary_pair",
+    )
+
+
+def step3a_decreasing(state, iteration, right_boundary):
+    """执行 decreasing Step 3(a)，但不插入输出点。"""
+    return _step3a(
+        state,
+        iteration,
+        right_boundary,
+        orientation=DECREASING,
+        insertion_side=BEFORE,
+        boundary_trace_step="step2_select_boundary_pair",
+    )
+
+
+def step3b_increasing(state, iteration, new_pair_id, right_boundary):
+    """执行 increasing Step 3(b)：skip 或 acquire left split side。"""
+    return _step3b(
+        state,
+        iteration,
+        new_pair_id,
+        right_boundary,
+        orientation=INCREASING,
+        acquired_side=LEFT,
+        boundary_trace_step="step2_select_boundary_pair",
+    )
+
+
+def step3b_decreasing(state, iteration, new_pair_id, left_boundary):
+    """执行 decreasing Step 3(b)：skip 或 acquire right split side。"""
+    return _step3b(
+        state,
+        iteration,
+        new_pair_id,
+        left_boundary,
+        orientation=DECREASING,
+        acquired_side=RIGHT,
+        boundary_trace_step="step1_select_boundary_pair",
+    )
+
+
+def _step3a(
+    state,
+    iteration,
+    boundary,
+    orientation,
+    insertion_side,
+    boundary_trace_step,
+):
+    _require_next_iteration(state, iteration)
+    _require_orientation(state, iteration, orientation)
+    _require_boundary_trace(state, boundary_trace_step, boundary, iteration)
+    if iteration in state.pair_by_end_index or iteration in state.pairs:
+        raise RuntimeError("Step 3(a) pair already exists for this iteration")
+
+    boundary_pair = _validated_boundary_pair(state, boundary, iteration)
+    previous_point_id = iteration - 1
+    creates_singleton = pair_encloses_point(
+        state,
+        boundary_pair.pair_id,
+        previous_point_id,
+    )
+    new_pair = PairRecord(
+        pair_id=iteration,
+        end_index=iteration,
+        first_point_id=previous_point_id,
+        second_point_id=iteration,
+        family=pair_family_for_end_index(iteration),
+    )
+
+    state.sibling_backend.register_pair(new_pair)
+    try:
+        if creates_singleton:
+            sibling_list_id = state.sibling_backend.make_list(
+                new_pair.pair_id,
+                boundary_pair.pair_id,
+            )
+            insertion_mode = SINGLETON_LIST
+            state.metrics["sibling_lists_created"] += 1
+        else:
+            if boundary_pair.is_dummy:
+                raise RuntimeError("dummy boundary must enclose every finite point")
+            sibling_list_id = state.sibling_backend.insert_at_boundary(
+                new_pair.pair_id,
+                boundary_pair.pair_id,
+                insertion_side,
+            )
+            insertion_mode = BOUNDARY_INSERTION
+            state.metrics["sibling_list_insertions"] += 1
+    except Exception:
+        state.sibling_backend.unregister_unowned_pair(new_pair.pair_id)
+        raise
+
+    state.pairs[new_pair.pair_id] = new_pair
+    state.pair_by_end_index[iteration] = new_pair.pair_id
+    result = Step3AResult(
+        pair_id=new_pair.pair_id,
+        orientation=orientation,
+        insertion_mode=insertion_mode,
+        boundary_pair_id=boundary_pair.pair_id,
+        parent_pair_id=new_pair.parent_pair_id,
+        sibling_list_id=sibling_list_id,
+    )
+    _record_trace(
+        state,
+        {
+            "step": "step3a_insert_pair",
+            "iteration": iteration,
+            "family": new_pair.family,
+            "orientation": orientation,
+            "pair_id": new_pair.pair_id,
+            "boundary_pair_id": boundary_pair.pair_id,
+            "insertion_mode": insertion_mode,
+            "parent_pair_id": new_pair.parent_pair_id,
+            "sibling_list_id": sibling_list_id,
+        },
+    )
+    return result
+
+
+def _step3b(
+    state,
+    iteration,
+    new_pair_id,
+    boundary,
+    orientation,
+    acquired_side,
+    boundary_trace_step,
+):
+    _require_next_iteration(state, iteration)
+    _require_orientation(state, iteration, orientation)
+    _require_boundary_trace(state, boundary_trace_step, boundary, iteration)
+    _require_step3a_trace(state, iteration, new_pair_id)
+    _require_trace_step_absent(state, "step3b_split_sibling_list", iteration)
+    new_pair = _validated_new_iteration_pair(state, iteration, new_pair_id)
+    if new_pair.child_sibling_list_ids:
+        raise RuntimeError("new pair already owns child sibling lists before Step 3(b)")
+
+    boundary_pair = _validated_boundary_pair(state, boundary, iteration)
+    previous_point_id = iteration - 1
+    if pair_encloses_point(state, boundary_pair.pair_id, previous_point_id):
+        result = Step3BResult(
+            performed=False,
+            pair_id=new_pair.pair_id,
+            orientation=orientation,
+            boundary_pair_id=boundary_pair.pair_id,
+            input_list_id=None,
+            left_list_id=None,
+            right_list_id=None,
+            acquired_side=None,
+            reason="boundary pair encloses previous point",
+        )
+        _record_step3b_trace(state, result, input_size=0, left_size=0, right_size=0)
+        return result
+
+    if boundary_pair.is_dummy or boundary_pair.sibling_list_id is None:
+        raise RuntimeError("non-enclosing Step 3(b) boundary must be a live finite pair")
+    input_list = state.sibling_backend.get_list(boundary_pair.sibling_list_id)
+    if orientation == INCREASING:
+        if input_list.pair_ids[0] != boundary_pair.pair_id:
+            raise RuntimeError("increasing Step 3(b) boundary must be first")
+    elif input_list.pair_ids[-1] != boundary_pair.pair_id:
+        raise RuntimeError("decreasing Step 3(b) boundary must be last")
+
+    input_list_id = input_list.list_id
+    input_size = len(input_list.pair_ids)
+    split_result = state.sibling_backend.split_pairs_at_value(
+        input_list_id,
+        boundary_value=state.point_value(iteration),
+        acquired_side=acquired_side,
+        new_parent_pair_id=new_pair.pair_id,
+    )
+    left_size = _sibling_list_size(state, split_result.left_list_id)
+    right_size = _sibling_list_size(state, split_result.right_list_id)
+    moved_size = left_size if acquired_side == LEFT else right_size
+
+    state.metrics["sibling_scan_checks"] += input_size
+    state.metrics["sibling_list_splits"] += 1
+    state.metrics["split_items_scanned"] += input_size
+    state.metrics["split_items_moved"] += moved_size
+    result = Step3BResult(
+        performed=True,
+        pair_id=new_pair.pair_id,
+        orientation=orientation,
+        boundary_pair_id=boundary_pair.pair_id,
+        input_list_id=input_list_id,
+        left_list_id=split_result.left_list_id,
+        right_list_id=split_result.right_list_id,
+        acquired_side=acquired_side,
+        reason=None,
+    )
+    _record_step3b_trace(
+        state,
+        result,
+        input_size=input_size,
+        left_size=left_size,
+        right_size=right_size,
+    )
+    return result
+
+
 def _order_first_three(points):
     partial_order = SortedOrderList()
     first, second, third = points
@@ -356,6 +599,95 @@ def _boundary_selection(
     )
 
 
+def _validated_boundary_pair(state, boundary, iteration):
+    if not isinstance(boundary, BoundarySelection):
+        raise TypeError("boundary must be a BoundarySelection")
+
+    expected_family = pair_family_for_end_index(iteration)
+    if boundary.used_dummy_pair:
+        if boundary.neighbor_point_id is not None:
+            raise RuntimeError("dummy boundary cannot have a finite neighbor")
+        expected_dummy_id = (
+            state.upper_dummy_pair_id
+            if expected_family == UPPER
+            else state.lower_dummy_pair_id
+        )
+        if boundary.pair_id != expected_dummy_id:
+            raise RuntimeError("boundary uses the wrong configured family dummy")
+        _validated_dummy_pair_id(state, iteration, boundary.pair_id)
+        return state.pairs[boundary.pair_id]
+
+    if boundary.neighbor_point_id is None:
+        raise RuntimeError("finite boundary must identify its neighbor point")
+    _require_processed_point(state, boundary.neighbor_point_id)
+    expected_end_index = _same_family_end_index(
+        state,
+        boundary.neighbor_point_id,
+        iteration,
+    )
+    if expected_end_index is None:
+        raise RuntimeError("boundary neighbor has no processed same-family pair")
+    expected_pair_id = state.pair_by_end_index.get(expected_end_index)
+    if boundary.pair_id != expected_pair_id:
+        raise RuntimeError("boundary pair does not match its neighbor and family")
+
+    pair = _validated_live_finite_pair(state, boundary.pair_id)
+    if pair.family != expected_family:
+        raise RuntimeError("finite boundary pair belongs to the wrong family")
+    if boundary.neighbor_point_id not in {
+        pair.first_point_id,
+        pair.second_point_id,
+    }:
+        raise RuntimeError("finite boundary pair does not contain its neighbor")
+    return pair
+
+
+def _validated_state_backend_pair(state, pair_id):
+    try:
+        pair = state.pairs[pair_id]
+        backend_pair = state.sibling_backend.get_pair(pair_id)
+    except (KeyError, TypeError) as exc:
+        raise RuntimeError("pair is missing from state or sibling backend") from exc
+
+    if backend_pair is not pair or pair.pair_id != pair_id:
+        raise RuntimeError("state and sibling backend disagree about pair identity")
+    return pair
+
+
+def _validated_live_finite_pair(state, pair_id):
+    pair = _validated_state_backend_pair(state, pair_id)
+    if pair.is_dummy:
+        raise RuntimeError("expected a live finite pair, received a dummy")
+    if pair.parent_pair_id is None or pair.sibling_list_id is None:
+        raise RuntimeError("finite pair has no live sibling-list ownership")
+
+    sibling_list = state.sibling_backend.get_list(pair.sibling_list_id)
+    if sibling_list.list_id != pair.sibling_list_id:
+        raise RuntimeError("finite pair and sibling-list IDs disagree")
+    if sibling_list.owner_parent_pair_id != pair.parent_pair_id:
+        raise RuntimeError("finite pair and sibling-list parent mappings disagree")
+    if sibling_list.pair_ids.count(pair_id) != 1:
+        raise RuntimeError("finite pair is absent from its sibling list")
+    return pair
+
+
+def _validated_new_iteration_pair(state, iteration, pair_id):
+    if pair_id != iteration:
+        raise RuntimeError("new pair ID must equal the current paper end index")
+    if state.pair_by_end_index.get(iteration) != pair_id:
+        raise RuntimeError("new pair is missing from the end-index mapping")
+
+    pair = _validated_live_finite_pair(state, pair_id)
+    if (
+        pair.end_index != iteration
+        or pair.first_point_id != iteration - 1
+        or pair.second_point_id != iteration
+        or pair.family != pair_family_for_end_index(iteration)
+    ):
+        raise RuntimeError("new iteration pair record is inconsistent")
+    return pair
+
+
 def _validated_dummy_pair_id(state, iteration, dummy_pair_id):
     expected_family = pair_family_for_end_index(iteration)
     try:
@@ -373,6 +705,105 @@ def _validated_dummy_pair_id(state, iteration, dummy_pair_id):
     if dummy.parent_pair_id is not None or dummy.sibling_list_id is not None:
         raise RuntimeError("family dummy pair cannot have ordinary ownership")
     return dummy.pair_id
+
+
+def _same_family_end_index(state, point_id, iteration):
+    if point_id >= 2 and point_id % 2 == iteration % 2:
+        return point_id
+    if (
+        point_id + 1 <= state.processed_count
+        and (point_id + 1) % 2 == iteration % 2
+    ):
+        return point_id + 1
+    return None
+
+
+def _require_orientation(state, iteration, expected_orientation):
+    previous_value = state.point_value(iteration - 1)
+    current_value = state.point_value(iteration)
+    if previous_value < current_value:
+        actual_orientation = INCREASING
+    elif current_value < previous_value:
+        actual_orientation = DECREASING
+    else:
+        raise ValueError("consecutive point values must be distinct")
+
+    if actual_orientation != expected_orientation:
+        raise ValueError(
+            f"iteration orientation is {actual_orientation}, not {expected_orientation}"
+        )
+
+
+def _require_trace_step_absent(state, step, iteration):
+    if any(
+        event.get("step") == step and event.get("iteration") == iteration
+        for event in state.trace
+    ):
+        raise RuntimeError(f"{step} already completed for iteration {iteration}")
+
+
+def _require_boundary_trace(state, step, boundary, iteration):
+    if not isinstance(boundary, BoundarySelection):
+        raise TypeError("boundary must be a BoundarySelection")
+
+    matching_events = [
+        event
+        for event in state.trace
+        if event.get("step") == step and event.get("iteration") == iteration
+    ]
+    if len(matching_events) != 1:
+        raise RuntimeError(f"{step} must occur exactly once before Step 3")
+
+    event = matching_events[0]
+    expected_fields = {
+        "neighbor_point_id": boundary.neighbor_point_id,
+        "selected_pair_id": boundary.pair_id,
+        "used_dummy_pair": boundary.used_dummy_pair,
+        "adjusted_for_z1": boundary.adjusted_for_z1,
+    }
+    if any(event.get(name) != value for name, value in expected_fields.items()):
+        raise RuntimeError("Step 3 boundary does not match its Step 1/2 trace")
+
+
+def _require_step3a_trace(state, iteration, new_pair_id):
+    matching_events = [
+        event
+        for event in state.trace
+        if event.get("step") == "step3a_insert_pair"
+        and event.get("iteration") == iteration
+        and event.get("pair_id") == new_pair_id
+    ]
+    if len(matching_events) != 1:
+        raise RuntimeError("Step 3(a) must complete exactly once before Step 3(b)")
+
+
+def _sibling_list_size(state, list_id):
+    if list_id is None:
+        return 0
+    return len(state.sibling_backend.get_list(list_id).pair_ids)
+
+
+def _record_step3b_trace(state, result, input_size, left_size, right_size):
+    _record_trace(
+        state,
+        {
+            "step": "step3b_split_sibling_list",
+            "iteration": result.pair_id,
+            "family": pair_family_for_end_index(result.pair_id),
+            "orientation": result.orientation,
+            "pair_id": result.pair_id,
+            "boundary_pair_id": result.boundary_pair_id,
+            "performed": result.performed,
+            "reason": result.reason,
+            "input_list_id": result.input_list_id,
+            "input_size": input_size,
+            "left_list_id": result.left_list_id,
+            "left_size": left_size,
+            "right_list_id": result.right_list_id,
+            "right_size": right_size,
+            "acquired_side": result.acquired_side,
+        },
+    )
 
 
 def _record_boundary_pair_trace(state, step, iteration, selection):

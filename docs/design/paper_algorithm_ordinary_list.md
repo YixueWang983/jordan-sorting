@@ -1892,8 +1892,8 @@ This specification is ready for Day 2 data-structure implementation when:
 Current status: the Day 1 specification and Day 2 data structures are
 implemented. Day 3 adds `PaperJordanState` initialization and executable Step
 1/2 boundary selection and is approved after focused ownership, dummy, and
-permutation checks. Step 3 and the complete paper loop remain unimplemented
-until their later focused gates pass.
+permutation checks. Day 4 adds Step 3(a)/(b). Step 3(c) and the complete paper
+loop remain unimplemented until their later focused gates pass.
 
 ## Day 3 Implementation Record
 
@@ -1942,5 +1942,52 @@ Focused tests cover:
 - rejection of wrong-family, identity-mismatched, or ordinarily owned dummies;
 - trace order, counters, and next-iteration validation.
 
-No Step 3 function, main paper loop, oracle call, rank map, or ordinary sorting
-call is present in the Day 3 source.
+At the approved Day 3 checkpoint, no Step 3 function, main paper loop, oracle
+call, rank map, or ordinary sorting call was present.
+
+## Day 4 Implementation Record
+
+Day 4 adds only Step 3(a) and Step 3(b):
+
+```text
+step3a_increasing(state, iteration, left_boundary)
+step3a_decreasing(state, iteration, right_boundary)
+step3b_increasing(state, iteration, new_pair_id, right_boundary)
+step3b_decreasing(state, iteration, new_pair_id, left_boundary)
+```
+
+Step 3(a):
+
+- creates `P_i={z_(i-1),z_i}` with parity-derived family;
+- creates a singleton list when the direction-specific boundary encloses
+  `z_(i-1)`;
+- otherwise inserts after the increasing left boundary or before the
+  decreasing right boundary;
+- verifies that the supplied boundary matches the corresponding Step 1/2
+  trace;
+- rolls back backend registration if boundary insertion fails.
+
+The rollback path uses
+`OrdinarySiblingListBackend.unregister_unowned_pair()`, which can remove only
+a finite pair with no parent, sibling list, or child list.
+
+Step 3(b):
+
+- records a skip when the opposite boundary encloses `z_(i-1)`;
+- requires the increasing split boundary to be first and acquires `LEFT`;
+- requires the decreasing split boundary to be last and acquires `RIGHT`;
+- delegates atomic partition and ownership transfer to
+  `split_pairs_at_value`;
+- records scanned/moved item counts without advancing the processed prefix.
+
+Focused tests cover increasing/decreasing singleton creation, both sibling
+boundary insertions, both skip paths, one-sided acquisition in both
+directions, two-nonempty-side Trace F and its reflected counterpart, wrong
+orientation, wrong boundary side, registration rollback, ownership
+invariants, trace fields, and counters. An external differential test also
+runs Step 1/2/3(a)/(b) once for all 16 oracle-valid four-point permutations
+without feeding oracle output into core state.
+
+The current point `z_i` remains absent from `SortedOrderList`,
+`processed_count` remains `i-1`, and `output_insertions` remains zero. No Step
+3(c) function or complete paper loop is part of Day 4.

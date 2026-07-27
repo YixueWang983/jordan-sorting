@@ -82,9 +82,9 @@ gate:
   2026-07-24.
 
 Week 9 has started the ordinary-list reconstruction of the high-level 1990
-paper algorithm. Days 1-3 now provide the frozen executable specification,
-ordinary core data structures, initialization, and Step 1/2 boundary
-selection:
+paper algorithm. Days 1-4 now provide the frozen executable specification,
+ordinary core data structures, initialization, Step 1/2 boundary selection,
+and Step 3(a)/(b) pair/sibling ownership transitions:
 
 - the existing `simplified_jordan_reference` remains a separate baseline;
 - the new core must recover output from a maintained partial sorted order;
@@ -94,7 +94,11 @@ selection:
   roots, and their sibling-list ownership;
 - predecessor/successor boundary selection supports family dummies,
   processed same-family incident pairs, and the odd-index `z1` adjustment;
-- Step 3 and the complete paper loop are intentionally not implemented yet;
+- increasing/decreasing Step 3(a) supports singleton-list creation and legal
+  sibling-boundary insertion;
+- increasing/decreasing Step 3(b) supports skipped, one-sided, and two-sided
+  split/ownership transfer;
+- Step 3(c) and the complete paper loop are intentionally not implemented yet;
 - heterogeneous finger trees and a linear-time claim remain out of scope.
 
 ## Project Structure
@@ -259,7 +263,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 254 tests
+Ran 273 tests
 OK
 ```
 
@@ -352,8 +356,9 @@ Important project documents:
 
 Immediate next task:
 
-- begin Week 9 Day 4 Step 3(a) and Step 3(b);
-- do not implement Step 3(c) or the complete loop before the Day 4 gate passes.
+- review Week 9 Day 4 Step 3(a)/(b) structure transitions;
+- after approval, begin Day 5 Step 3(c), mirrored output insertion, and the
+  end-to-end paper loop.
 
 Later cleanup:
 

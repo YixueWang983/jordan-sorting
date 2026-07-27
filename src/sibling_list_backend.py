@@ -149,6 +149,21 @@ class OrdinarySiblingListBackend:
         except (KeyError, TypeError) as exc:
             raise KeyError(f"unknown sibling-list id: {list_id}") from exc
 
+    def unregister_unowned_pair(self, pair_id):
+        """移除尚未接入 family tree 的 finite pair，用于事务回滚。"""
+        pair = self.get_pair(pair_id)
+        if pair.is_dummy:
+            raise ValueError("dummy pair cannot be unregistered")
+        if (
+            pair.parent_pair_id is not None
+            or pair.sibling_list_id is not None
+            or pair.child_sibling_list_ids
+        ):
+            raise ValueError("only a completely unowned finite pair can be unregistered")
+
+        del self._pairs[pair.pair_id]
+        return pair
+
     def make_list(self, pair_id, owner_parent_pair_id):
         """创建 singleton list，并建立 pair/parent/list 三方 ownership。"""
         pair = self._require_unowned_finite_pair(pair_id)
