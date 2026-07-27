@@ -74,6 +74,14 @@ class SiblingListBackendTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.backend.register_pair(PairRecord(2, 2, 1, 2, UPPER))
 
+    def test_registered_pair_ids_returns_registry_snapshot(self):
+        self.register_finite_pair(2, 1, 2)
+
+        pair_ids = self.backend.registered_pair_ids()
+
+        self.assertEqual(set(pair_ids), {UPPER_DUMMY_ID, LOWER_DUMMY_ID, 2})
+        self.assertIsInstance(pair_ids, tuple)
+
     def test_unregister_unowned_pair_supports_transaction_rollback(self):
         pair = self.register_finite_pair(2, 1, 2)
 

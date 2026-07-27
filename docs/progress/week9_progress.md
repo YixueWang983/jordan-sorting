@@ -590,12 +590,26 @@ Implemented:
 - added `paper_jordan_diagnostics_valid(seq)` without duplicating the loop;
 - added `validate_paper_jordan_state(state)` for complete prefix, pair,
   ownership, metric, stage, and trace audits;
+- tightened that audit after adversarial review so it requires an exact
+  state/backend pair set, validates both dummy identities, checks every stage
+  dataclass and its semantic fields, enforces exact trace order and field
+  sets, and recomputes operation counters from trace payloads;
 - invoked full diagnostics after initialization and every completed iteration
   only when an invariant callback is supplied;
 - added `experiments/validate_paper_algorithm.py`;
 - added focused tests for shared-runner behavior, callback cadence, diagnostic
   copies, small inputs, corrupted state, configuration validation, and
   machine-readable output.
+
+Adversarial regression tests now reject:
+
+```text
+an arbitrary object replacing a Step 3(a) stage result
+a forged Step 3(c) trace pair_id
+an extra state.pairs alias
+an unknown trace field
+reordered trace events
+```
 
 The validator performs:
 
@@ -637,12 +651,13 @@ Day 6 verification:
 ```text
 python -m unittest tests.test_paper_jordan \
     tests.test_paper_jordan_sort \
+    tests.test_sibling_list_backend \
     tests.test_validate_paper_algorithm:
-    Ran 68 tests
+    Ran 99 tests
     OK
 
 python -m unittest discover -s tests:
-    Ran 304 tests
+    Ran 309 tests
     OK
 
 python experiments/validate_paper_algorithm.py --max-n 8:

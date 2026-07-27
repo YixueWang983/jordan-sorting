@@ -143,6 +143,10 @@ class OrdinarySiblingListBackend:
         except (KeyError, TypeError) as exc:
             raise KeyError(f"unknown pair id: {pair_id}") from exc
 
+    def registered_pair_ids(self):
+        """返回当前 backend 中全部 pair ID 的不可变快照。"""
+        return tuple(self._pairs)
+
     def get_list(self, list_id):
         try:
             return self._lists[list_id]

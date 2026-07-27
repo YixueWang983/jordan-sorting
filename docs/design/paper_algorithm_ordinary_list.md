@@ -2141,17 +2141,28 @@ using the oracle, a rank map, or global sorting, it checks:
 ```text
 processed point membership and count
 partial-order bidirectional links
-processed pair/end-index mapping
+exact state/backend pair registry membership
+dummy identity, family, endpoints, and backend registration
+processed pair/end-index mapping and mapping-key identity
 pair endpoint and parity-derived family consistency
 sibling-list ownership and acyclic parent chains
 metric shape and non-negative values
-trace counter consistency
-complete stage and trace coverage for every finished iteration
+typed and semantically consistent stage results
+exact initialization events
+strict seven-event order and exact trace payload for every iteration
+operation metrics recomputed from the validated trace
 ```
 
 The callback runs after initialization and after each completed iteration.
 It increments `invariant_checks`. Because it scans ownership and trace state,
 its cost is deliberately excluded from the future timed algorithm path.
+
+The audit rejects forged stage objects, changed trace payloads, unknown trace
+fields, reordered events, and extra pair aliases. Historical Step 1/2
+neighbors are reconstructed by filtering the maintained final point order to
+the relevant processed prefix. Step 3(c) anchors are checked against pair
+geometry and adjacency in that prefix. This reconstruction does not call
+`sorted()` and does not change algorithm state.
 
 The external script:
 

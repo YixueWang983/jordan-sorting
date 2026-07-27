@@ -240,6 +240,7 @@ def validate_paper_jordan_state(state):
         for value in state.metrics.values()
     ):
         raise RuntimeError("paper-state metrics must be non-negative integers")
+    _validate_point_records(state)
 
     state.partial_order.validate_links()
 
@@ -251,15 +252,37 @@ def validate_paper_jordan_state(state):
         raise RuntimeError("partial order does not contain exactly the processed points")
 
     expected_end_indices = set(range(2, state.processed_count + 1))
+    expected_pair_ids = {
+        state.upper_dummy_pair_id,
+        state.lower_dummy_pair_id,
+        *expected_end_indices,
+    }
+    if state.upper_dummy_pair_id != UPPER_DUMMY_PAIR_ID:
+        raise RuntimeError("upper dummy pair ID does not match the state contract")
+    if state.lower_dummy_pair_id != LOWER_DUMMY_PAIR_ID:
+        raise RuntimeError("lower dummy pair ID does not match the state contract")
+    if set(state.pairs) != expected_pair_ids:
+        raise RuntimeError("state pair mapping does not match the processed prefix")
+    if set(state.sibling_backend.registered_pair_ids()) != expected_pair_ids:
+        raise RuntimeError("backend pair registry does not match the state mapping")
+
+    _validate_configured_dummy(state, state.upper_dummy_pair_id, UPPER)
+    _validate_configured_dummy(state, state.lower_dummy_pair_id, LOWER)
+
     if set(state.pair_by_end_index) != expected_end_indices:
         raise RuntimeError("pair end-index mapping does not match processed prefix")
     if len(set(state.pair_by_end_index.values())) != len(expected_end_indices):
         raise RuntimeError("multiple processed indices map to the same pair")
     for end_index in expected_end_indices:
         pair_id = state.pair_by_end_index[end_index]
+        if pair_id != end_index:
+            raise RuntimeError("finite pair ID must equal its end index")
         pair = _validated_live_finite_pair(state, pair_id)
+        if state.pairs.get(pair_id) is not pair:
+            raise RuntimeError("pair mapping key does not match its pair object")
         if (
-            pair.end_index != end_index
+            pair.pair_id != pair_id
+            or pair.end_index != end_index
             or pair.first_point_id != end_index - 1
             or pair.second_point_id != end_index
             or pair.family != pair_family_for_end_index(end_index)
@@ -267,42 +290,572 @@ def validate_paper_jordan_state(state):
             raise RuntimeError("processed pair record is inconsistent")
 
     state.sibling_backend.validate_invariants()
-    if state.metrics["trace_event_count"] != len(state.trace):
-        raise RuntimeError("trace counter does not match recorded events")
-
-    expected_trace_steps = (
-        "step1_find_predecessor",
-        "step1_select_boundary_pair",
-        "step2_find_successor",
-        "step2_select_boundary_pair",
-        "step3a_insert_pair",
-        "step3b_split_sibling_list",
-        "step3c_insert_output_point",
-    )
-    expected_stage_steps = (
-        "step1_select_boundary_pair",
-        "step2_select_boundary_pair",
-        "step3a_insert_pair",
-        "step3b_split_sibling_list",
-        "step3c_insert_output_point",
-    )
-    expected_iterations = set(range(4, state.processed_count + 1))
-    if set(state.stage_results) != expected_iterations:
-        raise RuntimeError("stage-result iterations do not match processed prefix")
-
-    for iteration in expected_iterations:
-        if set(state.stage_results[iteration]) != set(expected_stage_steps):
-            raise RuntimeError("completed iteration has incomplete stage results")
-        for step in expected_trace_steps:
-            occurrences = sum(
-                event.get("iteration") == iteration and event.get("step") == step
-                for event in state.trace
-            )
-            if occurrences != 1:
-                raise RuntimeError("completed iteration has incomplete trace coverage")
+    derived_metrics = _validate_stage_results_and_trace(state, actual_point_ids)
+    for metric_name, expected_value in derived_metrics.items():
+        if state.metrics[metric_name] != expected_value:
+            raise RuntimeError(f"metric does not match validated trace: {metric_name}")
 
     state.metrics["invariant_checks"] += 1
     return True
+
+
+def _validate_point_records(state):
+    if not isinstance(state.points, tuple) or len(state.points) < 3:
+        raise RuntimeError("state points must be an initialized tuple")
+    for paper_index, point in enumerate(state.points, start=1):
+        if not isinstance(point, PointRef) or point.paper_index != paper_index:
+            raise RuntimeError("point records do not match one-based paper indices")
+
+
+def _validate_configured_dummy(state, dummy_pair_id, expected_family):
+    try:
+        dummy = state.pairs[dummy_pair_id]
+        backend_dummy = state.sibling_backend.get_pair(dummy_pair_id)
+    except (KeyError, TypeError) as exc:
+        raise RuntimeError("configured family dummy is missing") from exc
+    if backend_dummy is not dummy:
+        raise RuntimeError("state and backend dummy identities differ")
+    if (
+        dummy.pair_id != dummy_pair_id
+        or not dummy.is_dummy
+        or dummy.family != expected_family
+        or dummy.end_index is not None
+        or dummy.first_point_id is not None
+        or dummy.second_point_id is not None
+        or dummy.parent_pair_id is not None
+        or dummy.sibling_list_id is not None
+    ):
+        raise RuntimeError("configured family dummy record is inconsistent")
+
+
+def _validate_stage_results_and_trace(state, final_point_order):
+    expected_iterations = tuple(range(4, state.processed_count + 1))
+    if set(state.stage_results) != set(expected_iterations):
+        raise RuntimeError("stage-result iterations do not match processed prefix")
+
+    expected_trace_length = 2 + 7 * len(expected_iterations)
+    if len(state.trace) != expected_trace_length:
+        raise RuntimeError("trace length does not match completed iterations")
+    if state.metrics["trace_event_count"] != expected_trace_length:
+        raise RuntimeError("trace counter does not match recorded events")
+
+    expected_initial_trace = (
+        {
+            "step": "initialize_partial_order",
+            "processed_count": 3,
+            "point_ids": [
+                point_id for point_id in final_point_order if point_id <= 3
+            ],
+        },
+        {
+            "step": "initialize_pair_families",
+            "upper_pair_id": 2,
+            "lower_pair_id": 3,
+            "upper_list_id": 1,
+            "lower_list_id": 2,
+        },
+    )
+    if tuple(state.trace[:2]) != expected_initial_trace:
+        raise RuntimeError("initialization trace payload or order is inconsistent")
+
+    derived_metrics = {
+        name: 0
+        for name in METRIC_NAMES
+        if name != "invariant_checks"
+    }
+    derived_metrics["trace_event_count"] = expected_trace_length
+
+    for offset, iteration in enumerate(expected_iterations):
+        stages = state.stage_results[iteration]
+        expected_stage_names = {
+            "step1_select_boundary_pair",
+            "step2_select_boundary_pair",
+            "step3a_insert_pair",
+            "step3b_split_sibling_list",
+            "step3c_insert_output_point",
+        }
+        if set(stages) != expected_stage_names:
+            raise RuntimeError("completed iteration has incomplete stage results")
+
+        events = state.trace[2 + offset * 7 : 2 + (offset + 1) * 7]
+        _validate_iteration_records(
+            state,
+            iteration,
+            stages,
+            events,
+            final_point_order,
+            derived_metrics,
+        )
+
+    return derived_metrics
+
+
+def _validate_iteration_records(
+    state,
+    iteration,
+    stages,
+    events,
+    final_point_order,
+    derived_metrics,
+):
+    family = pair_family_for_end_index(iteration)
+    orientation = _orientation_for_iteration(state, iteration)
+    left_selection = stages["step1_select_boundary_pair"]
+    right_selection = stages["step2_select_boundary_pair"]
+    expected_left = _expected_boundary_selection(
+        state,
+        iteration,
+        final_point_order,
+        predecessor_side=True,
+    )
+    expected_right = _expected_boundary_selection(
+        state,
+        iteration,
+        final_point_order,
+        predecessor_side=False,
+    )
+    if (
+        not isinstance(left_selection, BoundarySelection)
+        or left_selection != expected_left
+    ):
+        raise RuntimeError("Step 1 boundary stage result is inconsistent")
+    if (
+        not isinstance(right_selection, BoundarySelection)
+        or right_selection != expected_right
+    ):
+        raise RuntimeError("Step 2 boundary stage result is inconsistent")
+
+    expected_prefix_events = (
+        {
+            "step": "step1_find_predecessor",
+            "iteration": iteration,
+            "family": family,
+            "previous_point_id": iteration - 1,
+            "neighbor_point_id": left_selection.neighbor_point_id,
+            "adjusted_for_z1": left_selection.adjusted_for_z1,
+        },
+        _boundary_trace_event(
+            "step1_select_boundary_pair",
+            iteration,
+            family,
+            left_selection,
+        ),
+        {
+            "step": "step2_find_successor",
+            "iteration": iteration,
+            "family": family,
+            "previous_point_id": iteration - 1,
+            "neighbor_point_id": right_selection.neighbor_point_id,
+            "adjusted_for_z1": right_selection.adjusted_for_z1,
+        },
+        _boundary_trace_event(
+            "step2_select_boundary_pair",
+            iteration,
+            family,
+            right_selection,
+        ),
+    )
+    if tuple(events[:4]) != expected_prefix_events:
+        raise RuntimeError("Step 1/2 trace payload or order is inconsistent")
+
+    step3a = stages["step3a_insert_pair"]
+    _validate_step3a_result(
+        state,
+        iteration,
+        orientation,
+        left_selection,
+        right_selection,
+        step3a,
+    )
+    expected_step3a_event = {
+        "step": "step3a_insert_pair",
+        "iteration": iteration,
+        "family": family,
+        "orientation": step3a.orientation,
+        "pair_id": step3a.pair_id,
+        "boundary_pair_id": step3a.boundary_pair_id,
+        "insertion_mode": step3a.insertion_mode,
+        "parent_pair_id": step3a.parent_pair_id,
+        "sibling_list_id": step3a.sibling_list_id,
+    }
+    if events[4] != expected_step3a_event:
+        raise RuntimeError("Step 3(a) trace payload or order is inconsistent")
+
+    step3b = stages["step3b_split_sibling_list"]
+    opposite_boundary = (
+        right_selection if orientation == INCREASING else left_selection
+    )
+    _validate_step3b_result(
+        state,
+        iteration,
+        orientation,
+        opposite_boundary,
+        step3b,
+    )
+    split_sizes = _validate_step3b_trace(
+        iteration,
+        family,
+        step3b,
+        events[5],
+    )
+
+    step3c = stages["step3c_insert_output_point"]
+    _validate_step3c_result(
+        state,
+        iteration,
+        orientation,
+        step3c,
+        final_point_order,
+    )
+    expected_step3c_event = {
+        "step": "step3c_insert_output_point",
+        "iteration": iteration,
+        "family": family,
+        "orientation": step3c.orientation,
+        "pair_id": step3c.pair_id,
+        "child_pair_id": step3c.child_pair_id,
+        "base_anchor_point_id": step3c.base_anchor_point_id,
+        "output_anchor_point_id": step3c.output_anchor_point_id,
+        "insertion_side": step3c.insertion_side,
+        "adjusted_for_z1": step3c.adjusted_for_z1,
+        "processed_count": iteration,
+    }
+    if events[6] != expected_step3c_event:
+        raise RuntimeError("Step 3(c) trace payload or order is inconsistent")
+
+    derived_metrics["predecessor_accesses"] += (
+        1 + left_selection.adjusted_for_z1
+    )
+    derived_metrics["successor_accesses"] += (
+        1 + right_selection.adjusted_for_z1
+    )
+    derived_metrics["boundary_pair_checks"] += (
+        int(not left_selection.used_dummy_pair)
+        + int(not right_selection.used_dummy_pair)
+    )
+    derived_metrics["z1_boundary_adjustments"] += (
+        int(left_selection.adjusted_for_z1)
+        + int(right_selection.adjusted_for_z1)
+    )
+    if step3a.insertion_mode == SINGLETON_LIST:
+        derived_metrics["sibling_lists_created"] += 1
+    else:
+        derived_metrics["sibling_list_insertions"] += 1
+
+    input_size, left_size, right_size = split_sizes
+    if step3b.performed:
+        derived_metrics["sibling_scan_checks"] += input_size
+        derived_metrics["sibling_list_splits"] += 1
+        derived_metrics["split_items_scanned"] += input_size
+        derived_metrics["split_items_copied"] += input_size
+        transferred_size = (
+            left_size if step3b.acquired_side == LEFT else right_size
+        )
+        derived_metrics["split_items_transferred"] += transferred_size
+
+    derived_metrics["output_insertions"] += 1
+    derived_metrics["z1_output_anchor_adjustments"] += int(
+        step3c.adjusted_for_z1
+    )
+
+
+def _expected_boundary_selection(
+    state,
+    iteration,
+    final_point_order,
+    predecessor_side,
+):
+    prefix_order = [
+        point_id for point_id in final_point_order if point_id < iteration
+    ]
+    previous_point_id = iteration - 1
+    previous_position = prefix_order.index(previous_point_id)
+    neighbor_position = (
+        previous_position - 1
+        if predecessor_side
+        else previous_position + 1
+    )
+    neighbor_point_id = (
+        prefix_order[neighbor_position]
+        if 0 <= neighbor_position < len(prefix_order)
+        else None
+    )
+    adjusted_for_z1 = iteration % 2 == 1 and neighbor_point_id == 1
+    if adjusted_for_z1:
+        first_position = prefix_order.index(1)
+        neighbor_position = (
+            first_position - 1
+            if predecessor_side
+            else first_position + 1
+        )
+        neighbor_point_id = (
+            prefix_order[neighbor_position]
+            if 0 <= neighbor_position < len(prefix_order)
+            else None
+        )
+
+    if neighbor_point_id is None:
+        pair_id = (
+            state.upper_dummy_pair_id
+            if iteration % 2 == 0
+            else state.lower_dummy_pair_id
+        )
+        return BoundarySelection(None, pair_id, True, adjusted_for_z1)
+
+    candidate_end_index = None
+    if neighbor_point_id >= 2 and neighbor_point_id % 2 == iteration % 2:
+        candidate_end_index = neighbor_point_id
+    elif (
+        neighbor_point_id + 1 <= iteration - 1
+        and (neighbor_point_id + 1) % 2 == iteration % 2
+    ):
+        candidate_end_index = neighbor_point_id + 1
+    if candidate_end_index is None:
+        raise RuntimeError("trace neighbor has no processed same-family pair")
+
+    try:
+        pair_id = state.pair_by_end_index[candidate_end_index]
+    except KeyError as exc:
+        raise RuntimeError("trace neighbor pair is missing") from exc
+    return BoundarySelection(neighbor_point_id, pair_id, False, adjusted_for_z1)
+
+
+def _boundary_trace_event(step, iteration, family, selection):
+    return {
+        "step": step,
+        "iteration": iteration,
+        "family": family,
+        "neighbor_point_id": selection.neighbor_point_id,
+        "selected_pair_id": selection.pair_id,
+        "used_dummy_pair": selection.used_dummy_pair,
+        "adjusted_for_z1": selection.adjusted_for_z1,
+    }
+
+
+def _orientation_for_iteration(state, iteration):
+    previous_value = state.point_value(iteration - 1)
+    current_value = state.point_value(iteration)
+    if previous_value < current_value:
+        return INCREASING
+    if current_value < previous_value:
+        return DECREASING
+    raise RuntimeError("processed iteration contains duplicate consecutive values")
+
+
+def _validate_step3a_result(
+    state,
+    iteration,
+    orientation,
+    left_selection,
+    right_selection,
+    result,
+):
+    if not isinstance(result, Step3AResult):
+        raise RuntimeError("Step 3(a) stage result has the wrong type")
+    expected_boundary = (
+        left_selection if orientation == INCREASING else right_selection
+    )
+    expected_mode = (
+        SINGLETON_LIST
+        if pair_encloses_point(state, expected_boundary.pair_id, iteration - 1)
+        else BOUNDARY_INSERTION
+    )
+    if (
+        result.pair_id != iteration
+        or result.orientation != orientation
+        or result.boundary_pair_id != expected_boundary.pair_id
+        or result.insertion_mode != expected_mode
+        or not _is_integer_id(result.parent_pair_id)
+        or not _is_positive_integer(result.sibling_list_id)
+    ):
+        raise RuntimeError("Step 3(a) stage result is inconsistent")
+    if expected_mode == SINGLETON_LIST and (
+        result.parent_pair_id != expected_boundary.pair_id
+    ):
+        raise RuntimeError("Step 3(a) singleton parent is inconsistent")
+
+
+def _validate_step3b_result(
+    state,
+    iteration,
+    orientation,
+    boundary,
+    result,
+):
+    if not isinstance(result, Step3BResult):
+        raise RuntimeError("Step 3(b) stage result has the wrong type")
+    expected_performed = not pair_encloses_point(
+        state,
+        boundary.pair_id,
+        iteration - 1,
+    )
+    expected_acquired_side = LEFT if orientation == INCREASING else RIGHT
+    if (
+        result.pair_id != iteration
+        or result.orientation != orientation
+        or result.boundary_pair_id != boundary.pair_id
+        or result.performed != expected_performed
+    ):
+        raise RuntimeError("Step 3(b) stage result is inconsistent")
+
+    if not expected_performed:
+        if (
+            result.input_list_id is not None
+            or result.left_list_id is not None
+            or result.right_list_id is not None
+            or result.acquired_side is not None
+            or result.reason != "boundary pair encloses previous point"
+        ):
+            raise RuntimeError("skipped Step 3(b) stage payload is inconsistent")
+        return
+
+    if (
+        not _is_positive_integer(result.input_list_id)
+        or result.acquired_side != expected_acquired_side
+        or result.reason is not None
+        or (
+            result.left_list_id is not None
+            and not _is_positive_integer(result.left_list_id)
+        )
+        or (
+            result.right_list_id is not None
+            and not _is_positive_integer(result.right_list_id)
+        )
+        or (
+            result.left_list_id is None
+            and result.right_list_id is None
+        )
+    ):
+        raise RuntimeError("performed Step 3(b) stage payload is inconsistent")
+
+
+def _validate_step3b_trace(iteration, family, result, event):
+    expected_keys = {
+        "step",
+        "iteration",
+        "family",
+        "orientation",
+        "pair_id",
+        "boundary_pair_id",
+        "performed",
+        "reason",
+        "input_list_id",
+        "input_size",
+        "left_list_id",
+        "left_size",
+        "right_list_id",
+        "right_size",
+        "acquired_side",
+    }
+    if not isinstance(event, dict) or set(event) != expected_keys:
+        raise RuntimeError("Step 3(b) trace fields are inconsistent")
+    input_size = event["input_size"]
+    left_size = event["left_size"]
+    right_size = event["right_size"]
+    if not all(
+        isinstance(size, int) and not isinstance(size, bool) and size >= 0
+        for size in (input_size, left_size, right_size)
+    ):
+        raise RuntimeError("Step 3(b) trace sizes must be non-negative integers")
+
+    expected_event = {
+        "step": "step3b_split_sibling_list",
+        "iteration": iteration,
+        "family": family,
+        "orientation": result.orientation,
+        "pair_id": result.pair_id,
+        "boundary_pair_id": result.boundary_pair_id,
+        "performed": result.performed,
+        "reason": result.reason,
+        "input_list_id": result.input_list_id,
+        "input_size": input_size,
+        "left_list_id": result.left_list_id,
+        "left_size": left_size,
+        "right_list_id": result.right_list_id,
+        "right_size": right_size,
+        "acquired_side": result.acquired_side,
+    }
+    if event != expected_event:
+        raise RuntimeError("Step 3(b) trace payload or order is inconsistent")
+
+    if result.performed:
+        if (
+            input_size < 1
+            or left_size + right_size != input_size
+            or (result.left_list_id is None) != (left_size == 0)
+            or (result.right_list_id is None) != (right_size == 0)
+        ):
+            raise RuntimeError("performed Step 3(b) trace sizes are inconsistent")
+    elif input_size != 0 or left_size != 0 or right_size != 0:
+        raise RuntimeError("skipped Step 3(b) trace sizes must be zero")
+    return input_size, left_size, right_size
+
+
+def _validate_step3c_result(
+    state,
+    iteration,
+    orientation,
+    result,
+    final_point_order,
+):
+    if not isinstance(result, Step3CResult):
+        raise RuntimeError("Step 3(c) stage result has the wrong type")
+    expected_side = AFTER if orientation == INCREASING else BEFORE
+    if (
+        result.pair_id != iteration
+        or result.orientation != orientation
+        or result.insertion_side != expected_side
+    ):
+        raise RuntimeError("Step 3(c) stage result is inconsistent")
+
+    if result.child_pair_id is None:
+        expected_base_anchor = iteration - 1
+    else:
+        child_pair = _validated_live_finite_pair(state, result.child_pair_id)
+        if child_pair.end_index >= iteration:
+            raise RuntimeError("Step 3(c) child must precede the current pair")
+        expected_base_anchor = (
+            right_endpoint_id(child_pair, state.point_value)
+            if orientation == INCREASING
+            else left_endpoint_id(child_pair, state.point_value)
+        )
+    if result.base_anchor_point_id != expected_base_anchor:
+        raise RuntimeError("Step 3(c) base anchor is inconsistent")
+
+    base_value = state.point_value(result.base_anchor_point_id)
+    first_value = state.point_value(1)
+    current_value = state.point_value(iteration)
+    expected_adjustment = iteration % 2 == 1 and (
+        base_value < first_value < current_value
+        if orientation == INCREASING
+        else current_value < first_value < base_value
+    )
+    expected_output_anchor = 1 if expected_adjustment else expected_base_anchor
+    if (
+        result.adjusted_for_z1 != expected_adjustment
+        or result.output_anchor_point_id != expected_output_anchor
+    ):
+        raise RuntimeError("Step 3(c) output anchor is inconsistent")
+
+    prefix_order = [
+        point_id for point_id in final_point_order if point_id <= iteration
+    ]
+    current_position = prefix_order.index(iteration)
+    anchor_position = prefix_order.index(result.output_anchor_point_id)
+    if orientation == INCREASING:
+        is_adjacent = current_position == anchor_position + 1
+    else:
+        is_adjacent = anchor_position == current_position + 1
+    if not is_adjacent:
+        raise RuntimeError("Step 3(c) output insertion is not adjacent to its anchor")
+
+
+def _is_integer_id(value):
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
+def _is_positive_integer(value):
+    return _is_integer_id(value) and value > 0
 
 
 def select_processed_same_family_pair(state, point_id, iteration):

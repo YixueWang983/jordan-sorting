@@ -389,7 +389,11 @@ Do not begin experiment integration unless:
 - split outputs preserve and partition their input;
 - parent pairs are not in their own child lists;
 - sentinels are used only for boundaries;
-- every iteration has complete trace coverage.
+- state and backend contain exactly the two dummies and processed finite pairs;
+- every stage result has the expected dataclass type and semantic payload;
+- trace events use the exact initialization-plus-seven-events-per-round order;
+- trace payloads agree with stage results and reconstructed prefix state;
+- operation counters agree with the validated trace.
 
 ### External Differential Checks
 

@@ -194,6 +194,48 @@ class PaperJordanSortValidTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             paper_jordan.validate_paper_jordan_state(state)
 
+    def test_invariant_audit_rejects_forged_stage_result(self):
+        state = _run_paper_jordan_valid([2, 3, 1, 4])
+        state.stage_results[4]["step3a_insert_pair"] = object()
+
+        with self.assertRaises(RuntimeError):
+            paper_jordan.validate_paper_jordan_state(state)
+
+    def test_invariant_audit_rejects_forged_trace_payload(self):
+        state = _run_paper_jordan_valid([2, 3, 1, 4])
+        step3c_event = next(
+            event
+            for event in state.trace
+            if event["step"] == "step3c_insert_output_point"
+        )
+        step3c_event["pair_id"] = 999
+
+        with self.assertRaises(RuntimeError):
+            paper_jordan.validate_paper_jordan_state(state)
+
+    def test_invariant_audit_rejects_extra_state_pair_alias(self):
+        state = _run_paper_jordan_valid([2, 3, 1, 4])
+        state.pairs[999] = state.pairs[2]
+
+        with self.assertRaises(RuntimeError):
+            paper_jordan.validate_paper_jordan_state(state)
+
+    def test_invariant_audit_rejects_unknown_or_reordered_trace_events(self):
+        state_with_unknown = _run_paper_jordan_valid([2, 3, 1, 4])
+        state_with_unknown.trace[2]["unexpected"] = True
+
+        with self.assertRaises(RuntimeError):
+            paper_jordan.validate_paper_jordan_state(state_with_unknown)
+
+        state_with_reordering = _run_paper_jordan_valid([2, 3, 1, 4])
+        state_with_reordering.trace[2], state_with_reordering.trace[3] = (
+            state_with_reordering.trace[3],
+            state_with_reordering.trace[2],
+        )
+
+        with self.assertRaises(RuntimeError):
+            paper_jordan.validate_paper_jordan_state(state_with_reordering)
+
     def test_comparable_non_numeric_values_are_supported(self):
         values = ["b", "c", "a", "d"]
 
