@@ -227,3 +227,18 @@ Week 9 may start formal experiments if:
    `docs/design/final_experiment_spec.md`;
 6. generated result CSVs are either committed intentionally or explicitly marked
    as reproducible local artifacts.
+
+## Post-Week-8 Direction Revision
+
+On 2026-07-27, the post-Week-8 plan was revised to align the implementation
+deliverable with the thesis title. Week 9 no longer starts with the formal
+performance experiment. It starts with an executable specification and
+ordinary-list reconstruction of the 1990 paper algorithm.
+
+The historical Week 8 dry-run and technical gate remain valid evidence about the
+experiment infrastructure. The new algorithm and experiment gates are defined
+in:
+
+```text
+docs/plan/refined_thesis_direction_after_week8.md
+```

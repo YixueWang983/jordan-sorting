@@ -33,3 +33,13 @@ This folder stores the approved thesis scope and research-question documents.
 - `week8_plan.md`
   Week 8 execution plan for scope freeze, final experiment specification,
   benchmark-runner hardening, generator audit v2, dry runs, and thesis drafts.
+
+- `refined_thesis_direction_after_week8.md`
+  Post-Week-8 scope revision and Weeks 9-16 plan. It makes the ordinary-list
+  reconstruction of the 1990 paper algorithm the core implementation target,
+  fixes the purity and data-structure boundaries, and delays formal performance
+  experiments until correctness gates pass.
+
+- `week9_plan.md`
+  Detailed daily execution plan for specifying, implementing, validating, and
+  lightly integrating the ordinary-list reconstruction of the 1990 algorithm.

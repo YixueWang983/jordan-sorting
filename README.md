@@ -81,6 +81,16 @@ gate:
 - the reference-framework boundary was confirmed by the supervisor on
   2026-07-24.
 
+Week 9 has started the ordinary-list reconstruction of the high-level 1990
+paper algorithm. Day 1 freezes the implementation-facing specification before
+algorithm code:
+
+- the existing `simplified_jordan_reference` remains a separate baseline;
+- the new core must recover output from a maintained partial sorted order;
+- the new core may not use oracle-sorted output, a global rank map, or full
+  sorting;
+- heterogeneous finger trees and a linear-time claim remain out of scope.
+
 ## Project Structure
 
 ```text
@@ -140,6 +150,7 @@ docs/
     final_scope_and_contributions.md
     final_experiment_spec.md
     theory_to_implementation_mapping.md
+    paper_algorithm_ordinary_list.md
   progress/
     week1_progress.md
     week1_summary.md
@@ -149,6 +160,7 @@ docs/
     week7_progress.md
     week7_summary.md
     week8_summary.md
+    week9_progress.md
   thesis/
     experimental_methodology_draft.md
     implementation_draft.md
@@ -169,6 +181,8 @@ docs/
     week6_plan.md
     week7_plan.md
     week8_plan.md
+    refined_thesis_direction_after_week8.md
+    week9_plan.md
   papers/
 ```
 
@@ -282,6 +296,9 @@ Important project documents:
 - [docs/progress/week1_summary.md](docs/progress/week1_summary.md): Week 1 completed work, experiment configuration, validation results, limitations, and next steps.
 - [docs/progress/week1_progress.md](docs/progress/week1_progress.md): checklist-style Week 1 progress tracker.
 - [docs/progress/week8_summary.md](docs/progress/week8_summary.md): Week 8 scope freeze, dry-run validation, and Week 9 gate.
+- [docs/progress/week9_progress.md](docs/progress/week9_progress.md): Week 9 daily execution record and current gate.
+- [docs/design/paper_algorithm_ordinary_list.md](docs/design/paper_algorithm_ordinary_list.md): implementation-facing state, pseudocode, invariants, and worked trace for the 1990 paper algorithm.
+- [docs/plan/week9_plan.md](docs/plan/week9_plan.md): detailed Day 1-Day 7 ordinary-list implementation plan.
 - [docs/design/final_experiment_spec.md](docs/design/final_experiment_spec.md): frozen experiment variables, correctness checks, aggregation rules, and non-claims.
 - [docs/design/oracle_and_test_generation.md](docs/design/oracle_and_test_generation.md): definitions and design notes for the oracle and generators.
 - [docs/design/notation.md](docs/design/notation.md): reusable terminology for candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and structural categories.
@@ -323,10 +340,13 @@ Important project documents:
 
 Immediate next task:
 
-- start Week 8 from the measured Week 7 gaps:
+- review Week 9 Day 1:
 
-  - [docs/progress/week7_summary.md](docs/progress/week7_summary.md)
-  - [docs/plan/four_month_roadmap.md](docs/plan/four_month_roadmap.md)
+  - [docs/design/paper_algorithm_ordinary_list.md](docs/design/paper_algorithm_ordinary_list.md)
+  - [docs/progress/week9_progress.md](docs/progress/week9_progress.md)
+
+- after Day 1 approval, implement and test `SortedOrderList` as the first Day 2
+  component.
 
 Later cleanup:
 

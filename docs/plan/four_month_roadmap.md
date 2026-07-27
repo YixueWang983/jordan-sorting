@@ -1,6 +1,20 @@
 # Four-Month Thesis Roadmap
 
-Last updated: 2026-07-24
+Last updated: 2026-07-27
+
+## Post-Week-8 Revision
+
+The official thesis direction requires implementation and evaluation of the
+1990 Simplified Jordan Sorting algorithm. The Weeks 9-16 schedule and algorithm
+gate are therefore superseded by:
+
+```text
+docs/plan/refined_thesis_direction_after_week8.md
+```
+
+The existing reference framework remains infrastructure and a baseline. Formal
+performance experiments are paused until the ordinary-list paper algorithm can
+recover sorted order independently and pass its correctness gates.
 
 ## Goal
 
@@ -507,12 +521,21 @@ Mitigation:
 Current task:
 
 ```text
-Finish Week 2 Day 7 (`docs/progress/week2_summary.md`) and start Week 3 Day 1
-reference pipeline strengthening.
+Create `docs/design/paper_algorithm_ordinary_list.md`.
 ```
 
-Week 3 reference pipeline should follow the fixed Day 1 contract:
+Before implementation, fix:
 
 ```text
-interval -> family_tree -> pipeline trace/backend metadata -> structure-aware experiment support.
+partial sorted-order state and sentinels
+pair identities and parity mapping
+sibling-list ownership
+make-list / boundary-insert / split preconditions
+Step 1 / Step 2 / Step 3 pseudocode
+symmetric and n < 3 behavior
+one complete worked trace
 ```
+
+Do not resume final performance experiments until the paper implementation
+passes the algorithm gate in
+`docs/plan/refined_thesis_direction_after_week8.md`.

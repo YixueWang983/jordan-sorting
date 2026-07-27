@@ -44,6 +44,11 @@ Current files:
   Week 8 frozen experiment questions, variables, correctness fields,
   aggregation rules, CSV semantics, and non-claims.
 
+- `paper_algorithm_ordinary_list.md`
+  Week 9 implementation-facing reconstruction of the 1990 paper algorithm,
+  including state, parity, sibling-list ownership, Step 1/2/3 pseudocode,
+  invariants, and an initial worked trace.
+
 ## Progress Documents
 
 Path:
@@ -96,6 +101,11 @@ Current files:
   Week 8 scope freeze, benchmark hardening, generator audit v2, dry-run
   validation, and Week 9 gate.
 
+- `week9_progress.md`
+  Week 9 daily implementation log. Day 1 records the frozen paper-algorithm
+  specification and the explicit Step 3 questions that remain for focused
+  tests.
+
 ## Plan Documents
 
 Path:
@@ -117,6 +127,8 @@ Current files:
 - `week6_plan.md`
 - `week7_plan.md`
 - `week8_plan.md`
+- `refined_thesis_direction_after_week8.md`
+- `week9_plan.md`
 - `thesis_scope_and_research_questions.pdf`
 
 Planned files:
