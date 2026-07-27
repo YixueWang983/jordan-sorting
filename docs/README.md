@@ -49,6 +49,10 @@ Current files:
   including state, parity, sibling-list ownership, Step 1/2/3 pseudocode,
   invariants, and an initial worked trace.
 
+- `paper_timing_modes.md`
+  Week 10 timing call graph, contamination classification, five-mode design,
+  local/global validation boundary, and non-claim contract.
+
 ## Progress Documents
 
 Path:
@@ -109,6 +113,10 @@ Current files:
 - `week9_summary.md`
   Week 9 completion summary, correctness evidence, pilot results, timing
   boundary, and Week 10 handoff.
+
+- `week10_progress.md`
+  Week 10 daily execution record. Day 1 freezes the baseline and designs
+  timing modes without modifying algorithm code.
 
 ## Plan Documents
 
@@ -186,6 +194,7 @@ Current files:
 
 - `week7_pilot_interpretation.md`
 - `week7_pilot_auto_report.md`
+- `week10_timing_baseline.md`
 
 ## Thesis Drafts
 

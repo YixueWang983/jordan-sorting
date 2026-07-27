@@ -111,6 +111,12 @@ ordinary-list reconstruction of the high-level 1990 paper algorithm:
   `oracle_valid = true` for every paper-algorithm row;
 - heterogeneous finger trees and a linear-time claim remain out of scope.
 
+Week 10 Day 1 is complete as a documentation-only checkpoint. It freezes the
+Week 9 timing baseline, audits the actual timer call graph, classifies trace,
+counter, input-copy, and backend-validation costs, and designs five fixed
+execution modes. No timing policy has been implemented yet; Day 2 has not
+started.
+
 ## Project Structure
 
 ```text
@@ -183,6 +189,7 @@ docs/
     final_experiment_spec.md
     theory_to_implementation_mapping.md
     paper_algorithm_ordinary_list.md
+    paper_timing_modes.md
   progress/
     week1_progress.md
     week1_summary.md
@@ -194,12 +201,14 @@ docs/
     week8_summary.md
     week9_progress.md
     week9_summary.md
+    week10_progress.md
   thesis/
     experimental_methodology_draft.md
     implementation_draft.md
   analysis/
     week7_pilot_interpretation.md
     week7_pilot_auto_report.md
+    week10_timing_baseline.md
   backlog/
     future_work_todo.md
   notes.md
@@ -335,6 +344,9 @@ Important project documents:
 - [docs/design/paper_algorithm_ordinary_list.md](docs/design/paper_algorithm_ordinary_list.md): implementation-facing state, pseudocode, invariants, and worked trace for the 1990 paper algorithm.
 - [docs/plan/week9_plan.md](docs/plan/week9_plan.md): detailed Day 1-Day 7 ordinary-list implementation plan.
 - [docs/plan/week10_plan.md](docs/plan/week10_plan.md): timing-contamination study, execution-policy design, controlled pilot, and Week 11 experiment gate.
+- [docs/design/paper_timing_modes.md](docs/design/paper_timing_modes.md): current timed call graph, contamination sources, fixed execution modes, and validation boundaries.
+- [docs/analysis/week10_timing_baseline.md](docs/analysis/week10_timing_baseline.md): frozen Week 10 Day 1 commit, environment, validation evidence, pilot timings, findings, and open questions.
+- [docs/progress/week10_progress.md](docs/progress/week10_progress.md): Week 10 daily status; Day 1 is documentation-only and Day 2 has not started.
 - [docs/design/final_experiment_spec.md](docs/design/final_experiment_spec.md): frozen experiment variables, correctness checks, aggregation rules, and non-claims.
 - [docs/design/oracle_and_test_generation.md](docs/design/oracle_and_test_generation.md): definitions and design notes for the oracle and generators.
 - [docs/design/notation.md](docs/design/notation.md): reusable terminology for candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and structural categories.
@@ -383,10 +395,10 @@ Important project documents:
 
 Immediate next task:
 
-- measure how trace/counter recording and backend commit validation affect the
-  ordinary-list paper timing;
-- define a timing mode with equivalent untimed correctness audits;
-- freeze a paper-algorithm experiment configuration only after that study.
+- review the Week 10 Day 1 timing call graph and contamination boundary;
+- after approval, begin Day 2 by adding immutable execution policies without
+  duplicating the Step 1/2/3 main loop;
+- do not run the contamination pilot or formal experiment yet.
 
 Later cleanup:
 
