@@ -102,9 +102,8 @@ Current files:
   validation, and Week 9 gate.
 
 - `week9_progress.md`
-  Week 9 daily implementation log. Day 1 records the frozen paper-algorithm
-  specification and the explicit Step 3 questions that remain for focused
-  tests.
+  Week 9 daily implementation log. Day 1 records the approved paper-algorithm
+  specification; Day 2 records the incremental data-structure implementation.
 
 ## Plan Documents
 

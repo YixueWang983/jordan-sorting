@@ -396,6 +396,31 @@ class SortedOrderList:
     def validate_links(self): ...
 ```
 
+The Day 2 implementation fixes the concrete contract:
+
+```text
+point:
+    immutable PointRef(paper_index, value)
+
+predecessor / successor:
+    return a paper point id or an identity-based infinity sentinel
+
+insert_before / insert_after:
+    accept a point id or legal sentinel anchor and a PointRef
+    return the inserted paper point id
+
+to_point_ids:
+    return real point ids in maintained x-order
+
+to_list:
+    return real values in maintained x-order
+```
+
+Insertion checks only the two adjacent values. An anchor that would violate
+strictly increasing order is rejected before links or mappings are changed.
+This is an O(1) invariant check, not a scan, global sort, oracle call, or rank
+map.
+
 Internal state includes:
 
 ```text

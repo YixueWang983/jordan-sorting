@@ -16,8 +16,7 @@ docs/plan/week9_plan.md
 
 ## Day 1: Freeze the Executable Specification
 
-Status: revised after Step 3(c) endpoint and odd-index counterexamples;
-awaiting review before Day 2.
+Status: approved for Day 2 data-structure implementation.
 
 - [x] Read and map paper Sections 2 and 3.
 - [x] Fix one-based paper indexing versus zero-based Python storage.
@@ -86,6 +85,26 @@ The 197 passing tests are regression evidence for the existing repository only.
 They do not validate the new Step 3 interpretation because Day 1 intentionally
 adds no algorithm code or executable Step 3 tests. Those tests are required
 before the later algorithm gate can pass.
+
+An independent temporary state-machine check performed during Day 1 review
+enumerated every oracle-valid permutation through length 7:
+
+```text
+n=4:  16 candidates
+n=5:  50 candidates
+n=6: 144 candidates
+n=7: 462 candidates
+```
+
+For every iteration it checked:
+
+```text
+partial_order == sorted(processed_prefix)
+```
+
+This review evidence approved the executable specification. The enumeration
+must later become a reproducible repository check in
+`experiments/validate_paper_algorithm.py`.
 
 ## Review Fixes
 
@@ -224,15 +243,70 @@ Step 3(c) now has two stages:
 Trace F now derives the correct sorted state after `i=7` before demonstrating
 the two-nonempty-output split at `i=8`.
 
-## Next Step
+## Day 2: Core Data Structures
 
-Wait for review of the corrected Step 3(c) rule and new traces. After approval,
-begin Day 2 with:
+Status: in progress.
+
+Completed first component:
 
 ```text
 src/partial_sorted_list.py
 tests/test_partial_sorted_list.py
 ```
 
-Do not implement sibling-list mutation or the full paper loop before the
-partial sorted-order structure passes its focused tests.
+Implemented:
+
+- identity-based negative and positive infinity sentinels;
+- immutable `PointRef` records with positive paper indices;
+- a doubly linked `SortedOrderList`;
+- O(1) predecessor and successor access through node links;
+- O(1) insertion before or after a known anchor;
+- point-id lookup and membership;
+- sentinel-free value and point-id extraction;
+- structural, mapping, size, and strict-order validation;
+- local order checks that reject incorrect insertion anchors without scanning
+  or sorting the whole list.
+
+Focused tests cover:
+
+- empty and singleton lists;
+- both sentinel insertion paths;
+- before/after insertion and neighbor recovery;
+- all six three-point input orders;
+- comparable nonnumeric values;
+- duplicate point IDs and duplicate/out-of-position values;
+- unknown point IDs;
+- invalid sentinel operations;
+- invalid `PointRef` paper indices.
+
+The sibling-list backend has not started.
+
+Day 2 first-component verification:
+
+```text
+python -m unittest tests/test_partial_sorted_list.py:
+    Ran 12 tests
+    OK
+
+python -m unittest discover -s tests:
+    Ran 209 tests
+    OK
+
+python -m compileall -q src experiments tests:
+    passed
+
+git diff --check:
+    passed
+```
+
+## Next Step
+
+Review the `SortedOrderList` component. After approval, continue Day 2 with:
+
+```text
+src/sibling_list_backend.py
+tests/test_sibling_list_backend.py
+```
+
+Do not implement the full paper loop before both Day 2 data structures pass
+their focused tests.

@@ -247,7 +247,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 197 tests
+Ran 209 tests
 OK
 ```
 
@@ -340,13 +340,9 @@ Important project documents:
 
 Immediate next task:
 
-- review Week 9 Day 1:
-
-  - [docs/design/paper_algorithm_ordinary_list.md](docs/design/paper_algorithm_ordinary_list.md)
-  - [docs/progress/week9_progress.md](docs/progress/week9_progress.md)
-
-- after Day 1 approval, implement and test `SortedOrderList` as the first Day 2
-  component.
+- review the Week 9 Day 2 `SortedOrderList` implementation and focused tests;
+- after approval, implement `src/sibling_list_backend.py` and
+  `tests/test_sibling_list_backend.py`.
 
 Later cleanup:
 
