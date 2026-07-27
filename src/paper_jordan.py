@@ -38,7 +38,8 @@ METRIC_NAMES = (
     "sibling_list_insertions",
     "sibling_list_splits",
     "split_items_scanned",
-    "split_items_moved",
+    "split_items_copied",
+    "split_items_transferred",
     "output_insertions",
     "z1_anchor_adjustments",
     "invariant_checks",
@@ -97,6 +98,7 @@ class PaperJordanState:
     lower_dummy_pair_id: int
     trace: list[dict]
     metrics: dict[str, int]
+    stage_results: dict[int, dict[str, object]]
 
     def point(self, paper_index):
         """按论文的一基下标返回 PointRef。"""
@@ -180,6 +182,7 @@ def initialize_paper_jordan_state(seq):
         lower_dummy_pair_id=lower_dummy.pair_id,
         trace=[],
         metrics=metrics,
+        stage_results={},
     )
     _record_trace(
         state,
@@ -236,6 +239,7 @@ def select_processed_same_family_pair(state, point_id, iteration):
 def step1_select_predecessor_boundary(state, iteration):
     """执行论文 Step 1：选择 predecessor 一侧的 family boundary pair。"""
     _require_next_iteration(state, iteration)
+    _require_stage_absent(state, "step1_select_boundary_pair", iteration)
     previous_point_id = iteration - 1
     neighbor = state.partial_order.predecessor(previous_point_id)
     state.metrics["predecessor_accesses"] += 1
@@ -270,12 +274,14 @@ def step1_select_predecessor_boundary(state, iteration):
         adjusted_for_z1,
     )
     _record_boundary_pair_trace(state, "step1_select_boundary_pair", iteration, selection)
+    _record_stage_result(state, "step1_select_boundary_pair", iteration, selection)
     return selection
 
 
 def step2_select_successor_boundary(state, iteration):
     """执行论文 Step 2：选择 successor 一侧的 family boundary pair。"""
     _require_next_iteration(state, iteration)
+    _require_stage_absent(state, "step2_select_boundary_pair", iteration)
     previous_point_id = iteration - 1
     neighbor = state.partial_order.successor(previous_point_id)
     state.metrics["successor_accesses"] += 1
@@ -310,6 +316,7 @@ def step2_select_successor_boundary(state, iteration):
         adjusted_for_z1,
     )
     _record_boundary_pair_trace(state, "step2_select_boundary_pair", iteration, selection)
+    _record_stage_result(state, "step2_select_boundary_pair", iteration, selection)
     return selection
 
 
@@ -389,7 +396,8 @@ def _step3a(
 ):
     _require_next_iteration(state, iteration)
     _require_orientation(state, iteration, orientation)
-    _require_boundary_trace(state, boundary_trace_step, boundary, iteration)
+    _require_boundary_stage(state, boundary_trace_step, boundary, iteration)
+    _require_stage_absent(state, "step3a_insert_pair", iteration)
     if iteration in state.pair_by_end_index or iteration in state.pairs:
         raise RuntimeError("Step 3(a) pair already exists for this iteration")
 
@@ -455,6 +463,7 @@ def _step3a(
             "sibling_list_id": sibling_list_id,
         },
     )
+    _record_stage_result(state, "step3a_insert_pair", iteration, result)
     return result
 
 
@@ -469,9 +478,9 @@ def _step3b(
 ):
     _require_next_iteration(state, iteration)
     _require_orientation(state, iteration, orientation)
-    _require_boundary_trace(state, boundary_trace_step, boundary, iteration)
-    _require_step3a_trace(state, iteration, new_pair_id)
-    _require_trace_step_absent(state, "step3b_split_sibling_list", iteration)
+    _require_boundary_stage(state, boundary_trace_step, boundary, iteration)
+    _require_step3a_stage(state, iteration, new_pair_id)
+    _require_stage_absent(state, "step3b_split_sibling_list", iteration)
     new_pair = _validated_new_iteration_pair(state, iteration, new_pair_id)
     if new_pair.child_sibling_list_ids:
         raise RuntimeError("new pair already owns child sibling lists before Step 3(b)")
@@ -491,6 +500,7 @@ def _step3b(
             reason="boundary pair encloses previous point",
         )
         _record_step3b_trace(state, result, input_size=0, left_size=0, right_size=0)
+        _record_stage_result(state, "step3b_split_sibling_list", iteration, result)
         return result
 
     if boundary_pair.is_dummy or boundary_pair.sibling_list_id is None:
@@ -512,12 +522,13 @@ def _step3b(
     )
     left_size = _sibling_list_size(state, split_result.left_list_id)
     right_size = _sibling_list_size(state, split_result.right_list_id)
-    moved_size = left_size if acquired_side == LEFT else right_size
+    transferred_size = left_size if acquired_side == LEFT else right_size
 
     state.metrics["sibling_scan_checks"] += input_size
     state.metrics["sibling_list_splits"] += 1
     state.metrics["split_items_scanned"] += input_size
-    state.metrics["split_items_moved"] += moved_size
+    state.metrics["split_items_copied"] += input_size
+    state.metrics["split_items_transferred"] += transferred_size
     result = Step3BResult(
         performed=True,
         pair_id=new_pair.pair_id,
@@ -536,6 +547,7 @@ def _step3b(
         left_size=left_size,
         right_size=right_size,
     )
+    _record_stage_result(state, "step3b_split_sibling_list", iteration, result)
     return result
 
 
@@ -734,47 +746,33 @@ def _require_orientation(state, iteration, expected_orientation):
         )
 
 
-def _require_trace_step_absent(state, step, iteration):
-    if any(
-        event.get("step") == step and event.get("iteration") == iteration
-        for event in state.trace
-    ):
+def _require_stage_absent(state, step, iteration):
+    if step in state.stage_results.get(iteration, {}):
         raise RuntimeError(f"{step} already completed for iteration {iteration}")
 
 
-def _require_boundary_trace(state, step, boundary, iteration):
+def _require_boundary_stage(state, step, boundary, iteration):
     if not isinstance(boundary, BoundarySelection):
         raise TypeError("boundary must be a BoundarySelection")
 
-    matching_events = [
-        event
-        for event in state.trace
-        if event.get("step") == step and event.get("iteration") == iteration
-    ]
-    if len(matching_events) != 1:
-        raise RuntimeError(f"{step} must occur exactly once before Step 3")
-
-    event = matching_events[0]
-    expected_fields = {
-        "neighbor_point_id": boundary.neighbor_point_id,
-        "selected_pair_id": boundary.pair_id,
-        "used_dummy_pair": boundary.used_dummy_pair,
-        "adjusted_for_z1": boundary.adjusted_for_z1,
-    }
-    if any(event.get(name) != value for name, value in expected_fields.items()):
-        raise RuntimeError("Step 3 boundary does not match its Step 1/2 trace")
+    recorded = state.stage_results.get(iteration, {}).get(step)
+    if recorded is None:
+        raise RuntimeError(f"{step} must complete before Step 3")
+    if recorded != boundary:
+        raise RuntimeError("Step 3 boundary does not match its Step 1/2 result")
 
 
-def _require_step3a_trace(state, iteration, new_pair_id):
-    matching_events = [
-        event
-        for event in state.trace
-        if event.get("step") == "step3a_insert_pair"
-        and event.get("iteration") == iteration
-        and event.get("pair_id") == new_pair_id
-    ]
-    if len(matching_events) != 1:
-        raise RuntimeError("Step 3(a) must complete exactly once before Step 3(b)")
+def _require_step3a_stage(state, iteration, new_pair_id):
+    recorded = state.stage_results.get(iteration, {}).get("step3a_insert_pair")
+    if not isinstance(recorded, Step3AResult) or recorded.pair_id != new_pair_id:
+        raise RuntimeError("Step 3(a) must complete before Step 3(b)")
+
+
+def _record_stage_result(state, step, iteration, result):
+    stages = state.stage_results.setdefault(iteration, {})
+    if step in stages:
+        raise RuntimeError(f"{step} already completed for iteration {iteration}")
+    stages[step] = result
 
 
 def _sibling_list_size(state, list_id):

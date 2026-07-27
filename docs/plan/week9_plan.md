@@ -513,7 +513,8 @@ sibling_lists_created
 sibling_list_insertions
 sibling_list_splits
 split_items_scanned
-split_items_moved
+split_items_copied
+split_items_transferred
 output_insertions
 invariant_checks
 trace_event_count

@@ -418,7 +418,7 @@ python -m unittest discover -s tests:
 
 ## Day 4: Step 3(a) and Step 3(b)
 
-Status: implementation complete; awaiting review before Day 5.
+Status: approved; ready for Day 5.
 
 Implemented:
 
@@ -434,9 +434,10 @@ Implemented:
 - increasing acquisition of the left split side;
 - decreasing acquisition of the right split side;
 - one-sided and two-nonempty-side ownership transfers;
-- Step 1/2 boundary-source trace validation;
+- O(1) Step 1/2 boundary-source stage validation;
 - Step 3(a)-before-Step 3(b) stage validation;
-- split scan/move counters and explicit trace output.
+- distinct split scan/copy/ownership-transfer counters and explicit trace
+  output.
 
 Focused tests reproduce Trace A, Trace B, Trace C, the decreasing boundary
 insertion mirror, Trace F, and Trace F's value-reflected counterpart. They also
@@ -444,6 +445,24 @@ cover wrong orientation, wrong boundary side, failed-registration rollback,
 both skip paths, and both acquisition directions. A differential gate executes
 one structural iteration for all 16 oracle-valid four-point permutations and
 checks sibling-backend invariants without passing oracle output into the core.
+
+Independent ownership differential validation also compared every actual
+finite-pair parent with the parent implied by strict same-family interval
+containment:
+
+```text
+n=4:  16 oracle-valid permutations, all matched
+n=5:  50 oracle-valid permutations, all matched
+n=6: 144 oracle-valid permutations, all matched
+n=7: 462 oracle-valid permutations, all matched
+total: 672, all matched
+```
+
+The implementation now keeps per-iteration stage results in an O(1) mapping.
+Diagnostic trace entries remain available, but Step 3 preconditions no longer
+rescan the complete trace. Split metrics distinguish all input items copied by
+the ordinary-list backend from acquired-side items transferred to the new
+pair.
 
 Scope boundary:
 
@@ -459,7 +478,7 @@ Day 4 verification:
 
 ```text
 python -m unittest tests.test_paper_jordan:
-    Ran 37 tests
+    Ran 39 tests
     OK
 
 python -m unittest tests.test_sibling_list_backend:
@@ -467,7 +486,7 @@ python -m unittest tests.test_sibling_list_backend:
     OK
 
 python -m unittest discover -s tests:
-    Ran 273 tests
+    Ran 275 tests
     OK
 
 python -m compileall -q src experiments tests:
@@ -479,7 +498,7 @@ git diff --check:
 
 ## Next Step
 
-Review Day 4 structure transitions. After approval, begin Day 5:
+Begin Day 5:
 
 ```text
 Step 3(c) output-anchor selection

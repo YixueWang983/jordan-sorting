@@ -1150,12 +1150,31 @@ sibling_lists_created
 sibling_list_insertions
 sibling_list_splits
 split_items_scanned
-split_items_moved
+split_items_copied
+split_items_transferred
 output_insertions
 z1_anchor_adjustments
 invariant_checks
 trace_event_count
 ```
+
+The three split counters have distinct meanings:
+
+```text
+split_items_scanned:
+    pairs inspected while classifying the input sibling list
+
+split_items_copied:
+    input pairs copied/rebound while materializing ordinary Python-list
+    split outputs; this increases by the full input-list size
+
+split_items_transferred:
+    acquired-side pairs whose ownership moves to the new P_i
+```
+
+`split_items_copied` is an ordinary-list backend cost model, not a claim about
+exact physical memory writes. The old ambiguous name `split_items_moved` is
+not used.
 
 The uninstrumented path remains available for timing. Detailed diagnostics may
 be collected in a separate untimed run.
@@ -1963,8 +1982,8 @@ Step 3(a):
   `z_(i-1)`;
 - otherwise inserts after the increasing left boundary or before the
   decreasing right boundary;
-- verifies that the supplied boundary matches the corresponding Step 1/2
-  trace;
+- verifies in O(1) that the supplied boundary matches the corresponding
+  Step 1/2 stage result;
 - rolls back backend registration if boundary insertion fails.
 
 The rollback path uses
@@ -1978,15 +1997,24 @@ Step 3(b):
 - requires the decreasing split boundary to be last and acquires `RIGHT`;
 - delegates atomic partition and ownership transfer to
   `split_pairs_at_value`;
-- records scanned/moved item counts without advancing the processed prefix.
+- records scanned, copied, and ownership-transferred item counts without
+  advancing the processed prefix.
+
+`PaperJordanState.stage_results` stores the Step 1, Step 2, Step 3(a), and
+Step 3(b) result for each iteration. Stage preconditions use this mapping
+instead of rescanning the complete diagnostic trace. The trace remains an
+append-only explanation artifact and is not the control-state index.
 
 Focused tests cover increasing/decreasing singleton creation, both sibling
 boundary insertions, both skip paths, one-sided acquisition in both
 directions, two-nonempty-side Trace F and its reflected counterpart, wrong
 orientation, wrong boundary side, registration rollback, ownership
-invariants, trace fields, and counters. An external differential test also
-runs Step 1/2/3(a)/(b) once for all 16 oracle-valid four-point permutations
-without feeding oracle output into core state.
+invariants, trace fields, counters, and O(1) stage validation. Independent
+ownership differential validation compares the actual family-tree parent of
+every finite pair with strict interval containment for all oracle-valid
+permutations through `n=7`: 16 at `n=4`, 50 at `n=5`, 144 at `n=6`, and 462
+at `n=7`, for 672 matching cases in total. Oracle output is used only by the
+external validator and never feeds the core state.
 
 The current point `z_i` remains absent from `SortedOrderList`,
 `processed_count` remains `i-1`, and `output_insertions` remains zero. No Step

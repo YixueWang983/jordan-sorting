@@ -40,6 +40,13 @@ from sibling_list_backend import (  # noqa: E402
 )
 
 
+class _AppendOnlyTrace(list):
+    """允许追加，但在阶段校验意外扫描 trace 时立即失败。"""
+
+    def __iter__(self):
+        raise AssertionError("stage validation must not scan the trace")
+
+
 class PaperJordanInitializationTests(unittest.TestCase):
     def test_pair_family_for_end_index_uses_paper_parity(self):
         self.assertEqual(pair_family_for_end_index(2), UPPER)
@@ -101,6 +108,10 @@ class PaperJordanInitializationTests(unittest.TestCase):
         self.assertEqual(state.metrics["predecessor_accesses"], 0)
         self.assertEqual(state.metrics["successor_accesses"], 0)
         self.assertEqual(state.metrics["boundary_pair_checks"], 0)
+        self.assertEqual(state.metrics["split_items_copied"], 0)
+        self.assertEqual(state.metrics["split_items_transferred"], 0)
+        self.assertNotIn("split_items_moved", state.metrics)
+        self.assertEqual(state.stage_results, {})
 
     def test_initialization_rejects_short_or_duplicate_prefix(self):
         for values in ([], [1], [1, 2]):
@@ -113,6 +124,20 @@ class PaperJordanInitializationTests(unittest.TestCase):
 
 
 class PaperJordanBoundarySelectionTests(unittest.TestCase):
+    def test_boundary_stage_cannot_be_recorded_twice(self):
+        state = initialize_paper_jordan_state([2, 3, 1, 4])
+        first = step1_select_predecessor_boundary(state, 4)
+        trace_size = len(state.trace)
+
+        with self.assertRaises(RuntimeError):
+            step1_select_predecessor_boundary(state, 4)
+
+        self.assertEqual(len(state.trace), trace_size)
+        self.assertIs(
+            state.stage_results[4]["step1_select_boundary_pair"],
+            first,
+        )
+
     def test_same_family_selection_uses_original_incident_pairs(self):
         state = initialize_paper_jordan_state([1, 2, 3, 4, 5])
 
@@ -563,6 +588,8 @@ class PaperJordanStep3ABTests(unittest.TestCase):
         self.assertIsNone(result.right_list_id)
         self.assertEqual(state.pairs[2].parent_pair_id, 4)
         self.assertEqual(state.pairs[4].child_sibling_list_ids, [result.left_list_id])
+        self.assertEqual(state.metrics["split_items_copied"], 1)
+        self.assertEqual(state.metrics["split_items_transferred"], 1)
         self.assertTrue(state.sibling_backend.validate_invariants())
         self._assert_step3c_not_run(state, 4)
 
@@ -605,7 +632,8 @@ class PaperJordanStep3ABTests(unittest.TestCase):
         self.assertEqual(state.pairs[4].parent_pair_id, 8)
         self.assertEqual(state.pairs[6].parent_pair_id, UPPER_DUMMY_PAIR_ID)
         self.assertEqual(state.metrics["split_items_scanned"], 3)
-        self.assertEqual(state.metrics["split_items_moved"], 2)
+        self.assertEqual(state.metrics["split_items_copied"], 3)
+        self.assertEqual(state.metrics["split_items_transferred"], 2)
         self.assertTrue(state.sibling_backend.validate_invariants())
         self._assert_step3c_not_run(state, 8)
 
@@ -631,6 +659,25 @@ class PaperJordanStep3ABTests(unittest.TestCase):
         self.assertEqual(result.acquired_side, RIGHT)
         self.assertTrue(state.sibling_backend.validate_invariants())
         self._assert_step3c_not_run(state, 8)
+
+    def test_step3_stage_validation_does_not_scan_trace(self):
+        state = initialize_paper_jordan_state([2, 3, 1, 4])
+        left = step1_select_predecessor_boundary(state, 4)
+        right = step2_select_successor_boundary(state, 4)
+        state.trace = _AppendOnlyTrace(state.trace)
+
+        new_pair = step3a_increasing(state, 4, left)
+        result = step3b_increasing(state, 4, new_pair.pair_id, right)
+
+        self.assertTrue(result.performed)
+        self.assertIs(
+            state.stage_results[4]["step3a_insert_pair"],
+            new_pair,
+        )
+        self.assertIs(
+            state.stage_results[4]["step3b_split_sibling_list"],
+            result,
+        )
 
     def test_step3ab_trace_stops_before_output_insertion(self):
         state = initialize_paper_jordan_state([2, 3, 1, 4])

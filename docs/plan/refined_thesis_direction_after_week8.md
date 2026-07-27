@@ -335,7 +335,8 @@ boundary_pair_checks
 sibling_lists_created
 sibling_list_insertions
 sibling_list_splits
-split_items_moved
+split_items_copied
+split_items_transferred
 output_insertions
 trace_event_count
 invariant_check_count

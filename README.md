@@ -263,7 +263,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 273 tests
+Ran 275 tests
 OK
 ```
 
@@ -356,9 +356,10 @@ Important project documents:
 
 Immediate next task:
 
-- review Week 9 Day 4 Step 3(a)/(b) structure transitions;
-- after approval, begin Day 5 Step 3(c), mirrored output insertion, and the
-  end-to-end paper loop.
+- begin Week 9 Day 5 Step 3(c), mirrored output insertion, and the
+  end-to-end paper loop;
+- keep diagnostic trace validation and full backend invariant checks outside
+  future timed performance regions.
 
 Later cleanup:
 
