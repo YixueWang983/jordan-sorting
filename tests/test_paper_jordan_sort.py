@@ -5,6 +5,7 @@ import inspect
 import itertools
 import sys
 import unittest
+from dataclasses import replace
 from pathlib import Path
 
 
@@ -132,6 +133,31 @@ class PaperJordanSortValidTests(unittest.TestCase):
         self.assertEqual(count_list_calls(runner_tree), 0)
         self.assertEqual(count_list_calls(initializer_tree), 0)
 
+    def test_step_control_flow_exists_only_once_across_core_modules(self):
+        step_calls = {
+            "step1_select_predecessor_boundary",
+            "step2_select_successor_boundary",
+            "step3a_increasing",
+            "step3a_decreasing",
+            "step3b_increasing",
+            "step3b_decreasing",
+            "step3c_increasing",
+            "step3c_decreasing",
+        }
+        call_counts = {name: 0 for name in step_calls}
+
+        for module in (paper_jordan, paper_jordan_sort):
+            tree = ast.parse(inspect.getsource(module))
+            for node in ast.walk(tree):
+                if (
+                    isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Name)
+                    and node.func.id in call_counts
+                ):
+                    call_counts[node.func.id] += 1
+
+        self.assertEqual(call_counts, {name: 1 for name in step_calls})
+
     def test_shared_runner_returns_complete_state(self):
         values = [2, 3, 1, 4]
 
@@ -235,6 +261,79 @@ class PaperJordanSortValidTests(unittest.TestCase):
 
         with self.assertRaises(RuntimeError):
             paper_jordan.validate_paper_jordan_state(state_with_reordering)
+
+    def test_invariant_audit_rejects_coordinated_step3a_forgery(self):
+        state = _run_paper_jordan_valid([1, 2, 3, 4])
+        original = state.stage_results[4]["step3a_insert_pair"]
+        forged = replace(
+            original,
+            parent_pair_id=999,
+            sibling_list_id=999,
+        )
+        state.stage_results[4]["step3a_insert_pair"] = forged
+        event = next(
+            event for event in state.trace if event["step"] == "step3a_insert_pair"
+        )
+        event["parent_pair_id"] = 999
+        event["sibling_list_id"] = 999
+
+        with self.assertRaisesRegex(RuntimeError, "deterministic replay"):
+            paper_jordan.validate_paper_jordan_state(state)
+
+    def test_invariant_audit_rejects_coordinated_step3b_forgery(self):
+        state = _run_paper_jordan_valid([2, 3, 1, 4])
+        original = state.stage_results[4]["step3b_split_sibling_list"]
+        forged = replace(
+            original,
+            input_list_id=999,
+            left_list_id=1000,
+        )
+        state.stage_results[4]["step3b_split_sibling_list"] = forged
+        event = next(
+            event
+            for event in state.trace
+            if event["step"] == "step3b_split_sibling_list"
+        )
+        event["input_list_id"] = 999
+        event["left_list_id"] = 1000
+
+        with self.assertRaisesRegex(RuntimeError, "deterministic replay"):
+            paper_jordan.validate_paper_jordan_state(state)
+
+    def test_invariant_audit_rejects_coordinated_step3c_forgery(self):
+        state = _run_paper_jordan_valid([2, 3, 1, 4])
+        original = state.stage_results[4]["step3c_insert_output_point"]
+        forged = replace(original, child_pair_id=3)
+        state.stage_results[4]["step3c_insert_output_point"] = forged
+        event = next(
+            event
+            for event in state.trace
+            if event["step"] == "step3c_insert_output_point"
+        )
+        event["child_pair_id"] = 3
+
+        with self.assertRaisesRegex(RuntimeError, "deterministic replay"):
+            paper_jordan.validate_paper_jordan_state(state)
+
+    def test_invariant_audit_rejects_coordinated_split_metric_forgery(self):
+        state = _run_paper_jordan_valid([2, 3, 1, 4])
+        event = next(
+            event
+            for event in state.trace
+            if event["step"] == "step3b_split_sibling_list"
+        )
+        event["input_size"] = 2
+        event["left_size"] = 2
+        for metric_name in (
+            "sibling_scan_checks",
+            "split_items_scanned",
+            "split_items_copied",
+            "split_items_transferred",
+        ):
+            state.metrics[metric_name] += 1
+
+        with self.assertRaisesRegex(RuntimeError, "deterministic replay"):
+            paper_jordan.validate_paper_jordan_state(state)
 
     def test_comparable_non_numeric_values_are_supported(self):
         values = ["b", "c", "a", "d"]

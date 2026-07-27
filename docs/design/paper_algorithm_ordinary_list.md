@@ -2161,8 +2161,33 @@ The audit rejects forged stage objects, changed trace payloads, unknown trace
 fields, reordered events, and extra pair aliases. Historical Step 1/2
 neighbors are reconstructed by filtering the maintained final point order to
 the relevant processed prefix. Step 3(c) anchors are checked against pair
-geometry and adjacency in that prefix. This reconstruction does not call
-`sorted()` and does not change algorithm state.
+geometry and adjacency in that prefix.
+
+Cross-consistency among mutable stage, trace, and metric records is not treated
+as sufficient evidence. The audit deterministically replays the same unique
+paper runner from initialization through the audited `processed_count`, then
+compares:
+
+```text
+partial point order
+pair/end-index mapping
+all typed stage results
+the complete trace
+all core operation metrics except the audit-call counter
+the canonical sibling-backend snapshot
+```
+
+The backend snapshot includes every pair field, parent/list ownership, child
+list IDs, all live sibling-list contents, dummy registration, and the next
+list ID. Coordinated changes to Step 3(a) ownership, Step 3(b) list IDs or
+sizes, Step 3(c) child choice, trace, and metrics are therefore rejected
+against replayed algorithm state.
+
+Replay calls `_run_paper_jordan_state_values(..., stop_after=processed_count)`.
+Production sorting and the public compatibility wrapper call that same
+function. An AST regression test requires every directional Step 1/2/3 call
+site to occur exactly once across the two core modules. Replay does not call
+`sorted()` and does not feed data back into the state being audited.
 
 The external script:
 

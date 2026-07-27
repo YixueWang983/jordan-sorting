@@ -294,6 +294,7 @@ def validate_paper_jordan_state(state):
     for metric_name, expected_value in derived_metrics.items():
         if state.metrics[metric_name] != expected_value:
             raise RuntimeError(f"metric does not match validated trace: {metric_name}")
+    _validate_state_against_deterministic_replay(state)
 
     state.metrics["invariant_checks"] += 1
     return True
@@ -856,6 +857,106 @@ def _is_integer_id(value):
 
 def _is_positive_integer(value):
     return _is_integer_id(value) and value > 0
+
+
+def _validate_state_against_deterministic_replay(state):
+    replayed = _run_paper_jordan_state_values(
+        [point.value for point in state.points],
+        stop_after=state.processed_count,
+    )
+    actual_metrics = {
+        name: value
+        for name, value in state.metrics.items()
+        if name != "invariant_checks"
+    }
+    replayed_metrics = {
+        name: value
+        for name, value in replayed.metrics.items()
+        if name != "invariant_checks"
+    }
+    comparisons = (
+        (
+            state.partial_order.to_point_ids(),
+            replayed.partial_order.to_point_ids(),
+            "partial order",
+        ),
+        (
+            state.pair_by_end_index,
+            replayed.pair_by_end_index,
+            "pair end-index mapping",
+        ),
+        (state.stage_results, replayed.stage_results, "stage results"),
+        (state.trace, replayed.trace, "trace"),
+        (actual_metrics, replayed_metrics, "operation metrics"),
+        (
+            state.sibling_backend.audit_snapshot(),
+            replayed.sibling_backend.audit_snapshot(),
+            "sibling backend",
+        ),
+    )
+    for actual, expected, label in comparisons:
+        if actual != expected:
+            raise RuntimeError(
+                f"state does not match deterministic replay: {label}"
+            )
+
+
+def _run_paper_jordan_state_values(
+    values,
+    stop_after=None,
+    invariant_callback=None,
+):
+    """使用唯一 Step 1/2/3 控制流运行已物化 valid-input values。"""
+    if not isinstance(values, list):
+        raise TypeError("values must be a materialized list")
+    if len(values) < 3:
+        raise ValueError("paper runner requires at least three values")
+    if stop_after is None:
+        stop_after = len(values)
+    if (
+        isinstance(stop_after, bool)
+        or not isinstance(stop_after, int)
+        or not 3 <= stop_after <= len(values)
+    ):
+        raise ValueError("stop_after must satisfy 3 <= stop_after <= len(values)")
+    if invariant_callback is not None and not callable(invariant_callback):
+        raise TypeError("invariant_callback must be callable")
+
+    state = _initialize_paper_jordan_state_values(values)
+    if invariant_callback is not None:
+        invariant_callback(state)
+
+    for iteration in range(4, stop_after + 1):
+        left_boundary = step1_select_predecessor_boundary(state, iteration)
+        right_boundary = step2_select_successor_boundary(state, iteration)
+
+        previous_value = state.point_value(iteration - 1)
+        current_value = state.point_value(iteration)
+        if previous_value < current_value:
+            new_pair = step3a_increasing(state, iteration, left_boundary)
+            step3b_increasing(
+                state,
+                iteration,
+                new_pair.pair_id,
+                right_boundary,
+            )
+            step3c_increasing(state, iteration, new_pair.pair_id)
+        elif current_value < previous_value:
+            new_pair = step3a_decreasing(state, iteration, right_boundary)
+            step3b_decreasing(
+                state,
+                iteration,
+                new_pair.pair_id,
+                left_boundary,
+            )
+            step3c_decreasing(state, iteration, new_pair.pair_id)
+        else:
+            raise ValueError("point values must be distinct")
+
+        if invariant_callback is not None:
+            invariant_callback(state)
+
+    return state
 
 
 def select_processed_same_family_pair(state, point_id, iteration):

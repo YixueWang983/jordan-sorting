@@ -394,6 +394,8 @@ Do not begin experiment integration unless:
 - trace events use the exact initialization-plus-seven-events-per-round order;
 - trace payloads agree with stage results and reconstructed prefix state;
 - operation counters agree with the validated trace.
+- deterministic replay through the audited prefix agrees with partial order,
+  stage/trace records, metrics, and a canonical backend snapshot.
 
 ### External Differential Checks
 

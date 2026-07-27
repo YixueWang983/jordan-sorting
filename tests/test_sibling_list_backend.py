@@ -82,6 +82,16 @@ class SiblingListBackendTests(unittest.TestCase):
         self.assertEqual(set(pair_ids), {UPPER_DUMMY_ID, LOWER_DUMMY_ID, 2})
         self.assertIsInstance(pair_ids, tuple)
 
+    def test_audit_snapshot_changes_with_backend_ownership(self):
+        pair = self.register_finite_pair(2, 1, 2)
+        before = self.backend.audit_snapshot()
+
+        self.backend.make_list(pair.pair_id, UPPER_DUMMY_ID)
+        after = self.backend.audit_snapshot()
+
+        self.assertNotEqual(before, after)
+        self.assertIsInstance(after, tuple)
+
     def test_unregister_unowned_pair_supports_transaction_rollback(self):
         pair = self.register_finite_pair(2, 1, 2)
 

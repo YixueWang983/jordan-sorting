@@ -594,6 +594,11 @@ Implemented:
   state/backend pair set, validates both dummy identities, checks every stage
   dataclass and its semantic fields, enforces exact trace order and field
   sets, and recomputes operation counters from trace payloads;
+- added deterministic prefix replay and a canonical backend snapshot after a
+  second adversarial review, closing coordinated stage/trace/metric forgery;
+- moved the unique Step 1/2/3 runner into
+  `_run_paper_jordan_state_values(...)`; production sorting, diagnostics, and
+  replay all use this one control-flow implementation;
 - invoked full diagnostics after initialization and every completed iteration
   only when an invariant callback is supplied;
 - added `experiments/validate_paper_algorithm.py`;
@@ -609,6 +614,10 @@ a forged Step 3(c) trace pair_id
 an extra state.pairs alias
 an unknown trace field
 reordered trace events
+coordinated Step 3(a) parent/list forgery
+coordinated Step 3(b) input/output list-ID forgery
+coordinated Step 3(c) child-pair substitution
+coordinated split-size and metric forgery
 ```
 
 The validator performs:
@@ -637,6 +646,11 @@ partial_order == sorted(processed prefix)
 The expected prefix is never returned to the algorithm or stored in core
 state. Final output continues to come only from `state.partial_order`.
 
+Complete audit additionally replays the unique core runner through the current
+processed prefix. This is an untimed correctness operation. It detects
+coordinated mutation of stage, trace, metrics, and historical backend
+identifiers that would remain internally self-consistent without replay.
+
 Timing boundary:
 
 ```text
@@ -653,11 +667,11 @@ python -m unittest tests.test_paper_jordan \
     tests.test_paper_jordan_sort \
     tests.test_sibling_list_backend \
     tests.test_validate_paper_algorithm:
-    Ran 99 tests
+    Ran 105 tests
     OK
 
 python -m unittest discover -s tests:
-    Ran 309 tests
+    Ran 315 tests
     OK
 
 python experiments/validate_paper_algorithm.py --max-n 8:

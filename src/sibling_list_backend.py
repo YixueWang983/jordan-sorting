@@ -147,6 +147,39 @@ class OrdinarySiblingListBackend:
         """返回当前 backend 中全部 pair ID 的不可变快照。"""
         return tuple(self._pairs)
 
+    def audit_snapshot(self):
+        """返回可用于确定性重放比较的不可变 backend 状态。"""
+        pair_records = tuple(
+            (
+                pair_id,
+                pair.pair_id,
+                pair.end_index,
+                pair.first_point_id,
+                pair.second_point_id,
+                pair.family,
+                pair.parent_pair_id,
+                pair.sibling_list_id,
+                tuple(pair.child_sibling_list_ids),
+                pair.is_dummy,
+            )
+            for pair_id, pair in sorted(self._pairs.items())
+        )
+        sibling_lists = tuple(
+            (
+                list_id,
+                sibling_list.list_id,
+                sibling_list.owner_parent_pair_id,
+                tuple(sibling_list.pair_ids),
+            )
+            for list_id, sibling_list in sorted(self._lists.items())
+        )
+        return (
+            pair_records,
+            sibling_lists,
+            tuple(sorted(self._dummy_pair_ids.items())),
+            self._next_list_id,
+        )
+
     def get_list(self, list_id):
         try:
             return self._lists[list_id]
