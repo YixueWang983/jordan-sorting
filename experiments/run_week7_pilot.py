@@ -346,6 +346,14 @@ def build_cases(config):
                 case_seed = seed_for_case(family, n, index, config.seed)
                 sequence = generate_sequence(family, n, seed=case_seed)
                 oracle_result = oracle(sequence)
+                if (
+                    PAPER_ALGORITHM_NAME in config.algorithms
+                    and not oracle_result["valid"]
+                ):
+                    raise RuntimeError(
+                        "paper ordinary-list algorithm requires "
+                        "oracle-certified valid input"
+                    )
                 profile = structure_profile(sequence, oracle_result=oracle_result)
                 diagnostics = instrumented_reference_run(sequence)["metrics"]
                 paper_diagnostics = {}

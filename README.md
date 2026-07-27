@@ -106,6 +106,9 @@ ordinary-list reconstruction of the high-level 1990 paper algorithm:
   checks reproducible generated cases through `n=128`;
 - a separate Week 9 integration pilot keeps valid-input sorting distinct from
   valid/invalid recognition and writes isolated manifests;
+- the runner certifies every actual paper-sorter input with the oracle before
+  diagnostics or timing, and the output validator independently requires
+  `oracle_valid = true` for every paper-algorithm row;
 - heterogeneous finger trees and a linear-time claim remain out of scope.
 
 ## Project Structure
@@ -277,7 +280,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 322 tests
+Ran 324 tests
 OK
 ```
 
@@ -366,6 +369,8 @@ Important project documents:
 - `paper_jordan_sort_valid(seq)` implements the high-level paper control flow
   with ordinary lists and recovers output from its maintained partial order,
   but assumes pre-certified valid input.
+- Experiment configuration by valid-family name is not treated as
+  certification: generated paper-sorter cases are checked individually.
 - Current paper-algorithm timing still includes trace/counter recording,
   ordinary-list split materialization, and correctness-first backend commit
   validation. The Week 9 pilot is not final performance evidence.

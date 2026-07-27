@@ -18,6 +18,7 @@ from run_week7_pilot import (  # noqa: E402
     ALGORITHMS,
     PAPER_ALGORITHM_NAME,
     PAPER_METRIC_FIELDS,
+    build_cases,
     validate_config,
 )
 from run_week9_pilot import (  # noqa: E402
@@ -65,6 +66,36 @@ class RunWeek9PilotTests(unittest.TestCase):
 
             with self.assertRaisesRegex(ValueError, "valid-only"):
                 validate_config(invalid_config)
+
+    def test_case_construction_rejects_invalid_sequence_from_valid_family(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            sorting = build_week9_configs("test_week9", tmpdir, mode="sorting")[
+                "sorting"
+            ]
+            config = replace(
+                sorting,
+                sizes=[8],
+                families=[SORTING_FAMILIES[0]],
+                algorithms=[PAPER_ALGORITHM_NAME],
+            )
+            invalid_sequence = [2, 7, 3, 4, 5, 6, 1, 8]
+
+            with patch.object(
+                run_week7_pilot,
+                "generate_sequence",
+                return_value=invalid_sequence,
+            ):
+                with patch.object(
+                    run_week7_pilot,
+                    "paper_jordan_diagnostics_valid",
+                ) as diagnostics_mock:
+                    with self.assertRaisesRegex(
+                        RuntimeError,
+                        "oracle-certified valid input",
+                    ):
+                        build_cases(config)
+
+            diagnostics_mock.assert_not_called()
 
     def test_paper_diagnostics_run_once_per_case_outside_timing_loop(self):
         with tempfile.TemporaryDirectory() as tmpdir:

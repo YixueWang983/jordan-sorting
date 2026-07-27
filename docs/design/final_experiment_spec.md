@@ -322,6 +322,11 @@ It uses sizes `8, 16, 32`, one warm-up, three measured runs, and two randomized
 cases. Sorting and recognition use separate configurations and output
 directories.
 
+For the valid-input-only paper sorter, each generated sequence must be
+oracle-certified before paper diagnostics or timing. A valid-family
+configuration is not sufficient by itself. Output validation also requires
+`oracle_valid = true` on every paper-algorithm row.
+
 This pilot may establish correctness, schema compatibility, manifests, and
 rough executability. It must not be used for final performance conclusions:
 the paper ordinary-list timed path still records trace/counters and runs

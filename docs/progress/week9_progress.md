@@ -726,6 +726,12 @@ Paper diagnostics run once per case outside the timed region. Their operation
 metrics are written only to paper-algorithm rows. The public sorting call is
 timed separately.
 
+Before diagnostics or timing, the runner checks the actual generated sequence
+with the oracle. A valid-family label alone is not accepted as certification.
+If the oracle rejects a generated sequence, case construction stops
+immediately. The output validator independently requires every paper-algorithm
+row to contain `oracle_valid = true`.
+
 The pilot deliberately separates two questions:
 
 ```text
@@ -781,7 +787,7 @@ Day 7 verification:
 
 ```text
 python -m unittest discover -s tests:
-    Ran 322 tests
+    Ran 324 tests
     OK
 
 python -m compileall -q src experiments tests:

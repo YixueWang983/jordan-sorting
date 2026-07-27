@@ -5,6 +5,7 @@ import json
 import tempfile
 import sys
 import unittest
+from dataclasses import replace
 from pathlib import Path
 
 
@@ -13,7 +14,13 @@ sys.path.insert(0, str(PROJECT_ROOT / "experiments"))
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from generators import FLAT_VALID, INCREMENTAL_VALID  # noqa: E402
-from run_week7_pilot import DEFAULT_ALGORITHM_NAMES, PilotConfig, run_pilot  # noqa: E402
+from run_week7_pilot import (  # noqa: E402
+    DEFAULT_ALGORITHM_NAMES,
+    PAPER_ALGORITHM_NAME,
+    PilotConfig,
+    file_sha256,
+    run_pilot,
+)
 from validate_experiment_outputs import validate_outputs  # noqa: E402
 
 
@@ -191,6 +198,39 @@ class ValidateExperimentOutputsTests(unittest.TestCase):
             self._write_rows(config.case_summary_csv, rows)
 
         self._assert_tamper_is_rejected(mutate)
+
+    def test_validate_outputs_rejects_paper_row_with_invalid_oracle_result(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            config = replace(
+                self._config(Path(tmpdir) / "run"),
+                algorithms=[PAPER_ALGORITHM_NAME],
+                families=[FLAT_VALID],
+            )
+            run_pilot(config)
+
+            rows = self._read_rows(config.raw_csv)
+            rows[0]["oracle_valid"] = "False"
+            self._write_rows(config.raw_csv, rows)
+
+            manifest = json.loads(config.manifest_json.read_text(encoding="utf-8"))
+            manifest["files"]["raw_csv"]["sha256"] = file_sha256(config.raw_csv)
+            config.manifest_json.write_text(
+                json.dumps(manifest, indent=2) + "\n",
+                encoding="utf-8",
+            )
+
+            report = validate_outputs(config.run_dir)
+
+            self.assertFalse(report["valid"])
+            self.assertTrue(
+                any(
+                    "paper ordinary-list algorithm row requires "
+                    "oracle-certified valid input"
+                    in error
+                    for error in report["errors"]
+                ),
+                report["errors"],
+            )
 
 
 if __name__ == "__main__":

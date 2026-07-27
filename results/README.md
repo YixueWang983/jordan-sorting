@@ -219,6 +219,10 @@ The sorting pilot compares `python_sort`, `simplified_jordan_reference`, and
 pilot separately covers valid and invalid families without invoking the
 valid-input-only paper sorter.
 
+Every generated paper-sorter case is oracle-certified before diagnostics or
+timing. The output validator also rejects any paper row with
+`oracle_valid = false`; valid-family configuration alone is not certification.
+
 Paper diagnostics are collected once per case outside timing. The timed paper
 path still includes trace/counter recording, ordinary-list split
 materialization, and sibling-backend commit validation. These outputs validate

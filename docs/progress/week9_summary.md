@@ -163,6 +163,11 @@ Paper diagnostics were collected once per case outside the timed region and
 were written only to paper-algorithm rows. Sorting and recognition outputs use
 separate directories and manifests.
 
+The valid-input contract is enforced from the generated sequence rather than
+from its configured family label. The runner requires an oracle-valid result
+before paper diagnostics or timing, and the output validator independently
+rejects paper rows whose `oracle_valid` field is false.
+
 ## Timing Boundary
 
 The pilot demonstrates integration, correctness, schema stability, output
@@ -184,7 +189,7 @@ Complete deterministic replay diagnostics are excluded from timing.
 
 ```text
 python -m unittest discover -s tests:
-    Ran 322 tests
+    Ran 324 tests
     OK
 
 python -m compileall -q src experiments tests:
@@ -214,4 +219,3 @@ Week 10 should not immediately run thesis-scale benchmarks. It should first:
    sorting without hiding oracle work inside paper timing;
 5. freeze the paper-algorithm experiment configuration only after a timing
    contamination study.
-

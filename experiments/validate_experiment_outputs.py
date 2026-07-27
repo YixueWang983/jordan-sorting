@@ -154,6 +154,12 @@ def _validate_raw_rows(raw_rows, config, errors):
     for row in raw_rows:
         n = _parse_int(row["n"], "n", errors)
         if row["algorithm"] == PAPER_ALGORITHM_NAME:
+            _require(
+                _as_bool(row["oracle_valid"]),
+                "paper ordinary-list algorithm row requires "
+                f"oracle-certified valid input: {row['case_id']}",
+                errors,
+            )
             for field in PAPER_METRIC_FIELDS:
                 value = _parse_int(row[field], field, errors)
                 _require(
