@@ -103,6 +103,8 @@ src/
   jordan_operations.py
   instrumentation.py
   simplified_jordan.py
+  partial_sorted_list.py
+  sibling_list_backend.py
 
 tests/
   test_oracle.py
@@ -116,6 +118,8 @@ tests/
   test_instrumentation.py
   test_generator_coverage_audit.py
   test_run_week7_pilot.py
+  test_partial_sorted_list.py
+  test_sibling_list_backend.py
 
 experiments/
   run_small_tests.py
@@ -247,7 +251,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 209 tests
+Ran 227 tests
 OK
 ```
 
@@ -340,9 +344,8 @@ Important project documents:
 
 Immediate next task:
 
-- review the Week 9 Day 2 `SortedOrderList` implementation and focused tests;
-- after approval, implement `src/sibling_list_backend.py` and
-  `tests/test_sibling_list_backend.py`.
+- review both Week 9 Day 2 data structures and their focused tests;
+- after approval, begin Week 9 Day 3 initialization, Step 1, and Step 2.
 
 Later cleanup:
 

@@ -560,6 +560,7 @@ right items: key(item) > boundary_key
 ```text
 retired list ID
 previous owner parent pair ID
+original pair IDs
 left pair IDs in original order
 right pair IDs in original order
 ```
@@ -567,18 +568,33 @@ right pair IDs in original order
 It is a partition plan, not a complete Jordan ownership transition. The plan
 does not become visible as live state until the algorithm adapter commits it.
 
+The ordinary backend exposes the atomic commit separately:
+
+```python
+commit_split(
+    plan,
+    acquired_side,
+    new_parent_pair_id,
+) -> SplitCommitResult
+```
+
+`SplitCommitResult` contains `left_list_id` and `right_list_id`; an empty side
+is represented by `None`. A stale or forged plan, a third child list, or any
+ownership mismatch is rejected before publication. If the final invariant
+check raises unexpectedly, all affected pair/list/parent fields are rolled
+back.
+
 ### Algorithm `split_pairs_at_value`
 
 Conceptual API:
 
 ```python
 split_pairs_at_value(
-    state,
     list_id,
     boundary_value,
     acquired_side,
     new_parent_pair_id,
-) -> (left_list_id, right_list_id)
+) -> SplitCommitResult
 ```
 
 Before calling `split_by_key`, this adapter checks every pair in the input list:

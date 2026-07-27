@@ -165,6 +165,16 @@ class SortedOrderListTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             order.insert_after(NEGATIVE_INFINITY, (1, 10))
 
+    def test_incomparable_value_failure_does_not_modify_list(self):
+        order = SortedOrderList()
+        order.insert_after(NEGATIVE_INFINITY, PointRef(1, 10))
+
+        with self.assertRaises(TypeError):
+            order.insert_after(1, PointRef(2, "20"))
+
+        self.assertEqual(order.to_list(), [10])
+        self.assertTrue(order.validate_links())
+
     def test_point_ref_rejects_invalid_paper_indices(self):
         for bad_index in (0, -1):
             with self.subTest(bad_index=bad_index):

@@ -245,7 +245,7 @@ the two-nonempty-output split at `i=8`.
 
 ## Day 2: Core Data Structures
 
-Status: in progress.
+Status: implementation complete; awaiting review before Day 3.
 
 Completed first component:
 
@@ -279,17 +279,58 @@ Focused tests cover:
 - invalid sentinel operations;
 - invalid `PointRef` paper indices.
 
-The sibling-list backend has not started.
+Completed second component:
 
-Day 2 first-component verification:
+```text
+src/sibling_list_backend.py
+tests/test_sibling_list_backend.py
+```
+
+Implemented:
+
+- parity-validated finite `PairRecord` and family-specific dummy pairs;
+- geometric left/right endpoint helpers independent of curve-order endpoints;
+- mandatory-owner `SiblingList` records;
+- `make_list` with ordered parent child-list ownership;
+- legal front/back `insert_at_boundary` with inherited parent ownership;
+- non-destructive generic `split_by_key`;
+- Jordan-specific straddle validation in `split_pairs_at_value`;
+- immutable `SplitPlan` and `SplitCommitResult`;
+- atomic split retirement, replacement, acquisition, and ownership transfer;
+- `None` representation for empty outputs;
+- stale/forged plan rejection;
+- rollback if an unexpected final invariant check fails;
+- global pair/list/parent ownership and order validation;
+- enforcement of at most two child sibling lists per parent.
+
+Backend tests cover:
+
+- increasing and decreasing endpoint orientation;
+- pair parity and duplicate registration;
+- singleton creation and two-list parent ordering;
+- front/back insertion and illegal middle insertion;
+- rejection of pairs already owned elsewhere;
+- non-destructive split planning;
+- noncontiguous split-key rejection;
+- empty-left, empty-right, and two-nonempty-output commits;
+- Trace F-style acquired/retained ownership;
+- straddling-pair rejection without mutation;
+- third-child-list rejection without mutation;
+- stale and forged split plans.
+
+Day 2 verification:
 
 ```text
 python -m unittest tests/test_partial_sorted_list.py:
-    Ran 12 tests
+    Ran 13 tests
+    OK
+
+python -m unittest tests/test_sibling_list_backend.py:
+    Ran 17 tests
     OK
 
 python -m unittest discover -s tests:
-    Ran 209 tests
+    Ran 227 tests
     OK
 
 python -m compileall -q src experiments tests:
@@ -301,12 +342,13 @@ git diff --check:
 
 ## Next Step
 
-Review the `SortedOrderList` component. After approval, continue Day 2 with:
+Review both Day 2 data structures. After approval, begin Day 3:
 
 ```text
-src/sibling_list_backend.py
-tests/test_sibling_list_backend.py
+initialization
+Step 1 predecessor-side boundary selection
+Step 2 successor-side boundary selection
 ```
 
-Do not implement the full paper loop before both Day 2 data structures pass
-their focused tests.
+Do not implement Step 3 or the full paper loop before the Day 3 boundary
+selection helpers pass their focused tests.
