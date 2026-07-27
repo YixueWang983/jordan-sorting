@@ -464,6 +464,12 @@ rescan the complete trace. Split metrics distinguish all input items copied by
 the ordinary-list backend from acquired-side items transferred to the new
 pair.
 
+Follow-up coverage locks the copy/transfer counters for increasing and
+decreasing two-sided splits, confirms both skip orientations leave the
+counters unchanged, and verifies that repeated Step 3(a) or Step 3(b) calls
+leave trace, metrics, stage state, partial order, and backend ownership
+unchanged.
+
 Scope boundary:
 
 ```text
@@ -478,7 +484,7 @@ Day 4 verification:
 
 ```text
 python -m unittest tests.test_paper_jordan:
-    Ran 39 tests
+    Ran 40 tests
     OK
 
 python -m unittest tests.test_sibling_list_backend:
@@ -486,7 +492,7 @@ python -m unittest tests.test_sibling_list_backend:
     OK
 
 python -m unittest discover -s tests:
-    Ran 275 tests
+    Ran 276 tests
     OK
 
 python -m compileall -q src experiments tests:

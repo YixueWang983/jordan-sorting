@@ -1844,8 +1844,11 @@ ordinary sibling boundary insertion:
 ordinary sibling split:
     O(length of scanned sibling list)
 
-ownership updates after split:
-    O(number of moved pairs)
+list materialization and pair sibling-list rebinding:
+    O(input sibling-list size)
+
+parent-ownership transfers:
+    O(transferred-side size)
 ```
 
 Other bookkeeping may add ordinary dictionary or list costs. No total linear

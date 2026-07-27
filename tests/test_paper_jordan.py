@@ -545,6 +545,8 @@ class PaperJordanStep3ABTests(unittest.TestCase):
         self.assertIsNone(result.acquired_side)
         self.assertEqual(state.pairs[4].child_sibling_list_ids, [])
         self.assertEqual(state.metrics["sibling_list_splits"], 0)
+        self.assertEqual(state.metrics["split_items_copied"], 0)
+        self.assertEqual(state.metrics["split_items_transferred"], 0)
         self._assert_step3c_not_run(state, 4)
 
     def test_step3b_rejects_boundary_from_wrong_side(self):
@@ -569,6 +571,8 @@ class PaperJordanStep3ABTests(unittest.TestCase):
 
         self.assertFalse(result.performed)
         self.assertEqual(state.pairs[4].child_sibling_list_ids, [])
+        self.assertEqual(state.metrics["split_items_copied"], 0)
+        self.assertEqual(state.metrics["split_items_transferred"], 0)
         self._assert_step3c_not_run(state, 4)
 
     def test_increasing_step3b_acquires_left_one_sided_split(self):
@@ -657,8 +661,32 @@ class PaperJordanStep3ABTests(unittest.TestCase):
         self.assertEqual(state.pairs[4].parent_pair_id, 8)
         self.assertEqual(state.pairs[2].parent_pair_id, 8)
         self.assertEqual(result.acquired_side, RIGHT)
+        self.assertEqual(state.metrics["split_items_scanned"], 3)
+        self.assertEqual(state.metrics["split_items_copied"], 3)
+        self.assertEqual(state.metrics["split_items_transferred"], 2)
         self.assertTrue(state.sibling_backend.validate_invariants())
         self._assert_step3c_not_run(state, 8)
+
+    def test_repeated_step3_stages_leave_state_unchanged(self):
+        state = initialize_paper_jordan_state([2, 3, 1, 4])
+        left = step1_select_predecessor_boundary(state, 4)
+        right = step2_select_successor_boundary(state, 4)
+        new_pair = step3a_increasing(state, 4, left)
+        after_step3a = self._state_snapshot(state)
+
+        with self.assertRaises(RuntimeError):
+            step3a_increasing(state, 4, left)
+
+        self.assertEqual(self._state_snapshot(state), after_step3a)
+
+        step3b_increasing(state, 4, new_pair.pair_id, right)
+        after_step3b = self._state_snapshot(state)
+
+        with self.assertRaises(RuntimeError):
+            step3b_increasing(state, 4, new_pair.pair_id, right)
+
+        self.assertEqual(self._state_snapshot(state), after_step3b)
+        self.assertTrue(state.sibling_backend.validate_invariants())
 
     def test_step3_stage_validation_does_not_scan_trace(self):
         state = initialize_paper_jordan_state([2, 3, 1, 4])
@@ -797,6 +825,42 @@ class PaperJordanStep3ABTests(unittest.TestCase):
         self.assertEqual(state.processed_count, iteration - 1)
         self.assertNotIn(iteration, state.partial_order)
         self.assertEqual(state.metrics["output_insertions"], 0)
+
+    @staticmethod
+    def _state_snapshot(state):
+        list_ids = set()
+        pair_state = {}
+        for pair_id, pair in state.pairs.items():
+            pair_state[pair_id] = (
+                pair.parent_pair_id,
+                pair.sibling_list_id,
+                tuple(pair.child_sibling_list_ids),
+            )
+            if pair.sibling_list_id is not None:
+                list_ids.add(pair.sibling_list_id)
+            list_ids.update(pair.child_sibling_list_ids)
+
+        list_state = {}
+        for list_id in list_ids:
+            sibling_list = state.sibling_backend.get_list(list_id)
+            list_state[list_id] = (
+                sibling_list.owner_parent_pair_id,
+                tuple(sibling_list.pair_ids),
+            )
+
+        return {
+            "processed_count": state.processed_count,
+            "partial_order": tuple(state.partial_order.to_point_ids()),
+            "pair_by_end_index": dict(state.pair_by_end_index),
+            "pairs": pair_state,
+            "lists": list_state,
+            "trace": tuple(tuple(sorted(event.items())) for event in state.trace),
+            "metrics": dict(state.metrics),
+            "stage_results": {
+                iteration: dict(stages)
+                for iteration, stages in state.stage_results.items()
+            },
+        }
 
 
 if __name__ == "__main__":

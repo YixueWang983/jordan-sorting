@@ -322,7 +322,8 @@ input size
 left size
 right size
 items scanned
-items moved
+items copied
+items transferred
 split boundary
 ```
 

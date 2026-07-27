@@ -388,7 +388,8 @@ minimum and maximum side sizes
 split balance
 potential change
 actual items scanned
-actual items moved
+actual items copied
+actual items transferred
 ```
 
 This analysis explains the theoretical amortization argument. It does not show
@@ -481,7 +482,7 @@ marked slow test so normal development remains usable.
 - runtime and operations by algorithm and size;
 - structure-sensitive costs;
 - locality reduction;
-- split count, balance, and items moved;
+- split count, balance, items copied, and items transferred;
 - generator family versus measured structural category;
 - optional potential-function replay.
 
