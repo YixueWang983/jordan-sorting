@@ -517,12 +517,16 @@ split_items_scanned
 split_items_copied
 split_items_transferred
 output_insertions
+z1_boundary_adjustments
+z1_output_anchor_adjustments
 invariant_checks
 trace_event_count
 ```
 
-When instrumentation changes runtime materially, time the plain algorithm and
-collect detailed diagnostics in one separate execution per case.
+The Step 1/2 boundary adjustment and Step 3(c) output-anchor adjustment are
+separate counters because they describe different decisions. When diagnostics
+change runtime materially, time the plain algorithm and collect complete state
+audits in one separate execution per case through the same internal runner.
 
 ## Final Definition of Done
 

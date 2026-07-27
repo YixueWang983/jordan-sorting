@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-27
 
-Status: Week 9 implementation-facing specification, before main algorithm code.
+Status: Week 9 Day 6 ordinary-list implementation and validation contract.
 
 ## Purpose
 
@@ -1189,8 +1189,12 @@ split_items_transferred:
 exact physical memory writes. The old ambiguous name `split_items_moved` is
 not used.
 
-The uninstrumented path remains available for timing. Detailed diagnostics may
-be collected in a separate untimed run.
+`paper_jordan_sort_valid(seq)` and the diagnostic API share one internal main
+loop. The diagnostic API adds complete state audits through a callback and
+must run outside future timing regions. The ordinary public path does not
+invoke that callback. It still records the core counters and trace, and the
+correctness-first sibling backend still performs its own commit validation;
+those remaining costs must be handled explicitly before performance claims.
 
 ## Worked Trace: `[1, 4, 2, 3]`
 
@@ -2109,5 +2113,75 @@ n=7: 462
 total: 672
 ```
 
-The loop is not connected to experiment runners. A validation wrapper, full
-Day 6 instrumentation audit, and performance integration remain pending.
+The loop is not connected to experiment runners. Performance integration
+remains pending.
+
+## Day 6 Correctness and Diagnostics Record
+
+Day 6 factors the valid-input implementation into one control-flow owner:
+
+```text
+_run_paper_jordan_valid(values, invariant_callback=None)
+    -> PaperJordanState
+
+paper_jordan_sort_valid(seq)
+    -> state.partial_order.to_list()
+
+paper_jordan_diagnostics_valid(seq)
+    -> output + copied metrics + copied trace + invariant result
+```
+
+The public function materializes `seq` once. The internal initializer accepts
+that already-materialized list and does not copy it again. Both public output
+and diagnostics therefore execute the same Step 1/2/3(a)/(b)/(c) loop.
+
+`validate_paper_jordan_state(state)` is a correctness/debug audit. Without
+using the oracle, a rank map, or global sorting, it checks:
+
+```text
+processed point membership and count
+partial-order bidirectional links
+processed pair/end-index mapping
+pair endpoint and parity-derived family consistency
+sibling-list ownership and acyclic parent chains
+metric shape and non-negative values
+trace counter consistency
+complete stage and trace coverage for every finished iteration
+```
+
+The callback runs after initialization and after each completed iteration.
+It increments `invariant_checks`. Because it scans ownership and trace state,
+its cost is deliberately excluded from the future timed algorithm path.
+
+The external script:
+
+```text
+experiments/validate_paper_algorithm.py
+```
+
+performs two independent checks:
+
+```text
+exhaustive oracle-filtered permutations through n=8
+reproducible flat/nested/incremental generated cases at n=16,32,64,128
+```
+
+The script may compare each maintained prefix with `sorted(processed_prefix)`
+and the final output with the external expected order. Those values exist only
+inside the callback/validation layer and never feed algorithm state.
+
+The recorded Day 6 run validated:
+
+```text
+n=0..8 exhaustive valid permutations: 2,074
+  of which n=4..8 exercise the complete loop: 2,064
+
+generated cases:
+  flat_valid: 4
+  nested_valid: 4
+  incremental_valid: 40
+  total: 48
+```
+
+All prefix invariants and final outputs passed. This is correctness evidence
+for the ordinary-list implementation, not a linear-time complexity claim.

@@ -504,7 +504,7 @@ git diff --check:
 
 ## Day 5: Step 3(c) and End-to-End Valid-Input Loop
 
-Status: implementation complete; awaiting review before Day 6.
+Status: approved; Day 6 correctness and diagnostics work has started.
 
 Implemented:
 
@@ -577,13 +577,90 @@ git diff --check:
     passed
 ```
 
-## Next Step
+## Day 6: Correctness, Invariants, and Instrumentation
 
-Review the end-to-end valid-input loop. After approval, begin Day 6:
+Status: implementation complete; awaiting review before Day 7 integration.
+
+Implemented:
+
+- factored the complete Step 1/2/3 loop into the single internal
+  `_run_paper_jordan_valid(values, invariant_callback=None)` control path;
+- removed the second `list(seq)` materialization for `n >= 3`;
+- kept `paper_jordan_sort_valid(seq)` as the plain valid-input output API;
+- added `paper_jordan_diagnostics_valid(seq)` without duplicating the loop;
+- added `validate_paper_jordan_state(state)` for complete prefix, pair,
+  ownership, metric, stage, and trace audits;
+- invoked full diagnostics after initialization and every completed iteration
+  only when an invariant callback is supplied;
+- added `experiments/validate_paper_algorithm.py`;
+- added focused tests for shared-runner behavior, callback cadence, diagnostic
+  copies, small inputs, corrupted state, configuration validation, and
+  machine-readable output.
+
+The validator performs:
 
 ```text
-online and external invariant audit
-formalize valid-input failure behavior
-instrumentation coverage and timing-boundary review
-standalone exhaustive validation script through n=8
+exhaustive validation:
+    n=0..8
+    2,074 valid permutations total
+    2,064 complete-loop cases at n=4..8
+
+generated validation:
+    sizes = 16, 32, 64, 128
+    flat_valid = 4 canonical cases
+    nested_valid = 4 canonical cases
+    incremental_valid = 40 fixed-seed cases
+    total = 48 cases
 ```
+
+For each `n >= 3` case, an external callback checks:
+
+```text
+validate_paper_jordan_state(state)
+partial_order == sorted(processed prefix)
+```
+
+The expected prefix is never returned to the algorithm or stored in core
+state. Final output continues to come only from `state.partial_order`.
+
+Timing boundary:
+
+```text
+paper_jordan_diagnostics_valid and exhaustive prefix checks are not timed
+the ordinary public API does not run the full state-audit callback
+the sibling backend still retains correctness-first commit validation
+no performance or linear-time claim is made
+```
+
+Day 6 verification:
+
+```text
+python -m unittest tests.test_paper_jordan \
+    tests.test_paper_jordan_sort \
+    tests.test_validate_paper_algorithm:
+    Ran 68 tests
+    OK
+
+python -m unittest discover -s tests:
+    Ran 304 tests
+    OK
+
+python experiments/validate_paper_algorithm.py --max-n 8:
+    exhaustive valid permutations = 2,074
+    generated valid cases = 48
+    all prefix and final checks passed
+
+python -m compileall -q src experiments tests:
+    passed
+
+AST core-shortcut guard:
+    passed
+
+git diff --check:
+    passed
+```
+
+## Next Step
+
+Review the Day 6 correctness and diagnostics checkpoint. After approval, begin
+Day 7 integration and a small pilot without running thesis-scale experiments.

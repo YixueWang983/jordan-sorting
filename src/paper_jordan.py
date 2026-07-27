@@ -137,7 +137,11 @@ def pair_family_for_end_index(end_index):
 
 def initialize_paper_jordan_state(seq):
     """为 n >= 3 的输入建立前三点、P2/P3 和两棵 family 根结构。"""
-    values = list(seq)
+    return _initialize_paper_jordan_state_values(list(seq))
+
+
+def _initialize_paper_jordan_state_values(values):
+    """从已物化 values 初始化 state；调用者负责输入所有权。"""
     if len(values) < 3:
         raise ValueError("PaperJordanState initialization requires n >= 3")
 
@@ -222,6 +226,83 @@ def initialize_paper_jordan_state(seq):
     partial_order.validate_links()
     sibling_backend.validate_invariants()
     return state
+
+
+def validate_paper_jordan_state(state):
+    """执行不依赖 oracle/全局排序的完整 correctness/debug invariant audit。"""
+    _require_state(state)
+    if not 3 <= state.processed_count <= len(state.points):
+        raise RuntimeError("processed_count is outside the initialized point range")
+    if set(state.metrics) != set(METRIC_NAMES):
+        raise RuntimeError("metric fields do not match the paper-state contract")
+    if any(
+        isinstance(value, bool) or not isinstance(value, int) or value < 0
+        for value in state.metrics.values()
+    ):
+        raise RuntimeError("paper-state metrics must be non-negative integers")
+
+    state.partial_order.validate_links()
+
+    expected_point_ids = set(range(1, state.processed_count + 1))
+    actual_point_ids = state.partial_order.to_point_ids()
+    if len(actual_point_ids) != state.processed_count:
+        raise RuntimeError("partial-order size does not match processed_count")
+    if set(actual_point_ids) != expected_point_ids:
+        raise RuntimeError("partial order does not contain exactly the processed points")
+
+    expected_end_indices = set(range(2, state.processed_count + 1))
+    if set(state.pair_by_end_index) != expected_end_indices:
+        raise RuntimeError("pair end-index mapping does not match processed prefix")
+    if len(set(state.pair_by_end_index.values())) != len(expected_end_indices):
+        raise RuntimeError("multiple processed indices map to the same pair")
+    for end_index in expected_end_indices:
+        pair_id = state.pair_by_end_index[end_index]
+        pair = _validated_live_finite_pair(state, pair_id)
+        if (
+            pair.end_index != end_index
+            or pair.first_point_id != end_index - 1
+            or pair.second_point_id != end_index
+            or pair.family != pair_family_for_end_index(end_index)
+        ):
+            raise RuntimeError("processed pair record is inconsistent")
+
+    state.sibling_backend.validate_invariants()
+    if state.metrics["trace_event_count"] != len(state.trace):
+        raise RuntimeError("trace counter does not match recorded events")
+
+    expected_trace_steps = (
+        "step1_find_predecessor",
+        "step1_select_boundary_pair",
+        "step2_find_successor",
+        "step2_select_boundary_pair",
+        "step3a_insert_pair",
+        "step3b_split_sibling_list",
+        "step3c_insert_output_point",
+    )
+    expected_stage_steps = (
+        "step1_select_boundary_pair",
+        "step2_select_boundary_pair",
+        "step3a_insert_pair",
+        "step3b_split_sibling_list",
+        "step3c_insert_output_point",
+    )
+    expected_iterations = set(range(4, state.processed_count + 1))
+    if set(state.stage_results) != expected_iterations:
+        raise RuntimeError("stage-result iterations do not match processed prefix")
+
+    for iteration in expected_iterations:
+        if set(state.stage_results[iteration]) != set(expected_stage_steps):
+            raise RuntimeError("completed iteration has incomplete stage results")
+        for step in expected_trace_steps:
+            occurrences = sum(
+                event.get("iteration") == iteration and event.get("step") == step
+                for event in state.trace
+            )
+            if occurrences != 1:
+                raise RuntimeError("completed iteration has incomplete trace coverage")
+
+    state.metrics["invariant_checks"] += 1
+    return True
 
 
 def select_processed_same_family_pair(state, point_id, iteration):

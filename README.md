@@ -81,10 +81,8 @@ gate:
 - the reference-framework boundary was confirmed by the supervisor on
   2026-07-24.
 
-Week 9 has started the ordinary-list reconstruction of the high-level 1990
-paper algorithm. Days 1-4 now provide the frozen executable specification,
-ordinary core data structures, initialization, Step 1/2 boundary selection,
-and Step 3(a)/(b) pair/sibling ownership transitions:
+Week 9 has implemented and independently validated the ordinary-list
+reconstruction of the high-level 1990 paper algorithm through Day 6:
 
 - the existing `simplified_jordan_reference` remains a separate baseline;
 - the new core must recover output from a maintained partial sorted order;
@@ -102,6 +100,10 @@ and Step 3(a)/(b) pair/sibling ownership transitions:
   odd-index `z1` output-anchor adjustment;
 - `paper_jordan_sort_valid(seq)` now runs the complete ordinary-list paper
   control flow for pre-certified valid inputs;
+- the public sorting API and diagnostic API share one internal main loop;
+- full state audits can run after every processed prefix outside timed paths;
+- `validate_paper_algorithm.py` exhaustively validates through `n=8` and also
+  checks reproducible generated cases through `n=128`;
 - heterogeneous finger trees and a linear-time claim remain out of scope.
 
 ## Project Structure
@@ -137,6 +139,7 @@ tests/
   test_sibling_list_backend.py
   test_paper_jordan.py
   test_paper_jordan_sort.py
+  test_validate_paper_algorithm.py
 
 experiments/
   run_small_tests.py
@@ -146,6 +149,7 @@ experiments/
   run_week7_pilot.py
   validate_experiment_outputs.py
   validate_generator_audit_outputs.py
+  validate_paper_algorithm.py
 
 results/
   week1_baseline_results.csv
@@ -268,7 +272,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 293 tests
+Ran 304 tests
 OK
 ```
 
@@ -361,9 +365,8 @@ Important project documents:
 
 Immediate next task:
 
-- review the Week 9 Day 5 end-to-end `paper_jordan_sort_valid` loop;
-- after approval, begin the Day 6 correctness, invariant, and instrumentation
-  gate before any experiment integration;
+- review the Week 9 Day 6 correctness, invariant, and diagnostics checkpoint;
+- after approval, begin Day 7 integration and a deliberately small pilot;
 - keep diagnostic trace validation and full backend invariant checks outside
   future timed performance regions.
 

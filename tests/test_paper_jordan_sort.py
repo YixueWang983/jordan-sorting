@@ -19,7 +19,11 @@ from generators import (  # noqa: E402
     generate_nested,
 )
 from oracle import oracle  # noqa: E402
-from paper_jordan_sort import paper_jordan_sort_valid  # noqa: E402
+from paper_jordan_sort import (  # noqa: E402
+    _run_paper_jordan_valid,
+    paper_jordan_diagnostics_valid,
+    paper_jordan_sort_valid,
+)
 
 
 class PaperJordanSortValidTests(unittest.TestCase):
@@ -104,6 +108,91 @@ class PaperJordanSortValidTests(unittest.TestCase):
 
         self.assertEqual(values, [2, 3, 1, 4])
         self.assertEqual(result, [1, 2, 3, 4])
+
+    def test_materialized_main_path_does_not_copy_values_again(self):
+        public_tree = ast.parse(
+            inspect.getsource(paper_jordan_sort.paper_jordan_sort_valid)
+        )
+        runner_tree = ast.parse(
+            inspect.getsource(paper_jordan_sort._run_paper_jordan_valid)
+        )
+        initializer_tree = ast.parse(
+            inspect.getsource(paper_jordan._initialize_paper_jordan_state_values)
+        )
+
+        def count_list_calls(tree):
+            return sum(
+                isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Name)
+                and node.func.id == "list"
+                for node in ast.walk(tree)
+            )
+
+        self.assertEqual(count_list_calls(public_tree), 1)
+        self.assertEqual(count_list_calls(runner_tree), 0)
+        self.assertEqual(count_list_calls(initializer_tree), 0)
+
+    def test_shared_runner_returns_complete_state(self):
+        values = [2, 3, 1, 4]
+
+        state = _run_paper_jordan_valid(list(values))
+
+        self.assertEqual(state.processed_count, len(values))
+        self.assertEqual(state.partial_order.to_list(), [1, 2, 3, 4])
+        self.assertTrue(paper_jordan.validate_paper_jordan_state(state))
+
+    def test_shared_runner_invokes_invariant_callback_for_each_prefix(self):
+        values = [1, 6, 2, 5, 3, 4]
+        checked_prefixes = []
+
+        def check_state(state):
+            paper_jordan.validate_paper_jordan_state(state)
+            checked_prefixes.append(state.processed_count)
+
+        state = _run_paper_jordan_valid(
+            list(values),
+            invariant_callback=check_state,
+        )
+
+        self.assertEqual(checked_prefixes, [3, 4, 5, 6])
+        self.assertEqual(state.metrics["invariant_checks"], 4)
+
+    def test_diagnostics_reuses_core_and_returns_independent_data(self):
+        values = [1, 6, 2, 5, 3, 4]
+
+        result = paper_jordan_diagnostics_valid(values)
+
+        self.assertEqual(result["output"], sorted(values))
+        self.assertEqual(result["processed_count"], len(values))
+        self.assertTrue(result["invariants_valid"])
+        self.assertEqual(result["metrics"]["invariant_checks"], len(values) - 2)
+        self.assertEqual(
+            result["metrics"]["trace_event_count"],
+            len(result["trace"]),
+        )
+        self.assertEqual(result["metrics"]["output_insertions"], len(values) - 3)
+
+        result["metrics"]["output_insertions"] = -1
+        second = paper_jordan_diagnostics_valid(values)
+        self.assertEqual(second["metrics"]["output_insertions"], len(values) - 3)
+
+    def test_diagnostics_handles_small_inputs_without_core_loop(self):
+        for values, expected in (([], []), ([2], [2]), ([2, 1], [1, 2])):
+            with self.subTest(values=values):
+                result = paper_jordan_diagnostics_valid(values)
+
+                self.assertEqual(result["output"], expected)
+                self.assertEqual(result["processed_count"], len(values))
+                self.assertEqual(result["trace"], [])
+                self.assertTrue(result["invariants_valid"])
+                self.assertTrue(all(value == 0 for value in result["metrics"].values()))
+
+    def test_invariant_audit_rejects_corrupted_trace_state(self):
+        state = _run_paper_jordan_valid([2, 3, 1, 4])
+        state.trace.pop()
+
+        with self.assertRaises(RuntimeError):
+            paper_jordan.validate_paper_jordan_state(state)
 
     def test_comparable_non_numeric_values_are_supported(self):
         values = ["b", "c", "a", "d"]
