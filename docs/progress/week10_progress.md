@@ -82,8 +82,8 @@ recognition pilot validator:
     valid = true
     rows = 180 / 60 / 42
 
-git diff --check:
-    passed before documentation edits
+commit diff check:
+    passed
 ```
 
 ## Day 2: Unified Execution Policy
@@ -128,4 +128,3 @@ No final timing mode or Week 11 formal configuration has been frozen.
 ## Week 10 Status
 
 Week 10 is in progress. Only Day 1 is complete.
-

@@ -384,8 +384,14 @@ No mode may change branch decisions or Step 1/2/3 semantics.
    non-checked mode or retained because its state size is constant?
 4. Should formal timing use public APIs, including their inner materialization,
    or pre-materialized internal entry points for all compared algorithms?
-5. Are the five modes sufficient, or will interaction effects require another
-   trace+counters combination?
+5. The five-mode design identifies the trace/counter interaction with commit
+   validation disabled and estimates validation overhead when trace and
+   counters are both enabled. It does not identify validation-by-trace,
+   validation-by-counter, or three-way interactions. If the pilot suggests
+   material interaction effects, should the study expand to the complete
+   eight-mode factorial design? That extension would add `validation_only`,
+   `validation_trace`, and `validation_counters`; Day 1 records but does not
+   implement them.
 6. Should metrics in disabled mode be an empty mapping, zero-filled mapping,
    or unavailable object while preserving diagnostics compatibility?
 
@@ -400,4 +406,3 @@ Week 10 may quantify instrumentation and audit overhead. It may not claim:
 - that minimal mode removes ordinary Python-list scan/copy costs;
 - that a small contamination pilot represents all Jordan sequences;
 - that faster minimal timing proves an asymptotic bound.
-

@@ -259,4 +259,3 @@ docs/analysis/week10_timing_baseline.md
 ```
 
 Day 2 must preserve one Step 1/2/3 control flow and the Week 9 default API.
-
