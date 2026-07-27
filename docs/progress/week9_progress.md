@@ -16,7 +16,7 @@ docs/plan/week9_plan.md
 
 ## Day 1: Freeze the Executable Specification
 
-Status: approved for Day 2 data-structure work after review fixes.
+Status: revised after Step 3(c) counterexamples; awaiting review before Day 2.
 
 - [x] Read and map paper Sections 2 and 3.
 - [x] Fix one-based paper indexing versus zero-based Python storage.
@@ -38,6 +38,12 @@ Status: approved for Day 2 data-structure work after review fixes.
 - [x] Correct Python-list front-insertion complexity.
 - [x] Add an existing-sibling-list insertion trace.
 - [x] Add increasing and decreasing split/ownership-transfer traces.
+- [x] Separate curve-order `first/second` endpoints from geometric `left/right`
+  endpoints.
+- [x] Resolve the Step 3(c) anchor against minimal orientation counterexamples.
+- [x] Add all four parent/child orientation combinations.
+- [x] Add a split trace whose left and right outputs are both nonempty.
+- [x] Restore mandatory ownership for every live sibling list.
 
 Primary output:
 
@@ -116,16 +122,71 @@ amortized `O(1)`, insertion at the front is `O(k)`, and split is `O(k)`.
 
 1. Increasing Step 3(b) transfers the left split output to the new pair.
 2. Decreasing Step 3(b) transfers the right split output to the new pair.
-3. Decreasing Step 3(c) inserts before the second curve-order endpoint of the
+3. Increasing Step 3(c) inserts after the geometric right endpoint of the
+   rightmost child.
+4. Decreasing Step 3(c) inserts before the geometric left endpoint of the
    leftmost child.
-4. Empty split outputs are represented by `None`, not persistent empty lists.
+5. Empty split outputs are represented by `None`, not persistent empty lists.
+6. A two-nonempty-side split preserves the retained side's parent and transfers
+   every acquired pair to the new parent atomically.
 
-The three new traces fix the intended interpretation. Direct executable tests
-are still required before the complete Step 3 algorithm is declared correct.
+The design traces fix the intended interpretation. Direct executable tests are
+still required before the complete Step 3 algorithm is declared correct.
+
+## Second Review: Step 3(c) Counterexamples
+
+The second review found that interpreting the paper's `z_m` as
+`PairRecord.second` is incorrect. Two oracle-valid minimal counterexamples are:
+
+```text
+[3,2,1,4]:
+    increasing P4 acquires decreasing child P2={3,2}
+    inserting 4 after P2.second=2 gives [1,2,4,3]
+
+[2,3,4,1]:
+    decreasing P4 acquires increasing child P2={2,3}
+    inserting 1 before P2.second=3 gives [2,1,3,4]
+```
+
+The first candidate also has a direct simple-curve realization using a nested
+inner upper arc from `3` to `2`, a lower arc from `2` to `1`, and an outer
+upper arc from `1` to `4`. The failure is therefore not dismissed as an oracle
+domain artifact.
+
+The corrected executable rule is:
+
+```text
+increasing:
+    insert after the geometric right endpoint of the rightmost child
+
+decreasing:
+    insert before the geometric left endpoint of the leftmost child
+```
+
+This agrees with the earlier 1986 algorithm's boundary item `u_q`, which is
+stored in a sorted family list. The 1990 text compresses a child to a pair and
+uses `z_m`; the ordinary-list reconstruction records that a literal
+curve-index interpretation is insufficient.
+
+The design now covers all four orientation combinations:
+
+```text
+increasing parent + increasing child: [2,3,1,4]
+increasing parent + decreasing child: [3,2,1,4]
+decreasing parent + increasing child: [2,3,4,1]
+decreasing parent + decreasing child: [3,2,4,1]
+```
+
+The candidate `[1,2,3,4,6,7,0,5]` provides a two-nonempty-output split:
+`[P2,P4]` is acquired by `P8`, while `[P6]` remains with the upper dummy.
+
+`SiblingList.owner_parent_pair_id` is mandatory for every live list. Temporary
+unowned partitions exist only inside `SplitPlan`.
 
 ## Next Step
 
-Wait for Day 1 review. After approval, begin Day 2 with:
+Wait for review of the corrected Step 3(c) rule and new traces. After approval,
+begin Day 2 with:
 
 ```text
 src/partial_sorted_list.py

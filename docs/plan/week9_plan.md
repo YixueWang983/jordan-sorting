@@ -157,6 +157,7 @@ writing the main algorithm.
 - map paper symbols to Python state;
 - fix the 1-based/0-based boundary;
 - define pair identity and point-to-pair selection;
+- separate curve-order pair endpoints from geometric left/right endpoints;
 - define the upper/lower parity rule;
 - define two family-specific dummy pairs;
 - define partial-order sentinels;
@@ -182,6 +183,8 @@ docs/design/paper_algorithm_ordinary_list.md
 - sentinel and parity behavior are explicit;
 - sibling-list and output-list insertion are not conflated;
 - unresolved Step 3 ownership questions are visible;
+- Step 3(c) is checked against all four parent/child orientation combinations;
+- at least one split trace has two nonempty outputs;
 - no main algorithm code is written before this document is coherent.
 
 ## Day 2: Implement Core Data Structures
@@ -212,6 +215,10 @@ family
 owning sibling-list id
 child sibling-list ids
 ```
+
+Geometric endpoint helpers select the smaller or larger endpoint by comparison;
+they must not treat the curve-order second endpoint as the geometric right
+endpoint.
 
 ### Ordinary Sibling-List Backend
 

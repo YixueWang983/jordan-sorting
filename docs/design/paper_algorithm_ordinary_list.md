@@ -78,6 +78,12 @@ split(x, L)
 The heterogeneous finger tree is a backend for achieving the theoretical
 amortized bound. It is not required to preserve the algorithm's control flow.
 
+The 1986 predecessor algorithm is used only to resolve compressed notation
+where the 1990 description is not executable under a literal reading. In
+particular, the 1986 algorithm stores both endpoints in sorted family lists and
+inserts the new point next to the geometric boundary item `u_q`. This provides
+the comparison point for the Step 3(c) anchor correction documented below.
+
 ## Input Model
 
 The pure core accepts:
@@ -310,6 +316,34 @@ Required meanings:
 
 Every finite processed pair must be owned by exactly one sibling list.
 
+`first_point_id` and `second_point_id` preserve curve order. They must not be
+used as synonyms for the geometric left and right endpoints. The implementation
+also exposes:
+
+```python
+def left_endpoint_id(pair, points):
+    ...
+
+
+def right_endpoint_id(pair, points):
+    ...
+```
+
+These helpers compare the two endpoint values already present in the partial
+order:
+
+```text
+left_endpoint_id(P_i):
+    endpoint with smaller x-coordinate
+
+right_endpoint_id(P_i):
+    endpoint with larger x-coordinate
+```
+
+They perform one endpoint comparison and do not require a global rank map.
+This distinction is required when a pair runs from right to left along the
+curve.
+
 ## Sentinels and Dummy Pairs
 
 The partial sorted order has two sentinel node identities:
@@ -398,7 +432,7 @@ Conceptual structure:
 @dataclass
 class SiblingList:
     list_id: int
-    owner_parent_pair_id: int | None
+    owner_parent_pair_id: int
     pair_ids: list[int]
 ```
 
@@ -407,6 +441,10 @@ A parent pair may temporarily own one or two sibling lists. Its
 
 Persistent empty sibling lists are not required. When a split side is empty,
 the backend returns `None` for that side.
+
+Every live sibling list has an owner. Temporary split output without a live
+owner exists only inside `SplitPlan`; it is not represented by a
+`SiblingList` whose owner is `None`.
 
 Ownership invariants:
 
@@ -808,12 +846,24 @@ Otherwise:
 
 ```text
 C = rightmost child pair of N
-insert z_i immediately after C.second
+anchor = right_endpoint_id(C)
+insert z_i immediately after anchor
 ```
 
-`C.second` means the second endpoint in curve order, matching the paper's
-`z_m` in child pair `{z_(m-1), z_m}`. It is not chosen by sorting the two
-endpoints inside the pair.
+The anchor is the geometric right endpoint of the rightmost child. It is not
+necessarily `C.second`, because `C.second` is defined by curve order.
+
+This is the executable interpretation of the paper's `z_m`. A literal reading
+of `z_m` as the second curve-order endpoint fails for the oracle-valid and
+geometrically realizable sequence `[3, 2, 1, 4]`: the only acquired child is
+`P2={z1=3,z2=2}`, so inserting `z4=4` after `z2=2` would produce
+`[1,2,4,3]`. Inserting after the child's geometric right endpoint `z1=3`
+produces the correct order.
+
+The earlier 1986 algorithm supports this interpretation. It stores both
+endpoints in sorted family lists and inserts the new point after the boundary
+item `u_q`. In the ordinary pair-list reconstruction, `right_endpoint_id(C)`
+is that boundary item for the rightmost acquired child.
 
 ## Step 3: Decreasing Orientation
 
@@ -887,12 +937,20 @@ Otherwise:
 
 ```text
 C = leftmost child pair of N
-insert z_i immediately before C.second
+anchor = left_endpoint_id(C)
+insert z_i immediately before anchor
 ```
 
-This mirrored interpretation must be verified with focused tests obtained by
-reflecting valid increasing-orientation examples. It must not be implemented
-as an untested assumption.
+The anchor is the geometric left endpoint of the leftmost child, not
+necessarily its second curve-order endpoint. The sequence `[2,3,4,1]` is the
+minimal reflected counterexample: inserting `z4=1` before `z2=3` is wrong,
+while inserting it before the child's geometric left endpoint `z1=2` is
+correct.
+
+The simplified 1990 algorithm handles the special role of `z1` in lower-family
+boundary selection through the Step 1 and Step 2 adjustments. This
+reconstruction therefore does not add the separate 1986 `x1` insertion
+anomaly. Odd-index tests must verify that the 1990 adjustments are sufficient.
 
 ## End-to-End Pseudocode
 
@@ -1270,8 +1328,8 @@ Step 3(c):
 
 ```text
 rightmost child of P4 is P2
-P2.second is z2=3
-insert z4=4 immediately after z2
+P2 runs left-to-right, so right_endpoint(P2) is z2=3
+insert z4=4 immediately after z2=3
 ```
 
 Final partial order:
@@ -1357,8 +1415,8 @@ Mirrored Step 3(c):
 
 ```text
 leftmost child of P4 is P2
-P2.second is z2=2
-insert z4=1 immediately before z2
+P2 runs right-to-left, so left_endpoint(P2) is z2=2
+insert z4=1 immediately before z2=2
 ```
 
 Final partial order:
@@ -1367,8 +1425,171 @@ Final partial order:
 1, 2, 3, 4
 ```
 
-This trace fixes the decreasing acquired side and mirrored output anchor for
-the reflected test pair.
+This trace fixes the decreasing acquired side for a decreasing child.
+
+## Nontrivial Trace D: Increasing Parent with a Decreasing Child
+
+Sequence:
+
+```text
+[3, 2, 1, 4]
+```
+
+This candidate is oracle-valid. It is also geometrically realizable as a
+simple polygonal curve: an inner upper arc joins `3` to `2`, a lower arc joins
+`2` to `1`, and an outer upper arc joins `1` to `4`.
+
+One explicit non-self-intersecting polyline witness visits:
+
+```text
+(3,-1), (3,0), (2.5,0.5), (2,0), (1.5,-0.5),
+(1,0), (2.5,2), (4,0), (4,-1)
+```
+
+Its x-axis intersections occur in curve order `3,2,1,4`.
+
+Initialization gives:
+
+```text
+partial order: z3=1, z2=2, z1=3
+upper dummy child list U1: [P2={z1=3,z2=2}]
+lower dummy child list L1: [P3={z2=2,z3=1}]
+```
+
+At `i=4`, `P4={z3=1,z4=4}` is increasing. Step 3(a) creates a singleton
+list for `P4`, and Step 3(b) transfers `P2` from the upper dummy to `P4`.
+
+Step 3(c) must distinguish curve order from geometric order:
+
+```text
+rightmost child of P4 is P2
+P2.first  = z1=3
+P2.second = z2=2
+right_endpoint(P2) = z1=3
+
+insert z4=4 immediately after z1=3
+```
+
+Final partial order:
+
+```text
+1, 2, 3, 4
+```
+
+The rejected literal interpretation would insert after `P2.second=z2=2` and
+produce `[1,2,4,3]`.
+
+## Nontrivial Trace E: Decreasing Parent with an Increasing Child
+
+Sequence:
+
+```text
+[2, 3, 4, 1]
+```
+
+This is the reflected counterpart of Trace D and is oracle-valid. At `i=4`,
+`P4={z3=4,z4=1}` is decreasing and acquires the increasing child
+`P2={z1=2,z2=3}`.
+
+Mirrored Step 3(c):
+
+```text
+leftmost child of P4 is P2
+P2.first  = z1=2
+P2.second = z2=3
+left_endpoint(P2) = z1=2
+
+insert z4=1 immediately before z1=2
+```
+
+Final partial order:
+
+```text
+1, 2, 3, 4
+```
+
+The rejected literal interpretation would insert before `P2.second=z2=3` and
+produce `[2,1,3,4]`.
+
+The four parent/child orientation combinations are therefore covered by:
+
+| Parent orientation | Child orientation | Trace | Required anchor |
+| --- | --- | --- | --- |
+| increasing | increasing | B: `[2,3,1,4]` | child's geometric right endpoint |
+| increasing | decreasing | D: `[3,2,1,4]` | child's geometric right endpoint |
+| decreasing | increasing | E: `[2,3,4,1]` | child's geometric left endpoint |
+| decreasing | decreasing | C: `[3,2,4,1]` | child's geometric left endpoint |
+
+## Nontrivial Trace F: Split with Two Nonempty Outputs
+
+Sequence:
+
+```text
+[1, 2, 3, 4, 6, 7, 0, 5]
+```
+
+This candidate is oracle-valid. Immediately before `i=8`, the upper dummy owns
+one sibling list:
+
+```text
+U1 = [
+    P2={1,2},
+    P4={3,4},
+    P6={6,7},
+]
+```
+
+The partial order is:
+
+```text
+0, 1, 2, 3, 4, 6, 7
+```
+
+The new upper pair is:
+
+```text
+P8={z7=0,z8=5}
+orientation = increasing
+```
+
+Step 3(a) creates the singleton list `[P8]` under the upper dummy. Step 3(b)
+splits `U1` at boundary value `5`:
+
+```text
+left pair IDs:  [P2, P4]
+right pair IDs: [P6]
+acquired side:  left
+retained side:  right
+```
+
+The atomic ownership result is:
+
+```text
+retire U1
+new acquired list [P2,P4] is owned by P8
+parent(P2) = parent(P4) = P8
+new retained list [P6] remains owned by UPPER_DUMMY_PAIR
+parent(P6) remains UPPER_DUMMY_PAIR
+upper dummy child-list IDs contain [P8] and [P6] in left-to-right order
+P8 child-list IDs contain [P2,P4]
+```
+
+Step 3(c) uses the geometric right endpoint of the rightmost acquired child:
+
+```text
+rightmost child = P4={3,4}
+right_endpoint(P4) = 4
+insert z8=5 after 4
+```
+
+Final partial order:
+
+```text
+0, 1, 2, 3, 4, 5, 6, 7
+```
+
+This trace fixes the case in which both split outputs are nonempty and both
+the old and new parent retain live child lists.
 
 ## Test Matrix
 
@@ -1377,6 +1598,7 @@ the reflected test pair.
 | index conversion | first point, last point, rejected index 0 |
 | parity | `P2/P4` upper, `P3/P5` lower |
 | same-family pair selection | point as first endpoint, point as second endpoint |
+| endpoint helpers | increasing pair, decreasing pair, left/right identity |
 | `z1` exception | lower-family predecessor and successor cases |
 | sentinels | negative and positive infinity, both family dummies |
 | small inputs | `n=0`, `n=1`, both orders for `n=2`, all six orders for `n=3` |
@@ -1388,8 +1610,8 @@ the reflected test pair.
 | Step 1 | even, odd, `z1` adjustment, negative sentinel |
 | Step 2 | even, odd, `z1` adjustment, positive sentinel |
 | Step 3(a) | singleton creation, shared-parent boundary insertion |
-| Step 3(b) | no children, one child, multiple children, ownership transfer |
-| Step 3(c) | no child, extreme child, increasing and decreasing |
+| Step 3(b) | no children, one child, multiple children, empty side, two nonempty sides, ownership transfer |
+| Step 3(c) | no child plus all four parent/child orientation combinations |
 | full loop | flat, nested, incremental, odd/even lengths |
 | independence | no oracle output, no rank map, no full sorting |
 
@@ -1401,13 +1623,15 @@ the reflected test pair.
 | successor of `z_(i-1)` | next linked node in `SortedOrderList` | right boundary and positive sentinel |
 | pair containing `v` or `w` | processed incident pair whose end-index parity matches `i` | first-endpoint, second-endpoint, and `z1` exception |
 | `{-infinity,+infinity}` | one distinct dummy pair per family | both family boundaries |
+| pair's first/second endpoint | curve-order identity only | all four parent/child orientation combinations |
+| pair's left/right endpoint | endpoint selected by x-coordinate comparison | reversed child orientation |
 | insert after left sibling | restricted insertion after a last-list anchor | reject non-boundary anchor |
 | mirrored insert before right sibling | restricted insertion before a first-list anchor | decreasing-orientation test |
 | split at `z_i` | partition only when every pair has both endpoints on one side | two sides, empty side, and straddle rejection |
 | split off children | transfer the enclosed side to the new pair and preserve the other side's old owner | ownership conservation |
 | rightmost child | final pair in left-to-right sibling order | Step 3(c) increasing |
 | leftmost child | first pair in left-to-right sibling order | Step 3(c) decreasing |
-| insert after/before `z_m` | use the child's second endpoint in curve order | endpoint-orientation test |
+| insert after/before `z_m` | use the child's geometric boundary endpoint, corresponding to the 1986 `u_q` | four-orientation matrix and minimal counterexamples |
 | symmetric case | reflect comparisons, boundary roles, child extreme, and output insertion side | mirrored paired examples |
 
 Rows describing Step 3 ownership are proposed executable interpretations. They
@@ -1441,23 +1665,29 @@ bound is claimed.
 The theoretical heterogeneous finger-tree backend remains a paper-level
 comparison point, not an implemented component.
 
-## Open Questions Before Step 3 Implementation
+## Decisions Requiring Executable Step 3 Tests
 
-The following interpretations are now explicit but still require direct
-confirmation through focused executable tests:
+The design now fixes the following transitions, but documentation alone is not
+correctness evidence:
 
-1. Trace B fixes the increasing interpretation: the left output is acquired and
-   the right output is retained.
-2. Trace C fixes the decreasing interpretation: the right output is acquired
-   and the left output is retained.
-3. Trace C fixes the mirrored test interpretation: insert before the second
-   curve-order endpoint of the leftmost child.
-4. Traces B and C fix empty-side representation as `None`, with no persistent
-   empty list.
+1. Increasing Step 3(b) transfers the left split output to the new pair and
+   retains the right output under the old parent.
+2. Decreasing Step 3(b) transfers the right split output to the new pair and
+   retains the left output under the old parent.
+3. Increasing Step 3(c) inserts after the geometric right endpoint of the
+   rightmost child.
+4. Decreasing Step 3(c) inserts before the geometric left endpoint of the
+   leftmost child.
+5. Empty split outputs are represented by `None`, with no persistent empty
+   list.
+6. A two-nonempty-side split updates both parent ownership collections in one
+   atomic transition.
+7. The Step 1 and Step 2 `z1` adjustments are sufficient for odd-index
+   processing; the separate anomaly described by the 1986 algorithm is not
+   independently added.
 
-These interpretations are sufficiently precise for backend API design. They
-must still be protected by direct Step 3 tests before the full loop is declared
-correct.
+Focused executable tests must cover Traces B through F and odd-index cases
+before the full loop is declared correct.
 
 ## Day 1 Acceptance Record
 
@@ -1468,6 +1698,13 @@ This specification is ready for Day 2 data-structure implementation when:
 - sentinel and dummy identities are accepted;
 - pair and sibling-list ownership fields are accepted;
 - the two insert operations are clearly separated;
+- curve-order and geometric endpoint identities are kept separate;
+- all four parent/child orientation combinations use the correct geometric
+  Step 3(c) anchor;
 - the proposed mirrored Step 3 interpretation is treated as testable, not
   silently assumed;
+- empty-side and two-nonempty-side ownership transitions are explicit;
 - no unresolved item is hidden by oracle-sorted output.
+
+Current status: revised after the Step 3(c) counterexamples and awaiting review.
+Day 2 source implementation has not started.
