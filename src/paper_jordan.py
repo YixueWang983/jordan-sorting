@@ -4,6 +4,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from paper_execution_policy import (
+    CHECKED_MODE,
+    CHECKED_POLICY,
+    PaperExecutionPolicy,
+    require_fixed_paper_execution_policy,
+    resolve_paper_execution_policy,
+)
 from partial_sorted_list import (
     NEGATIVE_INFINITY,
     POSITIVE_INFINITY,
@@ -112,6 +119,7 @@ class PaperJordanState:
     sibling_backend: OrdinarySiblingListBackend
     upper_dummy_pair_id: int
     lower_dummy_pair_id: int
+    execution_policy: PaperExecutionPolicy
     trace: list[dict]
     metrics: dict[str, int]
     stage_results: dict[int, dict[str, object]]
@@ -135,13 +143,21 @@ def pair_family_for_end_index(end_index):
     return UPPER if end_index % 2 == 0 else LOWER
 
 
-def initialize_paper_jordan_state(seq):
+def initialize_paper_jordan_state(seq, execution_mode=CHECKED_MODE):
     """为 n >= 3 的输入建立前三点、P2/P3 和两棵 family 根结构。"""
-    return _initialize_paper_jordan_state_values(list(seq))
+    execution_policy = resolve_paper_execution_policy(execution_mode)
+    return _initialize_paper_jordan_state_values(
+        list(seq),
+        execution_policy=execution_policy,
+    )
 
 
-def _initialize_paper_jordan_state_values(values):
+def _initialize_paper_jordan_state_values(
+    values,
+    execution_policy=CHECKED_POLICY,
+):
     """从已物化 values 初始化 state；调用者负责输入所有权。"""
+    execution_policy = require_fixed_paper_execution_policy(execution_policy)
     if len(values) < 3:
         raise ValueError("PaperJordanState initialization requires n >= 3")
 
@@ -151,7 +167,10 @@ def _initialize_paper_jordan_state_values(values):
     )
     partial_order = _order_first_three(points[:3])
     point_value = lambda point_id: points[point_id - 1].value
-    sibling_backend = OrdinarySiblingListBackend(point_value)
+    sibling_backend = OrdinarySiblingListBackend(
+        point_value,
+        execution_policy=execution_policy,
+    )
 
     upper_dummy = PairRecord(
         UPPER_DUMMY_PAIR_ID,
@@ -200,6 +219,7 @@ def _initialize_paper_jordan_state_values(values):
         sibling_backend=sibling_backend,
         upper_dummy_pair_id=upper_dummy.pair_id,
         lower_dummy_pair_id=lower_dummy.pair_id,
+        execution_policy=execution_policy,
         trace=[],
         metrics=metrics,
         stage_results={},
@@ -231,6 +251,11 @@ def _initialize_paper_jordan_state_values(values):
 def validate_paper_jordan_state(state):
     """执行不依赖 oracle/全局排序的完整 correctness/debug invariant audit。"""
     _require_state(state)
+    execution_policy = require_fixed_paper_execution_policy(
+        state.execution_policy
+    )
+    if state.sibling_backend.execution_policy is not execution_policy:
+        raise RuntimeError("state and backend execution policies differ")
     if not 3 <= state.processed_count <= len(state.points):
         raise RuntimeError("processed_count is outside the initialized point range")
     if set(state.metrics) != set(METRIC_NAMES):
@@ -878,6 +903,7 @@ def _validate_state_against_deterministic_replay(state):
     replayed = _run_paper_jordan_state_values(
         [point.value for point in state.points],
         stop_after=state.processed_count,
+        execution_policy=state.execution_policy,
     )
     actual_metrics = {
         name: value
@@ -920,8 +946,10 @@ def _run_paper_jordan_state_values(
     values,
     stop_after=None,
     invariant_callback=None,
+    execution_policy=CHECKED_POLICY,
 ):
     """使用唯一 Step 1/2/3 控制流运行已物化 valid-input values。"""
+    execution_policy = require_fixed_paper_execution_policy(execution_policy)
     if not isinstance(values, list):
         raise TypeError("values must be a materialized list")
     if len(values) < 3:
@@ -937,7 +965,10 @@ def _run_paper_jordan_state_values(
     if invariant_callback is not None and not callable(invariant_callback):
         raise TypeError("invariant_callback must be callable")
 
-    state = _initialize_paper_jordan_state_values(values)
+    state = _initialize_paper_jordan_state_values(
+        values,
+        execution_policy=execution_policy,
+    )
     if invariant_callback is not None:
         invariant_callback(state)
 

@@ -1,5 +1,10 @@
 """1990 Jordan-sorting 论文算法的 valid-input ordinary-list 主循环。"""
 
+from paper_execution_policy import (
+    CHECKED_MODE,
+    CHECKED_POLICY,
+    resolve_paper_execution_policy,
+)
 from paper_jordan import (
     METRIC_NAMES,
     _run_paper_jordan_state_values,
@@ -7,12 +12,14 @@ from paper_jordan import (
 )
 
 
-def paper_jordan_sort_valid(seq):
+def paper_jordan_sort_valid(seq, execution_mode=CHECKED_MODE):
     """使用论文控制流排序一个预先认证的 valid Jordan sequence。
 
     调用者负责保证元素互异、可比较，并满足项目采用的 Jordan-sequence
     validity model。该纯核心不调用 oracle，也不自行识别 invalid 输入。
+    Week 10 Day 2 仅传递 execution policy；各模式尚未切换运行行为。
     """
+    execution_policy = resolve_paper_execution_policy(execution_mode)
     values = list(seq)
     n = len(values)
 
@@ -23,7 +30,10 @@ def paper_jordan_sort_valid(seq):
     if n == 2:
         return _order_two(values[0], values[1])
 
-    state = _run_paper_jordan_valid(values)
+    state = _run_paper_jordan_valid(
+        values,
+        execution_policy=execution_policy,
+    )
     return state.partial_order.to_list()
 
 
@@ -43,6 +53,7 @@ def paper_jordan_diagnostics_valid(seq):
     state = _run_paper_jordan_valid(
         values,
         invariant_callback=validate_paper_jordan_state,
+        execution_policy=CHECKED_POLICY,
     )
     return {
         "output": state.partial_order.to_list(),
@@ -53,11 +64,16 @@ def paper_jordan_diagnostics_valid(seq):
     }
 
 
-def _run_paper_jordan_valid(values, invariant_callback=None):
+def _run_paper_jordan_valid(
+    values,
+    invariant_callback=None,
+    execution_policy=CHECKED_POLICY,
+):
     """对已物化、长度至少为三的 values 执行唯一 paper 主循环。"""
     return _run_paper_jordan_state_values(
         values,
         invariant_callback=invariant_callback,
+        execution_policy=execution_policy,
     )
 
 

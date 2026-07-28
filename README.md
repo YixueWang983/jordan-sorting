@@ -111,11 +111,13 @@ ordinary-list reconstruction of the high-level 1990 paper algorithm:
   `oracle_valid = true` for every paper-algorithm row;
 - heterogeneous finger trees and a linear-time claim remain out of scope.
 
-Week 10 Day 1 is complete as a documentation-only checkpoint. It freezes the
-Week 9 timing baseline, audits the actual timer call graph, classifies trace,
-counter, input-copy, and backend-validation costs, and designs five fixed
-execution modes. No timing policy has been implemented yet; Day 2 has not
-started.
+Week 10 Day 1 and Day 2 are complete. Day 1 froze the Week 9 timing baseline
+and classified trace, counter, input-copy, and backend-validation costs. Day 2
+added one immutable five-mode execution-policy registry and passed each fixed
+policy through the existing public API, shared runner, state, and sibling-list
+backend without duplicating the Step 1/2/3 loop. This is architecture only:
+all modes still record trace, update counters, and run backend commit
+validation until Day 3 and Day 4 implement those switches.
 
 ## Project Structure
 
@@ -130,6 +132,7 @@ src/
   instrumentation.py
   simplified_jordan.py
   partial_sorted_list.py
+  paper_execution_policy.py
   sibling_list_backend.py
   paper_jordan.py
   paper_jordan_sort.py
@@ -147,6 +150,7 @@ tests/
   test_generator_coverage_audit.py
   test_run_week7_pilot.py
   test_partial_sorted_list.py
+  test_paper_execution_policy.py
   test_sibling_list_backend.py
   test_paper_jordan.py
   test_paper_jordan_sort.py
@@ -290,7 +294,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 324 tests
+Ran 335 tests
 OK
 ```
 
@@ -346,7 +350,7 @@ Important project documents:
 - [docs/plan/week10_plan.md](docs/plan/week10_plan.md): timing-contamination study, execution-policy design, controlled pilot, and Week 11 experiment gate.
 - [docs/design/paper_timing_modes.md](docs/design/paper_timing_modes.md): current timed call graph, contamination sources, fixed execution modes, and validation boundaries.
 - [docs/analysis/week10_timing_baseline.md](docs/analysis/week10_timing_baseline.md): frozen Week 10 Day 1 commit, environment, validation evidence, pilot timings, findings, and open questions.
-- [docs/progress/week10_progress.md](docs/progress/week10_progress.md): Week 10 daily status; Day 1 is documentation-only and Day 2 has not started.
+- [docs/progress/week10_progress.md](docs/progress/week10_progress.md): Week 10 daily status; Day 1 freezes the timing baseline and Day 2 adds the unified execution-policy architecture.
 - [docs/design/final_experiment_spec.md](docs/design/final_experiment_spec.md): frozen experiment variables, correctness checks, aggregation rules, and non-claims.
 - [docs/design/oracle_and_test_generation.md](docs/design/oracle_and_test_generation.md): definitions and design notes for the oracle and generators.
 - [docs/design/notation.md](docs/design/notation.md): reusable terminology for candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and structural categories.
@@ -395,9 +399,10 @@ Important project documents:
 
 Immediate next task:
 
-- review the Week 10 Day 1 timing call graph and contamination boundary;
-- after approval, begin Day 2 by adding immutable execution policies without
-  duplicating the Step 1/2/3 main loop;
+- review the Week 10 Day 2 execution-policy architecture;
+- after approval, begin Day 3 by separating complete backend commit validation
+  from required local mutation checks;
+- preserve the single Step 1/2/3 main loop and the default checked behavior;
 - do not run the contamination pilot or formal experiment yet.
 
 Later cleanup:

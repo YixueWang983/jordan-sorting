@@ -1,6 +1,6 @@
 # Week 10 Progress
 
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 ## Goal
 
@@ -16,7 +16,7 @@ docs/plan/week10_plan.md
 
 ## Day 1: Baseline Freeze and Timing-Mode Design
 
-Status: complete; awaiting review before Day 2.
+Status: complete.
 
 - [x] fetched and confirmed the latest `origin/main`;
 - [x] confirmed local `HEAD == origin/main`;
@@ -88,10 +88,56 @@ commit diff check:
 
 ## Day 2: Unified Execution Policy
 
-Status: not started.
+Status: implementation complete; awaiting review before Day 3.
 
-No `PaperExecutionPolicy`, fixed policy registry, or mode-aware runner exists
-yet.
+- [x] added the immutable `PaperExecutionPolicy` value object;
+- [x] added fixed `checked`, `instrumented`, `trace_only`,
+  `counters_only`, and `minimal` registry entries;
+- [x] rejected unknown public mode names and caller-created policy copies;
+- [x] kept `checked` as the default public mode;
+- [x] passed one fixed policy through the public sorter, shared runner,
+  `PaperJordanState`, and `OrdinarySiblingListBackend`;
+- [x] required the state and backend to hold the same registry policy object;
+- [x] kept `paper_jordan_diagnostics_valid()` explicitly checked;
+- [x] preserved one Step 1/2/3 control flow;
+- [x] verified small and representative valid inputs across all five modes;
+- [x] verified duplicate-input behavior remains unchanged;
+- [x] verified all five modes still record trace, count operations, and run
+  backend commit validation at the Day 2 checkpoint;
+- [x] ran all 335 unit tests and `compileall`;
+- [x] reproduced 2,074 exhaustive valid permutations through `n=8`;
+- [x] reproduced all 48 fixed generated validation cases;
+- [x] passed `git diff --check`.
+
+Outputs:
+
+```text
+src/paper_execution_policy.py
+tests/test_paper_execution_policy.py
+```
+
+Day 2 implements policy selection and parameter plumbing only. The policy
+flags are deliberately not consumed yet. In particular, selecting `minimal`
+does not yet produce a minimal timed path.
+
+## Day 2 Verification
+
+```text
+python -m unittest discover -s tests:
+    Ran 335 tests
+    OK
+
+python -m compileall -q src experiments tests:
+    passed
+
+python experiments/validate_paper_algorithm.py --max-n 8:
+    exhaustive valid permutations = 2,074
+    generated valid cases = 48
+    all valid = true
+
+git diff --check:
+    passed
+```
 
 ## Day 3: Backend Commit-Audit Separation
 
@@ -127,4 +173,4 @@ No final timing mode or Week 11 formal configuration has been frozen.
 
 ## Week 10 Status
 
-Week 10 is in progress. Only Day 1 is complete.
+Week 10 is in progress. Day 1 and Day 2 are complete. Day 3 has not started.

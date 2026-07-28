@@ -1,8 +1,9 @@
 # Paper Algorithm Timing Modes
 
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
-Status: Week 10 Day 1 design contract; modes are designed but not implemented.
+Status: Week 10 Day 2 policy architecture implemented; behavior switching has
+not started.
 
 ## Purpose
 
@@ -22,6 +23,45 @@ experiment infrastructure
 
 The goal is not to prove linear time. It is to make later timing evidence
 explicit about what was measured and what was excluded.
+
+## Day 2 Policy Architecture
+
+The five fixed modes now exist in:
+
+```text
+src/paper_execution_policy.py
+```
+
+The public and internal call chain is:
+
+```text
+paper_jordan_sort_valid(seq, execution_mode=...)
+-> resolve one fixed PaperExecutionPolicy
+-> _run_paper_jordan_valid(..., execution_policy=...)
+-> _run_paper_jordan_state_values(..., execution_policy=...)
+-> _initialize_paper_jordan_state_values(..., execution_policy=...)
+-> PaperJordanState.execution_policy
+-> OrdinarySiblingListBackend.execution_policy
+```
+
+The registry and policy objects are immutable. Internal entry points reject
+caller-created policy copies, and the full state audit requires the state and
+backend to hold the same registry object. The default remains `checked`.
+
+This is an architecture checkpoint only. The three policy flags are carried
+through the system but are not yet used to change execution. At the end of
+Day 2, every mode still:
+
+```text
+records trace events
+updates operation counters
+runs complete backend commit validation
+```
+
+Therefore `minimal` is currently a selectable contract name, not yet a
+minimal timed implementation. Day 3 will address backend commit validation;
+Day 4 will address trace and counter behavior. No experiment should interpret
+cross-mode timing before those checkpoints are complete.
 
 ## Current Timing Call Graph
 
@@ -374,28 +414,36 @@ No mode may change branch decisions or Step 1/2/3 semantics.
 9. Keep oracle certification and complete diagnostics outside timed calls.
 10. Validate cross-mode backend equivalence before any performance conclusion.
 
+## Resolved Day 2 Decisions
+
+1. Public callers select a fixed mode name. Internal code passes the exact
+   immutable registry policy object.
+2. The policy is state-owned and is also passed to the backend constructor.
+   State validation rejects policy identity disagreement.
+3. `paper_jordan_diagnostics_valid()` always uses `checked`.
+4. Policy flags remain inactive until their dedicated implementation days.
+
 ## Open Design Questions
 
-1. Should policy be passed into the backend constructor, `commit_split()`, or
-   both through one state-owned policy?
-2. Which explicit local postconditions must replace the safety signal formerly
+1. Which explicit local postconditions must replace the safety signal formerly
    supplied by the global post-commit scan before minimal mode is allowed?
-3. Should fixed initialization-wide validation be disabled in every
+2. Should fixed initialization-wide validation be disabled in every
    non-checked mode or retained because its state size is constant?
-4. Should formal timing use public APIs, including their inner materialization,
+3. Should formal timing use public APIs, including their inner materialization,
    or pre-materialized internal entry points for all compared algorithms?
-5. The five-mode design identifies the trace/counter interaction with commit
+4. The five-mode design identifies the trace/counter interaction with commit
    validation disabled and estimates validation overhead when trace and
    counters are both enabled. It does not identify validation-by-trace,
    validation-by-counter, or three-way interactions. If the pilot suggests
    material interaction effects, should the study expand to the complete
    eight-mode factorial design? That extension would add `validation_only`,
-   `validation_trace`, and `validation_counters`; Day 1 records but does not
+   `validation_trace`, and `validation_counters`; the current plan records but
+   does not
    implement them.
-6. Should metrics in disabled mode be an empty mapping, zero-filled mapping,
+5. Should metrics in disabled mode be an empty mapping, zero-filled mapping,
    or unavailable object while preserving diagnostics compatibility?
 
-These questions are intentionally unresolved on Day 1.
+These questions remain intentionally unresolved after Day 2.
 
 ## Non-Claim Boundary
 

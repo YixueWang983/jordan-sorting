@@ -4,6 +4,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from paper_execution_policy import (
+    CHECKED_POLICY,
+    require_fixed_paper_execution_policy,
+)
+
 
 UPPER = "upper"
 LOWER = "lower"
@@ -114,14 +119,23 @@ def right_endpoint_id(pair, point_value):
 class OrdinarySiblingListBackend:
     """维护 sibling lists、pair ownership 和原子 split transaction。"""
 
-    def __init__(self, point_value):
+    def __init__(self, point_value, execution_policy=CHECKED_POLICY):
         if not callable(point_value):
             raise TypeError("point_value must be callable")
+        execution_policy = require_fixed_paper_execution_policy(
+            execution_policy
+        )
         self._point_value = point_value
+        self._execution_policy = execution_policy
         self._pairs = {}
         self._lists = {}
         self._dummy_pair_ids = {}
         self._next_list_id = 1
+
+    @property
+    def execution_policy(self):
+        """Return the fixed policy carried by this backend instance."""
+        return self._execution_policy
 
     def register_pair(self, pair):
         """注册尚未进入 sibling list 的 pair。"""

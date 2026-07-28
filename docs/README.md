@@ -50,8 +50,9 @@ Current files:
   invariants, and an initial worked trace.
 
 - `paper_timing_modes.md`
-  Week 10 timing call graph, contamination classification, five-mode design,
-  local/global validation boundary, and non-claim contract.
+  Week 10 timing call graph, contamination classification, fixed five-mode
+  execution-policy architecture, local/global validation boundary, and
+  non-claim contract.
 
 ## Progress Documents
 
@@ -115,8 +116,8 @@ Current files:
   boundary, and Week 10 handoff.
 
 - `week10_progress.md`
-  Week 10 daily execution record. Day 1 freezes the baseline and designs
-  timing modes without modifying algorithm code.
+  Week 10 daily execution record. Day 1 freezes the baseline; Day 2 implements
+  immutable policy selection and plumbing without changing execution behavior.
 
 ## Plan Documents
 
