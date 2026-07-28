@@ -166,8 +166,11 @@ paper execution modes.
 
 The dedicated validator checks exact seeded mode order, mode-policy flags,
 certification/audit/output correctness, complete measured rounds,
-non-negative timing, exact-sequence SHA-256 and structural constancy across
-modes, recomputed summaries, manifest paths, row counts, and file hashes.
+non-negative timing, recomputed summaries, manifest paths, row counts, and
+file hashes. It also regenerates every expected case from the frozen
+configuration and independently checks case identity, seed, sequence SHA-256,
+case order, oracle validity, and all structural fields. Malformed CSV or JSON
+evidence produces a `valid = false` report instead of an uncaught exception.
 
 ## Current Timing Call Graph
 

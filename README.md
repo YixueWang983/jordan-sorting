@@ -111,8 +111,9 @@ ordinary-list reconstruction of the high-level 1990 paper algorithm:
   `oracle_valid = true` for every paper-algorithm row;
 - heterogeneous finger trees and a linear-time claim remain out of scope.
 
-Week 10 Day 1 through Day 4 are complete, and Day 5 implementation is awaiting
-review. Day 1 froze the Week 9 timing baseline and classified trace,
+Week 10 Day 1 through Day 4 are complete, and Day 5 implementation and
+validator hardening are awaiting final review. Day 1 froze the Week 9 timing
+baseline and classified trace,
 counter, input-copy, and backend-validation costs. Day 2 added one immutable
 five-mode execution-policy registry without duplicating the Step 1/2/3 loop.
 Day 3 made complete initialization and post-split backend scans checked-only
@@ -121,7 +122,8 @@ rollback in every mode. Day 4 independently activates or removes trace and
 operation counters while preserving `stage_results` and algorithm state.
 Day 5 adds a separate safe certification wrapper, a five-mode contamination
 runner, and a specialized semantic output validator while keeping oracle and
-complete diagnostics outside timed calls.
+complete diagnostics outside timed calls. The validator independently
+regenerates the frozen cases and rejects malformed evidence without crashing.
 
 ## Project Structure
 
@@ -304,7 +306,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 368 tests
+Ran 372 tests
 OK
 ```
 
@@ -410,7 +412,8 @@ Important project documents:
 
 Immediate next task:
 
-- review the Week 10 Day 5 certification/timing boundary, runner, and validator;
+- review the Week 10 Day 5 certification/timing boundary, runner, and hardened
+  validator;
 - after approval, run and analyze the frozen Day 6 1,500-row contamination
   pilot;
 - do not select the final timing mode until the Day 6 evidence is validated.

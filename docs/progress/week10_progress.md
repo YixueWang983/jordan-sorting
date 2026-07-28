@@ -289,14 +289,19 @@ Status: implementation complete; awaiting review before Day 6.
 - [x] added no-overwrite protection for every run artifact;
 - [x] added a dedicated Week 10 output validator;
 - [x] made the validator recompute exact mode order from the frozen seed;
+- [x] made the validator independently regenerate every expected case and
+  verify case ID/index, family, size, seed, sequence SHA-256, oracle validity,
+  structural profile, and case execution position;
 - [x] made the validator recompute raw-to-case-to-group summaries;
 - [x] made the validator reject invalid certification, wrong output, failed
   audit, wrong flags, missing modes/runs, invalid positions, negative timing,
   structural drift, summary tampering, and hash mismatch;
+- [x] made malformed CSV schemas, numeric fields, JSON, and container types
+  fail closed with `valid = false` rather than raising;
 - [x] added independent tamper regression tests;
 - [x] ran a smoke experiment with `135 / 45 / 45` rows;
 - [x] validated the smoke output with `valid = true`;
-- [x] ran all 368 unit tests and `compileall`;
+- [x] ran all 372 unit tests and `compileall`;
 - [x] reproduced 2,074 exhaustive valid permutations through `n=8`;
 - [x] reproduced all 48 fixed generated validation cases;
 - [x] passed `git diff --check`.
@@ -308,7 +313,7 @@ Day 5 builds and validates the safe interfaces. It does not run the full
 
 ```text
 python -m unittest discover -s tests:
-    Ran 368 tests
+    Ran 372 tests
     OK
 
 python -m compileall -q src experiments tests:

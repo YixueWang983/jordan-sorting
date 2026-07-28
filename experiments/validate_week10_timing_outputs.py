@@ -2,7 +2,9 @@
 
 import argparse
 import csv
+import hashlib
 import json
+import random
 import sys
 from pathlib import Path
 
@@ -12,6 +14,12 @@ sys.path.insert(0, str(PROJECT_ROOT / "experiments"))
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from paper_execution_policy import PAPER_EXECUTION_POLICIES  # noqa: E402
+from generators import (  # noqa: E402
+    INCREMENTAL_VALID,
+    generate_sequence,
+    make_case_id,
+)
+from oracle import oracle  # noqa: E402
 from run_week10_timing_contamination import (  # noqa: E402
     CASE_SUMMARY_FIELDS,
     EXECUTION_MODES,
@@ -25,6 +33,7 @@ from run_week10_timing_contamination import (  # noqa: E402
     summarize_by_group,
 )
 from run_week7_pilot import file_sha256  # noqa: E402
+from stats import structure_profile  # noqa: E402
 
 
 DEFAULT_RUN_DIR = (
@@ -86,12 +95,21 @@ def _parse_bool(value, field, errors):
 def _validate_schema(rows, expected_fields, label, errors):
     if not rows:
         errors.append(f"{label} CSV is empty")
-        return
+        return False
     actual = set(rows[0])
     missing = set(expected_fields) - actual
     extra = actual - set(expected_fields)
-    _require(not missing, f"{label} CSV missing fields: {sorted(missing)}", errors)
-    _require(not extra, f"{label} CSV has unexpected fields: {sorted(extra)}", errors)
+    _require(
+        not missing,
+        f"{label} CSV missing fields: {sorted(missing, key=str)}",
+        errors,
+    )
+    _require(
+        not extra,
+        f"{label} CSV has unexpected fields: {sorted(extra, key=str)}",
+        errors,
+    )
+    return not missing and not extra
 
 
 def _validate_config_data(config, errors):
@@ -157,7 +175,98 @@ def _config_view(config):
     return view
 
 
-def _validate_raw_rows(raw_rows, config, errors):
+def _sequence_sha256(sequence):
+    payload = json.dumps(
+        list(sequence),
+        ensure_ascii=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def _rebuild_expected_cases(config, errors):
+    """Recreate the frozen cases independently of the experiment outputs."""
+    cases = []
+    try:
+        for family in config["families"]:
+            repetitions = (
+                config["randomized_cases"]
+                if family == INCREMENTAL_VALID
+                else 1
+            )
+            for requested_n in config["sizes"]:
+                for index in range(1, repetitions + 1):
+                    case_seed = (
+                        config["seed"] + requested_n * 1000 + index
+                        if family == INCREMENTAL_VALID
+                        else None
+                    )
+                    sequence = generate_sequence(
+                        family,
+                        requested_n,
+                        seed=case_seed,
+                    )
+                    oracle_result = oracle(sequence)
+                    if not oracle_result["valid"]:
+                        errors.append(
+                            "reconstructed Week 10 case is not oracle-valid: "
+                            f"family={family}, n={requested_n}, "
+                            f"reason={oracle_result['reason']}"
+                        )
+                        continue
+                    profile = structure_profile(
+                        sequence,
+                        oracle_result=oracle_result,
+                    )
+                    cases.append(
+                        {
+                            "case_id": make_case_id(
+                                family,
+                                len(sequence),
+                                index,
+                            ),
+                            "case_index": len(cases),
+                            "family": family,
+                            "n": len(sequence),
+                            "seed": case_seed,
+                            "sequence_sha256": _sequence_sha256(sequence),
+                            "oracle_valid": True,
+                            **{
+                                field: profile[field]
+                                for field in STRUCTURAL_FIELDS
+                            },
+                        }
+                    )
+    except (KeyError, TypeError, ValueError, RuntimeError) as exc:
+        errors.append(
+            "failed to reconstruct frozen Week 10 cases: "
+            f"{type(exc).__name__}: {exc}"
+        )
+        return {}
+
+    shuffled = list(cases)
+    random.Random(config["case_order_seed"]).shuffle(shuffled)
+    positions = {
+        case["case_id"]: position
+        for position, case in enumerate(shuffled, start=1)
+    }
+    for case in cases:
+        case["case_execution_position"] = positions[case["case_id"]]
+    return {case["case_id"]: case for case in cases}
+
+
+def _validate_expected_case_field(row, expected, field, errors):
+    actual = row[field]
+    expected_text = _stringify(expected[field])
+    _require(
+        actual == expected_text,
+        f"case provenance mismatch for {field}: "
+        f"{row['case_id']} -> {actual!r}, expected {expected_text!r}",
+        errors,
+    )
+
+
+def _validate_raw_rows(raw_rows, config, expected_cases_by_id, errors):
     expected_cases = expected_case_count(_config_view(config))
     measured_runs = _parse_int(
         config.get("measured_runs"),
@@ -195,8 +304,32 @@ def _validate_raw_rows(raw_rows, config, errors):
     case_metadata = {}
     grouped_rounds = {}
     mode_position_counts = {}
+    observed_case_ids = set()
 
     for row in raw_rows:
+        case_id = row["case_id"]
+        observed_case_ids.add(case_id)
+        expected_case = expected_cases_by_id.get(case_id)
+        if expected_case is None:
+            errors.append(f"unexpected raw case_id: {case_id}")
+        else:
+            for field in (
+                "case_index",
+                "family",
+                "n",
+                "seed",
+                "sequence_sha256",
+                "case_execution_position",
+                *STRUCTURAL_FIELDS,
+                "oracle_valid",
+            ):
+                _validate_expected_case_field(
+                    row,
+                    expected_case,
+                    field,
+                    errors,
+                )
+
         mode = row["execution_mode"]
         policy = PAPER_EXECUTION_POLICIES.get(mode)
         if policy is None:
@@ -302,6 +435,31 @@ def _validate_raw_rows(raw_rows, config, errors):
             f"time_ns must be non-negative: {row['case_id']}",
             errors,
         )
+        for field in (
+            "upper_interval_count",
+            "lower_interval_count",
+            "total_interval_count",
+            "upper_root_count",
+            "lower_root_count",
+            "nesting_count",
+            "max_depth",
+        ):
+            value = _parse_int(row[field], field, errors)
+            _require(
+                value is None or value >= 0,
+                f"{field} must be non-negative: {row['case_id']}",
+                errors,
+            )
+        density = _parse_float(
+            row["nesting_density"],
+            "nesting_density",
+            errors,
+        )
+        _require(
+            density is None or 0 <= density <= 1,
+            f"nesting_density must be in [0, 1]: {row['case_id']}",
+            errors,
+        )
 
         if case_position is not None:
             known_position = case_positions.setdefault(
@@ -396,10 +554,12 @@ def _validate_raw_rows(raw_rows, config, errors):
 
     for (case_id, run_index), rows in grouped_rounds.items():
         modes = [row["execution_mode"] for row in rows]
-        positions = {
+        round_number = _parse_int(run_index, "run_index", errors)
+        parsed_positions = [
             _parse_int(row["mode_position"], "mode_position", errors)
             for row in rows
-        }
+        ]
+        positions = set(parsed_positions)
         _require(
             len(rows) == len(EXECUTION_MODES)
             and set(modes) == set(EXECUTION_MODES),
@@ -412,12 +572,16 @@ def _validate_raw_rows(raw_rows, config, errors):
             errors,
         )
         case_index = case_indices.get(case_id)
-        if case_index is not None:
+        if (
+            case_index is not None
+            and round_number is not None
+            and all(position is not None for position in parsed_positions)
+        ):
             expected_order = mode_order_for_round(
                 EXECUTION_MODES,
                 config["mode_order_seed"],
                 case_index,
-                int(run_index),
+                round_number,
             )
             observed_order = [
                 row["execution_mode"]
@@ -442,6 +606,11 @@ def _validate_raw_rows(raw_rows, config, errors):
     _require(
         len(case_metadata) == expected_cases,
         f"raw case count {len(case_metadata)} != expected {expected_cases}",
+        errors,
+    )
+    _require(
+        observed_case_ids == set(expected_cases_by_id),
+        "raw case IDs do not match independently reconstructed cases",
         errors,
     )
 
@@ -563,7 +732,7 @@ def _validate_summary_consistency(raw_rows, case_rows, group_rows, errors):
     try:
         expected_case_rows = summarize_by_case(raw_rows)
         expected_group_rows = summarize_by_group(expected_case_rows)
-    except (TypeError, ValueError) as exc:
+    except (KeyError, TypeError, ValueError) as exc:
         errors.append(
             "failed to recompute summaries: "
             f"{type(exc).__name__}: {exc}"
@@ -618,6 +787,9 @@ def _validate_manifest(manifest, config, environment, run_dir, errors):
     )
     for label, expected_path in expected_files.items():
         info = manifest.get("files", {}).get(label, {})
+        if not isinstance(info, dict):
+            errors.append(f"manifest file entry is not an object: {label}")
+            continue
         path = Path(info.get("path", ""))
         if not path.is_absolute():
             path = PROJECT_ROOT / path
@@ -626,9 +798,11 @@ def _validate_manifest(manifest, config, environment, run_dir, errors):
             f"manifest path mismatch for {label}",
             errors,
         )
-        configured_path = Path(
-            config.get("outputs", {}).get(label, "")
-        )
+        outputs = config.get("outputs", {})
+        if not isinstance(outputs, dict):
+            errors.append("config outputs must be an object")
+            break
+        configured_path = Path(outputs.get(label, ""))
         if not configured_path.is_absolute():
             configured_path = PROJECT_ROOT / configured_path
         _require(
@@ -646,6 +820,34 @@ def _validate_manifest(manifest, config, environment, run_dir, errors):
         )
 
 
+def _safe_read_json(path, label, errors):
+    try:
+        value = read_json(path)
+    except (OSError, UnicodeError, json.JSONDecodeError, TypeError) as exc:
+        errors.append(
+            f"failed to read {label} JSON: {type(exc).__name__}: {exc}"
+        )
+        return None
+    if not isinstance(value, dict):
+        errors.append(f"{label} JSON must contain an object")
+        return None
+    return value
+
+
+def _safe_read_csv(path, label, errors):
+    try:
+        rows = read_csv(path)
+    except (OSError, UnicodeError, csv.Error, TypeError) as exc:
+        errors.append(
+            f"failed to read {label} CSV: {type(exc).__name__}: {exc}"
+        )
+        return None
+    if not isinstance(rows, list):
+        errors.append(f"{label} CSV reader returned an invalid container")
+        return None
+    return rows
+
+
 def validate_outputs(run_dir=None, report_json=None):
     """Validate one Week 10 run directory and write a JSON report."""
     root = Path(run_dir or DEFAULT_RUN_DIR)
@@ -661,64 +863,126 @@ def validate_outputs(run_dir=None, report_json=None):
     for label, path in paths.items():
         _require(path.exists(), f"missing required file: {label} -> {path}", errors)
 
+    raw_rows = None
+    case_rows = None
+    group_rows = None
     if not errors:
-        config = read_json(paths["config"])
-        manifest = read_json(paths["manifest"])
-        environment = read_json(paths["environment"])
-        raw_rows = read_csv(paths["raw"])
-        case_rows = read_csv(paths["case"])
-        group_rows = read_csv(paths["group"])
+        config = _safe_read_json(paths["config"], "config", errors)
+        manifest = _safe_read_json(paths["manifest"], "manifest", errors)
+        environment = _safe_read_json(
+            paths["environment"],
+            "environment",
+            errors,
+        )
+        raw_rows = _safe_read_csv(paths["raw"], "raw", errors)
+        case_rows = _safe_read_csv(paths["case"], "case-summary", errors)
+        group_rows = _safe_read_csv(paths["group"], "group-summary", errors)
 
-        _validate_schema(raw_rows, RAW_FIELDS, "raw", errors)
-        _validate_schema(
-            case_rows,
-            CASE_SUMMARY_FIELDS,
-            "case-summary",
-            errors,
+        raw_schema_valid = (
+            raw_rows is not None
+            and _validate_schema(raw_rows, RAW_FIELDS, "raw", errors)
         )
-        _validate_schema(
-            group_rows,
-            GROUP_SUMMARY_FIELDS,
-            "group-summary",
-            errors,
+        case_schema_valid = (
+            case_rows is not None
+            and _validate_schema(
+                case_rows,
+                CASE_SUMMARY_FIELDS,
+                "case-summary",
+                errors,
+            )
         )
-        config_errors = []
-        config_valid = _validate_config_data(config, config_errors)
-        errors.extend(config_errors)
+        group_schema_valid = (
+            group_rows is not None
+            and _validate_schema(
+                group_rows,
+                GROUP_SUMMARY_FIELDS,
+                "group-summary",
+                errors,
+            )
+        )
+        config_valid = False
+        if config is not None:
+            config_errors = []
+            config_valid = _validate_config_data(config, config_errors)
+            errors.extend(config_errors)
+
+        expected_cases_by_id = {}
         if config_valid:
-            _validate_raw_rows(raw_rows, config, errors)
+            expected_cases_by_id = _rebuild_expected_cases(config, errors)
+        if config_valid and raw_schema_valid:
+            _validate_raw_rows(
+                raw_rows,
+                config,
+                expected_cases_by_id,
+                errors,
+            )
+        if config_valid and case_schema_valid and group_schema_valid:
             _validate_summary_values(case_rows, group_rows, config, errors)
-        _validate_summary_consistency(
-            raw_rows,
-            case_rows,
-            group_rows,
-            errors,
-        )
-        _validate_manifest(manifest, config, environment, root, errors)
-        _require(
-            manifest.get("row_counts", {}).get("raw") == len(raw_rows),
-            "manifest raw row count mismatch",
-            errors,
-        )
-        _require(
-            manifest.get("row_counts", {}).get("case_summary")
-            == len(case_rows),
-            "manifest case-summary row count mismatch",
-            errors,
-        )
-        _require(
-            manifest.get("row_counts", {}).get("group_summary")
-            == len(group_rows),
-            "manifest group-summary row count mismatch",
-            errors,
-        )
+        if raw_schema_valid and case_schema_valid and group_schema_valid:
+            _validate_summary_consistency(
+                raw_rows,
+                case_rows,
+                group_rows,
+                errors,
+            )
+        if (
+            manifest is not None
+            and config is not None
+            and environment is not None
+        ):
+            try:
+                _validate_manifest(
+                    manifest,
+                    config,
+                    environment,
+                    root,
+                    errors,
+                )
+            except (AttributeError, OSError, TypeError, ValueError) as exc:
+                errors.append(
+                    "failed to validate manifest: "
+                    f"{type(exc).__name__}: {exc}"
+                )
+        if manifest is not None and raw_rows is not None:
+            row_counts = manifest.get("row_counts", {})
+            if not isinstance(row_counts, dict):
+                errors.append("manifest row_counts must be an object")
+                row_counts = {}
+            _require(
+                row_counts.get("raw") == len(raw_rows),
+                "manifest raw row count mismatch",
+                errors,
+            )
+        if manifest is not None and case_rows is not None:
+            row_counts = manifest.get("row_counts", {})
+            if not isinstance(row_counts, dict):
+                row_counts = {}
+            _require(
+                row_counts.get("case_summary") == len(case_rows),
+                "manifest case-summary row count mismatch",
+                errors,
+            )
+        if manifest is not None and group_rows is not None:
+            row_counts = manifest.get("row_counts", {})
+            if not isinstance(row_counts, dict):
+                row_counts = {}
+            _require(
+                row_counts.get("group_summary") == len(group_rows),
+                "manifest group-summary row count mismatch",
+                errors,
+            )
 
     report = {
         "valid": not errors,
         "errors": errors,
         "run_dir": str(root),
     }
-    if not errors:
+    if (
+        not errors
+        and raw_rows is not None
+        and case_rows is not None
+        and group_rows is not None
+    ):
         report["row_counts"] = {
             "raw": len(raw_rows),
             "case_summary": len(case_rows),

@@ -134,6 +134,134 @@ class ValidateWeek10TimingOutputsTests(unittest.TestCase):
                     report["errors"],
                 )
 
+    def test_validator_rejects_coordinated_case_provenance_tampering(self):
+        tamper_cases = [
+            ("category", "forged_category"),
+            ("seed", "999999"),
+            ("sequence_sha256", "0" * 64),
+            ("max_depth", "-999"),
+        ]
+        original_raw = self.config.raw_csv.read_text(encoding="utf-8")
+        original_manifest = self.config.manifest_json.read_text(
+            encoding="utf-8"
+        )
+
+        for field, value in tamper_cases:
+            with self.subTest(field=field):
+                self.config.raw_csv.write_text(
+                    original_raw,
+                    encoding="utf-8",
+                )
+                self.config.manifest_json.write_text(
+                    original_manifest,
+                    encoding="utf-8",
+                )
+                rows = self._read_rows(self.config.raw_csv)
+                case_id = rows[0]["case_id"]
+                for row in rows:
+                    if row["case_id"] == case_id:
+                        row[field] = value
+                self._write_rows(
+                    self.config.raw_csv,
+                    rows,
+                    runner.RAW_FIELDS,
+                )
+                self._refresh_manifest_entry("raw_csv")
+
+                report = validate_outputs(self.root)
+
+                self.assertFalse(report["valid"])
+                self.assertTrue(
+                    any(
+                        f"case provenance mismatch for {field}" in error
+                        for error in report["errors"]
+                    ),
+                    report["errors"],
+                )
+
+    def test_validator_reports_missing_raw_column_without_crashing(self):
+        rows = self._read_rows(self.config.raw_csv)
+        fields = [
+            field
+            for field in runner.RAW_FIELDS
+            if field != "execution_mode"
+        ]
+        trimmed_rows = [
+            {field: row[field] for field in fields}
+            for row in rows
+        ]
+        self._write_rows(self.config.raw_csv, trimmed_rows, fields)
+        self._refresh_manifest_entry("raw_csv")
+
+        report = validate_outputs(self.root)
+
+        self.assertFalse(report["valid"])
+        self.assertTrue(
+            any("raw CSV missing fields" in error for error in report["errors"]),
+            report["errors"],
+        )
+
+    def test_validator_reports_invalid_run_index_without_crashing(self):
+        rows = self._read_rows(self.config.raw_csv)
+        rows[0]["run_index"] = "not-an-integer"
+        self._write_rows(self.config.raw_csv, rows, runner.RAW_FIELDS)
+        self._refresh_manifest_entry("raw_csv")
+
+        report = validate_outputs(self.root)
+
+        self.assertFalse(report["valid"])
+        self.assertTrue(
+            any(
+                "run_index is not an integer" in error
+                for error in report["errors"]
+            ),
+            report["errors"],
+        )
+
+    def test_validator_reports_invalid_json_containers_without_crashing(self):
+        original_config = self.config.config_json.read_text(encoding="utf-8")
+        original_environment = self.config.environment_json.read_text(
+            encoding="utf-8"
+        )
+        original_manifest = self.config.manifest_json.read_text(
+            encoding="utf-8"
+        )
+        cases = [
+            (self.config.config_json, "{invalid", "failed to read config JSON"),
+            (
+                self.config.environment_json,
+                "[]",
+                "environment JSON must contain an object",
+            ),
+        ]
+
+        for path, payload, expected_error in cases:
+            with self.subTest(path=path.name):
+                self.config.config_json.write_text(
+                    original_config,
+                    encoding="utf-8",
+                )
+                self.config.environment_json.write_text(
+                    original_environment,
+                    encoding="utf-8",
+                )
+                self.config.manifest_json.write_text(
+                    original_manifest,
+                    encoding="utf-8",
+                )
+                path.write_text(payload, encoding="utf-8")
+
+                report = validate_outputs(self.root)
+
+                self.assertFalse(report["valid"])
+                self.assertTrue(
+                    any(
+                        expected_error in error
+                        for error in report["errors"]
+                    ),
+                    report["errors"],
+                )
+
     def test_validator_rejects_seed_inconsistent_mode_order(self):
         rows = self._read_rows(self.config.raw_csv)
         first_case = rows[0]["case_id"]
