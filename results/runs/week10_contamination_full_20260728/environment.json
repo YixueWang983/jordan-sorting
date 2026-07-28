@@ -1,0 +1,50 @@
+{
+  "run_id": "week10_contamination_full_20260728",
+  "timestamp_utc": "2026-07-28T16:37:21.936080+00:00",
+  "git_commit_sha": "c195a2f3c79df3ebd6f2e7205a5c70bcd956362e",
+  "git_dirty": false,
+  "python_version": "3.12.4 | packaged by Anaconda, Inc. | (main, Jun 18 2024, 10:07:17) [Clang 14.0.6 ]",
+  "python_implementation": "CPython",
+  "platform": "macOS-26.5-arm64-arm-64bit",
+  "machine": "arm64",
+  "processor": "arm",
+  "cpu_model": "arm",
+  "logical_cpu_count": 8,
+  "perf_counter_resolution": 4.166666666666667e-08,
+  "gc_initial_state": true,
+  "config": {
+    "run_id": "week10_contamination_full_20260728",
+    "families": [
+      "flat_valid",
+      "nested_valid",
+      "incremental_valid"
+    ],
+    "sizes": [
+      32,
+      64,
+      128,
+      256
+    ],
+    "execution_modes": [
+      "checked",
+      "instrumented",
+      "trace_only",
+      "counters_only",
+      "minimal"
+    ],
+    "randomized_cases": 3,
+    "warmup_runs": 3,
+    "measured_runs": 15,
+    "seed": 20260723,
+    "mode_order_seed": 20268642,
+    "case_order_seed": 20262266,
+    "outputs": {
+      "raw_csv": "results/runs/week10_contamination_full_20260728/raw.csv",
+      "case_summary_csv": "results/runs/week10_contamination_full_20260728/case_summary.csv",
+      "group_summary_csv": "results/runs/week10_contamination_full_20260728/group_summary.csv",
+      "environment_json": "results/runs/week10_contamination_full_20260728/environment.json",
+      "config_json": "results/runs/week10_contamination_full_20260728/config.json",
+      "manifest_json": "results/runs/week10_contamination_full_20260728/manifest.json"
+    }
+  }
+}

@@ -205,6 +205,7 @@ Current files:
 - `week10_mode_overhead_table.csv`
 - `week10_runtime_ratio_by_size.csv`
 - `week10_runtime_ratio_by_family.csv`
+- `week10_runtime_ratio_by_family_size.csv`
 - `week10_runtime_ratio_by_size.svg`
 - `week10_observation_ratio_by_size.svg`
 

@@ -678,6 +678,8 @@ python experiments/analyze_week10_contamination.py \
   --component-table-csv docs/analysis/week10_component_overhead_table.csv \
   --size-ratios-csv docs/analysis/week10_runtime_ratio_by_size.csv \
   --family-ratios-csv docs/analysis/week10_runtime_ratio_by_family.csv \
+  --family-size-ratios-csv \
+    docs/analysis/week10_runtime_ratio_by_family_size.csv \
   --ratio-figure docs/analysis/week10_runtime_ratio_by_size.svg \
   --observation-figure docs/analysis/week10_observation_ratio_by_size.svg
 ```
@@ -686,3 +688,13 @@ Oracle certification, structural profiling, and one complete checked
 diagnostic run occur before timing. The measured region calls only the
 pre-certified valid-input paper sorter for one fixed execution mode. Generated
 Week 10 outputs are reproducible artifacts and are not committed by default.
+
+The reviewed Day 6 evidence run is the explicit exception:
+
+```text
+results/runs/week10_contamination_full_20260728/
+```
+
+Its manifest-covered raw data, summaries, configuration, environment,
+manifest, and validation report are committed so the exact published ratios
+can be recomputed without rerunning timing.

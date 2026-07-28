@@ -1,0 +1,10 @@
+{
+  "valid": true,
+  "errors": [],
+  "run_dir": "results/runs/week10_contamination_full_20260728",
+  "row_counts": {
+    "raw": 1500,
+    "case_summary": 100,
+    "group_summary": 60
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "run_id": "week10_contamination_full_20260728",
+  "git_commit_sha": "c195a2f3c79df3ebd6f2e7205a5c70bcd956362e",
+  "git_dirty": false,
+  "row_counts": {
+    "raw": 1500,
+    "case_summary": 100,
+    "group_summary": 60
+  },
+  "files": {
+    "raw_csv": {
+      "path": "results/runs/week10_contamination_full_20260728/raw.csv",
+      "sha256": "f200988d37d7e9789275ec8af4321fb21bef425ae270024e230ebc67a1b74e41"
+    },
+    "case_summary_csv": {
+      "path": "results/runs/week10_contamination_full_20260728/case_summary.csv",
+      "sha256": "2b81b5440180c4bc6082bedd4c1f151680ec9c350aad4894012a209d3d9a797c"
+    },
+    "group_summary_csv": {
+      "path": "results/runs/week10_contamination_full_20260728/group_summary.csv",
+      "sha256": "e00a51165be4a65e90c5e8e375380511b2867e0336275e7cfa59674271b23ff7"
+    },
+    "environment_json": {
+      "path": "results/runs/week10_contamination_full_20260728/environment.json",
+      "sha256": "2303a766e46a0204abc23dc014b2c8e3818fa8ce6314fc986fbc66a343ae4cc0"
+    },
+    "config_json": {
+      "path": "results/runs/week10_contamination_full_20260728/config.json",
+      "sha256": "e54e5a0492fb580d8676486ccbe483aaf7bf4557797210208df983e71f4cf772"
+    }
+  }
+}

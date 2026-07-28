@@ -69,9 +69,29 @@ The raw CSV SHA-256 recorded by the manifest is:
 f200988d37d7e9789275ec8af4321fb21bef425ae270024e230ebc67a1b74e41
 ```
 
-Generated run files remain under
-`results/runs/week10_contamination_full_20260728/` and are not committed by
-default.
+The complete evidence run is archived under:
+
+```text
+results/runs/week10_contamination_full_20260728/
+```
+
+The committed archive contains `raw.csv`, both summaries, `config.json`,
+`environment.json`, `manifest.json`, and `validation_report.json`. The
+analysis command runs the validator again against these live files before
+reading `case_summary.csv`; a stale earlier `valid = true` report cannot
+authorize modified evidence.
+
+Selected evidence hashes:
+
+| File | SHA-256 |
+| --- | --- |
+| `raw.csv` | `f200988d37d7e9789275ec8af4321fb21bef425ae270024e230ebc67a1b74e41` |
+| `case_summary.csv` | `2b81b5440180c4bc6082bedd4c1f151680ec9c350aad4894012a209d3d9a797c` |
+| `group_summary.csv` | `e00a51165be4a65e90c5e8e375380511b2867e0336275e7cfa59674271b23ff7` |
+| `config.json` | `e54e5a0492fb580d8676486ccbe483aaf7bf4557797210208df983e71f4cf772` |
+| `environment.json` | `2303a766e46a0204abc23dc014b2c8e3818fa8ce6314fc986fbc66a343ae4cc0` |
+| `manifest.json` | `d96b736cc654e32b4ef4ff65c45220a90cee44465d7c27b68e46c567dfaa9e8b` |
+| `validation_report.json` | `006c0c62a07373287069349bfb71828aa27d94a973daa6cd4d998bfc1340aff0` |
 
 ## Aggregation Method
 
@@ -101,6 +121,9 @@ and input size.
 ## Scaling by Input Size
 
 The values below are median case-level ratios relative to `minimal`.
+Each size contains five cases: one flat, one nested, and three incremental.
+The size median therefore gives incremental cases three of the five
+observations and must not be interpreted as a family-balanced result.
 
 | n | checked | instrumented | trace_only | counters_only |
 | ---: | ---: | ---: | ---: | ---: |
@@ -120,6 +143,18 @@ The zoomed figure below removes checked mode so that the smaller observation
 costs remain visible.
 
 ![Week 10 observation overhead by input size](week10_observation_ratio_by_size.svg)
+
+The checked-mode family-by-size breakdown confirms which cases drive the
+overall size median:
+
+| Family | n=32 | n=64 | n=128 | n=256 |
+| --- | ---: | ---: | ---: | ---: |
+| flat_valid | 1.165x | 1.168x | 1.160x | 1.152x |
+| nested_valid | 1.129x | 1.139x | 1.114x | 1.090x |
+| incremental_valid | 1.548x | 2.591x | 4.287x | 8.428x |
+
+The corresponding reproducible data is stored in
+`week10_runtime_ratio_by_family_size.csv`.
 
 ## Differences by Family
 
@@ -188,6 +223,8 @@ python experiments/analyze_week10_contamination.py \
   --component-table-csv docs/analysis/week10_component_overhead_table.csv \
   --size-ratios-csv docs/analysis/week10_runtime_ratio_by_size.csv \
   --family-ratios-csv docs/analysis/week10_runtime_ratio_by_family.csv \
+  --family-size-ratios-csv \
+    docs/analysis/week10_runtime_ratio_by_family_size.csv \
   --ratio-figure docs/analysis/week10_runtime_ratio_by_size.svg \
   --observation-figure docs/analysis/week10_observation_ratio_by_size.svg
 ```

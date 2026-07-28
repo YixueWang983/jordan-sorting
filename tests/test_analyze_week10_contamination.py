@@ -4,6 +4,7 @@ import json
 import sys
 import tempfile
 import unittest
+from dataclasses import replace
 from pathlib import Path
 
 
@@ -12,15 +13,19 @@ sys.path.insert(0, str(PROJECT_ROOT / "experiments"))
 
 from analyze_week10_contamination import (  # noqa: E402
     EXECUTION_MODES,
+    analyze_run,
     compute_case_overheads,
     require_validated_run,
     summarize_components,
     summarize_modes,
     summarize_ratios_by_family,
+    summarize_ratios_by_family_and_size,
     summarize_ratios_by_size,
     write_observation_ratio_figure,
     write_ratio_figure,
 )
+import run_week10_timing_contamination as runner  # noqa: E402
+from validate_week10_timing_outputs import validate_outputs  # noqa: E402
 
 
 def make_case_rows(case_id, family, n, minimal):
@@ -71,6 +76,7 @@ class AnalyzeWeek10ContaminationTests(unittest.TestCase):
         component_rows = summarize_components(records)
         size_rows = summarize_ratios_by_size(records)
         family_rows = summarize_ratios_by_family(records)
+        family_size_rows = summarize_ratios_by_family_and_size(records)
 
         checked = next(
             row
@@ -99,6 +105,14 @@ class AnalyzeWeek10ContaminationTests(unittest.TestCase):
             and row["execution_mode"] == "checked"
         )
         self.assertEqual(checked_family["case_count"], 1)
+        checked_family_size = next(
+            row
+            for row in family_size_rows
+            if row["family"] == "flat_valid"
+            and row["n"] == 8
+            and row["execution_mode"] == "checked"
+        )
+        self.assertEqual(checked_family_size["median_ratio"], 2.0)
 
     def test_ratio_figure_contains_modes_and_sizes(self):
         rows = []
@@ -143,6 +157,46 @@ class AnalyzeWeek10ContaminationTests(unittest.TestCase):
 
             with self.assertRaises(ValueError):
                 require_validated_run(root)
+
+    def test_analysis_rejects_tampering_after_a_successful_validation(self):
+        with tempfile.TemporaryDirectory() as tempdir:
+            root = Path(tempdir)
+            config = replace(
+                runner.build_week10_config(
+                    "stale_validation_report",
+                    root,
+                    smoke=True,
+                ),
+                sizes=[8],
+                randomized_cases=1,
+                warmup_runs=0,
+                measured_runs=1,
+            )
+            runner.run_contamination_experiment(config)
+            self.assertTrue(validate_outputs(root)["valid"])
+
+            content = config.case_summary_csv.read_text(encoding="utf-8")
+            config.case_summary_csv.write_text(
+                content.replace(
+                    "flat_valid_n8_001",
+                    "forged_flat_n8_001",
+                    1,
+                ),
+                encoding="utf-8",
+            )
+
+            with self.assertRaises(ValueError):
+                analyze_run(
+                    root,
+                    root / "case_overheads.csv",
+                    root / "mode_table.csv",
+                    root / "component_table.csv",
+                    root / "size_ratios.csv",
+                    root / "family_ratios.csv",
+                    root / "family_size_ratios.csv",
+                    root / "ratios.svg",
+                    root / "observation.svg",
+                )
 
 
 if __name__ == "__main__":

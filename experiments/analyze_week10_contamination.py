@@ -6,6 +6,8 @@ import json
 import statistics
 from pathlib import Path
 
+from validate_week10_timing_outputs import validate_outputs
+
 
 EXECUTION_MODES = [
     "checked",
@@ -71,6 +73,16 @@ COMPONENT_FIELDS = [
 
 FAMILY_RATIO_FIELDS = [
     "family",
+    "execution_mode",
+    "case_count",
+    "median_ratio",
+    "q1_ratio",
+    "q3_ratio",
+]
+
+FAMILY_SIZE_RATIO_FIELDS = [
+    "family",
+    "n",
     "execution_mode",
     "case_count",
     "median_ratio",
@@ -318,6 +330,40 @@ def summarize_ratios_by_family(case_records):
     return rows
 
 
+def summarize_ratios_by_family_and_size(case_records):
+    """Aggregate slowdown ratios without mixing families or sizes."""
+    grouped = {}
+    for record in case_records:
+        for mode in EXECUTION_MODES:
+            grouped.setdefault(
+                (record["family"], record["n"], mode),
+                [],
+            ).append(record[f"{mode}_ratio"])
+
+    rows = []
+    for (family, n, mode), ratios in sorted(
+        grouped.items(),
+        key=lambda item: (
+            item[0][0],
+            item[0][1],
+            EXECUTION_MODES.index(item[0][2]),
+        ),
+    ):
+        q1, q3 = _quartiles(ratios)
+        rows.append(
+            {
+                "family": family,
+                "n": n,
+                "execution_mode": mode,
+                "case_count": len(ratios),
+                "median_ratio": statistics.median(ratios),
+                "q1_ratio": q1,
+                "q3_ratio": q3,
+            }
+        )
+    return rows
+
+
 def write_csv(rows, path, fields):
     output = Path(path)
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -519,11 +565,11 @@ def write_observation_ratio_figure(size_rows, path):
 
 
 def require_validated_run(run_dir):
-    report_path = Path(run_dir) / "validation_report.json"
-    report = read_json(report_path)
+    """Revalidate live artifacts so a stale report cannot authorize analysis."""
+    report = validate_outputs(run_dir)
     if not isinstance(report, dict) or report.get("valid") is not True:
         raise ValueError(
-            "Week 10 run must have a successful validation_report.json"
+            "Week 10 run failed live validation and cannot be analyzed"
         )
     return report
 
@@ -535,6 +581,7 @@ def analyze_run(
     component_table_csv,
     size_ratios_csv,
     family_ratios_csv,
+    family_size_ratios_csv,
     ratio_figure,
     observation_figure,
 ):
@@ -545,14 +592,27 @@ def analyze_run(
     component_rows = summarize_components(case_records)
     size_rows = summarize_ratios_by_size(case_records)
     family_rows = summarize_ratios_by_family(case_records)
+    family_size_rows = summarize_ratios_by_family_and_size(case_records)
     write_csv(case_records, case_overheads_csv, OVERHEAD_FIELDS)
     write_csv(mode_rows, mode_table_csv, MODE_TABLE_FIELDS)
     write_csv(component_rows, component_table_csv, COMPONENT_FIELDS)
     write_csv(size_rows, size_ratios_csv, SIZE_RATIO_FIELDS)
     write_csv(family_rows, family_ratios_csv, FAMILY_RATIO_FIELDS)
+    write_csv(
+        family_size_rows,
+        family_size_ratios_csv,
+        FAMILY_SIZE_RATIO_FIELDS,
+    )
     write_ratio_figure(size_rows, ratio_figure)
     write_observation_ratio_figure(size_rows, observation_figure)
-    return case_records, mode_rows, component_rows, size_rows, family_rows
+    return (
+        case_records,
+        mode_rows,
+        component_rows,
+        size_rows,
+        family_rows,
+        family_size_rows,
+    )
 
 
 def parse_args(argv=None):
@@ -563,6 +623,7 @@ def parse_args(argv=None):
     parser.add_argument("--component-table-csv", type=Path, required=True)
     parser.add_argument("--size-ratios-csv", type=Path, required=True)
     parser.add_argument("--family-ratios-csv", type=Path, required=True)
+    parser.add_argument("--family-size-ratios-csv", type=Path, required=True)
     parser.add_argument("--ratio-figure", type=Path, required=True)
     parser.add_argument("--observation-figure", type=Path, required=True)
     return parser.parse_args(argv)
@@ -576,6 +637,7 @@ def main(argv=None):
         component_rows,
         size_rows,
         family_rows,
+        family_size_rows,
     ) = analyze_run(
         args.run_dir,
         args.case_overheads_csv,
@@ -583,6 +645,7 @@ def main(argv=None):
         args.component_table_csv,
         args.size_ratios_csv,
         args.family_ratios_csv,
+        args.family_size_ratios_csv,
         args.ratio_figure,
         args.observation_figure,
     )
@@ -594,6 +657,7 @@ def main(argv=None):
                 "component_table_rows": len(component_rows),
                 "size_ratio_rows": len(size_rows),
                 "family_ratio_rows": len(family_rows),
+                "family_size_ratio_rows": len(family_size_rows),
                 "mode_table": mode_rows,
                 "component_table": component_rows,
             },

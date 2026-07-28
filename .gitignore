@@ -7,3 +7,14 @@ results/*
 !results/README.md
 !results/week1_baseline_results.csv
 !results/week1_baseline_smoke_results.csv
+!results/runs/
+results/runs/*
+!results/runs/week10_contamination_full_20260728/
+results/runs/week10_contamination_full_20260728/*
+!results/runs/week10_contamination_full_20260728/raw.csv
+!results/runs/week10_contamination_full_20260728/case_summary.csv
+!results/runs/week10_contamination_full_20260728/group_summary.csv
+!results/runs/week10_contamination_full_20260728/config.json
+!results/runs/week10_contamination_full_20260728/environment.json
+!results/runs/week10_contamination_full_20260728/manifest.json
+!results/runs/week10_contamination_full_20260728/validation_report.json

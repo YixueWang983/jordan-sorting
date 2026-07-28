@@ -346,10 +346,16 @@ Status: complete; awaiting review before Day 7.
 - [x] added `experiments/analyze_week10_contamination.py`;
 - [x] added equal-weighted per-case overhead and ratio aggregation;
 - [x] generated the component-overhead, mode, size, and family tables;
+- [x] added a family-by-size table so the incremental weighting of the size
+  median is explicit;
 - [x] generated a runtime-ratio figure by input size;
 - [x] recorded the interpretation and non-claim boundary in
   `docs/analysis/week10_contamination_pilot.md`;
 - [x] kept final timing-mode selection out of Day 6.
+- [x] made the analysis rerun the full validator against live artifacts;
+- [x] added a stale-validation-report tamper regression test;
+- [x] archived the complete reviewed evidence run under its original
+  manifest path.
 
 Key result:
 
@@ -373,7 +379,7 @@ checked / minimal by n:
     n=256: 7.989x
 ```
 
-The generated full run remains reproducible but uncommitted under:
+The reviewed full run is committed and reproducible under:
 
 ```text
 results/runs/week10_contamination_full_20260728/
@@ -383,7 +389,7 @@ results/runs/week10_contamination_full_20260728/
 
 ```text
 python -m unittest discover -s tests:
-    Ran 376 tests
+    Ran 377 tests
     OK
 
 python -m compileall -q src experiments tests:
