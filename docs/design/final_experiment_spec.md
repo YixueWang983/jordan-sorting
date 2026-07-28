@@ -474,25 +474,26 @@ pilot does not add invalid families to the paper algorithm.
 
 ### Formal Machine
 
-The formal machine is the same local development machine unless explicitly
-changed before Week 9. The actual machine metadata must be recorded in
-`environment.json`; the thesis should cite the recorded environment rather than
-memory.
+The execution machine must be fixed and recorded before the corresponding
+pilot or formal run begins. Any machine change requires a new run ID and a new
+environment record. The actual machine metadata must be stored in
+`environment.json`; the thesis should cite that evidence rather than memory.
 
 ## Failure and Fallback Rules
 
 1. If any raw row has `error != ""`, the formal run fails.
 2. If any applicable correctness field is false, the formal run fails.
-3. If `validate_experiment_outputs.py` returns `valid=false`, the formal run
-   fails.
+3. If the applicable experiment-specific validator returns `valid=false`, the
+   run fails.
 4. Validator checks include manifest SHA-256 verification and raw-to-summary
    recomputation; a summary CSV is not accepted merely because it exists.
 5. If a run fails, keep its run directory for debugging and rerun with a new
    `run_id`; do not overwrite failed evidence.
-6. If formal runtime is too high, reduce maximum size only after documenting the
-   change in this file and in the Week 9 summary.
-7. Generated CSVs may remain uncommitted only if the manifest hash and
-   reproduction command are recorded.
+6. Any change to a frozen configuration requires a new gate version and a new
+   `run_id`; the previous gate and evidence remain unchanged.
+7. Pilot and formal evidence used in the thesis must be archived either in the
+   repository or in a persistent release. A manifest hash and reproduction
+   command alone do not replace the underlying evidence files.
 
 ## Frozen CSV Semantics
 
