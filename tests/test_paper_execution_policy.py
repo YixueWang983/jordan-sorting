@@ -464,7 +464,7 @@ class PaperExecutionPolicyTests(unittest.TestCase):
                 else:
                     self.assertEqual(validation_flags, [])
 
-    def test_trace_disabled_modes_never_call_trace_recorder(self):
+    def test_trace_disabled_modes_never_call_trace_helpers(self):
         values = [1, 2, 3, 4, 6, 7, 0, 5]
 
         for mode in (COUNTERS_ONLY_MODE, MINIMAL_MODE):
@@ -475,12 +475,71 @@ class PaperExecutionPolicyTests(unittest.TestCase):
                     side_effect=AssertionError(
                         "trace recorder must not run when trace is disabled"
                     ),
+                ), patch.object(
+                    paper_jordan,
+                    "_record_boundary_pair_trace",
+                    side_effect=AssertionError(
+                        "boundary trace helper must not run when trace is disabled"
+                    ),
+                ), patch.object(
+                    paper_jordan,
+                    "_record_step3b_trace",
+                    side_effect=AssertionError(
+                        "split trace helper must not run when trace is disabled"
+                    ),
                 ):
                     state = _run_paper_jordan_valid(
                         list(values),
                         execution_policy=PAPER_EXECUTION_POLICIES[mode],
                     )
                 self.assertEqual(state.trace, [])
+
+    def test_minimal_mode_skips_split_observation_size_lookups(self):
+        values = [1, 2, 3, 4, 6, 7, 0, 5]
+
+        with patch.object(
+            paper_jordan,
+            "_sibling_list_size",
+            side_effect=AssertionError(
+                "observation-only size lookup reached minimal mode"
+            ),
+        ):
+            state = _run_paper_jordan_valid(
+                list(values),
+                execution_policy=MINIMAL_POLICY,
+            )
+
+        self.assertEqual(state.partial_order.to_list(), sorted(values))
+        self.assertEqual(state.trace, [])
+        self.assertEqual(state.metrics, {})
+        self.assertTrue(state.stage_results)
+
+    def test_observing_modes_still_collect_split_sizes(self):
+        values = [1, 2, 3, 4, 6, 7, 0, 5]
+        original_size = paper_jordan._sibling_list_size
+
+        for mode in (TRACE_ONLY_MODE, COUNTERS_ONLY_MODE):
+            with self.subTest(mode=mode):
+                with patch.object(
+                    paper_jordan,
+                    "_sibling_list_size",
+                    wraps=original_size,
+                ) as size_mock:
+                    state = _run_paper_jordan_valid(
+                        list(values),
+                        execution_policy=PAPER_EXECUTION_POLICIES[mode],
+                    )
+
+                self.assertGreater(size_mock.call_count, 0)
+                if mode == TRACE_ONLY_MODE:
+                    self.assertTrue(state.trace)
+                    self.assertEqual(state.metrics, {})
+                else:
+                    self.assertEqual(state.trace, [])
+                    self.assertGreater(
+                        state.metrics["split_items_scanned"],
+                        0,
+                    )
 
     def test_counter_disabled_modes_never_access_metrics_mapping(self):
         class NoAccessMetrics(dict):

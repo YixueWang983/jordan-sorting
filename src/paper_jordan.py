@@ -1137,7 +1137,13 @@ def step1_select_predecessor_boundary(state, iteration):
         else state.lower_dummy_pair_id,
         adjusted_for_z1,
     )
-    _record_boundary_pair_trace(state, "step1_select_boundary_pair", iteration, selection)
+    if state.execution_policy.record_trace:
+        _record_boundary_pair_trace(
+            state,
+            "step1_select_boundary_pair",
+            iteration,
+            selection,
+        )
     _record_stage_result(state, "step1_select_boundary_pair", iteration, selection)
     return selection
 
@@ -1182,7 +1188,13 @@ def step2_select_successor_boundary(state, iteration):
         else state.lower_dummy_pair_id,
         adjusted_for_z1,
     )
-    _record_boundary_pair_trace(state, "step2_select_boundary_pair", iteration, selection)
+    if state.execution_policy.record_trace:
+        _record_boundary_pair_trace(
+            state,
+            "step2_select_boundary_pair",
+            iteration,
+            selection,
+        )
     _record_stage_result(state, "step2_select_boundary_pair", iteration, selection)
     return selection
 
@@ -1391,7 +1403,14 @@ def _step3b(
             acquired_side=None,
             reason="boundary pair encloses previous point",
         )
-        _record_step3b_trace(state, result, input_size=0, left_size=0, right_size=0)
+        if state.execution_policy.record_trace:
+            _record_step3b_trace(
+                state,
+                result,
+                input_size=0,
+                left_size=0,
+                right_size=0,
+            )
         _record_stage_result(state, "step3b_split_sibling_list", iteration, result)
         return result
 
@@ -1402,21 +1421,27 @@ def _step3b(
         if input_list.pair_ids[0] != boundary_pair.pair_id:
             raise RuntimeError("increasing Step 3(b) boundary must be first")
     elif input_list.pair_ids[-1] != boundary_pair.pair_id:
-        raise RuntimeError("decreasing Step 3(b) boundary must be last")
+            raise RuntimeError("decreasing Step 3(b) boundary must be last")
 
     input_list_id = input_list.list_id
-    input_size = len(input_list.pair_ids)
+    needs_split_observation = (
+        state.execution_policy.record_trace
+        or state.execution_policy.count_operations
+    )
+    if needs_split_observation:
+        input_size = len(input_list.pair_ids)
     split_result = state.sibling_backend.split_pairs_at_value(
         input_list_id,
         boundary_value=state.point_value(iteration),
         acquired_side=acquired_side,
         new_parent_pair_id=new_pair.pair_id,
     )
-    left_size = _sibling_list_size(state, split_result.left_list_id)
-    right_size = _sibling_list_size(state, split_result.right_list_id)
-    transferred_size = left_size if acquired_side == LEFT else right_size
+    if needs_split_observation:
+        left_size = _sibling_list_size(state, split_result.left_list_id)
+        right_size = _sibling_list_size(state, split_result.right_list_id)
 
     if state.execution_policy.count_operations:
+        transferred_size = left_size if acquired_side == LEFT else right_size
         state.metrics["sibling_scan_checks"] += input_size
         state.metrics["sibling_list_splits"] += 1
         state.metrics["split_items_scanned"] += input_size
@@ -1433,13 +1458,14 @@ def _step3b(
         acquired_side=acquired_side,
         reason=None,
     )
-    _record_step3b_trace(
-        state,
-        result,
-        input_size=input_size,
-        left_size=left_size,
-        right_size=right_size,
-    )
+    if state.execution_policy.record_trace:
+        _record_step3b_trace(
+            state,
+            result,
+            input_size=input_size,
+            left_size=left_size,
+            right_size=right_size,
+        )
     _record_stage_result(state, "step3b_split_sibling_list", iteration, result)
     return result
 

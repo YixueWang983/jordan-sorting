@@ -213,6 +213,8 @@ Status: implementation complete; awaiting review before Day 5.
 
 - [x] activated `record_trace` without creating a second Step 1/2/3 loop;
 - [x] avoided calling the trace recorder when trace is disabled;
+- [x] avoided calling boundary-pair and Step 3(b) trace helpers when trace is
+  disabled;
 - [x] guarded event dictionary construction so trace-disabled modes do not
   construct event payloads;
 - [x] required trace-disabled states to retain an empty `trace` list;
@@ -224,6 +226,10 @@ Status: implementation complete; awaiting review before Day 5.
   `counters_only`;
 - [x] retained complete trace output in `checked`, `instrumented`, and
   `trace_only`;
+- [x] skipped observation-only input/left/right/transferred split-size work in
+  `minimal`;
+- [x] verified `trace_only` and `counters_only` still collect the split sizes
+  required by their enabled observation contract;
 - [x] retained `stage_results` in all five modes;
 - [x] verified all five modes produce identical partial order, pair mapping,
   stage results, and canonical backend state;
@@ -232,7 +238,7 @@ Status: implementation complete; awaiting review before Day 5.
   contract through same-policy deterministic replay;
 - [x] permanently retained the 682 valid permutations through `n=7` across
   five modes, for 3,410 output-equivalence executions;
-- [x] ran all 352 unit tests and `compileall`;
+- [x] ran all 354 unit tests and `compileall`;
 - [x] reproduced 2,074 exhaustive valid permutations through `n=8`;
 - [x] reproduced all 48 fixed generated validation cases;
 - [x] passed `git diff --check`.
@@ -245,7 +251,7 @@ output recovery.
 
 ```text
 python -m unittest discover -s tests:
-    Ran 352 tests
+    Ran 354 tests
     OK
 
 python -m compileall -q src experiments tests:

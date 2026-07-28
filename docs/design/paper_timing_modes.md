@@ -110,13 +110,21 @@ minimal:       trace = [],   metrics = {}
 
 Trace-disabled paths branch before event dictionary literals are evaluated.
 The boundary and split trace helpers also return before constructing their
-payloads. `_record_trace()` is therefore not a no-op sink: it is unreachable
-during a correct trace-disabled execution and rejects accidental calls.
+payloads, and their call sites skip the helpers entirely. `_record_trace()` is
+therefore not a no-op sink: it is unreachable during a correct trace-disabled
+execution and rejects accidental calls.
 
 Counter-disabled paths initialize an empty metrics mapping and branch before
 every lookup or update. This behavior has a regression test using a mapping
 that raises on item access, so a disabled counter cannot silently retain
 dictionary work.
+
+Step 3(b) computes its input, left, right, and transferred-side sizes only
+when trace or counters need them. `minimal` still performs the ordinary-list
+split itself, but it does not call the observation-only size helper or inspect
+the input list length solely for trace/counter reporting. `trace_only` and
+`counters_only` retain those size calculations because their enabled
+observation output requires them.
 
 `stage_results` remains populated in every mode. Cross-mode tests require the
 same partial order, pair mapping, stage results, and canonical backend
@@ -504,8 +512,8 @@ No mode may change branch decisions or Step 1/2/3 semantics.
 
 ## Resolved Day 4 Decisions
 
-1. Trace-disabled modes keep `trace == []` and do not construct event
-   dictionaries.
+1. Trace-disabled modes keep `trace == []`, do not call trace-specific helpers,
+   and do not construct event dictionaries.
 2. Counter-disabled modes keep `metrics == {}` and do not access that mapping
    during algorithm execution.
 3. `stage_results` remains complete in all modes because it is algorithm
@@ -514,6 +522,8 @@ No mode may change branch decisions or Step 1/2/3 semantics.
    `counters_only`.
 5. Complete diagnostics remain checked, while full state audit understands and
    validates every fixed mode contract.
+6. Split-size calculations used only by trace/counters are skipped when both
+   observation channels are disabled.
 
 ## Open Design Questions
 
