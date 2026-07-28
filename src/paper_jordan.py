@@ -1421,7 +1421,7 @@ def _step3b(
         if input_list.pair_ids[0] != boundary_pair.pair_id:
             raise RuntimeError("increasing Step 3(b) boundary must be first")
     elif input_list.pair_ids[-1] != boundary_pair.pair_id:
-            raise RuntimeError("decreasing Step 3(b) boundary must be last")
+        raise RuntimeError("decreasing Step 3(b) boundary must be last")
 
     input_list_id = input_list.list_id
     needs_split_observation = (
