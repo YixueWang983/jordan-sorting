@@ -49,6 +49,11 @@ This folder stores the approved thesis scope and research-question documents.
   execution policies without duplicating the main loop, running a controlled
   overhead pilot, and freezing the Week 11 timing gate.
 
+- `week11_plan.md`
+  Daily plan for the immutable paper-sorting integration runner, fail-closed
+  validator, formal preflight, single 1,050-row pilot, evidence archive,
+  analysis, and Week 12 gate freeze.
+
 The canonical frozen Week 11 integration-pilot values are implemented in:
 
 ```text

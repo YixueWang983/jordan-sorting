@@ -129,6 +129,10 @@ Current files:
   Week 10 final timing-mode decision, correctness/timing boundary,
   contamination evidence, and Week 11 handoff.
 
+- `week11_progress.md`
+  Week 11 daily execution record. Day 1 freezes the plan, source baseline, and
+  machine identity while keeping the pilot unexecuted.
+
 ## Plan Documents
 
 Path:
@@ -153,6 +157,7 @@ Current files:
 - `refined_thesis_direction_after_week8.md`
 - `week9_plan.md`
 - `week10_plan.md`
+- `week11_plan.md`
 - `thesis_scope_and_research_questions.pdf`
 
 Planned files:
@@ -214,6 +219,9 @@ Current files:
 - `week10_runtime_ratio_by_family_size.csv`
 - `week10_runtime_ratio_by_size.svg`
 - `week10_observation_ratio_by_size.svg`
+- `week11_machine_preflight.md`
+  Week 11 fixed machine, Python environment, source baseline, power/load
+  snapshot, and Day 5/Day 6 timing-readiness controls.
 
 ## Thesis Drafts
 

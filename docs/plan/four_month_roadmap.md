@@ -521,7 +521,7 @@ Mitigation:
 Current task:
 
 ```text
-Implement the Week 11 paper-sorting integration pilot against:
+Week 11 Day 2: implement the frozen runner framework against:
 
 experiments/week11_experiment_gate.py
 ```
@@ -529,6 +529,8 @@ experiments/week11_experiment_gate.py
 Required boundary:
 
 ```text
+support --preflight-only
+do not create formal timing evidence
 paper timing mode = minimal
 untimed paper audit mode = checked
 oracle certification outside timing
@@ -536,5 +538,5 @@ valid-input sorting separate from recognition
 expected raw rows = 1050
 ```
 
-Run only the Week 11 pilot after its dedicated runner and validator pass. The
-Week 12 formal experiment remains a separate later gate.
+Do not run the Week 11 pilot before the Day 5 preflight gate. The Week 12 formal
+experiment remains a separate later gate.

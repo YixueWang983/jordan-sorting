@@ -121,6 +121,11 @@ one oracle certification and one complete `checked` diagnostic per exact case
 outside timing. The machine-readable Week 11 integration-pilot configuration
 is frozen but has not been executed.
 
+Week 11 Day 1 is complete. The Week 11 execution plan, source baseline, and
+machine preflight are recorded. The frozen 1,050-row pilot remains
+`frozen_not_executed`; current power/load observations were not timing-ready,
+so no pilot timing was started.
+
 ## Project Structure
 
 ```text
@@ -219,6 +224,7 @@ docs/
     week9_summary.md
     week10_progress.md
     week10_summary.md
+    week11_progress.md
   thesis/
     experimental_methodology_draft.md
     implementation_draft.md
@@ -226,6 +232,7 @@ docs/
     week7_pilot_interpretation.md
     week7_pilot_auto_report.md
     week10_timing_baseline.md
+    week11_machine_preflight.md
   backlog/
     future_work_todo.md
   notes.md
@@ -243,6 +250,7 @@ docs/
     refined_thesis_direction_after_week8.md
     week9_plan.md
     week10_plan.md
+    week11_plan.md
   papers/
 ```
 
@@ -361,11 +369,14 @@ Important project documents:
 - [docs/design/paper_algorithm_ordinary_list.md](docs/design/paper_algorithm_ordinary_list.md): implementation-facing state, pseudocode, invariants, and worked trace for the 1990 paper algorithm.
 - [docs/plan/week9_plan.md](docs/plan/week9_plan.md): detailed Day 1-Day 7 ordinary-list implementation plan.
 - [docs/plan/week10_plan.md](docs/plan/week10_plan.md): timing-contamination study, execution-policy design, controlled pilot, and Week 11 experiment gate.
+- [docs/plan/week11_plan.md](docs/plan/week11_plan.md): immutable Week 11 runner, validator, preflight, pilot, evidence, analysis, and Week 12 handoff plan.
 - [docs/design/paper_timing_modes.md](docs/design/paper_timing_modes.md): current timed call graph, contamination sources, fixed execution modes, and validation boundaries.
 - [docs/analysis/week10_timing_baseline.md](docs/analysis/week10_timing_baseline.md): frozen Week 10 Day 1 commit, environment, validation evidence, pilot timings, findings, and open questions.
 - [docs/analysis/week10_contamination_pilot.md](docs/analysis/week10_contamination_pilot.md): validated Day 6 full-pilot evidence, overhead tables, scaling and family comparisons, figure, and interpretation boundary.
 - [docs/progress/week10_progress.md](docs/progress/week10_progress.md): Week 10 daily execution record through final timing-mode selection and the frozen Week 11 gate.
 - [docs/progress/week10_summary.md](docs/progress/week10_summary.md): Week 10 mode decision, correctness/timing boundary, contamination evidence, and Week 11 handoff.
+- [docs/progress/week11_progress.md](docs/progress/week11_progress.md): Week 11 daily execution record; Day 1 freezes the plan, baseline, and machine identity without running timing.
+- [docs/analysis/week11_machine_preflight.md](docs/analysis/week11_machine_preflight.md): fixed machine and Python environment plus Day 5/Day 6 timing-readiness checks.
 - [docs/design/final_experiment_spec.md](docs/design/final_experiment_spec.md): frozen experiment variables, correctness checks, aggregation rules, and non-claims.
 - [docs/design/oracle_and_test_generation.md](docs/design/oracle_and_test_generation.md): definitions and design notes for the oracle and generators.
 - [docs/design/notation.md](docs/design/notation.md): reusable terminology for candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and structural categories.
@@ -415,9 +426,10 @@ Important project documents:
 
 Immediate next task:
 
-- implement the dedicated Week 11 integration-pilot runner and validator
-  against `experiments/week11_experiment_gate.py`;
-- run only the frozen 1,050-row pilot after those regression gates pass;
+- implement only the Day 2 dedicated runner framework against
+  `experiments/week11_experiment_gate.py`;
+- support `--preflight-only` without creating the formal timing evidence;
+- do not run the frozen 1,050-row pilot before the Day 5 gate;
 - keep recognition separate from valid-input paper sorting;
 - do not treat the ordinary-list pilot as a linear-time claim.
 
