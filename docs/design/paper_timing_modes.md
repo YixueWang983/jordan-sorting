@@ -2,8 +2,8 @@
 
 Last updated: 2026-07-28
 
-Status: Week 10 Day 5 safe public/experiment interfaces implemented; awaiting
-review before the full contamination pilot.
+Status: Week 10 Day 6 full contamination pilot completed and validated; final
+mode selection remains a Day 7 decision.
 
 ## Purpose
 

@@ -668,6 +668,20 @@ The frozen full configuration produces:
 60 group-summary rows
 ```
 
+Analyze a validated full run:
+
+```bash
+python experiments/analyze_week10_contamination.py \
+  --run-dir results/runs/<run_id> \
+  --case-overheads-csv results/runs/<run_id>/case_overheads.csv \
+  --mode-table-csv docs/analysis/week10_mode_overhead_table.csv \
+  --component-table-csv docs/analysis/week10_component_overhead_table.csv \
+  --size-ratios-csv docs/analysis/week10_runtime_ratio_by_size.csv \
+  --family-ratios-csv docs/analysis/week10_runtime_ratio_by_family.csv \
+  --ratio-figure docs/analysis/week10_runtime_ratio_by_size.svg \
+  --observation-figure docs/analysis/week10_observation_ratio_by_size.svg
+```
+
 Oracle certification, structural profiling, and one complete checked
 diagnostic run occur before timing. The measured region calls only the
 pre-certified valid-input paper sorter for one fixed execution mode. Generated

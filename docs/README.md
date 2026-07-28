@@ -120,7 +120,8 @@ Current files:
   Week 10 daily execution record. Day 1 freezes the baseline, Day 2 implements
   immutable policy plumbing, Day 3 separates complete backend scans from
   always-on local split safety, Day 4 decouples trace and counters, and Day 5
-  adds safe certification plus the contamination runner/validator.
+  adds safe certification plus the contamination runner/validator. Day 6 runs,
+  validates, and analyzes the full 1,500-row contamination pilot.
 
 ## Plan Documents
 
@@ -199,6 +200,13 @@ Current files:
 - `week7_pilot_interpretation.md`
 - `week7_pilot_auto_report.md`
 - `week10_timing_baseline.md`
+- `week10_contamination_pilot.md`
+- `week10_component_overhead_table.csv`
+- `week10_mode_overhead_table.csv`
+- `week10_runtime_ratio_by_size.csv`
+- `week10_runtime_ratio_by_family.csv`
+- `week10_runtime_ratio_by_size.svg`
+- `week10_observation_ratio_by_size.svg`
 
 ## Thesis Drafts
 

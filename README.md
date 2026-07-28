@@ -111,8 +111,8 @@ ordinary-list reconstruction of the high-level 1990 paper algorithm:
   `oracle_valid = true` for every paper-algorithm row;
 - heterogeneous finger trees and a linear-time claim remain out of scope.
 
-Week 10 Day 1 through Day 4 are complete, and Day 5 implementation and
-validator hardening are awaiting final review. Day 1 froze the Week 9 timing
+Week 10 Day 1 through Day 5 are formally approved, and the validated Day 6
+full contamination pilot is awaiting review. Day 1 froze the Week 9 timing
 baseline and classified trace,
 counter, input-copy, and backend-validation costs. Day 2 added one immutable
 five-mode execution-policy registry without duplicating the Step 1/2/3 loop.
@@ -124,6 +124,8 @@ Day 5 adds a separate safe certification wrapper, a five-mode contamination
 runner, and a specialized semantic output validator while keeping oracle and
 complete diagnostics outside timed calls. The validator independently
 regenerates the frozen cases and rejects malformed evidence without crashing.
+Day 6 runs the isolated 1,500-row pilot and adds reproducible per-case
+overhead tables plus a runtime-ratio figure without selecting the final mode.
 
 ## Project Structure
 
@@ -166,6 +168,7 @@ tests/
   test_run_week9_pilot.py
   test_run_week10_timing_contamination.py
   test_validate_week10_timing_outputs.py
+  test_analyze_week10_contamination.py
 
 experiments/
   run_small_tests.py
@@ -179,6 +182,7 @@ experiments/
   run_week9_pilot.py
   run_week10_timing_contamination.py
   validate_week10_timing_outputs.py
+  analyze_week10_contamination.py
 
 results/
   week1_baseline_results.csv
@@ -306,7 +310,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 372 tests
+Ran 376 tests
 OK
 ```
 
@@ -362,7 +366,8 @@ Important project documents:
 - [docs/plan/week10_plan.md](docs/plan/week10_plan.md): timing-contamination study, execution-policy design, controlled pilot, and Week 11 experiment gate.
 - [docs/design/paper_timing_modes.md](docs/design/paper_timing_modes.md): current timed call graph, contamination sources, fixed execution modes, and validation boundaries.
 - [docs/analysis/week10_timing_baseline.md](docs/analysis/week10_timing_baseline.md): frozen Week 10 Day 1 commit, environment, validation evidence, pilot timings, findings, and open questions.
-- [docs/progress/week10_progress.md](docs/progress/week10_progress.md): Week 10 daily status through the Day 5 certification, timing-interface, smoke, and validator checkpoint.
+- [docs/analysis/week10_contamination_pilot.md](docs/analysis/week10_contamination_pilot.md): validated Day 6 full-pilot evidence, overhead tables, scaling and family comparisons, figure, and interpretation boundary.
+- [docs/progress/week10_progress.md](docs/progress/week10_progress.md): Week 10 daily status through the validated Day 6 full contamination pilot and analysis checkpoint.
 - [docs/design/final_experiment_spec.md](docs/design/final_experiment_spec.md): frozen experiment variables, correctness checks, aggregation rules, and non-claims.
 - [docs/design/oracle_and_test_generation.md](docs/design/oracle_and_test_generation.md): definitions and design notes for the oracle and generators.
 - [docs/design/notation.md](docs/design/notation.md): reusable terminology for candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and structural categories.
@@ -412,11 +417,10 @@ Important project documents:
 
 Immediate next task:
 
-- review the Week 10 Day 5 certification/timing boundary, runner, and hardened
-  validator;
-- after approval, run and analyze the frozen Day 6 1,500-row contamination
-  pilot;
-- do not select the final timing mode until the Day 6 evidence is validated.
+- review the validated Week 10 Day 6 contamination evidence and interpretation;
+- after approval, perform Day 7 final-mode selection and freeze the Week 11
+  gate;
+- do not treat the ordinary-list pilot as a linear-time claim.
 
 Later cleanup:
 

@@ -268,7 +268,7 @@ git diff --check:
 
 ## Day 5: Public Wrapper and Contamination Runner
 
-Status: implementation complete; awaiting review before Day 6.
+Status: formally approved and complete.
 
 - [x] added `certified_paper_jordan_sort()` in a separate module so the pure
   valid-input core remains oracle-free;
@@ -336,9 +336,74 @@ git diff --check:
 
 ## Day 6: Contamination Pilot
 
-Status: not started.
+Status: complete; awaiting review before Day 7.
 
-The 1,500-row contamination pilot has not run.
+- [x] ran the frozen full pilot from clean source commit `c195a2f`;
+- [x] generated exactly `1,500 / 100 / 60` raw, case-summary, and
+  group-summary rows;
+- [x] validated the full run with `valid = true`;
+- [x] confirmed zero timing errors, wrong outputs, and failed untimed audits;
+- [x] added `experiments/analyze_week10_contamination.py`;
+- [x] added equal-weighted per-case overhead and ratio aggregation;
+- [x] generated the component-overhead, mode, size, and family tables;
+- [x] generated a runtime-ratio figure by input size;
+- [x] recorded the interpretation and non-claim boundary in
+  `docs/analysis/week10_contamination_pilot.md`;
+- [x] kept final timing-mode selection out of Day 6.
+
+Key result:
+
+```text
+median checked / minimal ratio:
+    1.789x
+
+median instrumented / minimal ratio:
+    1.126x
+
+median trace_only / minimal ratio:
+    1.102x
+
+median counters_only / minimal ratio:
+    1.013x
+
+checked / minimal by n:
+    n=32:  1.510x
+    n=64:  2.488x
+    n=128: 4.239x
+    n=256: 7.989x
+```
+
+The generated full run remains reproducible but uncommitted under:
+
+```text
+results/runs/week10_contamination_full_20260728/
+```
+
+## Day 6 Verification
+
+```text
+python -m unittest discover -s tests:
+    Ran 376 tests
+    OK
+
+python -m compileall -q src experiments tests:
+    passed
+
+python experiments/validate_paper_algorithm.py --max-n 8:
+    exhaustive valid permutations = 2,074
+    generated valid cases = 48
+    all valid = true
+
+Week 10 full contamination pilot:
+    raw rows = 1,500
+    case-summary rows = 100
+    group-summary rows = 60
+    validator valid = true
+    errors = 0
+
+git diff --check:
+    passed
+```
 
 ## Day 7: Final Mode and Week 11 Gate
 
@@ -348,5 +413,5 @@ No final timing mode or Week 11 formal configuration has been frozen.
 
 ## Week 10 Status
 
-Week 10 is in progress. Day 1 through Day 4 are complete. Day 5 implementation
-is complete and awaiting review. Day 6 has not started.
+Week 10 is in progress. Day 1 through Day 5 are formally approved. Day 6 is
+complete and awaiting review. Day 7 has not started.
