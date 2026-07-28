@@ -2,8 +2,8 @@
 
 Last updated: 2026-07-28
 
-Status: Week 10 Day 2 policy architecture implemented; behavior switching has
-not started.
+Status: Week 10 Day 3 backend commit-audit separation implemented; trace and
+counter switching has not started.
 
 ## Purpose
 
@@ -53,9 +53,7 @@ through `n=7` in every mode, for 3,410 cross-mode executions. It also protects
 single-pass input consumption, input ownership, checked diagnostics, invalid
 mode rejection, and state/backend policy identity.
 
-This is an architecture checkpoint only. The three policy flags are carried
-through the system but are not yet used to change execution. At the end of
-Day 2, every mode still:
+At the end of Day 2, every mode still:
 
 ```text
 records trace events
@@ -64,9 +62,40 @@ runs complete backend commit validation
 ```
 
 Therefore `minimal` is currently a selectable contract name, not yet a
-minimal timed implementation. Day 3 will address backend commit validation;
-Day 4 will address trace and counter behavior. No experiment should interpret
-cross-mode timing before those checkpoints are complete.
+minimal timed implementation.
+
+## Day 3 Backend Audit Boundary
+
+Day 3 activates only `validate_backend_commits`. The backend now performs:
+
+```text
+all modes:
+    constant-size initial dummy/pair/list ownership postcondition
+    split-plan and ownership preconditions
+    descendant/cycle prevention
+    split materialization and ownership rebinding
+    always-on touched-state postconditions
+    rollback after any mutation or postcondition failure
+
+checked only:
+    complete initialization backend scan
+    complete post-split registry/parent-chain scan
+```
+
+The initialization postcondition checks only P2, P3, the two dummy roots, and
+their singleton lists. The split postcondition checks only state touched by the
+split: the retired list, newly materialized left/right lists, old and new
+owners, original split pairs, and next-list ID. Neither check scans unrelated
+registry entries or walks every parent chain.
+
+The default remains `checked`. Complete untimed diagnostics also remain
+checked and independently run the full backend audit and deterministic replay,
+including for a state produced under `minimal`.
+
+Trace and operation counters remain active in all five modes. Consequently,
+Day 3 does not yet provide a final minimal timing path. Day 4 will address
+trace and counter behavior; no contamination timing conclusion should be
+drawn before that checkpoint.
 
 ## Current Timing Call Graph
 
@@ -100,7 +129,8 @@ make_raw_rows()
                -> initialize partial order and pair families
                -> record two initialization trace events
                -> partial_order.validate_links()
-               -> sibling_backend.validate_invariants()
+               -> if checked:
+                  -> sibling_backend.validate_invariants()
             -> for i = 4..n:
                -> Step 1
                -> Step 2
@@ -108,7 +138,9 @@ make_raw_rows()
                -> Step 3(b)
                   -> optional ordinary-list split
                   -> commit_split()
-                  -> validate_invariants(require_all_owned=False)
+                  -> local touched-state postconditions
+                  -> if checked:
+                     -> validate_invariants(require_all_owned=False)
                -> Step 3(c)
          -> state.partial_order.to_list()
    -> end = time.perf_counter_ns()
@@ -212,22 +244,20 @@ entry points. The decision must be applied consistently and documented.
 
 ## Important Current Findings
 
-### Global Backend Validation Is Timed
+### Global Backend Validation Is Policy-Controlled
 
-`OrdinarySiblingListBackend.commit_split()` unconditionally runs:
+`OrdinarySiblingListBackend.commit_split()` always runs local touched-state
+postconditions. It runs the complete scan:
 
 ```python
 self.validate_invariants(require_all_owned=False)
 ```
 
-after publishing the staged mutation. `validate_invariants()` scans all live
-lists and pairs and follows parent chains for owned finite pairs. Its worst
-case is `O(p^2)` for `p` registered pairs. Repeating it after splits can create
-an aggregate cost approaching `O(n^3)` in the ordinary-list implementation.
-
-The current backend docstring says the global check does not belong to the
-timed path, but the actual call graph shows that it is currently timed. Week
-10 must make implementation and documentation agree.
+only when `validate_backend_commits` is true. `validate_invariants()` scans all
+live lists and pairs and follows parent chains for owned finite pairs. Its
+worst case is `O(p^2)` for `p` registered pairs. The default `checked` timing
+still includes this cost for comparison with the Week 9 baseline. The other
+four modes omit it while retaining local safety and rollback.
 
 ### Trace Is Timed
 
@@ -428,15 +458,24 @@ No mode may change branch decisions or Step 1/2/3 semantics.
 3. `paper_jordan_diagnostics_valid()` always uses `checked`.
 4. Policy flags remain inactive until their dedicated implementation days.
 
+## Resolved Day 3 Decisions
+
+1. Complete backend validation is controlled by
+   `validate_backend_commits`.
+2. Both initialization and post-split complete backend scans are checked-only.
+3. Split-local preconditions, touched-state postconditions, and rollback remain
+   active in every mode.
+4. Constant-size initial dummy/pair/list ownership postconditions remain
+   active in every mode.
+5. Complete diagnostics remain checked regardless of the mode used to produce
+   the state.
+6. Trace and counter flags remain inactive until Day 4.
+
 ## Open Design Questions
 
-1. Which explicit local postconditions must replace the safety signal formerly
-   supplied by the global post-commit scan before minimal mode is allowed?
-2. Should fixed initialization-wide validation be disabled in every
-   non-checked mode or retained because its state size is constant?
-3. Should formal timing use public APIs, including their inner materialization,
+1. Should formal timing use public APIs, including their inner materialization,
    or pre-materialized internal entry points for all compared algorithms?
-4. The five-mode design identifies the trace/counter interaction with commit
+2. The five-mode design identifies the trace/counter interaction with commit
    validation disabled and estimates validation overhead when trace and
    counters are both enabled. It does not identify validation-by-trace,
    validation-by-counter, or three-way interactions. If the pilot suggests
@@ -445,10 +484,10 @@ No mode may change branch decisions or Step 1/2/3 semantics.
    `validation_trace`, and `validation_counters`; the current plan records but
    does not
    implement them.
-5. Should metrics in disabled mode be an empty mapping, zero-filled mapping,
+3. Should metrics in disabled mode be an empty mapping, zero-filled mapping,
    or unavailable object while preserving diagnostics compatibility?
 
-These questions remain intentionally unresolved after Day 2.
+These questions remain intentionally unresolved after Day 3.
 
 ## Non-Claim Boundary
 

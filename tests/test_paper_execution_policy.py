@@ -35,7 +35,11 @@ from paper_execution_policy import (  # noqa: E402
     require_fixed_paper_execution_policy,
     resolve_paper_execution_policy,
 )
-from paper_jordan import validate_paper_jordan_state  # noqa: E402
+from paper_jordan import (  # noqa: E402
+    _validate_initial_backend_postconditions,
+    initialize_paper_jordan_state,
+    validate_paper_jordan_state,
+)
 from paper_jordan_sort import (  # noqa: E402
     _run_paper_jordan_valid,
     paper_jordan_diagnostics_valid,
@@ -336,7 +340,66 @@ class PaperExecutionPolicyTests(unittest.TestCase):
                 )
                 self.assertEqual(values.iteration_count, 1)
 
-    def test_day2_modes_do_not_disable_trace_counters_or_commit_validation(self):
+    def test_checked_instrumented_and_minimal_backend_states_match(self):
+        values = [1, 2, 3, 4, 6, 7, 0, 5]
+        states = {
+            mode: _run_paper_jordan_valid(
+                list(values),
+                execution_policy=PAPER_EXECUTION_POLICIES[mode],
+            )
+            for mode in (CHECKED_MODE, INSTRUMENTED_MODE, MINIMAL_MODE)
+        }
+        checked = states[CHECKED_MODE]
+
+        for mode, state in states.items():
+            with self.subTest(mode=mode):
+                self.assertEqual(
+                    state.partial_order.to_point_ids(),
+                    checked.partial_order.to_point_ids(),
+                )
+                self.assertEqual(state.processed_count, checked.processed_count)
+                self.assertEqual(
+                    state.sibling_backend.audit_snapshot(),
+                    checked.sibling_backend.audit_snapshot(),
+                )
+
+    def test_complete_state_audit_remains_checked_for_minimal_state(self):
+        state = _run_paper_jordan_valid(
+            [2, 3, 1, 4],
+            execution_policy=MINIMAL_POLICY,
+        )
+        pair = state.sibling_backend.get_pair(2)
+        pair.parent_pair_id = state.lower_dummy_pair_id
+
+        with self.assertRaises(RuntimeError):
+            validate_paper_jordan_state(state)
+
+    def test_initial_local_postconditions_detect_ownership_corruption(self):
+        state = initialize_paper_jordan_state(
+            [2, 3, 1, 4],
+            execution_mode=MINIMAL_MODE,
+        )
+        upper_dummy = state.sibling_backend.get_pair(
+            state.upper_dummy_pair_id
+        )
+        lower_dummy = state.sibling_backend.get_pair(
+            state.lower_dummy_pair_id
+        )
+        pair_2 = state.sibling_backend.get_pair(state.pair_by_end_index[2])
+        pair_3 = state.sibling_backend.get_pair(state.pair_by_end_index[3])
+        family_records = (
+            (upper_dummy, pair_2, pair_2.sibling_list_id),
+            (lower_dummy, pair_3, pair_3.sibling_list_id),
+        )
+        pair_2.parent_pair_id = state.lower_dummy_pair_id
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            "initial finite-pair ownership is inconsistent",
+        ):
+            _validate_initial_backend_postconditions(state, family_records)
+
+    def test_day3_policy_only_disables_complete_backend_validation(self):
         values = [1, 2, 3, 4, 6, 7, 0, 5]
         original_validate = OrdinarySiblingListBackend.validate_invariants
 
@@ -364,7 +427,11 @@ class PaperExecutionPolicyTests(unittest.TestCase):
                     len(state.trace),
                 )
                 self.assertGreater(state.metrics["output_insertions"], 0)
-                self.assertIn(False, validation_flags)
+                if mode == CHECKED_MODE:
+                    self.assertIn(True, validation_flags)
+                    self.assertIn(False, validation_flags)
+                else:
+                    self.assertEqual(validation_flags, [])
 
 
 if __name__ == "__main__":

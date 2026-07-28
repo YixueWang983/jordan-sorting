@@ -88,7 +88,7 @@ commit diff check:
 
 ## Day 2: Unified Execution Policy
 
-Status: implementation complete; awaiting review before Day 3.
+Status: complete.
 
 - [x] added the immutable `PaperExecutionPolicy` value object;
 - [x] added fixed `checked`, `instrumented`, `trace_only`,
@@ -151,9 +151,61 @@ git diff --check:
 
 ## Day 3: Backend Commit-Audit Separation
 
-Status: not started.
+Status: implementation complete; awaiting review before Day 4.
 
-Global backend validation has not been disabled or made optional.
+- [x] retained split-plan, acquired-side, parent, ownership, and stale-plan
+  checks in every mode;
+- [x] retained descendant/cycle prevention and rollback snapshots in every
+  mode;
+- [x] added an always-on constant-size initialization postcondition for P2/P3,
+  both dummy roots, and their singleton lists;
+- [x] added always-on local split postconditions for the retired list, staged
+  lists, owners, transferred pairs, and next-list ID;
+- [x] kept local postconditions inside the atomic rollback boundary;
+- [x] made initialization and post-split complete backend scans conditional on
+  `validate_backend_commits`;
+- [x] preserved complete backend scans in the default `checked` mode;
+- [x] removed complete backend scans from `instrumented`, `trace_only`,
+  `counters_only`, and `minimal` execution;
+- [x] verified touched ownership corruption is detected and rolled back
+  without a global scan;
+- [x] verified invalid-side and stale-plan guards remain active in `minimal`;
+- [x] verified invalid-side, unowned-parent, and ownership-mismatch guards
+  produce no additional mutation with complete audits both enabled and
+  disabled;
+- [x] verified checked global-audit failure and minimal local-postcondition
+  failure both restore the exact pre-call backend snapshot;
+- [x] verified checked, instrumented, and minimal backend snapshots agree;
+- [x] verified complete state diagnostics still reject corruption in a
+  minimal-produced state;
+- [x] kept trace construction and operation counters active in all modes;
+- [x] ran all 348 unit tests and `compileall`;
+- [x] reproduced 2,074 exhaustive valid permutations through `n=8`;
+- [x] reproduced all 48 fixed generated validation cases;
+- [x] passed `git diff --check`.
+
+Day 3 changes only complete backend audit scheduling. It does not change
+Step 1/2/3, trace, counters, stage results, split materialization, local safety
+checks, rollback, or output recovery.
+
+## Day 3 Verification
+
+```text
+python -m unittest discover -s tests:
+    Ran 348 tests
+    OK
+
+python -m compileall -q src experiments tests:
+    passed
+
+python experiments/validate_paper_algorithm.py --max-n 8:
+    exhaustive valid permutations = 2,074
+    generated valid cases = 48
+    all valid = true
+
+git diff --check:
+    passed
+```
 
 ## Day 4: Trace and Counter Decoupling
 
@@ -183,4 +235,5 @@ No final timing mode or Week 11 formal configuration has been frozen.
 
 ## Week 10 Status
 
-Week 10 is in progress. Day 1 and Day 2 are complete. Day 3 has not started.
+Week 10 is in progress. Day 1, Day 2, and Day 3 are complete. Day 4 has not
+started.

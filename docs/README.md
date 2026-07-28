@@ -51,8 +51,8 @@ Current files:
 
 - `paper_timing_modes.md`
   Week 10 timing call graph, contamination classification, fixed five-mode
-  execution-policy architecture, local/global validation boundary, and
-  non-claim contract.
+  execution-policy architecture, checked-only complete backend audit boundary,
+  always-on local split safety, and non-claim contract.
 
 ## Progress Documents
 
@@ -116,8 +116,9 @@ Current files:
   boundary, and Week 10 handoff.
 
 - `week10_progress.md`
-  Week 10 daily execution record. Day 1 freezes the baseline; Day 2 implements
-  immutable policy selection and plumbing without changing execution behavior.
+  Week 10 daily execution record. Day 1 freezes the baseline, Day 2 implements
+  immutable policy plumbing, and Day 3 separates complete backend scans from
+  always-on local split safety.
 
 ## Plan Documents
 

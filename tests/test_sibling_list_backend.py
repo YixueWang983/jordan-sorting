@@ -9,6 +9,10 @@ from unittest.mock import patch
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
+from paper_execution_policy import (  # noqa: E402
+    CHECKED_POLICY,
+    MINIMAL_POLICY,
+)
 from sibling_list_backend import (  # noqa: E402
     AFTER,
     BEFORE,
@@ -31,13 +35,20 @@ LOWER_DUMMY_ID = -2
 class SiblingListBackendTests(unittest.TestCase):
     def setUp(self):
         self.values = {}
-        self.backend = OrdinarySiblingListBackend(self.values.__getitem__)
-        self.backend.register_pair(
+        self.backend = self.make_backend()
+
+    def make_backend(self, execution_policy=CHECKED_POLICY):
+        backend = OrdinarySiblingListBackend(
+            self.values.__getitem__,
+            execution_policy=execution_policy,
+        )
+        backend.register_pair(
             PairRecord(UPPER_DUMMY_ID, None, None, None, UPPER, is_dummy=True)
         )
-        self.backend.register_pair(
+        backend.register_pair(
             PairRecord(LOWER_DUMMY_ID, None, None, None, LOWER, is_dummy=True)
         )
+        return backend
 
     def register_finite_pair(self, end_index, first_value, second_value):
         first_point_id = end_index - 1
@@ -522,6 +533,202 @@ class SiblingListBackendTests(unittest.TestCase):
             dummy_children,
         )
         self.assertTrue(self.backend.validate_invariants())
+
+    def test_minimal_commit_skips_global_audit_and_runs_local_postconditions(self):
+        self.backend = self.make_backend(MINIMAL_POLICY)
+        child = self.register_finite_pair(2, 1, 2)
+        new_parent = self.register_finite_pair(4, 0, 5)
+        list_id = self.backend.make_list(child.pair_id, UPPER_DUMMY_ID)
+        self.backend.make_list(new_parent.pair_id, UPPER_DUMMY_ID)
+        local_postconditions = self.backend._validate_split_commit_postconditions
+
+        with patch.object(
+            self.backend,
+            "_validate_split_commit_postconditions",
+            wraps=local_postconditions,
+        ) as local_mock:
+            with patch.object(
+                self.backend,
+                "validate_invariants",
+                side_effect=AssertionError("global audit must be skipped"),
+            ):
+                result = self.backend.split_pairs_at_value(
+                    list_id,
+                    boundary_value=5,
+                    acquired_side=LEFT,
+                    new_parent_pair_id=new_parent.pair_id,
+                )
+
+        self.assertIsNotNone(result.left_list_id)
+        self.assertIsNone(result.right_list_id)
+        self.assertEqual(local_mock.call_count, 1)
+        self.assertTrue(self.backend.validate_invariants())
+
+    def test_minimal_commit_rolls_back_when_local_postcondition_fails(self):
+        self.backend = self.make_backend(MINIMAL_POLICY)
+        child = self.register_finite_pair(2, 1, 2)
+        new_parent = self.register_finite_pair(4, 0, 5)
+        list_id = self.backend.make_list(child.pair_id, UPPER_DUMMY_ID)
+        self.backend.make_list(new_parent.pair_id, UPPER_DUMMY_ID)
+        before = self.backend.audit_snapshot()
+
+        with patch.object(
+            self.backend,
+            "_validate_split_commit_postconditions",
+            side_effect=RuntimeError("forced local postcondition failure"),
+        ):
+            with self.assertRaisesRegex(
+                RuntimeError,
+                "forced local postcondition failure",
+            ):
+                self.backend.split_pairs_at_value(
+                    list_id,
+                    boundary_value=5,
+                    acquired_side=LEFT,
+                    new_parent_pair_id=new_parent.pair_id,
+                )
+
+        self.assertEqual(self.backend.audit_snapshot(), before)
+        self.assertTrue(self.backend.validate_invariants())
+
+    def test_minimal_local_postconditions_detect_ownership_corruption(self):
+        self.backend = self.make_backend(MINIMAL_POLICY)
+        child = self.register_finite_pair(2, 1, 2)
+        new_parent = self.register_finite_pair(4, 0, 5)
+        list_id = self.backend.make_list(child.pair_id, UPPER_DUMMY_ID)
+        self.backend.make_list(new_parent.pair_id, UPPER_DUMMY_ID)
+        before = self.backend.audit_snapshot()
+        local_postconditions = self.backend._validate_split_commit_postconditions
+
+        def corrupt_then_validate(**kwargs):
+            child.parent_pair_id = LOWER_DUMMY_ID
+            return local_postconditions(**kwargs)
+
+        with patch.object(
+            self.backend,
+            "_validate_split_commit_postconditions",
+            side_effect=corrupt_then_validate,
+        ):
+            with self.assertRaisesRegex(RuntimeError, "wrong parent"):
+                self.backend.split_pairs_at_value(
+                    list_id,
+                    boundary_value=5,
+                    acquired_side=LEFT,
+                    new_parent_pair_id=new_parent.pair_id,
+                )
+
+        self.assertEqual(self.backend.audit_snapshot(), before)
+        self.assertTrue(self.backend.validate_invariants())
+
+    def test_minimal_policy_keeps_invalid_side_and_stale_plan_guards(self):
+        self.backend = self.make_backend(MINIMAL_POLICY)
+        first = self.register_finite_pair(2, 1, 2)
+        second = self.register_finite_pair(4, 3, 4)
+        new_parent = self.register_finite_pair(6, 0, 5)
+        list_id = self.backend.make_list(first.pair_id, UPPER_DUMMY_ID)
+        plan = self.backend.split_by_key(list_id, 2, lambda pair: pair.pair_id)
+        self.backend.make_list(new_parent.pair_id, UPPER_DUMMY_ID)
+        before_invalid_side = self.backend.audit_snapshot()
+
+        with self.assertRaisesRegex(ValueError, "acquired_side"):
+            self.backend.commit_split(plan, "middle", new_parent.pair_id)
+        self.assertEqual(self.backend.audit_snapshot(), before_invalid_side)
+
+        self.backend.insert_at_boundary(second.pair_id, first.pair_id, AFTER)
+        before_stale_plan = self.backend.audit_snapshot()
+        with self.assertRaisesRegex(ValueError, "stale"):
+            self.backend.commit_split(plan, LEFT, new_parent.pair_id)
+        self.assertEqual(self.backend.audit_snapshot(), before_stale_plan)
+        self.assertTrue(self.backend.validate_invariants())
+
+    def test_split_guards_apply_with_and_without_global_audit(self):
+        for policy in (CHECKED_POLICY, MINIMAL_POLICY):
+            with self.subTest(policy=policy.name, guard="invalid_side"):
+                self.values = {}
+                self.backend = self.make_backend(policy)
+                child = self.register_finite_pair(2, 1, 2)
+                new_parent = self.register_finite_pair(4, 0, 5)
+                list_id = self.backend.make_list(
+                    child.pair_id,
+                    UPPER_DUMMY_ID,
+                )
+                self.backend.make_list(
+                    new_parent.pair_id,
+                    UPPER_DUMMY_ID,
+                )
+                plan = self.backend.split_by_key(
+                    list_id,
+                    5,
+                    lambda pair: pair.pair_id,
+                )
+                before = self.backend.audit_snapshot()
+
+                with self.assertRaisesRegex(ValueError, "acquired_side"):
+                    self.backend.commit_split(
+                        plan,
+                        "middle",
+                        new_parent.pair_id,
+                    )
+                self.assertEqual(self.backend.audit_snapshot(), before)
+
+            with self.subTest(policy=policy.name, guard="unowned_parent"):
+                self.values = {}
+                self.backend = self.make_backend(policy)
+                child = self.register_finite_pair(2, 1, 2)
+                new_parent = self.register_finite_pair(4, 0, 5)
+                list_id = self.backend.make_list(
+                    child.pair_id,
+                    UPPER_DUMMY_ID,
+                )
+                plan = self.backend.split_by_key(
+                    list_id,
+                    5,
+                    lambda pair: pair.pair_id,
+                )
+                before = self.backend.audit_snapshot()
+
+                with self.assertRaisesRegex(ValueError, "finite parent"):
+                    self.backend.commit_split(
+                        plan,
+                        LEFT,
+                        new_parent.pair_id,
+                    )
+                self.assertEqual(self.backend.audit_snapshot(), before)
+                self.assertTrue(
+                    self.backend.validate_invariants(require_all_owned=False)
+                )
+
+            with self.subTest(policy=policy.name, guard="ownership_mismatch"):
+                self.values = {}
+                self.backend = self.make_backend(policy)
+                child = self.register_finite_pair(2, 1, 2)
+                new_parent = self.register_finite_pair(4, 0, 5)
+                list_id = self.backend.make_list(
+                    child.pair_id,
+                    UPPER_DUMMY_ID,
+                )
+                self.backend.make_list(
+                    new_parent.pair_id,
+                    UPPER_DUMMY_ID,
+                )
+                plan = self.backend.split_by_key(
+                    list_id,
+                    5,
+                    lambda pair: pair.pair_id,
+                )
+                child.parent_pair_id = new_parent.pair_id
+                before = self.backend.audit_snapshot()
+
+                with self.assertRaisesRegex(ValueError, "old parent"):
+                    self.backend.commit_split(
+                        plan,
+                        LEFT,
+                        new_parent.pair_id,
+                    )
+                self.assertEqual(self.backend.audit_snapshot(), before)
+
+                child.parent_pair_id = UPPER_DUMMY_ID
+                self.assertTrue(self.backend.validate_invariants())
 
     def test_validate_invariants_rejects_family_tree_cycle(self):
         parent = self.register_finite_pair(2, 0, 10)

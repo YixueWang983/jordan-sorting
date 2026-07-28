@@ -336,7 +336,7 @@ class OrdinarySiblingListBackend:
         return self.commit_split(plan, acquired_side, new_parent_pair_id)
 
     def commit_split(self, plan, acquired_side, new_parent_pair_id):
-        """验证完整 final state 后，一次性发布 split ownership 变更。"""
+        """验证局部 final state 后，原子发布 split ownership 变更。"""
         if not isinstance(plan, SplitPlan):
             raise TypeError("plan must be a SplitPlan")
         if acquired_side not in {LEFT, RIGHT}:
@@ -441,7 +441,22 @@ class OrdinarySiblingListBackend:
                 pair.sibling_list_id = right_list_id
                 pair.parent_pair_id = right_owner_id
 
-            self.validate_invariants(require_all_owned=False)
+            self._validate_split_commit_postconditions(
+                plan=plan,
+                retired_list_id=retired.list_id,
+                staged_lists=staged_lists,
+                old_owner=old_owner,
+                new_parent=new_parent,
+                expected_old_owner_lists=old_owner_lists,
+                expected_new_parent_lists=new_parent_lists,
+                left_list_id=left_list_id,
+                right_list_id=right_list_id,
+                left_owner_id=left_owner_id,
+                right_owner_id=right_owner_id,
+                expected_next_list_id=next_list_id,
+            )
+            if self._execution_policy.validate_backend_commits:
+                self.validate_invariants(require_all_owned=False)
         except Exception:
             for list_id in staged_lists:
                 self._lists.pop(list_id, None)
@@ -457,8 +472,82 @@ class OrdinarySiblingListBackend:
 
         return SplitCommitResult(left_list_id, right_list_id)
 
+    def _validate_split_commit_postconditions(
+        self,
+        *,
+        plan,
+        retired_list_id,
+        staged_lists,
+        old_owner,
+        new_parent,
+        expected_old_owner_lists,
+        expected_new_parent_lists,
+        left_list_id,
+        right_list_id,
+        left_owner_id,
+        right_owner_id,
+        expected_next_list_id,
+    ):
+        """只验证本次 split 触及的局部 ownership，不扫描完整 registry。"""
+        if retired_list_id in self._lists:
+            raise RuntimeError("retired sibling list is still live")
+        if self._next_list_id != expected_next_list_id:
+            raise RuntimeError("next sibling-list ID does not match split commit")
+        if old_owner.child_sibling_list_ids != expected_old_owner_lists:
+            raise RuntimeError("old-parent child lists do not match split commit")
+        if new_parent.child_sibling_list_ids != expected_new_parent_lists:
+            raise RuntimeError("new-parent child lists do not match split commit")
+
+        expected_sides = (
+            (
+                plan.left_pair_ids,
+                left_list_id,
+                left_owner_id,
+            ),
+            (
+                plan.right_pair_ids,
+                right_list_id,
+                right_owner_id,
+            ),
+        )
+        expected_live_list_ids = {
+            list_id
+            for _, list_id, _ in expected_sides
+            if list_id is not None
+        }
+        if set(staged_lists) != expected_live_list_ids:
+            raise RuntimeError("staged sibling lists do not match split outputs")
+
+        for pair_ids, list_id, owner_id in expected_sides:
+            if not pair_ids:
+                if list_id is not None:
+                    raise RuntimeError("empty split side has a live sibling list")
+                continue
+            if list_id is None:
+                raise RuntimeError("nonempty split side has no sibling list")
+
+            sibling_list = self.get_list(list_id)
+            if sibling_list.list_id != list_id:
+                raise RuntimeError("split output list mapping is inconsistent")
+            if sibling_list.owner_parent_pair_id != owner_id:
+                raise RuntimeError("split output list has the wrong owner")
+            if tuple(sibling_list.pair_ids) != pair_ids:
+                raise RuntimeError("split output list has the wrong pair order")
+
+            owner = self.get_pair(owner_id)
+            if owner.child_sibling_list_ids.count(list_id) != 1:
+                raise RuntimeError("split output list is not owned exactly once")
+            for pair_id in pair_ids:
+                pair = self.get_pair(pair_id)
+                if pair.sibling_list_id != list_id:
+                    raise RuntimeError("split pair has the wrong sibling list")
+                if pair.parent_pair_id != owner_id:
+                    raise RuntimeError("split pair has the wrong parent")
+                if pair.family != owner.family:
+                    raise RuntimeError("split pair and owner families differ")
+
     def validate_invariants(self, require_all_owned=True):
-        """执行完整 correctness/debug 验证；该全局检查不属于计时路径。"""
+        """执行完整 correctness/debug 验证；非 checked 计时路径会跳过。"""
         pair_occurrences = {}
         list_owner_occurrences = {}
 

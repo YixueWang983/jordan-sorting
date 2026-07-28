@@ -244,8 +244,51 @@ def _initialize_paper_jordan_state_values(
     )
 
     partial_order.validate_links()
-    sibling_backend.validate_invariants()
+    _validate_initial_backend_postconditions(
+        state,
+        (
+            (upper_dummy, pair_2, upper_list_id),
+            (lower_dummy, pair_3, lower_list_id),
+        ),
+    )
+    if execution_policy.validate_backend_commits:
+        sibling_backend.validate_invariants()
     return state
+
+
+def _validate_initial_backend_postconditions(state, family_records):
+    """常数规模核对初始 dummy/pair/list ownership，不扫描完整 registry。"""
+    if state.sibling_backend.execution_policy is not state.execution_policy:
+        raise RuntimeError("initial state and backend policies differ")
+
+    for dummy, pair, list_id in family_records:
+        if state.sibling_backend.get_pair(dummy.pair_id) is not dummy:
+            raise RuntimeError("initial dummy is not registered by identity")
+        if (
+            not dummy.is_dummy
+            or dummy.parent_pair_id is not None
+            or dummy.sibling_list_id is not None
+            or dummy.child_sibling_list_ids != [list_id]
+        ):
+            raise RuntimeError("initial dummy ownership is inconsistent")
+
+        if state.sibling_backend.get_pair(pair.pair_id) is not pair:
+            raise RuntimeError("initial finite pair is not registered by identity")
+        if (
+            pair.is_dummy
+            or pair.parent_pair_id != dummy.pair_id
+            or pair.sibling_list_id != list_id
+            or pair.family != dummy.family
+        ):
+            raise RuntimeError("initial finite-pair ownership is inconsistent")
+
+        sibling_list = state.sibling_backend.get_list(list_id)
+        if (
+            sibling_list.list_id != list_id
+            or sibling_list.owner_parent_pair_id != dummy.pair_id
+            or sibling_list.pair_ids != [pair.pair_id]
+        ):
+            raise RuntimeError("initial sibling-list ownership is inconsistent")
 
 
 def validate_paper_jordan_state(state):

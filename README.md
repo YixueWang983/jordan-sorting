@@ -111,13 +111,13 @@ ordinary-list reconstruction of the high-level 1990 paper algorithm:
   `oracle_valid = true` for every paper-algorithm row;
 - heterogeneous finger trees and a linear-time claim remain out of scope.
 
-Week 10 Day 1 and Day 2 are complete. Day 1 froze the Week 9 timing baseline
-and classified trace, counter, input-copy, and backend-validation costs. Day 2
-added one immutable five-mode execution-policy registry and passed each fixed
-policy through the existing public API, shared runner, state, and sibling-list
-backend without duplicating the Step 1/2/3 loop. This is architecture only:
-all modes still record trace, update counters, and run backend commit
-validation until Day 3 and Day 4 implement those switches.
+Week 10 Day 1, Day 2, and Day 3 are complete. Day 1 froze the Week 9 timing
+baseline and classified trace, counter, input-copy, and backend-validation
+costs. Day 2 added one immutable five-mode execution-policy registry without
+duplicating the Step 1/2/3 loop. Day 3 made complete initialization and
+post-split backend scans checked-only while retaining local safety checks,
+touched-state postconditions, and rollback in every mode. Trace and counters
+remain active until Day 4.
 
 ## Project Structure
 
@@ -294,7 +294,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 340 tests
+Ran 348 tests
 OK
 ```
 
@@ -389,9 +389,10 @@ Important project documents:
   but assumes pre-certified valid input.
 - Experiment configuration by valid-family name is not treated as
   certification: generated paper-sorter cases are checked individually.
-- Current paper-algorithm timing still includes trace/counter recording,
-  ordinary-list split materialization, and correctness-first backend commit
-  validation. The Week 9 pilot is not final performance evidence.
+- Current paper-algorithm timing still includes trace/counter recording and
+  ordinary-list split materialization. Complete backend commit validation is
+  checked-only after Week 10 Day 3. The Week 9 pilot is not final performance
+  evidence.
 - No level-linked or heterogeneous finger-tree backend is implemented.
 - Visualization is still future work.
 
@@ -399,9 +400,9 @@ Important project documents:
 
 Immediate next task:
 
-- review the Week 10 Day 2 execution-policy architecture;
-- after approval, begin Day 3 by separating complete backend commit validation
-  from required local mutation checks;
+- review the Week 10 Day 3 backend audit boundary and rollback gates;
+- after approval, begin Day 4 by decoupling trace and counters without changing
+  stage results or algorithm branches;
 - preserve the single Step 1/2/3 main loop and the default checked behavior;
 - do not run the contamination pilot or formal experiment yet.
 
