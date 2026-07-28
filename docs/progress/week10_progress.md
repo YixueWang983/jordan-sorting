@@ -101,10 +101,20 @@ Status: implementation complete; awaiting review before Day 3.
 - [x] kept `paper_jordan_diagnostics_valid()` explicitly checked;
 - [x] preserved one Step 1/2/3 control flow;
 - [x] verified small and representative valid inputs across all five modes;
+- [x] permanently verified all 682 oracle-valid permutations through `n=7`
+  across all five modes, for 3,410 mode executions;
 - [x] verified duplicate-input behavior remains unchanged;
+- [x] verified each mode preserves list inputs and consumes single-pass
+  iterables exactly once;
+- [x] rejected non-string, empty, and unknown modes before small-input
+  shortcuts;
+- [x] verified diagnostics always enter the shared runner with
+  `CHECKED_POLICY`;
+- [x] rejected state/backend policy disagreement, caller-created policy
+  copies, and invalid policy types during complete state audit;
 - [x] verified all five modes still record trace, count operations, and run
   backend commit validation at the Day 2 checkpoint;
-- [x] ran all 335 unit tests and `compileall`;
+- [x] ran all 340 unit tests and `compileall`;
 - [x] reproduced 2,074 exhaustive valid permutations through `n=8`;
 - [x] reproduced all 48 fixed generated validation cases;
 - [x] passed `git diff --check`.
@@ -124,7 +134,7 @@ does not yet produce a minimal timed path.
 
 ```text
 python -m unittest discover -s tests:
-    Ran 335 tests
+    Ran 340 tests
     OK
 
 python -m compileall -q src experiments tests:

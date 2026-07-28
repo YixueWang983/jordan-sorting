@@ -48,6 +48,11 @@ The registry and policy objects are immutable. Internal entry points reject
 caller-created policy copies, and the full state audit requires the state and
 backend to hold the same registry object. The default remains `checked`.
 
+The permanent Day 2 regression gate covers all 682 oracle-valid permutations
+through `n=7` in every mode, for 3,410 cross-mode executions. It also protects
+single-pass input consumption, input ownership, checked diagnostics, invalid
+mode rejection, and state/backend policy identity.
+
 This is an architecture checkpoint only. The three policy flags are carried
 through the system but are not yet used to change execution. At the end of
 Day 2, every mode still:

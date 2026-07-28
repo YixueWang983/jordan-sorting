@@ -17,6 +17,7 @@ from generators import (  # noqa: E402
     generate_incremental_valid,
     generate_nested,
 )
+from oracle import oracle  # noqa: E402
 from paper_execution_policy import (  # noqa: E402
     CHECKED_MODE,
     CHECKED_POLICY,
@@ -34,8 +35,10 @@ from paper_execution_policy import (  # noqa: E402
     require_fixed_paper_execution_policy,
     resolve_paper_execution_policy,
 )
+from paper_jordan import validate_paper_jordan_state  # noqa: E402
 from paper_jordan_sort import (  # noqa: E402
     _run_paper_jordan_valid,
+    paper_jordan_diagnostics_valid,
     paper_jordan_sort_valid,
 )
 from sibling_list_backend import OrdinarySiblingListBackend  # noqa: E402
@@ -87,11 +90,22 @@ class PaperExecutionPolicyTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             PAPER_EXECUTION_POLICIES["custom"] = CHECKED_POLICY
 
-    def test_unknown_mode_and_caller_defined_policy_are_rejected(self):
-        with self.assertRaisesRegex(ValueError, "unknown paper execution mode"):
-            resolve_paper_execution_policy("unknown")
-        with self.assertRaisesRegex(TypeError, "execution_mode must be a string"):
-            resolve_paper_execution_policy(None)
+    def test_invalid_modes_and_caller_defined_policy_are_rejected(self):
+        for invalid_mode in (None, True, False, 1, 0, object()):
+            with self.subTest(invalid_mode=invalid_mode):
+                with self.assertRaisesRegex(
+                    TypeError,
+                    "execution_mode must be a string",
+                ):
+                    resolve_paper_execution_policy(invalid_mode)
+
+        for invalid_mode in ("", "unknown"):
+            with self.subTest(invalid_mode=invalid_mode):
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "unknown paper execution mode",
+                ):
+                    resolve_paper_execution_policy(invalid_mode)
 
         copied_policy = PaperExecutionPolicy(
             name=CHECKED_MODE,
@@ -102,9 +116,22 @@ class PaperExecutionPolicyTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "fixed policy registry"):
             require_fixed_paper_execution_policy(copied_policy)
 
-    def test_unknown_public_mode_is_rejected_before_small_input_shortcuts(self):
-        with self.assertRaisesRegex(ValueError, "unknown paper execution mode"):
-            paper_jordan_sort_valid([], execution_mode="unknown")
+    def test_invalid_public_modes_are_rejected_before_small_input_shortcuts(self):
+        for invalid_mode in (None, True, False, 1, 0, object()):
+            with self.subTest(invalid_mode=invalid_mode):
+                with self.assertRaisesRegex(
+                    TypeError,
+                    "execution_mode must be a string",
+                ):
+                    paper_jordan_sort_valid([], execution_mode=invalid_mode)
+
+        for invalid_mode in ("", "unknown"):
+            with self.subTest(invalid_mode=invalid_mode):
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "unknown paper execution mode",
+                ):
+                    paper_jordan_sort_valid([], execution_mode=invalid_mode)
 
     def test_small_inputs_match_in_all_modes(self):
         cases = [
@@ -176,6 +203,39 @@ class PaperExecutionPolicyTests(unittest.TestCase):
                         default_result,
                     )
 
+    def test_all_valid_permutations_through_n7_match_in_every_mode(self):
+        expected_counts = {
+            0: 1,
+            1: 1,
+            2: 2,
+            3: 6,
+            4: 16,
+            5: 50,
+            6: 144,
+            7: 462,
+        }
+
+        for n, expected_count in expected_counts.items():
+            valid_count = 0
+            expected = list(range(n))
+
+            for values in itertools.permutations(expected):
+                if not oracle(values)["valid"]:
+                    continue
+
+                valid_count += 1
+                for mode in PAPER_EXECUTION_MODE_NAMES:
+                    with self.subTest(n=n, values=values, mode=mode):
+                        self.assertEqual(
+                            paper_jordan_sort_valid(
+                                values,
+                                execution_mode=mode,
+                            ),
+                            expected,
+                        )
+
+            self.assertEqual(valid_count, expected_count)
+
     def test_policy_object_reaches_state_and_backend(self):
         values = [2, 3, 1, 4]
 
@@ -190,6 +250,91 @@ class PaperExecutionPolicyTests(unittest.TestCase):
                 self.assertIs(state.execution_policy, policy)
                 self.assertIs(state.sibling_backend.execution_policy, policy)
                 self.assertEqual(state.partial_order.to_list(), [1, 2, 3, 4])
+
+    def test_diagnostics_always_use_checked_policy(self):
+        original_runner = paper_jordan_sort._run_paper_jordan_valid
+
+        with patch.object(
+            paper_jordan_sort,
+            "_run_paper_jordan_valid",
+            wraps=original_runner,
+        ) as runner_mock:
+            result = paper_jordan_diagnostics_valid([2, 3, 1, 4])
+
+        self.assertEqual(result["output"], [1, 2, 3, 4])
+        self.assertEqual(runner_mock.call_count, 1)
+        self.assertIs(
+            runner_mock.call_args.kwargs["execution_policy"],
+            CHECKED_POLICY,
+        )
+
+    def test_state_audit_rejects_state_backend_policy_disagreement(self):
+        state = _run_paper_jordan_valid(
+            [2, 3, 1, 4],
+            execution_policy=CHECKED_POLICY,
+        )
+        state.sibling_backend._execution_policy = MINIMAL_POLICY
+
+        with self.assertRaisesRegex(
+            RuntimeError,
+            "state and backend execution policies differ",
+        ):
+            validate_paper_jordan_state(state)
+
+    def test_state_audit_rejects_invalid_state_policy(self):
+        invalid_policies = (
+            PaperExecutionPolicy(
+                name=CHECKED_MODE,
+                record_trace=True,
+                count_operations=True,
+                validate_backend_commits=True,
+            ),
+            object(),
+        )
+
+        for invalid_policy in invalid_policies:
+            with self.subTest(invalid_policy=invalid_policy):
+                state = _run_paper_jordan_valid(
+                    [2, 3, 1, 4],
+                    execution_policy=CHECKED_POLICY,
+                )
+                state.execution_policy = invalid_policy
+
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    "state execution policy is invalid",
+                ):
+                    validate_paper_jordan_state(state)
+
+    def test_all_modes_preserve_input_and_consume_iterables_once(self):
+        class SinglePassIterable:
+            def __init__(self, values):
+                self.values = tuple(values)
+                self.iteration_count = 0
+
+            def __iter__(self):
+                self.iteration_count += 1
+                if self.iteration_count > 1:
+                    raise RuntimeError("iterable consumed more than once")
+                return iter(self.values)
+
+        for mode in PAPER_EXECUTION_MODE_NAMES:
+            with self.subTest(mode=mode, input_kind="list"):
+                values = [2, 3, 1, 4]
+                original = list(values)
+                self.assertEqual(
+                    paper_jordan_sort_valid(values, execution_mode=mode),
+                    [1, 2, 3, 4],
+                )
+                self.assertEqual(values, original)
+
+            with self.subTest(mode=mode, input_kind="single_pass"):
+                values = SinglePassIterable([2, 3, 1, 4])
+                self.assertEqual(
+                    paper_jordan_sort_valid(values, execution_mode=mode),
+                    [1, 2, 3, 4],
+                )
+                self.assertEqual(values.iteration_count, 1)
 
     def test_day2_modes_do_not_disable_trace_counters_or_commit_validation(self):
         values = [1, 2, 3, 4, 6, 7, 0, 5]

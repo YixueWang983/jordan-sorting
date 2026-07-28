@@ -251,9 +251,12 @@ def _initialize_paper_jordan_state_values(
 def validate_paper_jordan_state(state):
     """执行不依赖 oracle/全局排序的完整 correctness/debug invariant audit。"""
     _require_state(state)
-    execution_policy = require_fixed_paper_execution_policy(
-        state.execution_policy
-    )
+    try:
+        execution_policy = require_fixed_paper_execution_policy(
+            state.execution_policy
+        )
+    except (TypeError, ValueError) as exc:
+        raise RuntimeError("state execution policy is invalid") from exc
     if state.sibling_backend.execution_policy is not execution_policy:
         raise RuntimeError("state and backend execution policies differ")
     if not 3 <= state.processed_count <= len(state.points):
