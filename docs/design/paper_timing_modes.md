@@ -2,8 +2,8 @@
 
 Last updated: 2026-07-28
 
-Status: Week 10 Day 3 backend commit-audit separation implemented; trace and
-counter switching has not started.
+Status: Week 10 Day 4 trace/counter decoupling implemented; awaiting review
+before the Day 5 public experiment interface.
 
 ## Purpose
 
@@ -92,10 +92,37 @@ The default remains `checked`. Complete untimed diagnostics also remain
 checked and independently run the full backend audit and deterministic replay,
 including for a state produced under `minimal`.
 
-Trace and operation counters remain active in all five modes. Consequently,
-Day 3 does not yet provide a final minimal timing path. Day 4 will address
-trace and counter behavior; no contamination timing conclusion should be
-drawn before that checkpoint.
+At the Day 3 checkpoint, trace and operation counters remained active in all
+five modes. Day 4 now controls them independently. No contamination timing
+conclusion should be drawn before the dedicated pilot.
+
+## Day 4 Trace and Counter Boundary
+
+Day 4 activates `record_trace` and `count_operations` independently:
+
+```text
+checked:       trace = full, metrics = full
+instrumented:  trace = full, metrics = full
+trace_only:    trace = full, metrics = {}
+counters_only: trace = [],   metrics = full
+minimal:       trace = [],   metrics = {}
+```
+
+Trace-disabled paths branch before event dictionary literals are evaluated.
+The boundary and split trace helpers also return before constructing their
+payloads. `_record_trace()` is therefore not a no-op sink: it is unreachable
+during a correct trace-disabled execution and rejects accidental calls.
+
+Counter-disabled paths initialize an empty metrics mapping and branch before
+every lookup or update. This behavior has a regression test using a mapping
+that raises on item access, so a disabled counter cannot silently retain
+dictionary work.
+
+`stage_results` remains populated in every mode. Cross-mode tests require the
+same partial order, pair mapping, stage results, and canonical backend
+snapshot. Only trace and metrics may differ. Complete diagnostics still use
+`CHECKED_POLICY`; state audit can also validate states produced under every
+fixed mode through same-policy deterministic replay.
 
 ## Current Timing Call Graph
 
@@ -259,7 +286,7 @@ worst case is `O(p^2)` for `p` registered pairs. The default `checked` timing
 still includes this cost for comparison with the Week 9 baseline. The other
 four modes omit it while retaining local safety and rollback.
 
-### Trace Is Timed
+### Trace Is Policy-Controlled
 
 Initialization records two events. Each completed iteration records seven:
 
@@ -273,16 +300,19 @@ Step 3(b)
 Step 3(c)
 ```
 
-Event dictionaries are built before `_record_trace()` is called. Making
-`_record_trace()` a no-op would still pay dictionary-construction cost.
+These event dictionaries are constructed and appended only when
+`record_trace` is true. Trace-disabled modes branch before payload
+construction, so they do not pay dictionary-construction or append cost.
 
 Trace does not control algorithm branches. Stage results, not trace scans,
 enforce Step 3 sequencing.
 
-### Counters Are Timed
+### Counters Are Policy-Controlled
 
-The metrics dictionary is initialized inside the paper state. Step 1/2/3 and
-trace recording update counters inside the timer.
+When `count_operations` is true, the metrics dictionary is initialized inside
+the paper state and Step 1/2/3 plus trace recording update counters inside the
+timer. When it is false, the state uses an empty mapping and the execution
+path performs no metric lookup or update.
 
 Most counters reuse values already computed by the algorithm. No current
 counter introduces a separate structural scan. `invariant_checks` is different:
@@ -456,7 +486,8 @@ No mode may change branch decisions or Step 1/2/3 semantics.
 2. The policy is state-owned and is also passed to the backend constructor.
    State validation rejects policy identity disagreement.
 3. `paper_jordan_diagnostics_valid()` always uses `checked`.
-4. Policy flags remain inactive until their dedicated implementation days.
+4. Day 2 introduced the flags without changing behavior; Day 3 activated
+   backend validation control and Day 4 activated trace/counter control.
 
 ## Resolved Day 3 Decisions
 
@@ -469,7 +500,20 @@ No mode may change branch decisions or Step 1/2/3 semantics.
    active in every mode.
 5. Complete diagnostics remain checked regardless of the mode used to produce
    the state.
-6. Trace and counter flags remain inactive until Day 4.
+6. Trace and counter flags were intentionally left inactive until Day 4.
+
+## Resolved Day 4 Decisions
+
+1. Trace-disabled modes keep `trace == []` and do not construct event
+   dictionaries.
+2. Counter-disabled modes keep `metrics == {}` and do not access that mapping
+   during algorithm execution.
+3. `stage_results` remains complete in all modes because it is algorithm
+   control and safety state.
+4. `trace_event_count` counts recorded events only; it remains zero in
+   `counters_only`.
+5. Complete diagnostics remain checked, while full state audit understands and
+   validates every fixed mode contract.
 
 ## Open Design Questions
 
@@ -482,12 +526,9 @@ No mode may change branch decisions or Step 1/2/3 semantics.
    material interaction effects, should the study expand to the complete
    eight-mode factorial design? That extension would add `validation_only`,
    `validation_trace`, and `validation_counters`; the current plan records but
-   does not
-   implement them.
-3. Should metrics in disabled mode be an empty mapping, zero-filled mapping,
-   or unavailable object while preserving diagnostics compatibility?
+   does not implement them.
 
-These questions remain intentionally unresolved after Day 3.
+These questions remain intentionally unresolved after Day 4.
 
 ## Non-Claim Boundary
 

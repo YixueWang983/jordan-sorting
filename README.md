@@ -111,13 +111,14 @@ ordinary-list reconstruction of the high-level 1990 paper algorithm:
   `oracle_valid = true` for every paper-algorithm row;
 - heterogeneous finger trees and a linear-time claim remain out of scope.
 
-Week 10 Day 1, Day 2, and Day 3 are complete. Day 1 froze the Week 9 timing
-baseline and classified trace, counter, input-copy, and backend-validation
-costs. Day 2 added one immutable five-mode execution-policy registry without
-duplicating the Step 1/2/3 loop. Day 3 made complete initialization and
-post-split backend scans checked-only while retaining local safety checks,
-touched-state postconditions, and rollback in every mode. Trace and counters
-remain active until Day 4.
+Week 10 Day 1, Day 2, and Day 3 are complete, and Day 4 implementation is
+awaiting review. Day 1 froze the Week 9 timing baseline and classified trace,
+counter, input-copy, and backend-validation costs. Day 2 added one immutable
+five-mode execution-policy registry without duplicating the Step 1/2/3 loop.
+Day 3 made complete initialization and post-split backend scans checked-only
+while retaining local safety checks, touched-state postconditions, and
+rollback in every mode. Day 4 independently activates or removes trace and
+operation counters while preserving `stage_results` and algorithm state.
 
 ## Project Structure
 
@@ -294,7 +295,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 348 tests
+Ran 352 tests
 OK
 ```
 
@@ -350,7 +351,7 @@ Important project documents:
 - [docs/plan/week10_plan.md](docs/plan/week10_plan.md): timing-contamination study, execution-policy design, controlled pilot, and Week 11 experiment gate.
 - [docs/design/paper_timing_modes.md](docs/design/paper_timing_modes.md): current timed call graph, contamination sources, fixed execution modes, and validation boundaries.
 - [docs/analysis/week10_timing_baseline.md](docs/analysis/week10_timing_baseline.md): frozen Week 10 Day 1 commit, environment, validation evidence, pilot timings, findings, and open questions.
-- [docs/progress/week10_progress.md](docs/progress/week10_progress.md): Week 10 daily status; Day 1 freezes the timing baseline and Day 2 adds the unified execution-policy architecture.
+- [docs/progress/week10_progress.md](docs/progress/week10_progress.md): Week 10 daily status through the Day 4 backend-audit, trace, and counter separation checkpoints.
 - [docs/design/final_experiment_spec.md](docs/design/final_experiment_spec.md): frozen experiment variables, correctness checks, aggregation rules, and non-claims.
 - [docs/design/oracle_and_test_generation.md](docs/design/oracle_and_test_generation.md): definitions and design notes for the oracle and generators.
 - [docs/design/notation.md](docs/design/notation.md): reusable terminology for candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and structural categories.
@@ -389,10 +390,10 @@ Important project documents:
   but assumes pre-certified valid input.
 - Experiment configuration by valid-family name is not treated as
   certification: generated paper-sorter cases are checked individually.
-- Current paper-algorithm timing still includes trace/counter recording and
-  ordinary-list split materialization. Complete backend commit validation is
-  checked-only after Week 10 Day 3. The Week 9 pilot is not final performance
-  evidence.
+- Current paper timing modes can independently remove trace, counters, and
+  complete backend commit validation, but all modes still include
+  ordinary-list split materialization, local safety checks, `stage_results`,
+  and output recovery. The Week 9 pilot is not final performance evidence.
 - No level-linked or heterogeneous finger-tree backend is implemented.
 - Visualization is still future work.
 
@@ -400,10 +401,10 @@ Important project documents:
 
 Immediate next task:
 
-- review the Week 10 Day 3 backend audit boundary and rollback gates;
-- after approval, begin Day 4 by decoupling trace and counters without changing
-  stage results or algorithm branches;
-- preserve the single Step 1/2/3 main loop and the default checked behavior;
+- review the Week 10 Day 4 trace/counter boundary and cross-mode state gates;
+- after approval, begin Day 5 with the safe public/experiment interface;
+- preserve the single Step 1/2/3 main loop, `stage_results`, and default
+  checked behavior;
 - do not run the contamination pilot or formal experiment yet.
 
 Later cleanup:

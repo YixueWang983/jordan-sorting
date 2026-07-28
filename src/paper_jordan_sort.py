@@ -17,7 +17,8 @@ def paper_jordan_sort_valid(seq, execution_mode=CHECKED_MODE):
 
     调用者负责保证元素互异、可比较，并满足项目采用的 Jordan-sequence
     validity model。该纯核心不调用 oracle，也不自行识别 invalid 输入。
-    Week 10 Day 2 仅传递 execution policy；各模式尚未切换运行行为。
+    execution_mode 仅控制完整 backend audit、trace 和 operation counters，
+    不改变 Step 1/2/3、局部安全检查、stage results 或输出恢复。
     """
     execution_policy = resolve_paper_execution_policy(execution_mode)
     values = list(seq)

@@ -151,7 +151,7 @@ git diff --check:
 
 ## Day 3: Backend Commit-Audit Separation
 
-Status: implementation complete; awaiting review before Day 4.
+Status: complete.
 
 - [x] retained split-plan, acquired-side, parent, ownership, and stale-plan
   checks in every mode;
@@ -209,10 +209,56 @@ git diff --check:
 
 ## Day 4: Trace and Counter Decoupling
 
-Status: not started.
+Status: implementation complete; awaiting review before Day 5.
 
-Trace dictionaries and operation counters remain active in the current timed
-paper path.
+- [x] activated `record_trace` without creating a second Step 1/2/3 loop;
+- [x] avoided calling the trace recorder when trace is disabled;
+- [x] guarded event dictionary construction so trace-disabled modes do not
+  construct event payloads;
+- [x] required trace-disabled states to retain an empty `trace` list;
+- [x] activated `count_operations` without changing algorithm branches;
+- [x] used an empty metrics mapping when counters are disabled;
+- [x] verified counter-disabled runs do not read or write the metrics mapping;
+- [x] kept `trace_event_count` at zero in `counters_only`;
+- [x] retained complete operation metrics in `checked`, `instrumented`, and
+  `counters_only`;
+- [x] retained complete trace output in `checked`, `instrumented`, and
+  `trace_only`;
+- [x] retained `stage_results` in all five modes;
+- [x] verified all five modes produce identical partial order, pair mapping,
+  stage results, and canonical backend state;
+- [x] kept complete diagnostics fixed to `CHECKED_POLICY`;
+- [x] made complete state audit accept and verify each mode's trace/metric
+  contract through same-policy deterministic replay;
+- [x] permanently retained the 682 valid permutations through `n=7` across
+  five modes, for 3,410 output-equivalence executions;
+- [x] ran all 352 unit tests and `compileall`;
+- [x] reproduced 2,074 exhaustive valid permutations through `n=8`;
+- [x] reproduced all 48 fixed generated validation cases;
+- [x] passed `git diff --check`.
+
+Day 4 changes observation work only. It does not change Step 1/2/3,
+`stage_results`, local safety checks, rollback, backend audit scheduling, or
+output recovery.
+
+## Day 4 Verification
+
+```text
+python -m unittest discover -s tests:
+    Ran 352 tests
+    OK
+
+python -m compileall -q src experiments tests:
+    passed
+
+python experiments/validate_paper_algorithm.py --max-n 8:
+    exhaustive valid permutations = 2,074
+    generated valid cases = 48
+    all valid = true
+
+git diff --check:
+    passed
+```
 
 ## Day 5: Public Wrapper and Contamination Runner
 
@@ -235,5 +281,5 @@ No final timing mode or Week 11 formal configuration has been frozen.
 
 ## Week 10 Status
 
-Week 10 is in progress. Day 1, Day 2, and Day 3 are complete. Day 4 has not
-started.
+Week 10 is in progress. Day 1, Day 2, and Day 3 are complete. Day 4
+implementation is complete and awaiting review. Day 5 has not started.

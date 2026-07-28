@@ -209,7 +209,7 @@ def _initialize_paper_jordan_state_values(
         lower_dummy.pair_id,
     )
 
-    metrics = {name: 0 for name in METRIC_NAMES}
+    metrics = _new_metrics(execution_policy)
     state = PaperJordanState(
         points=points,
         processed_count=3,
@@ -224,24 +224,25 @@ def _initialize_paper_jordan_state_values(
         metrics=metrics,
         stage_results={},
     )
-    _record_trace(
-        state,
-        {
-            "step": "initialize_partial_order",
-            "processed_count": 3,
-            "point_ids": partial_order.to_point_ids(),
-        },
-    )
-    _record_trace(
-        state,
-        {
-            "step": "initialize_pair_families",
-            "upper_pair_id": pair_2.pair_id,
-            "lower_pair_id": pair_3.pair_id,
-            "upper_list_id": upper_list_id,
-            "lower_list_id": lower_list_id,
-        },
-    )
+    if execution_policy.record_trace:
+        _record_trace(
+            state,
+            {
+                "step": "initialize_partial_order",
+                "processed_count": 3,
+                "point_ids": partial_order.to_point_ids(),
+            },
+        )
+        _record_trace(
+            state,
+            {
+                "step": "initialize_pair_families",
+                "upper_pair_id": pair_2.pair_id,
+                "lower_pair_id": pair_3.pair_id,
+                "upper_list_id": upper_list_id,
+                "lower_list_id": lower_list_id,
+            },
+        )
 
     partial_order.validate_links()
     _validate_initial_backend_postconditions(
@@ -304,13 +305,16 @@ def validate_paper_jordan_state(state):
         raise RuntimeError("state and backend execution policies differ")
     if not 3 <= state.processed_count <= len(state.points):
         raise RuntimeError("processed_count is outside the initialized point range")
-    if set(state.metrics) != set(METRIC_NAMES):
-        raise RuntimeError("metric fields do not match the paper-state contract")
-    if any(
-        isinstance(value, bool) or not isinstance(value, int) or value < 0
-        for value in state.metrics.values()
-    ):
-        raise RuntimeError("paper-state metrics must be non-negative integers")
+    if execution_policy.count_operations:
+        if set(state.metrics) != set(METRIC_NAMES):
+            raise RuntimeError("metric fields do not match the paper-state contract")
+        if any(
+            isinstance(value, bool) or not isinstance(value, int) or value < 0
+            for value in state.metrics.values()
+        ):
+            raise RuntimeError("paper-state metrics must be non-negative integers")
+    elif state.metrics:
+        raise RuntimeError("metrics must be empty when operation counters are disabled")
     _validate_point_records(state)
 
     state.partial_order.validate_links()
@@ -362,12 +366,16 @@ def validate_paper_jordan_state(state):
 
     state.sibling_backend.validate_invariants()
     derived_metrics = _validate_stage_results_and_trace(state, actual_point_ids)
-    for metric_name, expected_value in derived_metrics.items():
-        if state.metrics[metric_name] != expected_value:
-            raise RuntimeError(f"metric does not match validated trace: {metric_name}")
+    if execution_policy.count_operations and execution_policy.record_trace:
+        for metric_name, expected_value in derived_metrics.items():
+            if state.metrics[metric_name] != expected_value:
+                raise RuntimeError(
+                    f"metric does not match validated trace: {metric_name}"
+                )
     _validate_state_against_deterministic_replay(state)
 
-    state.metrics["invariant_checks"] += 1
+    if execution_policy.count_operations:
+        state.metrics["invariant_checks"] += 1
     return True
 
 
@@ -420,10 +428,29 @@ def _validate_stage_results_and_trace(state, final_point_order):
     if set(state.stage_results) != set(expected_iterations):
         raise RuntimeError("stage-result iterations do not match processed prefix")
 
+    expected_stage_names = {
+        "step1_select_boundary_pair",
+        "step2_select_boundary_pair",
+        "step3a_insert_pair",
+        "step3b_split_sibling_list",
+        "step3c_insert_output_point",
+    }
+    for iteration in expected_iterations:
+        if set(state.stage_results[iteration]) != expected_stage_names:
+            raise RuntimeError("completed iteration has incomplete stage results")
+
+    if not state.execution_policy.record_trace:
+        if state.trace:
+            raise RuntimeError("trace must be empty when trace recording is disabled")
+        return {}
+
     expected_trace_length = 2 + 7 * len(expected_iterations)
     if len(state.trace) != expected_trace_length:
         raise RuntimeError("trace length does not match completed iterations")
-    if state.metrics["trace_event_count"] != expected_trace_length:
+    if (
+        state.execution_policy.count_operations
+        and state.metrics["trace_event_count"] != expected_trace_length
+    ):
         raise RuntimeError("trace counter does not match recorded events")
 
     expected_initial_trace = (
@@ -454,16 +481,6 @@ def _validate_stage_results_and_trace(state, final_point_order):
 
     for offset, iteration in enumerate(expected_iterations):
         stages = state.stage_results[iteration]
-        expected_stage_names = {
-            "step1_select_boundary_pair",
-            "step2_select_boundary_pair",
-            "step3a_insert_pair",
-            "step3b_split_sibling_list",
-            "step3c_insert_output_point",
-        }
-        if set(stages) != expected_stage_names:
-            raise RuntimeError("completed iteration has incomplete stage results")
-
         events = state.trace[2 + offset * 7 : 2 + (offset + 1) * 7]
         _validate_iteration_records(
             state,
@@ -1075,7 +1092,8 @@ def select_processed_same_family_pair(state, point_id, iteration):
         raise RuntimeError("selected pair does not contain the requested point")
     _validated_live_finite_pair(state, pair_id)
 
-    state.metrics["boundary_pair_checks"] += 1
+    if state.execution_policy.count_operations:
+        state.metrics["boundary_pair_checks"] += 1
     return pair.pair_id
 
 
@@ -1085,26 +1103,29 @@ def step1_select_predecessor_boundary(state, iteration):
     _require_stage_absent(state, "step1_select_boundary_pair", iteration)
     previous_point_id = iteration - 1
     neighbor = state.partial_order.predecessor(previous_point_id)
-    state.metrics["predecessor_accesses"] += 1
+    if state.execution_policy.count_operations:
+        state.metrics["predecessor_accesses"] += 1
     adjusted_for_z1 = False
 
     if iteration % 2 == 1 and neighbor == 1:
         neighbor = state.partial_order.predecessor(1)
-        state.metrics["predecessor_accesses"] += 1
-        state.metrics["z1_boundary_adjustments"] += 1
+        if state.execution_policy.count_operations:
+            state.metrics["predecessor_accesses"] += 1
+            state.metrics["z1_boundary_adjustments"] += 1
         adjusted_for_z1 = True
 
-    _record_trace(
-        state,
-        {
-            "step": "step1_find_predecessor",
-            "iteration": iteration,
-            "family": pair_family_for_end_index(iteration),
-            "previous_point_id": previous_point_id,
-            "neighbor_point_id": _finite_neighbor_id(neighbor),
-            "adjusted_for_z1": adjusted_for_z1,
-        },
-    )
+    if state.execution_policy.record_trace:
+        _record_trace(
+            state,
+            {
+                "step": "step1_find_predecessor",
+                "iteration": iteration,
+                "family": pair_family_for_end_index(iteration),
+                "previous_point_id": previous_point_id,
+                "neighbor_point_id": _finite_neighbor_id(neighbor),
+                "adjusted_for_z1": adjusted_for_z1,
+            },
+        )
 
     selection = _boundary_selection(
         state,
@@ -1127,26 +1148,29 @@ def step2_select_successor_boundary(state, iteration):
     _require_stage_absent(state, "step2_select_boundary_pair", iteration)
     previous_point_id = iteration - 1
     neighbor = state.partial_order.successor(previous_point_id)
-    state.metrics["successor_accesses"] += 1
+    if state.execution_policy.count_operations:
+        state.metrics["successor_accesses"] += 1
     adjusted_for_z1 = False
 
     if iteration % 2 == 1 and neighbor == 1:
         neighbor = state.partial_order.successor(1)
-        state.metrics["successor_accesses"] += 1
-        state.metrics["z1_boundary_adjustments"] += 1
+        if state.execution_policy.count_operations:
+            state.metrics["successor_accesses"] += 1
+            state.metrics["z1_boundary_adjustments"] += 1
         adjusted_for_z1 = True
 
-    _record_trace(
-        state,
-        {
-            "step": "step2_find_successor",
-            "iteration": iteration,
-            "family": pair_family_for_end_index(iteration),
-            "previous_point_id": previous_point_id,
-            "neighbor_point_id": _finite_neighbor_id(neighbor),
-            "adjusted_for_z1": adjusted_for_z1,
-        },
-    )
+    if state.execution_policy.record_trace:
+        _record_trace(
+            state,
+            {
+                "step": "step2_find_successor",
+                "iteration": iteration,
+                "family": pair_family_for_end_index(iteration),
+                "previous_point_id": previous_point_id,
+                "neighbor_point_id": _finite_neighbor_id(neighbor),
+                "adjusted_for_z1": adjusted_for_z1,
+            },
+        )
 
     selection = _boundary_selection(
         state,
@@ -1289,7 +1313,8 @@ def _step3a(
                 boundary_pair.pair_id,
             )
             insertion_mode = SINGLETON_LIST
-            state.metrics["sibling_lists_created"] += 1
+            if state.execution_policy.count_operations:
+                state.metrics["sibling_lists_created"] += 1
         else:
             if boundary_pair.is_dummy:
                 raise RuntimeError("dummy boundary must enclose every finite point")
@@ -1299,7 +1324,8 @@ def _step3a(
                 insertion_side,
             )
             insertion_mode = BOUNDARY_INSERTION
-            state.metrics["sibling_list_insertions"] += 1
+            if state.execution_policy.count_operations:
+                state.metrics["sibling_list_insertions"] += 1
     except Exception:
         state.sibling_backend.unregister_unowned_pair(new_pair.pair_id)
         raise
@@ -1314,20 +1340,21 @@ def _step3a(
         parent_pair_id=new_pair.parent_pair_id,
         sibling_list_id=sibling_list_id,
     )
-    _record_trace(
-        state,
-        {
-            "step": "step3a_insert_pair",
-            "iteration": iteration,
-            "family": new_pair.family,
-            "orientation": orientation,
-            "pair_id": new_pair.pair_id,
-            "boundary_pair_id": boundary_pair.pair_id,
-            "insertion_mode": insertion_mode,
-            "parent_pair_id": new_pair.parent_pair_id,
-            "sibling_list_id": sibling_list_id,
-        },
-    )
+    if state.execution_policy.record_trace:
+        _record_trace(
+            state,
+            {
+                "step": "step3a_insert_pair",
+                "iteration": iteration,
+                "family": new_pair.family,
+                "orientation": orientation,
+                "pair_id": new_pair.pair_id,
+                "boundary_pair_id": boundary_pair.pair_id,
+                "insertion_mode": insertion_mode,
+                "parent_pair_id": new_pair.parent_pair_id,
+                "sibling_list_id": sibling_list_id,
+            },
+        )
     _record_stage_result(state, "step3a_insert_pair", iteration, result)
     return result
 
@@ -1389,11 +1416,12 @@ def _step3b(
     right_size = _sibling_list_size(state, split_result.right_list_id)
     transferred_size = left_size if acquired_side == LEFT else right_size
 
-    state.metrics["sibling_scan_checks"] += input_size
-    state.metrics["sibling_list_splits"] += 1
-    state.metrics["split_items_scanned"] += input_size
-    state.metrics["split_items_copied"] += input_size
-    state.metrics["split_items_transferred"] += transferred_size
+    if state.execution_policy.count_operations:
+        state.metrics["sibling_scan_checks"] += input_size
+        state.metrics["sibling_list_splits"] += 1
+        state.metrics["split_items_scanned"] += input_size
+        state.metrics["split_items_copied"] += input_size
+        state.metrics["split_items_transferred"] += transferred_size
     result = Step3BResult(
         performed=True,
         pair_id=new_pair.pair_id,
@@ -1461,25 +1489,27 @@ def _step3c(state, iteration, new_pair_id, orientation, insertion_side):
         adjusted_for_z1=adjusted_for_z1,
     )
     state.processed_count = iteration
-    state.metrics["output_insertions"] += 1
-    if adjusted_for_z1:
-        state.metrics["z1_output_anchor_adjustments"] += 1
-    _record_trace(
-        state,
-        {
-            "step": "step3c_insert_output_point",
-            "iteration": iteration,
-            "family": new_pair.family,
-            "orientation": orientation,
-            "pair_id": new_pair.pair_id,
-            "child_pair_id": child_pair_id,
-            "base_anchor_point_id": base_anchor_point_id,
-            "output_anchor_point_id": output_anchor_point_id,
-            "insertion_side": insertion_side,
-            "adjusted_for_z1": adjusted_for_z1,
-            "processed_count": state.processed_count,
-        },
-    )
+    if state.execution_policy.count_operations:
+        state.metrics["output_insertions"] += 1
+        if adjusted_for_z1:
+            state.metrics["z1_output_anchor_adjustments"] += 1
+    if state.execution_policy.record_trace:
+        _record_trace(
+            state,
+            {
+                "step": "step3c_insert_output_point",
+                "iteration": iteration,
+                "family": new_pair.family,
+                "orientation": orientation,
+                "pair_id": new_pair.pair_id,
+                "child_pair_id": child_pair_id,
+                "base_anchor_point_id": base_anchor_point_id,
+                "output_anchor_point_id": output_anchor_point_id,
+                "insertion_side": insertion_side,
+                "adjusted_for_z1": adjusted_for_z1,
+                "processed_count": state.processed_count,
+            },
+        )
     _record_stage_result(state, "step3c_insert_output_point", iteration, result)
     return result
 
@@ -1760,6 +1790,8 @@ def _sibling_list_size(state, list_id):
 
 
 def _record_step3b_trace(state, result, input_size, left_size, right_size):
+    if not state.execution_policy.record_trace:
+        return
     _record_trace(
         state,
         {
@@ -1783,6 +1815,8 @@ def _record_step3b_trace(state, result, input_size, left_size, right_size):
 
 
 def _record_boundary_pair_trace(state, step, iteration, selection):
+    if not state.execution_policy.record_trace:
+        return
     _record_trace(
         state,
         {
@@ -1798,8 +1832,17 @@ def _record_boundary_pair_trace(state, step, iteration, selection):
 
 
 def _record_trace(state, event):
+    if not state.execution_policy.record_trace:
+        raise RuntimeError("trace event reached a trace-disabled state")
     state.trace.append(event)
-    state.metrics["trace_event_count"] += 1
+    if state.execution_policy.count_operations:
+        state.metrics["trace_event_count"] += 1
+
+
+def _new_metrics(execution_policy):
+    if not execution_policy.count_operations:
+        return {}
+    return {name: 0 for name in METRIC_NAMES}
 
 
 def _finite_neighbor_id(neighbor):

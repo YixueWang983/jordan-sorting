@@ -12,6 +12,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 import paper_jordan_sort  # noqa: E402
+import paper_jordan  # noqa: E402
 from generators import (  # noqa: E402
     generate_flat,
     generate_incremental_valid,
@@ -340,14 +341,14 @@ class PaperExecutionPolicyTests(unittest.TestCase):
                 )
                 self.assertEqual(values.iteration_count, 1)
 
-    def test_checked_instrumented_and_minimal_backend_states_match(self):
+    def test_all_modes_preserve_algorithm_state_and_backend(self):
         values = [1, 2, 3, 4, 6, 7, 0, 5]
         states = {
             mode: _run_paper_jordan_valid(
                 list(values),
                 execution_policy=PAPER_EXECUTION_POLICIES[mode],
             )
-            for mode in (CHECKED_MODE, INSTRUMENTED_MODE, MINIMAL_MODE)
+            for mode in PAPER_EXECUTION_MODE_NAMES
         }
         checked = states[CHECKED_MODE]
 
@@ -358,6 +359,9 @@ class PaperExecutionPolicyTests(unittest.TestCase):
                     checked.partial_order.to_point_ids(),
                 )
                 self.assertEqual(state.processed_count, checked.processed_count)
+                self.assertEqual(state.pairs, checked.pairs)
+                self.assertEqual(state.pair_by_end_index, checked.pair_by_end_index)
+                self.assertEqual(state.stage_results, checked.stage_results)
                 self.assertEqual(
                     state.sibling_backend.audit_snapshot(),
                     checked.sibling_backend.audit_snapshot(),
@@ -373,6 +377,21 @@ class PaperExecutionPolicyTests(unittest.TestCase):
 
         with self.assertRaises(RuntimeError):
             validate_paper_jordan_state(state)
+
+    def test_complete_state_audit_accepts_every_mode_contract(self):
+        values = [1, 2, 3, 4, 6, 7, 0, 5]
+
+        for mode in PAPER_EXECUTION_MODE_NAMES:
+            with self.subTest(mode=mode):
+                state = _run_paper_jordan_valid(
+                    list(values),
+                    execution_policy=PAPER_EXECUTION_POLICIES[mode],
+                )
+                self.assertTrue(validate_paper_jordan_state(state))
+                if state.execution_policy.count_operations:
+                    self.assertEqual(state.metrics["invariant_checks"], 1)
+                else:
+                    self.assertEqual(state.metrics, {})
 
     def test_initial_local_postconditions_detect_ownership_corruption(self):
         state = initialize_paper_jordan_state(
@@ -399,7 +418,7 @@ class PaperExecutionPolicyTests(unittest.TestCase):
         ):
             _validate_initial_backend_postconditions(state, family_records)
 
-    def test_day3_policy_only_disables_complete_backend_validation(self):
+    def test_mode_observation_and_backend_audit_contracts(self):
         values = [1, 2, 3, 4, 6, 7, 0, 5]
         original_validate = OrdinarySiblingListBackend.validate_invariants
 
@@ -421,17 +440,88 @@ class PaperExecutionPolicyTests(unittest.TestCase):
                         execution_policy=PAPER_EXECUTION_POLICIES[mode],
                     )
 
-                self.assertTrue(state.trace)
-                self.assertEqual(
-                    state.metrics["trace_event_count"],
-                    len(state.trace),
-                )
-                self.assertGreater(state.metrics["output_insertions"], 0)
+                if state.execution_policy.record_trace:
+                    self.assertTrue(state.trace)
+                else:
+                    self.assertEqual(state.trace, [])
+
+                if state.execution_policy.count_operations:
+                    self.assertEqual(
+                        set(state.metrics),
+                        set(paper_jordan.METRIC_NAMES),
+                    )
+                    self.assertEqual(
+                        state.metrics["trace_event_count"],
+                        len(state.trace),
+                    )
+                    self.assertGreater(state.metrics["output_insertions"], 0)
+                else:
+                    self.assertEqual(state.metrics, {})
+
                 if mode == CHECKED_MODE:
                     self.assertIn(True, validation_flags)
                     self.assertIn(False, validation_flags)
                 else:
                     self.assertEqual(validation_flags, [])
+
+    def test_trace_disabled_modes_never_call_trace_recorder(self):
+        values = [1, 2, 3, 4, 6, 7, 0, 5]
+
+        for mode in (COUNTERS_ONLY_MODE, MINIMAL_MODE):
+            with self.subTest(mode=mode):
+                with patch.object(
+                    paper_jordan,
+                    "_record_trace",
+                    side_effect=AssertionError(
+                        "trace recorder must not run when trace is disabled"
+                    ),
+                ):
+                    state = _run_paper_jordan_valid(
+                        list(values),
+                        execution_policy=PAPER_EXECUTION_POLICIES[mode],
+                    )
+                self.assertEqual(state.trace, [])
+
+    def test_counter_disabled_modes_never_access_metrics_mapping(self):
+        class NoAccessMetrics(dict):
+            def __getitem__(self, key):
+                raise AssertionError("disabled metrics were read")
+
+            def __setitem__(self, key, value):
+                raise AssertionError("disabled metrics were written")
+
+        values = [1, 2, 3, 4, 6, 7, 0, 5]
+        for mode in (TRACE_ONLY_MODE, MINIMAL_MODE):
+            with self.subTest(mode=mode):
+                metrics = NoAccessMetrics()
+                with patch.object(
+                    paper_jordan,
+                    "_new_metrics",
+                    return_value=metrics,
+                ):
+                    state = _run_paper_jordan_valid(
+                        list(values),
+                        execution_policy=PAPER_EXECUTION_POLICIES[mode],
+                    )
+                self.assertIs(state.metrics, metrics)
+                self.assertEqual(len(metrics), 0)
+
+    def test_disabled_observation_state_rejects_unexpected_payloads(self):
+        trace_disabled = _run_paper_jordan_valid(
+            [2, 3, 1, 4],
+            execution_policy=COUNTERS_ONLY_POLICY,
+        )
+        trace_disabled.trace.append({"step": "forged"})
+        with self.assertRaisesRegex(RuntimeError, "trace must be empty"):
+            validate_paper_jordan_state(trace_disabled)
+
+        counters_disabled = _run_paper_jordan_valid(
+            [2, 3, 1, 4],
+            execution_policy=TRACE_ONLY_POLICY,
+        )
+        counters_disabled.metrics["forged"] = 1
+        with self.assertRaisesRegex(RuntimeError, "metrics must be empty"):
+            validate_paper_jordan_state(counters_disabled)
 
 
 if __name__ == "__main__":
