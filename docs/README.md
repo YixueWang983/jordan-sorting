@@ -119,7 +119,8 @@ Current files:
 - `week10_progress.md`
   Week 10 daily execution record. Day 1 freezes the baseline, Day 2 implements
   immutable policy plumbing, Day 3 separates complete backend scans from
-  always-on local split safety, and Day 4 decouples trace and counters.
+  always-on local split safety, Day 4 decouples trace and counters, and Day 5
+  adds safe certification plus the contamination runner/validator.
 
 ## Plan Documents
 

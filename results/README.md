@@ -632,3 +632,43 @@ all_correct
 The CSV does not store the full sequence directly. It records `case_id`, and the generated JSON case files store the actual sequence. The JSON files are reproducible intermediate files and are not committed.
 
 Week 1 timing results are preliminary. They show that the experiment pipeline works; they should not be interpreted as final performance claims about Jordan sorting.
+
+## Week 10 Timing-Contamination Outputs
+
+Week 10 uses isolated run directories under:
+
+```text
+results/runs/<run_id>/
+```
+
+Generate the smoke output:
+
+```bash
+python experiments/run_week10_timing_contamination.py --smoke
+```
+
+Validate it:
+
+```bash
+python experiments/validate_week10_timing_outputs.py \
+  --run-dir results/runs/<run_id>
+```
+
+The full Day 6 pilot must be requested explicitly:
+
+```bash
+python experiments/run_week10_timing_contamination.py --full
+```
+
+The frozen full configuration produces:
+
+```text
+1,500 raw rows
+100 case-summary rows
+60 group-summary rows
+```
+
+Oracle certification, structural profiling, and one complete checked
+diagnostic run occur before timing. The measured region calls only the
+pre-certified valid-input paper sorter for one fixed execution mode. Generated
+Week 10 outputs are reproducible artifacts and are not committed by default.

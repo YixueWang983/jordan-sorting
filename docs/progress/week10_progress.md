@@ -209,7 +209,7 @@ git diff --check:
 
 ## Day 4: Trace and Counter Decoupling
 
-Status: implementation complete; awaiting review before Day 5.
+Status: complete.
 
 - [x] activated `record_trace` without creating a second Step 1/2/3 loop;
 - [x] avoided calling the trace recorder when trace is disabled;
@@ -268,10 +268,66 @@ git diff --check:
 
 ## Day 5: Public Wrapper and Contamination Runner
 
-Status: not started.
+Status: implementation complete; awaiting review before Day 6.
 
-No certified public wrapper, Week 10 contamination runner, or Week 10 output
-validator has been implemented.
+- [x] added `certified_paper_jordan_sort()` in a separate module so the pure
+  valid-input core remains oracle-free;
+- [x] made the certified wrapper reject invalid actual inputs before entering
+  the paper sorter;
+- [x] added a dedicated Week 10 contamination runner with five fixed modes;
+- [x] kept oracle certification and `structure_profile()` in case
+  construction before warm-up or measured timing;
+- [x] ran one complete checked diagnostic per exact case before timing;
+- [x] made the timed function call only
+  `paper_jordan_sort_valid(..., execution_mode=...)`;
+- [x] compared output with the precomputed oracle result after the timer;
+- [x] added deterministic case order and exact cyclic per-round mode order;
+- [x] stored mode flags, stable case index, mode position, correctness, audit,
+  sequence SHA-256, and structural fields in raw rows;
+- [x] added case and group summaries with median/IQR and minimal-mode ratios;
+- [x] added isolated config, environment, manifest, and SHA-256 evidence;
+- [x] added no-overwrite protection for every run artifact;
+- [x] added a dedicated Week 10 output validator;
+- [x] made the validator recompute exact mode order from the frozen seed;
+- [x] made the validator recompute raw-to-case-to-group summaries;
+- [x] made the validator reject invalid certification, wrong output, failed
+  audit, wrong flags, missing modes/runs, invalid positions, negative timing,
+  structural drift, summary tampering, and hash mismatch;
+- [x] added independent tamper regression tests;
+- [x] ran a smoke experiment with `135 / 45 / 45` rows;
+- [x] validated the smoke output with `valid = true`;
+- [x] ran all 368 unit tests and `compileall`;
+- [x] reproduced 2,074 exhaustive valid permutations through `n=8`;
+- [x] reproduced all 48 fixed generated validation cases;
+- [x] passed `git diff --check`.
+
+Day 5 builds and validates the safe interfaces. It does not run the full
+1,500-row contamination pilot or select a final timing mode.
+
+## Day 5 Verification
+
+```text
+python -m unittest discover -s tests:
+    Ran 368 tests
+    OK
+
+python -m compileall -q src experiments tests:
+    passed
+
+python experiments/validate_paper_algorithm.py --max-n 8:
+    exhaustive valid permutations = 2,074
+    generated valid cases = 48
+    all valid = true
+
+Week 10 smoke:
+    raw rows = 135
+    case-summary rows = 45
+    group-summary rows = 45
+    validator valid = true
+
+git diff --check:
+    passed
+```
 
 ## Day 6: Contamination Pilot
 
@@ -287,5 +343,5 @@ No final timing mode or Week 11 formal configuration has been frozen.
 
 ## Week 10 Status
 
-Week 10 is in progress. Day 1, Day 2, and Day 3 are complete. Day 4
-implementation is complete and awaiting review. Day 5 has not started.
+Week 10 is in progress. Day 1 through Day 4 are complete. Day 5 implementation
+is complete and awaiting review. Day 6 has not started.

@@ -111,14 +111,17 @@ ordinary-list reconstruction of the high-level 1990 paper algorithm:
   `oracle_valid = true` for every paper-algorithm row;
 - heterogeneous finger trees and a linear-time claim remain out of scope.
 
-Week 10 Day 1, Day 2, and Day 3 are complete, and Day 4 implementation is
-awaiting review. Day 1 froze the Week 9 timing baseline and classified trace,
+Week 10 Day 1 through Day 4 are complete, and Day 5 implementation is awaiting
+review. Day 1 froze the Week 9 timing baseline and classified trace,
 counter, input-copy, and backend-validation costs. Day 2 added one immutable
 five-mode execution-policy registry without duplicating the Step 1/2/3 loop.
 Day 3 made complete initialization and post-split backend scans checked-only
 while retaining local safety checks, touched-state postconditions, and
 rollback in every mode. Day 4 independently activates or removes trace and
 operation counters while preserving `stage_results` and algorithm state.
+Day 5 adds a separate safe certification wrapper, a five-mode contamination
+runner, and a specialized semantic output validator while keeping oracle and
+complete diagnostics outside timed calls.
 
 ## Project Structure
 
@@ -137,6 +140,7 @@ src/
   sibling_list_backend.py
   paper_jordan.py
   paper_jordan_sort.py
+  certified_paper_jordan.py
 
 tests/
   test_oracle.py
@@ -155,8 +159,11 @@ tests/
   test_sibling_list_backend.py
   test_paper_jordan.py
   test_paper_jordan_sort.py
+  test_certified_paper_jordan.py
   test_validate_paper_algorithm.py
   test_run_week9_pilot.py
+  test_run_week10_timing_contamination.py
+  test_validate_week10_timing_outputs.py
 
 experiments/
   run_small_tests.py
@@ -168,6 +175,8 @@ experiments/
   validate_generator_audit_outputs.py
   validate_paper_algorithm.py
   run_week9_pilot.py
+  run_week10_timing_contamination.py
+  validate_week10_timing_outputs.py
 
 results/
   week1_baseline_results.csv
@@ -295,7 +304,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 354 tests
+Ran 368 tests
 OK
 ```
 
@@ -351,7 +360,7 @@ Important project documents:
 - [docs/plan/week10_plan.md](docs/plan/week10_plan.md): timing-contamination study, execution-policy design, controlled pilot, and Week 11 experiment gate.
 - [docs/design/paper_timing_modes.md](docs/design/paper_timing_modes.md): current timed call graph, contamination sources, fixed execution modes, and validation boundaries.
 - [docs/analysis/week10_timing_baseline.md](docs/analysis/week10_timing_baseline.md): frozen Week 10 Day 1 commit, environment, validation evidence, pilot timings, findings, and open questions.
-- [docs/progress/week10_progress.md](docs/progress/week10_progress.md): Week 10 daily status through the Day 4 backend-audit, trace, and counter separation checkpoints.
+- [docs/progress/week10_progress.md](docs/progress/week10_progress.md): Week 10 daily status through the Day 5 certification, timing-interface, smoke, and validator checkpoint.
 - [docs/design/final_experiment_spec.md](docs/design/final_experiment_spec.md): frozen experiment variables, correctness checks, aggregation rules, and non-claims.
 - [docs/design/oracle_and_test_generation.md](docs/design/oracle_and_test_generation.md): definitions and design notes for the oracle and generators.
 - [docs/design/notation.md](docs/design/notation.md): reusable terminology for candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and structural categories.
@@ -401,11 +410,10 @@ Important project documents:
 
 Immediate next task:
 
-- review the Week 10 Day 4 trace/counter boundary and cross-mode state gates;
-- after approval, begin Day 5 with the safe public/experiment interface;
-- preserve the single Step 1/2/3 main loop, `stage_results`, and default
-  checked behavior;
-- do not run the contamination pilot or formal experiment yet.
+- review the Week 10 Day 5 certification/timing boundary, runner, and validator;
+- after approval, run and analyze the frozen Day 6 1,500-row contamination
+  pilot;
+- do not select the final timing mode until the Day 6 evidence is validated.
 
 Later cleanup:
 

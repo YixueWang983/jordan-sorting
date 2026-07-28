@@ -2,8 +2,8 @@
 
 Last updated: 2026-07-28
 
-Status: Week 10 Day 4 trace/counter decoupling implemented; awaiting review
-before the Day 5 public experiment interface.
+Status: Week 10 Day 5 safe public/experiment interfaces implemented; awaiting
+review before the full contamination pilot.
 
 ## Purpose
 
@@ -131,6 +131,43 @@ same partial order, pair mapping, stage results, and canonical backend
 snapshot. Only trace and metrics may differ. Complete diagnostics still use
 `CHECKED_POLICY`; state audit can also validate states produced under every
 fixed mode through same-policy deterministic replay.
+
+## Day 5 Certification and Experiment Boundary
+
+Safe public use and pure timing now have separate entry points:
+
+```text
+certified_paper_jordan_sort(seq, mode)
+    -> materialize input
+    -> oracle certification
+    -> reject invalid input
+    -> paper_jordan_sort_valid(values, mode)
+
+Week 10 case construction
+    -> generate exact sequence
+    -> oracle certification
+    -> structure profile
+    -> one complete checked diagnostic
+    -> retain certified oracle output
+
+Week 10 timed call
+    -> materialize runner-owned input before timer
+    -> start timer
+    -> paper_jordan_sort_valid(values, mode)
+    -> stop timer
+    -> compare with retained oracle output
+```
+
+The safe wrapper lives outside `paper_jordan_sort.py`, preserving the AST gate
+that prohibits oracle imports and calls in the pure core. The contamination
+runner does not time the wrapper. It times the public valid-input API as-is,
+including that API's inner input materialization, consistently across all five
+paper execution modes.
+
+The dedicated validator checks exact seeded mode order, mode-policy flags,
+certification/audit/output correctness, complete measured rounds,
+non-negative timing, exact-sequence SHA-256 and structural constancy across
+modes, recomputed summaries, manifest paths, row counts, and file hashes.
 
 ## Current Timing Call Graph
 
@@ -525,11 +562,23 @@ No mode may change branch decisions or Step 1/2/3 semantics.
 6. Split-size calculations used only by trace/counters are skipped when both
    observation channels are disabled.
 
+## Resolved Day 5 Decisions
+
+1. Safe public certification is a separate wrapper and is never used in pure
+   paper timing.
+2. The contamination study times `paper_jordan_sort_valid()` as a public API,
+   including its inner input materialization.
+3. Oracle certification, structure profiling, and one checked diagnostic occur
+   exactly once per case before warm-up and measured calls.
+4. Every mode receives the same stored sequence and certified expected output.
+5. Smoke mode is the CLI default; the full 1,500-row pilot requires explicit
+   `--full`.
+6. Every run uses an isolated directory with no-overwrite protection and a
+   specialized semantic validator.
+
 ## Open Design Questions
 
-1. Should formal timing use public APIs, including their inner materialization,
-   or pre-materialized internal entry points for all compared algorithms?
-2. The five-mode design identifies the trace/counter interaction with commit
+1. The five-mode design identifies the trace/counter interaction with commit
    validation disabled and estimates validation overhead when trace and
    counters are both enabled. It does not identify validation-by-trace,
    validation-by-counter, or three-way interactions. If the pilot suggests
@@ -538,7 +587,7 @@ No mode may change branch decisions or Step 1/2/3 semantics.
    `validation_trace`, and `validation_counters`; the current plan records but
    does not implement them.
 
-These questions remain intentionally unresolved after Day 4.
+This question remains intentionally unresolved after Day 5.
 
 ## Non-Claim Boundary
 
