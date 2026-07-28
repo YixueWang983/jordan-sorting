@@ -1,6 +1,6 @@
 # Final Experiment Specification
 
-Last updated: 2026-07-24
+Last updated: 2026-07-28
 
 ## Status
 
@@ -180,7 +180,7 @@ coverage summary rows:
 12 sizes x 7 families = 84 rows
 ```
 
-### Performance Experiment
+### Pre-Paper Reference Performance Experiment
 
 Purpose:
 
@@ -327,12 +327,150 @@ oracle-certified before paper diagnostics or timing. A valid-family
 configuration is not sufficient by itself. Output validation also requires
 `oracle_valid = true` on every paper-algorithm row.
 
-This pilot may establish correctness, schema compatibility, manifests, and
-rough executability. It must not be used for final performance conclusions:
-the paper ordinary-list timed path still records trace/counters and runs
-correctness-first backend commit validation. A future formal paper-algorithm
-configuration requires an explicit timing-contamination study and a new scope
-freeze.
+This pilot establishes correctness, schema compatibility, manifests, and rough
+executability. It must not be used for final performance conclusions because
+the Week 9 paper path included trace, counters, and complete backend commit
+validation.
+
+### Week 10 Paper Timing Decision
+
+The Week 10 contamination study resolves the Week 9 timing boundary:
+
+```text
+paper timing:
+    minimal
+
+untimed correctness audit:
+    checked
+
+untimed input certification:
+    oracle
+```
+
+`minimal` runs the same Step 1/2/3 control flow and produces the same output and
+canonical backend state as `checked`. It disables:
+
+```text
+complete backend commit validation
+trace recording
+diagnostic operation counters
+```
+
+It retains:
+
+```text
+ordinary-list search, insertion, split, and ownership transfer
+local safety checks and rollback
+stage_results required by control flow
+partial-order output recovery
+```
+
+The archived 1,500-row contamination evidence is in:
+
+```text
+results/runs/week10_contamination_full_20260728/
+```
+
+Its validator reports `valid = true`. This mode choice removes measured
+diagnostic overhead; it does not establish linear-time complexity.
+
+### Frozen Week 11 Paper-Sorting Integration Pilot
+
+The canonical machine-readable gate is:
+
+```text
+experiments/week11_experiment_gate.py
+```
+
+Status:
+
+```text
+frozen_not_executed
+```
+
+Configuration:
+
+```text
+run_id:
+week11_paper_sorting_pilot_v1
+
+output directory:
+results/runs/week11_paper_sorting_pilot_v1
+
+sizes:
+32, 64, 128, 256, 512
+
+valid families:
+flat_valid
+nested_valid
+incremental_valid
+
+deterministic cases:
+1 per deterministic family/size
+
+randomized incremental cases:
+5 per size
+
+warm-up runs:
+3
+
+measured runs:
+10
+
+seed:
+20260723
+
+algorithm-order seed:
+20268642
+
+case-order seed:
+20262266
+
+algorithms:
+python_sort
+simplified_jordan_reference
+simplified_jordan_paper_ordinary_list
+
+paper execution mode:
+minimal
+
+untimed paper audit mode:
+checked
+```
+
+Expected row counts:
+
+```text
+cases:
+5 sizes x (1 flat + 1 nested + 5 incremental)
+= 35 cases
+
+raw timing rows:
+35 cases x 3 algorithms x 10 measured runs
+= 1050 rows
+
+case-summary rows:
+35 cases x 3 algorithms
+= 105 rows
+
+group-summary rows:
+3 families x 5 sizes x 3 algorithms
+= 45 rows
+```
+
+The runtime planning ceiling is 15 minutes on the recorded development
+machine. This is a scheduling bound rather than an empirical claim. Week 11
+records actual elapsed time and uses it to freeze the separate Week 12 formal
+experiment.
+
+The Week 11 runner must not rely on the public sorter's default mode. It must
+pass `execution_mode="minimal"` explicitly and store that mode in raw rows,
+configuration, environment, and manifest evidence. Every paper case must
+receive one oracle certification and one checked diagnostic before warm-up or
+measured timing.
+
+Recognition remains a separate experiment. The Week 11 valid-input sorting
+pilot does not add invalid families to the paper algorithm.
 
 ### Formal Machine
 

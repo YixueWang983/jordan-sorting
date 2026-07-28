@@ -521,21 +521,20 @@ Mitigation:
 Current task:
 
 ```text
-Create `docs/design/paper_algorithm_ordinary_list.md`.
+Implement the Week 11 paper-sorting integration pilot against:
+
+experiments/week11_experiment_gate.py
 ```
 
-Before implementation, fix:
+Required boundary:
 
 ```text
-partial sorted-order state and sentinels
-pair identities and parity mapping
-sibling-list ownership
-make-list / boundary-insert / split preconditions
-Step 1 / Step 2 / Step 3 pseudocode
-symmetric and n < 3 behavior
-one complete worked trace
+paper timing mode = minimal
+untimed paper audit mode = checked
+oracle certification outside timing
+valid-input sorting separate from recognition
+expected raw rows = 1050
 ```
 
-Do not resume final performance experiments until the paper implementation
-passes the algorithm gate in
-`docs/plan/refined_thesis_direction_after_week8.md`.
+Run only the Week 11 pilot after its dedicated runner and validator pass. The
+Week 12 formal experiment remains a separate later gate.

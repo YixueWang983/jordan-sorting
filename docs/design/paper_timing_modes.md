@@ -2,8 +2,7 @@
 
 Last updated: 2026-07-28
 
-Status: Week 10 Day 6 full contamination pilot completed and validated; final
-mode selection remains a Day 7 decision.
+Status: Week 10 complete; `minimal` selected for Week 11 paper timing.
 
 ## Purpose
 
@@ -61,8 +60,9 @@ updates operation counters
 runs complete backend commit validation
 ```
 
-Therefore `minimal` is currently a selectable contract name, not yet a
-minimal timed implementation.
+That statement describes the Day 2 checkpoint only. Day 3 and Day 4 later
+activated all three policy controls, so `minimal` now implements the intended
+timing boundary.
 
 ## Day 3 Backend Audit Boundary
 
@@ -486,8 +486,9 @@ complete backend commit validation: off
 
 Keeps Step 1/2/3, ordinary-list operations, required local checks,
 `stage_results`, rollback, and final output recovery. A checked diagnostic runs
-outside timing on the exact case. Use: candidate final paper timing mode only
-after cross-mode state equivalence and exhaustive validation pass.
+outside timing on the exact case. Day 7 selected this as the Week 11 paper
+timing mode after cross-mode state equivalence and exhaustive validation
+passed.
 
 ## Cross-Mode Invariants
 
@@ -579,18 +580,51 @@ No mode may change branch decisions or Step 1/2/3 semantics.
 6. Every run uses an isolated directory with no-overwrite protection and a
    specialized semantic validator.
 
-## Open Design Questions
+## Day 7 Final Decision
 
-1. The five-mode design identifies the trace/counter interaction with commit
-   validation disabled and estimates validation overhead when trace and
-   counters are both enabled. It does not identify validation-by-trace,
-   validation-by-counter, or three-way interactions. If the pilot suggests
-   material interaction effects, should the study expand to the complete
-   eight-mode factorial design? That extension would add `validation_only`,
-   `validation_trace`, and `validation_counters`; the current plan records but
-   does not implement them.
+The selected Week 11 paper timing mode is:
 
-This question remains intentionally unresolved after Day 5.
+```text
+minimal
+```
+
+It passed:
+
+```text
+cross-mode output equivalence
+cross-mode canonical backend-state equivalence
+2,074 exhaustive valid permutations through n=8
+48 fixed generated cases
+one checked diagnostic per exact timing case
+oracle-free and replay-free timed calls
+empty trace and metrics
+no complete backend validate_invariants() in timing
+```
+
+The final separation is:
+
+```text
+timing:
+    minimal
+
+operation counters:
+    checked diagnostic outside timing
+
+correctness:
+    oracle certification plus checked diagnostic outside timing
+```
+
+The five-mode study does not identify validation-by-trace,
+validation-by-counter, or three-way interactions. Day 7 does not expand to the
+complete eight-mode factorial design because the existing evidence answers the
+mode-selection question. `validation_only`, `validation_trace`, and
+`validation_counters` remain optional future work.
+
+The frozen, unexecuted Week 11 configuration is:
+
+```text
+experiments/week11_experiment_gate.py
+```
 
 ## Non-Claim Boundary
 

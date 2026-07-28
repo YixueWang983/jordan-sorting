@@ -1191,10 +1191,10 @@ not used.
 
 `paper_jordan_sort_valid(seq)` and the diagnostic API share one internal main
 loop. The diagnostic API adds complete state audits through a callback and
-must run outside future timing regions. The ordinary public path does not
-invoke that callback. It still records the core counters and trace, and the
-correctness-first sibling backend still performs its own commit validation;
-those remaining costs must be handled explicitly before performance claims.
+must run outside timing regions. The public sorter accepts one fixed execution
+mode. The Week 11 timing gate selects `minimal`, which disables trace, counters,
+and complete backend commit validation while retaining the same algorithm
+control flow and always-on local safety checks.
 
 ## Worked Trace: `[1, 4, 2, 3]`
 
@@ -1876,12 +1876,11 @@ after each committed split. Validation follows every owned finite pair's
 parent chain to its family dummy. With `p` pairs and a chain depth of `O(p)`,
 one complete validation can therefore cost `O(p^2)` in the worst case.
 
-This audit cost is deliberately retained during the Week 9 correctness gate,
-but it is not part of the intended ordinary-list algorithm timing. Before
-performance experiments, the implementation must expose an explicit
-correctness/debug validation mode. Timed runs must exclude complete invariant
-validation, and an equivalent complete validation must run separately outside
-the measured region.
+This audit cost was deliberately retained during the Week 9 correctness gate.
+Week 10 introduced explicit execution policies and selected `minimal` for paper
+timing. Timed calls exclude complete invariant validation; every exact case
+receives an equivalent complete `checked` diagnostic outside the measured
+region.
 
 The theoretical heterogeneous finger-tree backend remains a paper-level
 comparison point, not an implemented component.
@@ -2234,3 +2233,56 @@ generated cases:
 
 All prefix invariants and final outputs passed. This is correctness evidence
 for the ordinary-list implementation, not a linear-time complexity claim.
+
+## Week 10 Timing-Policy Record
+
+The implementation now has five immutable execution policies:
+
+```text
+checked:
+    trace on, counters on, complete commit validation on
+
+instrumented:
+    trace on, counters on, complete commit validation off
+
+trace_only:
+    trace on, counters off, complete commit validation off
+
+counters_only:
+    trace off, counters on, complete commit validation off
+
+minimal:
+    trace off, counters off, complete commit validation off
+```
+
+All modes execute the same Step 1/2/3 loop. Cross-mode tests require identical
+output, stage results, partial order, and canonical sibling-backend state.
+Complete state audit remains capable of validating a state produced in
+`minimal` mode.
+
+The frozen Week 11 boundary is:
+
+```text
+before timing:
+    oracle-certify the exact generated input
+    compute structural metadata
+    run one complete checked diagnostic
+
+during paper timing:
+    paper_jordan_sort_valid(seq, execution_mode="minimal")
+
+after timing:
+    compare output with the precomputed oracle result
+```
+
+The timed `minimal` call still performs ordinary-list operations, local safety
+checks, rollback, stage-result recording, and output recovery. Removing
+diagnostic work does not make the ordinary-list backend equivalent to the
+paper's heterogeneous finger-tree implementation and does not create a
+linear-time claim.
+
+The canonical not-yet-executed Week 11 gate is stored in:
+
+```text
+experiments/week11_experiment_gate.py
+```

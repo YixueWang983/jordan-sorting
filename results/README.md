@@ -698,3 +698,28 @@ results/runs/week10_contamination_full_20260728/
 Its manifest-covered raw data, summaries, configuration, environment,
 manifest, and validation report are committed so the exact published ratios
 can be recomputed without rerunning timing.
+
+## Frozen Week 11 Gate
+
+Week 10 freezes, but does not execute, the Week 11 paper-sorting integration
+pilot in:
+
+```text
+experiments/week11_experiment_gate.py
+```
+
+Inspect the machine-readable contract with:
+
+```bash
+python experiments/week11_experiment_gate.py
+```
+
+The planned output directory is:
+
+```text
+results/runs/week11_paper_sorting_pilot_v1/
+```
+
+The gate expects `1,050` raw rows, `105` case-summary rows, and `45`
+group-summary rows. These files do not exist yet and must not be described as
+Week 10 results.

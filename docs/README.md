@@ -30,7 +30,8 @@ Current files:
   Week 7 research questions, metric definitions, and interpretation boundaries.
 
 - `benchmark_protocol.md`
-  Week 7 timing protocol for pilot benchmarking.
+  Timing, correctness-audit, aggregation, and frozen Week 11 paper-pilot
+  protocol.
 
 - `final_scope_and_contributions.md`
   Week 8 supervisor-confirmed scope freeze, contribution claims, non-contributions, success
@@ -121,7 +122,12 @@ Current files:
   immutable policy plumbing, Day 3 separates complete backend scans from
   always-on local split safety, Day 4 decouples trace and counters, and Day 5
   adds safe certification plus the contamination runner/validator. Day 6 runs,
-  validates, and analyzes the full 1,500-row contamination pilot.
+  validates, and analyzes the full 1,500-row contamination pilot. Day 7 selects
+  `minimal` and freezes the unexecuted Week 11 gate.
+
+- `week10_summary.md`
+  Week 10 final timing-mode decision, correctness/timing boundary,
+  contamination evidence, and Week 11 handoff.
 
 ## Plan Documents
 

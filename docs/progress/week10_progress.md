@@ -336,7 +336,7 @@ git diff --check:
 
 ## Day 6: Contamination Pilot
 
-Status: complete; awaiting review before Day 7.
+Status: formally approved and complete.
 
 - [x] ran the frozen full pilot from clean source commit `c195a2f`;
 - [x] generated exactly `1,500 / 100 / 60` raw, case-summary, and
@@ -413,11 +413,83 @@ git diff --check:
 
 ## Day 7: Final Mode and Week 11 Gate
 
-Status: not started.
+Status: complete.
 
-No final timing mode or Week 11 formal configuration has been frozen.
+- [x] selected `minimal` as the only Week 11 paper timing mode;
+- [x] retained one complete `checked` diagnostic per case outside timing;
+- [x] retained oracle certification and structural profiling outside timing;
+- [x] confirmed `minimal` records no trace or diagnostic counters;
+- [x] confirmed `minimal` runs no complete backend commit validation;
+- [x] confirmed always-on local safety checks, rollback, `stage_results`, and
+  ordinary-list work remain in timing;
+- [x] confirmed output and canonical backend state match `checked`;
+- [x] confirmed the 2,074-case exhaustive correctness gate;
+- [x] added a machine-readable frozen Week 11 gate;
+- [x] fixed sizes, valid families, randomized case count, warm-up/measured
+  runs, algorithms, seeds, run ID, output directory, row counts, and runtime
+  planning ceiling;
+- [x] added tests that reject drift from the frozen gate;
+- [x] kept Week 11 status as `frozen_not_executed`;
+- [x] revalidated the archived Week 10 evidence;
+- [x] revalidated the Week 9 sorting and recognition outputs;
+- [x] documented the final timing boundary and non-linear-time claim.
+
+Frozen Week 11 configuration:
+
+```text
+experiments/week11_experiment_gate.py
+
+run_id:
+    week11_paper_sorting_pilot_v1
+
+paper timing mode:
+    minimal
+
+untimed audit mode:
+    checked
+
+expected rows:
+    raw = 1,050
+    case summary = 105
+    group summary = 45
+```
+
+## Day 7 Verification
+
+```text
+python -m unittest discover -s tests:
+    Ran 383 tests
+    OK
+
+python -m compileall -q src experiments tests:
+    passed
+
+python experiments/validate_paper_algorithm.py --max-n 8:
+    exhaustive valid permutations = 2,074
+    generated valid cases = 48
+    all valid = true
+
+Week 10 archived validator:
+    valid = true
+    rows = 1,500 / 100 / 60
+
+Week 9 sorting validator:
+    valid = true
+    rows = 108 / 36 / 27
+
+Week 9 recognition validator:
+    valid = true
+    rows = 180 / 60 / 42
+
+Week 11 frozen gate:
+    status = frozen_not_executed
+    expected rows = 1,050 / 105 / 45
+
+git diff --check:
+    passed
+```
 
 ## Week 10 Status
 
-Week 10 is in progress. Day 1 through Day 5 are formally approved. Day 6 is
-complete and awaiting review. Day 7 has not started.
+Week 10 is complete. The selected timing mode and Week 11 integration-pilot
+gate are frozen. The Week 11 experiment has not been executed.

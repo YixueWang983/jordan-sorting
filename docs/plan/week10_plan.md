@@ -1,8 +1,8 @@
 # Week 10 Plan: Paper Algorithm Timing-Contamination Study
 
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
-Status: recorded; implementation has not started.
+Status: complete; `minimal` selected and Week 11 gate frozen.
 
 ## Core Goal
 
@@ -722,20 +722,20 @@ updated docs/design/final_experiment_spec.md
 ## Definition of Done
 
 ```text
-[ ] Step 1/2/3 still has one main loop
-[ ] all five modes produce identical algorithm output
-[ ] minimal runs no complete backend validation
-[ ] minimal records no trace
-[ ] minimal updates no diagnostic counters
-[ ] oracle certification is entirely outside timing
-[ ] every case receives one complete untimed audit
-[ ] exhaustive n=0..8 passes
-[ ] all 48 fixed generated cases pass
-[ ] every contamination-pilot output passes its validator
-[ ] validation, trace, and counter overhead are quantified
-[ ] the Week 11 formal timing mode is selected
-[ ] no linear-time claim is made
-[ ] full tests, compileall, and diff check pass
+[x] Step 1/2/3 still has one main loop
+[x] all five modes produce identical algorithm output
+[x] minimal runs no complete backend validation
+[x] minimal records no trace
+[x] minimal updates no diagnostic counters
+[x] oracle certification is entirely outside timing
+[x] every case receives one complete untimed audit
+[x] exhaustive n=0..8 passes
+[x] all 48 fixed generated cases pass
+[x] every contamination-pilot output passes its validator
+[x] validation, trace, and counter overhead are quantified
+[x] the Week 11 paper timing mode is selected
+[x] no linear-time claim is made
+[x] full tests, compileall, and diff check pass
 ```
 
 The main Week 10 result is not simply a faster program. It is an explainable,

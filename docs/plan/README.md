@@ -48,3 +48,9 @@ This folder stores the approved thesis scope and research-question documents.
   Daily plan for decomposing paper-algorithm timing contamination, adding fixed
   execution policies without duplicating the main loop, running a controlled
   overhead pilot, and freezing the Week 11 timing gate.
+
+The canonical frozen Week 11 integration-pilot values are implemented in:
+
+```text
+experiments/week11_experiment_gate.py
+```

@@ -2,8 +2,8 @@
 
 Last updated: 2026-07-28
 
-Status: Day 6 full pilot completed and validated; final mode selection is
-reserved for Day 7.
+Status: Day 6 full pilot completed and validated; Day 7 selected `minimal` for
+Week 11 paper timing.
 
 ## Purpose
 
@@ -201,8 +201,10 @@ The pilot does not support any of the following claims:
 - these three generator families represent all valid Jordan sequences;
 - one macOS run is sufficient for final cross-environment performance claims.
 
-Final timing-mode selection and the Week 11 experiment gate remain Day 7
-decisions.
+Day 7 selected `minimal` for paper timing while retaining one complete
+`checked` diagnostic and oracle certification outside timing. The frozen,
+unexecuted Week 11 gate is recorded in
+`experiments/week11_experiment_gate.py`.
 
 ## Reproduction
 

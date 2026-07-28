@@ -545,28 +545,23 @@ The following must not block completion:
 
 ## Immediate Next Step
 
-The detailed daily plan is:
+Week 9 and Week 10 are complete. The next implementation gate is the frozen
+Week 11 paper-sorting integration pilot:
 
 ```text
-docs/plan/week9_plan.md
+experiments/week11_experiment_gate.py
 ```
 
-Create:
+Week 11 must:
 
 ```text
-docs/design/paper_algorithm_ordinary_list.md
+implement a dedicated runner and validator
+pass execution_mode="minimal" explicitly for paper timing
+run one checked diagnostic per case outside timing
+keep oracle certification outside timing
+keep valid-input sorting separate from recognition
+produce exactly 1050 raw rows under the frozen gate
 ```
 
-Before implementation, it must define:
-
-1. the partial sorted-order structure and sentinels;
-2. pair identities, parity mapping, and sibling-list ownership;
-3. exact `make-list`, boundary insertion, and split preconditions;
-4. implementation-facing Step 1/2/3 pseudocode;
-5. the `z_{i-1} > z_i` symmetric case;
-6. behavior for `n < 3`;
-7. one complete worked trace;
-8. unit-test cases for every paper step and boundary condition.
-
-No final performance experiment should run until the paper algorithm passes the
-algorithm gate.
+The Week 11 pilot is not the Week 12 formal experiment and does not support a
+linear-time claim.
