@@ -6,7 +6,6 @@ from types import MappingProxyType
 from typing import Mapping
 
 
-DEFAULT_EXECUTION_ID = "week11_pilot_v1__mac16_13__run1"
 EXECUTION_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 
 

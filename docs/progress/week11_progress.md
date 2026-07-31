@@ -259,6 +259,12 @@ Status: complete; awaiting review before Day 3 resumes.
   absent;
 - [x] added protocol drift, execution isolation, path safety, machine
   independence, and evidence-contract tests.
+- [x] removed the machine-named default execution ID;
+- [x] required an explicit execution ID for CLI, preflight, evidence
+  initialization, and in-memory pilot paths;
+- [x] kept machine identity only in the nested environment field;
+- [x] rejected environment paper/audit modes that differ from the protocol;
+- [x] restored the caller's GC state even if a timed algorithm changes it.
 
 Day 2.6 outputs:
 
@@ -282,11 +288,11 @@ ratios and cross-machine trend consistency may be compared.
 
 ```text
 focused protocol and runner tests:
-    Ran 45 tests
+    Ran 49 tests
     OK
 
 python -m unittest discover -s tests:
-    Ran 435 tests
+    Ran 439 tests
     OK
 
 python -m compileall -q src experiments tests:
@@ -388,6 +394,8 @@ Status: blocked by validated Day 6 evidence.
 ## Current Status
 
 Week 11 Day 1, the repaired Day 2 framework, the historical Day 2.5 migration,
-and the Day 3 in-memory timing control flow are complete. Day 2.6 now separates
-the active protocol from per-run machine evidence. W11D3 is paused for review
-before Day 4 begins. No formal Week 11 execution has run.
+and the Day 3 in-memory timing control flow are complete. Day 2.6 separates the
+active protocol from per-run machine evidence and the joint checkpoint repair
+requires explicit execution identity and consistent environment evidence.
+W11D3 is implemented and migrated, but Day 4 remains paused for review. No
+formal Week 11 execution has run.

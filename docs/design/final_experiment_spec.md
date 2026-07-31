@@ -474,6 +474,8 @@ Each pilot or formal execution uses a unique `execution_id`, output directory,
 source commit, and `environment.json`. The machine is fixed for that execution,
 but it is not part of the experimental protocol. A machine change therefore
 requires a new execution ID and environment record, not a new protocol version.
+The execution ID must be supplied explicitly; the runner must not infer a
+machine-named default.
 
 `config.json` stores the machine-independent protocol. `environment.json`
 stores the execution identity and actual machine metadata. Absolute runtimes

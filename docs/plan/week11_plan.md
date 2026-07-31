@@ -2,7 +2,8 @@
 
 Last updated: 2026-07-31
 
-Status: protocol/execution separation complete; W11D3 paused for review; pilot not executed.
+Status: W11D3 implemented and migrated to the protocol/execution model; joint
+checkpoint repair complete; pilot not executed.
 
 ## Core Goal
 
@@ -74,6 +75,11 @@ output_dir
 machine_identity
 source_commit
 ```
+
+Every preflight, in-memory pilot, and evidence initialization call must receive
+an explicit execution ID. No machine-named default is permitted. Machine
+identity appears only in the nested `machine_identity` environment field;
+paper/audit modes in `environment.json` must equal the protocol.
 
 The planned M4 execution ID is
 `week11_pilot_v1__mac16_13__run1`. Another machine must use another execution
@@ -353,7 +359,7 @@ Before formal execution:
 3. rerun paper validation through `n=8`;
 4. revalidate Week 10 archived evidence;
 5. revalidate Week 9 sorting and recognition evidence;
-6. run `run_week11_pilot.py --preflight-only`;
+6. run `run_week11_pilot.py --preflight-only --execution-id <id>`;
 7. confirm the selected execution machine is timing-ready and record it;
 8. confirm the output directory is absent;
 9. commit and push all source changes;

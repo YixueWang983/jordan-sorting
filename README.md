@@ -329,7 +329,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 435 tests
+Ran 439 tests
 OK
 ```
 
@@ -443,9 +443,9 @@ Important project documents:
 
 Immediate next task:
 
-- review the Week 11 protocol/execution separation;
+- review the repaired joint W11D3 protocol/execution checkpoint;
 - keep the historical v1/v2 and planned execution directories absent;
-- resume W11D3 review only after the separation passes;
+- do not enter W11D4 before the joint checkpoint passes;
 - keep recognition separate from valid-input paper sorting;
 - do not treat the ordinary-list pilot as a linear-time claim.
 

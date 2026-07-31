@@ -37,7 +37,6 @@ from paper_jordan_sort import (  # noqa: E402
 from simplified_jordan import simplified_jordan_sort  # noqa: E402
 from stats import structure_profile  # noqa: E402
 from week11_execution_context import (  # noqa: E402
-    DEFAULT_EXECUTION_ID,
     Week11ExecutionContext,
     execution_context_to_dict,
     output_dir_for_execution,
@@ -52,6 +51,18 @@ from week11_experiment_protocol import (  # noqa: E402
 )
 
 
+MACHINE_IDENTITY_FIELDS = (
+    "machine_name",
+    "machine_model",
+    "chip",
+    "architecture",
+    "os_name",
+    "os_version",
+    "os_build",
+    "python_executable",
+    "python_implementation",
+    "python_version",
+)
 EVIDENCE_FILENAMES = (
     "raw.csv",
     "case_summary.csv",
@@ -361,7 +372,7 @@ def _case_audit_row(config, execution_id, case, diagnostics):
     return {field: _csv_value(row.get(field)) for field in CASE_AUDIT_FIELDS}
 
 
-def build_cases_and_audits(config, execution_id=DEFAULT_EXECUTION_ID):
+def build_cases_and_audits(config, execution_id):
     """Certify and audit every exact case before any timing may begin."""
     validate_execution_config(config)
     validate_execution_id(execution_id)
@@ -487,8 +498,11 @@ def _time_once_algorithm(
         result = algorithm(values, paper_execution_mode)
         end = time.perf_counter_ns()
     finally:
-        if was_enabled:
-            gc.enable()
+        if gc.isenabled() != was_enabled:
+            if was_enabled:
+                gc.enable()
+            else:
+                gc.disable()
     return result, end - start
 
 
@@ -554,7 +568,7 @@ def _raw_metadata(config, execution_id, case, algorithm_name):
 def make_raw_rows(
     config,
     certified_cases,
-    execution_id=DEFAULT_EXECUTION_ID,
+    execution_id,
 ):
     """Warm up and time only after all case certifications have completed."""
     validate_execution_config(config)
@@ -738,7 +752,7 @@ def summarize_by_group(case_rows):
     return summaries
 
 
-def run_pilot_in_memory(config, execution_id=DEFAULT_EXECUTION_ID):
+def run_pilot_in_memory(config, execution_id):
     """Execute a supplied contract without writing any evidence files."""
     validate_execution_config(config)
     validate_execution_id(execution_id)
@@ -802,7 +816,8 @@ class Week11PilotPaths:
 
 def build_pilot_paths(
     project_root=PROJECT_ROOT,
-    execution_id=DEFAULT_EXECUTION_ID,
+    *,
+    execution_id,
 ):
     """Resolve one execution-specific output directory under a project root."""
     validate_execution_id(execution_id)
@@ -979,7 +994,8 @@ def capture_machine_identity():
 
 def build_environment_record(
     git_state,
-    execution_id=DEFAULT_EXECUTION_ID,
+    *,
+    execution_id,
     protocol=WEEK11_EXPERIMENT_PROTOCOL,
     project_root=PROJECT_ROOT,
     machine_identity=None,
@@ -1005,7 +1021,6 @@ def build_environment_record(
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "git_dirty": False,
         "head_matches_origin_main": True,
-        **identity,
         "python_runtime": sys.version,
         "platform": platform.platform(),
         "processor": platform.processor(),
@@ -1053,6 +1068,24 @@ def initialize_evidence_directory(
         raise ValueError("config does not match the frozen protocol")
     if environment_record.get("protocol_version") != protocol.protocol_version:
         raise ValueError("environment protocol_version does not match config")
+    duplicated_identity_fields = sorted(
+        set(MACHINE_IDENTITY_FIELDS).intersection(environment_record)
+    )
+    if duplicated_identity_fields:
+        raise ValueError(
+            "environment must keep machine identity only in machine_identity: "
+            f"{duplicated_identity_fields}"
+        )
+    if (
+        environment_record.get("paper_execution_mode")
+        != protocol.paper_execution_mode
+    ):
+        raise ValueError("environment paper execution mode does not match protocol")
+    if (
+        environment_record.get("audit_execution_mode")
+        != protocol.audit_execution_mode
+    ):
+        raise ValueError("environment audit execution mode does not match protocol")
     execution_id = environment_record.get("execution_id")
     identity = environment_record.get("machine_identity")
     source_commit = environment_record.get("source_commit")
@@ -1090,21 +1123,24 @@ def initialize_evidence_directory(
 
 def initialize_formal_evidence(
     project_root=PROJECT_ROOT,
-    execution_id=DEFAULT_EXECUTION_ID,
+    *,
+    execution_id,
     protocol=WEEK11_EXPERIMENT_PROTOCOL,
 ):
     """Perform the mandatory evidence prewrite for a future formal run."""
     validate_week11_experiment_protocol(protocol)
     validate_execution_id(execution_id)
     root = Path(project_root)
-    paths = require_unused_output(build_pilot_paths(root, execution_id))
+    paths = require_unused_output(
+        build_pilot_paths(root, execution_id=execution_id)
+    )
     identity = capture_machine_identity()
     source = require_clean_pushed_git(git_snapshot(root))
     config = build_config_record(protocol)
     environment = build_environment_record(
         source,
-        execution_id,
-        protocol,
+        execution_id=execution_id,
+        protocol=protocol,
         project_root=root,
         machine_identity=identity,
     )
@@ -1118,21 +1154,24 @@ def initialize_formal_evidence(
 
 def run_preflight(
     project_root=PROJECT_ROOT,
-    execution_id=DEFAULT_EXECUTION_ID,
+    *,
+    execution_id,
     protocol=WEEK11_EXPERIMENT_PROTOCOL,
 ):
     """Validate protocol and execution readiness without creating output."""
     validate_week11_experiment_protocol(protocol)
     validate_execution_id(execution_id)
     root = Path(project_root)
-    paths = require_unused_output(build_pilot_paths(root, execution_id))
+    paths = require_unused_output(
+        build_pilot_paths(root, execution_id=execution_id)
+    )
     identity = capture_machine_identity()
     source = require_clean_pushed_git(git_snapshot(root))
     config = build_config_record(protocol)
     environment = build_environment_record(
         source,
-        execution_id,
-        protocol,
+        execution_id=execution_id,
+        protocol=protocol,
         project_root=root,
         machine_identity=identity,
     )
@@ -1175,7 +1214,7 @@ def parse_args(argv=None):
     )
     parser.add_argument(
         "--execution-id",
-        default=DEFAULT_EXECUTION_ID,
+        required=True,
         help="identify one run without changing the frozen protocol",
     )
     return parser.parse_args(argv)

@@ -19,7 +19,6 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 import run_week11_pilot as runner  # noqa: E402
 from week11_execution_context import (  # noqa: E402
-    DEFAULT_EXECUTION_ID,
     Week11ExecutionContext,
     output_dir_for_execution,
     validate_execution_context,
@@ -28,6 +27,9 @@ from week11_experiment_protocol import (  # noqa: E402
     WEEK11_EXPERIMENT_PROTOCOL,
     protocol_to_dict,
 )
+
+
+TEST_EXECUTION_ID = "week11_pilot_v1__test_machine__run1"
 
 
 class RunWeek11PilotTests(unittest.TestCase):
@@ -66,12 +68,14 @@ class RunWeek11PilotTests(unittest.TestCase):
 
     def _minimal_environment_record(self):
         return {
-            "execution_id": DEFAULT_EXECUTION_ID,
-            "output_dir": output_dir_for_execution(DEFAULT_EXECUTION_ID),
+            "execution_id": TEST_EXECUTION_ID,
+            "output_dir": output_dir_for_execution(TEST_EXECUTION_ID),
             "machine_identity": self._matching_machine_identity(),
             "source_commit": "a" * 40,
             "protocol_version": WEEK11_EXPERIMENT_PROTOCOL.protocol_version,
             "captured_before_timing": True,
+            "paper_execution_mode": "minimal",
+            "audit_execution_mode": "checked",
         }
 
     def _temporary_project(self):
@@ -141,12 +145,15 @@ class RunWeek11PilotTests(unittest.TestCase):
 
     def test_output_contract_is_derived_from_execution_id(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            paths = runner.build_pilot_paths(tmpdir)
+            paths = runner.build_pilot_paths(
+                tmpdir,
+                execution_id=TEST_EXECUTION_ID,
+            )
 
         self.assertEqual(
             paths.run_dir,
             Path(tmpdir)
-            / "results/runs/week11_pilot_v1__mac16_13__run1",
+            / f"results/runs/{TEST_EXECUTION_ID}",
         )
         self.assertEqual(
             tuple(path.name for path in paths.evidence_paths),
@@ -186,7 +193,10 @@ class RunWeek11PilotTests(unittest.TestCase):
 
     def test_existing_run_directory_is_rejected_even_when_empty(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            paths = runner.build_pilot_paths(tmpdir)
+            paths = runner.build_pilot_paths(
+                tmpdir,
+                execution_id=TEST_EXECUTION_ID,
+            )
             paths.run_dir.mkdir(parents=True)
 
             with self.assertRaisesRegex(RuntimeError, "already in use"):
@@ -198,7 +208,10 @@ class RunWeek11PilotTests(unittest.TestCase):
                 temporary = tempfile.TemporaryDirectory()
                 self.addCleanup(temporary.cleanup)
                 tmpdir = temporary.name
-                paths = runner.build_pilot_paths(tmpdir)
+                paths = runner.build_pilot_paths(
+                    tmpdir,
+                    execution_id=TEST_EXECUTION_ID,
+                )
                 paths.run_dir.mkdir(parents=True)
                 evidence = paths.run_dir / filename
                 evidence.write_text("existing\n", encoding="utf-8")
@@ -285,7 +298,9 @@ class RunWeek11PilotTests(unittest.TestCase):
         )
         self.assertTrue(args.preflight_only)
         self.assertEqual(args.execution_id, "week11_test_run")
-        self.assertFalse(runner.parse_args([]).preflight_only)
+        with redirect_stderr(io.StringIO()):
+            with self.assertRaises(SystemExit):
+                runner.parse_args(["--preflight-only"])
 
         for forbidden in (
             "--overwrite",
@@ -305,8 +320,21 @@ class RunWeek11PilotTests(unittest.TestCase):
     def test_formal_execution_is_disabled(self):
         with patch.object(runner, "run_preflight") as preflight:
             with self.assertRaisesRegex(RuntimeError, "Day 5 preflight"):
-                runner.main([])
+                runner.main(["--execution-id", TEST_EXECUTION_ID])
         preflight.assert_not_called()
+
+    def test_preflight_cli_requires_explicit_execution_id_on_any_machine(self):
+        non_m4_identity = dict(self._matching_machine_identity())
+        non_m4_identity["machine_model"] = "Linux-5800U"
+        with patch.object(
+            runner,
+            "capture_machine_identity",
+            return_value=non_m4_identity,
+        ) as identity:
+            with redirect_stderr(io.StringIO()):
+                with self.assertRaises(SystemExit):
+                    runner.main(["--preflight-only"])
+        identity.assert_not_called()
 
     def test_preflight_is_read_only_and_reports_frozen_counts(self):
         temporary, root = self._temporary_project()
@@ -320,13 +348,16 @@ class RunWeek11PilotTests(unittest.TestCase):
             "capture_machine_identity",
             return_value=self._matching_machine_identity(),
         ):
-            result = runner.run_preflight(root)
+            result = runner.run_preflight(
+                root,
+                execution_id=TEST_EXECUTION_ID,
+            )
 
         self.assertEqual(result["status"], "ready_not_executed")
         self.assertTrue(result["protocol_valid"])
         self.assertEqual(result["protocol_version"], "week11_pilot_v1")
         self.assertTrue(result["execution_context_valid"])
-        self.assertEqual(result["execution_id"], DEFAULT_EXECUTION_ID)
+        self.assertEqual(result["execution_id"], TEST_EXECUTION_ID)
         self.assertTrue(result["machine_identity_recorded"])
         self.assertTrue(result["git_clean"])
         self.assertTrue(result["head_pushed"])
@@ -340,7 +371,7 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertTrue(result["environment_contract_ready"])
         self.assertFalse(result["formal_execution_enabled"])
         self.assertFalse(
-            (root / output_dir_for_execution(DEFAULT_EXECUTION_ID)).exists()
+            (root / output_dir_for_execution(TEST_EXECUTION_ID)).exists()
         )
 
     def test_preflight_rejects_dirty_or_unpushed_source(self):
@@ -359,7 +390,10 @@ class RunWeek11PilotTests(unittest.TestCase):
                 return_value=self._matching_machine_identity(),
             ):
                 with self.assertRaises(RuntimeError):
-                    runner.run_preflight(root)
+                    runner.run_preflight(
+                        root,
+                        execution_id=TEST_EXECUTION_ID,
+                    )
 
     def test_preflight_accepts_an_unseen_machine_as_a_new_execution(self):
         with tempfile.TemporaryDirectory() as tmpdir, patch.object(
@@ -433,7 +467,7 @@ class RunWeek11PilotTests(unittest.TestCase):
 
     def test_tiny_execution_builds_all_four_row_products(self):
         config = self._tiny_execution_config()
-        result = runner.run_pilot_in_memory(config)
+        result = runner.run_pilot_in_memory(config, TEST_EXECUTION_ID)
 
         self.assertEqual(config.case_count, 4)
         self.assertEqual(len(result["raw_rows"]), 24)
@@ -530,7 +564,7 @@ class RunWeek11PilotTests(unittest.TestCase):
             "_time_once_algorithm",
             side_effect=time_once,
         ):
-            result = runner.run_pilot_in_memory(config)
+            result = runner.run_pilot_in_memory(config, TEST_EXECUTION_ID)
 
         self.assertEqual(generator.call_count, 35)
         self.assertEqual(oracle_mock.call_count, 35)
@@ -575,7 +609,7 @@ class RunWeek11PilotTests(unittest.TestCase):
             "_time_once_algorithm",
             side_effect=fake_timer,
         ):
-            runner.run_pilot_in_memory(config)
+            runner.run_pilot_in_memory(config, TEST_EXECUTION_ID)
 
         first_timing = events.index("timing")
         self.assertEqual(events.count("oracle"), config.case_count)
@@ -606,7 +640,7 @@ class RunWeek11PilotTests(unittest.TestCase):
             "_time_once_algorithm",
         ) as timer:
             with self.assertRaisesRegex(RuntimeError, "oracle-certified"):
-                runner.run_pilot_in_memory(config)
+                runner.run_pilot_in_memory(config, TEST_EXECUTION_ID)
 
         diagnostic.assert_not_called()
         timer.assert_not_called()
@@ -623,7 +657,7 @@ class RunWeek11PilotTests(unittest.TestCase):
             return_value=[1, 2, 3, 4],
         ), patch.object(runner, "oracle") as oracle_mock:
             with self.assertRaisesRegex(RuntimeError, "wrong length"):
-                runner.build_cases_and_audits(config)
+                runner.build_cases_and_audits(config, TEST_EXECUTION_ID)
 
         oracle_mock.assert_not_called()
 
@@ -646,7 +680,7 @@ class RunWeek11PilotTests(unittest.TestCase):
             "_time_once_algorithm",
         ) as timer:
             with self.assertRaisesRegex(RuntimeError, "duplicate case"):
-                runner.run_pilot_in_memory(config)
+                runner.run_pilot_in_memory(config, TEST_EXECUTION_ID)
 
         diagnostic.assert_called_once()
         timer.assert_not_called()
@@ -693,6 +727,38 @@ class RunWeek11PilotTests(unittest.TestCase):
                                 [2, 1],
                                 "minimal",
                             )
+                    self.assertEqual(gc.isenabled(), initially_enabled)
+        finally:
+            if original_state:
+                gc.enable()
+            else:
+                gc.disable()
+
+    def test_timed_call_restores_gc_after_algorithm_changes_it(self):
+        def enable_gc(values, paper_execution_mode):
+            del paper_execution_mode
+            gc.enable()
+            return sorted(values)
+
+        original_state = gc.isenabled()
+        try:
+            for initially_enabled in (True, False):
+                with self.subTest(initially_enabled=initially_enabled):
+                    if initially_enabled:
+                        gc.enable()
+                    else:
+                        gc.disable()
+                    with patch.dict(
+                        runner.ALGORITHMS,
+                        {"python_sort": enable_gc},
+                    ):
+                        result, elapsed = runner._time_once_algorithm(
+                            "python_sort",
+                            [2, 1],
+                            "minimal",
+                        )
+                    self.assertEqual(result, [1, 2])
+                    self.assertGreaterEqual(elapsed, 0)
                     self.assertEqual(gc.isenabled(), initially_enabled)
         finally:
             if original_state:
@@ -767,6 +833,7 @@ class RunWeek11PilotTests(unittest.TestCase):
         ):
             environment = runner.build_environment_record(
                 git_state,
+                execution_id=TEST_EXECUTION_ID,
                 project_root=tmpdir,
                 machine_identity=self._matching_machine_identity(),
             )
@@ -775,10 +842,10 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertFalse(environment["git_dirty"])
         self.assertTrue(environment["head_matches_origin_main"])
         self.assertEqual(environment["source_commit"], "a" * 40)
-        self.assertEqual(environment["execution_id"], DEFAULT_EXECUTION_ID)
+        self.assertEqual(environment["execution_id"], TEST_EXECUTION_ID)
         self.assertEqual(
             environment["output_dir"],
-            output_dir_for_execution(DEFAULT_EXECUTION_ID),
+            output_dir_for_execution(TEST_EXECUTION_ID),
         )
         self.assertEqual(environment["protocol_version"], "week11_pilot_v1")
         self.assertEqual(environment["paper_execution_mode"], "minimal")
@@ -788,8 +855,8 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertTrue(environment["power_command_success"])
         self.assertTrue(environment["load_command_success"])
         self.assertGreaterEqual(environment["available_disk_bytes"], 0)
-        self.assertEqual(environment["machine_model"], "Mac16,13")
-        self.assertEqual(environment["architecture"], "arm64")
+        self.assertNotIn("machine_model", environment)
+        self.assertNotIn("architecture", environment)
         self.assertEqual(
             environment["machine_identity"],
             self._matching_machine_identity(),
@@ -797,7 +864,10 @@ class RunWeek11PilotTests(unittest.TestCase):
 
     def test_initialize_evidence_directory_writes_and_verifies_json(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            paths = runner.build_pilot_paths(tmpdir)
+            paths = runner.build_pilot_paths(
+                tmpdir,
+                execution_id=TEST_EXECUTION_ID,
+            )
             config = runner.build_config_record()
             environment = self._minimal_environment_record()
             result = runner.initialize_evidence_directory(
@@ -831,7 +901,10 @@ class RunWeek11PilotTests(unittest.TestCase):
             with self.subTest(record=record_name):
                 temporary, root = self._temporary_project()
                 self.addCleanup(temporary.cleanup)
-                paths = runner.build_pilot_paths(root)
+                paths = runner.build_pilot_paths(
+                    root,
+                    execution_id=TEST_EXECUTION_ID,
+                )
                 config = runner.build_config_record()
                 environment = self._minimal_environment_record()
                 if record_name == "config":
@@ -851,9 +924,54 @@ class RunWeek11PilotTests(unittest.TestCase):
 
                 self.assertFalse(paths.run_dir.exists())
 
+    def test_initialize_evidence_rejects_duplicate_machine_fields(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            paths = runner.build_pilot_paths(
+                tmpdir,
+                execution_id=TEST_EXECUTION_ID,
+            )
+            environment = self._minimal_environment_record()
+            environment["machine_model"] = "contradictory-machine"
+
+            with self.assertRaisesRegex(ValueError, "only in machine_identity"):
+                runner.initialize_evidence_directory(
+                    paths,
+                    runner.build_config_record(),
+                    environment,
+                )
+
+            self.assertFalse(paths.run_dir.exists())
+
+    def test_initialize_evidence_rejects_execution_mode_drift(self):
+        for field_name, changed_value in (
+            ("paper_execution_mode", "checked"),
+            ("audit_execution_mode", "minimal"),
+        ):
+            with self.subTest(field=field_name):
+                temporary, root = self._temporary_project()
+                self.addCleanup(temporary.cleanup)
+                paths = runner.build_pilot_paths(
+                    root,
+                    execution_id=TEST_EXECUTION_ID,
+                )
+                environment = self._minimal_environment_record()
+                environment[field_name] = changed_value
+
+                with self.assertRaisesRegex(ValueError, "mode does not match"):
+                    runner.initialize_evidence_directory(
+                        paths,
+                        runner.build_config_record(),
+                        environment,
+                    )
+
+                self.assertFalse(paths.run_dir.exists())
+
     def test_environment_write_failure_preserves_partial_evidence(self):
         with tempfile.TemporaryDirectory() as tmpdir:
-            paths = runner.build_pilot_paths(tmpdir)
+            paths = runner.build_pilot_paths(
+                tmpdir,
+                execution_id=TEST_EXECUTION_ID,
+            )
             config = runner.build_config_record()
             environment = self._minimal_environment_record()
             original_write = runner._write_json_exclusive
@@ -899,8 +1017,14 @@ class RunWeek11PilotTests(unittest.TestCase):
             "capture_machine_identity",
             return_value=self._matching_machine_identity(),
         ):
-            runner.initialize_formal_evidence(root)
-        paths = runner.build_pilot_paths(root)
+            runner.initialize_formal_evidence(
+                root,
+                execution_id=TEST_EXECUTION_ID,
+            )
+        paths = runner.build_pilot_paths(
+            root,
+            execution_id=TEST_EXECUTION_ID,
+        )
 
         def future_sorter():
             self.assertTrue(paths.config_json.is_file())
@@ -940,7 +1064,10 @@ class RunWeek11PilotTests(unittest.TestCase):
             paths.environment_json.read_text(encoding="utf-8")
         )
         self.assertEqual(config, protocol_to_dict())
-        self.assertEqual(environment["machine_model"], "another-machine")
+        self.assertEqual(
+            environment["machine_identity"]["machine_model"],
+            "another-machine",
+        )
         self.assertEqual(
             environment["execution_id"],
             "week11_pilot_v1__other_machine__run1",
@@ -955,16 +1082,19 @@ class RunWeek11PilotTests(unittest.TestCase):
             runner,
             "run_preflight",
             return_value=result,
-        ), patch("builtins.print") as print_mock:
-            runner.main(["--preflight-only"])
+        ) as preflight, patch("builtins.print") as print_mock:
+            runner.main(
+                ["--preflight-only", "--execution-id", TEST_EXECUTION_ID]
+            )
 
         written = json.loads(print_mock.call_args.args[0])
         self.assertEqual(written, result)
+        preflight.assert_called_once_with(execution_id=TEST_EXECUTION_ID)
 
     def test_day3_timing_path_is_not_reachable_from_cli(self):
         with patch.object(runner, "run_pilot_in_memory") as pilot:
             with self.assertRaisesRegex(RuntimeError, "Day 5 preflight"):
-                runner.main([])
+                runner.main(["--execution-id", TEST_EXECUTION_ID])
         pilot.assert_not_called()
 
 
