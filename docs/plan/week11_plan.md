@@ -119,6 +119,8 @@ The dedicated validator must not trust runner-produced metadata. It must:
 - regenerate all 35 expected sequences;
 - recompute case IDs, seeds, sequence hashes, oracle results, structural
   fields, and case order;
+- independently rerun one complete checked diagnostic per case and compare
+  output hash, processed count, trace count, and every paper metric;
 - verify the complete `35 x 3 x 10` raw-row product;
 - verify algorithm order for every measured round;
 - require paper mode `minimal` and audit mode `checked`;
@@ -210,7 +212,7 @@ The completed framework additionally requires:
 
 - a direct `git ls-remote` query of `refs/heads/main`, so a stale local
   `origin/main` tracking ref cannot satisfy the pushed-source gate;
-- a structured machine record for every execution;
+- an anonymous structured benchmark-environment record for every execution;
 - atomic run-directory reservation with exclusive `config.json` and
   `environment.json` writes;
 - immediate JSON read-back verification;
@@ -219,8 +221,10 @@ The completed framework additionally requires:
   diagnostics, warm-up, sorter call, or timing call.
 
 `--preflight-only` remains read-only and never initializes the evidence
-directory. Power/load command success and timing readiness become fail-closed
-requirements in the Day 5 formal gate.
+directory. Power evidence uses a structured cross-platform status: macOS uses
+`pmset`, Linux uses `/sys/class/power_supply`, and a desktop with no battery is
+`not_applicable`. An unavailable power source cannot initialize formal
+evidence. AC/load timing readiness remains a Day 5 fail-closed decision.
 
 Suggested commit:
 
@@ -348,8 +352,10 @@ Required adversarial tests include:
 
 The validator defines its evidence schemas and deterministic case/ordering
 rules independently of the runner. It regenerates the frozen 35-case product,
-recomputes both summary layers, verifies manifest hashes, and rewrites the
-validation report on every invocation. It does not treat a stale
+reruns checked diagnostics, compares every audit metric, recomputes both
+summary layers, verifies manifest hashes, and rewrites the validation report
+on every invocation. Its public boundary converts unexpected validation
+failures into `valid=false`; it does not treat a stale
 `validation_report.json` as authorization.
 
 Suggested commit:

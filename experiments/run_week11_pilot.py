@@ -62,6 +62,12 @@ EVIDENCE_FILENAMES = (
     "manifest.json",
     "validation_report.json",
 )
+POWER_STATUS_FIELDS = (
+    "source",
+    "status",
+    "on_ac_power",
+    "battery_state",
+)
 
 STRUCTURAL_FIELDS = (
     "category",
@@ -1005,6 +1011,151 @@ def capture_benchmark_environment():
     }
 
 
+def _linux_power_status(power_supply_root=Path("/sys/class/power_supply")):
+    """Read anonymous Linux power state from sysfs when available."""
+    root = Path(power_supply_root)
+    if not root.is_dir():
+        return {
+            "source": "linux_sysfs",
+            "status": "unavailable",
+            "on_ac_power": None,
+            "battery_state": "unknown",
+        }
+    try:
+        supplies = sorted(root.iterdir())
+    except OSError:
+        supplies = []
+
+    batteries = []
+    line_power = []
+    for supply in supplies:
+        try:
+            supply_type = (supply / "type").read_text(
+                encoding="utf-8"
+            ).strip()
+        except OSError:
+            continue
+        if supply_type == "Battery":
+            try:
+                batteries.append(
+                    (supply / "status").read_text(
+                        encoding="utf-8"
+                    ).strip().lower()
+                )
+            except OSError:
+                batteries.append("unknown")
+        elif supply_type in {"Mains", "USB", "USB_C"}:
+            try:
+                line_power.append(
+                    (supply / "online").read_text(
+                        encoding="utf-8"
+                    ).strip()
+                    == "1"
+                )
+            except OSError:
+                continue
+
+    if not batteries:
+        return {
+            "source": "linux_sysfs",
+            "status": "not_applicable",
+            "on_ac_power": None,
+            "battery_state": "not_applicable",
+        }
+
+    if "discharging" in batteries:
+        battery_state = "discharging"
+    elif "charging" in batteries:
+        battery_state = "charging"
+    elif batteries and all(state == "full" for state in batteries):
+        battery_state = "full"
+    else:
+        battery_state = "unknown"
+    on_ac_power = (
+        any(line_power)
+        if line_power
+        else battery_state in {"charging", "full"}
+    )
+    return {
+        "source": "linux_sysfs",
+        "status": "available",
+        "on_ac_power": on_ac_power,
+        "battery_state": battery_state,
+    }
+
+
+def capture_power_status():
+    """Capture a cross-platform, device-anonymous power status."""
+    system = platform.system()
+    if system == "Darwin":
+        captured = _capture_command(["pmset", "-g", "batt"])
+        if not captured["success"]:
+            return {
+                "source": "pmset",
+                "status": "unavailable",
+                "on_ac_power": None,
+                "battery_state": "unknown",
+            }
+        normalized = captured["output"].lower()
+        if "discharging" in normalized:
+            battery_state = "discharging"
+        elif "charging" in normalized:
+            battery_state = "charging"
+        elif "charged" in normalized:
+            battery_state = "full"
+        else:
+            battery_state = "unknown"
+        return {
+            "source": "pmset",
+            "status": "available",
+            "on_ac_power": "ac power" in normalized,
+            "battery_state": battery_state,
+        }
+    if system == "Linux":
+        return _linux_power_status()
+    return {
+        "source": system.lower() or "unknown",
+        "status": "unavailable",
+        "on_ac_power": None,
+        "battery_state": "unknown",
+    }
+
+
+def validate_power_status(power_status):
+    """Validate power metadata without imposing the Day 5 readiness rule."""
+    if not isinstance(power_status, dict):
+        raise TypeError("power_status must be a dictionary")
+    if set(power_status) != set(POWER_STATUS_FIELDS):
+        raise ValueError("power_status fields changed")
+    if (
+        not isinstance(power_status["source"], str)
+        or not power_status["source"]
+    ):
+        raise ValueError("power_status source is invalid")
+    status = power_status["status"]
+    if status not in {"available", "not_applicable", "unavailable"}:
+        raise ValueError("power_status status is invalid")
+    on_ac_power = power_status["on_ac_power"]
+    if on_ac_power is not None and not isinstance(on_ac_power, bool):
+        raise ValueError("power_status on_ac_power is invalid")
+    battery_state = power_status["battery_state"]
+    if battery_state not in {
+        "charging",
+        "discharging",
+        "full",
+        "not_applicable",
+        "unknown",
+    }:
+        raise ValueError("power_status battery_state is invalid")
+    if status == "not_applicable" and (
+        on_ac_power is not None or battery_state != "not_applicable"
+    ):
+        raise ValueError("not-applicable power_status is inconsistent")
+    if status == "available" and not isinstance(on_ac_power, bool):
+        raise ValueError("available power_status requires an AC-power value")
+    return power_status
+
+
 def build_environment_record(
     git_state,
     *,
@@ -1025,7 +1176,7 @@ def build_environment_record(
         source_commit=git_state["head"],
     )
     validate_execution_context(context)
-    power = _capture_command(["pmset", "-g", "batt"])
+    power_status = validate_power_status(capture_power_status())
     load = _capture_command(["uptime"])
     return {
         **execution_context_to_dict(context),
@@ -1038,8 +1189,7 @@ def build_environment_record(
         "perf_counter_resolution": time.get_clock_info(
             "perf_counter"
         ).resolution,
-        "power_command_success": power["success"],
-        "power_snapshot": power["output"],
+        "power_status": power_status,
         "load_command_success": load["success"],
         "load_snapshot": load["output"],
         "paper_execution_mode": protocol.paper_execution_mode,
@@ -1109,6 +1259,9 @@ def initialize_evidence_directory(
         raise ValueError("evidence path does not match execution_id")
     if environment_record.get("captured_before_timing") is not True:
         raise ValueError("environment must be captured before timing")
+    power_status = validate_power_status(environment_record.get("power_status"))
+    if power_status["status"] == "unavailable":
+        raise ValueError("power_status must be available or not_applicable")
     try:
         paths.run_dir.mkdir(parents=True, exist_ok=False)
     except FileExistsError as exc:
@@ -1207,7 +1360,8 @@ def run_preflight(
         "environment_contract_ready": (
             environment["captured_before_timing"] is True
             and environment["available_disk_bytes"] >= 0
-            and "power_command_success" in environment
+            and environment["power_status"]["status"]
+            in {"available", "not_applicable"}
             and "load_command_success" in environment
         ),
         "formal_execution_enabled": False,

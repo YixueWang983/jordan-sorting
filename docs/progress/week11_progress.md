@@ -385,6 +385,9 @@ Status: implementation complete; awaiting review.
 - [x] defined validator schemas independently of the runner;
 - [x] regenerated all 35 frozen cases, seeds, hashes, oracle results,
   structural profiles, and case positions;
+- [x] independently reran one complete checked diagnostic per case;
+- [x] compared diagnostic output hash, processed count, trace count, and every
+  `paper_*` metric with the reconstructed checked result;
 - [x] checked the complete 1,050-row case/round/algorithm product and cyclic
   algorithm order;
 - [x] required minimal paper mode, checked audit mode, valid certification,
@@ -392,24 +395,29 @@ Status: implementation complete; awaiting review.
 - [x] recomputed 105 case summaries and 45 group summaries from raw rows;
 - [x] verified exact manifest labels, row counts, paths, and SHA-256 values;
 - [x] returned `valid=false` for malformed CSV/JSON rather than raising;
+- [x] guarded out-of-range scheduling values before indexing and added a final
+  unexpected-exception fail-closed boundary;
 - [x] rejected coordinated metadata and summary changes even after manifest
   hashes were refreshed;
 - [x] confirmed stale validation reports cannot authorize changed evidence;
+- [x] replaced macOS-only power command evidence with structured macOS/Linux
+  status and accepted Linux desktop `not_applicable` power state;
+- [x] rejected unavailable or internally inconsistent power evidence before
+  formal evidence initialization;
 - [x] kept formal execution disabled and created no formal evidence directory.
 
-Focused validator verification:
+Focused validator regression coverage:
 
 ```text
-python -m unittest tests.test_validate_week11_pilot_outputs
-    Ran 15 tests
-    OK
+tests/test_validate_week11_pilot_outputs.py:
+    17 test methods
 ```
 
 Current repository verification:
 
 ```text
 python -m unittest discover -s tests:
-    Ran 455 tests
+    Ran 461 tests
     OK
 
 python -m compileall -q src experiments tests:
@@ -419,6 +427,11 @@ python experiments/validate_paper_algorithm.py --max-n 8:
     exhaustive valid permutations = 2,074
     generated valid cases = 48
     all valid = true
+
+real validator checked-diagnostic reconstruction:
+    cases = 35
+    audits = 35
+    all expected paper metrics present = true
 
 formal Week 11 execution directories:
     absent

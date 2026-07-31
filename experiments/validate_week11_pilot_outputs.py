@@ -23,6 +23,7 @@ from generators import (  # noqa: E402
     make_case_id,
 )
 from oracle import oracle  # noqa: E402
+from paper_jordan_sort import paper_jordan_diagnostics_valid  # noqa: E402
 from stats import structure_profile  # noqa: E402
 from week11_execution_context import (  # noqa: E402
     BENCHMARK_ENVIRONMENT_FIELDS,
@@ -44,6 +45,12 @@ MANIFEST_FILE_LABELS = {
     "case_audit": "case_audit.csv",
     "config": "config.json",
     "environment": "environment.json",
+}
+POWER_STATUS_FIELDS = {
+    "source",
+    "status",
+    "on_ac_power",
+    "battery_state",
 }
 PAPER_METRIC_NAMES = (
     "predecessor_accesses",
@@ -171,8 +178,7 @@ ENVIRONMENT_FIELDS = {
     "head_matches_origin_main",
     "available_disk_bytes",
     "perf_counter_resolution",
-    "power_command_success",
-    "power_snapshot",
+    "power_status",
     "load_command_success",
     "load_snapshot",
     "paper_execution_mode",
@@ -324,6 +330,30 @@ def rebuild_expected_cases():
                 if sequence_hash in group_hashes:
                     raise RuntimeError("Week 11 expected cases contain duplicates")
                 group_hashes.add(sequence_hash)
+                profile = structure_profile(
+                    sequence,
+                    oracle_result=oracle_result,
+                )
+                diagnostics = paper_jordan_diagnostics_valid(sequence)
+                metrics = diagnostics.get("metrics")
+                trace = diagnostics.get("trace")
+                if (
+                    diagnostics.get("invariants_valid") is not True
+                    or diagnostics.get("output") != oracle_result["sorted"]
+                    or diagnostics.get("processed_count") != n
+                    or not isinstance(trace, list)
+                    or not isinstance(metrics, dict)
+                    or set(metrics) != set(PAPER_METRIC_NAMES)
+                    or any(
+                        isinstance(metrics[name], bool)
+                        or not isinstance(metrics[name], int)
+                        or metrics[name] < 0
+                        for name in PAPER_METRIC_NAMES
+                    )
+                ):
+                    raise RuntimeError(
+                        "Week 11 checked diagnostic reconstruction failed"
+                    )
                 cases.append(
                     {
                         "case_id": make_case_id(family, n, case_number),
@@ -333,10 +363,21 @@ def rebuild_expected_cases():
                         "seed": case_seed,
                         "sequence_sha256": sequence_hash,
                         "oracle": oracle_result,
-                        "profile": structure_profile(
-                            sequence,
-                            oracle_result=oracle_result,
-                        ),
+                        "profile": profile,
+                        "audit": {
+                            "audit_passed": True,
+                            "diagnostic_output_sha256": _sequence_sha256(
+                                diagnostics["output"]
+                            ),
+                            "diagnostic_processed_count": diagnostics[
+                                "processed_count"
+                            ],
+                            "diagnostic_trace_event_count": len(trace),
+                            **{
+                                f"paper_{name}": metrics[name]
+                                for name in PAPER_METRIC_NAMES
+                            },
+                        },
                     }
                 )
     if len(cases) != protocol.case_count:
@@ -441,7 +482,6 @@ def _validate_environment(environment, run_dir, errors):
     for field in (
         "captured_before_timing",
         "head_matches_origin_main",
-        "power_command_success",
         "load_command_success",
     ):
         _require(
@@ -476,13 +516,70 @@ def _validate_environment(environment, run_dir, errors):
         "environment clock resolution is invalid",
         errors,
     )
-    for field in ("power_snapshot", "load_snapshot"):
+    _validate_power_status(environment["power_status"], errors)
+    _require(
+        isinstance(environment["load_snapshot"], str)
+        and bool(environment["load_snapshot"]),
+        "environment load_snapshot is invalid",
+        errors,
+    )
+    return context
+
+
+def _validate_power_status(power_status, errors):
+    if not isinstance(power_status, dict):
+        errors.append("environment power_status must be an object")
+        return
+    _require(
+        set(power_status) == POWER_STATUS_FIELDS,
+        "environment power_status fields changed",
+        errors,
+    )
+    if set(power_status) != POWER_STATUS_FIELDS:
+        return
+    source = power_status["source"]
+    status = power_status["status"]
+    on_ac_power = power_status["on_ac_power"]
+    battery_state = power_status["battery_state"]
+    _require(
+        isinstance(source, str) and bool(source),
+        "environment power_status source is invalid",
+        errors,
+    )
+    _require(
+        status in {"available", "not_applicable"},
+        "environment power_status is unavailable or invalid",
+        errors,
+    )
+    _require(
+        on_ac_power is None or isinstance(on_ac_power, bool),
+        "environment power_status on_ac_power is invalid",
+        errors,
+    )
+    _require(
+        battery_state
+        in {
+            "charging",
+            "discharging",
+            "full",
+            "not_applicable",
+            "unknown",
+        },
+        "environment power_status battery_state is invalid",
+        errors,
+    )
+    if status == "not_applicable":
         _require(
-            isinstance(environment[field], str) and bool(environment[field]),
-            f"environment {field} is invalid",
+            on_ac_power is None and battery_state == "not_applicable",
+            "not-applicable power status is inconsistent",
             errors,
         )
-    return context
+    if status == "available":
+        _require(
+            isinstance(on_ac_power, bool),
+            "available power status requires an AC-power value",
+            errors,
+        )
 
 
 def _validate_raw_rows(rows, context, expected_cases, errors):
@@ -565,7 +662,9 @@ def _validate_raw_rows(rows, context, expected_cases, errors):
             )
         if (
             run_index is not None
+            and 1 <= run_index <= protocol.measured_runs
             and position is not None
+            and 1 <= position <= len(protocol.algorithms)
             and algorithm in protocol.algorithms
         ):
             expected_order = _algorithm_order(
@@ -637,29 +736,14 @@ def _validate_audit_rows(rows, context, expected_cases, errors):
             label,
             errors,
         )
-        _matches_expected(row, "audit_passed", True, label, errors)
-        _matches_expected(
-            row,
-            "diagnostic_output_sha256",
-            _sequence_sha256(expected["oracle"]["sorted"]),
-            label,
-            errors,
-        )
-        _matches_expected(
-            row,
-            "diagnostic_processed_count",
-            expected["n"],
-            label,
-            errors,
-        )
-        _parse_int(
-            row.get("diagnostic_trace_event_count"),
-            f"{label} diagnostic_trace_event_count",
-            errors,
-            1,
-        )
-        for field in PAPER_AUDIT_FIELDS:
-            _parse_int(row.get(field), f"{label} {field}", errors, 0)
+        for field, expected_value in expected["audit"].items():
+            _matches_expected(
+                row,
+                field,
+                expected_value,
+                label,
+                errors,
+            )
     _require(seen == set(expected_cases), "case-audit product is incomplete", errors)
 
 
@@ -875,8 +959,8 @@ def _validate_manifest(manifest, config, environment, run_dir, row_counts, error
         )
 
 
-def validate_outputs(run_dir, report_json=None):
-    """Validate one Week 11 execution and return a fail-closed report."""
+def _validate_outputs(run_dir, report_json=None):
+    """Run the Week 11 checks after the public fail-closed boundary."""
     validate_week11_experiment_protocol()
     root = Path(run_dir)
     paths = {
@@ -1014,6 +1098,37 @@ def validate_outputs(run_dir, report_json=None):
         report["valid"] = False
         report["errors"].append(f"could not write validation report: {exc}")
     return report
+
+
+def validate_outputs(run_dir, report_json=None):
+    """Validate one Week 11 execution and always return a report."""
+    try:
+        return _validate_outputs(run_dir, report_json)
+    except Exception as exc:
+        root = Path(run_dir)
+        report = {
+            "valid": False,
+            "errors": [
+                "unexpected validation failure: "
+                f"{type(exc).__name__}: {exc}"
+            ],
+            "run_dir": str(root),
+        }
+        output_path = (
+            Path(report_json)
+            if report_json
+            else root / "validation_report.json"
+        )
+        try:
+            output_path.write_text(
+                json.dumps(report, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+        except OSError as write_error:
+            report["errors"].append(
+                f"could not write validation report: {write_error}"
+            )
+        return report
 
 
 def parse_args(argv=None):

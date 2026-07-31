@@ -8,6 +8,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import Mock, patch
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -30,7 +31,34 @@ SOURCE_COMMIT = "a" * 40
 class ValidateWeek11PilotOutputsTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.expected_cases = validator.rebuild_expected_cases()
+        def diagnostics_for(sequence):
+            n = len(sequence)
+            return {
+                "invariants_valid": True,
+                "output": sorted(sequence),
+                "processed_count": n,
+                "trace": [{} for _ in range(n + 3)],
+                "metrics": {
+                    name: n + index
+                    for index, name in enumerate(
+                        validator.PAPER_METRIC_NAMES,
+                        start=1,
+                    )
+                },
+            }
+
+        validator.rebuild_expected_cases.cache_clear()
+        diagnostics = Mock(side_effect=diagnostics_for)
+        with patch.object(
+            validator,
+            "paper_jordan_diagnostics_valid",
+            diagnostics,
+        ):
+            cls.expected_cases = validator.rebuild_expected_cases()
+        if diagnostics.call_count != WEEK11_EXPERIMENT_PROTOCOL.case_count:
+            raise AssertionError(
+                "validator did not rebuild one checked diagnostic per case"
+            )
 
     def _benchmark_environment(self):
         return {
@@ -45,7 +73,7 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
             "python_version": "3.12.4",
         }
 
-    def _environment(self):
+    def _environment(self, power_status=None):
         protocol = WEEK11_EXPERIMENT_PROTOCOL
         return {
             "execution_id": EXECUTION_ID,
@@ -59,8 +87,13 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
             "head_matches_origin_main": True,
             "available_disk_bytes": 1_000_000,
             "perf_counter_resolution": 1e-9,
-            "power_command_success": True,
-            "power_snapshot": "AC Power",
+            "power_status": power_status
+            or {
+                "source": "test_power",
+                "status": "available",
+                "on_ac_power": True,
+                "battery_state": "charging",
+            },
             "load_command_success": True,
             "load_snapshot": "load averages: 0.10 0.10 0.10",
             "paper_execution_mode": protocol.paper_execution_mode,
@@ -142,13 +175,7 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
                     for field in validator.STRUCTURAL_FIELDS
                 },
                 "audit_execution_mode": protocol.audit_execution_mode,
-                "audit_passed": True,
-                "diagnostic_output_sha256": validator._sequence_sha256(
-                    case["oracle"]["sorted"]
-                ),
-                "diagnostic_processed_count": case["n"],
-                "diagnostic_trace_event_count": 1,
-                **{field: 0 for field in validator.PAPER_AUDIT_FIELDS},
+                **case["audit"],
             }
             rows.append(row)
         return rows
@@ -178,7 +205,7 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
             encoding="utf-8",
         )
 
-    def _build_evidence(self):
+    def _build_evidence(self, environment=None):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         run_dir = Path(temporary.name) / EXECUTION_ID
@@ -205,7 +232,12 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
             encoding="utf-8",
         )
         (run_dir / "environment.json").write_text(
-            json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+            json.dumps(
+                environment or self._environment(),
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n",
             encoding="utf-8",
         )
         manifest = {
@@ -301,15 +333,18 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
                 self.assertFalse(report["valid"])
 
     def test_scheduling_and_mode_tampering_is_rejected(self):
-        mutations = {
-            "case_execution_position": "999",
-            "algorithm_position": "3",
-            "measured_round": "9",
-            "paper_execution_mode": "checked",
-            "audit_execution_mode": "minimal",
-        }
-        for field, value in mutations.items():
-            with self.subTest(field=field):
+        mutations = (
+            ("case_execution_position", "999"),
+            ("algorithm_position", "3"),
+            ("algorithm_position", "4"),
+            ("algorithm_position", "999"),
+            ("run_index", "999"),
+            ("measured_round", "9"),
+            ("paper_execution_mode", "checked"),
+            ("audit_execution_mode", "minimal"),
+        )
+        for field, value in mutations:
+            with self.subTest(field=field, value=value):
                 run_dir = self._build_evidence()
 
                 def mutate(rows):
@@ -318,6 +353,18 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
                 self._rewrite_raw(run_dir, mutate)
                 report = validator.validate_outputs(run_dir)
                 self.assertFalse(report["valid"])
+
+    def test_unexpected_validator_error_fails_closed(self):
+        run_dir = self._build_evidence()
+        with patch.object(
+            validator,
+            "_validate_raw_rows",
+            side_effect=IndexError("simulated internal failure"),
+        ):
+            report = validator.validate_outputs(run_dir)
+
+        self.assertFalse(report["valid"])
+        self.assertIn("IndexError", report["errors"][0])
 
     def test_missing_duplicate_and_extra_raw_rows_are_rejected(self):
         for mutation in ("missing", "duplicate", "extra"):
@@ -430,19 +477,26 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
                 self.assertFalse(report["valid"])
 
     def test_invalid_audit_fields_are_rejected(self):
+        metric_field = validator.PAPER_AUDIT_FIELDS[0]
         mutations = {
             "audit_passed": "False",
             "diagnostic_output_sha256": "0" * 64,
             "diagnostic_processed_count": "-1",
             "diagnostic_trace_event_count": "nan",
-            validator.PAPER_AUDIT_FIELDS[0]: "-1",
+            metric_field: "-1",
+            f"{metric_field}_nonnegative_forgery": None,
         }
         for field, value in mutations.items():
             with self.subTest(field=field):
                 run_dir = self._build_evidence()
 
                 def mutate(rows):
-                    rows[0][field] = value
+                    if field.endswith("_nonnegative_forgery"):
+                        rows[0][metric_field] = str(
+                            int(rows[0][metric_field]) + 1
+                        )
+                    else:
+                        rows[0][field] = value
 
                 self._rewrite_audit(run_dir, mutate)
                 report = validator.validate_outputs(run_dir)
@@ -479,6 +533,21 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
 
         report = validator.validate_outputs(run_dir)
         self.assertFalse(report["valid"])
+
+    def test_linux_desktop_power_status_is_accepted(self):
+        environment = self._environment(
+            power_status={
+                "source": "linux_sysfs",
+                "status": "not_applicable",
+                "on_ac_power": None,
+                "battery_state": "not_applicable",
+            }
+        )
+        report = validator.validate_outputs(
+            self._build_evidence(environment=environment)
+        )
+
+        self.assertTrue(report["valid"], report["errors"])
 
     def test_stale_valid_report_cannot_authorize_tampered_evidence(self):
         run_dir = self._build_evidence()

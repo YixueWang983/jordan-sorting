@@ -483,6 +483,10 @@ as processor class, architecture, memory, OS, Python, power, and load. Absolute
 runtimes from different environments must not be pooled into one median;
 within-execution ratios and cross-environment trend consistency may be compared.
 
+Power state is represented structurally rather than as a platform-specific
+command-success flag. A battery-free desktop may use `not_applicable`; an
+unavailable or inconsistent power record cannot initialize formal evidence.
+
 ## Failure and Fallback Rules
 
 1. If any raw row has `error != ""`, the formal run fails.

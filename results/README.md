@@ -727,3 +727,8 @@ group-summary rows. A rerun uses a different execution ID and
 always supplied explicitly; there is no machine-named default. Anonymous
 benchmark metadata is recorded, but concrete device identity is not. These
 files do not exist yet and must not be described as Week 10 results.
+
+Power metadata is also platform-neutral: macOS uses `pmset`, Linux uses sysfs,
+and systems without a battery record `not_applicable`. The audit CSV is
+authoritative only after the dedicated validator independently reruns checked
+diagnostics and matches every recorded paper metric.

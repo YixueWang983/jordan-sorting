@@ -65,6 +65,14 @@ class RunWeek11PilotTests(unittest.TestCase):
             "python_version": "3.12.4",
         }
 
+    def _power_status(self):
+        return {
+            "source": "test_power",
+            "status": "available",
+            "on_ac_power": True,
+            "battery_state": "charging",
+        }
+
     def _minimal_environment_record(self):
         return {
             "execution_id": TEST_EXECUTION_ID,
@@ -73,6 +81,7 @@ class RunWeek11PilotTests(unittest.TestCase):
             "source_commit": "a" * 40,
             "protocol_version": WEEK11_EXPERIMENT_PROTOCOL.protocol_version,
             "captured_before_timing": True,
+            "power_status": self._power_status(),
             "paper_execution_mode": "minimal",
             "audit_execution_mode": "checked",
         }
@@ -824,6 +833,10 @@ class RunWeek11PilotTests(unittest.TestCase):
             runner,
             "_capture_command",
             return_value={"success": True, "output": "captured"},
+        ), patch.object(
+            runner,
+            "capture_power_status",
+            return_value=self._power_status(),
         ):
             environment = runner.build_environment_record(
                 git_state,
@@ -844,9 +857,8 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(environment["protocol_version"], "week11_pilot_v1")
         self.assertEqual(environment["paper_execution_mode"], "minimal")
         self.assertEqual(environment["audit_execution_mode"], "checked")
-        self.assertEqual(environment["power_snapshot"], "captured")
+        self.assertEqual(environment["power_status"], self._power_status())
         self.assertEqual(environment["load_snapshot"], "captured")
-        self.assertTrue(environment["power_command_success"])
         self.assertTrue(environment["load_command_success"])
         self.assertGreaterEqual(environment["available_disk_bytes"], 0)
         self.assertNotIn("processor_class", environment)
@@ -962,6 +974,30 @@ class RunWeek11PilotTests(unittest.TestCase):
                     )
 
                 self.assertFalse(paths.run_dir.exists())
+
+    def test_initialize_evidence_rejects_unavailable_power_status(self):
+        temporary, root = self._temporary_project()
+        self.addCleanup(temporary.cleanup)
+        paths = runner.build_pilot_paths(
+            root,
+            execution_id=TEST_EXECUTION_ID,
+        )
+        environment = self._minimal_environment_record()
+        environment["power_status"] = {
+            "source": "unknown",
+            "status": "unavailable",
+            "on_ac_power": None,
+            "battery_state": "unknown",
+        }
+
+        with self.assertRaisesRegex(ValueError, "available"):
+            runner.initialize_evidence_directory(
+                paths,
+                runner.build_config_record(),
+                environment,
+            )
+
+        self.assertFalse(paths.run_dir.exists())
 
     def test_environment_write_failure_preserves_partial_evidence(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -1084,6 +1120,63 @@ class RunWeek11PilotTests(unittest.TestCase):
             result,
             "AMD Ryzen 7 5800U with Radeon Graphics",
         )
+
+    def test_linux_desktop_power_status_is_not_applicable(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            result = runner._linux_power_status(Path(tmpdir))
+
+        self.assertEqual(
+            result,
+            {
+                "source": "linux_sysfs",
+                "status": "not_applicable",
+                "on_ac_power": None,
+                "battery_state": "not_applicable",
+            },
+        )
+        self.assertIs(runner.validate_power_status(result), result)
+
+    def test_linux_laptop_power_status_reads_battery_and_ac(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            battery = root / "BAT0"
+            mains = root / "AC0"
+            battery.mkdir()
+            mains.mkdir()
+            (battery / "type").write_text("Battery\n", encoding="utf-8")
+            (battery / "status").write_text(
+                "Discharging\n",
+                encoding="utf-8",
+            )
+            (mains / "type").write_text("Mains\n", encoding="utf-8")
+            (mains / "online").write_text("0\n", encoding="utf-8")
+
+            result = runner._linux_power_status(root)
+
+        self.assertEqual(result["status"], "available")
+        self.assertFalse(result["on_ac_power"])
+        self.assertEqual(result["battery_state"], "discharging")
+
+    def test_macos_power_status_uses_pmset(self):
+        snapshot = (
+            "Now drawing from 'AC Power'\n"
+            " -InternalBattery-0; charging; 80%"
+        )
+        with patch.object(
+            runner.platform,
+            "system",
+            return_value="Darwin",
+        ), patch.object(
+            runner,
+            "_capture_command",
+            return_value={"success": True, "output": snapshot},
+        ):
+            result = runner.capture_power_status()
+
+        self.assertEqual(result["source"], "pmset")
+        self.assertEqual(result["status"], "available")
+        self.assertTrue(result["on_ac_power"])
+        self.assertEqual(result["battery_state"], "charging")
 
     def test_preflight_main_prints_json_without_writing_outputs(self):
         result = {

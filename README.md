@@ -127,10 +127,11 @@ unexecuted v1 M1 and v2 M4 gate files remain historical records. The runner
 constructs and checks all 35 cases before any warm-up, records one checked
 audit per case, times the three protocol algorithms with the paper path fixed
 to `minimal`, and builds the `1,050 / 105 / 45 / 35` in-memory row products.
-The independent Day 4 validator regenerates cases and scheduling, recomputes
-summaries, verifies manifest hashes, and fails closed on malformed or
-coordinatedly changed evidence. The formal CLI remains disabled and no formal
-Week 11 execution has run.
+The independent Day 4 validator regenerates cases and scheduling, reruns one
+checked diagnostic per case, compares every audit metric, recomputes summaries,
+verifies manifest hashes, and fails closed on malformed or coordinatedly
+changed evidence. Power evidence is cross-platform and anonymous. The formal
+CLI remains disabled and no formal Week 11 execution has run.
 
 ## Project Structure
 
@@ -334,7 +335,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 455 tests
+Ran 461 tests
 OK
 ```
 
