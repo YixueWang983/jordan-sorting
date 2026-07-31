@@ -620,14 +620,15 @@ complete eight-mode factorial design because the existing evidence answers the
 mode-selection question. `validation_only`, `validation_trace`, and
 `validation_counters` remain optional future work.
 
-The frozen, unexecuted Week 11 configuration is:
+The frozen, unexecuted Week 11 protocol is:
 
 ```text
-experiments/week11_experiment_gate.py
+experiments/week11_experiment_protocol.py
 ```
 
-This is the preserved historical v1 M1 gate. The active, still-unexecuted M4
-replacement is `experiments/week11_experiment_gate_v2.py`.
+It is machine-independent. The earlier v1 M1 and v2 M4 gate files remain
+historical records, and each future execution records its own machine and
+source commit separately.
 
 ## Non-Claim Boundary
 

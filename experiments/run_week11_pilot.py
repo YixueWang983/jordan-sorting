@@ -1,4 +1,4 @@
-"""Build and preflight the frozen Week 11 sorting integration pilot."""
+"""Build and preflight executions of the frozen Week 11 protocol."""
 
 import argparse
 import gc
@@ -36,32 +36,22 @@ from paper_jordan_sort import (  # noqa: E402
 )
 from simplified_jordan import simplified_jordan_sort  # noqa: E402
 from stats import structure_profile  # noqa: E402
-from week11_experiment_gate import PAPER_ALGORITHM_NAME  # noqa: E402
-from week11_experiment_gate_v2 import (  # noqa: E402
-    WEEK11_EXPERIMENT_GATE,
-    gate_to_dict,
-    validate_week11_experiment_gate,
+from week11_execution_context import (  # noqa: E402
+    DEFAULT_EXECUTION_ID,
+    Week11ExecutionContext,
+    execution_context_to_dict,
+    output_dir_for_execution,
+    validate_execution_context,
+    validate_execution_id,
+)
+from week11_experiment_protocol import (  # noqa: E402
+    PAPER_ALGORITHM_NAME,
+    WEEK11_EXPERIMENT_PROTOCOL,
+    protocol_to_dict,
+    validate_week11_experiment_protocol,
 )
 
 
-MACHINE_PREFLIGHT_DOCUMENT = Path(
-    WEEK11_EXPERIMENT_GATE.machine_preflight_path
-)
-MACHINE_BASELINE_DOCUMENT = Path(
-    WEEK11_EXPERIMENT_GATE.machine_baseline_path
-)
-MACHINE_IDENTITY_FIELDS = (
-    "machine_name",
-    "machine_model",
-    "chip",
-    "architecture",
-    "os_name",
-    "os_version",
-    "os_build",
-    "python_executable",
-    "python_implementation",
-    "python_version",
-)
 EVIDENCE_FILENAMES = (
     "raw.csv",
     "case_summary.csv",
@@ -100,8 +90,8 @@ PAPER_AUDIT_FIELDS = tuple(
     f"paper_{metric_name}" for metric_name in PAPER_METRIC_NAMES
 )
 RAW_FIELDS = (
-    "run_id",
-    "gate_version",
+    "protocol_version",
+    "execution_id",
     "case_id",
     "case_index",
     "family",
@@ -152,8 +142,8 @@ GROUP_SUMMARY_FIELDS = (
     "total_error_count",
 )
 CASE_AUDIT_FIELDS = (
-    "run_id",
-    "gate_version",
+    "protocol_version",
+    "execution_id",
     "case_id",
     "case_index",
     "family",
@@ -174,10 +164,9 @@ CASE_AUDIT_FIELDS = (
 
 @dataclass(frozen=True)
 class Week11ExecutionConfig:
-    """Hold an in-memory execution contract derived from the frozen gate."""
+    """Hold an in-memory execution contract derived from the protocol."""
 
-    run_id: str
-    gate_version: str
+    protocol_version: str
     sizes: tuple[int, ...]
     valid_families: tuple[str, ...]
     randomized_cases: int
@@ -215,23 +204,22 @@ class Week11ExecutionConfig:
         return len(self.valid_families) * len(self.sizes) * len(self.algorithms)
 
 
-def build_execution_config(gate=WEEK11_EXPERIMENT_GATE):
-    """Derive the executable contract without copying frozen values."""
-    validate_week11_experiment_gate(gate)
+def build_execution_config(protocol=WEEK11_EXPERIMENT_PROTOCOL):
+    """Derive the executable contract without copying protocol values."""
+    validate_week11_experiment_protocol(protocol)
     return Week11ExecutionConfig(
-        run_id=gate.run_id,
-        gate_version=gate.gate_version,
-        sizes=tuple(gate.sizes),
-        valid_families=tuple(gate.valid_families),
-        randomized_cases=gate.randomized_cases,
-        warmup_runs=gate.warmup_runs,
-        measured_runs=gate.measured_runs,
-        algorithms=tuple(gate.algorithms),
-        paper_execution_mode=gate.paper_execution_mode,
-        audit_execution_mode=gate.audit_execution_mode,
-        seed=gate.seed,
-        algorithm_order_seed=gate.algorithm_order_seed,
-        case_order_seed=gate.case_order_seed,
+        protocol_version=protocol.protocol_version,
+        sizes=tuple(protocol.sizes),
+        valid_families=tuple(protocol.valid_families),
+        randomized_cases=protocol.randomized_cases,
+        warmup_runs=protocol.warmup_runs,
+        measured_runs=protocol.measured_runs,
+        algorithms=tuple(protocol.algorithms),
+        paper_execution_mode=protocol.paper_execution_mode,
+        audit_execution_mode=protocol.audit_execution_mode,
+        seed=protocol.seed,
+        algorithm_order_seed=protocol.algorithm_order_seed,
+        case_order_seed=protocol.case_order_seed,
     )
 
 
@@ -239,8 +227,10 @@ def validate_execution_config(config):
     """Validate a frozen-derived or deliberately reduced test configuration."""
     if not isinstance(config, Week11ExecutionConfig):
         raise TypeError("config must be a Week11ExecutionConfig")
-    if not config.run_id or not config.gate_version:
-        raise ValueError("run_id and gate_version must be non-empty")
+    if not config.protocol_version:
+        raise ValueError("protocol_version must be non-empty")
+    if config.protocol_version != WEEK11_EXPERIMENT_PROTOCOL.protocol_version:
+        raise ValueError("protocol_version does not match the frozen protocol")
     if not config.sizes or len(set(config.sizes)) != len(config.sizes):
         raise ValueError("sizes must be non-empty and unique")
     if any(
@@ -252,14 +242,14 @@ def validate_execution_config(config):
         not config.valid_families
         or len(set(config.valid_families)) != len(config.valid_families)
         or not set(config.valid_families).issubset(
-            WEEK11_EXPERIMENT_GATE.valid_families
+            WEEK11_EXPERIMENT_PROTOCOL.valid_families
         )
     ):
         raise ValueError("valid families must be a unique frozen subset")
-    if config.algorithms != WEEK11_EXPERIMENT_GATE.algorithms:
+    if config.algorithms != WEEK11_EXPERIMENT_PROTOCOL.algorithms:
         raise ValueError("algorithms must match the frozen Week 11 order")
     if set(config.algorithms) != set(ALGORITHMS):
-        raise RuntimeError("algorithm registry does not match the frozen gate")
+        raise RuntimeError("algorithm registry does not match the protocol")
     if config.paper_execution_mode != MINIMAL_MODE:
         raise ValueError("paper timing mode must be minimal")
     if config.audit_execution_mode != CHECKED_MODE:
@@ -341,12 +331,12 @@ def _extract_sorted_output(algorithm_name, result):
     raise ValueError(f"unknown algorithm: {algorithm_name}")
 
 
-def _case_audit_row(config, case, diagnostics):
+def _case_audit_row(config, execution_id, case, diagnostics):
     profile = case["profile"]
     oracle_result = case["oracle"]
     row = {
-        "run_id": config.run_id,
-        "gate_version": config.gate_version,
+        "protocol_version": config.protocol_version,
+        "execution_id": execution_id,
         "case_id": case["case_id"],
         "case_index": case["case_index"],
         "family": case["family"],
@@ -371,9 +361,10 @@ def _case_audit_row(config, case, diagnostics):
     return {field: _csv_value(row.get(field)) for field in CASE_AUDIT_FIELDS}
 
 
-def build_cases_and_audits(config):
+def build_cases_and_audits(config, execution_id=DEFAULT_EXECUTION_ID):
     """Certify and audit every exact case before any timing may begin."""
     validate_execution_config(config)
+    validate_execution_id(execution_id)
     cases = []
     audit_rows = []
     sequence_hashes_by_group = {}
@@ -443,7 +434,9 @@ def build_cases_and_audits(config):
                     "audit_passed": audit_passed,
                 }
                 cases.append(case)
-                audit_rows.append(_case_audit_row(config, case, diagnostics))
+                audit_rows.append(
+                    _case_audit_row(config, execution_id, case, diagnostics)
+                )
 
     if len(cases) != config.case_count:
         raise RuntimeError(
@@ -534,10 +527,10 @@ def run_timed_algorithm(
         }
 
 
-def _raw_metadata(config, case, algorithm_name):
+def _raw_metadata(config, execution_id, case, algorithm_name):
     return {
-        "run_id": config.run_id,
-        "gate_version": config.gate_version,
+        "protocol_version": config.protocol_version,
+        "execution_id": execution_id,
         "case_id": case["case_id"],
         "case_index": case["case_index"],
         "family": case["family"],
@@ -558,9 +551,14 @@ def _raw_metadata(config, case, algorithm_name):
     }
 
 
-def make_raw_rows(config, certified_cases):
+def make_raw_rows(
+    config,
+    certified_cases,
+    execution_id=DEFAULT_EXECUTION_ID,
+):
     """Warm up and time only after all case certifications have completed."""
     validate_execution_config(config)
+    validate_execution_id(execution_id)
     if len(certified_cases) != config.case_count:
         raise ValueError("certified case count does not match the configuration")
 
@@ -600,7 +598,12 @@ def make_raw_rows(config, certified_cases):
                 start=1,
             ):
                 row = {
-                    **_raw_metadata(config, case, algorithm_name),
+                    **_raw_metadata(
+                        config,
+                        execution_id,
+                        case,
+                        algorithm_name,
+                    ),
                     **run_timed_algorithm(
                         algorithm_name,
                         case["sequence"],
@@ -735,11 +738,12 @@ def summarize_by_group(case_rows):
     return summaries
 
 
-def run_pilot_in_memory(config):
+def run_pilot_in_memory(config, execution_id=DEFAULT_EXECUTION_ID):
     """Execute a supplied contract without writing any evidence files."""
     validate_execution_config(config)
-    cases, audit_rows = build_cases_and_audits(config)
-    raw_rows = make_raw_rows(config, cases)
+    validate_execution_id(execution_id)
+    cases, audit_rows = build_cases_and_audits(config, execution_id)
+    raw_rows = make_raw_rows(config, cases, execution_id)
     case_rows = summarize_by_case(raw_rows)
     group_rows = summarize_by_group(case_rows)
 
@@ -770,7 +774,7 @@ def run_pilot_in_memory(config):
 
 @dataclass(frozen=True)
 class Week11PilotPaths:
-    """Hold the fixed output contract for one Week 11 gate."""
+    """Hold the fixed output contract for one Week 11 execution."""
 
     run_dir: Path
     raw_csv: Path
@@ -796,11 +800,14 @@ class Week11PilotPaths:
         ))
 
 
-def build_pilot_paths(project_root=PROJECT_ROOT, gate=WEEK11_EXPERIMENT_GATE):
-    """Resolve the frozen gate output directory under one project root."""
-    validate_week11_experiment_gate(gate)
+def build_pilot_paths(
+    project_root=PROJECT_ROOT,
+    execution_id=DEFAULT_EXECUTION_ID,
+):
+    """Resolve one execution-specific output directory under a project root."""
+    validate_execution_id(execution_id)
     root = Path(project_root)
-    run_dir = root / gate.output_dir
+    run_dir = root / output_dir_for_execution(execution_id)
     paths = Week11PilotPaths(
         run_dir=run_dir,
         raw_csv=run_dir / "raw.csv",
@@ -824,7 +831,7 @@ def require_unused_output(paths):
     existing = [path for path in paths.evidence_paths if path.exists()]
     if paths.run_dir.exists() or existing:
         raise RuntimeError(
-            "Week 11 frozen output is already in use: "
+            "Week 11 execution output is already in use: "
             f"run_dir={paths.run_dir}, existing={existing}"
         )
     return paths
@@ -893,22 +900,10 @@ def require_clean_pushed_git(snapshot):
 
 
 def build_config_record(
-    paths,
-    gate=WEEK11_EXPERIMENT_GATE,
-    project_root=PROJECT_ROOT,
+    protocol=WEEK11_EXPERIMENT_PROTOCOL,
 ):
-    """Build the config.json contract without writing formal evidence."""
-    validate_week11_experiment_gate(gate)
-    root = Path(project_root)
-    record = gate_to_dict(gate)
-    record["status"] = "ready_not_executed"
-    record["outputs"] = {
-        path.name: str(path.relative_to(root))
-        if path.is_relative_to(root)
-        else str(path)
-        for path in paths.evidence_paths
-    }
-    return record
+    """Build machine-independent config.json content from the protocol."""
+    return protocol_to_dict(protocol)
 
 
 def _capture_command(command):
@@ -928,7 +923,13 @@ def _capture_command(command):
 
 
 def _hardware_identity():
-    """Capture non-sensitive Mac hardware fields for machine matching."""
+    """Capture non-sensitive hardware fields without fixing one machine."""
+    if platform.system() != "Darwin":
+        return {
+            "machine_name": platform.node() or "unavailable",
+            "machine_model": platform.machine() or "unavailable",
+            "chip": platform.processor() or platform.machine() or "unavailable",
+        }
     captured = _capture_command(
         ["system_profiler", "SPHardwareDataType", "-json"]
     )
@@ -955,10 +956,15 @@ def _hardware_identity():
 
 
 def capture_machine_identity():
-    """Capture the stable fields compared with the frozen machine baseline."""
+    """Capture stable fields for one execution environment record."""
     hardware = _hardware_identity()
-    build = _capture_command(["sw_vers", "-buildVersion"])
-    os_name = "macOS" if platform.system() == "Darwin" else platform.system()
+    is_macos = platform.system() == "Darwin"
+    build = (
+        _capture_command(["sw_vers", "-buildVersion"])
+        if is_macos
+        else {"success": True, "output": platform.version()}
+    )
+    os_name = "macOS" if is_macos else platform.system()
     return {
         **hardware,
         "architecture": platform.machine(),
@@ -971,86 +977,32 @@ def capture_machine_identity():
     }
 
 
-def _sha256_file(path):
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def load_verified_machine_baseline(
-    project_root,
-    baseline_path,
-    expected_sha256,
-):
-    """Load one machine baseline only when its bytes match a frozen hash."""
-    path = Path(project_root) / baseline_path
-    try:
-        actual_sha256 = _sha256_file(path)
-    except FileNotFoundError as exc:
-        raise RuntimeError("Week 11 machine baseline is missing") from exc
-    if actual_sha256 != expected_sha256:
-        raise RuntimeError(
-            "Week 11 machine baseline SHA-256 does not match the gate"
-        )
-    try:
-        baseline = json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        raise RuntimeError("Week 11 machine baseline is invalid JSON") from exc
-    if not isinstance(baseline, dict):
-        raise RuntimeError("Week 11 machine baseline must be an object")
-    missing = [field for field in MACHINE_IDENTITY_FIELDS if field not in baseline]
-    if missing:
-        raise RuntimeError(
-            f"Week 11 machine baseline is missing fields: {missing}"
-        )
-    return baseline
-
-
-def load_machine_baseline(
-    project_root=PROJECT_ROOT,
-    gate=WEEK11_EXPERIMENT_GATE,
-):
-    """Load the baseline cryptographically bound to the active gate."""
-    validate_week11_experiment_gate(gate)
-    return load_verified_machine_baseline(
-        project_root,
-        gate.machine_baseline_path,
-        gate.machine_baseline_sha256,
-    )
-
-
-def machine_identity_mismatches(baseline, actual):
-    """Return every frozen identity field that differs from this machine."""
-    return {
-        field: {"expected": baseline[field], "actual": actual.get(field)}
-        for field in MACHINE_IDENTITY_FIELDS
-        if actual.get(field) != baseline[field]
-    }
-
-
 def build_environment_record(
     git_state,
-    gate=WEEK11_EXPERIMENT_GATE,
+    execution_id=DEFAULT_EXECUTION_ID,
+    protocol=WEEK11_EXPERIMENT_PROTOCOL,
     project_root=PROJECT_ROOT,
     machine_identity=None,
 ):
     """Build the environment.json contract before any future timing."""
-    validate_week11_experiment_gate(gate)
+    validate_week11_experiment_protocol(protocol)
+    validate_execution_id(execution_id)
     require_clean_pushed_git(git_state)
     identity = machine_identity or capture_machine_identity()
+    context = Week11ExecutionContext(
+        execution_id=execution_id,
+        output_dir=output_dir_for_execution(execution_id),
+        machine_identity=identity,
+        source_commit=git_state["head"],
+    )
+    validate_execution_context(context)
     power = _capture_command(["pmset", "-g", "batt"])
     load = _capture_command(["uptime"])
     return {
-        "run_id": gate.run_id,
-        "gate_version": gate.gate_version,
-        "machine_identity_id": gate.machine_identity_id,
-        "machine_baseline_path": gate.machine_baseline_path,
-        "machine_baseline_sha256": gate.machine_baseline_sha256,
+        **execution_context_to_dict(context),
+        "protocol_version": protocol.protocol_version,
         "captured_before_timing": True,
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
-        "git_commit_sha": git_state["head"],
         "git_dirty": False,
         "head_matches_origin_main": True,
         **identity,
@@ -1066,8 +1018,8 @@ def build_environment_record(
         "power_snapshot": power["output"],
         "load_command_success": load["success"],
         "load_snapshot": load["output"],
-        "paper_execution_mode": gate.paper_execution_mode,
-        "audit_execution_mode": gate.audit_execution_mode,
+        "paper_execution_mode": protocol.paper_execution_mode,
+        "audit_execution_mode": protocol.audit_execution_mode,
     }
 
 
@@ -1092,29 +1044,33 @@ def initialize_evidence_directory(
     paths,
     config_record,
     environment_record,
-    gate=WEEK11_EXPERIMENT_GATE,
+    protocol=WEEK11_EXPERIMENT_PROTOCOL,
 ):
     """Atomically reserve a run directory and prewrite timing evidence."""
-    validate_week11_experiment_gate(gate)
+    validate_week11_experiment_protocol(protocol)
     require_unused_output(paths)
-    expected_binding = {
-        "run_id": gate.run_id,
-        "gate_version": gate.gate_version,
-        "machine_identity_id": gate.machine_identity_id,
-        "machine_baseline_path": gate.machine_baseline_path,
-        "machine_baseline_sha256": gate.machine_baseline_sha256,
-    }
-    for field, expected in expected_binding.items():
-        if config_record.get(field) != expected:
-            raise ValueError(f"config {field} does not match the gate")
-        if environment_record.get(field) != expected:
-            raise ValueError(f"environment {field} does not match the gate")
+    if config_record != protocol_to_dict(protocol):
+        raise ValueError("config does not match the frozen protocol")
+    if environment_record.get("protocol_version") != protocol.protocol_version:
+        raise ValueError("environment protocol_version does not match config")
+    execution_id = environment_record.get("execution_id")
+    identity = environment_record.get("machine_identity")
+    source_commit = environment_record.get("source_commit")
+    context = Week11ExecutionContext(
+        execution_id=execution_id,
+        output_dir=environment_record.get("output_dir"),
+        machine_identity=identity,
+        source_commit=source_commit,
+    )
+    validate_execution_context(context)
+    if paths.run_dir.name != execution_id:
+        raise ValueError("evidence path does not match execution_id")
     if environment_record.get("captured_before_timing") is not True:
         raise ValueError("environment must be captured before timing")
     try:
         paths.run_dir.mkdir(parents=True, exist_ok=False)
     except FileExistsError as exc:
-        raise RuntimeError("Week 11 frozen output is already in use") from exc
+        raise RuntimeError("Week 11 execution output is already in use") from exc
 
     # Deliberately leave partial evidence in place if a later write fails.
     _write_json_exclusive(paths.config_json, config_record)
@@ -1134,80 +1090,72 @@ def initialize_evidence_directory(
 
 def initialize_formal_evidence(
     project_root=PROJECT_ROOT,
-    gate=WEEK11_EXPERIMENT_GATE,
+    execution_id=DEFAULT_EXECUTION_ID,
+    protocol=WEEK11_EXPERIMENT_PROTOCOL,
 ):
     """Perform the mandatory evidence prewrite for a future formal run."""
-    validate_week11_experiment_gate(gate)
+    validate_week11_experiment_protocol(protocol)
+    validate_execution_id(execution_id)
     root = Path(project_root)
-    paths = require_unused_output(build_pilot_paths(root, gate))
-    if not (root / gate.machine_preflight_path).is_file():
-        raise RuntimeError("Week 11 machine preflight document is missing")
-
-    baseline = load_machine_baseline(root, gate)
+    paths = require_unused_output(build_pilot_paths(root, execution_id))
     identity = capture_machine_identity()
-    mismatches = machine_identity_mismatches(baseline, identity)
-    if mismatches:
-        raise RuntimeError(
-            f"current machine does not match the Week 11 baseline: {mismatches}"
-        )
-
     source = require_clean_pushed_git(git_snapshot(root))
-    config = build_config_record(paths, gate, project_root=root)
+    config = build_config_record(protocol)
     environment = build_environment_record(
         source,
-        gate,
+        execution_id,
+        protocol,
         project_root=root,
         machine_identity=identity,
     )
-    return initialize_evidence_directory(paths, config, environment)
+    return initialize_evidence_directory(
+        paths,
+        config,
+        environment,
+        protocol,
+    )
 
 
 def run_preflight(
     project_root=PROJECT_ROOT,
-    gate=WEEK11_EXPERIMENT_GATE,
+    execution_id=DEFAULT_EXECUTION_ID,
+    protocol=WEEK11_EXPERIMENT_PROTOCOL,
 ):
-    """Validate Day 2 framework readiness without creating any output."""
-    validate_week11_experiment_gate(gate)
+    """Validate protocol and execution readiness without creating output."""
+    validate_week11_experiment_protocol(protocol)
+    validate_execution_id(execution_id)
     root = Path(project_root)
-    paths = require_unused_output(build_pilot_paths(root, gate))
-    machine_document = root / gate.machine_preflight_path
-    if not machine_document.is_file():
-        raise RuntimeError("Week 11 machine preflight document is missing")
-    baseline = load_machine_baseline(root, gate)
+    paths = require_unused_output(build_pilot_paths(root, execution_id))
     identity = capture_machine_identity()
-    mismatches = machine_identity_mismatches(baseline, identity)
     source = require_clean_pushed_git(git_snapshot(root))
-    config = build_config_record(paths, gate, project_root=root)
+    config = build_config_record(protocol)
     environment = build_environment_record(
         source,
-        gate,
+        execution_id,
+        protocol,
         project_root=root,
         machine_identity=identity,
     )
     return {
-        "status": (
-            "ready_not_executed" if not mismatches
-            else "blocked_machine_mismatch"
-        ),
-        "gate_valid": True,
-        "machine_preflight_document_present": True,
-        "machine_baseline_present": True,
-        "machine_identity_matches_baseline": not mismatches,
-        "machine_identity_mismatches": mismatches,
+        "status": "ready_not_executed",
+        "protocol_valid": True,
+        "protocol_version": protocol.protocol_version,
+        "execution_context_valid": True,
+        "execution_id": execution_id,
+        "machine_identity_recorded": True,
         "git_clean": source["git_clean"],
         "head_pushed": source["head_pushed"],
         "head": source["head"],
         "origin_main": source["origin_main"],
-        "run_id": gate.run_id,
         "output_dir": str(paths.run_dir),
         "output_directory_unused": True,
-        "case_count": gate.case_count,
-        "expected_raw_rows": gate.raw_row_count,
-        "expected_case_summary_rows": gate.case_summary_row_count,
-        "expected_group_summary_rows": gate.group_summary_row_count,
-        "paper_execution_mode": gate.paper_execution_mode,
-        "audit_execution_mode": gate.audit_execution_mode,
-        "config_contract_ready": config["status"] == "ready_not_executed",
+        "case_count": protocol.case_count,
+        "expected_raw_rows": protocol.raw_row_count,
+        "expected_case_summary_rows": protocol.case_summary_row_count,
+        "expected_group_summary_rows": protocol.group_summary_row_count,
+        "paper_execution_mode": protocol.paper_execution_mode,
+        "audit_execution_mode": protocol.audit_execution_mode,
+        "config_contract_ready": config["status"] == "frozen",
         "environment_contract_ready": (
             environment["captured_before_timing"] is True
             and environment["available_disk_bytes"] >= 0
@@ -1225,6 +1173,11 @@ def parse_args(argv=None):
         action="store_true",
         help="validate the frozen framework without creating evidence",
     )
+    parser.add_argument(
+        "--execution-id",
+        default=DEFAULT_EXECUTION_ID,
+        help="identify one run without changing the frozen protocol",
+    )
     return parser.parse_args(argv)
 
 
@@ -1232,9 +1185,14 @@ def main(argv=None):
     args = parse_args(argv)
     if not args.preflight_only:
         raise RuntimeError(
-            "formal Week 11 execution is disabled until the Day 5 gate"
+            "formal Week 11 execution is disabled until the Day 5 preflight"
         )
-    print(json.dumps(run_preflight(), indent=2))
+    print(
+        json.dumps(
+            run_preflight(execution_id=args.execution_id),
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":

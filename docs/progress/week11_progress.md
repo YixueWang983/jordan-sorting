@@ -14,17 +14,20 @@ Plan:
 docs/plan/week11_plan.md
 ```
 
-## Frozen Pilot
+## Active Protocol and Planned Execution
 
 ```text
-gate:
-    experiments/week11_experiment_gate_v2.py
+protocol:
+    experiments/week11_experiment_protocol.py
 
-run_id:
-    week11_paper_sorting_pilot_v2_m4
+protocol_version:
+    week11_pilot_v1
 
 status:
-    frozen_not_executed
+    frozen; no formal execution
+
+planned execution_id:
+    week11_pilot_v1__mac16_13__run1
 
 expected rows:
     raw = 1,050
@@ -32,20 +35,22 @@ expected rows:
     group summary = 45
 ```
 
-Historical unexecuted gate:
+Historical unexecuted gates:
 
 ```text
-gate:
+v1:
     experiments/week11_experiment_gate.py
-
-run_id:
-    week11_paper_sorting_pilot_v1
-
-machine:
     MacBookAir10,1 / Apple M1
+
+v2:
+    experiments/week11_experiment_gate_v2.py
+    Mac16,13 / Apple M4
 ```
 
-## Day 1: Plan, Baseline, and Machine Freeze
+These gate files are preserved for audit history. The active runner does not
+import them.
+
+## Day 1: Plan, Baseline, and Initial Machine Record
 
 Status: complete.
 
@@ -180,12 +185,13 @@ while the frozen v1 baseline is `MacBookAir10,1 / Apple M1 / macOS 26.5`.
 The repaired preflight therefore reports `blocked_machine_mismatch` for v1.
 This is the intended safety behavior: v1 must not run on the replacement
 computer. A new machine preflight, versioned gate, run ID, and output directory
-were required before later Week 11 execution work could continue; Day 2.5
-implements that migration without running either pilot.
+were initially treated as requiring a new gate; Day 2.5 records that historical
+migration. Day 2.6 later corrects the architecture by separating protocol from
+execution context.
 
-## Day 2.5: M4 Rebaseline and v2 Gate Migration
+## Day 2.5: Historical M4 Rebaseline and v2 Gate Migration
 
-Status: complete and approved for Day 3.
+Status: complete as a historical design step; superseded by Day 2.6.
 
 - [x] preserved the v1 gate, run ID, output directory, and M1 baseline bytes;
 - [x] added an explicit v1 compatibility entry point;
@@ -235,11 +241,74 @@ formal timing:
     not executed
 ```
 
+## Day 2.6: Protocol and Execution Separation
+
+Status: complete; awaiting review before Day 3 resumes.
+
+- [x] added the machine-independent protocol authority;
+- [x] moved execution ID, output directory, machine identity, and source commit
+  into a run-level execution context;
+- [x] removed active runner dependencies on the v1/v2 machine-bound gates;
+- [x] retained the old gate and baseline files unchanged as historical records;
+- [x] made `config.json` contain only protocol fields and derived row counts;
+- [x] made `environment.json` contain the execution context and current machine
+  environment;
+- [x] allowed the same protocol to run on different machines under distinct
+  execution IDs and directories;
+- [x] kept formal execution disabled and all historical/new formal directories
+  absent;
+- [x] added protocol drift, execution isolation, path safety, machine
+  independence, and evidence-contract tests.
+
+Day 2.6 outputs:
+
+```text
+experiments/week11_experiment_protocol.py
+experiments/week11_execution_context.py
+tests/test_week11_experiment_protocol.py
+```
+
+Interpretation rule:
+
+```text
+protocol-field change -> new protocol version
+machine or rerun change -> new execution ID and environment record
+```
+
+Absolute runtimes from different machines must remain separate. Within-run
+ratios and cross-machine trend consistency may be compared.
+
+## Day 2.6 Verification
+
+```text
+focused protocol and runner tests:
+    Ran 45 tests
+    OK
+
+python -m unittest discover -s tests:
+    Ran 435 tests
+    OK
+
+python -m compileall -q src experiments tests:
+    passed
+
+python experiments/validate_paper_algorithm.py --max-n 8:
+    exhaustive valid permutations = 2,074
+    generated valid cases = 48
+    all valid = true
+
+historical v1/v2 and planned execution directories:
+    absent
+
+formal timing:
+    not executed
+```
+
 ## Day 3: Case Audit and Timing Control Flow
 
-Status: implementation complete; awaiting review before Day 4.
+Status: implementation migrated to the protocol model; paused for review.
 
-- [x] derived the executable contract from the frozen v2 gate;
+- [x] derived the executable contract from the machine-independent protocol;
 - [x] implemented the exact 35-case generation and stable seed/ID rules;
 - [x] required the generated length and oracle-valid result for every case;
 - [x] ran exactly one complete checked diagnostic per case;
@@ -251,7 +320,8 @@ Status: implementation complete; awaiting review before Day 4.
 - [x] added reproducible case shuffling and cyclic algorithm ordering;
 - [x] added raw, case-summary, and group-summary row builders;
 - [x] protected the `1,050 / 105 / 45 / 35` frozen row counts;
-- [x] kept the formal CLI disabled and both formal output directories absent;
+- [x] kept the formal CLI disabled and all Week 11 formal output directories
+  absent;
 - [x] did not implement the Day 4 validator or write formal evidence.
 
 Day 3 outputs:
@@ -286,7 +356,7 @@ exact frozen case construction and checked audit:
 formal timing:
     not executed
 
-v1 and v2 formal output directories:
+historical v1/v2 and active planned execution directories:
     absent
 ```
 
@@ -317,6 +387,7 @@ Status: blocked by validated Day 6 evidence.
 
 ## Current Status
 
-Week 11 Day 1, the repaired Day 2 framework, the Day 2.5 M4 rebaseline, and the
-Day 3 in-memory timing control flow are complete. W11D3 awaits review before
-Day 4 begins. Both v1 and v2 pilots remain unexecuted.
+Week 11 Day 1, the repaired Day 2 framework, the historical Day 2.5 migration,
+and the Day 3 in-memory timing control flow are complete. Day 2.6 now separates
+the active protocol from per-run machine evidence. W11D3 is paused for review
+before Day 4 begins. No formal Week 11 execution has run.

@@ -130,8 +130,8 @@ Current files:
   contamination evidence, and Week 11 handoff.
 
 - `week11_progress.md`
-  Week 11 daily execution record through the Day 3 case-audit and in-memory
-  timing-control implementation, with both pilots unexecuted.
+  Week 11 daily execution record through the protocol/execution separation and
+  Day 3 in-memory timing-control implementation, with no formal execution.
 
 ## Plan Documents
 
@@ -223,14 +223,14 @@ Current files:
   Preserved preflight record for the unexecuted historical v1 M1 gate.
 
 - `week11_machine_preflight_v2_m4.md`
-  Active v2 M4 identity, source baseline, power/load snapshot, and later
-  timing-readiness controls.
+  Preserved v2 M4 identity, source baseline, and power/load snapshot from the
+  historical machine-bound design.
 
 - `week11_machine_baseline_v1_m1.json`
   Preserved structured v1 M1 identity.
 
 - `week11_machine_baseline_v2_m4.json`
-  Structured M4 identity bound to the v2 gate by path and SHA-256. Neither
+  Preserved structured M4 identity from the historical v2 gate. Neither
   baseline contains a serial number or hardware UUID.
 
 ## Thesis Drafts

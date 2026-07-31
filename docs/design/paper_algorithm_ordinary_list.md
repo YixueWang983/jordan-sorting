@@ -2281,11 +2281,12 @@ diagnostic work does not make the ordinary-list backend equivalent to the
 paper's heterogeneous finger-tree implementation and does not create a
 linear-time claim.
 
-The canonical not-yet-executed Week 11 gate is stored in:
+The canonical not-yet-executed Week 11 protocol is stored in:
 
 ```text
-experiments/week11_experiment_gate.py
+experiments/week11_experiment_protocol.py
 ```
 
-That file preserves the unexecuted v1 M1 contract. The active M4 replacement
-is `experiments/week11_experiment_gate_v2.py`.
+It is machine-independent. The unexecuted v1 M1 and v2 M4 gate files remain
+preserved as historical records; actual machine identity belongs to each
+execution's `environment.json`.

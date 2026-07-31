@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-31
 
-Status: W11D3 implementation complete; frozen pilot not executed.
+Status: protocol/execution separation complete; W11D3 paused for review; pilot not executed.
 
 ## Core Goal
 
@@ -25,26 +25,20 @@ freeze machine and baseline
 
 ## Frozen Week 11 Configuration
 
-The active machine-readable authority is:
+The active machine-independent authority is:
 
 ```text
-experiments/week11_experiment_gate_v2.py
+experiments/week11_experiment_protocol.py
 ```
 
-The unexecuted v1 M1 gate remains preserved in
-`experiments/week11_experiment_gate.py`, with an explicit compatibility entry
-point in `experiments/week11_experiment_gate_v1.py`.
+The earlier unexecuted v1 M1 and v2 M4 gates remain preserved as historical
+design records. They are no longer active runner dependencies.
 
 The following values must not be redefined in the runner:
 
 | Field | Frozen value |
 | --- | --- |
-| Gate version | `v2` |
-| Run ID | `week11_paper_sorting_pilot_v2_m4` |
-| Output directory | `results/runs/week11_paper_sorting_pilot_v2_m4` |
-| Machine identity | `week11_v2_m4_mac16_13` |
-| Machine baseline | `docs/analysis/week11_machine_baseline_v2_m4.json` |
-| Baseline SHA-256 | `d59a3d265985d781d3368366ac1553635b5fbfca20f6a03e6df4efef43fe7f69` |
+| Protocol version | `week11_pilot_v1` |
 | Sizes | `32, 64, 128, 256, 512` |
 | Valid families | `flat_valid, nested_valid, incremental_valid` |
 | Incremental cases | 5 per size |
@@ -60,20 +54,42 @@ The following values must not be redefined in the runner:
 | Raw rows | 1,050 |
 | Case-summary rows | 105 |
 | Group-summary rows | 45 |
-| Runtime planning ceiling | 15 minutes |
+Any change to these protocol fields requires a new protocol version. A machine
+change does not: each execution instead receives a new execution ID, output
+directory, environment record, and source commit.
 
-Any configuration change requires a new gate version, run ID, and output
-directory. Existing evidence must not be overwritten.
+## Execution Context
+
+The run-level contract is defined by:
+
+```text
+experiments/week11_execution_context.py
+```
+
+One execution records:
+
+```text
+execution_id
+output_dir
+machine_identity
+source_commit
+```
+
+The planned M4 execution ID is
+`week11_pilot_v1__mac16_13__run1`. Another machine must use another execution
+ID, but it uses the same `week11_pilot_v1` protocol. Absolute runtimes from
+different machines remain separate; within-machine ratios and cross-machine
+trend consistency may be compared.
 
 ## Runner Responsibility
 
 The dedicated runner must:
 
-- import and validate `WEEK11_EXPERIMENT_GATE`;
+- import and validate `WEEK11_EXPERIMENT_PROTOCOL`;
 - expose no CLI options that mutate the frozen experiment;
 - reject every existing evidence output and provide no `--overwrite`;
-- require a clean, pushed worktree before formal execution;
-- write configuration and environment evidence before timing;
+- require a unique execution ID plus a clean, pushed worktree before formal execution;
+- write protocol configuration and execution environment evidence before timing;
 - construct exactly 35 valid-input cases;
 - oracle-certify every exact case before diagnostics or timing;
 - run exactly one complete checked diagnostic per case outside timing;
@@ -91,7 +107,8 @@ The runner must not trust a family label as validity certification.
 
 The dedicated validator must not trust runner-produced metadata. It must:
 
-- load the frozen gate independently;
+- load the frozen protocol independently;
+- validate execution identity and environment evidence separately;
 - reject malformed schemas and JSON without crashing;
 - regenerate all 35 expected sequences;
 - recompute case IDs, seeds, sequence hashes, oracle results, structural
@@ -133,7 +150,7 @@ outside timing:
 The minimal path still includes ordinary-list operations, local safety checks,
 rollback, `stage_results`, and final partial-order output recovery.
 
-## Day 1: Plan, Baseline, and Machine Freeze
+## Day 1: Plan, Baseline, and Initial Machine Record
 
 Status: complete.
 
@@ -151,7 +168,7 @@ Tasks:
 2. record the exact baseline commit and clean worktree;
 3. capture machine, OS, Python, architecture, clock, power, and load data;
 4. run the complete unit suite and `compileall`;
-5. validate the frozen Week 11 gate;
+5. validate the frozen Week 11 experiment choices;
 6. validate 2,074 exhaustive permutations and 48 fixed generated cases;
 7. confirm the formal output directory does not exist;
 8. record machine-use controls for Day 6.
@@ -170,12 +187,15 @@ tests/test_run_week11_pilot.py
 docs/analysis/week11_machine_baseline_v1_m1.json
 ```
 
-The runner must import the gate rather than repeat its values. The only
-permitted operational CLI option is:
+The runner must import the protocol rather than repeat its values. The only
+experiment-control CLI option is:
 
 ```text
 --preflight-only
 ```
+
+It may also accept `--execution-id`, which changes only the run identity and
+output directory. It must not alter the protocol.
 
 Day 2 implements output contracts, no-overwrite behavior, environment/config
 pre-write behavior, and preflight. It does not execute the 1,050-row pilot.
@@ -184,7 +204,7 @@ The completed framework additionally requires:
 
 - a direct `git ls-remote` query of `refs/heads/main`, so a stale local
   `origin/main` tracking ref cannot satisfy the pushed-source gate;
-- a structured machine baseline and an explicit identity comparison;
+- a structured machine record for every execution;
 - atomic run-directory reservation with exclusive `config.json` and
   `environment.json` writes;
 - immediate JSON read-back verification;
@@ -202,9 +222,9 @@ Suggested commit:
 Add frozen Week 11 pilot runner framework
 ```
 
-## Day 2.5: M4 Rebaseline and v2 Gate Migration
+## Day 2.5: Historical M4 Rebaseline and v2 Gate Migration
 
-Status: complete and approved for Day 3.
+Status: complete as a historical design step; superseded by Day 2.6.
 
 Outputs:
 
@@ -234,6 +254,35 @@ Suggested commit:
 Freeze Week 11 v2 M4 machine gate
 ```
 
+## Day 2.6: Separate Protocol from Execution Context
+
+Status: complete; awaiting review before Day 3 resumes.
+
+Outputs:
+
+```text
+experiments/week11_experiment_protocol.py
+experiments/week11_execution_context.py
+tests/test_week11_experiment_protocol.py
+```
+
+This correction separates two concerns:
+
+```text
+protocol:
+    sizes, families, seeds, algorithms, repetitions, modes, timing boundary,
+    and expected row counts
+
+execution context:
+    execution ID, output directory, machine identity, and source commit
+```
+
+The v1 M1 and v2 M4 gates and baseline files remain unchanged as historical
+records. The active runner no longer imports them. A machine change requires a
+new execution ID, output directory, and `environment.json`; it does not require
+a new protocol version. Only a protocol-field change creates a new protocol
+version.
+
 ## Day 3: Case Audit and Timing Control Flow
 
 Status: implementation complete; awaiting review before Day 4.
@@ -253,8 +302,9 @@ Day 3 may use tiny temporary test configurations internally. It must not write
 the frozen formal run directory.
 
 The completed implementation keeps the execution layer in memory and leaves
-the formal CLI disabled. It derives its executable configuration from the v2
-gate, builds all cases and audit rows before warm-up, uses cyclically balanced
+the formal CLI disabled. It derives its executable configuration from the
+machine-independent protocol, builds all cases and audit rows before warm-up,
+uses cyclically balanced
 per-round algorithm order, restores the caller's GC state after every timed
 call, and creates the frozen `1,050 / 105 / 45 / 35` raw, case-summary,
 group-summary, and case-audit row products. CSV/manifest writes remain blocked
@@ -304,7 +354,7 @@ Before formal execution:
 4. revalidate Week 10 archived evidence;
 5. revalidate Week 9 sorting and recognition evidence;
 6. run `run_week11_pilot.py --preflight-only`;
-7. confirm the fixed machine is timing-ready;
+7. confirm the selected execution machine is timing-ready and record it;
 8. confirm the output directory is absent;
 9. commit and push all source changes;
 10. require `HEAD == origin/main` and a clean worktree.
@@ -326,10 +376,11 @@ Seal Week 11 pilot preflight gates
 Run exactly once:
 
 ```bash
-python experiments/run_week11_pilot.py
+python experiments/run_week11_pilot.py \
+  --execution-id week11_pilot_v1__mac16_13__run1
 
 python experiments/validate_week11_pilot_outputs.py \
-  --run-dir results/runs/week11_paper_sorting_pilot_v2_m4
+  --run-dir results/runs/week11_pilot_v1__mac16_13__run1
 ```
 
 Required result:
@@ -348,9 +399,9 @@ If the run fails:
 
 - preserve the failed directory;
 - do not overwrite it;
-- do not reuse the run ID;
+- do not reuse the execution ID;
 - document the reason;
-- create a new gate version before any rerun.
+- create a new execution ID before any rerun under the unchanged protocol.
 
 Validated evidence used in the thesis must be archived in the repository or a
 persistent release.
@@ -389,7 +440,9 @@ should report:
 
 Week 12 values must be selected from actual Week 11 elapsed time, maximum-size
 runtime, group variability, thermal/load observations, and family differences.
-The Week 12 gate must use a new version, run ID, and output directory and remain:
+The Week 12 formal protocol must use a new protocol version if its experimental
+choices differ. Every execution must use a new execution ID and output
+directory and remain:
 
 ```text
 frozen_not_executed

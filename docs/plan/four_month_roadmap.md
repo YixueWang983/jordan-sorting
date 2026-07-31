@@ -521,21 +521,20 @@ Mitigation:
 Current task:
 
 ```text
-Week 11 Day 2.5 M4 rebaseline and v2 gate review:
+Week 11 protocol/execution separation review:
 
 experiments/run_week11_pilot.py
-experiments/week11_experiment_gate_v2.py
-docs/analysis/week11_machine_baseline_v2_m4.json
+experiments/week11_experiment_protocol.py
+experiments/week11_execution_context.py
 ```
 
 Required boundary:
 
 ```text
-preserve the v1 M1 gate and baseline
-bind v2 to the M4 baseline path and SHA-256
-keep v1 and v2 run IDs/output directories distinct
-include all untracked files in clean-worktree checks
-do not start Day 3 before the migration review passes
+preserve the v1 M1 and v2 M4 files as historical records
+keep protocol fields independent of machine identity
+bind each run to a unique execution ID, output directory, environment, and commit
+do not resume Day 3 before the separation review passes
 ```
 
 Do not run the Week 11 pilot before the Day 5 preflight gate. The Week 12 formal

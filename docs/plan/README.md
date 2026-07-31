@@ -54,11 +54,12 @@ This folder stores the approved thesis scope and research-question documents.
   validator, formal preflight, single 1,050-row pilot, evidence archive,
   analysis, and Week 12 gate freeze.
 
-The canonical frozen Week 11 integration-pilot values are implemented in:
+The canonical machine-independent Week 11 integration-pilot values are in:
 
 ```text
-experiments/week11_experiment_gate_v2.py
+experiments/week11_experiment_protocol.py
 ```
 
-The unexecuted historical v1 contract remains in
-`experiments/week11_experiment_gate.py`.
+Per-run identity and machine evidence are defined in
+`experiments/week11_execution_context.py`. The unexecuted v1 M1 and v2 M4 gate
+files remain historical records.

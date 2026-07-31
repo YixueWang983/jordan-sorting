@@ -145,12 +145,12 @@ partial-order output recovery
 GC is disabled only around the timed function call and restored immediately
 afterward. Output is compared with the precomputed oracle result after timing.
 
-## Frozen Week 11 Pilot
+## Frozen Week 11 Protocol
 
-The authoritative configuration is validated by:
+The machine-independent protocol is validated by:
 
 ```bash
-python experiments/week11_experiment_gate_v2.py
+python experiments/week11_experiment_protocol.py
 ```
 
 It fixes:
@@ -169,7 +169,11 @@ case-order seed = 20262266
 expected raw rows = 1050
 ```
 
-The original v1 gate was frozen but never executed. After the machine change,
-W11D2.5 preserved v1 and created the active v2 gate with unchanged experiment
-values, a distinct run ID/output directory, and a cryptographically bound M4
-machine baseline. Existing evidence must not be overwritten.
+The earlier v1 M1 and v2 M4 gates were frozen but never executed. They remain
+historical records and are no longer active runner dependencies. One execution
+combines this protocol with a unique execution ID, output directory, machine
+identity, and source commit. Existing evidence must not be overwritten.
+
+Changing machines does not change the protocol. Absolute runtimes from
+different machines are reported separately; within-execution ratios and
+cross-machine trend consistency may be compared.

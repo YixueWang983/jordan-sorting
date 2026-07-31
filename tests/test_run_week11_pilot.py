@@ -18,19 +18,21 @@ sys.path.insert(0, str(PROJECT_ROOT / "experiments"))
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 import run_week11_pilot as runner  # noqa: E402
-from week11_experiment_gate_v1 import (  # noqa: E402
-    WEEK11_MACHINE_BASELINE_PATH_V1,
-    WEEK11_MACHINE_BASELINE_SHA256_V1,
+from week11_execution_context import (  # noqa: E402
+    DEFAULT_EXECUTION_ID,
+    Week11ExecutionContext,
+    output_dir_for_execution,
+    validate_execution_context,
 )
-from week11_experiment_gate_v2 import (  # noqa: E402
-    WEEK11_EXPERIMENT_GATE_V2 as WEEK11_EXPERIMENT_GATE,
+from week11_experiment_protocol import (  # noqa: E402
+    WEEK11_EXPERIMENT_PROTOCOL,
+    protocol_to_dict,
 )
 
 
 class RunWeek11PilotTests(unittest.TestCase):
     def _tiny_execution_config(self, **changes):
         defaults = {
-            "run_id": "week11_day3_test",
             "sizes": (8,),
             "randomized_cases": 2,
             "warmup_runs": 1,
@@ -64,28 +66,17 @@ class RunWeek11PilotTests(unittest.TestCase):
 
     def _minimal_environment_record(self):
         return {
-            "run_id": WEEK11_EXPERIMENT_GATE.run_id,
-            "gate_version": WEEK11_EXPERIMENT_GATE.gate_version,
-            "machine_identity_id": WEEK11_EXPERIMENT_GATE.machine_identity_id,
-            "machine_baseline_path": (
-                WEEK11_EXPERIMENT_GATE.machine_baseline_path
-            ),
-            "machine_baseline_sha256": (
-                WEEK11_EXPERIMENT_GATE.machine_baseline_sha256
-            ),
+            "execution_id": DEFAULT_EXECUTION_ID,
+            "output_dir": output_dir_for_execution(DEFAULT_EXECUTION_ID),
+            "machine_identity": self._matching_machine_identity(),
+            "source_commit": "a" * 40,
+            "protocol_version": WEEK11_EXPERIMENT_PROTOCOL.protocol_version,
             "captured_before_timing": True,
         }
 
     def _temporary_project(self):
         temporary = tempfile.TemporaryDirectory()
         root = Path(temporary.name)
-        machine_doc = root / runner.MACHINE_PREFLIGHT_DOCUMENT
-        machine_doc.parent.mkdir(parents=True)
-        machine_doc.write_text("# fixed machine\n", encoding="utf-8")
-        baseline_doc = root / runner.MACHINE_BASELINE_DOCUMENT
-        baseline_doc.write_bytes(
-            (PROJECT_ROOT / runner.MACHINE_BASELINE_DOCUMENT).read_bytes()
-        )
         return temporary, root
 
     def _run_git(self, repository, *args):
@@ -97,18 +88,25 @@ class RunWeek11PilotTests(unittest.TestCase):
             text=True,
         ).stdout.strip()
 
-    def test_runner_imports_the_exact_frozen_gate(self):
-        self.assertIs(runner.WEEK11_EXPERIMENT_GATE, WEEK11_EXPERIMENT_GATE)
+    def test_runner_imports_the_machine_independent_protocol(self):
+        self.assertIs(
+            runner.WEEK11_EXPERIMENT_PROTOCOL,
+            WEEK11_EXPERIMENT_PROTOCOL,
+        )
         self.assertEqual(
-            WEEK11_EXPERIMENT_GATE.valid_families,
+            WEEK11_EXPERIMENT_PROTOCOL.valid_families,
             ("flat_valid", "nested_valid", "incremental_valid"),
         )
+        protocol_fields = set(protocol_to_dict())
+        self.assertNotIn("run_id", protocol_fields)
+        self.assertNotIn("output_dir", protocol_fields)
+        self.assertNotIn("machine_model", protocol_fields)
+        self.assertNotIn("machine_baseline_path", protocol_fields)
 
-    def test_execution_config_is_derived_from_frozen_gate(self):
+    def test_execution_config_is_derived_from_frozen_protocol(self):
         config = runner.build_execution_config()
 
-        self.assertEqual(config.run_id, WEEK11_EXPERIMENT_GATE.run_id)
-        self.assertEqual(config.gate_version, "v2")
+        self.assertEqual(config.protocol_version, "week11_pilot_v1")
         self.assertEqual(config.case_count, 35)
         self.assertEqual(config.raw_row_count, 1050)
         self.assertEqual(config.case_summary_row_count, 105)
@@ -133,7 +131,7 @@ class RunWeek11PilotTests(unittest.TestCase):
             20292728,
         )
         self.assertEqual(
-            WEEK11_EXPERIMENT_GATE.algorithms,
+            WEEK11_EXPERIMENT_PROTOCOL.algorithms,
             (
                 "python_sort",
                 "simplified_jordan_reference",
@@ -141,14 +139,14 @@ class RunWeek11PilotTests(unittest.TestCase):
             ),
         )
 
-    def test_output_contract_uses_the_frozen_run_id(self):
+    def test_output_contract_is_derived_from_execution_id(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             paths = runner.build_pilot_paths(tmpdir)
 
         self.assertEqual(
             paths.run_dir,
             Path(tmpdir)
-            / "results/runs/week11_paper_sorting_pilot_v2_m4",
+            / "results/runs/week11_pilot_v1__mac16_13__run1",
         )
         self.assertEqual(
             tuple(path.name for path in paths.evidence_paths),
@@ -158,11 +156,33 @@ class RunWeek11PilotTests(unittest.TestCase):
             all(path.parent == paths.run_dir for path in paths.evidence_paths)
         )
 
-    def test_modified_gate_is_rejected(self):
-        changed = replace(WEEK11_EXPERIMENT_GATE, measured_runs=11)
-        with tempfile.TemporaryDirectory() as tmpdir:
-            with self.assertRaises(ValueError):
-                runner.build_pilot_paths(tmpdir, gate=changed)
+    def test_modified_protocol_is_rejected(self):
+        changed = replace(WEEK11_EXPERIMENT_PROTOCOL, measured_runs=11)
+        with self.assertRaises(ValueError):
+            runner.build_execution_config(changed)
+
+    def test_different_execution_ids_share_the_same_protocol(self):
+        first = Week11ExecutionContext(
+            execution_id="week11_pilot_v1__m4__run1",
+            output_dir="results/runs/week11_pilot_v1__m4__run1",
+            machine_identity=self._matching_machine_identity(),
+            source_commit="a" * 40,
+        )
+        second_identity = dict(self._matching_machine_identity())
+        second_identity["machine_model"] = "Linux-5800U"
+        second = Week11ExecutionContext(
+            execution_id="week11_pilot_v1__linux_5800u__run1",
+            output_dir="results/runs/week11_pilot_v1__linux_5800u__run1",
+            machine_identity=second_identity,
+            source_commit="b" * 40,
+        )
+
+        self.assertIs(validate_execution_context(first), first)
+        self.assertIs(validate_execution_context(second), second)
+        self.assertEqual(
+            runner.build_execution_config(),
+            runner.build_execution_config(),
+        )
 
     def test_existing_run_directory_is_rejected_even_when_empty(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -259,8 +279,12 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertFalse(snapshot["git_clean"])
         self.assertTrue(snapshot["head_pushed"])
 
-    def test_cli_exposes_only_preflight_operational_option(self):
-        self.assertTrue(runner.parse_args(["--preflight-only"]).preflight_only)
+    def test_cli_exposes_preflight_and_run_identity_only(self):
+        args = runner.parse_args(
+            ["--preflight-only", "--execution-id", "week11_test_run"]
+        )
+        self.assertTrue(args.preflight_only)
+        self.assertEqual(args.execution_id, "week11_test_run")
         self.assertFalse(runner.parse_args([]).preflight_only)
 
         for forbidden in (
@@ -280,7 +304,7 @@ class RunWeek11PilotTests(unittest.TestCase):
 
     def test_formal_execution_is_disabled(self):
         with patch.object(runner, "run_preflight") as preflight:
-            with self.assertRaisesRegex(RuntimeError, "Day 5 gate"):
+            with self.assertRaisesRegex(RuntimeError, "Day 5 preflight"):
                 runner.main([])
         preflight.assert_not_called()
 
@@ -299,11 +323,11 @@ class RunWeek11PilotTests(unittest.TestCase):
             result = runner.run_preflight(root)
 
         self.assertEqual(result["status"], "ready_not_executed")
-        self.assertTrue(result["gate_valid"])
-        self.assertTrue(result["machine_preflight_document_present"])
-        self.assertTrue(result["machine_baseline_present"])
-        self.assertTrue(result["machine_identity_matches_baseline"])
-        self.assertEqual(result["machine_identity_mismatches"], {})
+        self.assertTrue(result["protocol_valid"])
+        self.assertEqual(result["protocol_version"], "week11_pilot_v1")
+        self.assertTrue(result["execution_context_valid"])
+        self.assertEqual(result["execution_id"], DEFAULT_EXECUTION_ID)
+        self.assertTrue(result["machine_identity_recorded"])
         self.assertTrue(result["git_clean"])
         self.assertTrue(result["head_pushed"])
         self.assertTrue(result["output_directory_unused"])
@@ -316,7 +340,7 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertTrue(result["environment_contract_ready"])
         self.assertFalse(result["formal_execution_enabled"])
         self.assertFalse(
-            (root / WEEK11_EXPERIMENT_GATE.output_dir).exists()
+            (root / output_dir_for_execution(DEFAULT_EXECUTION_ID)).exists()
         )
 
     def test_preflight_rejects_dirty_or_unpushed_source(self):
@@ -337,16 +361,36 @@ class RunWeek11PilotTests(unittest.TestCase):
                 with self.assertRaises(RuntimeError):
                     runner.run_preflight(root)
 
-    def test_preflight_requires_machine_document(self):
+    def test_preflight_accepts_an_unseen_machine_as_a_new_execution(self):
         with tempfile.TemporaryDirectory() as tmpdir, patch.object(
             runner,
             "git_snapshot",
             return_value=self._clean_git_state(),
-        ):
-            with self.assertRaisesRegex(RuntimeError, "document is missing"):
-                runner.run_preflight(tmpdir)
+        ), patch.object(
+            runner,
+            "_capture_command",
+            return_value={"success": True, "output": "captured"},
+        ), patch.object(
+            runner,
+            "capture_machine_identity",
+        ) as identity_mock:
+            changed = dict(self._matching_machine_identity())
+            changed["machine_model"] = "Linux-5800U"
+            changed["chip"] = "AMD Ryzen 7 5800U"
+            identity_mock.return_value = changed
+            result = runner.run_preflight(
+                tmpdir,
+                execution_id="week11_pilot_v1__linux_5800u__run1",
+            )
 
-    def test_preflight_reports_machine_identity_mismatch(self):
+        self.assertEqual(result["status"], "ready_not_executed")
+        self.assertTrue(result["machine_identity_recorded"])
+        self.assertEqual(
+            result["execution_id"],
+            "week11_pilot_v1__linux_5800u__run1",
+        )
+
+    def test_distinct_execution_ids_use_distinct_output_directories(self):
         temporary, root = self._temporary_project()
         self.addCleanup(temporary.cleanup)
         changed = dict(self._matching_machine_identity())
@@ -361,34 +405,31 @@ class RunWeek11PilotTests(unittest.TestCase):
             "capture_machine_identity",
             return_value=changed,
         ):
-            result = runner.run_preflight(root)
+            first = runner.run_preflight(
+                root,
+                execution_id="week11_pilot_v1__m1__run1",
+            )
+            second = runner.run_preflight(
+                root,
+                execution_id="week11_pilot_v1__m1__run2",
+            )
 
-        self.assertEqual(result["status"], "blocked_machine_mismatch")
-        self.assertFalse(result["machine_identity_matches_baseline"])
-        self.assertIn("machine_model", result["machine_identity_mismatches"])
-        self.assertIn("chip", result["machine_identity_mismatches"])
-        self.assertFalse((root / WEEK11_EXPERIMENT_GATE.output_dir).exists())
+        self.assertNotEqual(first["output_dir"], second["output_dir"])
+        self.assertEqual(first["protocol_version"], second["protocol_version"])
 
-    def test_config_contract_records_modes_counts_and_paths(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            paths = runner.build_pilot_paths(tmpdir)
-            config = runner.build_config_record(paths, project_root=tmpdir)
+    def test_config_contract_contains_only_the_frozen_protocol(self):
+        config = runner.build_config_record()
 
-        self.assertEqual(config["status"], "ready_not_executed")
+        self.assertEqual(config["status"], "frozen")
+        self.assertEqual(config["protocol_version"], "week11_pilot_v1")
         self.assertEqual(config["paper_execution_mode"], "minimal")
         self.assertEqual(config["audit_execution_mode"], "checked")
         self.assertEqual(config["case_count"], 35)
         self.assertEqual(config["raw_row_count"], 1050)
-        self.assertEqual(config["gate_version"], "v2")
-        self.assertEqual(
-            config["machine_baseline_path"],
-            "docs/analysis/week11_machine_baseline_v2_m4.json",
-        )
-        self.assertEqual(
-            config["machine_baseline_sha256"],
-            WEEK11_EXPERIMENT_GATE.machine_baseline_sha256,
-        )
-        self.assertEqual(set(config["outputs"]), set(runner.EVIDENCE_FILENAMES))
+        self.assertNotIn("execution_id", config)
+        self.assertNotIn("output_dir", config)
+        self.assertNotIn("machine_identity", config)
+        self.assertNotIn("machine_baseline_sha256", config)
 
     def test_tiny_execution_builds_all_four_row_products(self):
         config = self._tiny_execution_config()
@@ -733,7 +774,13 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertTrue(environment["captured_before_timing"])
         self.assertFalse(environment["git_dirty"])
         self.assertTrue(environment["head_matches_origin_main"])
-        self.assertEqual(environment["git_commit_sha"], "a" * 40)
+        self.assertEqual(environment["source_commit"], "a" * 40)
+        self.assertEqual(environment["execution_id"], DEFAULT_EXECUTION_ID)
+        self.assertEqual(
+            environment["output_dir"],
+            output_dir_for_execution(DEFAULT_EXECUTION_ID),
+        )
+        self.assertEqual(environment["protocol_version"], "week11_pilot_v1")
         self.assertEqual(environment["paper_execution_mode"], "minimal")
         self.assertEqual(environment["audit_execution_mode"], "checked")
         self.assertEqual(environment["power_snapshot"], "captured")
@@ -741,42 +788,17 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertTrue(environment["power_command_success"])
         self.assertTrue(environment["load_command_success"])
         self.assertGreaterEqual(environment["available_disk_bytes"], 0)
-        self.assertEqual(environment["gate_version"], "v2")
-        self.assertEqual(
-            environment["machine_baseline_sha256"],
-            WEEK11_EXPERIMENT_GATE.machine_baseline_sha256,
-        )
         self.assertEqual(environment["machine_model"], "Mac16,13")
         self.assertEqual(environment["architecture"], "arm64")
-
-    def test_active_baseline_hash_tampering_is_rejected(self):
-        temporary, root = self._temporary_project()
-        self.addCleanup(temporary.cleanup)
-        baseline = root / runner.MACHINE_BASELINE_DOCUMENT
-        baseline.write_bytes(baseline.read_bytes() + b"\n")
-
-        with self.assertRaisesRegex(RuntimeError, "SHA-256"):
-            runner.load_machine_baseline(root)
-
-    def test_preserved_v1_m1_baseline_rejects_current_m4_identity(self):
-        baseline = runner.load_verified_machine_baseline(
-            PROJECT_ROOT,
-            WEEK11_MACHINE_BASELINE_PATH_V1,
-            WEEK11_MACHINE_BASELINE_SHA256_V1,
-        )
-        mismatches = runner.machine_identity_mismatches(
-            baseline,
+        self.assertEqual(
+            environment["machine_identity"],
             self._matching_machine_identity(),
         )
-
-        self.assertIn("machine_model", mismatches)
-        self.assertIn("chip", mismatches)
-        self.assertIn("os_version", mismatches)
 
     def test_initialize_evidence_directory_writes_and_verifies_json(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             paths = runner.build_pilot_paths(tmpdir)
-            config = runner.build_config_record(paths, project_root=tmpdir)
+            config = runner.build_config_record()
             environment = self._minimal_environment_record()
             result = runner.initialize_evidence_directory(
                 paths,
@@ -804,16 +826,21 @@ class RunWeek11PilotTests(unittest.TestCase):
                     environment,
                 )
 
-    def test_initialize_evidence_rejects_changed_gate_binding(self):
+    def test_initialize_evidence_rejects_protocol_or_execution_drift(self):
         for record_name in ("config", "environment"):
             with self.subTest(record=record_name):
                 temporary, root = self._temporary_project()
                 self.addCleanup(temporary.cleanup)
                 paths = runner.build_pilot_paths(root)
-                config = runner.build_config_record(paths, project_root=root)
+                config = runner.build_config_record()
                 environment = self._minimal_environment_record()
-                target = config if record_name == "config" else environment
-                target["machine_baseline_sha256"] = "0" * 64
+                if record_name == "config":
+                    config["measured_runs"] = 11
+                else:
+                    environment["execution_id"] = "week11_other_run"
+                    environment["output_dir"] = (
+                        "results/runs/week11_other_run"
+                    )
 
                 with self.assertRaisesRegex(ValueError, "does not match"):
                     runner.initialize_evidence_directory(
@@ -827,7 +854,7 @@ class RunWeek11PilotTests(unittest.TestCase):
     def test_environment_write_failure_preserves_partial_evidence(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             paths = runner.build_pilot_paths(tmpdir)
-            config = runner.build_config_record(paths, project_root=tmpdir)
+            config = runner.build_config_record()
             environment = self._minimal_environment_record()
             original_write = runner._write_json_exclusive
 
@@ -883,7 +910,7 @@ class RunWeek11PilotTests(unittest.TestCase):
         sorter()
         sorter.assert_called_once_with()
 
-    def test_formal_evidence_rejects_machine_mismatch_before_writing(self):
+    def test_formal_evidence_accepts_a_new_machine_with_a_new_execution_id(self):
         temporary, root = self._temporary_project()
         self.addCleanup(temporary.cleanup)
         changed = dict(self._matching_machine_identity())
@@ -898,10 +925,26 @@ class RunWeek11PilotTests(unittest.TestCase):
             "capture_machine_identity",
             return_value=changed,
         ):
-            with self.assertRaisesRegex(RuntimeError, "does not match"):
-                runner.initialize_formal_evidence(root)
+            result = runner.initialize_formal_evidence(
+                root,
+                execution_id="week11_pilot_v1__other_machine__run1",
+            )
 
-        self.assertFalse((root / WEEK11_EXPERIMENT_GATE.output_dir).exists())
+        self.assertEqual(result["status"], "evidence_initialized_before_timing")
+        paths = runner.build_pilot_paths(
+            root,
+            execution_id="week11_pilot_v1__other_machine__run1",
+        )
+        config = json.loads(paths.config_json.read_text(encoding="utf-8"))
+        environment = json.loads(
+            paths.environment_json.read_text(encoding="utf-8")
+        )
+        self.assertEqual(config, protocol_to_dict())
+        self.assertEqual(environment["machine_model"], "another-machine")
+        self.assertEqual(
+            environment["execution_id"],
+            "week11_pilot_v1__other_machine__run1",
+        )
 
     def test_preflight_main_prints_json_without_writing_outputs(self):
         result = {
@@ -920,7 +963,7 @@ class RunWeek11PilotTests(unittest.TestCase):
 
     def test_day3_timing_path_is_not_reachable_from_cli(self):
         with patch.object(runner, "run_pilot_in_memory") as pilot:
-            with self.assertRaisesRegex(RuntimeError, "Day 5 gate"):
+            with self.assertRaisesRegex(RuntimeError, "Day 5 preflight"):
                 runner.main([])
         pilot.assert_not_called()
 

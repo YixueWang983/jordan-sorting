@@ -546,10 +546,10 @@ The following must not block completion:
 ## Immediate Next Step
 
 Week 9 and Week 10 are complete. The next implementation gate is the frozen
-Week 11 paper-sorting integration pilot:
+Week 11 paper-sorting integration protocol:
 
 ```text
-experiments/week11_experiment_gate_v2.py
+experiments/week11_experiment_protocol.py
 ```
 
 Week 11 must:
@@ -560,8 +560,13 @@ pass execution_mode="minimal" explicitly for paper timing
 run one checked diagnostic per case outside timing
 keep oracle certification outside timing
 keep valid-input sorting separate from recognition
-produce exactly 1050 raw rows under the frozen gate
+produce exactly 1050 raw rows under the frozen protocol
 ```
+
+The protocol is machine-independent. Each execution uses a unique execution
+ID, output directory, machine environment record, and source commit. Different
+machines must not pool absolute runtimes, but may compare within-run ratios and
+cross-machine trend consistency.
 
 The Week 11 pilot is not the Week 12 formal experiment and does not support a
 linear-time claim.

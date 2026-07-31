@@ -374,31 +374,25 @@ results/runs/week10_contamination_full_20260728/
 Its validator reports `valid = true`. This mode choice removes measured
 diagnostic overhead; it does not establish linear-time complexity.
 
-### Frozen Week 11 Paper-Sorting Integration Pilot
+### Frozen Week 11 Paper-Sorting Protocol
 
-The canonical machine-readable gate is:
+The canonical machine-independent protocol is:
 
 ```text
-experiments/week11_experiment_gate_v2.py
+experiments/week11_experiment_protocol.py
 ```
 
 Status:
 
 ```text
-frozen_not_executed
+frozen; no formal execution
 ```
 
 Configuration:
 
 ```text
-run_id:
-week11_paper_sorting_pilot_v2_m4
-
-output directory:
-results/runs/week11_paper_sorting_pilot_v2_m4
-
-machine baseline:
-docs/analysis/week11_machine_baseline_v2_m4.json
+protocol_version:
+week11_pilot_v1
 
 sizes:
 32, 64, 128, 256, 512
@@ -461,10 +455,9 @@ group-summary rows:
 = 45 rows
 ```
 
-The runtime planning ceiling is 15 minutes on the recorded development
-machine. This is a scheduling bound rather than an empirical claim. Week 11
-records actual elapsed time and uses it to freeze the separate Week 12 formal
-experiment.
+The earlier 15-minute estimate was a development-machine planning value, not a
+protocol field or empirical claim. Each execution records actual elapsed time
+and its machine environment separately.
 
 The Week 11 runner must not rely on the public sorter's default mode. It must
 pass `execution_mode="minimal"` explicitly and store that mode in raw rows,
@@ -475,12 +468,17 @@ measured timing.
 Recognition remains a separate experiment. The Week 11 valid-input sorting
 pilot does not add invalid families to the paper algorithm.
 
-### Formal Machine
+### Execution Context
 
-The execution machine must be fixed and recorded before the corresponding
-pilot or formal run begins. Any machine change requires a new run ID and a new
-environment record. The actual machine metadata must be stored in
-`environment.json`; the thesis should cite that evidence rather than memory.
+Each pilot or formal execution uses a unique `execution_id`, output directory,
+source commit, and `environment.json`. The machine is fixed for that execution,
+but it is not part of the experimental protocol. A machine change therefore
+requires a new execution ID and environment record, not a new protocol version.
+
+`config.json` stores the machine-independent protocol. `environment.json`
+stores the execution identity and actual machine metadata. Absolute runtimes
+from different machines must not be pooled into one median; within-execution
+ratios and cross-machine trend consistency may be compared.
 
 ## Failure and Fallback Rules
 
@@ -490,10 +488,10 @@ environment record. The actual machine metadata must be stored in
    run fails.
 4. Validator checks include manifest SHA-256 verification and raw-to-summary
    recomputation; a summary CSV is not accepted merely because it exists.
-5. If a run fails, keep its run directory for debugging and rerun with a new
-   `run_id`; do not overwrite failed evidence.
-6. Any change to a frozen configuration requires a new gate version and a new
-   `run_id`; the previous gate and evidence remain unchanged.
+5. If an execution fails, keep its directory for debugging and rerun with a new
+   `execution_id`; do not overwrite failed evidence.
+6. Any change to a protocol field requires a new protocol version. A machine
+   change or rerun under the same protocol requires only a new execution ID.
 7. Pilot and formal evidence used in the thesis must be archived either in the
    repository or in a persistent release. A manifest hash and reproduction
    command alone do not replace the underlying evidence files.

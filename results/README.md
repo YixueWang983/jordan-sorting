@@ -699,27 +699,29 @@ Its manifest-covered raw data, summaries, configuration, environment,
 manifest, and validation report are committed so the exact published ratios
 can be recomputed without rerunning timing.
 
-## Frozen Week 11 Gate
+## Frozen Week 11 Protocol
 
 Week 10 freezes, but does not execute, the Week 11 paper-sorting integration
-pilot in:
+protocol in:
 
 ```text
-experiments/week11_experiment_gate.py
+experiments/week11_experiment_protocol.py
 ```
 
-Inspect the machine-readable contract with:
+Inspect the machine-independent contract with:
 
 ```bash
-python experiments/week11_experiment_gate.py
+python experiments/week11_experiment_protocol.py
 ```
 
-The planned output directory is:
+One planned execution uses:
 
 ```text
-results/runs/week11_paper_sorting_pilot_v1/
+execution_id = week11_pilot_v1__mac16_13__run1
+output = results/runs/week11_pilot_v1__mac16_13__run1/
 ```
 
-The gate expects `1,050` raw rows, `105` case-summary rows, and `45`
-group-summary rows. These files do not exist yet and must not be described as
-Week 10 results.
+The protocol expects `1,050` raw rows, `105` case-summary rows, and `45`
+group-summary rows. A different machine uses a different execution ID and
+`environment.json`, not a different protocol version. These files do not exist
+yet and must not be described as Week 10 results.
