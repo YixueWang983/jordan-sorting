@@ -150,7 +150,7 @@ afterward. Output is compared with the precomputed oracle result after timing.
 The authoritative configuration is validated by:
 
 ```bash
-python experiments/week11_experiment_gate.py
+python experiments/week11_experiment_gate_v2.py
 ```
 
 It fixes:
@@ -169,7 +169,7 @@ case-order seed = 20262266
 expected raw rows = 1050
 ```
 
-The gate is frozen but not executed during Week 10. Week 11 must implement the
-dedicated runner and validator without changing these values. Any necessary
-change requires a documented new gate version and run ID; existing evidence
-must not be overwritten.
+The original v1 gate was frozen but never executed. After the machine change,
+W11D2.5 preserved v1 and created the active v2 gate with unchanged experiment
+values, a distinct run ID/output directory, and a cryptographically bound M4
+machine baseline. Existing evidence must not be overwritten.

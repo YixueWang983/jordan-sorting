@@ -1,14 +1,13 @@
-# Week 11 Machine Preflight
+# Week 11 v1 M1 Machine Preflight
 
 Last updated: 2026-07-31
 
-Status: machine identity frozen; formal timing readiness must be rechecked on
-Day 5 and immediately before Day 6.
+Status: historical v1 M1 machine identity; the v1 pilot was never executed.
 
 The machine-readable companion to this document is:
 
 ```text
-docs/analysis/week11_machine_baseline.json
+docs/analysis/week11_machine_baseline_v1_m1.json
 ```
 
 The runner compares the current machine with that structured baseline. The

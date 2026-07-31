@@ -18,10 +18,10 @@ docs/plan/week11_plan.md
 
 ```text
 gate:
-    experiments/week11_experiment_gate.py
+    experiments/week11_experiment_gate_v2.py
 
 run_id:
-    week11_paper_sorting_pilot_v1
+    week11_paper_sorting_pilot_v2_m4
 
 status:
     frozen_not_executed
@@ -30,6 +30,19 @@ expected rows:
     raw = 1,050
     case summary = 105
     group summary = 45
+```
+
+Historical unexecuted gate:
+
+```text
+gate:
+    experiments/week11_experiment_gate.py
+
+run_id:
+    week11_paper_sorting_pilot_v1
+
+machine:
+    MacBookAir10,1 / Apple M1
 ```
 
 ## Day 1: Plan, Baseline, and Machine Freeze
@@ -57,7 +70,7 @@ Day 1 outputs:
 ```text
 docs/plan/week11_plan.md
 docs/progress/week11_progress.md
-docs/analysis/week11_machine_preflight.md
+docs/analysis/week11_machine_preflight_v1_m1.md
 ```
 
 ## Day 1 Verification
@@ -129,7 +142,7 @@ Day 2 outputs:
 ```text
 experiments/run_week11_pilot.py
 tests/test_run_week11_pilot.py
-docs/analysis/week11_machine_baseline.json
+docs/analysis/week11_machine_baseline_v1_m1.json
 ```
 
 ## Day 2 Verification
@@ -167,7 +180,60 @@ while the frozen v1 baseline is `MacBookAir10,1 / Apple M1 / macOS 26.5`.
 The repaired preflight therefore reports `blocked_machine_mismatch` for v1.
 This is the intended safety behavior: v1 must not run on the replacement
 computer. A new machine preflight, versioned gate, run ID, and output directory
-are required before later Week 11 execution work continues.
+were required before later Week 11 execution work could continue; Day 2.5
+implements that migration without running either pilot.
+
+## Day 2.5: M4 Rebaseline and v2 Gate Migration
+
+Status: complete; awaiting review before Day 3.
+
+- [x] preserved the v1 gate, run ID, output directory, and M1 baseline bytes;
+- [x] added an explicit v1 compatibility entry point;
+- [x] captured a non-sensitive M4 structured baseline and preflight document;
+- [x] created a distinct v2 gate, run ID, and output directory;
+- [x] bound v2 to its baseline path, SHA-256, and machine identity ID;
+- [x] included the binding in config and environment evidence contracts;
+- [x] rejected a changed baseline when the frozen gate hash is unchanged;
+- [x] forced clean-worktree checks to include every untracked file;
+- [x] verified the v1 baseline still rejects the current M4 identity;
+- [x] kept v1 and v2 formal output directories absent;
+- [x] did not add Day 3 experiment logic or execute timing.
+
+Migration outputs:
+
+```text
+experiments/week11_experiment_gate_v1.py
+experiments/week11_experiment_gate_v2.py
+docs/analysis/week11_machine_baseline_v1_m1.json
+docs/analysis/week11_machine_baseline_v2_m4.json
+docs/analysis/week11_machine_preflight_v1_m1.md
+docs/analysis/week11_machine_preflight_v2_m4.md
+tests/test_week11_experiment_gate_v2.py
+```
+
+## Day 2.5 Verification
+
+```text
+focused v1/v2 gate and runner tests:
+    Ran 37 tests
+    OK
+
+python -m unittest discover -s tests:
+    Ran 414 tests
+    OK
+
+v1 M1 baseline SHA-256:
+    0a18befd93257c2ce4f625cdc17ceafd537d1c7349ed2a5601d684ebba41e617
+
+v2 M4 baseline SHA-256:
+    d59a3d265985d781d3368366ac1553635b5fbfca20f6a03e6df4efef43fe7f69
+
+v1 and v2 formal output directories:
+    absent
+
+formal timing:
+    not executed
+```
 
 ## Day 3: Case Audit and Timing Control Flow
 
@@ -195,6 +261,5 @@ Status: blocked by validated Day 6 evidence.
 
 ## Current Status
 
-Week 11 Day 1 and the repaired Day 2 framework are complete. W11D3 must wait
-for review and for the replacement machine to receive a new structured
-preflight plus a versioned gate/run ID. The v1 pilot remains unexecuted.
+Week 11 Day 1, the repaired Day 2 framework, and the Day 2.5 M4 rebaseline are
+complete. W11D3 must wait for review. Both v1 and v2 pilots remain unexecuted.

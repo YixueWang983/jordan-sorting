@@ -521,20 +521,21 @@ Mitigation:
 Current task:
 
 ```text
-Week 11 Day 2 review repair and replacement-machine rebaseline:
+Week 11 Day 2.5 M4 rebaseline and v2 gate review:
 
 experiments/run_week11_pilot.py
-docs/analysis/week11_machine_baseline.json
+experiments/week11_experiment_gate_v2.py
+docs/analysis/week11_machine_baseline_v2_m4.json
 ```
 
 Required boundary:
 
 ```text
-query the real remote main ref
-prewrite config/environment before any future timed work
-preserve failed evidence initialization
-reject the frozen v1 M1 gate on the replacement M4 machine
-create a new gate version/run ID before continuing to Day 3
+preserve the v1 M1 gate and baseline
+bind v2 to the M4 baseline path and SHA-256
+keep v1 and v2 run IDs/output directories distinct
+include all untracked files in clean-worktree checks
+do not start Day 3 before the migration review passes
 ```
 
 Do not run the Week 11 pilot before the Day 5 preflight gate. The Week 12 formal

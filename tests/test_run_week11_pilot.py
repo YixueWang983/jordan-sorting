@@ -17,8 +17,12 @@ sys.path.insert(0, str(PROJECT_ROOT / "experiments"))
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 import run_week11_pilot as runner  # noqa: E402
-from week11_experiment_gate import (  # noqa: E402
-    WEEK11_EXPERIMENT_GATE,
+from week11_experiment_gate_v1 import (  # noqa: E402
+    WEEK11_MACHINE_BASELINE_PATH_V1,
+    WEEK11_MACHINE_BASELINE_SHA256_V1,
+)
+from week11_experiment_gate_v2 import (  # noqa: E402
+    WEEK11_EXPERIMENT_GATE_V2 as WEEK11_EXPERIMENT_GATE,
 )
 
 
@@ -35,15 +39,29 @@ class RunWeek11PilotTests(unittest.TestCase):
     def _matching_machine_identity(self):
         return {
             "machine_name": "MacBook Air",
-            "machine_model": "MacBookAir10,1",
-            "chip": "Apple M1",
+            "machine_model": "Mac16,13",
+            "chip": "Apple M4",
             "architecture": "arm64",
             "os_name": "macOS",
-            "os_version": "26.5",
-            "os_build": "25F71",
+            "os_version": "26.5.2",
+            "os_build": "25F84",
             "python_executable": "/opt/anaconda3/bin/python",
             "python_implementation": "CPython",
             "python_version": "3.12.4",
+        }
+
+    def _minimal_environment_record(self):
+        return {
+            "run_id": WEEK11_EXPERIMENT_GATE.run_id,
+            "gate_version": WEEK11_EXPERIMENT_GATE.gate_version,
+            "machine_identity_id": WEEK11_EXPERIMENT_GATE.machine_identity_id,
+            "machine_baseline_path": (
+                WEEK11_EXPERIMENT_GATE.machine_baseline_path
+            ),
+            "machine_baseline_sha256": (
+                WEEK11_EXPERIMENT_GATE.machine_baseline_sha256
+            ),
+            "captured_before_timing": True,
         }
 
     def _temporary_project(self):
@@ -53,9 +71,8 @@ class RunWeek11PilotTests(unittest.TestCase):
         machine_doc.parent.mkdir(parents=True)
         machine_doc.write_text("# fixed machine\n", encoding="utf-8")
         baseline_doc = root / runner.MACHINE_BASELINE_DOCUMENT
-        baseline_doc.write_text(
-            json.dumps(self._matching_machine_identity()),
-            encoding="utf-8",
+        baseline_doc.write_bytes(
+            (PROJECT_ROOT / runner.MACHINE_BASELINE_DOCUMENT).read_bytes()
         )
         return temporary, root
 
@@ -90,7 +107,7 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(
             paths.run_dir,
             Path(tmpdir)
-            / "results/runs/week11_paper_sorting_pilot_v1",
+            / "results/runs/week11_paper_sorting_pilot_v2_m4",
         )
         self.assertEqual(
             tuple(path.name for path in paths.evidence_paths),
@@ -164,6 +181,42 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(snapshot["origin_main"], new_head)
         self.assertEqual(snapshot["origin_main_source"], "git_ls_remote")
         self.assertFalse(snapshot["head_pushed"])
+
+    def test_git_snapshot_includes_untracked_files_despite_local_config(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            remote = root / "remote.git"
+            clone = root / "clone"
+            self._run_git(
+                root,
+                "init",
+                "--bare",
+                "--initial-branch=main",
+                str(remote),
+            )
+            self._run_git(root, "init", "--initial-branch=main", str(clone))
+            self._run_git(clone, "config", "user.name", "Week 11 Test")
+            self._run_git(clone, "config", "user.email", "week11@example.com")
+            (clone / "tracked.txt").write_text("tracked\n", encoding="utf-8")
+            self._run_git(clone, "add", "tracked.txt")
+            self._run_git(clone, "commit", "-m", "baseline")
+            self._run_git(clone, "remote", "add", "origin", str(remote))
+            self._run_git(clone, "push", "-u", "origin", "main")
+            self._run_git(
+                clone,
+                "config",
+                "status.showUntrackedFiles",
+                "no",
+            )
+            (clone / "hidden-by-config.txt").write_text(
+                "untracked\n",
+                encoding="utf-8",
+            )
+
+            snapshot = runner.git_snapshot(clone)
+
+        self.assertFalse(snapshot["git_clean"])
+        self.assertTrue(snapshot["head_pushed"])
 
     def test_cli_exposes_only_preflight_operational_option(self):
         self.assertTrue(runner.parse_args(["--preflight-only"]).preflight_only)
@@ -256,8 +309,8 @@ class RunWeek11PilotTests(unittest.TestCase):
         temporary, root = self._temporary_project()
         self.addCleanup(temporary.cleanup)
         changed = dict(self._matching_machine_identity())
-        changed["machine_model"] = "Mac16,13"
-        changed["chip"] = "Apple M4"
+        changed["machine_model"] = "MacBookAir10,1"
+        changed["chip"] = "Apple M1"
         with patch.object(
             runner,
             "git_snapshot",
@@ -285,6 +338,15 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(config["audit_execution_mode"], "checked")
         self.assertEqual(config["case_count"], 35)
         self.assertEqual(config["raw_row_count"], 1050)
+        self.assertEqual(config["gate_version"], "v2")
+        self.assertEqual(
+            config["machine_baseline_path"],
+            "docs/analysis/week11_machine_baseline_v2_m4.json",
+        )
+        self.assertEqual(
+            config["machine_baseline_sha256"],
+            WEEK11_EXPERIMENT_GATE.machine_baseline_sha256,
+        )
         self.assertEqual(set(config["outputs"]), set(runner.EVIDENCE_FILENAMES))
 
     def test_environment_contract_is_captured_before_timing(self):
@@ -311,17 +373,43 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertTrue(environment["power_command_success"])
         self.assertTrue(environment["load_command_success"])
         self.assertGreaterEqual(environment["available_disk_bytes"], 0)
-        self.assertEqual(environment["machine_model"], "MacBookAir10,1")
+        self.assertEqual(environment["gate_version"], "v2")
+        self.assertEqual(
+            environment["machine_baseline_sha256"],
+            WEEK11_EXPERIMENT_GATE.machine_baseline_sha256,
+        )
+        self.assertEqual(environment["machine_model"], "Mac16,13")
         self.assertEqual(environment["architecture"], "arm64")
+
+    def test_active_baseline_hash_tampering_is_rejected(self):
+        temporary, root = self._temporary_project()
+        self.addCleanup(temporary.cleanup)
+        baseline = root / runner.MACHINE_BASELINE_DOCUMENT
+        baseline.write_bytes(baseline.read_bytes() + b"\n")
+
+        with self.assertRaisesRegex(RuntimeError, "SHA-256"):
+            runner.load_machine_baseline(root)
+
+    def test_preserved_v1_m1_baseline_rejects_current_m4_identity(self):
+        baseline = runner.load_verified_machine_baseline(
+            PROJECT_ROOT,
+            WEEK11_MACHINE_BASELINE_PATH_V1,
+            WEEK11_MACHINE_BASELINE_SHA256_V1,
+        )
+        mismatches = runner.machine_identity_mismatches(
+            baseline,
+            self._matching_machine_identity(),
+        )
+
+        self.assertIn("machine_model", mismatches)
+        self.assertIn("chip", mismatches)
+        self.assertIn("os_version", mismatches)
 
     def test_initialize_evidence_directory_writes_and_verifies_json(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             paths = runner.build_pilot_paths(tmpdir)
             config = runner.build_config_record(paths, project_root=tmpdir)
-            environment = {
-                "run_id": WEEK11_EXPERIMENT_GATE.run_id,
-                "captured_before_timing": True,
-            }
+            environment = self._minimal_environment_record()
             result = runner.initialize_evidence_directory(
                 paths,
                 config,
@@ -348,14 +436,31 @@ class RunWeek11PilotTests(unittest.TestCase):
                     environment,
                 )
 
+    def test_initialize_evidence_rejects_changed_gate_binding(self):
+        for record_name in ("config", "environment"):
+            with self.subTest(record=record_name):
+                temporary, root = self._temporary_project()
+                self.addCleanup(temporary.cleanup)
+                paths = runner.build_pilot_paths(root)
+                config = runner.build_config_record(paths, project_root=root)
+                environment = self._minimal_environment_record()
+                target = config if record_name == "config" else environment
+                target["machine_baseline_sha256"] = "0" * 64
+
+                with self.assertRaisesRegex(ValueError, "does not match"):
+                    runner.initialize_evidence_directory(
+                        paths,
+                        config,
+                        environment,
+                    )
+
+                self.assertFalse(paths.run_dir.exists())
+
     def test_environment_write_failure_preserves_partial_evidence(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             paths = runner.build_pilot_paths(tmpdir)
             config = runner.build_config_record(paths, project_root=tmpdir)
-            environment = {
-                "run_id": WEEK11_EXPERIMENT_GATE.run_id,
-                "captured_before_timing": True,
-            }
+            environment = self._minimal_environment_record()
             original_write = runner._write_json_exclusive
 
             def fail_environment(path, payload):

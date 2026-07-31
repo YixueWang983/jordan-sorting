@@ -549,7 +549,7 @@ Week 9 and Week 10 are complete. The next implementation gate is the frozen
 Week 11 paper-sorting integration pilot:
 
 ```text
-experiments/week11_experiment_gate.py
+experiments/week11_experiment_gate_v2.py
 ```
 
 Week 11 must:

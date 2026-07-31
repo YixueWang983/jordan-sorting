@@ -1,6 +1,7 @@
 """Preflight-only framework for the frozen Week 11 sorting pilot."""
 
 import argparse
+import hashlib
 import json
 import os
 import platform
@@ -17,7 +18,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SRC_ROOT = PROJECT_ROOT / "src"
 sys.path.insert(0, str(SRC_ROOT))
 
-from week11_experiment_gate import (  # noqa: E402
+from week11_experiment_gate_v2 import (  # noqa: E402
     WEEK11_EXPERIMENT_GATE,
     gate_to_dict,
     validate_week11_experiment_gate,
@@ -25,10 +26,10 @@ from week11_experiment_gate import (  # noqa: E402
 
 
 MACHINE_PREFLIGHT_DOCUMENT = Path(
-    "docs/analysis/week11_machine_preflight.md"
+    WEEK11_EXPERIMENT_GATE.machine_preflight_path
 )
 MACHINE_BASELINE_DOCUMENT = Path(
-    "docs/analysis/week11_machine_baseline.json"
+    WEEK11_EXPERIMENT_GATE.machine_baseline_path
 )
 MACHINE_IDENTITY_FIELDS = (
     "machine_name",
@@ -152,7 +153,12 @@ def _remote_main_sha(project_root):
 def git_snapshot(project_root=PROJECT_ROOT):
     """Return the clean/pushed source state required by the formal runner."""
     root = Path(project_root)
-    status = _git_output(root, "status", "--porcelain")
+    status = _git_output(
+        root,
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all",
+    )
     head = _git_output(root, "rev-parse", "HEAD")
     origin_main = _remote_main_sha(root)
     return {
@@ -252,13 +258,31 @@ def capture_machine_identity():
     }
 
 
-def load_machine_baseline(project_root=PROJECT_ROOT):
-    """Load and validate the structured Day 1 machine identity."""
-    path = Path(project_root) / MACHINE_BASELINE_DOCUMENT
+def _sha256_file(path):
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def load_verified_machine_baseline(
+    project_root,
+    baseline_path,
+    expected_sha256,
+):
+    """Load one machine baseline only when its bytes match a frozen hash."""
+    path = Path(project_root) / baseline_path
     try:
-        baseline = json.loads(path.read_text(encoding="utf-8"))
+        actual_sha256 = _sha256_file(path)
     except FileNotFoundError as exc:
         raise RuntimeError("Week 11 machine baseline is missing") from exc
+    if actual_sha256 != expected_sha256:
+        raise RuntimeError(
+            "Week 11 machine baseline SHA-256 does not match the gate"
+        )
+    try:
+        baseline = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         raise RuntimeError("Week 11 machine baseline is invalid JSON") from exc
     if not isinstance(baseline, dict):
@@ -269,6 +293,19 @@ def load_machine_baseline(project_root=PROJECT_ROOT):
             f"Week 11 machine baseline is missing fields: {missing}"
         )
     return baseline
+
+
+def load_machine_baseline(
+    project_root=PROJECT_ROOT,
+    gate=WEEK11_EXPERIMENT_GATE,
+):
+    """Load the baseline cryptographically bound to the active gate."""
+    validate_week11_experiment_gate(gate)
+    return load_verified_machine_baseline(
+        project_root,
+        gate.machine_baseline_path,
+        gate.machine_baseline_sha256,
+    )
 
 
 def machine_identity_mismatches(baseline, actual):
@@ -294,6 +331,10 @@ def build_environment_record(
     load = _capture_command(["uptime"])
     return {
         "run_id": gate.run_id,
+        "gate_version": gate.gate_version,
+        "machine_identity_id": gate.machine_identity_id,
+        "machine_baseline_path": gate.machine_baseline_path,
+        "machine_baseline_sha256": gate.machine_baseline_sha256,
         "captured_before_timing": True,
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "git_commit_sha": git_state["head"],
@@ -334,11 +375,27 @@ def _read_json_object(path):
     return value
 
 
-def initialize_evidence_directory(paths, config_record, environment_record):
+def initialize_evidence_directory(
+    paths,
+    config_record,
+    environment_record,
+    gate=WEEK11_EXPERIMENT_GATE,
+):
     """Atomically reserve a run directory and prewrite timing evidence."""
+    validate_week11_experiment_gate(gate)
     require_unused_output(paths)
-    if config_record.get("run_id") != environment_record.get("run_id"):
-        raise ValueError("config and environment run_id values differ")
+    expected_binding = {
+        "run_id": gate.run_id,
+        "gate_version": gate.gate_version,
+        "machine_identity_id": gate.machine_identity_id,
+        "machine_baseline_path": gate.machine_baseline_path,
+        "machine_baseline_sha256": gate.machine_baseline_sha256,
+    }
+    for field, expected in expected_binding.items():
+        if config_record.get(field) != expected:
+            raise ValueError(f"config {field} does not match the gate")
+        if environment_record.get(field) != expected:
+            raise ValueError(f"environment {field} does not match the gate")
     if environment_record.get("captured_before_timing") is not True:
         raise ValueError("environment must be captured before timing")
     try:
@@ -370,10 +427,10 @@ def initialize_formal_evidence(
     validate_week11_experiment_gate(gate)
     root = Path(project_root)
     paths = require_unused_output(build_pilot_paths(root, gate))
-    if not (root / MACHINE_PREFLIGHT_DOCUMENT).is_file():
+    if not (root / gate.machine_preflight_path).is_file():
         raise RuntimeError("Week 11 machine preflight document is missing")
 
-    baseline = load_machine_baseline(root)
+    baseline = load_machine_baseline(root, gate)
     identity = capture_machine_identity()
     mismatches = machine_identity_mismatches(baseline, identity)
     if mismatches:
@@ -400,10 +457,10 @@ def run_preflight(
     validate_week11_experiment_gate(gate)
     root = Path(project_root)
     paths = require_unused_output(build_pilot_paths(root, gate))
-    machine_document = root / MACHINE_PREFLIGHT_DOCUMENT
+    machine_document = root / gate.machine_preflight_path
     if not machine_document.is_file():
         raise RuntimeError("Week 11 machine preflight document is missing")
-    baseline = load_machine_baseline(root)
+    baseline = load_machine_baseline(root, gate)
     identity = capture_machine_identity()
     mismatches = machine_identity_mismatches(baseline, identity)
     source = require_clean_pushed_git(git_snapshot(root))

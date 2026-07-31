@@ -130,8 +130,8 @@ Current files:
   contamination evidence, and Week 11 handoff.
 
 - `week11_progress.md`
-  Week 11 daily execution record. Day 1 freezes the plan, source baseline, and
-  machine identity while keeping the pilot unexecuted.
+  Week 11 daily execution record through the Day 2.5 M4 baseline and v2 gate
+  migration, with both pilots unexecuted.
 
 ## Plan Documents
 
@@ -219,13 +219,19 @@ Current files:
 - `week10_runtime_ratio_by_family_size.csv`
 - `week10_runtime_ratio_by_size.svg`
 - `week10_observation_ratio_by_size.svg`
-- `week11_machine_preflight.md`
-  Week 11 fixed machine, Python environment, source baseline, power/load
-  snapshot, and Day 5/Day 6 timing-readiness controls.
+- `week11_machine_preflight_v1_m1.md`
+  Preserved preflight record for the unexecuted historical v1 M1 gate.
 
-- `week11_machine_baseline.json`
-  Structured Week 11 v1 machine identity used for fail-closed preflight
-  comparison; it contains no serial number or hardware UUID.
+- `week11_machine_preflight_v2_m4.md`
+  Active v2 M4 identity, source baseline, power/load snapshot, and later
+  timing-readiness controls.
+
+- `week11_machine_baseline_v1_m1.json`
+  Preserved structured v1 M1 identity.
+
+- `week11_machine_baseline_v2_m4.json`
+  Structured M4 identity bound to the v2 gate by path and SHA-256. Neither
+  baseline contains a serial number or hardware UUID.
 
 ## Thesis Drafts
 

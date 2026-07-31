@@ -1,0 +1,12 @@
+{
+  "architecture": "arm64",
+  "chip": "Apple M4",
+  "machine_model": "Mac16,13",
+  "machine_name": "MacBook Air",
+  "os_build": "25F84",
+  "os_name": "macOS",
+  "os_version": "26.5.2",
+  "python_executable": "/opt/anaconda3/bin/python",
+  "python_implementation": "CPython",
+  "python_version": "3.12.4"
+}

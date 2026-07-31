@@ -57,5 +57,8 @@ This folder stores the approved thesis scope and research-question documents.
 The canonical frozen Week 11 integration-pilot values are implemented in:
 
 ```text
-experiments/week11_experiment_gate.py
+experiments/week11_experiment_gate_v2.py
 ```
+
+The unexecuted historical v1 contract remains in
+`experiments/week11_experiment_gate.py`.

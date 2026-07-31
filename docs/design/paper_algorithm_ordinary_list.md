@@ -2286,3 +2286,6 @@ The canonical not-yet-executed Week 11 gate is stored in:
 ```text
 experiments/week11_experiment_gate.py
 ```
+
+That file preserves the unexecuted v1 M1 contract. The active M4 replacement
+is `experiments/week11_experiment_gate_v2.py`.

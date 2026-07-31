@@ -626,6 +626,9 @@ The frozen, unexecuted Week 11 configuration is:
 experiments/week11_experiment_gate.py
 ```
 
+This is the preserved historical v1 M1 gate. The active, still-unexecuted M4
+replacement is `experiments/week11_experiment_gate_v2.py`.
+
 ## Non-Claim Boundary
 
 Week 10 may quantify instrumentation and audit overhead. It may not claim:

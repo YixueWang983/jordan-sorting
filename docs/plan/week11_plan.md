@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-31
 
-Status: Day 2 framework complete; frozen pilot not executed.
+Status: W11D2.5 M4 rebaseline complete; frozen pilot not executed.
 
 ## Core Goal
 
@@ -25,18 +25,26 @@ freeze machine and baseline
 
 ## Frozen Week 11 Configuration
 
-The machine-readable authority is:
+The active machine-readable authority is:
 
 ```text
-experiments/week11_experiment_gate.py
+experiments/week11_experiment_gate_v2.py
 ```
+
+The unexecuted v1 M1 gate remains preserved in
+`experiments/week11_experiment_gate.py`, with an explicit compatibility entry
+point in `experiments/week11_experiment_gate_v1.py`.
 
 The following values must not be redefined in the runner:
 
 | Field | Frozen value |
 | --- | --- |
-| Run ID | `week11_paper_sorting_pilot_v1` |
-| Output directory | `results/runs/week11_paper_sorting_pilot_v1` |
+| Gate version | `v2` |
+| Run ID | `week11_paper_sorting_pilot_v2_m4` |
+| Output directory | `results/runs/week11_paper_sorting_pilot_v2_m4` |
+| Machine identity | `week11_v2_m4_mac16_13` |
+| Machine baseline | `docs/analysis/week11_machine_baseline_v2_m4.json` |
+| Baseline SHA-256 | `d59a3d265985d781d3368366ac1553635b5fbfca20f6a03e6df4efef43fe7f69` |
 | Sizes | `32, 64, 128, 256, 512` |
 | Valid families | `flat_valid, nested_valid, incremental_valid` |
 | Incremental cases | 5 per size |
@@ -127,14 +135,14 @@ rollback, `stage_results`, and final partial-order output recovery.
 
 ## Day 1: Plan, Baseline, and Machine Freeze
 
-Status: complete after the W11D2 review repair.
+Status: complete.
 
 Outputs:
 
 ```text
 docs/plan/week11_plan.md
 docs/progress/week11_progress.md
-docs/analysis/week11_machine_preflight.md
+docs/analysis/week11_machine_preflight_v1_m1.md
 ```
 
 Tasks:
@@ -152,14 +160,14 @@ No runner or pilot execution is permitted on Day 1.
 
 ## Day 2: Dedicated Runner Framework
 
-Status: complete.
+Status: complete after the W11D2 review repair.
 
 Add:
 
 ```text
 experiments/run_week11_pilot.py
 tests/test_run_week11_pilot.py
-docs/analysis/week11_machine_baseline.json
+docs/analysis/week11_machine_baseline_v1_m1.json
 ```
 
 The runner must import the gate rather than repeat its values. The only
@@ -192,6 +200,38 @@ Suggested commit:
 
 ```text
 Add frozen Week 11 pilot runner framework
+```
+
+## Day 2.5: M4 Rebaseline and v2 Gate Migration
+
+Status: complete; awaiting review before Day 3.
+
+Outputs:
+
+```text
+experiments/week11_experiment_gate_v1.py
+experiments/week11_experiment_gate_v2.py
+docs/analysis/week11_machine_baseline_v1_m1.json
+docs/analysis/week11_machine_baseline_v2_m4.json
+docs/analysis/week11_machine_preflight_v1_m1.md
+docs/analysis/week11_machine_preflight_v2_m4.md
+```
+
+The migration:
+
+- preserves the v1 M1 baseline bytes and unexecuted v1 identifiers;
+- gives v2 a distinct run ID and output directory;
+- binds v2 to the M4 baseline path, SHA-256, and machine identity ID;
+- records the same binding in future config and environment evidence;
+- rejects any baseline-byte change unless a new gate version is created;
+- forces Git status to include all untracked files regardless of local config;
+- keeps both formal output directories absent;
+- adds no generator, oracle, sorter, diagnostic, warm-up, or timing logic.
+
+Suggested commit:
+
+```text
+Freeze Week 11 v2 M4 machine gate
 ```
 
 ## Day 3: Case Audit and Timing Control Flow
@@ -281,7 +321,7 @@ Run exactly once:
 python experiments/run_week11_pilot.py
 
 python experiments/validate_week11_pilot_outputs.py \
-  --run-dir results/runs/week11_paper_sorting_pilot_v1
+  --run-dir results/runs/week11_paper_sorting_pilot_v2_m4
 ```
 
 Required result:

@@ -379,7 +379,7 @@ diagnostic overhead; it does not establish linear-time complexity.
 The canonical machine-readable gate is:
 
 ```text
-experiments/week11_experiment_gate.py
+experiments/week11_experiment_gate_v2.py
 ```
 
 Status:
@@ -392,10 +392,13 @@ Configuration:
 
 ```text
 run_id:
-week11_paper_sorting_pilot_v1
+week11_paper_sorting_pilot_v2_m4
 
 output directory:
-results/runs/week11_paper_sorting_pilot_v1
+results/runs/week11_paper_sorting_pilot_v2_m4
+
+machine baseline:
+docs/analysis/week11_machine_baseline_v2_m4.json
 
 sizes:
 32, 64, 128, 256, 512
