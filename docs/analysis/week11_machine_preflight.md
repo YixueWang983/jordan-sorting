@@ -1,9 +1,19 @@
 # Week 11 Machine Preflight
 
-Last updated: 2026-07-28
+Last updated: 2026-07-31
 
 Status: machine identity frozen; formal timing readiness must be rechecked on
 Day 5 and immediately before Day 6.
+
+The machine-readable companion to this document is:
+
+```text
+docs/analysis/week11_machine_baseline.json
+```
+
+The runner compares the current machine with that structured baseline. The
+presence of this Markdown file alone is not evidence that the current machine
+matches the frozen identity.
 
 ## Source Baseline
 

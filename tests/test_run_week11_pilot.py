@@ -2,13 +2,14 @@
 
 import json
 import io
+import subprocess
 import sys
 import tempfile
 import unittest
 from contextlib import redirect_stderr
 from dataclasses import replace
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -26,8 +27,23 @@ class RunWeek11PilotTests(unittest.TestCase):
         return {
             "head": "a" * 40,
             "origin_main": "a" * 40,
+            "origin_main_source": "git_ls_remote",
             "git_clean": True,
             "head_pushed": True,
+        }
+
+    def _matching_machine_identity(self):
+        return {
+            "machine_name": "MacBook Air",
+            "machine_model": "MacBookAir10,1",
+            "chip": "Apple M1",
+            "architecture": "arm64",
+            "os_name": "macOS",
+            "os_version": "26.5",
+            "os_build": "25F71",
+            "python_executable": "/opt/anaconda3/bin/python",
+            "python_implementation": "CPython",
+            "python_version": "3.12.4",
         }
 
     def _temporary_project(self):
@@ -36,7 +52,21 @@ class RunWeek11PilotTests(unittest.TestCase):
         machine_doc = root / runner.MACHINE_PREFLIGHT_DOCUMENT
         machine_doc.parent.mkdir(parents=True)
         machine_doc.write_text("# fixed machine\n", encoding="utf-8")
+        baseline_doc = root / runner.MACHINE_BASELINE_DOCUMENT
+        baseline_doc.write_text(
+            json.dumps(self._matching_machine_identity()),
+            encoding="utf-8",
+        )
         return temporary, root
+
+    def _run_git(self, repository, *args):
+        return subprocess.run(
+            ["git", *args],
+            cwd=repository,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
 
     def test_runner_imports_the_exact_frozen_gate(self):
         self.assertIs(runner.WEEK11_EXPERIMENT_GATE, WEEK11_EXPERIMENT_GATE)
@@ -85,13 +115,55 @@ class RunWeek11PilotTests(unittest.TestCase):
                 runner.require_unused_output(paths)
 
     def test_existing_evidence_file_is_rejected(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
-            paths = runner.build_pilot_paths(tmpdir)
-            paths.run_dir.mkdir(parents=True)
-            paths.raw_csv.write_text("existing\n", encoding="utf-8")
+        for filename in runner.EVIDENCE_FILENAMES:
+            with self.subTest(filename=filename):
+                temporary = tempfile.TemporaryDirectory()
+                self.addCleanup(temporary.cleanup)
+                tmpdir = temporary.name
+                paths = runner.build_pilot_paths(tmpdir)
+                paths.run_dir.mkdir(parents=True)
+                evidence = paths.run_dir / filename
+                evidence.write_text("existing\n", encoding="utf-8")
 
-            with self.assertRaisesRegex(RuntimeError, "raw.csv"):
-                runner.require_unused_output(paths)
+                with self.assertRaisesRegex(RuntimeError, filename):
+                    runner.require_unused_output(paths)
+
+    def test_git_snapshot_queries_remote_instead_of_stale_tracking_ref(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            root = Path(tmpdir)
+            remote = root / "remote.git"
+            clone_a = root / "clone-a"
+            clone_b = root / "clone-b"
+            self._run_git(root, "init", "--bare", "--initial-branch=main", str(remote))
+            self._run_git(root, "init", "--initial-branch=main", str(clone_a))
+            self._run_git(clone_a, "config", "user.name", "Week 11 Test")
+            self._run_git(clone_a, "config", "user.email", "week11@example.com")
+            (clone_a / "baseline.txt").write_text("old\n", encoding="utf-8")
+            self._run_git(clone_a, "add", "baseline.txt")
+            self._run_git(clone_a, "commit", "-m", "baseline")
+            self._run_git(clone_a, "remote", "add", "origin", str(remote))
+            self._run_git(clone_a, "push", "-u", "origin", "main")
+            old_head = self._run_git(clone_a, "rev-parse", "HEAD")
+
+            self._run_git(root, "clone", str(remote), str(clone_b))
+            self._run_git(clone_b, "config", "user.name", "Week 11 Test")
+            self._run_git(clone_b, "config", "user.email", "week11@example.com")
+            (clone_b / "remote-change.txt").write_text("new\n", encoding="utf-8")
+            self._run_git(clone_b, "add", "remote-change.txt")
+            self._run_git(clone_b, "commit", "-m", "advance remote")
+            self._run_git(clone_b, "push", "origin", "main")
+            new_head = self._run_git(clone_b, "rev-parse", "HEAD")
+
+            self.assertEqual(
+                self._run_git(clone_a, "rev-parse", "origin/main"),
+                old_head,
+            )
+            snapshot = runner.git_snapshot(clone_a)
+
+        self.assertEqual(snapshot["head"], old_head)
+        self.assertEqual(snapshot["origin_main"], new_head)
+        self.assertEqual(snapshot["origin_main_source"], "git_ls_remote")
+        self.assertFalse(snapshot["head_pushed"])
 
     def test_cli_exposes_only_preflight_operational_option(self):
         self.assertTrue(runner.parse_args(["--preflight-only"]).preflight_only)
@@ -125,12 +197,19 @@ class RunWeek11PilotTests(unittest.TestCase):
             runner,
             "git_snapshot",
             return_value=self._clean_git_state(),
+        ), patch.object(
+            runner,
+            "capture_machine_identity",
+            return_value=self._matching_machine_identity(),
         ):
             result = runner.run_preflight(root)
 
         self.assertEqual(result["status"], "ready_not_executed")
         self.assertTrue(result["gate_valid"])
-        self.assertTrue(result["machine_fixed"])
+        self.assertTrue(result["machine_preflight_document_present"])
+        self.assertTrue(result["machine_baseline_present"])
+        self.assertTrue(result["machine_identity_matches_baseline"])
+        self.assertEqual(result["machine_identity_mismatches"], {})
         self.assertTrue(result["git_clean"])
         self.assertTrue(result["head_pushed"])
         self.assertTrue(result["output_directory_unused"])
@@ -140,6 +219,7 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(result["expected_group_summary_rows"], 45)
         self.assertEqual(result["paper_execution_mode"], "minimal")
         self.assertEqual(result["audit_execution_mode"], "checked")
+        self.assertTrue(result["environment_contract_ready"])
         self.assertFalse(result["formal_execution_enabled"])
         self.assertFalse(
             (root / WEEK11_EXPERIMENT_GATE.output_dir).exists()
@@ -155,6 +235,10 @@ class RunWeek11PilotTests(unittest.TestCase):
                 runner,
                 "git_snapshot",
                 return_value=state,
+            ), patch.object(
+                runner,
+                "capture_machine_identity",
+                return_value=self._matching_machine_identity(),
             ):
                 with self.assertRaises(RuntimeError):
                     runner.run_preflight(root)
@@ -168,10 +252,33 @@ class RunWeek11PilotTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "document is missing"):
                 runner.run_preflight(tmpdir)
 
+    def test_preflight_reports_machine_identity_mismatch(self):
+        temporary, root = self._temporary_project()
+        self.addCleanup(temporary.cleanup)
+        changed = dict(self._matching_machine_identity())
+        changed["machine_model"] = "Mac16,13"
+        changed["chip"] = "Apple M4"
+        with patch.object(
+            runner,
+            "git_snapshot",
+            return_value=self._clean_git_state(),
+        ), patch.object(
+            runner,
+            "capture_machine_identity",
+            return_value=changed,
+        ):
+            result = runner.run_preflight(root)
+
+        self.assertEqual(result["status"], "blocked_machine_mismatch")
+        self.assertFalse(result["machine_identity_matches_baseline"])
+        self.assertIn("machine_model", result["machine_identity_mismatches"])
+        self.assertIn("chip", result["machine_identity_mismatches"])
+        self.assertFalse((root / WEEK11_EXPERIMENT_GATE.output_dir).exists())
+
     def test_config_contract_records_modes_counts_and_paths(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             paths = runner.build_pilot_paths(tmpdir)
-            config = runner.build_config_record(paths)
+            config = runner.build_config_record(paths, project_root=tmpdir)
 
         self.assertEqual(config["status"], "ready_not_executed")
         self.assertEqual(config["paper_execution_mode"], "minimal")
@@ -182,12 +289,16 @@ class RunWeek11PilotTests(unittest.TestCase):
 
     def test_environment_contract_is_captured_before_timing(self):
         git_state = self._clean_git_state()
-        with patch.object(
+        with tempfile.TemporaryDirectory() as tmpdir, patch.object(
             runner,
-            "_safe_command_output",
-            return_value="captured",
+            "_capture_command",
+            return_value={"success": True, "output": "captured"},
         ):
-            environment = runner.build_environment_record(git_state)
+            environment = runner.build_environment_record(
+                git_state,
+                project_root=tmpdir,
+                machine_identity=self._matching_machine_identity(),
+            )
 
         self.assertTrue(environment["captured_before_timing"])
         self.assertFalse(environment["git_dirty"])
@@ -197,6 +308,127 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(environment["audit_execution_mode"], "checked")
         self.assertEqual(environment["power_snapshot"], "captured")
         self.assertEqual(environment["load_snapshot"], "captured")
+        self.assertTrue(environment["power_command_success"])
+        self.assertTrue(environment["load_command_success"])
+        self.assertGreaterEqual(environment["available_disk_bytes"], 0)
+        self.assertEqual(environment["machine_model"], "MacBookAir10,1")
+        self.assertEqual(environment["architecture"], "arm64")
+
+    def test_initialize_evidence_directory_writes_and_verifies_json(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            paths = runner.build_pilot_paths(tmpdir)
+            config = runner.build_config_record(paths, project_root=tmpdir)
+            environment = {
+                "run_id": WEEK11_EXPERIMENT_GATE.run_id,
+                "captured_before_timing": True,
+            }
+            result = runner.initialize_evidence_directory(
+                paths,
+                config,
+                environment,
+            )
+
+            self.assertEqual(
+                result["status"],
+                "evidence_initialized_before_timing",
+            )
+            self.assertEqual(
+                json.loads(paths.config_json.read_text(encoding="utf-8")),
+                config,
+            )
+            self.assertEqual(
+                json.loads(paths.environment_json.read_text(encoding="utf-8")),
+                environment,
+            )
+
+            with self.assertRaisesRegex(RuntimeError, "already in use"):
+                runner.initialize_evidence_directory(
+                    paths,
+                    config,
+                    environment,
+                )
+
+    def test_environment_write_failure_preserves_partial_evidence(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            paths = runner.build_pilot_paths(tmpdir)
+            config = runner.build_config_record(paths, project_root=tmpdir)
+            environment = {
+                "run_id": WEEK11_EXPERIMENT_GATE.run_id,
+                "captured_before_timing": True,
+            }
+            original_write = runner._write_json_exclusive
+
+            def fail_environment(path, payload):
+                if path == paths.environment_json:
+                    raise OSError("simulated environment write failure")
+                return original_write(path, payload)
+
+            with patch.object(
+                runner,
+                "_write_json_exclusive",
+                side_effect=fail_environment,
+            ):
+                with self.assertRaisesRegex(OSError, "simulated"):
+                    runner.initialize_evidence_directory(
+                        paths,
+                        config,
+                        environment,
+                    )
+
+            self.assertTrue(paths.run_dir.is_dir())
+            self.assertTrue(paths.config_json.is_file())
+            self.assertFalse(paths.environment_json.exists())
+            self.assertEqual(
+                json.loads(paths.config_json.read_text(encoding="utf-8")),
+                config,
+            )
+
+    def test_formal_evidence_is_initialized_before_future_sorter_call(self):
+        temporary, root = self._temporary_project()
+        self.addCleanup(temporary.cleanup)
+        with patch.object(
+            runner,
+            "_capture_command",
+            return_value={"success": True, "output": "captured"},
+        ), patch.object(
+            runner,
+            "git_snapshot",
+            return_value=self._clean_git_state(),
+        ), patch.object(
+            runner,
+            "capture_machine_identity",
+            return_value=self._matching_machine_identity(),
+        ):
+            runner.initialize_formal_evidence(root)
+        paths = runner.build_pilot_paths(root)
+
+        def future_sorter():
+            self.assertTrue(paths.config_json.is_file())
+            self.assertTrue(paths.environment_json.is_file())
+
+        sorter = Mock(side_effect=future_sorter)
+        sorter()
+        sorter.assert_called_once_with()
+
+    def test_formal_evidence_rejects_machine_mismatch_before_writing(self):
+        temporary, root = self._temporary_project()
+        self.addCleanup(temporary.cleanup)
+        changed = dict(self._matching_machine_identity())
+        changed["machine_model"] = "another-machine"
+
+        with patch.object(
+            runner,
+            "git_snapshot",
+            return_value=self._clean_git_state(),
+        ), patch.object(
+            runner,
+            "capture_machine_identity",
+            return_value=changed,
+        ):
+            with self.assertRaisesRegex(RuntimeError, "does not match"):
+                runner.initialize_formal_evidence(root)
+
+        self.assertFalse((root / WEEK11_EXPERIMENT_GATE.output_dir).exists())
 
     def test_preflight_main_prints_json_without_writing_outputs(self):
         result = {

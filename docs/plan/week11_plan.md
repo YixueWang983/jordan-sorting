@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-31
 
-Status: Day 1 complete; frozen pilot not executed.
+Status: Day 2 framework complete; frozen pilot not executed.
 
 ## Core Goal
 
@@ -127,7 +127,7 @@ rollback, `stage_results`, and final partial-order output recovery.
 
 ## Day 1: Plan, Baseline, and Machine Freeze
 
-Status: complete.
+Status: complete after the W11D2 review repair.
 
 Outputs:
 
@@ -159,6 +159,7 @@ Add:
 ```text
 experiments/run_week11_pilot.py
 tests/test_run_week11_pilot.py
+docs/analysis/week11_machine_baseline.json
 ```
 
 The runner must import the gate rather than repeat its values. The only
@@ -170,6 +171,22 @@ permitted operational CLI option is:
 
 Day 2 implements output contracts, no-overwrite behavior, environment/config
 pre-write behavior, and preflight. It does not execute the 1,050-row pilot.
+
+The completed framework additionally requires:
+
+- a direct `git ls-remote` query of `refs/heads/main`, so a stale local
+  `origin/main` tracking ref cannot satisfy the pushed-source gate;
+- a structured machine baseline and an explicit identity comparison;
+- atomic run-directory reservation with exclusive `config.json` and
+  `environment.json` writes;
+- immediate JSON read-back verification;
+- preservation of a partially initialized evidence directory after failure;
+- config and environment initialization before any future case generation,
+  diagnostics, warm-up, sorter call, or timing call.
+
+`--preflight-only` remains read-only and never initializes the evidence
+directory. Power/load command success and timing readiness become fail-closed
+requirements in the Day 5 formal gate.
 
 Suggested commit:
 

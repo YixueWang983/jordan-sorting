@@ -123,9 +123,11 @@ is frozen but has not been executed.
 
 Week 11 Day 1 and Day 2 are complete. The execution plan, source baseline, and
 machine preflight are recorded. A dedicated runner framework now imports the
-frozen gate, enforces clean/pushed Git and no-overwrite preconditions, exposes
-only `--preflight-only`, and keeps formal execution disabled. The 1,050-row
-pilot remains `frozen_not_executed`; no timing was started.
+frozen gate, queries the real remote main ref, enforces clean/pushed Git and
+no-overwrite preconditions, and prewrites config/environment evidence through
+an exclusive initialization transaction. A structured machine baseline now
+detects that the replacement M4 computer does not match the frozen v1 M1
+machine. The 1,050-row v1 pilot remains unexecuted.
 
 ## Project Structure
 
@@ -235,6 +237,7 @@ docs/
     week7_pilot_interpretation.md
     week7_pilot_auto_report.md
     week10_timing_baseline.md
+    week11_machine_baseline.json
     week11_machine_preflight.md
   backlog/
     future_work_todo.md
@@ -318,7 +321,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 397 tests
+Ran 403 tests
 OK
 ```
 
@@ -380,6 +383,7 @@ Important project documents:
 - [docs/progress/week10_summary.md](docs/progress/week10_summary.md): Week 10 mode decision, correctness/timing boundary, contamination evidence, and Week 11 handoff.
 - [docs/progress/week11_progress.md](docs/progress/week11_progress.md): Week 11 daily execution record through the frozen, preflight-only Day 2 runner framework.
 - [docs/analysis/week11_machine_preflight.md](docs/analysis/week11_machine_preflight.md): fixed machine and Python environment plus Day 5/Day 6 timing-readiness checks.
+- [docs/analysis/week11_machine_baseline.json](docs/analysis/week11_machine_baseline.json): structured, non-sensitive Week 11 v1 machine identity used by preflight.
 - [docs/design/final_experiment_spec.md](docs/design/final_experiment_spec.md): frozen experiment variables, correctness checks, aggregation rules, and non-claims.
 - [docs/design/oracle_and_test_generation.md](docs/design/oracle_and_test_generation.md): definitions and design notes for the oracle and generators.
 - [docs/design/notation.md](docs/design/notation.md): reusable terminology for candidate sequences, valid Jordan sequences, pair families, rank intervals, laminarity, family trees, sibling lists, and structural categories.
@@ -429,10 +433,11 @@ Important project documents:
 
 Immediate next task:
 
-- implement Day 3 case construction, one untimed checked audit per case, and
-  the timing-control flow;
-- keep paper timing explicitly in `minimal` mode;
-- do not run the frozen 1,050-row pilot before the Day 5 gate;
+- review the repaired W11D2 remote, evidence-prewrite, and machine-identity
+  gates;
+- freeze a new machine preflight, gate version, run ID, and output directory
+  for the replacement computer before W11D3;
+- do not run the frozen v1 pilot on the replacement computer;
 - keep recognition separate from valid-input paper sorting;
 - do not treat the ordinary-list pilot as a linear-time claim.
 

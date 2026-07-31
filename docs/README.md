@@ -223,6 +223,10 @@ Current files:
   Week 11 fixed machine, Python environment, source baseline, power/load
   snapshot, and Day 5/Day 6 timing-readiness controls.
 
+- `week11_machine_baseline.json`
+  Structured Week 11 v1 machine identity used for fail-closed preflight
+  comparison; it contains no serial number or hardware UUID.
+
 ## Thesis Drafts
 
 Path:

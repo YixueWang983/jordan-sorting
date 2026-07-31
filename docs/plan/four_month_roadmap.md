@@ -521,24 +521,20 @@ Mitigation:
 Current task:
 
 ```text
-Week 11 Day 3: complete case audit and timing control flow in:
+Week 11 Day 2 review repair and replacement-machine rebaseline:
 
 experiments/run_week11_pilot.py
+docs/analysis/week11_machine_baseline.json
 ```
 
 Required boundary:
 
 ```text
-construct exactly 35 certified cases
-run one checked diagnostic per case outside timing
-pass minimal explicitly inside paper timing
-restore GC after every timed call
-do not create the frozen formal evidence directory
-paper timing mode = minimal
-untimed paper audit mode = checked
-oracle certification outside timing
-valid-input sorting separate from recognition
-expected raw rows = 1050
+query the real remote main ref
+prewrite config/environment before any future timed work
+preserve failed evidence initialization
+reject the frozen v1 M1 gate on the replacement M4 machine
+create a new gate version/run ID before continuing to Day 3
 ```
 
 Do not run the Week 11 pilot before the Day 5 preflight gate. The Week 12 formal
