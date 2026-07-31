@@ -1,6 +1,6 @@
 # Week 11 Plan: Paper Ordinary-List Sorting Integration Pilot
 
-Last updated: 2026-07-28
+Last updated: 2026-07-31
 
 Status: Day 1 complete; frozen pilot not executed.
 
@@ -152,6 +152,8 @@ No runner or pilot execution is permitted on Day 1.
 
 ## Day 2: Dedicated Runner Framework
 
+Status: complete.
+
 Add:
 
 ```text
@@ -176,6 +178,8 @@ Add frozen Week 11 pilot runner framework
 ```
 
 ## Day 3: Case Audit and Timing Control Flow
+
+Status: not started.
 
 Complete:
 

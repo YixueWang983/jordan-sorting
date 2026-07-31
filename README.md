@@ -121,10 +121,11 @@ one oracle certification and one complete `checked` diagnostic per exact case
 outside timing. The machine-readable Week 11 integration-pilot configuration
 is frozen but has not been executed.
 
-Week 11 Day 1 is complete. The Week 11 execution plan, source baseline, and
-machine preflight are recorded. The frozen 1,050-row pilot remains
-`frozen_not_executed`; current power/load observations were not timing-ready,
-so no pilot timing was started.
+Week 11 Day 1 and Day 2 are complete. The execution plan, source baseline, and
+machine preflight are recorded. A dedicated runner framework now imports the
+frozen gate, enforces clean/pushed Git and no-overwrite preconditions, exposes
+only `--preflight-only`, and keeps formal execution disabled. The 1,050-row
+pilot remains `frozen_not_executed`; no timing was started.
 
 ## Project Structure
 
@@ -169,6 +170,7 @@ tests/
   test_validate_week10_timing_outputs.py
   test_analyze_week10_contamination.py
   test_week11_experiment_gate.py
+  test_run_week11_pilot.py
 
 experiments/
   run_small_tests.py
@@ -184,6 +186,7 @@ experiments/
   validate_week10_timing_outputs.py
   analyze_week10_contamination.py
   week11_experiment_gate.py
+  run_week11_pilot.py
 
 results/
   week1_baseline_results.csv
@@ -315,7 +318,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 383 tests
+Ran 397 tests
 OK
 ```
 
@@ -375,7 +378,7 @@ Important project documents:
 - [docs/analysis/week10_contamination_pilot.md](docs/analysis/week10_contamination_pilot.md): validated Day 6 full-pilot evidence, overhead tables, scaling and family comparisons, figure, and interpretation boundary.
 - [docs/progress/week10_progress.md](docs/progress/week10_progress.md): Week 10 daily execution record through final timing-mode selection and the frozen Week 11 gate.
 - [docs/progress/week10_summary.md](docs/progress/week10_summary.md): Week 10 mode decision, correctness/timing boundary, contamination evidence, and Week 11 handoff.
-- [docs/progress/week11_progress.md](docs/progress/week11_progress.md): Week 11 daily execution record; Day 1 freezes the plan, baseline, and machine identity without running timing.
+- [docs/progress/week11_progress.md](docs/progress/week11_progress.md): Week 11 daily execution record through the frozen, preflight-only Day 2 runner framework.
 - [docs/analysis/week11_machine_preflight.md](docs/analysis/week11_machine_preflight.md): fixed machine and Python environment plus Day 5/Day 6 timing-readiness checks.
 - [docs/design/final_experiment_spec.md](docs/design/final_experiment_spec.md): frozen experiment variables, correctness checks, aggregation rules, and non-claims.
 - [docs/design/oracle_and_test_generation.md](docs/design/oracle_and_test_generation.md): definitions and design notes for the oracle and generators.
@@ -426,9 +429,9 @@ Important project documents:
 
 Immediate next task:
 
-- implement only the Day 2 dedicated runner framework against
-  `experiments/week11_experiment_gate.py`;
-- support `--preflight-only` without creating the formal timing evidence;
+- implement Day 3 case construction, one untimed checked audit per case, and
+  the timing-control flow;
+- keep paper timing explicitly in `minimal` mode;
 - do not run the frozen 1,050-row pilot before the Day 5 gate;
 - keep recognition separate from valid-input paper sorting;
 - do not treat the ordinary-list pilot as a linear-time claim.

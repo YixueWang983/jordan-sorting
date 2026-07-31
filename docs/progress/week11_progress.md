@@ -1,6 +1,6 @@
 # Week 11 Progress
 
-Last updated: 2026-07-28
+Last updated: 2026-07-31
 
 ## Goal
 
@@ -92,9 +92,69 @@ git diff --check:
 
 ## Day 2: Dedicated Runner Framework
 
-Status: not started.
+Status: complete; formal execution remains disabled.
 
-Do not execute the frozen pilot.
+- [x] added `experiments/run_week11_pilot.py`;
+- [x] added `tests/test_run_week11_pilot.py`;
+- [x] imported and validated the exact frozen gate;
+- [x] avoided redefining sizes, families, seeds, algorithms, modes, or row
+  counts;
+- [x] added the fixed run-directory and eight-file evidence contract;
+- [x] rejected an existing run directory, including an empty one;
+- [x] provided no `--overwrite` or mutable experiment CLI options;
+- [x] exposed only `--preflight-only` as an operational option;
+- [x] rejected ordinary execution until the Day 5 gate;
+- [x] required a clean worktree and `HEAD == origin/main` in preflight;
+- [x] required the machine-preflight document;
+- [x] added config and environment record contracts captured before timing;
+- [x] included power/load snapshots without recording device identifiers;
+- [x] kept preflight read-only and verified it creates no output directory;
+- [x] kept generator, paper sorter, and timing calls out of the Day 2 module;
+- [x] rejected modified gate objects;
+- [x] ran all 397 unit tests and `compileall`;
+- [x] reproduced 2,074 exhaustive valid permutations and 48 generated cases;
+- [x] confirmed the formal output directory remains absent.
+
+Day 2 outputs:
+
+```text
+experiments/run_week11_pilot.py
+tests/test_run_week11_pilot.py
+```
+
+## Day 2 Verification
+
+```text
+focused Week 11 gate and runner tests:
+    Ran 20 tests
+    OK
+
+python -m unittest discover -s tests:
+    Ran 397 tests
+    OK
+
+python -m compileall -q src experiments tests:
+    passed
+
+python experiments/validate_paper_algorithm.py --max-n 8:
+    exhaustive valid permutations = 2,074
+    generated valid cases = 48
+    all valid = true
+
+Week 11 gate:
+    status = frozen_not_executed
+    expected rows = 1,050 / 105 / 45
+
+formal output directory:
+    absent
+
+git diff --check:
+    passed
+```
+
+The preflight implementation is covered with isolated clean/pushed Git-state
+fixtures. The real repository CLI preflight is run after this Day 2 commit is
+pushed, when the worktree can satisfy its own clean/pushed requirement.
 
 ## Day 3: Case Audit and Timing Control Flow
 
@@ -122,5 +182,6 @@ Status: blocked by validated Day 6 evidence.
 
 ## Current Status
 
-Week 11 Day 1 is complete. The next task is Day 2 runner scaffolding with
-`--preflight-only`. The pilot remains unexecuted.
+Week 11 Day 1 and Day 2 are complete. The next task is Day 3 case construction,
+untimed checked audit, and timing-control implementation. The pilot remains
+unexecuted.

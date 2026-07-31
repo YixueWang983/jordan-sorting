@@ -521,16 +521,19 @@ Mitigation:
 Current task:
 
 ```text
-Week 11 Day 2: implement the frozen runner framework against:
+Week 11 Day 3: complete case audit and timing control flow in:
 
-experiments/week11_experiment_gate.py
+experiments/run_week11_pilot.py
 ```
 
 Required boundary:
 
 ```text
-support --preflight-only
-do not create formal timing evidence
+construct exactly 35 certified cases
+run one checked diagnostic per case outside timing
+pass minimal explicitly inside paper timing
+restore GC after every timed call
+do not create the frozen formal evidence directory
 paper timing mode = minimal
 untimed paper audit mode = checked
 oracle certification outside timing
