@@ -4,6 +4,7 @@ import argparse
 import gc
 import hashlib
 import json
+import math
 import os
 import platform
 import random
@@ -68,6 +69,22 @@ POWER_STATUS_FIELDS = (
     "on_ac_power",
     "battery_state",
 )
+LOAD_STATUS_FIELDS = (
+    "logical_cpu_count",
+    "one_minute_load",
+    "five_minute_load",
+    "fifteen_minute_load",
+    "one_minute_load_per_cpu",
+    "five_minute_load_per_cpu",
+    "one_five_delta_per_cpu",
+    "max_allowed_load_per_cpu",
+    "max_allowed_delta_per_cpu",
+    "low",
+    "stable",
+)
+MIN_TIMING_DISK_BYTES = 1 << 30
+MAX_TIMING_LOAD_PER_CPU = 0.25
+MAX_TIMING_LOAD_DELTA_PER_CPU = 0.10
 
 STRUCTURAL_FIELDS = (
     "category",
@@ -1178,6 +1195,165 @@ def validate_power_status(power_status):
     return power_status
 
 
+def capture_load_status(logical_cpu_count=None):
+    """Capture normalized load values for the Day 5 timing-readiness gate."""
+    cpu_count = (
+        logical_cpu_count
+        if logical_cpu_count is not None
+        else os.cpu_count()
+    )
+    if (
+        not isinstance(cpu_count, int)
+        or isinstance(cpu_count, bool)
+        or cpu_count <= 0
+    ):
+        raise RuntimeError("logical CPU count is unavailable or invalid")
+    try:
+        raw_loads = os.getloadavg()
+    except (AttributeError, OSError) as exc:
+        raise RuntimeError("system load averages are unavailable") from exc
+    if len(raw_loads) != 3:
+        raise RuntimeError("system load average shape changed")
+    loads = tuple(float(value) for value in raw_loads)
+    if any(not math.isfinite(value) or value < 0 for value in loads):
+        raise RuntimeError("system load averages are invalid")
+
+    one_minute, five_minute, fifteen_minute = loads
+    one_per_cpu = one_minute / cpu_count
+    five_per_cpu = five_minute / cpu_count
+    delta_per_cpu = abs(one_minute - five_minute) / cpu_count
+    return {
+        "logical_cpu_count": cpu_count,
+        "one_minute_load": one_minute,
+        "five_minute_load": five_minute,
+        "fifteen_minute_load": fifteen_minute,
+        "one_minute_load_per_cpu": one_per_cpu,
+        "five_minute_load_per_cpu": five_per_cpu,
+        "one_five_delta_per_cpu": delta_per_cpu,
+        "max_allowed_load_per_cpu": MAX_TIMING_LOAD_PER_CPU,
+        "max_allowed_delta_per_cpu": MAX_TIMING_LOAD_DELTA_PER_CPU,
+        "low": (
+            max(one_per_cpu, five_per_cpu)
+            <= MAX_TIMING_LOAD_PER_CPU
+        ),
+        "stable": delta_per_cpu <= MAX_TIMING_LOAD_DELTA_PER_CPU,
+    }
+
+
+def validate_load_status(load_status):
+    """Reject malformed or internally inconsistent load measurements."""
+    if not isinstance(load_status, dict):
+        raise TypeError("load_status must be a dictionary")
+    if set(load_status) != set(LOAD_STATUS_FIELDS):
+        raise ValueError("load_status fields changed")
+    cpu_count = load_status["logical_cpu_count"]
+    if (
+        not isinstance(cpu_count, int)
+        or isinstance(cpu_count, bool)
+        or cpu_count <= 0
+    ):
+        raise ValueError("load_status logical CPU count is invalid")
+    numeric_fields = (
+        "one_minute_load",
+        "five_minute_load",
+        "fifteen_minute_load",
+        "one_minute_load_per_cpu",
+        "five_minute_load_per_cpu",
+        "one_five_delta_per_cpu",
+        "max_allowed_load_per_cpu",
+        "max_allowed_delta_per_cpu",
+    )
+    for field_name in numeric_fields:
+        value = load_status[field_name]
+        if (
+            not isinstance(value, (int, float))
+            or isinstance(value, bool)
+            or not math.isfinite(value)
+            or value < 0
+        ):
+            raise ValueError(f"load_status {field_name} is invalid")
+    if load_status["max_allowed_load_per_cpu"] != MAX_TIMING_LOAD_PER_CPU:
+        raise ValueError("load_status load threshold changed")
+    if (
+        load_status["max_allowed_delta_per_cpu"]
+        != MAX_TIMING_LOAD_DELTA_PER_CPU
+    ):
+        raise ValueError("load_status stability threshold changed")
+
+    one_per_cpu = load_status["one_minute_load"] / cpu_count
+    five_per_cpu = load_status["five_minute_load"] / cpu_count
+    delta_per_cpu = abs(
+        load_status["one_minute_load"] - load_status["five_minute_load"]
+    ) / cpu_count
+    expected_numeric = {
+        "one_minute_load_per_cpu": one_per_cpu,
+        "five_minute_load_per_cpu": five_per_cpu,
+        "one_five_delta_per_cpu": delta_per_cpu,
+    }
+    for field_name, expected in expected_numeric.items():
+        if not math.isclose(
+            load_status[field_name],
+            expected,
+            rel_tol=1e-12,
+            abs_tol=1e-12,
+        ):
+            raise ValueError(f"load_status {field_name} is inconsistent")
+    expected_low = max(one_per_cpu, five_per_cpu) <= MAX_TIMING_LOAD_PER_CPU
+    expected_stable = delta_per_cpu <= MAX_TIMING_LOAD_DELTA_PER_CPU
+    if load_status["low"] is not expected_low:
+        raise ValueError("load_status low flag is inconsistent")
+    if load_status["stable"] is not expected_stable:
+        raise ValueError("load_status stable flag is inconsistent")
+    return load_status
+
+
+def require_timing_ready_environment(environment_record, load_status):
+    """Enforce the fail-closed Day 5 power, load, and disk gates."""
+    power_status = validate_power_status(environment_record.get("power_status"))
+    validated_load = validate_load_status(load_status)
+    available_disk = environment_record.get("available_disk_bytes")
+    if (
+        not isinstance(available_disk, int)
+        or isinstance(available_disk, bool)
+        or available_disk < 0
+    ):
+        raise RuntimeError("available disk measurement is invalid")
+
+    power_ready = power_status["status"] == "not_applicable" or (
+        power_status["status"] == "available"
+        and power_status["on_ac_power"] is True
+        and power_status["battery_state"] in {"charging", "full"}
+    )
+    disk_ready = available_disk >= MIN_TIMING_DISK_BYTES
+    failures = []
+    if not power_ready:
+        failures.append(
+            "stable AC power and a non-discharging battery are required"
+        )
+    if validated_load["low"] is not True:
+        failures.append("system load is above the normalized timing threshold")
+    if validated_load["stable"] is not True:
+        failures.append(
+            "system load is not stable across 1- and 5-minute averages"
+        )
+    if not disk_ready:
+        failures.append("at least 1 GiB of free disk space is required")
+    if failures:
+        raise RuntimeError(
+            "Week 11 timing preflight failed: " + "; ".join(failures)
+        )
+    return {
+        "ready": True,
+        "power_ready": True,
+        "load_low": True,
+        "load_stable": True,
+        "disk_ready": True,
+        "minimum_disk_bytes": MIN_TIMING_DISK_BYTES,
+        "available_disk_bytes": available_disk,
+        "load_status": validated_load,
+    }
+
+
 def build_environment_record(
     git_state,
     *,
@@ -1359,6 +1535,13 @@ def run_preflight(
         project_root=root,
         benchmark_environment=benchmark_environment,
     )
+    load_status = capture_load_status(
+        benchmark_environment["logical_cpu_count"]
+    )
+    timing_readiness = require_timing_ready_environment(
+        environment,
+        load_status,
+    )
     return {
         "status": "ready_not_executed",
         "protocol_valid": True,
@@ -1386,6 +1569,7 @@ def run_preflight(
             in {"available", "not_applicable"}
             and "load_command_success" in environment
         ),
+        "timing_readiness": timing_readiness,
         "formal_execution_enabled": False,
     }
 

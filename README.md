@@ -133,7 +133,10 @@ verifies manifest hashes, and fails closed on malformed or coordinatedly
 changed evidence. Power evidence is cross-platform, anonymous, and fail-closed:
 Linux `not_applicable` is used only after a successful sysfs scan confirms that
 no battery exists. The formal CLI remains disabled and no formal Week 11
-execution has run.
+execution has run. The Day 5 read-only preflight now additionally requires
+stable AC power for battery-backed systems, normalized low and stable load,
+at least 1 GiB of free disk, a clean pushed source commit, and an unused
+execution directory.
 
 ## Project Structure
 
@@ -337,7 +340,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 466 tests
+Ran 471 tests
 OK
 ```
 
@@ -451,9 +454,9 @@ Important project documents:
 
 Immediate next task:
 
-- review the W11D4 fail-closed validator checkpoint;
+- review the W11D5 final read-only preflight checkpoint;
 - keep the historical v1/v2 and planned execution directories absent;
-- do not begin the Day 5 formal preflight before W11D4 review passes;
+- do not enable or execute the formal pilot before W11D5 review passes;
 - keep recognition separate from valid-input paper sorting;
 - do not treat the ordinary-list pilot as a linear-time claim.
 

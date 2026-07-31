@@ -73,6 +73,10 @@ class RunWeek11PilotTests(unittest.TestCase):
             "battery_state": "charging",
         }
 
+    def _load_status(self, loads=(0.50, 0.60, 0.70), cpu_count=10):
+        with patch.object(runner.os, "getloadavg", return_value=loads):
+            return runner.capture_load_status(cpu_count)
+
     def _minimal_environment_record(self):
         return {
             "execution_id": TEST_EXECUTION_ID,
@@ -353,6 +357,14 @@ class RunWeek11PilotTests(unittest.TestCase):
             runner,
             "capture_benchmark_environment",
             return_value=self._benchmark_environment(),
+        ), patch.object(
+            runner,
+            "capture_power_status",
+            return_value=self._power_status(),
+        ), patch.object(
+            runner,
+            "capture_load_status",
+            return_value=self._load_status(),
         ):
             result = runner.run_preflight(
                 root,
@@ -375,6 +387,11 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(result["paper_execution_mode"], "minimal")
         self.assertEqual(result["audit_execution_mode"], "checked")
         self.assertTrue(result["environment_contract_ready"])
+        self.assertTrue(result["timing_readiness"]["ready"])
+        self.assertTrue(result["timing_readiness"]["power_ready"])
+        self.assertTrue(result["timing_readiness"]["load_low"])
+        self.assertTrue(result["timing_readiness"]["load_stable"])
+        self.assertTrue(result["timing_readiness"]["disk_ready"])
         self.assertFalse(result["formal_execution_enabled"])
         self.assertFalse(
             (root / output_dir_for_execution(TEST_EXECUTION_ID)).exists()
@@ -417,10 +434,19 @@ class RunWeek11PilotTests(unittest.TestCase):
             environment_mock.return_value = self._benchmark_environment(
                 "AMD Ryzen 7 5800U"
             )
-            result = runner.run_preflight(
-                tmpdir,
-                execution_id="week11_pilot_v1__run002",
-            )
+            with patch.object(
+                runner,
+                "capture_power_status",
+                return_value=self._power_status(),
+            ), patch.object(
+                runner,
+                "capture_load_status",
+                return_value=self._load_status(),
+            ):
+                result = runner.run_preflight(
+                    tmpdir,
+                    execution_id="week11_pilot_v1__run002",
+                )
 
         self.assertEqual(result["status"], "ready_not_executed")
         self.assertTrue(result["benchmark_environment_recorded"])
@@ -441,6 +467,14 @@ class RunWeek11PilotTests(unittest.TestCase):
             runner,
             "capture_benchmark_environment",
             return_value=changed,
+        ), patch.object(
+            runner,
+            "capture_power_status",
+            return_value=self._power_status(),
+        ), patch.object(
+            runner,
+            "capture_load_status",
+            return_value=self._load_status(),
         ):
             first = runner.run_preflight(
                 root,
@@ -1191,6 +1225,83 @@ class RunWeek11PilotTests(unittest.TestCase):
                     "on_ac_power": True,
                     "battery_state": "full",
                 }
+            )
+
+    def test_load_status_normalizes_by_logical_cpu_count(self):
+        result = self._load_status(loads=(1.0, 1.5, 2.0), cpu_count=10)
+
+        self.assertEqual(result["one_minute_load_per_cpu"], 0.1)
+        self.assertEqual(result["five_minute_load_per_cpu"], 0.15)
+        self.assertEqual(result["one_five_delta_per_cpu"], 0.05)
+        self.assertTrue(result["low"])
+        self.assertTrue(result["stable"])
+        self.assertIs(runner.validate_load_status(result), result)
+
+    def test_timing_readiness_rejects_discharging_power(self):
+        environment = self._minimal_environment_record()
+        environment["available_disk_bytes"] = runner.MIN_TIMING_DISK_BYTES
+        environment["power_status"] = {
+            "source": "test_power",
+            "status": "available",
+            "on_ac_power": False,
+            "battery_state": "discharging",
+        }
+
+        with self.assertRaisesRegex(RuntimeError, "stable AC power"):
+            runner.require_timing_ready_environment(
+                environment,
+                self._load_status(),
+            )
+
+    def test_timing_readiness_accepts_battery_free_environment(self):
+        environment = self._minimal_environment_record()
+        environment["available_disk_bytes"] = runner.MIN_TIMING_DISK_BYTES
+        environment["power_status"] = {
+            "source": "linux_sysfs",
+            "status": "not_applicable",
+            "on_ac_power": None,
+            "battery_state": "not_applicable",
+        }
+
+        result = runner.require_timing_ready_environment(
+            environment,
+            self._load_status(),
+        )
+
+        self.assertTrue(result["ready"])
+        self.assertTrue(result["power_ready"])
+
+    def test_timing_readiness_rejects_high_or_unstable_load(self):
+        environment = self._minimal_environment_record()
+        environment["available_disk_bytes"] = runner.MIN_TIMING_DISK_BYTES
+        cases = {
+            "high": self._load_status(loads=(3.0, 3.0, 3.0), cpu_count=10),
+            "unstable": self._load_status(
+                loads=(2.4, 0.5, 0.5),
+                cpu_count=10,
+            ),
+        }
+
+        for label, load_status in cases.items():
+            with self.subTest(label=label), self.assertRaisesRegex(
+                RuntimeError,
+                "system load",
+            ):
+                runner.require_timing_ready_environment(
+                    environment,
+                    load_status,
+                )
+
+    def test_timing_readiness_rejects_insufficient_disk(self):
+        environment = self._minimal_environment_record()
+        environment["available_disk_bytes"] = (
+            runner.MIN_TIMING_DISK_BYTES - 1
+        )
+
+        with self.assertRaisesRegex(RuntimeError, "1 GiB"):
+            runner.require_timing_ready_environment(
+                environment,
+                self._load_status(),
             )
 
     def test_linux_laptop_power_status_reads_battery_and_ac(self):

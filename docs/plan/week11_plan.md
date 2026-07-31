@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-31
 
-Status: W11D4 validator implemented; awaiting review; pilot not executed.
+Status: W11D5 preflight implemented; awaiting review; pilot not executed.
 
 ## Core Goal
 
@@ -368,6 +368,23 @@ Add fail-closed Week 11 pilot validator
 ```
 
 ## Day 5: Formal Preflight Gate
+
+Status: implementation complete; final preflight must run against the clean,
+pushed checkpoint before approval.
+
+The read-only timing-readiness gate is separate from the frozen protocol. It
+requires:
+
+- `available` power with AC connected and battery `charging` or `full`, or a
+  successfully established battery-free `not_applicable` environment;
+- one- and five-minute load averages no greater than `0.25` per logical CPU;
+- a one-/five-minute load difference no greater than `0.10` per logical CPU;
+- at least `1 GiB` of available disk space;
+- a clean worktree whose `HEAD` equals the real remote `main` ref;
+- an explicit, unused execution ID and absent output directory.
+
+These thresholds govern execution readiness only. They do not change the
+machine-independent experiment protocol.
 
 Before formal execution:
 

@@ -447,9 +447,63 @@ formal Week 11 execution directories:
 
 ## Day 5: Formal Preflight Gate
 
-Status: not started.
+Status: implementation complete; clean/pushed checkpoint execution and review
+pending.
 
-The frozen pilot cannot run until this gate is formally approved.
+- [x] required stable AC power and a non-discharging battery for systems with
+  an applicable battery state;
+- [x] retained `not_applicable` for successfully confirmed battery-free
+  systems;
+- [x] normalized one- and five-minute load by logical CPU count;
+- [x] required normalized load at or below `0.25` and normalized one-/five-
+  minute difference at or below `0.10`;
+- [x] required at least `1 GiB` of available disk space;
+- [x] retained clean worktree, real remote-main equality, explicit execution
+  ID, and unused output-directory gates;
+- [x] kept the final preflight read-only and formal execution disabled;
+- [x] added focused success, discharging, high-load, unstable-load, and
+  insufficient-disk regression coverage.
+
+Implementation verification before the final clean/pushed preflight:
+
+```text
+tests/test_run_week11_pilot.py:
+    Ran 53 tests
+    OK
+
+runner + validator focused suite:
+    Ran 71 tests
+    OK
+
+python -m unittest discover -s tests:
+    Ran 471 tests
+    OK
+
+python -m compileall -q src experiments tests:
+    passed
+
+python experiments/validate_paper_algorithm.py --max-n 8:
+    exhaustive valid permutations = 2,074
+    generated valid cases = 48
+    all valid = true
+
+Week 10 archived contamination evidence:
+    valid = true
+    rows = 1,500 / 100 / 60
+
+Week 9 sorting evidence:
+    valid = true
+    rows = 108 / 36 / 27
+
+Week 9 recognition evidence:
+    valid = true
+    rows = 180 / 60 / 42
+```
+
+The final command must be run only after this checkpoint is committed and
+pushed, because the Git gate intentionally rejects a dirty or unpushed tree.
+
+The frozen pilot cannot run until this gate is executed and formally approved.
 
 ## Day 6: Execute and Archive One Pilot
 
@@ -462,7 +516,8 @@ Status: blocked by validated Day 6 evidence.
 ## Current Status
 
 Week 11 Day 1, the repaired Day 2 framework, the historical Day 2.5 migration,
-Day 3 timing control flow, and the Day 4 validator implementation are complete.
+Day 3 timing control flow, and the approved Day 4 validator are complete.
 The active protocol is machine-independent; each run records an anonymous
-benchmark environment and explicit execution ID. W11D4 now awaits review. No
-formal Week 11 execution has run.
+benchmark environment and explicit execution ID. W11D5 preflight
+implementation now awaits execution against a clean pushed checkpoint and
+review. No formal Week 11 execution has run.
