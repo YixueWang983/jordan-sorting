@@ -402,6 +402,10 @@ Status: implementation complete; awaiting review.
 - [x] confirmed stale validation reports cannot authorize changed evidence;
 - [x] replaced macOS-only power command evidence with structured macOS/Linux
   status and accepted Linux desktop `not_applicable` power state;
+- [x] made Linux sysfs enumeration and supply-type read failures return
+  `unavailable` instead of being mistaken for a confirmed battery-free host;
+- [x] enforced the exact `available`, `not_applicable`, and `unavailable`
+  field combinations in both runner and validator power contracts;
 - [x] rejected unavailable or internally inconsistent power evidence before
   formal evidence initialization;
 - [x] kept formal execution disabled and created no formal evidence directory.
@@ -410,14 +414,18 @@ Focused validator regression coverage:
 
 ```text
 tests/test_validate_week11_pilot_outputs.py:
-    17 test methods
+    18 test methods
+
+runner + validator focused suite:
+    Ran 66 tests
+    OK
 ```
 
 Current repository verification:
 
 ```text
 python -m unittest discover -s tests:
-    Ran 461 tests
+    Ran 466 tests
     OK
 
 python -m compileall -q src experiments tests:

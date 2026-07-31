@@ -1136,6 +1136,63 @@ class RunWeek11PilotTests(unittest.TestCase):
         )
         self.assertIs(runner.validate_power_status(result), result)
 
+    def test_linux_power_status_is_unavailable_when_sysfs_scan_fails(self):
+        with tempfile.TemporaryDirectory() as tmpdir, patch.object(
+            Path,
+            "iterdir",
+            side_effect=PermissionError("sysfs denied"),
+        ):
+            result = runner._linux_power_status(Path(tmpdir))
+
+        self.assertEqual(
+            result,
+            {
+                "source": "linux_sysfs",
+                "status": "unavailable",
+                "on_ac_power": None,
+                "battery_state": "unknown",
+            },
+        )
+
+    def test_linux_power_status_is_unavailable_when_type_read_fails(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            unreadable_supply = Path(tmpdir) / "BAT0"
+            unreadable_supply.mkdir()
+
+            result = runner._linux_power_status(Path(tmpdir))
+
+        self.assertEqual(
+            result,
+            {
+                "source": "linux_sysfs",
+                "status": "unavailable",
+                "on_ac_power": None,
+                "battery_state": "unknown",
+            },
+        )
+
+    def test_power_status_rejects_inconsistent_available_state(self):
+        with self.assertRaisesRegex(ValueError, "available.*inconsistent"):
+            runner.validate_power_status(
+                {
+                    "source": "linux_sysfs",
+                    "status": "available",
+                    "on_ac_power": True,
+                    "battery_state": "not_applicable",
+                }
+            )
+
+    def test_power_status_rejects_inconsistent_unavailable_state(self):
+        with self.assertRaisesRegex(ValueError, "unavailable.*inconsistent"):
+            runner.validate_power_status(
+                {
+                    "source": "linux_sysfs",
+                    "status": "unavailable",
+                    "on_ac_power": True,
+                    "battery_state": "full",
+                }
+            )
+
     def test_linux_laptop_power_status_reads_battery_and_ac(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             root = Path(tmpdir)

@@ -223,8 +223,11 @@ The completed framework additionally requires:
 `--preflight-only` remains read-only and never initializes the evidence
 directory. Power evidence uses a structured cross-platform status: macOS uses
 `pmset`, Linux uses `/sys/class/power_supply`, and a desktop with no battery is
-`not_applicable`. An unavailable power source cannot initialize formal
-evidence. AC/load timing readiness remains a Day 5 fail-closed decision.
+`not_applicable` only after a successful sysfs scan confirms that no battery
+exists. Directory enumeration or supply-type read failures are `unavailable`,
+and the three power states have mutually exclusive field contracts. An
+unavailable power source cannot initialize formal evidence. AC/load timing
+readiness remains a Day 5 fail-closed decision.
 
 Suggested commit:
 

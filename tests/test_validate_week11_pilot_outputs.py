@@ -549,6 +549,22 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
 
         self.assertTrue(report["valid"], report["errors"])
 
+    def test_inconsistent_available_power_status_is_rejected(self):
+        environment = self._environment(
+            power_status={
+                "source": "linux_sysfs",
+                "status": "available",
+                "on_ac_power": True,
+                "battery_state": "not_applicable",
+            }
+        )
+
+        report = validator.validate_outputs(
+            self._build_evidence(environment=environment)
+        )
+
+        self.assertFalse(report["valid"])
+
     def test_stale_valid_report_cannot_authorize_tampered_evidence(self):
         run_dir = self._build_evidence()
         first = validator.validate_outputs(run_dir)

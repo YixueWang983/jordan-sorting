@@ -130,8 +130,10 @@ to `minimal`, and builds the `1,050 / 105 / 45 / 35` in-memory row products.
 The independent Day 4 validator regenerates cases and scheduling, reruns one
 checked diagnostic per case, compares every audit metric, recomputes summaries,
 verifies manifest hashes, and fails closed on malformed or coordinatedly
-changed evidence. Power evidence is cross-platform and anonymous. The formal
-CLI remains disabled and no formal Week 11 execution has run.
+changed evidence. Power evidence is cross-platform, anonymous, and fail-closed:
+Linux `not_applicable` is used only after a successful sysfs scan confirms that
+no battery exists. The formal CLI remains disabled and no formal Week 11
+execution has run.
 
 ## Project Structure
 
@@ -335,7 +337,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 461 tests
+Ran 466 tests
 OK
 ```
 

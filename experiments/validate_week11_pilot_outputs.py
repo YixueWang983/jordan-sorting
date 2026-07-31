@@ -576,8 +576,16 @@ def _validate_power_status(power_status, errors):
         )
     if status == "available":
         _require(
-            isinstance(on_ac_power, bool),
-            "available power status requires an AC-power value",
+            isinstance(on_ac_power, bool)
+            and battery_state
+            in {"charging", "discharging", "full", "unknown"},
+            "available power status is inconsistent",
+            errors,
+        )
+    if status == "unavailable":
+        _require(
+            on_ac_power is None and battery_state == "unknown",
+            "unavailable power status is inconsistent",
             errors,
         )
 

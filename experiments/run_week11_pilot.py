@@ -1024,16 +1024,23 @@ def _linux_power_status(power_supply_root=Path("/sys/class/power_supply")):
     try:
         supplies = sorted(root.iterdir())
     except OSError:
-        supplies = []
+        return {
+            "source": "linux_sysfs",
+            "status": "unavailable",
+            "on_ac_power": None,
+            "battery_state": "unknown",
+        }
 
     batteries = []
     line_power = []
+    type_read_error = False
     for supply in supplies:
         try:
             supply_type = (supply / "type").read_text(
                 encoding="utf-8"
             ).strip()
         except OSError:
+            type_read_error = True
             continue
         if supply_type == "Battery":
             try:
@@ -1054,6 +1061,14 @@ def _linux_power_status(power_supply_root=Path("/sys/class/power_supply")):
                 )
             except OSError:
                 continue
+
+    if type_read_error:
+        return {
+            "source": "linux_sysfs",
+            "status": "unavailable",
+            "on_ac_power": None,
+            "battery_state": "unknown",
+        }
 
     if not batteries:
         return {
@@ -1147,12 +1162,19 @@ def validate_power_status(power_status):
         "unknown",
     }:
         raise ValueError("power_status battery_state is invalid")
-    if status == "not_applicable" and (
-        on_ac_power is not None or battery_state != "not_applicable"
-    ):
-        raise ValueError("not-applicable power_status is inconsistent")
-    if status == "available" and not isinstance(on_ac_power, bool):
-        raise ValueError("available power_status requires an AC-power value")
+    if status == "available":
+        if not isinstance(on_ac_power, bool) or battery_state not in {
+            "charging",
+            "discharging",
+            "full",
+            "unknown",
+        }:
+            raise ValueError("available power_status is inconsistent")
+    elif status == "not_applicable":
+        if on_ac_power is not None or battery_state != "not_applicable":
+            raise ValueError("not-applicable power_status is inconsistent")
+    elif on_ac_power is not None or battery_state != "unknown":
+        raise ValueError("unavailable power_status is inconsistent")
     return power_status
 
 
