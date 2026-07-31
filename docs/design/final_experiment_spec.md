@@ -471,16 +471,17 @@ pilot does not add invalid families to the paper algorithm.
 ### Execution Context
 
 Each pilot or formal execution uses a unique `execution_id`, output directory,
-source commit, and `environment.json`. The machine is fixed for that execution,
-but it is not part of the experimental protocol. A machine change therefore
-requires a new execution ID and environment record, not a new protocol version.
-The execution ID must be supplied explicitly; the runner must not infer a
-machine-named default.
+source commit, and `environment.json`. The benchmark environment is fixed for
+that execution, but it is not part of the experimental protocol. A rerun or
+environment change therefore requires a new execution ID and environment
+record, not a new protocol version. The execution ID must be supplied
+explicitly and must not encode a concrete device identity.
 
 `config.json` stores the machine-independent protocol. `environment.json`
-stores the execution identity and actual machine metadata. Absolute runtimes
-from different machines must not be pooled into one median; within-execution
-ratios and cross-machine trend consistency may be compared.
+stores the execution identity and anonymous performance-relevant metadata such
+as processor class, architecture, memory, OS, Python, power, and load. Absolute
+runtimes from different environments must not be pooled into one median;
+within-execution ratios and cross-environment trend consistency may be compared.
 
 ## Failure and Fallback Rules
 

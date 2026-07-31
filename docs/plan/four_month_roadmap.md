@@ -521,20 +521,22 @@ Mitigation:
 Current task:
 
 ```text
-Week 11 protocol/execution separation review:
+Week 11 Day 4 validator review:
 
 experiments/run_week11_pilot.py
 experiments/week11_experiment_protocol.py
 experiments/week11_execution_context.py
+experiments/validate_week11_pilot_outputs.py
 ```
 
 Required boundary:
 
 ```text
 preserve the v1 M1 and v2 M4 files as historical records
-keep protocol fields independent of machine identity
-bind each run to a unique execution ID, output directory, environment, and commit
-do not resume Day 3 before the separation review passes
+keep protocol fields independent of benchmark environment
+regenerate cases and summaries independently in the validator
+reject coordinated evidence changes even when manifest hashes are refreshed
+do not execute the pilot before the Day 5 preflight gate
 ```
 
 Do not run the Week 11 pilot before the Day 5 preflight gate. The Week 12 formal

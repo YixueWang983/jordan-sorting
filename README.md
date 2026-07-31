@@ -122,12 +122,15 @@ outside timing. The machine-independent Week 11 integration-pilot protocol is
 frozen but has not been executed.
 
 Week 11 now separates the machine-independent protocol from per-execution
-identity, machine metadata, output paths, and source commits. The unexecuted
-v1 M1 and v2 M4 gate files remain historical records. The runner constructs
-and checks all 35 cases before any warm-up, records one checked audit per case,
-times the three protocol algorithms with the paper path fixed to `minimal`,
-and builds the `1,050 / 105 / 45 / 35` in-memory row products. The formal CLI
-remains disabled and no formal Week 11 execution has run.
+identity, anonymous benchmark metadata, output paths, and source commits. The
+unexecuted v1 M1 and v2 M4 gate files remain historical records. The runner
+constructs and checks all 35 cases before any warm-up, records one checked
+audit per case, times the three protocol algorithms with the paper path fixed
+to `minimal`, and builds the `1,050 / 105 / 45 / 35` in-memory row products.
+The independent Day 4 validator regenerates cases and scheduling, recomputes
+summaries, verifies manifest hashes, and fails closed on malformed or
+coordinatedly changed evidence. The formal CLI remains disabled and no formal
+Week 11 execution has run.
 
 ## Project Structure
 
@@ -175,6 +178,7 @@ tests/
   test_week11_experiment_gate_v2.py
   test_week11_experiment_protocol.py
   test_run_week11_pilot.py
+  test_validate_week11_pilot_outputs.py
 
 experiments/
   run_small_tests.py
@@ -195,6 +199,7 @@ experiments/
   week11_experiment_protocol.py
   week11_execution_context.py
   run_week11_pilot.py
+  validate_week11_pilot_outputs.py
 
 results/
   week1_baseline_results.csv
@@ -329,7 +334,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 439 tests
+Ran 455 tests
 OK
 ```
 
@@ -389,7 +394,7 @@ Important project documents:
 - [docs/analysis/week10_contamination_pilot.md](docs/analysis/week10_contamination_pilot.md): validated Day 6 full-pilot evidence, overhead tables, scaling and family comparisons, figure, and interpretation boundary.
 - [docs/progress/week10_progress.md](docs/progress/week10_progress.md): Week 10 daily execution record through final timing-mode selection and the frozen Week 11 gate.
 - [docs/progress/week10_summary.md](docs/progress/week10_summary.md): Week 10 mode decision, correctness/timing boundary, contamination evidence, and Week 11 handoff.
-- [docs/progress/week11_progress.md](docs/progress/week11_progress.md): Week 11 daily execution record through protocol/execution separation and the Day 3 timing-control implementation.
+- [docs/progress/week11_progress.md](docs/progress/week11_progress.md): Week 11 daily execution record through the independent Day 4 evidence validator.
 - [docs/analysis/week11_machine_preflight_v1_m1.md](docs/analysis/week11_machine_preflight_v1_m1.md): preserved v1 M1 preflight record for the unexecuted historical gate.
 - [docs/analysis/week11_machine_preflight_v2_m4.md](docs/analysis/week11_machine_preflight_v2_m4.md): preserved M4 preflight from the historical v2 machine-bound design.
 - [docs/analysis/week11_machine_baseline_v1_m1.json](docs/analysis/week11_machine_baseline_v1_m1.json): preserved structured v1 M1 identity.
@@ -443,9 +448,9 @@ Important project documents:
 
 Immediate next task:
 
-- review the repaired joint W11D3 protocol/execution checkpoint;
+- review the W11D4 fail-closed validator checkpoint;
 - keep the historical v1/v2 and planned execution directories absent;
-- do not enter W11D4 before the joint checkpoint passes;
+- do not begin the Day 5 formal preflight before W11D4 review passes;
 - keep recognition separate from valid-input paper sorting;
 - do not treat the ordinary-list pilot as a linear-time claim.
 

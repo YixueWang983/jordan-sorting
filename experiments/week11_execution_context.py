@@ -1,5 +1,6 @@
 """Run-level identity and environment binding for Week 11 evidence."""
 
+import math
 import re
 from dataclasses import dataclass
 from types import MappingProxyType
@@ -7,22 +8,33 @@ from typing import Mapping
 
 
 EXECUTION_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+BENCHMARK_ENVIRONMENT_FIELDS = (
+    "processor_class",
+    "architecture",
+    "memory_gb",
+    "logical_cpu_count",
+    "os_name",
+    "os_version",
+    "os_build",
+    "python_implementation",
+    "python_version",
+)
 
 
 @dataclass(frozen=True)
 class Week11ExecutionContext:
-    """Describe one execution of a protocol on one source and machine."""
+    """Describe one execution of a protocol and its benchmark environment."""
 
     execution_id: str
     output_dir: str
-    machine_identity: Mapping[str, str]
+    benchmark_environment: Mapping[str, object]
     source_commit: str
 
     def __post_init__(self):
         object.__setattr__(
             self,
-            "machine_identity",
-            MappingProxyType(dict(self.machine_identity)),
+            "benchmark_environment",
+            MappingProxyType(dict(self.benchmark_environment)),
         )
 
 
@@ -47,16 +59,21 @@ def validate_execution_context(context):
     validate_execution_id(context.execution_id)
     if context.output_dir != output_dir_for_execution(context.execution_id):
         raise ValueError("execution output_dir does not match execution_id")
-    if not context.machine_identity:
-        raise ValueError("execution machine_identity must not be empty")
-    if any(
-        not isinstance(key, str)
-        or not key
-        or not isinstance(value, str)
-        or not value
-        for key, value in context.machine_identity.items()
-    ):
-        raise ValueError("execution machine_identity must contain strings")
+    environment = context.benchmark_environment
+    if set(environment) != set(BENCHMARK_ENVIRONMENT_FIELDS):
+        raise ValueError("execution benchmark_environment fields changed")
+    for field in BENCHMARK_ENVIRONMENT_FIELDS:
+        value = environment[field]
+        if field in {"memory_gb", "logical_cpu_count"}:
+            if (
+                isinstance(value, bool)
+                or not isinstance(value, (int, float))
+                or not math.isfinite(value)
+                or value <= 0
+            ):
+                raise ValueError(f"benchmark environment {field} is invalid")
+        elif not isinstance(value, str) or not value:
+            raise ValueError(f"benchmark environment {field} is invalid")
     if len(context.source_commit) not in {40, 64}:
         raise ValueError("source_commit must be a Git commit SHA")
     try:
@@ -72,6 +89,6 @@ def execution_context_to_dict(context):
     return {
         "execution_id": context.execution_id,
         "output_dir": context.output_dir,
-        "machine_identity": dict(context.machine_identity),
+        "benchmark_environment": dict(context.benchmark_environment),
         "source_commit": context.source_commit,
     }

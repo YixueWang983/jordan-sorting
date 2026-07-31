@@ -27,7 +27,7 @@ status:
     frozen; no formal execution
 
 planned execution_id:
-    week11_pilot_v1__mac16_13__run1
+    week11_pilot_v1__run001
 
 expected rows:
     raw = 1,050
@@ -246,8 +246,8 @@ formal timing:
 Status: complete; awaiting review before Day 3 resumes.
 
 - [x] added the machine-independent protocol authority;
-- [x] moved execution ID, output directory, machine identity, and source commit
-  into a run-level execution context;
+- [x] moved execution ID, output directory, anonymous benchmark environment,
+  and source commit into a run-level execution context;
 - [x] removed active runner dependencies on the v1/v2 machine-bound gates;
 - [x] retained the old gate and baseline files unchanged as historical records;
 - [x] made `config.json` contain only protocol fields and derived row counts;
@@ -262,7 +262,10 @@ Status: complete; awaiting review before Day 3 resumes.
 - [x] removed the machine-named default execution ID;
 - [x] required an explicit execution ID for CLI, preflight, evidence
   initialization, and in-memory pilot paths;
-- [x] kept machine identity only in the nested environment field;
+- [x] kept anonymous performance metadata only in the nested
+  `benchmark_environment` field;
+- [x] excluded host names, model identifiers, serial numbers, hardware UUIDs,
+  account data, and device nicknames from active execution evidence;
 - [x] rejected environment paper/audit modes that differ from the protocol;
 - [x] restored the caller's GC state even if a timed algorithm changes it.
 
@@ -375,7 +378,51 @@ Do not execute the frozen pilot.
 
 ## Day 4: Dedicated Fail-Closed Validator
 
-Status: not started.
+Status: implementation complete; awaiting review.
+
+- [x] added `experiments/validate_week11_pilot_outputs.py`;
+- [x] added `tests/test_validate_week11_pilot_outputs.py`;
+- [x] defined validator schemas independently of the runner;
+- [x] regenerated all 35 frozen cases, seeds, hashes, oracle results,
+  structural profiles, and case positions;
+- [x] checked the complete 1,050-row case/round/algorithm product and cyclic
+  algorithm order;
+- [x] required minimal paper mode, checked audit mode, valid certification,
+  correct output, passed audit, empty errors, and non-negative timing;
+- [x] recomputed 105 case summaries and 45 group summaries from raw rows;
+- [x] verified exact manifest labels, row counts, paths, and SHA-256 values;
+- [x] returned `valid=false` for malformed CSV/JSON rather than raising;
+- [x] rejected coordinated metadata and summary changes even after manifest
+  hashes were refreshed;
+- [x] confirmed stale validation reports cannot authorize changed evidence;
+- [x] kept formal execution disabled and created no formal evidence directory.
+
+Focused validator verification:
+
+```text
+python -m unittest tests.test_validate_week11_pilot_outputs
+    Ran 15 tests
+    OK
+```
+
+Current repository verification:
+
+```text
+python -m unittest discover -s tests:
+    Ran 455 tests
+    OK
+
+python -m compileall -q src experiments tests:
+    passed
+
+python experiments/validate_paper_algorithm.py --max-n 8:
+    exhaustive valid permutations = 2,074
+    generated valid cases = 48
+    all valid = true
+
+formal Week 11 execution directories:
+    absent
+```
 
 ## Day 5: Formal Preflight Gate
 
@@ -394,8 +441,7 @@ Status: blocked by validated Day 6 evidence.
 ## Current Status
 
 Week 11 Day 1, the repaired Day 2 framework, the historical Day 2.5 migration,
-and the Day 3 in-memory timing control flow are complete. Day 2.6 separates the
-active protocol from per-run machine evidence and the joint checkpoint repair
-requires explicit execution identity and consistent environment evidence.
-W11D3 is implemented and migrated, but Day 4 remains paused for review. No
+Day 3 timing control flow, and the Day 4 validator implementation are complete.
+The active protocol is machine-independent; each run records an anonymous
+benchmark environment and explicit execution ID. W11D4 now awaits review. No
 formal Week 11 execution has run.

@@ -37,6 +37,7 @@ from paper_jordan_sort import (  # noqa: E402
 from simplified_jordan import simplified_jordan_sort  # noqa: E402
 from stats import structure_profile  # noqa: E402
 from week11_execution_context import (  # noqa: E402
+    BENCHMARK_ENVIRONMENT_FIELDS,
     Week11ExecutionContext,
     execution_context_to_dict,
     output_dir_for_execution,
@@ -51,18 +52,6 @@ from week11_experiment_protocol import (  # noqa: E402
 )
 
 
-MACHINE_IDENTITY_FIELDS = (
-    "machine_name",
-    "machine_model",
-    "chip",
-    "architecture",
-    "os_name",
-    "os_version",
-    "os_build",
-    "python_executable",
-    "python_implementation",
-    "python_version",
-)
 EVIDENCE_FILENAMES = (
     "raw.csv",
     "case_summary.csv",
@@ -937,42 +926,65 @@ def _capture_command(command):
     }
 
 
-def _hardware_identity():
-    """Capture non-sensitive hardware fields without fixing one machine."""
-    if platform.system() != "Darwin":
-        return {
-            "machine_name": platform.node() or "unavailable",
-            "machine_model": platform.machine() or "unavailable",
-            "chip": platform.processor() or platform.machine() or "unavailable",
-        }
+def _processor_class():
+    """Capture an anonymous processor class without device identifiers."""
+    system = platform.system()
+    if system == "Linux":
+        try:
+            cpuinfo = Path("/proc/cpuinfo").read_text(
+                encoding="utf-8",
+                errors="replace",
+            )
+        except OSError:
+            cpuinfo = ""
+        cpu_fields = {}
+        for line in cpuinfo.splitlines():
+            key, separator, value = line.partition(":")
+            normalized_key = key.strip().lower()
+            candidate = value.strip()
+            if separator and candidate and normalized_key not in cpu_fields:
+                cpu_fields[normalized_key] = candidate
+        for field in ("model name", "hardware", "processor"):
+            if field in cpu_fields:
+                return cpu_fields[field]
+    if system != "Darwin":
+        return platform.processor() or platform.machine() or "unavailable"
     captured = _capture_command(
         ["system_profiler", "SPHardwareDataType", "-json"]
     )
     if not captured["success"]:
-        return {
-            "machine_name": "unavailable",
-            "machine_model": "unavailable",
-            "chip": "unavailable",
-        }
+        return "unavailable"
     try:
         payload = json.loads(captured["output"])
         hardware = payload["SPHardwareDataType"][0]
     except (KeyError, IndexError, TypeError, json.JSONDecodeError):
-        return {
-            "machine_name": "unavailable",
-            "machine_model": "unavailable",
-            "chip": "unavailable",
-        }
-    return {
-        "machine_name": hardware.get("machine_name", "unavailable"),
-        "machine_model": hardware.get("machine_model", "unavailable"),
-        "chip": hardware.get("chip_type", "unavailable"),
-    }
+        return "unavailable"
+    return hardware.get("chip_type", "unavailable")
 
 
-def capture_machine_identity():
-    """Capture stable fields for one execution environment record."""
-    hardware = _hardware_identity()
+def _physical_memory_gb():
+    if platform.system() == "Darwin":
+        captured = _capture_command(["sysctl", "-n", "hw.memsize"])
+        if not captured["success"]:
+            raise RuntimeError("could not capture physical memory")
+        try:
+            memory_bytes = int(captured["output"])
+        except (TypeError, ValueError) as exc:
+            raise RuntimeError("physical memory is not an integer") from exc
+    else:
+        try:
+            memory_bytes = os.sysconf("SC_PAGE_SIZE") * os.sysconf(
+                "SC_PHYS_PAGES"
+            )
+        except (AttributeError, OSError, TypeError, ValueError) as exc:
+            raise RuntimeError("could not capture physical memory") from exc
+    if memory_bytes <= 0:
+        raise RuntimeError("physical memory must be positive")
+    return round(memory_bytes / (1024**3), 2)
+
+
+def capture_benchmark_environment():
+    """Capture anonymous performance-relevant environment metadata."""
     is_macos = platform.system() == "Darwin"
     build = (
         _capture_command(["sw_vers", "-buildVersion"])
@@ -981,12 +993,13 @@ def capture_machine_identity():
     )
     os_name = "macOS" if is_macos else platform.system()
     return {
-        **hardware,
+        "processor_class": _processor_class(),
         "architecture": platform.machine(),
+        "memory_gb": _physical_memory_gb(),
+        "logical_cpu_count": os.cpu_count(),
         "os_name": os_name,
         "os_version": platform.mac_ver()[0] or platform.release(),
         "os_build": build["output"],
-        "python_executable": sys.executable,
         "python_implementation": platform.python_implementation(),
         "python_version": platform.python_version(),
     }
@@ -998,17 +1011,17 @@ def build_environment_record(
     execution_id,
     protocol=WEEK11_EXPERIMENT_PROTOCOL,
     project_root=PROJECT_ROOT,
-    machine_identity=None,
+    benchmark_environment=None,
 ):
     """Build the environment.json contract before any future timing."""
     validate_week11_experiment_protocol(protocol)
     validate_execution_id(execution_id)
     require_clean_pushed_git(git_state)
-    identity = machine_identity or capture_machine_identity()
+    environment = benchmark_environment or capture_benchmark_environment()
     context = Week11ExecutionContext(
         execution_id=execution_id,
         output_dir=output_dir_for_execution(execution_id),
-        machine_identity=identity,
+        benchmark_environment=environment,
         source_commit=git_state["head"],
     )
     validate_execution_context(context)
@@ -1021,10 +1034,6 @@ def build_environment_record(
         "timestamp_utc": datetime.now(timezone.utc).isoformat(),
         "git_dirty": False,
         "head_matches_origin_main": True,
-        "python_runtime": sys.version,
-        "platform": platform.platform(),
-        "processor": platform.processor(),
-        "logical_cpu_count": os.cpu_count(),
         "available_disk_bytes": shutil.disk_usage(project_root).free,
         "perf_counter_resolution": time.get_clock_info(
             "perf_counter"
@@ -1068,13 +1077,13 @@ def initialize_evidence_directory(
         raise ValueError("config does not match the frozen protocol")
     if environment_record.get("protocol_version") != protocol.protocol_version:
         raise ValueError("environment protocol_version does not match config")
-    duplicated_identity_fields = sorted(
-        set(MACHINE_IDENTITY_FIELDS).intersection(environment_record)
+    duplicated_environment_fields = sorted(
+        set(BENCHMARK_ENVIRONMENT_FIELDS).intersection(environment_record)
     )
-    if duplicated_identity_fields:
+    if duplicated_environment_fields:
         raise ValueError(
-            "environment must keep machine identity only in machine_identity: "
-            f"{duplicated_identity_fields}"
+            "environment must keep benchmark metadata only in "
+            f"benchmark_environment: {duplicated_environment_fields}"
         )
     if (
         environment_record.get("paper_execution_mode")
@@ -1087,12 +1096,12 @@ def initialize_evidence_directory(
     ):
         raise ValueError("environment audit execution mode does not match protocol")
     execution_id = environment_record.get("execution_id")
-    identity = environment_record.get("machine_identity")
+    benchmark_environment = environment_record.get("benchmark_environment")
     source_commit = environment_record.get("source_commit")
     context = Week11ExecutionContext(
         execution_id=execution_id,
         output_dir=environment_record.get("output_dir"),
-        machine_identity=identity,
+        benchmark_environment=benchmark_environment,
         source_commit=source_commit,
     )
     validate_execution_context(context)
@@ -1134,7 +1143,7 @@ def initialize_formal_evidence(
     paths = require_unused_output(
         build_pilot_paths(root, execution_id=execution_id)
     )
-    identity = capture_machine_identity()
+    benchmark_environment = capture_benchmark_environment()
     source = require_clean_pushed_git(git_snapshot(root))
     config = build_config_record(protocol)
     environment = build_environment_record(
@@ -1142,7 +1151,7 @@ def initialize_formal_evidence(
         execution_id=execution_id,
         protocol=protocol,
         project_root=root,
-        machine_identity=identity,
+        benchmark_environment=benchmark_environment,
     )
     return initialize_evidence_directory(
         paths,
@@ -1165,7 +1174,7 @@ def run_preflight(
     paths = require_unused_output(
         build_pilot_paths(root, execution_id=execution_id)
     )
-    identity = capture_machine_identity()
+    benchmark_environment = capture_benchmark_environment()
     source = require_clean_pushed_git(git_snapshot(root))
     config = build_config_record(protocol)
     environment = build_environment_record(
@@ -1173,7 +1182,7 @@ def run_preflight(
         execution_id=execution_id,
         protocol=protocol,
         project_root=root,
-        machine_identity=identity,
+        benchmark_environment=benchmark_environment,
     )
     return {
         "status": "ready_not_executed",
@@ -1181,7 +1190,7 @@ def run_preflight(
         "protocol_version": protocol.protocol_version,
         "execution_context_valid": True,
         "execution_id": execution_id,
-        "machine_identity_recorded": True,
+        "benchmark_environment_recorded": True,
         "git_clean": source["git_clean"],
         "head_pushed": source["head_pushed"],
         "head": source["head"],

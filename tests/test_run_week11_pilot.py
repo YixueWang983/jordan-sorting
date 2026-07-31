@@ -29,7 +29,7 @@ from week11_experiment_protocol import (  # noqa: E402
 )
 
 
-TEST_EXECUTION_ID = "week11_pilot_v1__test_machine__run1"
+TEST_EXECUTION_ID = "week11_pilot_v1__test_run001"
 
 
 class RunWeek11PilotTests(unittest.TestCase):
@@ -52,16 +52,15 @@ class RunWeek11PilotTests(unittest.TestCase):
             "head_pushed": True,
         }
 
-    def _matching_machine_identity(self):
+    def _benchmark_environment(self, processor_class="Apple M4"):
         return {
-            "machine_name": "MacBook Air",
-            "machine_model": "Mac16,13",
-            "chip": "Apple M4",
+            "processor_class": processor_class,
             "architecture": "arm64",
+            "memory_gb": 16,
+            "logical_cpu_count": 10,
             "os_name": "macOS",
             "os_version": "26.5.2",
             "os_build": "25F84",
-            "python_executable": "/opt/anaconda3/bin/python",
             "python_implementation": "CPython",
             "python_version": "3.12.4",
         }
@@ -70,7 +69,7 @@ class RunWeek11PilotTests(unittest.TestCase):
         return {
             "execution_id": TEST_EXECUTION_ID,
             "output_dir": output_dir_for_execution(TEST_EXECUTION_ID),
-            "machine_identity": self._matching_machine_identity(),
+            "benchmark_environment": self._benchmark_environment(),
             "source_commit": "a" * 40,
             "protocol_version": WEEK11_EXPERIMENT_PROTOCOL.protocol_version,
             "captured_before_timing": True,
@@ -104,7 +103,7 @@ class RunWeek11PilotTests(unittest.TestCase):
         protocol_fields = set(protocol_to_dict())
         self.assertNotIn("run_id", protocol_fields)
         self.assertNotIn("output_dir", protocol_fields)
-        self.assertNotIn("machine_model", protocol_fields)
+        self.assertNotIn("processor_class", protocol_fields)
         self.assertNotIn("machine_baseline_path", protocol_fields)
 
     def test_execution_config_is_derived_from_frozen_protocol(self):
@@ -170,17 +169,16 @@ class RunWeek11PilotTests(unittest.TestCase):
 
     def test_different_execution_ids_share_the_same_protocol(self):
         first = Week11ExecutionContext(
-            execution_id="week11_pilot_v1__m4__run1",
-            output_dir="results/runs/week11_pilot_v1__m4__run1",
-            machine_identity=self._matching_machine_identity(),
+            execution_id="week11_pilot_v1__run001",
+            output_dir="results/runs/week11_pilot_v1__run001",
+            benchmark_environment=self._benchmark_environment(),
             source_commit="a" * 40,
         )
-        second_identity = dict(self._matching_machine_identity())
-        second_identity["machine_model"] = "Linux-5800U"
+        second_environment = self._benchmark_environment("AMD Ryzen 7 5800U")
         second = Week11ExecutionContext(
-            execution_id="week11_pilot_v1__linux_5800u__run1",
-            output_dir="results/runs/week11_pilot_v1__linux_5800u__run1",
-            machine_identity=second_identity,
+            execution_id="week11_pilot_v1__run002",
+            output_dir="results/runs/week11_pilot_v1__run002",
+            benchmark_environment=second_environment,
             source_commit="b" * 40,
         )
 
@@ -324,17 +322,16 @@ class RunWeek11PilotTests(unittest.TestCase):
         preflight.assert_not_called()
 
     def test_preflight_cli_requires_explicit_execution_id_on_any_machine(self):
-        non_m4_identity = dict(self._matching_machine_identity())
-        non_m4_identity["machine_model"] = "Linux-5800U"
+        other_environment = self._benchmark_environment("AMD Ryzen 7 5800U")
         with patch.object(
             runner,
-            "capture_machine_identity",
-            return_value=non_m4_identity,
-        ) as identity:
+            "capture_benchmark_environment",
+            return_value=other_environment,
+        ) as capture:
             with redirect_stderr(io.StringIO()):
                 with self.assertRaises(SystemExit):
                     runner.main(["--preflight-only"])
-        identity.assert_not_called()
+        capture.assert_not_called()
 
     def test_preflight_is_read_only_and_reports_frozen_counts(self):
         temporary, root = self._temporary_project()
@@ -345,8 +342,8 @@ class RunWeek11PilotTests(unittest.TestCase):
             return_value=self._clean_git_state(),
         ), patch.object(
             runner,
-            "capture_machine_identity",
-            return_value=self._matching_machine_identity(),
+            "capture_benchmark_environment",
+            return_value=self._benchmark_environment(),
         ):
             result = runner.run_preflight(
                 root,
@@ -358,7 +355,7 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(result["protocol_version"], "week11_pilot_v1")
         self.assertTrue(result["execution_context_valid"])
         self.assertEqual(result["execution_id"], TEST_EXECUTION_ID)
-        self.assertTrue(result["machine_identity_recorded"])
+        self.assertTrue(result["benchmark_environment_recorded"])
         self.assertTrue(result["git_clean"])
         self.assertTrue(result["head_pushed"])
         self.assertTrue(result["output_directory_unused"])
@@ -386,8 +383,8 @@ class RunWeek11PilotTests(unittest.TestCase):
                 return_value=state,
             ), patch.object(
                 runner,
-                "capture_machine_identity",
-                return_value=self._matching_machine_identity(),
+                "capture_benchmark_environment",
+                return_value=self._benchmark_environment(),
             ):
                 with self.assertRaises(RuntimeError):
                     runner.run_preflight(
@@ -406,46 +403,43 @@ class RunWeek11PilotTests(unittest.TestCase):
             return_value={"success": True, "output": "captured"},
         ), patch.object(
             runner,
-            "capture_machine_identity",
-        ) as identity_mock:
-            changed = dict(self._matching_machine_identity())
-            changed["machine_model"] = "Linux-5800U"
-            changed["chip"] = "AMD Ryzen 7 5800U"
-            identity_mock.return_value = changed
+            "capture_benchmark_environment",
+        ) as environment_mock:
+            environment_mock.return_value = self._benchmark_environment(
+                "AMD Ryzen 7 5800U"
+            )
             result = runner.run_preflight(
                 tmpdir,
-                execution_id="week11_pilot_v1__linux_5800u__run1",
+                execution_id="week11_pilot_v1__run002",
             )
 
         self.assertEqual(result["status"], "ready_not_executed")
-        self.assertTrue(result["machine_identity_recorded"])
+        self.assertTrue(result["benchmark_environment_recorded"])
         self.assertEqual(
             result["execution_id"],
-            "week11_pilot_v1__linux_5800u__run1",
+            "week11_pilot_v1__run002",
         )
 
     def test_distinct_execution_ids_use_distinct_output_directories(self):
         temporary, root = self._temporary_project()
         self.addCleanup(temporary.cleanup)
-        changed = dict(self._matching_machine_identity())
-        changed["machine_model"] = "MacBookAir10,1"
-        changed["chip"] = "Apple M1"
+        changed = self._benchmark_environment("Apple M1")
         with patch.object(
             runner,
             "git_snapshot",
             return_value=self._clean_git_state(),
         ), patch.object(
             runner,
-            "capture_machine_identity",
+            "capture_benchmark_environment",
             return_value=changed,
         ):
             first = runner.run_preflight(
                 root,
-                execution_id="week11_pilot_v1__m1__run1",
+                execution_id="week11_pilot_v1__run001",
             )
             second = runner.run_preflight(
                 root,
-                execution_id="week11_pilot_v1__m1__run2",
+                execution_id="week11_pilot_v1__run002",
             )
 
         self.assertNotEqual(first["output_dir"], second["output_dir"])
@@ -462,7 +456,7 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(config["raw_row_count"], 1050)
         self.assertNotIn("execution_id", config)
         self.assertNotIn("output_dir", config)
-        self.assertNotIn("machine_identity", config)
+        self.assertNotIn("benchmark_environment", config)
         self.assertNotIn("machine_baseline_sha256", config)
 
     def test_tiny_execution_builds_all_four_row_products(self):
@@ -835,7 +829,7 @@ class RunWeek11PilotTests(unittest.TestCase):
                 git_state,
                 execution_id=TEST_EXECUTION_ID,
                 project_root=tmpdir,
-                machine_identity=self._matching_machine_identity(),
+                benchmark_environment=self._benchmark_environment(),
             )
 
         self.assertTrue(environment["captured_before_timing"])
@@ -855,11 +849,11 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertTrue(environment["power_command_success"])
         self.assertTrue(environment["load_command_success"])
         self.assertGreaterEqual(environment["available_disk_bytes"], 0)
-        self.assertNotIn("machine_model", environment)
+        self.assertNotIn("processor_class", environment)
         self.assertNotIn("architecture", environment)
         self.assertEqual(
-            environment["machine_identity"],
-            self._matching_machine_identity(),
+            environment["benchmark_environment"],
+            self._benchmark_environment(),
         )
 
     def test_initialize_evidence_directory_writes_and_verifies_json(self):
@@ -924,16 +918,19 @@ class RunWeek11PilotTests(unittest.TestCase):
 
                 self.assertFalse(paths.run_dir.exists())
 
-    def test_initialize_evidence_rejects_duplicate_machine_fields(self):
+    def test_initialize_evidence_rejects_duplicate_environment_fields(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             paths = runner.build_pilot_paths(
                 tmpdir,
                 execution_id=TEST_EXECUTION_ID,
             )
             environment = self._minimal_environment_record()
-            environment["machine_model"] = "contradictory-machine"
+            environment["processor_class"] = "contradictory-processor"
 
-            with self.assertRaisesRegex(ValueError, "only in machine_identity"):
+            with self.assertRaisesRegex(
+                ValueError,
+                "only in benchmark_environment",
+            ):
                 runner.initialize_evidence_directory(
                     paths,
                     runner.build_config_record(),
@@ -1014,8 +1011,8 @@ class RunWeek11PilotTests(unittest.TestCase):
             return_value=self._clean_git_state(),
         ), patch.object(
             runner,
-            "capture_machine_identity",
-            return_value=self._matching_machine_identity(),
+            "capture_benchmark_environment",
+            return_value=self._benchmark_environment(),
         ):
             runner.initialize_formal_evidence(
                 root,
@@ -1037,8 +1034,7 @@ class RunWeek11PilotTests(unittest.TestCase):
     def test_formal_evidence_accepts_a_new_machine_with_a_new_execution_id(self):
         temporary, root = self._temporary_project()
         self.addCleanup(temporary.cleanup)
-        changed = dict(self._matching_machine_identity())
-        changed["machine_model"] = "another-machine"
+        changed = self._benchmark_environment("AMD Ryzen 7 5800U")
 
         with patch.object(
             runner,
@@ -1046,18 +1042,18 @@ class RunWeek11PilotTests(unittest.TestCase):
             return_value=self._clean_git_state(),
         ), patch.object(
             runner,
-            "capture_machine_identity",
+            "capture_benchmark_environment",
             return_value=changed,
         ):
             result = runner.initialize_formal_evidence(
                 root,
-                execution_id="week11_pilot_v1__other_machine__run1",
+                execution_id="week11_pilot_v1__run002",
             )
 
         self.assertEqual(result["status"], "evidence_initialized_before_timing")
         paths = runner.build_pilot_paths(
             root,
-            execution_id="week11_pilot_v1__other_machine__run1",
+            execution_id="week11_pilot_v1__run002",
         )
         config = json.loads(paths.config_json.read_text(encoding="utf-8"))
         environment = json.loads(
@@ -1065,12 +1061,28 @@ class RunWeek11PilotTests(unittest.TestCase):
         )
         self.assertEqual(config, protocol_to_dict())
         self.assertEqual(
-            environment["machine_identity"]["machine_model"],
-            "another-machine",
+            environment["benchmark_environment"]["processor_class"],
+            "AMD Ryzen 7 5800U",
         )
         self.assertEqual(
             environment["execution_id"],
-            "week11_pilot_v1__other_machine__run1",
+            "week11_pilot_v1__run002",
+        )
+
+    def test_linux_processor_class_prefers_anonymous_cpu_model(self):
+        cpuinfo = (
+            "processor : 0\n"
+            "model name : AMD Ryzen 7 5800U with Radeon Graphics\n"
+        )
+        with patch.object(runner.platform, "system", return_value="Linux"), patch(
+            "run_week11_pilot.Path.read_text",
+            return_value=cpuinfo,
+        ):
+            result = runner._processor_class()
+
+        self.assertEqual(
+            result,
+            "AMD Ryzen 7 5800U with Radeon Graphics",
         )
 
     def test_preflight_main_prints_json_without_writing_outputs(self):

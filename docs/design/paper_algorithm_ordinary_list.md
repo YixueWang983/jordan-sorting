@@ -2288,5 +2288,5 @@ experiments/week11_experiment_protocol.py
 ```
 
 It is machine-independent. The unexecuted v1 M1 and v2 M4 gate files remain
-preserved as historical records; actual machine identity belongs to each
-execution's `environment.json`.
+preserved as historical records; anonymous performance-relevant benchmark
+metadata belongs to each execution's `environment.json`.

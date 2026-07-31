@@ -130,8 +130,8 @@ Current files:
   contamination evidence, and Week 11 handoff.
 
 - `week11_progress.md`
-  Week 11 daily execution record through the protocol/execution separation and
-  Day 3 in-memory timing-control implementation, with no formal execution.
+  Week 11 daily execution record through the independent Day 4 evidence
+  validator, with no formal execution.
 
 ## Plan Documents
 

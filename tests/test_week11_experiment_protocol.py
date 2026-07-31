@@ -29,10 +29,17 @@ from week11_experiment_protocol import (  # noqa: E402
 
 
 class Week11ExperimentProtocolTests(unittest.TestCase):
-    def _identity(self, model="Mac16,13"):
+    def _environment(self, processor="Apple M4"):
         return {
-            "machine_model": model,
+            "processor_class": processor,
             "architecture": "arm64",
+            "memory_gb": 16,
+            "logical_cpu_count": 10,
+            "os_name": "macOS",
+            "os_version": "26.5.2",
+            "os_build": "25F84",
+            "python_implementation": "CPython",
+            "python_version": "3.12.4",
         }
 
     def test_protocol_contains_only_machine_independent_choices(self):
@@ -47,7 +54,7 @@ class Week11ExperimentProtocolTests(unittest.TestCase):
             "run_id",
             "execution_id",
             "output_dir",
-            "machine_identity",
+            "benchmark_environment",
             "machine_baseline_path",
             "machine_baseline_sha256",
             "source_commit",
@@ -94,8 +101,8 @@ class Week11ExperimentProtocolTests(unittest.TestCase):
         self.assertEqual(json.loads(completed.stdout), protocol_to_dict())
 
     def test_execution_id_determines_only_the_run_directory(self):
-        first = "week11_pilot_v1__m4__run1"
-        second = "week11_pilot_v1__linux__run1"
+        first = "week11_pilot_v1__run001"
+        second = "week11_pilot_v1__run002"
 
         self.assertEqual(
             output_dir_for_execution(first),
@@ -117,47 +124,50 @@ class Week11ExperimentProtocolTests(unittest.TestCase):
                     validate_execution_id(value)
 
     def test_execution_context_accepts_different_machines(self):
-        for execution_id, identity in (
-            ("week11_pilot_v1__m4__run1", self._identity()),
+        for execution_id, environment in (
+            ("week11_pilot_v1__run001", self._environment()),
             (
-                "week11_pilot_v1__linux__run1",
-                self._identity("Linux-5800U"),
+                "week11_pilot_v1__run002",
+                self._environment("AMD Ryzen 7 5800U"),
             ),
         ):
             with self.subTest(execution_id=execution_id):
                 context = Week11ExecutionContext(
                     execution_id=execution_id,
                     output_dir=output_dir_for_execution(execution_id),
-                    machine_identity=identity,
+                    benchmark_environment=environment,
                     source_commit="a" * 40,
                 )
                 self.assertIs(validate_execution_context(context), context)
 
-    def test_execution_context_copies_machine_identity(self):
-        identity = self._identity()
+    def test_execution_context_copies_benchmark_environment(self):
+        environment = self._environment()
         context = Week11ExecutionContext(
-            execution_id="week11_pilot_v1__m4__run1",
-            output_dir="results/runs/week11_pilot_v1__m4__run1",
-            machine_identity=identity,
+            execution_id="week11_pilot_v1__run001",
+            output_dir="results/runs/week11_pilot_v1__run001",
+            benchmark_environment=environment,
             source_commit="a" * 40,
         )
-        identity["machine_model"] = "changed"
+        environment["processor_class"] = "changed"
 
-        self.assertEqual(context.machine_identity["machine_model"], "Mac16,13")
+        self.assertEqual(
+            context.benchmark_environment["processor_class"],
+            "Apple M4",
+        )
         with self.assertRaises(TypeError):
-            context.machine_identity["machine_model"] = "changed"
+            context.benchmark_environment["processor_class"] = "changed"
 
     def test_execution_context_rejects_wrong_output_or_source(self):
         wrong_output = Week11ExecutionContext(
-            execution_id="week11_pilot_v1__m4__run1",
+            execution_id="week11_pilot_v1__run001",
             output_dir="results/runs/another_run",
-            machine_identity=self._identity(),
+            benchmark_environment=self._environment(),
             source_commit="a" * 40,
         )
         wrong_source = Week11ExecutionContext(
-            execution_id="week11_pilot_v1__m4__run1",
-            output_dir="results/runs/week11_pilot_v1__m4__run1",
-            machine_identity=self._identity(),
+            execution_id="week11_pilot_v1__run001",
+            output_dir="results/runs/week11_pilot_v1__run001",
+            benchmark_environment=self._environment(),
             source_commit="not-a-sha",
         )
 
@@ -168,18 +178,18 @@ class Week11ExperimentProtocolTests(unittest.TestCase):
 
     def test_execution_context_serialization_keeps_run_level_fields(self):
         context = Week11ExecutionContext(
-            execution_id="week11_pilot_v1__m4__run1",
-            output_dir="results/runs/week11_pilot_v1__m4__run1",
-            machine_identity=self._identity(),
+            execution_id="week11_pilot_v1__run001",
+            output_dir="results/runs/week11_pilot_v1__run001",
+            benchmark_environment=self._environment(),
             source_commit="a" * 40,
         )
 
         self.assertEqual(
             execution_context_to_dict(context),
             {
-                "execution_id": "week11_pilot_v1__m4__run1",
-                "output_dir": "results/runs/week11_pilot_v1__m4__run1",
-                "machine_identity": self._identity(),
+                "execution_id": "week11_pilot_v1__run001",
+                "output_dir": "results/runs/week11_pilot_v1__run001",
+                "benchmark_environment": self._environment(),
                 "source_commit": "a" * 40,
             },
         )

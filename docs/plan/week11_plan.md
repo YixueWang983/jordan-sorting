@@ -2,8 +2,7 @@
 
 Last updated: 2026-07-31
 
-Status: W11D3 implemented and migrated to the protocol/execution model; joint
-checkpoint repair complete; pilot not executed.
+Status: W11D4 validator implemented; awaiting review; pilot not executed.
 
 ## Core Goal
 
@@ -55,9 +54,9 @@ The following values must not be redefined in the runner:
 | Raw rows | 1,050 |
 | Case-summary rows | 105 |
 | Group-summary rows | 45 |
-Any change to these protocol fields requires a new protocol version. A machine
-change does not: each execution instead receives a new execution ID, output
-directory, environment record, and source commit.
+Any change to these protocol fields requires a new protocol version. A rerun
+or benchmark-environment change does not: each execution instead receives a
+new execution ID, output directory, environment record, and source commit.
 
 ## Execution Context
 
@@ -72,20 +71,21 @@ One execution records:
 ```text
 execution_id
 output_dir
-machine_identity
+benchmark_environment
 source_commit
 ```
 
 Every preflight, in-memory pilot, and evidence initialization call must receive
-an explicit execution ID. No machine-named default is permitted. Machine
-identity appears only in the nested `machine_identity` environment field;
-paper/audit modes in `environment.json` must equal the protocol.
+an explicit execution ID. No machine-named default is permitted. Anonymous,
+performance-relevant metadata appears only in the nested
+`benchmark_environment` field; paper/audit modes in `environment.json` must
+equal the protocol. Host names, serial numbers, hardware UUIDs, account data,
+and device nicknames are not collected.
 
-The planned M4 execution ID is
-`week11_pilot_v1__mac16_13__run1`. Another machine must use another execution
-ID, but it uses the same `week11_pilot_v1` protocol. Absolute runtimes from
-different machines remain separate; within-machine ratios and cross-machine
-trend consistency may be compared.
+The planned execution ID is `week11_pilot_v1__run001`. A rerun uses a new
+execution ID but the same `week11_pilot_v1` protocol. Absolute runtimes from
+different benchmark environments remain separate; within-execution ratios and
+cross-environment trend consistency may be compared.
 
 ## Runner Responsibility
 
@@ -280,14 +280,14 @@ protocol:
     and expected row counts
 
 execution context:
-    execution ID, output directory, machine identity, and source commit
+    execution ID, output directory, benchmark environment, and source commit
 ```
 
 The v1 M1 and v2 M4 gates and baseline files remain unchanged as historical
-records. The active runner no longer imports them. A machine change requires a
-new execution ID, output directory, and `environment.json`; it does not require
-a new protocol version. Only a protocol-field change creates a new protocol
-version.
+records. The active runner no longer imports them. A rerun or environment
+change requires a new execution ID, output directory, and `environment.json`;
+it does not require a new protocol version. Only a protocol-field change
+creates a new protocol version.
 
 ## Day 3: Case Audit and Timing Control Flow
 
@@ -324,6 +324,8 @@ Complete Week 11 pilot timing control flow
 
 ## Day 4: Dedicated Fail-Closed Validator
 
+Status: implementation complete; awaiting review.
+
 Add:
 
 ```text
@@ -344,6 +346,12 @@ Required adversarial tests include:
 - invalid certification, output, audit, or error fields;
 - damaged JSON and wrong JSON container types.
 
+The validator defines its evidence schemas and deterministic case/ordering
+rules independently of the runner. It regenerates the frozen 35-case product,
+recomputes both summary layers, verifies manifest hashes, and rewrites the
+validation report on every invocation. It does not treat a stale
+`validation_report.json` as authorization.
+
 Suggested commit:
 
 ```text
@@ -360,7 +368,7 @@ Before formal execution:
 4. revalidate Week 10 archived evidence;
 5. revalidate Week 9 sorting and recognition evidence;
 6. run `run_week11_pilot.py --preflight-only --execution-id <id>`;
-7. confirm the selected execution machine is timing-ready and record it;
+7. confirm the selected benchmark environment is timing-ready and record it;
 8. confirm the output directory is absent;
 9. commit and push all source changes;
 10. require `HEAD == origin/main` and a clean worktree.
@@ -383,10 +391,10 @@ Run exactly once:
 
 ```bash
 python experiments/run_week11_pilot.py \
-  --execution-id week11_pilot_v1__mac16_13__run1
+  --execution-id week11_pilot_v1__run001
 
 python experiments/validate_week11_pilot_outputs.py \
-  --run-dir results/runs/week11_pilot_v1__mac16_13__run1
+  --run-dir results/runs/week11_pilot_v1__run001
 ```
 
 Required result:

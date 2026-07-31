@@ -717,12 +717,13 @@ python experiments/week11_experiment_protocol.py
 One planned execution uses:
 
 ```text
-execution_id = week11_pilot_v1__mac16_13__run1
-output = results/runs/week11_pilot_v1__mac16_13__run1/
+execution_id = week11_pilot_v1__run001
+output = results/runs/week11_pilot_v1__run001/
 ```
 
 The protocol expects `1,050` raw rows, `105` case-summary rows, and `45`
-group-summary rows. A different machine uses a different execution ID and
+group-summary rows. A rerun uses a different execution ID and
 `environment.json`, not a different protocol version. The execution ID is
-always supplied explicitly; there is no machine-named default. These files do
-not exist yet and must not be described as Week 10 results.
+always supplied explicitly; there is no machine-named default. Anonymous
+benchmark metadata is recorded, but concrete device identity is not. These
+files do not exist yet and must not be described as Week 10 results.
