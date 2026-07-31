@@ -130,8 +130,8 @@ Current files:
   contamination evidence, and Week 11 handoff.
 
 - `week11_progress.md`
-  Week 11 daily execution record through the Day 2.5 M4 baseline and v2 gate
-  migration, with both pilots unexecuted.
+  Week 11 daily execution record through the Day 3 case-audit and in-memory
+  timing-control implementation, with both pilots unexecuted.
 
 ## Plan Documents
 

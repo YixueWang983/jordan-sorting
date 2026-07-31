@@ -1,11 +1,14 @@
-"""Preflight-only framework for the frozen Week 11 sorting pilot."""
+"""Build and preflight the frozen Week 11 sorting integration pilot."""
 
 import argparse
+import gc
 import hashlib
 import json
 import os
 import platform
+import random
 import shutil
+import statistics
 import subprocess
 import sys
 import time
@@ -18,6 +21,22 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SRC_ROOT = PROJECT_ROOT / "src"
 sys.path.insert(0, str(SRC_ROOT))
 
+from baselines import python_sort  # noqa: E402
+from generators import (  # noqa: E402
+    INCREMENTAL_VALID,
+    generate_sequence,
+    make_case_id,
+)
+from oracle import oracle  # noqa: E402
+from paper_execution_policy import CHECKED_MODE, MINIMAL_MODE  # noqa: E402
+from paper_jordan import METRIC_NAMES as PAPER_METRIC_NAMES  # noqa: E402
+from paper_jordan_sort import (  # noqa: E402
+    paper_jordan_diagnostics_valid,
+    paper_jordan_sort_valid,
+)
+from simplified_jordan import simplified_jordan_sort  # noqa: E402
+from stats import structure_profile  # noqa: E402
+from week11_experiment_gate import PAPER_ALGORITHM_NAME  # noqa: E402
 from week11_experiment_gate_v2 import (  # noqa: E402
     WEEK11_EXPERIMENT_GATE,
     gate_to_dict,
@@ -53,6 +72,700 @@ EVIDENCE_FILENAMES = (
     "manifest.json",
     "validation_report.json",
 )
+
+STRUCTURAL_FIELDS = (
+    "category",
+    "upper_interval_count",
+    "lower_interval_count",
+    "total_interval_count",
+    "upper_root_count",
+    "lower_root_count",
+    "upper_nesting_count",
+    "lower_nesting_count",
+    "nesting_count",
+    "nesting_density",
+    "parented_interval_ratio",
+    "upper_max_depth",
+    "lower_max_depth",
+    "max_depth",
+    "upper_containment_pair_count",
+    "lower_containment_pair_count",
+    "containment_pair_count",
+    "containment_pair_density",
+    "upper_crossing_pair_count",
+    "lower_crossing_pair_count",
+    "total_crossing_pair_count",
+)
+PAPER_AUDIT_FIELDS = tuple(
+    f"paper_{metric_name}" for metric_name in PAPER_METRIC_NAMES
+)
+RAW_FIELDS = (
+    "run_id",
+    "gate_version",
+    "case_id",
+    "case_index",
+    "family",
+    "n",
+    "seed",
+    "sequence_sha256",
+    "case_execution_position",
+    *STRUCTURAL_FIELDS,
+    "algorithm",
+    "paper_execution_mode",
+    "audit_execution_mode",
+    "run_index",
+    "measured_round",
+    "algorithm_position",
+    "time_ns",
+    "oracle_valid",
+    "oracle_reason",
+    "output_correct",
+    "audit_passed",
+    "error",
+)
+CASE_SUMMARY_FIELDS = (
+    "case_id",
+    "family",
+    "n",
+    "algorithm",
+    "measured_run_count",
+    "median_time_ns",
+    "q1_time_ns",
+    "q3_time_ns",
+    "iqr_time_ns",
+    "mean_time_ns",
+    "stdev_time_ns",
+    "all_correct",
+    "error_count",
+)
+GROUP_SUMMARY_FIELDS = (
+    "family",
+    "n",
+    "algorithm",
+    "case_count",
+    "median_case_time_ns",
+    "q1_case_time_ns",
+    "q3_case_time_ns",
+    "iqr_case_time_ns",
+    "mean_case_time_ns",
+    "all_cases_correct",
+    "total_error_count",
+)
+CASE_AUDIT_FIELDS = (
+    "run_id",
+    "gate_version",
+    "case_id",
+    "case_index",
+    "family",
+    "n",
+    "seed",
+    "sequence_sha256",
+    "oracle_valid",
+    "oracle_reason",
+    *STRUCTURAL_FIELDS,
+    "audit_execution_mode",
+    "audit_passed",
+    "diagnostic_output_sha256",
+    "diagnostic_processed_count",
+    "diagnostic_trace_event_count",
+    *PAPER_AUDIT_FIELDS,
+)
+
+
+@dataclass(frozen=True)
+class Week11ExecutionConfig:
+    """Hold an in-memory execution contract derived from the frozen gate."""
+
+    run_id: str
+    gate_version: str
+    sizes: tuple[int, ...]
+    valid_families: tuple[str, ...]
+    randomized_cases: int
+    warmup_runs: int
+    measured_runs: int
+    algorithms: tuple[str, ...]
+    paper_execution_mode: str
+    audit_execution_mode: str
+    seed: int
+    algorithm_order_seed: int
+    case_order_seed: int
+
+    def repetitions_for_family(self, family):
+        if family not in self.valid_families:
+            raise ValueError(f"family is not part of this execution: {family}")
+        return self.randomized_cases if family == INCREMENTAL_VALID else 1
+
+    @property
+    def case_count(self):
+        return len(self.sizes) * sum(
+            self.repetitions_for_family(family)
+            for family in self.valid_families
+        )
+
+    @property
+    def raw_row_count(self):
+        return self.case_count * len(self.algorithms) * self.measured_runs
+
+    @property
+    def case_summary_row_count(self):
+        return self.case_count * len(self.algorithms)
+
+    @property
+    def group_summary_row_count(self):
+        return len(self.valid_families) * len(self.sizes) * len(self.algorithms)
+
+
+def build_execution_config(gate=WEEK11_EXPERIMENT_GATE):
+    """Derive the executable contract without copying frozen values."""
+    validate_week11_experiment_gate(gate)
+    return Week11ExecutionConfig(
+        run_id=gate.run_id,
+        gate_version=gate.gate_version,
+        sizes=tuple(gate.sizes),
+        valid_families=tuple(gate.valid_families),
+        randomized_cases=gate.randomized_cases,
+        warmup_runs=gate.warmup_runs,
+        measured_runs=gate.measured_runs,
+        algorithms=tuple(gate.algorithms),
+        paper_execution_mode=gate.paper_execution_mode,
+        audit_execution_mode=gate.audit_execution_mode,
+        seed=gate.seed,
+        algorithm_order_seed=gate.algorithm_order_seed,
+        case_order_seed=gate.case_order_seed,
+    )
+
+
+def validate_execution_config(config):
+    """Validate a frozen-derived or deliberately reduced test configuration."""
+    if not isinstance(config, Week11ExecutionConfig):
+        raise TypeError("config must be a Week11ExecutionConfig")
+    if not config.run_id or not config.gate_version:
+        raise ValueError("run_id and gate_version must be non-empty")
+    if not config.sizes or len(set(config.sizes)) != len(config.sizes):
+        raise ValueError("sizes must be non-empty and unique")
+    if any(
+        isinstance(n, bool) or not isinstance(n, int) or n < 1
+        for n in config.sizes
+    ):
+        raise ValueError("sizes must be positive integers")
+    if (
+        not config.valid_families
+        or len(set(config.valid_families)) != len(config.valid_families)
+        or not set(config.valid_families).issubset(
+            WEEK11_EXPERIMENT_GATE.valid_families
+        )
+    ):
+        raise ValueError("valid families must be a unique frozen subset")
+    if config.algorithms != WEEK11_EXPERIMENT_GATE.algorithms:
+        raise ValueError("algorithms must match the frozen Week 11 order")
+    if set(config.algorithms) != set(ALGORITHMS):
+        raise RuntimeError("algorithm registry does not match the frozen gate")
+    if config.paper_execution_mode != MINIMAL_MODE:
+        raise ValueError("paper timing mode must be minimal")
+    if config.audit_execution_mode != CHECKED_MODE:
+        raise ValueError("audit execution mode must be checked")
+    if (
+        isinstance(config.randomized_cases, bool)
+        or not isinstance(config.randomized_cases, int)
+        or config.randomized_cases < 1
+    ):
+        raise ValueError("randomized_cases must be a positive integer")
+    if (
+        isinstance(config.warmup_runs, bool)
+        or not isinstance(config.warmup_runs, int)
+        or config.warmup_runs < 0
+    ):
+        raise ValueError("warmup_runs must be a non-negative integer")
+    if (
+        isinstance(config.measured_runs, bool)
+        or not isinstance(config.measured_runs, int)
+        or config.measured_runs < 1
+    ):
+        raise ValueError("measured_runs must be a positive integer")
+    for field_name in ("seed", "algorithm_order_seed", "case_order_seed"):
+        value = getattr(config, field_name)
+        if isinstance(value, bool) or not isinstance(value, int):
+            raise ValueError(f"{field_name} must be an integer")
+    return config
+
+
+def seed_for_case(family, n, case_number, base_seed):
+    """Return the established deterministic seed for one generated case."""
+    if family == INCREMENTAL_VALID:
+        return base_seed + n * 1000 + case_number
+    return None
+
+
+def _sequence_sha256(sequence):
+    payload = json.dumps(
+        list(sequence),
+        ensure_ascii=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def _csv_value(value):
+    return "" if value is None else value
+
+
+def _python_sort_algorithm(values, paper_execution_mode):
+    del paper_execution_mode
+    return python_sort(values)
+
+
+def _reference_algorithm(values, paper_execution_mode):
+    del paper_execution_mode
+    return simplified_jordan_sort(values)
+
+
+def _paper_algorithm(values, paper_execution_mode):
+    return paper_jordan_sort_valid(
+        values,
+        execution_mode=paper_execution_mode,
+    )
+
+
+ALGORITHMS = {
+    "python_sort": _python_sort_algorithm,
+    "simplified_jordan_reference": _reference_algorithm,
+    PAPER_ALGORITHM_NAME: _paper_algorithm,
+}
+
+
+def _extract_sorted_output(algorithm_name, result):
+    if algorithm_name == "simplified_jordan_reference":
+        return result["sorted"]
+    if algorithm_name in {"python_sort", PAPER_ALGORITHM_NAME}:
+        return result
+    raise ValueError(f"unknown algorithm: {algorithm_name}")
+
+
+def _case_audit_row(config, case, diagnostics):
+    profile = case["profile"]
+    oracle_result = case["oracle"]
+    row = {
+        "run_id": config.run_id,
+        "gate_version": config.gate_version,
+        "case_id": case["case_id"],
+        "case_index": case["case_index"],
+        "family": case["family"],
+        "n": case["n"],
+        "seed": _csv_value(case["seed"]),
+        "sequence_sha256": case["sequence_sha256"],
+        "oracle_valid": oracle_result["valid"],
+        "oracle_reason": _csv_value(oracle_result["reason"]),
+        **{field: _csv_value(profile[field]) for field in STRUCTURAL_FIELDS},
+        "audit_execution_mode": config.audit_execution_mode,
+        "audit_passed": case["audit_passed"],
+        "diagnostic_output_sha256": _sequence_sha256(
+            diagnostics["output"]
+        ),
+        "diagnostic_processed_count": diagnostics["processed_count"],
+        "diagnostic_trace_event_count": len(diagnostics["trace"]),
+        **{
+            f"paper_{name}": diagnostics["metrics"][name]
+            for name in PAPER_METRIC_NAMES
+        },
+    }
+    return {field: _csv_value(row.get(field)) for field in CASE_AUDIT_FIELDS}
+
+
+def build_cases_and_audits(config):
+    """Certify and audit every exact case before any timing may begin."""
+    validate_execution_config(config)
+    cases = []
+    audit_rows = []
+    sequence_hashes_by_group = {}
+    for family in config.valid_families:
+        repetitions = config.repetitions_for_family(family)
+        for n in config.sizes:
+            for case_number in range(1, repetitions + 1):
+                case_seed = seed_for_case(
+                    family,
+                    n,
+                    case_number,
+                    config.seed,
+                )
+                sequence = generate_sequence(family, n, seed=case_seed)
+                if len(sequence) != n:
+                    raise RuntimeError(
+                        "Week 11 generator returned the wrong length: "
+                        f"family={family}, expected={n}, actual={len(sequence)}"
+                    )
+                oracle_result = oracle(sequence)
+                if not oracle_result["valid"]:
+                    raise RuntimeError(
+                        "Week 11 sorting requires an oracle-certified valid "
+                        f"input: family={family}, n={n}, "
+                        f"reason={oracle_result['reason']}"
+                    )
+
+                sequence_sha256 = _sequence_sha256(sequence)
+                group_key = (family, n)
+                group_hashes = sequence_hashes_by_group.setdefault(
+                    group_key,
+                    set(),
+                )
+                if sequence_sha256 in group_hashes:
+                    raise RuntimeError(
+                        "Week 11 generator returned a duplicate case: "
+                        f"family={family}, n={n}, seed={case_seed}"
+                    )
+                group_hashes.add(sequence_sha256)
+
+                profile = structure_profile(
+                    sequence,
+                    oracle_result=oracle_result,
+                )
+                diagnostics = paper_jordan_diagnostics_valid(sequence)
+                audit_passed = (
+                    diagnostics["invariants_valid"]
+                    and diagnostics["output"] == oracle_result["sorted"]
+                    and diagnostics["processed_count"] == len(sequence)
+                )
+                if not audit_passed:
+                    raise RuntimeError(
+                        "checked paper diagnostics failed before timing: "
+                        f"family={family}, n={n}, seed={case_seed}"
+                    )
+
+                case = {
+                    "case_id": make_case_id(family, len(sequence), case_number),
+                    "case_index": len(cases) + 1,
+                    "family": family,
+                    "n": len(sequence),
+                    "seed": case_seed,
+                    "sequence_sha256": sequence_sha256,
+                    "sequence": sequence,
+                    "oracle": oracle_result,
+                    "profile": profile,
+                    "audit_passed": audit_passed,
+                }
+                cases.append(case)
+                audit_rows.append(_case_audit_row(config, case, diagnostics))
+
+    if len(cases) != config.case_count:
+        raise RuntimeError(
+            f"expected {config.case_count} cases, generated {len(cases)}"
+        )
+    return cases, audit_rows
+
+
+def algorithm_order_for_round(
+    algorithms,
+    seed,
+    case_index,
+    measured_round,
+):
+    """Return a deterministic cyclically balanced algorithm order."""
+    ordered = list(algorithms)
+    random.Random(seed + case_index * 1009).shuffle(ordered)
+    shift = (measured_round - 1) % len(ordered)
+    return ordered[shift:] + ordered[:shift]
+
+
+def order_cases(cases, case_order_seed):
+    """Return deterministically shuffled case copies with fixed positions."""
+    ordered = [dict(case) for case in cases]
+    random.Random(case_order_seed).shuffle(ordered)
+    for position, case in enumerate(ordered, start=1):
+        case["case_execution_position"] = position
+    return ordered
+
+
+def _time_once_algorithm(
+    algorithm_name,
+    sequence,
+    paper_execution_mode,
+):
+    """Time only one algorithm call on an isolated input list."""
+    try:
+        algorithm = ALGORITHMS[algorithm_name]
+    except KeyError as exc:
+        raise ValueError(f"unknown algorithm: {algorithm_name}") from exc
+
+    values = list(sequence)
+    was_enabled = gc.isenabled()
+    if was_enabled:
+        gc.disable()
+    try:
+        start = time.perf_counter_ns()
+        result = algorithm(values, paper_execution_mode)
+        end = time.perf_counter_ns()
+    finally:
+        if was_enabled:
+            gc.enable()
+    return result, end - start
+
+
+def run_timed_algorithm(
+    algorithm_name,
+    sequence,
+    oracle_result,
+    paper_execution_mode,
+    run_index,
+    algorithm_position="",
+):
+    """Run one timing after certification, returning a fail-recording result."""
+    try:
+        result, time_ns = _time_once_algorithm(
+            algorithm_name,
+            sequence,
+            paper_execution_mode,
+        )
+        output = _extract_sorted_output(algorithm_name, result)
+        return {
+            "run_index": run_index,
+            "measured_round": run_index,
+            "algorithm_position": algorithm_position,
+            "time_ns": time_ns,
+            "output_correct": output == oracle_result["sorted"],
+            "error": "",
+        }
+    except Exception as exc:
+        return {
+            "run_index": run_index,
+            "measured_round": run_index,
+            "algorithm_position": algorithm_position,
+            "time_ns": "",
+            "output_correct": False,
+            "error": f"{type(exc).__name__}: {exc}",
+        }
+
+
+def _raw_metadata(config, case, algorithm_name):
+    return {
+        "run_id": config.run_id,
+        "gate_version": config.gate_version,
+        "case_id": case["case_id"],
+        "case_index": case["case_index"],
+        "family": case["family"],
+        "n": case["n"],
+        "seed": _csv_value(case["seed"]),
+        "sequence_sha256": case["sequence_sha256"],
+        "case_execution_position": case["case_execution_position"],
+        **{
+            field: _csv_value(case["profile"][field])
+            for field in STRUCTURAL_FIELDS
+        },
+        "algorithm": algorithm_name,
+        "paper_execution_mode": config.paper_execution_mode,
+        "audit_execution_mode": config.audit_execution_mode,
+        "oracle_valid": case["oracle"]["valid"],
+        "oracle_reason": _csv_value(case["oracle"]["reason"]),
+        "audit_passed": case["audit_passed"],
+    }
+
+
+def make_raw_rows(config, certified_cases):
+    """Warm up and time only after all case certifications have completed."""
+    validate_execution_config(config)
+    if len(certified_cases) != config.case_count:
+        raise ValueError("certified case count does not match the configuration")
+
+    rows = []
+    for case in order_cases(certified_cases, config.case_order_seed):
+        warmup_order = algorithm_order_for_round(
+            config.algorithms,
+            config.algorithm_order_seed,
+            case["case_index"],
+            measured_round=1,
+        )
+        for algorithm_name in warmup_order:
+            for _ in range(config.warmup_runs):
+                result = run_timed_algorithm(
+                    algorithm_name,
+                    case["sequence"],
+                    case["oracle"],
+                    config.paper_execution_mode,
+                    run_index=0,
+                )
+                if result["error"] or not result["output_correct"]:
+                    raise RuntimeError(
+                        "Week 11 warm-up failed for "
+                        f"{case['case_id']}, algorithm={algorithm_name}: "
+                        f"{result['error']}"
+                    )
+
+        for run_index in range(1, config.measured_runs + 1):
+            round_order = algorithm_order_for_round(
+                config.algorithms,
+                config.algorithm_order_seed,
+                case["case_index"],
+                measured_round=run_index,
+            )
+            for algorithm_position, algorithm_name in enumerate(
+                round_order,
+                start=1,
+            ):
+                row = {
+                    **_raw_metadata(config, case, algorithm_name),
+                    **run_timed_algorithm(
+                        algorithm_name,
+                        case["sequence"],
+                        case["oracle"],
+                        config.paper_execution_mode,
+                        run_index=run_index,
+                        algorithm_position=algorithm_position,
+                    ),
+                }
+                rows.append(
+                    {
+                        field: _csv_value(row.get(field))
+                        for field in RAW_FIELDS
+                    }
+                )
+    return rows
+
+
+def _as_bool(value):
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.strip().lower() == "true"
+    return bool(value)
+
+
+def _quartiles(values):
+    if not values:
+        return "", "", ""
+    ordered = sorted(values)
+    if len(ordered) == 1:
+        return ordered[0], ordered[0], 0
+    midpoint = len(ordered) // 2
+    if len(ordered) % 2 == 0:
+        lower = ordered[:midpoint]
+        upper = ordered[midpoint:]
+    else:
+        lower = ordered[:midpoint]
+        upper = ordered[midpoint + 1 :]
+    q1 = statistics.median(lower) if lower else ordered[0]
+    q3 = statistics.median(upper) if upper else ordered[-1]
+    return q1, q3, q3 - q1
+
+
+def summarize_by_case(raw_rows):
+    """Aggregate measured timings by case and algorithm."""
+    grouped = {}
+    for row in raw_rows:
+        grouped.setdefault((row["case_id"], row["algorithm"]), []).append(row)
+
+    summaries = []
+    for (case_id, algorithm_name), rows in sorted(grouped.items()):
+        times = [
+            int(row["time_ns"])
+            for row in rows
+            if row["time_ns"] not in {"", None}
+        ]
+        q1, q3, iqr = _quartiles(times)
+        first = rows[0]
+        summary = {
+            "case_id": case_id,
+            "family": first["family"],
+            "n": first["n"],
+            "algorithm": algorithm_name,
+            "measured_run_count": len(times),
+            "median_time_ns": statistics.median(times) if times else "",
+            "q1_time_ns": q1,
+            "q3_time_ns": q3,
+            "iqr_time_ns": iqr,
+            "mean_time_ns": statistics.mean(times) if times else "",
+            "stdev_time_ns": statistics.stdev(times) if len(times) > 1 else 0,
+            "all_correct": all(
+                _as_bool(row["oracle_valid"])
+                and _as_bool(row["output_correct"])
+                and _as_bool(row["audit_passed"])
+                and not row["error"]
+                for row in rows
+            ),
+            "error_count": sum(1 for row in rows if row["error"]),
+        }
+        summaries.append(
+            {
+                field: _csv_value(summary.get(field))
+                for field in CASE_SUMMARY_FIELDS
+            }
+        )
+    return summaries
+
+
+def summarize_by_group(case_rows):
+    """Aggregate case medians by family, size, and algorithm."""
+    grouped = {}
+    for row in case_rows:
+        grouped.setdefault(
+            (row["family"], row["n"], row["algorithm"]),
+            [],
+        ).append(row)
+
+    summaries = []
+    for (family, n, algorithm_name), rows in sorted(grouped.items()):
+        medians = [
+            float(row["median_time_ns"])
+            for row in rows
+            if row["median_time_ns"] not in {"", None}
+        ]
+        q1, q3, iqr = _quartiles(medians)
+        summary = {
+            "family": family,
+            "n": n,
+            "algorithm": algorithm_name,
+            "case_count": len(rows),
+            "median_case_time_ns": (
+                statistics.median(medians) if medians else ""
+            ),
+            "q1_case_time_ns": q1,
+            "q3_case_time_ns": q3,
+            "iqr_case_time_ns": iqr,
+            "mean_case_time_ns": (
+                statistics.mean(medians) if medians else ""
+            ),
+            "all_cases_correct": all(
+                _as_bool(row["all_correct"]) for row in rows
+            ),
+            "total_error_count": sum(int(row["error_count"]) for row in rows),
+        }
+        summaries.append(
+            {
+                field: _csv_value(summary.get(field))
+                for field in GROUP_SUMMARY_FIELDS
+            }
+        )
+    return summaries
+
+
+def run_pilot_in_memory(config):
+    """Execute a supplied contract without writing any evidence files."""
+    validate_execution_config(config)
+    cases, audit_rows = build_cases_and_audits(config)
+    raw_rows = make_raw_rows(config, cases)
+    case_rows = summarize_by_case(raw_rows)
+    group_rows = summarize_by_group(case_rows)
+
+    expected_counts = (
+        config.raw_row_count,
+        config.case_summary_row_count,
+        config.group_summary_row_count,
+        config.case_count,
+    )
+    actual_counts = (
+        len(raw_rows),
+        len(case_rows),
+        len(group_rows),
+        len(audit_rows),
+    )
+    if actual_counts != expected_counts:
+        raise RuntimeError(
+            f"Week 11 row counts changed: expected={expected_counts}, "
+            f"actual={actual_counts}"
+        )
+    return {
+        "raw_rows": raw_rows,
+        "case_summary_rows": case_rows,
+        "group_summary_rows": group_rows,
+        "case_audit_rows": audit_rows,
+    }
 
 
 @dataclass(frozen=True)

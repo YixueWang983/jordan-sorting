@@ -1,5 +1,6 @@
-"""Week 11 frozen pilot runner-framework tests."""
+"""Week 11 frozen pilot runner and timing-control tests."""
 
+import gc
 import json
 import io
 import subprocess
@@ -27,6 +28,17 @@ from week11_experiment_gate_v2 import (  # noqa: E402
 
 
 class RunWeek11PilotTests(unittest.TestCase):
+    def _tiny_execution_config(self, **changes):
+        defaults = {
+            "run_id": "week11_day3_test",
+            "sizes": (8,),
+            "randomized_cases": 2,
+            "warmup_runs": 1,
+            "measured_runs": 2,
+        }
+        defaults.update(changes)
+        return replace(runner.build_execution_config(), **defaults)
+
     def _clean_git_state(self):
         return {
             "head": "a" * 40,
@@ -90,6 +102,35 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(
             WEEK11_EXPERIMENT_GATE.valid_families,
             ("flat_valid", "nested_valid", "incremental_valid"),
+        )
+
+    def test_execution_config_is_derived_from_frozen_gate(self):
+        config = runner.build_execution_config()
+
+        self.assertEqual(config.run_id, WEEK11_EXPERIMENT_GATE.run_id)
+        self.assertEqual(config.gate_version, "v2")
+        self.assertEqual(config.case_count, 35)
+        self.assertEqual(config.raw_row_count, 1050)
+        self.assertEqual(config.case_summary_row_count, 105)
+        self.assertEqual(config.group_summary_row_count, 45)
+        self.assertEqual(config.paper_execution_mode, "minimal")
+        self.assertEqual(config.audit_execution_mode, "checked")
+
+    def test_case_seed_rule_matches_existing_generator_contract(self):
+        self.assertIsNone(
+            runner.seed_for_case("flat_valid", 32, 1, 20260723)
+        )
+        self.assertIsNone(
+            runner.seed_for_case("nested_valid", 32, 1, 20260723)
+        )
+        self.assertEqual(
+            runner.seed_for_case(
+                "incremental_valid",
+                32,
+                5,
+                20260723,
+            ),
+            20292728,
         )
         self.assertEqual(
             WEEK11_EXPERIMENT_GATE.algorithms,
@@ -349,6 +390,333 @@ class RunWeek11PilotTests(unittest.TestCase):
         )
         self.assertEqual(set(config["outputs"]), set(runner.EVIDENCE_FILENAMES))
 
+    def test_tiny_execution_builds_all_four_row_products(self):
+        config = self._tiny_execution_config()
+        result = runner.run_pilot_in_memory(config)
+
+        self.assertEqual(config.case_count, 4)
+        self.assertEqual(len(result["raw_rows"]), 24)
+        self.assertEqual(len(result["case_summary_rows"]), 12)
+        self.assertEqual(len(result["group_summary_rows"]), 9)
+        self.assertEqual(len(result["case_audit_rows"]), 4)
+        self.assertTrue(
+            all(set(row) == set(runner.RAW_FIELDS) for row in result["raw_rows"])
+        )
+        self.assertTrue(
+            all(
+                set(row) == set(runner.CASE_AUDIT_FIELDS)
+                for row in result["case_audit_rows"]
+            )
+        )
+        self.assertTrue(
+            all(row["output_correct"] for row in result["raw_rows"])
+        )
+        self.assertTrue(all(not row["error"] for row in result["raw_rows"]))
+        self.assertTrue(
+            all(row["all_correct"] for row in result["case_summary_rows"])
+        )
+        self.assertTrue(
+            all(
+                row["all_cases_correct"]
+                for row in result["group_summary_rows"]
+            )
+        )
+        self.assertTrue(
+            all(row["audit_passed"] for row in result["case_audit_rows"])
+        )
+
+    def test_frozen_execution_builds_exact_row_counts_with_stubbed_work(self):
+        config = runner.build_execution_config()
+
+        def generate(family, n, seed=None):
+            del family
+            values = list(range(n))
+            if seed is not None:
+                values[0] = seed
+            return values
+
+        def certify(sequence):
+            return {
+                "valid": True,
+                "reason": None,
+                "sorted": list(sequence),
+                "distinct_values": True,
+            }
+
+        def profile(sequence, oracle_result=None):
+            del sequence, oracle_result
+            return {
+                field: "strict_flat" if field == "category" else 0
+                for field in runner.STRUCTURAL_FIELDS
+            }
+
+        def diagnose(sequence):
+            return {
+                "output": list(sequence),
+                "processed_count": len(sequence),
+                "metrics": {
+                    name: 0 for name in runner.PAPER_METRIC_NAMES
+                },
+                "trace": [],
+                "invariants_valid": True,
+            }
+
+        def time_once(algorithm_name, sequence, paper_execution_mode):
+            del paper_execution_mode
+            output = list(sequence)
+            if algorithm_name == "simplified_jordan_reference":
+                output = {"sorted": output}
+            return output, 100
+
+        with patch.object(
+            runner,
+            "generate_sequence",
+            side_effect=generate,
+        ) as generator, patch.object(
+            runner,
+            "oracle",
+            side_effect=certify,
+        ) as oracle_mock, patch.object(
+            runner,
+            "structure_profile",
+            side_effect=profile,
+        ), patch.object(
+            runner,
+            "paper_jordan_diagnostics_valid",
+            side_effect=diagnose,
+        ) as diagnostic, patch.object(
+            runner,
+            "_time_once_algorithm",
+            side_effect=time_once,
+        ):
+            result = runner.run_pilot_in_memory(config)
+
+        self.assertEqual(generator.call_count, 35)
+        self.assertEqual(oracle_mock.call_count, 35)
+        self.assertEqual(diagnostic.call_count, 35)
+        self.assertEqual(len(result["raw_rows"]), 1050)
+        self.assertEqual(len(result["case_summary_rows"]), 105)
+        self.assertEqual(len(result["group_summary_rows"]), 45)
+        self.assertEqual(len(result["case_audit_rows"]), 35)
+        self.assertEqual(
+            len({row["case_id"] for row in result["case_audit_rows"]}),
+            35,
+        )
+
+    def test_all_cases_are_certified_and_audited_before_timing(self):
+        config = self._tiny_execution_config(warmup_runs=0, measured_runs=1)
+        events = []
+        real_oracle = runner.oracle
+        real_diagnostics = runner.paper_jordan_diagnostics_valid
+
+        def oracle_spy(sequence):
+            events.append("oracle")
+            return real_oracle(sequence)
+
+        def diagnostics_spy(sequence):
+            events.append("diagnostic")
+            return real_diagnostics(sequence)
+
+        def fake_timer(algorithm_name, sequence, paper_execution_mode):
+            events.append("timing")
+            result = runner.ALGORITHMS[algorithm_name](
+                list(sequence),
+                paper_execution_mode,
+            )
+            return result, 100
+
+        with patch.object(runner, "oracle", side_effect=oracle_spy), patch.object(
+            runner,
+            "paper_jordan_diagnostics_valid",
+            side_effect=diagnostics_spy,
+        ), patch.object(
+            runner,
+            "_time_once_algorithm",
+            side_effect=fake_timer,
+        ):
+            runner.run_pilot_in_memory(config)
+
+        first_timing = events.index("timing")
+        self.assertEqual(events.count("oracle"), config.case_count)
+        self.assertEqual(events.count("diagnostic"), config.case_count)
+        self.assertNotIn("timing", events[: config.case_count * 2])
+        self.assertTrue(
+            all(
+                event in {"oracle", "diagnostic"}
+                for event in events[:first_timing]
+            )
+        )
+
+    def test_invalid_generated_case_is_rejected_before_audit_or_timing(self):
+        config = self._tiny_execution_config(
+            sizes=(4,),
+            valid_families=("flat_valid",),
+            randomized_cases=1,
+        )
+        with patch.object(
+            runner,
+            "generate_sequence",
+            return_value=[1, 3, 2, 4],
+        ), patch.object(
+            runner,
+            "paper_jordan_diagnostics_valid",
+        ) as diagnostic, patch.object(
+            runner,
+            "_time_once_algorithm",
+        ) as timer:
+            with self.assertRaisesRegex(RuntimeError, "oracle-certified"):
+                runner.run_pilot_in_memory(config)
+
+        diagnostic.assert_not_called()
+        timer.assert_not_called()
+
+    def test_wrong_length_generated_case_is_rejected_before_oracle(self):
+        config = self._tiny_execution_config(
+            sizes=(8,),
+            valid_families=("flat_valid",),
+            randomized_cases=1,
+        )
+        with patch.object(
+            runner,
+            "generate_sequence",
+            return_value=[1, 2, 3, 4],
+        ), patch.object(runner, "oracle") as oracle_mock:
+            with self.assertRaisesRegex(RuntimeError, "wrong length"):
+                runner.build_cases_and_audits(config)
+
+        oracle_mock.assert_not_called()
+
+    def test_duplicate_randomized_case_is_rejected_before_timing(self):
+        config = self._tiny_execution_config(
+            sizes=(4,),
+            valid_families=("incremental_valid",),
+            randomized_cases=2,
+        )
+        with patch.object(
+            runner,
+            "generate_sequence",
+            return_value=[1, 2, 3, 4],
+        ), patch.object(
+            runner,
+            "paper_jordan_diagnostics_valid",
+            wraps=runner.paper_jordan_diagnostics_valid,
+        ) as diagnostic, patch.object(
+            runner,
+            "_time_once_algorithm",
+        ) as timer:
+            with self.assertRaisesRegex(RuntimeError, "duplicate case"):
+                runner.run_pilot_in_memory(config)
+
+        diagnostic.assert_called_once()
+        timer.assert_not_called()
+
+    def test_paper_timing_passes_minimal_mode_explicitly(self):
+        with patch.object(
+            runner,
+            "paper_jordan_sort_valid",
+            return_value=[1, 2, 3, 4],
+        ) as sorter:
+            result, elapsed = runner._time_once_algorithm(
+                runner.PAPER_ALGORITHM_NAME,
+                [1, 2, 3, 4],
+                "minimal",
+            )
+
+        self.assertEqual(result, [1, 2, 3, 4])
+        self.assertGreaterEqual(elapsed, 0)
+        sorter.assert_called_once_with(
+            [1, 2, 3, 4],
+            execution_mode="minimal",
+        )
+
+    def test_timed_exception_restores_original_gc_state(self):
+        def fail_algorithm(values, paper_execution_mode):
+            del values, paper_execution_mode
+            raise RuntimeError("timed failure")
+
+        original_state = gc.isenabled()
+        try:
+            for initially_enabled in (True, False):
+                with self.subTest(initially_enabled=initially_enabled):
+                    if initially_enabled:
+                        gc.enable()
+                    else:
+                        gc.disable()
+                    with patch.dict(
+                        runner.ALGORITHMS,
+                        {"python_sort": fail_algorithm},
+                    ):
+                        with self.assertRaisesRegex(RuntimeError, "timed failure"):
+                            runner._time_once_algorithm(
+                                "python_sort",
+                                [2, 1],
+                                "minimal",
+                            )
+                    self.assertEqual(gc.isenabled(), initially_enabled)
+        finally:
+            if original_state:
+                gc.enable()
+            else:
+                gc.disable()
+
+    def test_case_and_algorithm_orders_are_reproducible_and_balanced(self):
+        config = runner.build_execution_config()
+        cases = [
+            {"case_index": index, "case_id": f"case-{index}"}
+            for index in range(1, 8)
+        ]
+        first = runner.order_cases(cases, config.case_order_seed)
+        second = runner.order_cases(cases, config.case_order_seed)
+
+        self.assertEqual(first, second)
+        self.assertNotEqual(
+            [case["case_id"] for case in first],
+            [case["case_id"] for case in cases],
+        )
+        self.assertNotIn("case_execution_position", cases[0])
+
+        positions = {name: [] for name in config.algorithms}
+        for measured_round in range(1, config.measured_runs + 1):
+            order = runner.algorithm_order_for_round(
+                config.algorithms,
+                config.algorithm_order_seed,
+                case_index=1,
+                measured_round=measured_round,
+            )
+            self.assertEqual(set(order), set(config.algorithms))
+            for position, algorithm_name in enumerate(order, start=1):
+                positions[algorithm_name].append(position)
+
+        for algorithm_positions in positions.values():
+            counts = [algorithm_positions.count(position) for position in (1, 2, 3)]
+            self.assertLessEqual(max(counts) - min(counts), 1)
+
+    def test_summaries_preserve_an_all_error_algorithm_group(self):
+        raw_rows = [
+            {
+                "case_id": "flat_valid_n8_001",
+                "family": "flat_valid",
+                "n": 8,
+                "algorithm": "python_sort",
+                "time_ns": "",
+                "oracle_valid": True,
+                "output_correct": False,
+                "audit_passed": True,
+                "error": "RuntimeError: failed",
+            }
+            for _ in range(2)
+        ]
+
+        case_rows = runner.summarize_by_case(raw_rows)
+        group_rows = runner.summarize_by_group(case_rows)
+
+        self.assertEqual(case_rows[0]["median_time_ns"], "")
+        self.assertFalse(case_rows[0]["all_correct"])
+        self.assertEqual(case_rows[0]["error_count"], 2)
+        self.assertEqual(group_rows[0]["median_case_time_ns"], "")
+        self.assertFalse(group_rows[0]["all_cases_correct"])
+        self.assertEqual(group_rows[0]["total_error_count"], 2)
+
     def test_environment_contract_is_captured_before_timing(self):
         git_state = self._clean_git_state()
         with tempfile.TemporaryDirectory() as tmpdir, patch.object(
@@ -550,11 +918,11 @@ class RunWeek11PilotTests(unittest.TestCase):
         written = json.loads(print_mock.call_args.args[0])
         self.assertEqual(written, result)
 
-    def test_day2_framework_does_not_import_or_call_sorting_code(self):
-        source = Path(runner.__file__).read_text(encoding="utf-8")
-        self.assertNotIn("paper_jordan_sort_valid", source)
-        self.assertNotIn("generate_sequence", source)
-        self.assertNotIn("time.perf_counter_ns", source)
+    def test_day3_timing_path_is_not_reachable_from_cli(self):
+        with patch.object(runner, "run_pilot_in_memory") as pilot:
+            with self.assertRaisesRegex(RuntimeError, "Day 5 gate"):
+                runner.main([])
+        pilot.assert_not_called()
 
 
 if __name__ == "__main__":

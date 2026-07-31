@@ -121,13 +121,13 @@ one oracle certification and one complete `checked` diagnostic per exact case
 outside timing. The machine-readable Week 11 integration-pilot configuration
 is frozen but has not been executed.
 
-Week 11 Day 1, Day 2, and the Day 2.5 machine migration are complete. The
-unexecuted v1 gate and M1 baseline remain preserved. The active v2 gate uses a
-distinct run ID/output directory and cryptographically binds the replacement
-M4 baseline. The runner queries the real remote main ref, includes all
-untracked files in its clean-worktree check, and prewrites config/environment
-evidence through an exclusive initialization transaction. Both pilots remain
-unexecuted.
+Week 11 Day 1 through Day 3 are complete. The unexecuted v1 gate and M1
+baseline remain preserved. The active v2 gate uses a distinct run ID/output
+directory and cryptographically binds the replacement M4 baseline. The runner
+now constructs and checks all 35 cases before any warm-up, records one checked
+audit per case, times the three frozen algorithms with the paper path fixed to
+`minimal`, and builds the `1,050 / 105 / 45 / 35` in-memory row products. The
+formal CLI remains disabled and both pilots remain unexecuted.
 
 ## Project Structure
 
@@ -326,7 +326,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 414 tests
+Ran 426 tests
 OK
 ```
 
@@ -386,7 +386,7 @@ Important project documents:
 - [docs/analysis/week10_contamination_pilot.md](docs/analysis/week10_contamination_pilot.md): validated Day 6 full-pilot evidence, overhead tables, scaling and family comparisons, figure, and interpretation boundary.
 - [docs/progress/week10_progress.md](docs/progress/week10_progress.md): Week 10 daily execution record through final timing-mode selection and the frozen Week 11 gate.
 - [docs/progress/week10_summary.md](docs/progress/week10_summary.md): Week 10 mode decision, correctness/timing boundary, contamination evidence, and Week 11 handoff.
-- [docs/progress/week11_progress.md](docs/progress/week11_progress.md): Week 11 daily execution record through the Day 2.5 M4 gate migration.
+- [docs/progress/week11_progress.md](docs/progress/week11_progress.md): Week 11 daily execution record through the Day 3 case-audit and timing-control implementation.
 - [docs/analysis/week11_machine_preflight_v1_m1.md](docs/analysis/week11_machine_preflight_v1_m1.md): preserved v1 M1 preflight record for the unexecuted historical gate.
 - [docs/analysis/week11_machine_preflight_v2_m4.md](docs/analysis/week11_machine_preflight_v2_m4.md): replacement M4 preflight and Day 5/Day 6 timing-readiness controls.
 - [docs/analysis/week11_machine_baseline_v1_m1.json](docs/analysis/week11_machine_baseline_v1_m1.json): preserved structured v1 M1 identity.
@@ -440,9 +440,9 @@ Important project documents:
 
 Immediate next task:
 
-- review the W11D2.5 M4 baseline and v2 gate migration;
+- review the W11D3 case-audit and timing-control implementation;
 - keep both v1 and v2 pilot directories absent;
-- do not enter W11D3 before the migration review passes;
+- do not enter W11D4 before the Day 3 review passes;
 - keep recognition separate from valid-input paper sorting;
 - do not treat the ordinary-list pilot as a linear-time claim.
 

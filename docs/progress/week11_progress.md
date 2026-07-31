@@ -185,7 +185,7 @@ implements that migration without running either pilot.
 
 ## Day 2.5: M4 Rebaseline and v2 Gate Migration
 
-Status: complete; awaiting review before Day 3.
+Status: complete and approved for Day 3.
 
 - [x] preserved the v1 gate, run ID, output directory, and M1 baseline bytes;
 - [x] added an explicit v1 compatibility entry point;
@@ -237,7 +237,63 @@ formal timing:
 
 ## Day 3: Case Audit and Timing Control Flow
 
-Status: not started.
+Status: implementation complete; awaiting review before Day 4.
+
+- [x] derived the executable contract from the frozen v2 gate;
+- [x] implemented the exact 35-case generation and stable seed/ID rules;
+- [x] required the generated length and oracle-valid result for every case;
+- [x] ran exactly one complete checked diagnostic per case;
+- [x] completed all case certifications and audits before any warm-up;
+- [x] added a 35-row case-audit schema with structural and paper metrics;
+- [x] timed only the selected algorithm call on an isolated input list;
+- [x] passed `execution_mode="minimal"` explicitly to the paper sorter;
+- [x] restored the caller's GC state on success and exception paths;
+- [x] added reproducible case shuffling and cyclic algorithm ordering;
+- [x] added raw, case-summary, and group-summary row builders;
+- [x] protected the `1,050 / 105 / 45 / 35` frozen row counts;
+- [x] kept the formal CLI disabled and both formal output directories absent;
+- [x] did not implement the Day 4 validator or write formal evidence.
+
+Day 3 outputs:
+
+```text
+experiments/run_week11_pilot.py
+tests/test_run_week11_pilot.py
+```
+
+## Day 3 Verification
+
+```text
+focused Week 11 runner tests:
+    Ran 36 tests
+    OK
+
+python -m unittest discover -s tests:
+    Ran 426 tests
+    OK
+
+paper algorithm validation:
+    2,074 exhaustive valid permutations passed
+    48 fixed generated cases passed
+
+exact frozen case construction and checked audit:
+    cases = 35
+    audit rows = 35
+    oracle-valid = 35
+    audit-passed = 35
+    wall-clock = 411.742 seconds
+
+formal timing:
+    not executed
+
+v1 and v2 formal output directories:
+    absent
+```
+
+The 411.742-second observation is not an algorithm timing result. It measures
+the complete case-construction, structural-profile, and checked-diagnostic
+phase on this machine. It is recorded so the Day 5/6 wall-clock plan does not
+confuse the 15-minute timing ceiling with total process duration.
 
 Do not execute the frozen pilot.
 
@@ -261,5 +317,6 @@ Status: blocked by validated Day 6 evidence.
 
 ## Current Status
 
-Week 11 Day 1, the repaired Day 2 framework, and the Day 2.5 M4 rebaseline are
-complete. W11D3 must wait for review. Both v1 and v2 pilots remain unexecuted.
+Week 11 Day 1, the repaired Day 2 framework, the Day 2.5 M4 rebaseline, and the
+Day 3 in-memory timing control flow are complete. W11D3 awaits review before
+Day 4 begins. Both v1 and v2 pilots remain unexecuted.

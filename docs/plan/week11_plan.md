@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-31
 
-Status: W11D2.5 M4 rebaseline complete; frozen pilot not executed.
+Status: W11D3 implementation complete; frozen pilot not executed.
 
 ## Core Goal
 
@@ -204,7 +204,7 @@ Add frozen Week 11 pilot runner framework
 
 ## Day 2.5: M4 Rebaseline and v2 Gate Migration
 
-Status: complete; awaiting review before Day 3.
+Status: complete and approved for Day 3.
 
 Outputs:
 
@@ -236,7 +236,7 @@ Freeze Week 11 v2 M4 machine gate
 
 ## Day 3: Case Audit and Timing Control Flow
 
-Status: not started.
+Status: implementation complete; awaiting review before Day 4.
 
 Complete:
 
@@ -251,6 +251,14 @@ Complete:
 
 Day 3 may use tiny temporary test configurations internally. It must not write
 the frozen formal run directory.
+
+The completed implementation keeps the execution layer in memory and leaves
+the formal CLI disabled. It derives its executable configuration from the v2
+gate, builds all cases and audit rows before warm-up, uses cyclically balanced
+per-round algorithm order, restores the caller's GC state after every timed
+call, and creates the frozen `1,050 / 105 / 45 / 35` raw, case-summary,
+group-summary, and case-audit row products. CSV/manifest writes remain blocked
+until the later formal gate.
 
 Suggested commit:
 
