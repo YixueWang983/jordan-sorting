@@ -8,6 +8,7 @@ import math
 import os
 import platform
 import random
+import re
 import shutil
 import statistics
 import subprocess
@@ -68,6 +69,8 @@ POWER_STATUS_FIELDS = (
     "status",
     "on_ac_power",
     "battery_state",
+    "battery_percent",
+    "low_power_mode",
 )
 LOAD_STATUS_FIELDS = (
     "logical_cpu_count",
@@ -1028,29 +1031,32 @@ def capture_benchmark_environment():
     }
 
 
+def _unavailable_power_status(source):
+    return {
+        "source": source,
+        "status": "unavailable",
+        "on_ac_power": None,
+        "battery_state": "unknown",
+        "battery_percent": None,
+        "low_power_mode": None,
+    }
+
+
 def _linux_power_status(power_supply_root=Path("/sys/class/power_supply")):
     """Read anonymous Linux power state from sysfs when available."""
     root = Path(power_supply_root)
     if not root.is_dir():
-        return {
-            "source": "linux_sysfs",
-            "status": "unavailable",
-            "on_ac_power": None,
-            "battery_state": "unknown",
-        }
+        return _unavailable_power_status("linux_sysfs")
     try:
         supplies = sorted(root.iterdir())
     except OSError:
-        return {
-            "source": "linux_sysfs",
-            "status": "unavailable",
-            "on_ac_power": None,
-            "battery_state": "unknown",
-        }
+        return _unavailable_power_status("linux_sysfs")
 
     batteries = []
+    battery_percentages = []
     line_power = []
     type_read_error = False
+    capacity_read_error = False
     for supply in supplies:
         try:
             supply_type = (supply / "type").read_text(
@@ -1068,6 +1074,17 @@ def _linux_power_status(power_supply_root=Path("/sys/class/power_supply")):
                 )
             except OSError:
                 batteries.append("unknown")
+            try:
+                capacity = int(
+                    (supply / "capacity").read_text(
+                        encoding="utf-8"
+                    ).strip()
+                )
+                if not 0 <= capacity <= 100:
+                    raise ValueError("battery capacity is out of range")
+                battery_percentages.append(capacity)
+            except (OSError, ValueError):
+                capacity_read_error = True
         elif supply_type in {"Mains", "USB", "USB_C"}:
             try:
                 line_power.append(
@@ -1079,13 +1096,8 @@ def _linux_power_status(power_supply_root=Path("/sys/class/power_supply")):
             except OSError:
                 continue
 
-    if type_read_error:
-        return {
-            "source": "linux_sysfs",
-            "status": "unavailable",
-            "on_ac_power": None,
-            "battery_state": "unknown",
-        }
+    if type_read_error or capacity_read_error:
+        return _unavailable_power_status("linux_sysfs")
 
     if not batteries:
         return {
@@ -1093,6 +1105,8 @@ def _linux_power_status(power_supply_root=Path("/sys/class/power_supply")):
             "status": "not_applicable",
             "on_ac_power": None,
             "battery_state": "not_applicable",
+            "battery_percent": None,
+            "low_power_mode": None,
         }
 
     if "discharging" in batteries:
@@ -1113,6 +1127,8 @@ def _linux_power_status(power_supply_root=Path("/sys/class/power_supply")):
         "status": "available",
         "on_ac_power": on_ac_power,
         "battery_state": battery_state,
+        "battery_percent": min(battery_percentages),
+        "low_power_mode": None,
     }
 
 
@@ -1120,15 +1136,16 @@ def capture_power_status():
     """Capture a cross-platform, device-anonymous power status."""
     system = platform.system()
     if system == "Darwin":
-        captured = _capture_command(["pmset", "-g", "batt"])
-        if not captured["success"]:
-            return {
-                "source": "pmset",
-                "status": "unavailable",
-                "on_ac_power": None,
-                "battery_state": "unknown",
-            }
-        normalized = captured["output"].lower()
+        battery = _capture_command(["pmset", "-g", "batt"])
+        if not battery["success"]:
+            return _unavailable_power_status("pmset")
+        normalized = battery["output"].lower()
+        percent_match = re.search(r"(\d{1,3})%", normalized)
+        if percent_match is None:
+            return _unavailable_power_status("pmset")
+        battery_percent = int(percent_match.group(1))
+        if not 0 <= battery_percent <= 100:
+            return _unavailable_power_status("pmset")
         if "discharging" in normalized:
             battery_state = "discharging"
         elif "charging" in normalized:
@@ -1137,20 +1154,26 @@ def capture_power_status():
             battery_state = "full"
         else:
             battery_state = "unknown"
+        settings = _capture_command(["pmset", "-g", "custom"])
+        low_power_mode = None
+        if settings["success"]:
+            mode_match = re.search(
+                r"(?m)^\s*lowpowermode\s+([01])\s*$",
+                settings["output"].lower(),
+            )
+            if mode_match is not None:
+                low_power_mode = mode_match.group(1) == "1"
         return {
             "source": "pmset",
             "status": "available",
             "on_ac_power": "ac power" in normalized,
             "battery_state": battery_state,
+            "battery_percent": battery_percent,
+            "low_power_mode": low_power_mode,
         }
     if system == "Linux":
         return _linux_power_status()
-    return {
-        "source": system.lower() or "unknown",
-        "status": "unavailable",
-        "on_ac_power": None,
-        "battery_state": "unknown",
-    }
+    return _unavailable_power_status(system.lower() or "unknown")
 
 
 def validate_power_status(power_status):
@@ -1179,18 +1202,38 @@ def validate_power_status(power_status):
         "unknown",
     }:
         raise ValueError("power_status battery_state is invalid")
+    battery_percent = power_status["battery_percent"]
+    if battery_percent is not None and (
+        not isinstance(battery_percent, int)
+        or isinstance(battery_percent, bool)
+        or not 0 <= battery_percent <= 100
+    ):
+        raise ValueError("power_status battery_percent is invalid")
+    low_power_mode = power_status["low_power_mode"]
+    if low_power_mode is not None and not isinstance(low_power_mode, bool):
+        raise ValueError("power_status low_power_mode is invalid")
     if status == "available":
-        if not isinstance(on_ac_power, bool) or battery_state not in {
-            "charging",
-            "discharging",
-            "full",
-            "unknown",
-        }:
+        if (
+            not isinstance(on_ac_power, bool)
+            or battery_state
+            not in {"charging", "discharging", "full", "unknown"}
+            or not isinstance(battery_percent, int)
+        ):
             raise ValueError("available power_status is inconsistent")
     elif status == "not_applicable":
-        if on_ac_power is not None or battery_state != "not_applicable":
+        if (
+            on_ac_power is not None
+            or battery_state != "not_applicable"
+            or battery_percent is not None
+            or low_power_mode is not None
+        ):
             raise ValueError("not-applicable power_status is inconsistent")
-    elif on_ac_power is not None or battery_state != "unknown":
+    elif (
+        on_ac_power is not None
+        or battery_state != "unknown"
+        or battery_percent is not None
+        or low_power_mode is not None
+    ):
         raise ValueError("unavailable power_status is inconsistent")
     return power_status
 
@@ -1319,16 +1362,25 @@ def require_timing_ready_environment(environment_record, load_status):
     ):
         raise RuntimeError("available disk measurement is invalid")
 
+    discharging_exception = (
+        power_status["battery_state"] == "discharging"
+        and power_status["battery_percent"] >= 50
+        and power_status["low_power_mode"] is False
+    ) if power_status["status"] == "available" else False
     power_ready = power_status["status"] == "not_applicable" or (
         power_status["status"] == "available"
         and power_status["on_ac_power"] is True
-        and power_status["battery_state"] in {"charging", "full"}
+        and (
+            power_status["battery_state"] in {"charging", "full"}
+            or discharging_exception
+        )
     )
     disk_ready = available_disk >= MIN_TIMING_DISK_BYTES
     failures = []
     if not power_ready:
         failures.append(
-            "stable AC power and a non-discharging battery are required"
+            "power must be battery-free, charging/full on AC, or high-charge "
+            "discharging on AC with low-power mode disabled"
         )
     if validated_load["low"] is not True:
         failures.append("system load is above the normalized timing threshold")

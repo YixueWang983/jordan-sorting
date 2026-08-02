@@ -1,6 +1,6 @@
 # Week 11 Progress
 
-Last updated: 2026-07-31
+Last updated: 2026-08-02
 
 ## Goal
 
@@ -450,8 +450,11 @@ formal Week 11 execution directories:
 Status: implementation complete; clean/pushed checkpoint execution and review
 pending.
 
-- [x] required stable AC power and a non-discharging battery for systems with
-  an applicable battery state;
+- [x] required AC power for systems with an applicable battery state;
+- [x] accepted `charging` and `full` directly, and accepted `discharging` only
+  at 50% charge or higher with low-power mode explicitly disabled;
+- [x] added anonymous `battery_percent` and `low_power_mode` fields to runner,
+  validator, and environment-evidence contracts;
 - [x] retained `not_applicable` for successfully confirmed battery-free
   systems;
 - [x] normalized one- and five-minute load by logical CPU count;
@@ -461,22 +464,23 @@ pending.
 - [x] retained clean worktree, real remote-main equality, explicit execution
   ID, and unused output-directory gates;
 - [x] kept the final preflight read-only and formal execution disabled;
-- [x] added focused success, discharging, high-load, unstable-load, and
-  insufficient-disk regression coverage.
+- [x] added focused high-charge discharging success, low-charge rejection,
+  low-power-mode rejection, high-load, unstable-load, and insufficient-disk
+  regression coverage.
 
 Implementation verification before the final clean/pushed preflight:
 
 ```text
 tests/test_run_week11_pilot.py:
-    Ran 53 tests
+    Ran 56 tests
     OK
 
 runner + validator focused suite:
-    Ran 71 tests
+    Ran 76 tests
     OK
 
 python -m unittest discover -s tests:
-    Ran 471 tests
+    Ran 476 tests
     OK
 
 python -m compileall -q src experiments tests:

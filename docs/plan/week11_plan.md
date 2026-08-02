@@ -1,6 +1,6 @@
 # Week 11 Plan: Paper Ordinary-List Sorting Integration Pilot
 
-Last updated: 2026-07-31
+Last updated: 2026-08-02
 
 Status: W11D5 preflight implemented; awaiting review; pilot not executed.
 
@@ -375,8 +375,10 @@ pushed checkpoint before approval.
 The read-only timing-readiness gate is separate from the frozen protocol. It
 requires:
 
-- `available` power with AC connected and battery `charging` or `full`, or a
-  successfully established battery-free `not_applicable` environment;
+- `available` power with AC connected and battery `charging` or `full`;
+- conditional acceptance of AC-connected `discharging` only when battery
+  charge is at least 50% and low-power mode is explicitly disabled;
+- a successfully established battery-free `not_applicable` environment;
 - one- and five-minute load averages no greater than `0.25` per logical CPU;
 - a one-/five-minute load difference no greater than `0.10` per logical CPU;
 - at least `1 GiB` of available disk space;
@@ -384,7 +386,10 @@ requires:
 - an explicit, unused execution ID and absent output directory.
 
 These thresholds govern execution readiness only. They do not change the
-machine-independent experiment protocol.
+machine-independent experiment protocol. `battery_percent` and
+`low_power_mode` are recorded as execution-environment evidence. A missing
+percentage or unknown low-power-mode state cannot authorize the discharging
+exception.
 
 Before formal execution:
 

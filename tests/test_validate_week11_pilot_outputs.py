@@ -93,6 +93,8 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
                 "status": "available",
                 "on_ac_power": True,
                 "battery_state": "charging",
+                "battery_percent": 80,
+                "low_power_mode": False,
             },
             "load_command_success": True,
             "load_snapshot": "load averages: 0.10 0.10 0.10",
@@ -541,6 +543,8 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
                 "status": "not_applicable",
                 "on_ac_power": None,
                 "battery_state": "not_applicable",
+                "battery_percent": None,
+                "low_power_mode": None,
             }
         )
         report = validator.validate_outputs(
@@ -556,6 +560,8 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
                 "status": "available",
                 "on_ac_power": True,
                 "battery_state": "not_applicable",
+                "battery_percent": 80,
+                "low_power_mode": False,
             }
         )
 
@@ -564,6 +570,48 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
         )
 
         self.assertFalse(report["valid"])
+
+    def test_high_charge_discharging_power_status_is_accepted(self):
+        environment = self._environment(
+            power_status={
+                "source": "pmset",
+                "status": "available",
+                "on_ac_power": True,
+                "battery_state": "discharging",
+                "battery_percent": 91,
+                "low_power_mode": False,
+            }
+        )
+
+        report = validator.validate_outputs(
+            self._build_evidence(environment=environment)
+        )
+
+        self.assertTrue(report["valid"], report["errors"])
+
+    def test_low_charge_or_low_power_discharging_is_rejected(self):
+        cases = {
+            "low_charge": (49, False),
+            "low_power_mode": (91, True),
+            "unknown_low_power_mode": (91, None),
+        }
+        for label, (battery_percent, low_power_mode) in cases.items():
+            with self.subTest(label=label):
+                environment = self._environment(
+                    power_status={
+                        "source": "pmset",
+                        "status": "available",
+                        "on_ac_power": True,
+                        "battery_state": "discharging",
+                        "battery_percent": battery_percent,
+                        "low_power_mode": low_power_mode,
+                    }
+                )
+                report = validator.validate_outputs(
+                    self._build_evidence(environment=environment)
+                )
+
+                self.assertFalse(report["valid"])
 
     def test_stale_valid_report_cannot_authorize_tampered_evidence(self):
         run_dir = self._build_evidence()

@@ -71,6 +71,8 @@ class RunWeek11PilotTests(unittest.TestCase):
             "status": "available",
             "on_ac_power": True,
             "battery_state": "charging",
+            "battery_percent": 80,
+            "low_power_mode": False,
         }
 
     def _load_status(self, loads=(0.50, 0.60, 0.70), cpu_count=10):
@@ -1022,6 +1024,8 @@ class RunWeek11PilotTests(unittest.TestCase):
             "status": "unavailable",
             "on_ac_power": None,
             "battery_state": "unknown",
+            "battery_percent": None,
+            "low_power_mode": None,
         }
 
         with self.assertRaisesRegex(ValueError, "available"):
@@ -1083,6 +1087,10 @@ class RunWeek11PilotTests(unittest.TestCase):
             runner,
             "capture_benchmark_environment",
             return_value=self._benchmark_environment(),
+        ), patch.object(
+            runner,
+            "capture_power_status",
+            return_value=self._power_status(),
         ):
             runner.initialize_formal_evidence(
                 root,
@@ -1114,6 +1122,10 @@ class RunWeek11PilotTests(unittest.TestCase):
             runner,
             "capture_benchmark_environment",
             return_value=changed,
+        ), patch.object(
+            runner,
+            "capture_power_status",
+            return_value=self._power_status(),
         ):
             result = runner.initialize_formal_evidence(
                 root,
@@ -1166,6 +1178,8 @@ class RunWeek11PilotTests(unittest.TestCase):
                 "status": "not_applicable",
                 "on_ac_power": None,
                 "battery_state": "not_applicable",
+                "battery_percent": None,
+                "low_power_mode": None,
             },
         )
         self.assertIs(runner.validate_power_status(result), result)
@@ -1185,6 +1199,8 @@ class RunWeek11PilotTests(unittest.TestCase):
                 "status": "unavailable",
                 "on_ac_power": None,
                 "battery_state": "unknown",
+                "battery_percent": None,
+                "low_power_mode": None,
             },
         )
 
@@ -1202,6 +1218,8 @@ class RunWeek11PilotTests(unittest.TestCase):
                 "status": "unavailable",
                 "on_ac_power": None,
                 "battery_state": "unknown",
+                "battery_percent": None,
+                "low_power_mode": None,
             },
         )
 
@@ -1213,6 +1231,8 @@ class RunWeek11PilotTests(unittest.TestCase):
                     "status": "available",
                     "on_ac_power": True,
                     "battery_state": "not_applicable",
+                    "battery_percent": 80,
+                    "low_power_mode": False,
                 }
             )
 
@@ -1224,6 +1244,8 @@ class RunWeek11PilotTests(unittest.TestCase):
                     "status": "unavailable",
                     "on_ac_power": True,
                     "battery_state": "full",
+                    "battery_percent": None,
+                    "low_power_mode": None,
                 }
             )
 
@@ -1245,9 +1267,67 @@ class RunWeek11PilotTests(unittest.TestCase):
             "status": "available",
             "on_ac_power": False,
             "battery_state": "discharging",
+            "battery_percent": 80,
+            "low_power_mode": False,
         }
 
-        with self.assertRaisesRegex(RuntimeError, "stable AC power"):
+        with self.assertRaisesRegex(RuntimeError, "power must"):
+            runner.require_timing_ready_environment(
+                environment,
+                self._load_status(),
+            )
+
+    def test_timing_readiness_accepts_high_charge_discharging_on_ac(self):
+        environment = self._minimal_environment_record()
+        environment["available_disk_bytes"] = runner.MIN_TIMING_DISK_BYTES
+        environment["power_status"] = {
+            "source": "pmset",
+            "status": "available",
+            "on_ac_power": True,
+            "battery_state": "discharging",
+            "battery_percent": 91,
+            "low_power_mode": False,
+        }
+
+        result = runner.require_timing_ready_environment(
+            environment,
+            self._load_status(),
+        )
+
+        self.assertTrue(result["ready"])
+        self.assertTrue(result["power_ready"])
+
+    def test_timing_readiness_rejects_low_charge_discharging(self):
+        environment = self._minimal_environment_record()
+        environment["available_disk_bytes"] = runner.MIN_TIMING_DISK_BYTES
+        environment["power_status"] = {
+            "source": "pmset",
+            "status": "available",
+            "on_ac_power": True,
+            "battery_state": "discharging",
+            "battery_percent": 49,
+            "low_power_mode": False,
+        }
+
+        with self.assertRaisesRegex(RuntimeError, "power must"):
+            runner.require_timing_ready_environment(
+                environment,
+                self._load_status(),
+            )
+
+    def test_timing_readiness_rejects_discharging_in_low_power_mode(self):
+        environment = self._minimal_environment_record()
+        environment["available_disk_bytes"] = runner.MIN_TIMING_DISK_BYTES
+        environment["power_status"] = {
+            "source": "pmset",
+            "status": "available",
+            "on_ac_power": True,
+            "battery_state": "discharging",
+            "battery_percent": 91,
+            "low_power_mode": True,
+        }
+
+        with self.assertRaisesRegex(RuntimeError, "power must"):
             runner.require_timing_ready_environment(
                 environment,
                 self._load_status(),
@@ -1261,6 +1341,8 @@ class RunWeek11PilotTests(unittest.TestCase):
             "status": "not_applicable",
             "on_ac_power": None,
             "battery_state": "not_applicable",
+            "battery_percent": None,
+            "low_power_mode": None,
         }
 
         result = runner.require_timing_ready_environment(
@@ -1316,6 +1398,7 @@ class RunWeek11PilotTests(unittest.TestCase):
                 "Discharging\n",
                 encoding="utf-8",
             )
+            (battery / "capacity").write_text("80\n", encoding="utf-8")
             (mains / "type").write_text("Mains\n", encoding="utf-8")
             (mains / "online").write_text("0\n", encoding="utf-8")
 
@@ -1324,12 +1407,21 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(result["status"], "available")
         self.assertFalse(result["on_ac_power"])
         self.assertEqual(result["battery_state"], "discharging")
+        self.assertEqual(result["battery_percent"], 80)
+        self.assertIsNone(result["low_power_mode"])
 
     def test_macos_power_status_uses_pmset(self):
         snapshot = (
             "Now drawing from 'AC Power'\n"
             " -InternalBattery-0; charging; 80%"
         )
+        settings = "AC Power:\n lowpowermode 0\n"
+
+        def capture(command):
+            if command[-1] == "batt":
+                return {"success": True, "output": snapshot}
+            return {"success": True, "output": settings}
+
         with patch.object(
             runner.platform,
             "system",
@@ -1337,7 +1429,7 @@ class RunWeek11PilotTests(unittest.TestCase):
         ), patch.object(
             runner,
             "_capture_command",
-            return_value={"success": True, "output": snapshot},
+            side_effect=capture,
         ):
             result = runner.capture_power_status()
 
@@ -1345,6 +1437,8 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(result["status"], "available")
         self.assertTrue(result["on_ac_power"])
         self.assertEqual(result["battery_state"], "charging")
+        self.assertEqual(result["battery_percent"], 80)
+        self.assertFalse(result["low_power_mode"])
 
     def test_preflight_main_prints_json_without_writing_outputs(self):
         result = {

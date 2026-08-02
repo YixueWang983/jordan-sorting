@@ -133,10 +133,11 @@ verifies manifest hashes, and fails closed on malformed or coordinatedly
 changed evidence. Power evidence is cross-platform, anonymous, and fail-closed:
 Linux `not_applicable` is used only after a successful sysfs scan confirms that
 no battery exists. The formal CLI remains disabled and no formal Week 11
-execution has run. The Day 5 read-only preflight now additionally requires
-stable AC power for battery-backed systems, normalized low and stable load,
-at least 1 GiB of free disk, a clean pushed source commit, and an unused
-execution directory.
+execution has run. The Day 5 read-only preflight now additionally requires AC
+power for battery-backed systems; `charging` and `full` are accepted directly,
+while `discharging` requires at least 50% battery and disabled low-power mode.
+It also requires normalized low and stable load, at least 1 GiB of free disk,
+a clean pushed source commit, and an unused execution directory.
 
 ## Project Structure
 
@@ -340,7 +341,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 471 tests
+Ran 476 tests
 OK
 ```
 

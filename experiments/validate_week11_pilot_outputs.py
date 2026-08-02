@@ -51,6 +51,8 @@ POWER_STATUS_FIELDS = {
     "status",
     "on_ac_power",
     "battery_state",
+    "battery_percent",
+    "low_power_mode",
 }
 PAPER_METRIC_NAMES = (
     "predecessor_accesses",
@@ -541,6 +543,8 @@ def _validate_power_status(power_status, errors):
     status = power_status["status"]
     on_ac_power = power_status["on_ac_power"]
     battery_state = power_status["battery_state"]
+    battery_percent = power_status["battery_percent"]
+    low_power_mode = power_status["low_power_mode"]
     _require(
         isinstance(source, str) and bool(source),
         "environment power_status source is invalid",
@@ -568,9 +572,27 @@ def _validate_power_status(power_status, errors):
         "environment power_status battery_state is invalid",
         errors,
     )
+    _require(
+        battery_percent is None
+        or (
+            isinstance(battery_percent, int)
+            and not isinstance(battery_percent, bool)
+            and 0 <= battery_percent <= 100
+        ),
+        "environment power_status battery_percent is invalid",
+        errors,
+    )
+    _require(
+        low_power_mode is None or isinstance(low_power_mode, bool),
+        "environment power_status low_power_mode is invalid",
+        errors,
+    )
     if status == "not_applicable":
         _require(
-            on_ac_power is None and battery_state == "not_applicable",
+            on_ac_power is None
+            and battery_state == "not_applicable"
+            and battery_percent is None
+            and low_power_mode is None,
             "not-applicable power status is inconsistent",
             errors,
         )
@@ -578,13 +600,32 @@ def _validate_power_status(power_status, errors):
         _require(
             isinstance(on_ac_power, bool)
             and battery_state
-            in {"charging", "discharging", "full", "unknown"},
+            in {"charging", "discharging", "full", "unknown"}
+            and isinstance(battery_percent, int),
             "available power status is inconsistent",
+            errors,
+        )
+        discharging_exception = (
+            battery_state == "discharging"
+            and isinstance(battery_percent, int)
+            and battery_percent >= 50
+            and low_power_mode is False
+        )
+        _require(
+            on_ac_power is True
+            and (
+                battery_state in {"charging", "full"}
+                or discharging_exception
+            ),
+            "environment power status is not timing-ready",
             errors,
         )
     if status == "unavailable":
         _require(
-            on_ac_power is None and battery_state == "unknown",
+            on_ac_power is None
+            and battery_state == "unknown"
+            and battery_percent is None
+            and low_power_mode is None,
             "unavailable power status is inconsistent",
             errors,
         )
