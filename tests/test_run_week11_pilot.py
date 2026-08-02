@@ -1413,7 +1413,7 @@ class RunWeek11PilotTests(unittest.TestCase):
     def test_macos_power_status_uses_pmset(self):
         snapshot = (
             "Now drawing from 'AC Power'\n"
-            " -InternalBattery-0; charging; 80%"
+            " -InternalBattery-0\t80%; charging; 1:20 remaining"
         )
         settings = "AC Power:\n lowpowermode 0\n"
 
@@ -1439,6 +1439,98 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(result["battery_state"], "charging")
         self.assertEqual(result["battery_percent"], 80)
         self.assertFalse(result["low_power_mode"])
+
+    def test_macos_power_status_uses_only_active_profile_settings(self):
+        snapshot = (
+            "Now drawing from 'AC Power'\n"
+            " -InternalBattery-0\t80%; discharging; 2:00 remaining"
+        )
+        cases = [
+            (
+                "Battery Power:\n lowpowermode 0\n"
+                "AC Power:\n lowpowermode 1\n",
+                True,
+            ),
+            (
+                "Battery Power:\n lowpowermode 1\n"
+                "AC Power:\n lowpowermode 0\n",
+                False,
+            ),
+        ]
+
+        for settings, expected in cases:
+            with self.subTest(expected=expected):
+                def capture(command):
+                    if command[-1] == "batt":
+                        return {"success": True, "output": snapshot}
+                    return {"success": True, "output": settings}
+
+                with patch.object(
+                    runner.platform,
+                    "system",
+                    return_value="Darwin",
+                ), patch.object(
+                    runner,
+                    "_capture_command",
+                    side_effect=capture,
+                ):
+                    result = runner.capture_power_status()
+
+                self.assertIs(result["low_power_mode"], expected)
+
+    def test_macos_power_status_supports_powermode(self):
+        snapshot = (
+            "Now drawing from 'AC Power'\n"
+            " -InternalBattery-0\t80%; discharging; 2:00 remaining"
+        )
+        for value, expected in ((0, False), (1, True), (2, False)):
+            with self.subTest(value=value):
+                settings = f"AC Power:\n powermode {value}\n"
+
+                def capture(command):
+                    if command[-1] == "batt":
+                        return {"success": True, "output": snapshot}
+                    return {"success": True, "output": settings}
+
+                with patch.object(
+                    runner.platform,
+                    "system",
+                    return_value="Darwin",
+                ), patch.object(
+                    runner,
+                    "_capture_command",
+                    side_effect=capture,
+                ):
+                    result = runner.capture_power_status()
+
+                self.assertIs(result["low_power_mode"], expected)
+
+    def test_macos_not_charging_state_is_unknown(self):
+        snapshot = (
+            "Now drawing from 'AC Power'\n"
+            " -InternalBattery-0\t80%; not charging; 0:00 remaining"
+        )
+
+        def capture(command):
+            if command[-1] == "batt":
+                return {"success": True, "output": snapshot}
+            return {
+                "success": True,
+                "output": "AC Power:\n lowpowermode 0\n",
+            }
+
+        with patch.object(
+            runner.platform,
+            "system",
+            return_value="Darwin",
+        ), patch.object(
+            runner,
+            "_capture_command",
+            side_effect=capture,
+        ):
+            result = runner.capture_power_status()
+
+        self.assertEqual(result["battery_state"], "unknown")
 
     def test_preflight_main_prints_json_without_writing_outputs(self):
         result = {

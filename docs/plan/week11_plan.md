@@ -227,7 +227,10 @@ directory. Power evidence uses a structured cross-platform status: macOS uses
 exists. Directory enumeration or supply-type read failures are `unavailable`,
 and the three power states have mutually exclusive field contracts. An
 unavailable power source cannot initialize formal evidence. AC/load timing
-readiness remains a Day 5 fail-closed decision.
+readiness remains a Day 5 fail-closed decision. On macOS, the parser selects
+the active power profile reported by `pmset -g batt`, reads only that profile's
+settings from `pmset -g custom`, supports both `lowpowermode` and `powermode`,
+and classifies the semicolon-delimited battery state by exact value.
 
 Suggested commit:
 

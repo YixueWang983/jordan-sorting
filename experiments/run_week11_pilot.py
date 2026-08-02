@@ -1132,6 +1132,80 @@ def _linux_power_status(power_supply_root=Path("/sys/class/power_supply")):
     }
 
 
+def _pmset_active_profile(battery_output):
+    match = re.search(
+        r"(?im)^now drawing from ['\"]([^'\"]+)['\"]\s*$",
+        battery_output,
+    )
+    return match.group(1).strip() if match is not None else None
+
+
+def _pmset_profile_section(settings_output, profile_name):
+    """Return only the named top-level pmset custom profile section."""
+    if not isinstance(profile_name, str) or not profile_name:
+        return None
+    target = profile_name.casefold()
+    active = False
+    section_lines = []
+    found = False
+    for line in settings_output.splitlines():
+        stripped = line.strip()
+        is_header = (
+            bool(stripped)
+            and not line[:1].isspace()
+            and stripped.endswith(":")
+        )
+        if is_header:
+            active = stripped[:-1].strip().casefold() == target
+            found = found or active
+            continue
+        if active:
+            section_lines.append(line)
+    return "\n".join(section_lines) if found else None
+
+
+def _pmset_low_power_mode(settings_output, profile_name):
+    section = _pmset_profile_section(settings_output, profile_name)
+    if section is None:
+        return None
+    values = {}
+    for key, raw_value in re.findall(
+        r"(?im)^\s*(lowpowermode|powermode)\s+(-?\d+)\s*$",
+        section,
+    ):
+        values.setdefault(key.casefold(), set()).add(int(raw_value))
+    if "powermode" in values:
+        if len(values["powermode"]) != 1:
+            return None
+        return {0: False, 1: True, 2: False}.get(
+            next(iter(values["powermode"]))
+        )
+    if "lowpowermode" in values:
+        if len(values["lowpowermode"]) != 1:
+            return None
+        return {0: False, 1: True}.get(
+            next(iter(values["lowpowermode"]))
+        )
+    return None
+
+
+def _pmset_battery_reading(battery_output):
+    match = re.search(r"(\d{1,3})%;\s*([^;]+);", battery_output)
+    if match is None:
+        return None
+    battery_percent = int(match.group(1))
+    if not 0 <= battery_percent <= 100:
+        return None
+    raw_state = match.group(2).strip().casefold()
+    battery_state = {
+        "charging": "charging",
+        "charged": "full",
+        "full": "full",
+        "discharging": "discharging",
+    }.get(raw_state, "unknown")
+    return battery_percent, battery_state
+
+
 def capture_power_status():
     """Capture a cross-platform, device-anonymous power status."""
     system = platform.system()
@@ -1139,34 +1213,22 @@ def capture_power_status():
         battery = _capture_command(["pmset", "-g", "batt"])
         if not battery["success"]:
             return _unavailable_power_status("pmset")
-        normalized = battery["output"].lower()
-        percent_match = re.search(r"(\d{1,3})%", normalized)
-        if percent_match is None:
+        active_profile = _pmset_active_profile(battery["output"])
+        battery_reading = _pmset_battery_reading(battery["output"])
+        if active_profile is None or battery_reading is None:
             return _unavailable_power_status("pmset")
-        battery_percent = int(percent_match.group(1))
-        if not 0 <= battery_percent <= 100:
-            return _unavailable_power_status("pmset")
-        if "discharging" in normalized:
-            battery_state = "discharging"
-        elif "charging" in normalized:
-            battery_state = "charging"
-        elif "charged" in normalized:
-            battery_state = "full"
-        else:
-            battery_state = "unknown"
+        battery_percent, battery_state = battery_reading
         settings = _capture_command(["pmset", "-g", "custom"])
         low_power_mode = None
         if settings["success"]:
-            mode_match = re.search(
-                r"(?m)^\s*lowpowermode\s+([01])\s*$",
-                settings["output"].lower(),
+            low_power_mode = _pmset_low_power_mode(
+                settings["output"],
+                active_profile,
             )
-            if mode_match is not None:
-                low_power_mode = mode_match.group(1) == "1"
         return {
             "source": "pmset",
             "status": "available",
-            "on_ac_power": "ac power" in normalized,
+            "on_ac_power": active_profile.casefold() == "ac power",
             "battery_state": battery_state,
             "battery_percent": battery_percent,
             "low_power_mode": low_power_mode,

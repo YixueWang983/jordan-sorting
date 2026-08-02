@@ -136,6 +136,8 @@ no battery exists. The formal CLI remains disabled and no formal Week 11
 execution has run. The Day 5 read-only preflight now additionally requires AC
 power for battery-backed systems; `charging` and `full` are accepted directly,
 while `discharging` requires at least 50% battery and disabled low-power mode.
+On macOS, low-power status is read only from the active `pmset` profile and
+supports both `lowpowermode` and `powermode` output formats.
 It also requires normalized low and stable load, at least 1 GiB of free disk,
 a clean pushed source commit, and an unused execution directory.
 
@@ -341,7 +343,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 476 tests
+Ran 479 tests
 OK
 ```
 

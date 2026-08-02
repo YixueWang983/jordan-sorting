@@ -467,20 +467,23 @@ pending.
 - [x] added focused high-charge discharging success, low-charge rejection,
   low-power-mode rejection, high-load, unstable-load, and insufficient-disk
   regression coverage.
+- [x] restricted macOS low-power parsing to the currently active `pmset`
+  profile, supported `lowpowermode` and `powermode`, and rejected ambiguous
+  battery-state substrings such as `not charging`.
 
 Implementation verification before the final clean/pushed preflight:
 
 ```text
 tests/test_run_week11_pilot.py:
-    Ran 56 tests
+    Ran 59 tests
     OK
 
 runner + validator focused suite:
-    Ran 76 tests
+    Ran 79 tests
     OK
 
 python -m unittest discover -s tests:
-    Ran 476 tests
+    Ran 479 tests
     OK
 
 python -m compileall -q src experiments tests:
