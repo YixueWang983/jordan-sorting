@@ -458,8 +458,8 @@ pending.
 - [x] retained `not_applicable` for successfully confirmed battery-free
   systems;
 - [x] normalized one- and five-minute load by logical CPU count;
-- [x] required normalized load at or below `0.25` and normalized one-/five-
-  minute difference at or below `0.10`;
+- [x] retained `0.25` normalized load and `0.10` normalized one-/five-minute
+  difference thresholds as pilot warnings and formal-experiment hard gates;
 - [x] required at least `1 GiB` of available disk space;
 - [x] retained clean worktree, real remote-main equality, explicit execution
   ID, and unused output-directory gates;
@@ -470,20 +470,27 @@ pending.
 - [x] restricted macOS low-power parsing to the currently active `pmset`
   profile, supported `lowpowermode` and `powermode`, and rejected ambiguous
   battery-state substrings such as `not charging`.
+- [x] separated pilot timing-quality warnings from formal fail-closed load
+  checks while preserving actual load flags in the preflight result;
+- [x] persisted the same readiness measurements and warnings in the future
+  `environment.json` contract and independently recomputed them in the output
+  validator;
+- [x] required low-power mode to be explicitly disabled for every applicable
+  battery-backed pilot, including `charging` and `full` states.
 
 Implementation verification before the final clean/pushed preflight:
 
 ```text
 tests/test_run_week11_pilot.py:
-    Ran 59 tests
+    Ran 64 tests
     OK
 
 runner + validator focused suite:
-    Ran 79 tests
+    Ran 85 tests
     OK
 
 python -m unittest discover -s tests:
-    Ran 479 tests
+    Ran 485 tests
     OK
 
 python -m compileall -q src experiments tests:

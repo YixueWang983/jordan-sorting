@@ -54,6 +54,35 @@ POWER_STATUS_FIELDS = {
     "battery_percent",
     "low_power_mode",
 }
+LOAD_STATUS_FIELDS = {
+    "logical_cpu_count",
+    "one_minute_load",
+    "five_minute_load",
+    "fifteen_minute_load",
+    "one_minute_load_per_cpu",
+    "five_minute_load_per_cpu",
+    "one_five_delta_per_cpu",
+    "max_allowed_load_per_cpu",
+    "max_allowed_delta_per_cpu",
+    "low",
+    "stable",
+}
+TIMING_READINESS_FIELDS = {
+    "ready",
+    "execution_stage",
+    "quality",
+    "warnings",
+    "power_ready",
+    "load_low",
+    "load_stable",
+    "disk_ready",
+    "minimum_disk_bytes",
+    "available_disk_bytes",
+    "load_status",
+}
+MIN_TIMING_DISK_BYTES = 1 << 30
+MAX_TIMING_LOAD_PER_CPU = 0.25
+MAX_TIMING_LOAD_DELTA_PER_CPU = 0.10
 PAPER_METRIC_NAMES = (
     "predecessor_accesses",
     "successor_accesses",
@@ -185,6 +214,7 @@ ENVIRONMENT_FIELDS = {
     "load_snapshot",
     "paper_execution_mode",
     "audit_execution_mode",
+    "timing_readiness",
 }
 
 
@@ -519,6 +549,7 @@ def _validate_environment(environment, run_dir, errors):
         errors,
     )
     _validate_power_status(environment["power_status"], errors)
+    _validate_timing_readiness(environment, errors)
     _require(
         isinstance(environment["load_snapshot"], str)
         and bool(environment["load_snapshot"]),
@@ -526,6 +557,130 @@ def _validate_environment(environment, run_dir, errors):
         errors,
     )
     return context
+
+
+def _validate_timing_readiness(environment, errors):
+    readiness = environment.get("timing_readiness")
+    if not isinstance(readiness, dict):
+        errors.append("environment timing_readiness must be an object")
+        return
+    if set(readiness) != TIMING_READINESS_FIELDS:
+        errors.append("environment timing_readiness fields changed")
+        return
+    load = readiness["load_status"]
+    if not isinstance(load, dict) or set(load) != LOAD_STATUS_FIELDS:
+        errors.append("environment timing load_status fields changed")
+        return
+    cpu_count = load["logical_cpu_count"]
+    numeric_load_fields = (
+        "one_minute_load",
+        "five_minute_load",
+        "fifteen_minute_load",
+    )
+    valid_cpu = (
+        isinstance(cpu_count, int)
+        and not isinstance(cpu_count, bool)
+        and cpu_count > 0
+        and cpu_count
+        == environment["benchmark_environment"].get("logical_cpu_count")
+    )
+    valid_loads = all(
+        isinstance(load[field], (int, float))
+        and not isinstance(load[field], bool)
+        and math.isfinite(load[field])
+        and load[field] >= 0
+        for field in numeric_load_fields
+    )
+    if not valid_cpu or not valid_loads:
+        errors.append("environment timing load measurements are invalid")
+        return
+    one_per_cpu = load["one_minute_load"] / cpu_count
+    five_per_cpu = load["five_minute_load"] / cpu_count
+    delta_per_cpu = abs(
+        load["one_minute_load"] - load["five_minute_load"]
+    ) / cpu_count
+    expected_values = {
+        "one_minute_load_per_cpu": one_per_cpu,
+        "five_minute_load_per_cpu": five_per_cpu,
+        "one_five_delta_per_cpu": delta_per_cpu,
+        "max_allowed_load_per_cpu": MAX_TIMING_LOAD_PER_CPU,
+        "max_allowed_delta_per_cpu": MAX_TIMING_LOAD_DELTA_PER_CPU,
+    }
+    for field, expected in expected_values.items():
+        value = load[field]
+        _require(
+            isinstance(value, (int, float))
+            and not isinstance(value, bool)
+            and math.isfinite(value)
+            and math.isclose(value, expected, rel_tol=1e-12, abs_tol=1e-12),
+            f"environment timing {field} mismatch",
+            errors,
+        )
+    expected_low = max(one_per_cpu, five_per_cpu) <= MAX_TIMING_LOAD_PER_CPU
+    expected_stable = delta_per_cpu <= MAX_TIMING_LOAD_DELTA_PER_CPU
+    _require(load["low"] is expected_low, "environment load low mismatch", errors)
+    _require(
+        load["stable"] is expected_stable,
+        "environment load stable mismatch",
+        errors,
+    )
+
+    power = environment["power_status"]
+    discharging_exception = (
+        isinstance(power, dict)
+        and power.get("status") == "available"
+        and power.get("battery_state") == "discharging"
+        and isinstance(power.get("battery_percent"), int)
+        and not isinstance(power.get("battery_percent"), bool)
+        and power["battery_percent"] >= 50
+        and power.get("low_power_mode") is False
+    )
+    power_ready = isinstance(power, dict) and (
+        power.get("status") == "not_applicable"
+        or (
+            power.get("status") == "available"
+            and power.get("on_ac_power") is True
+            and power.get("low_power_mode") is False
+            and (
+                power.get("battery_state") in {"charging", "full"}
+                or discharging_exception
+            )
+        )
+    )
+    available_disk = environment["available_disk_bytes"]
+    disk_ready = (
+        isinstance(available_disk, int)
+        and not isinstance(available_disk, bool)
+        and available_disk >= MIN_TIMING_DISK_BYTES
+    )
+    expected_warnings = []
+    if not expected_low:
+        expected_warnings.append("load above recommended pilot threshold")
+    if not expected_stable:
+        expected_warnings.append("recent load history is still elevated")
+    if discharging_exception:
+        expected_warnings.append("battery is discharging while connected to AC")
+    expected_quality = "warning" if expected_warnings else "clean"
+    expected_fields = {
+        "ready": True,
+        "execution_stage": "pilot",
+        "quality": expected_quality,
+        "warnings": expected_warnings,
+        "power_ready": power_ready,
+        "load_low": expected_low,
+        "load_stable": expected_stable,
+        "disk_ready": disk_ready,
+        "minimum_disk_bytes": MIN_TIMING_DISK_BYTES,
+        "available_disk_bytes": available_disk,
+    }
+    for field, expected in expected_fields.items():
+        _require(
+            readiness[field] == expected,
+            f"environment timing_readiness {field} mismatch",
+            errors,
+        )
+    _require(power_ready, "environment timing power gate failed", errors)
+    _require(disk_ready, "environment timing disk gate failed", errors)
 
 
 def _validate_power_status(power_status, errors):

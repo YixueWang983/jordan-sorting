@@ -88,6 +88,7 @@ LOAD_STATUS_FIELDS = (
 MIN_TIMING_DISK_BYTES = 1 << 30
 MAX_TIMING_LOAD_PER_CPU = 0.25
 MAX_TIMING_LOAD_DELTA_PER_CPU = 0.10
+TIMING_EXECUTION_STAGES = ("pilot", "formal")
 
 STRUCTURAL_FIELDS = (
     "category",
@@ -1412,8 +1413,17 @@ def validate_load_status(load_status):
     return load_status
 
 
-def require_timing_ready_environment(environment_record, load_status):
-    """Enforce the fail-closed Day 5 power, load, and disk gates."""
+def require_timing_ready_environment(
+    environment_record,
+    load_status,
+    *,
+    execution_stage="pilot",
+):
+    """Apply hard safety gates and stage-specific timing-quality gates."""
+    if not isinstance(execution_stage, str):
+        raise TypeError("execution_stage must be a string")
+    if execution_stage not in TIMING_EXECUTION_STAGES:
+        raise ValueError("execution_stage must be 'pilot' or 'formal'")
     power_status = validate_power_status(environment_record.get("power_status"))
     validated_load = validate_load_status(load_status)
     available_disk = environment_record.get("available_disk_bytes")
@@ -1432,6 +1442,7 @@ def require_timing_ready_environment(environment_record, load_status):
     power_ready = power_status["status"] == "not_applicable" or (
         power_status["status"] == "available"
         and power_status["on_ac_power"] is True
+        and power_status["low_power_mode"] is False
         and (
             power_status["battery_state"] in {"charging", "full"}
             or discharging_exception
@@ -1442,30 +1453,68 @@ def require_timing_ready_environment(environment_record, load_status):
     if not power_ready:
         failures.append(
             "power must be battery-free, charging/full on AC, or high-charge "
-            "discharging on AC with low-power mode disabled"
-        )
-    if validated_load["low"] is not True:
-        failures.append("system load is above the normalized timing threshold")
-    if validated_load["stable"] is not True:
-        failures.append(
-            "system load is not stable across 1- and 5-minute averages"
+            "discharging on AC, with low-power mode disabled"
         )
     if not disk_ready:
         failures.append("at least 1 GiB of free disk space is required")
+    load_warnings = []
+    if validated_load["low"] is not True:
+        load_warnings.append("load above recommended pilot threshold")
+    if validated_load["stable"] is not True:
+        load_warnings.append("recent load history is still elevated")
+    if execution_stage == "formal":
+        if validated_load["low"] is not True:
+            failures.append(
+                "system load is above the normalized formal timing threshold"
+            )
+        if validated_load["stable"] is not True:
+            failures.append(
+                "system load is not stable across 1- and 5-minute averages"
+            )
     if failures:
         raise RuntimeError(
             "Week 11 timing preflight failed: " + "; ".join(failures)
         )
+    warnings = list(load_warnings)
+    if execution_stage == "pilot" and discharging_exception:
+        warnings.append("battery is discharging while connected to AC")
     return {
         "ready": True,
+        "execution_stage": execution_stage,
+        "quality": "warning" if warnings else "clean",
+        "warnings": warnings,
         "power_ready": True,
-        "load_low": True,
-        "load_stable": True,
+        "load_low": validated_load["low"],
+        "load_stable": validated_load["stable"],
         "disk_ready": True,
         "minimum_disk_bytes": MIN_TIMING_DISK_BYTES,
         "available_disk_bytes": available_disk,
         "load_status": validated_load,
     }
+
+
+def validate_timing_readiness_record(
+    environment_record,
+    timing_readiness,
+    *,
+    expected_stage,
+):
+    """Recompute a persisted readiness record from its raw measurements."""
+    if not isinstance(timing_readiness, dict):
+        raise ValueError("timing_readiness must be a dictionary")
+    if timing_readiness.get("execution_stage") != expected_stage:
+        raise ValueError("timing_readiness execution stage changed")
+    try:
+        expected = require_timing_ready_environment(
+            environment_record,
+            timing_readiness.get("load_status"),
+            execution_stage=expected_stage,
+        )
+    except (TypeError, ValueError, RuntimeError) as exc:
+        raise ValueError("timing_readiness is invalid") from exc
+    if timing_readiness != expected:
+        raise ValueError("timing_readiness does not match its measurements")
+    return timing_readiness
 
 
 def build_environment_record(
@@ -1490,7 +1539,7 @@ def build_environment_record(
     validate_execution_context(context)
     power_status = validate_power_status(capture_power_status())
     load = _capture_command(["uptime"])
-    return {
+    record = {
         **execution_context_to_dict(context),
         "protocol_version": protocol.protocol_version,
         "captured_before_timing": True,
@@ -1507,6 +1556,13 @@ def build_environment_record(
         "paper_execution_mode": protocol.paper_execution_mode,
         "audit_execution_mode": protocol.audit_execution_mode,
     }
+    load_status = capture_load_status(environment["logical_cpu_count"])
+    record["timing_readiness"] = require_timing_ready_environment(
+        record,
+        load_status,
+        execution_stage="pilot",
+    )
+    return record
 
 
 def _write_json_exclusive(path, payload):
@@ -1574,6 +1630,11 @@ def initialize_evidence_directory(
     power_status = validate_power_status(environment_record.get("power_status"))
     if power_status["status"] == "unavailable":
         raise ValueError("power_status must be available or not_applicable")
+    validate_timing_readiness_record(
+        environment_record,
+        environment_record.get("timing_readiness"),
+        expected_stage="pilot",
+    )
     try:
         paths.run_dir.mkdir(parents=True, exist_ok=False)
     except FileExistsError as exc:
@@ -1649,13 +1710,7 @@ def run_preflight(
         project_root=root,
         benchmark_environment=benchmark_environment,
     )
-    load_status = capture_load_status(
-        benchmark_environment["logical_cpu_count"]
-    )
-    timing_readiness = require_timing_ready_environment(
-        environment,
-        load_status,
-    )
+    timing_readiness = environment["timing_readiness"]
     return {
         "status": "ready_not_executed",
         "protocol_valid": True,

@@ -75,7 +75,15 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
 
     def _environment(self, power_status=None):
         protocol = WEEK11_EXPERIMENT_PROTOCOL
-        return {
+        valid_power_status = {
+            "source": "test_power",
+            "status": "available",
+            "on_ac_power": True,
+            "battery_state": "charging",
+            "battery_percent": 80,
+            "low_power_mode": False,
+        }
+        environment = {
             "execution_id": EXECUTION_ID,
             "output_dir": output_dir_for_execution(EXECUTION_ID),
             "benchmark_environment": self._benchmark_environment(),
@@ -85,22 +93,44 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
             "timestamp_utc": "2026-07-31T12:00:00+00:00",
             "git_dirty": False,
             "head_matches_origin_main": True,
-            "available_disk_bytes": 1_000_000,
+            "available_disk_bytes": runner.MIN_TIMING_DISK_BYTES,
             "perf_counter_resolution": 1e-9,
-            "power_status": power_status
-            or {
-                "source": "test_power",
-                "status": "available",
-                "on_ac_power": True,
-                "battery_state": "charging",
-                "battery_percent": 80,
-                "low_power_mode": False,
-            },
+            "power_status": valid_power_status,
             "load_command_success": True,
             "load_snapshot": "load averages: 0.10 0.10 0.10",
             "paper_execution_mode": protocol.paper_execution_mode,
             "audit_execution_mode": protocol.audit_execution_mode,
         }
+        with patch.object(
+            runner.os,
+            "getloadavg",
+            return_value=(0.5, 0.6, 0.7),
+        ):
+            load_status = runner.capture_load_status(
+                environment["benchmark_environment"]["logical_cpu_count"]
+            )
+        environment["timing_readiness"] = (
+            runner.require_timing_ready_environment(
+                environment,
+                load_status,
+                execution_stage="pilot",
+            )
+        )
+        if power_status is not None:
+            environment["power_status"] = power_status
+            try:
+                environment["timing_readiness"] = (
+                    runner.require_timing_ready_environment(
+                        environment,
+                        load_status,
+                        execution_stage="pilot",
+                    )
+                )
+            except (ValueError, RuntimeError):
+                # Keep the formerly valid readiness record so the validator
+                # sees the intentionally inconsistent evidence.
+                pass
+        return environment
 
     def _raw_rows(self):
         protocol = WEEK11_EXPERIMENT_PROTOCOL
@@ -527,6 +557,21 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
         environment = json.loads(path.read_text(encoding="utf-8"))
         environment["processor_class"] = "duplicated top-level value"
         environment["paper_execution_mode"] = "checked"
+        path.write_text(
+            json.dumps(environment, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        self._refresh_manifest(run_dir)
+
+        report = validator.validate_outputs(run_dir)
+        self.assertFalse(report["valid"])
+
+    def test_timing_readiness_warning_drift_is_rejected(self):
+        run_dir = self._build_evidence()
+        path = run_dir / "environment.json"
+        environment = json.loads(path.read_text(encoding="utf-8"))
+        environment["timing_readiness"]["quality"] = "warning"
+        environment["timing_readiness"]["warnings"] = ["forged warning"]
         path.write_text(
             json.dumps(environment, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",

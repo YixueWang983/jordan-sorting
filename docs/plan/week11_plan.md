@@ -378,18 +378,24 @@ pushed checkpoint before approval.
 The read-only timing-readiness gate is separate from the frozen protocol. It
 requires:
 
-- `available` power with AC connected and battery `charging` or `full`;
+- `available` power with AC connected, low-power mode explicitly disabled,
+  and battery `charging` or `full`;
 - conditional acceptance of AC-connected `discharging` only when battery
   charge is at least 50% and low-power mode is explicitly disabled;
 - a successfully established battery-free `not_applicable` environment;
-- one- and five-minute load averages no greater than `0.25` per logical CPU;
-- a one-/five-minute load difference no greater than `0.10` per logical CPU;
 - at least `1 GiB` of available disk space;
 - a clean worktree whose `HEAD` equals the real remote `main` ref;
 - an explicit, unused execution ID and absent output directory.
 
-These thresholds govern execution readiness only. They do not change the
-machine-independent experiment protocol. `battery_percent` and
+For the Week 11 pilot, one- and five-minute load above `0.25` per logical CPU
+or a one-/five-minute difference above `0.10` per logical CPU is advisory. The
+preflight remains ready, reports `quality = warning`, preserves the failed load
+flags, and records explicit warnings in both the preflight result and the
+future `environment.json`. The evidence initializer and independent validator
+recompute this record from the raw load, power, and disk measurements. A later
+formal experiment uses the same calculations with `execution_stage = formal`,
+where either load condition is a fail-closed gate. These thresholds do not
+change the machine-independent experiment protocol. `battery_percent` and
 `low_power_mode` are recorded as execution-environment evidence. A missing
 percentage or unknown low-power-mode state cannot authorize the discharging
 exception.

@@ -80,17 +80,26 @@ class RunWeek11PilotTests(unittest.TestCase):
             return runner.capture_load_status(cpu_count)
 
     def _minimal_environment_record(self):
-        return {
+        environment = {
             "execution_id": TEST_EXECUTION_ID,
             "output_dir": output_dir_for_execution(TEST_EXECUTION_ID),
             "benchmark_environment": self._benchmark_environment(),
             "source_commit": "a" * 40,
             "protocol_version": WEEK11_EXPERIMENT_PROTOCOL.protocol_version,
             "captured_before_timing": True,
+            "available_disk_bytes": runner.MIN_TIMING_DISK_BYTES,
             "power_status": self._power_status(),
             "paper_execution_mode": "minimal",
             "audit_execution_mode": "checked",
         }
+        environment["timing_readiness"] = (
+            runner.require_timing_ready_environment(
+                environment,
+                self._load_status(),
+                execution_stage="pilot",
+            )
+        )
+        return environment
 
     def _temporary_project(self):
         temporary = tempfile.TemporaryDirectory()
@@ -390,11 +399,58 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(result["audit_execution_mode"], "checked")
         self.assertTrue(result["environment_contract_ready"])
         self.assertTrue(result["timing_readiness"]["ready"])
+        self.assertEqual(
+            result["timing_readiness"]["execution_stage"],
+            "pilot",
+        )
+        self.assertEqual(result["timing_readiness"]["quality"], "clean")
+        self.assertEqual(result["timing_readiness"]["warnings"], [])
         self.assertTrue(result["timing_readiness"]["power_ready"])
         self.assertTrue(result["timing_readiness"]["load_low"])
         self.assertTrue(result["timing_readiness"]["load_stable"])
         self.assertTrue(result["timing_readiness"]["disk_ready"])
         self.assertFalse(result["formal_execution_enabled"])
+        self.assertFalse(
+            (root / output_dir_for_execution(TEST_EXECUTION_ID)).exists()
+        )
+
+    def test_preflight_reports_load_warnings_without_writing_outputs(self):
+        temporary, root = self._temporary_project()
+        self.addCleanup(temporary.cleanup)
+        elevated_load = self._load_status(
+            loads=(7.0, 11.0, 6.0),
+            cpu_count=10,
+        )
+        with patch.object(
+            runner,
+            "git_snapshot",
+            return_value=self._clean_git_state(),
+        ), patch.object(
+            runner,
+            "capture_benchmark_environment",
+            return_value=self._benchmark_environment(),
+        ), patch.object(
+            runner,
+            "capture_load_status",
+            return_value=elevated_load,
+        ):
+            result = runner.run_preflight(
+                root,
+                execution_id=TEST_EXECUTION_ID,
+            )
+
+        readiness = result["timing_readiness"]
+        self.assertTrue(readiness["ready"])
+        self.assertEqual(readiness["quality"], "warning")
+        self.assertFalse(readiness["load_low"])
+        self.assertFalse(readiness["load_stable"])
+        self.assertEqual(
+            readiness["warnings"],
+            [
+                "load above recommended pilot threshold",
+                "recent load history is still elevated",
+            ],
+        )
         self.assertFalse(
             (root / output_dir_for_execution(TEST_EXECUTION_ID)).exists()
         )
@@ -897,6 +953,11 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(environment["load_snapshot"], "captured")
         self.assertTrue(environment["load_command_success"])
         self.assertGreaterEqual(environment["available_disk_bytes"], 0)
+        self.assertEqual(
+            environment["timing_readiness"]["execution_stage"],
+            "pilot",
+        )
+        self.assertTrue(environment["timing_readiness"]["ready"])
         self.assertNotIn("processor_class", environment)
         self.assertNotIn("architecture", environment)
         self.assertEqual(
@@ -1010,6 +1071,25 @@ class RunWeek11PilotTests(unittest.TestCase):
                     )
 
                 self.assertFalse(paths.run_dir.exists())
+
+    def test_initialize_evidence_rejects_timing_readiness_drift(self):
+        temporary, root = self._temporary_project()
+        self.addCleanup(temporary.cleanup)
+        paths = runner.build_pilot_paths(
+            root,
+            execution_id=TEST_EXECUTION_ID,
+        )
+        environment = self._minimal_environment_record()
+        environment["timing_readiness"]["warnings"] = ["forged warning"]
+
+        with self.assertRaisesRegex(ValueError, "measurements"):
+            runner.initialize_evidence_directory(
+                paths,
+                runner.build_config_record(),
+                environment,
+            )
+
+        self.assertFalse(paths.run_dir.exists())
 
     def test_initialize_evidence_rejects_unavailable_power_status(self):
         temporary, root = self._temporary_project()
@@ -1296,6 +1376,26 @@ class RunWeek11PilotTests(unittest.TestCase):
 
         self.assertTrue(result["ready"])
         self.assertTrue(result["power_ready"])
+        self.assertEqual(result["quality"], "warning")
+        self.assertIn("battery is discharging", result["warnings"][0])
+
+    def test_timing_readiness_rejects_low_power_mode_while_charging(self):
+        environment = self._minimal_environment_record()
+        environment["available_disk_bytes"] = runner.MIN_TIMING_DISK_BYTES
+        environment["power_status"] = {
+            "source": "pmset",
+            "status": "available",
+            "on_ac_power": True,
+            "battery_state": "charging",
+            "battery_percent": 80,
+            "low_power_mode": True,
+        }
+
+        with self.assertRaisesRegex(RuntimeError, "low-power mode disabled"):
+            runner.require_timing_ready_environment(
+                environment,
+                self._load_status(),
+            )
 
     def test_timing_readiness_rejects_low_charge_discharging(self):
         environment = self._minimal_environment_record()
@@ -1353,7 +1453,30 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertTrue(result["ready"])
         self.assertTrue(result["power_ready"])
 
-    def test_timing_readiness_rejects_high_or_unstable_load(self):
+    def test_pilot_timing_readiness_warns_on_high_or_unstable_load(self):
+        environment = self._minimal_environment_record()
+        environment["available_disk_bytes"] = runner.MIN_TIMING_DISK_BYTES
+        cases = {
+            "high": self._load_status(loads=(3.0, 3.0, 3.0), cpu_count=10),
+            "unstable": self._load_status(
+                loads=(2.4, 0.5, 0.5),
+                cpu_count=10,
+            ),
+        }
+
+        for label, load_status in cases.items():
+            with self.subTest(label=label):
+                result = runner.require_timing_ready_environment(
+                    environment,
+                    load_status,
+                    execution_stage="pilot",
+                )
+
+            self.assertTrue(result["ready"])
+            self.assertEqual(result["quality"], "warning")
+            self.assertTrue(result["warnings"])
+
+    def test_formal_timing_readiness_rejects_high_or_unstable_load(self):
         environment = self._minimal_environment_record()
         environment["available_disk_bytes"] = runner.MIN_TIMING_DISK_BYTES
         cases = {
@@ -1367,12 +1490,28 @@ class RunWeek11PilotTests(unittest.TestCase):
         for label, load_status in cases.items():
             with self.subTest(label=label), self.assertRaisesRegex(
                 RuntimeError,
-                "system load",
+                "load",
             ):
                 runner.require_timing_ready_environment(
                     environment,
                     load_status,
+                    execution_stage="formal",
                 )
+
+    def test_timing_readiness_rejects_invalid_execution_stage(self):
+        environment = self._minimal_environment_record()
+        with self.assertRaises(TypeError):
+            runner.require_timing_ready_environment(
+                environment,
+                self._load_status(),
+                execution_stage=None,
+            )
+        with self.assertRaises(ValueError):
+            runner.require_timing_ready_environment(
+                environment,
+                self._load_status(),
+                execution_stage="smoke",
+            )
 
     def test_timing_readiness_rejects_insufficient_disk(self):
         environment = self._minimal_environment_record()
