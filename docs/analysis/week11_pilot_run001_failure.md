@@ -65,4 +65,3 @@ Before another attempt:
 5. retain the unchanged `week11_pilot_v1` protocol and source-controlled
    execution path;
 6. do not start W11D7 until a new run produces validated evidence.
-
