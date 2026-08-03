@@ -427,6 +427,9 @@ Seal Week 11 pilot preflight gates
 
 ## Day 6: Execute and Archive One Pilot
 
+Status: execution and archival wiring implemented; awaiting review before the
+single real pilot is run.
+
 Run exactly once:
 
 ```bash

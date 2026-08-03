@@ -106,6 +106,30 @@ class RunWeek11PilotTests(unittest.TestCase):
         root = Path(temporary.name)
         return temporary, root
 
+    def _frozen_stub_products(self):
+        def rows(fieldnames, count):
+            return [
+                {field_name: "" for field_name in fieldnames}
+                for _ in range(count)
+            ]
+
+        protocol = WEEK11_EXPERIMENT_PROTOCOL
+        return {
+            "raw_rows": rows(runner.RAW_FIELDS, protocol.raw_row_count),
+            "case_summary_rows": rows(
+                runner.CASE_SUMMARY_FIELDS,
+                protocol.case_summary_row_count,
+            ),
+            "group_summary_rows": rows(
+                runner.GROUP_SUMMARY_FIELDS,
+                protocol.group_summary_row_count,
+            ),
+            "case_audit_rows": rows(
+                runner.CASE_AUDIT_FIELDS,
+                protocol.case_count,
+            ),
+        }
+
     def _run_git(self, repository, *args):
         return subprocess.run(
             ["git", *args],
@@ -339,11 +363,20 @@ class RunWeek11PilotTests(unittest.TestCase):
                     with self.assertRaises(SystemExit):
                         runner.parse_args([forbidden])
 
-    def test_formal_execution_is_disabled(self):
-        with patch.object(runner, "run_preflight") as preflight:
-            with self.assertRaisesRegex(RuntimeError, "Day 5 preflight"):
-                runner.main(["--execution-id", TEST_EXECUTION_ID])
-        preflight.assert_not_called()
+    def test_cli_delegates_formal_execution_to_the_sealed_entrypoint(self):
+        result = {
+            "status": "validated_pilot_complete",
+            "execution_id": TEST_EXECUTION_ID,
+        }
+        with patch.object(
+            runner,
+            "execute_week11_pilot",
+            return_value=result,
+        ) as execute, patch("builtins.print") as print_mock:
+            runner.main(["--execution-id", TEST_EXECUTION_ID])
+
+        execute.assert_called_once_with(execution_id=TEST_EXECUTION_ID)
+        self.assertEqual(json.loads(print_mock.call_args.args[0]), result)
 
     def test_preflight_cli_requires_explicit_execution_id_on_any_machine(self):
         other_environment = self._benchmark_environment("AMD Ryzen 7 5800U")
@@ -429,6 +462,10 @@ class RunWeek11PilotTests(unittest.TestCase):
             runner,
             "capture_benchmark_environment",
             return_value=self._benchmark_environment(),
+        ), patch.object(
+            runner,
+            "capture_power_status",
+            return_value=self._power_status(),
         ), patch.object(
             runner,
             "capture_load_status",
@@ -1091,6 +1128,193 @@ class RunWeek11PilotTests(unittest.TestCase):
 
         self.assertFalse(paths.run_dir.exists())
 
+    def test_pilot_products_are_written_exclusively_with_manifest(self):
+        temporary, root = self._temporary_project()
+        self.addCleanup(temporary.cleanup)
+        paths = runner.build_pilot_paths(
+            root,
+            execution_id=TEST_EXECUTION_ID,
+        )
+        config = runner.build_config_record()
+        environment = self._minimal_environment_record()
+        runner.initialize_evidence_directory(paths, config, environment)
+
+        result = runner.write_pilot_evidence_products(
+            paths,
+            self._frozen_stub_products(),
+            environment,
+        )
+
+        self.assertEqual(
+            result["row_counts"],
+            {
+                "raw": 1050,
+                "case_summary": 105,
+                "group_summary": 45,
+                "case_audit": 35,
+            },
+        )
+        manifest = json.loads(
+            paths.manifest_json.read_text(encoding="utf-8")
+        )
+        self.assertEqual(
+            set(manifest["files"]),
+            set(runner.MANIFEST_FILE_ATTRIBUTES),
+        )
+        for label, attribute in runner.MANIFEST_FILE_ATTRIBUTES.items():
+            path = getattr(paths, attribute)
+            self.assertTrue(path.is_file())
+            self.assertEqual(manifest["files"][label]["path"], path.name)
+            self.assertEqual(
+                manifest["files"][label]["sha256"],
+                runner._file_sha256(path),
+            )
+        with self.assertRaises(FileExistsError):
+            runner.write_pilot_evidence_products(
+                paths,
+                self._frozen_stub_products(),
+                environment,
+            )
+
+    def test_execute_pilot_rechecks_environment_before_stubbed_timing(self):
+        temporary, root = self._temporary_project()
+        self.addCleanup(temporary.cleanup)
+        events = []
+        elevated_load = self._load_status(
+            loads=(7.0, 11.0, 6.0),
+            cpu_count=10,
+        )
+
+        def run_in_memory(config, execution_id):
+            paths = runner.build_pilot_paths(
+                root,
+                execution_id=execution_id,
+            )
+            self.assertTrue(paths.config_json.is_file())
+            self.assertTrue(paths.environment_json.is_file())
+            events.append("timing")
+            self.assertEqual(config, runner.build_execution_config())
+            return self._frozen_stub_products()
+
+        with patch.object(
+            runner,
+            "git_snapshot",
+            return_value=self._clean_git_state(),
+        ), patch.object(
+            runner,
+            "capture_benchmark_environment",
+            return_value=self._benchmark_environment(),
+        ), patch.object(
+            runner,
+            "capture_power_status",
+            return_value=self._power_status(),
+        ), patch.object(
+            runner,
+            "capture_load_status",
+            return_value=elevated_load,
+        ), patch.object(
+            runner,
+            "_capture_command",
+            return_value={"success": True, "output": "captured"},
+        ), patch.object(
+            runner,
+            "run_pilot_in_memory",
+            side_effect=run_in_memory,
+        ) as pilot, patch.object(
+            runner,
+            "_validate_written_outputs",
+            return_value={"valid": True, "errors": []},
+        ) as validate:
+            result = runner.execute_week11_pilot(
+                root,
+                execution_id=TEST_EXECUTION_ID,
+            )
+
+        self.assertEqual(events, ["timing"])
+        pilot.assert_called_once()
+        validate.assert_called_once()
+        self.assertEqual(result["status"], "validated_pilot_complete")
+        self.assertEqual(result["timing_readiness"]["quality"], "warning")
+        self.assertFalse(result["timing_readiness"]["load_low"])
+
+    def test_execute_pilot_rejects_source_before_evidence_or_timing(self):
+        temporary, root = self._temporary_project()
+        self.addCleanup(temporary.cleanup)
+        dirty = self._clean_git_state()
+        dirty["git_clean"] = False
+        with patch.object(
+            runner,
+            "git_snapshot",
+            return_value=dirty,
+        ), patch.object(
+            runner,
+            "capture_benchmark_environment",
+            return_value=self._benchmark_environment(),
+        ), patch.object(runner, "run_pilot_in_memory") as pilot:
+            with self.assertRaisesRegex(RuntimeError, "clean"):
+                runner.execute_week11_pilot(
+                    root,
+                    execution_id=TEST_EXECUTION_ID,
+                )
+
+        pilot.assert_not_called()
+        self.assertFalse(
+            runner.build_pilot_paths(
+                root,
+                execution_id=TEST_EXECUTION_ID,
+            ).run_dir.exists()
+        )
+
+    def test_execute_pilot_preserves_evidence_after_validation_failure(self):
+        temporary, root = self._temporary_project()
+        self.addCleanup(temporary.cleanup)
+        with patch.object(
+            runner,
+            "git_snapshot",
+            return_value=self._clean_git_state(),
+        ), patch.object(
+            runner,
+            "capture_benchmark_environment",
+            return_value=self._benchmark_environment(),
+        ), patch.object(
+            runner,
+            "capture_power_status",
+            return_value=self._power_status(),
+        ), patch.object(
+            runner,
+            "capture_load_status",
+            return_value=self._load_status(),
+        ), patch.object(
+            runner,
+            "_capture_command",
+            return_value={"success": True, "output": "captured"},
+        ), patch.object(
+            runner,
+            "run_pilot_in_memory",
+            return_value=self._frozen_stub_products(),
+        ), patch.object(
+            runner,
+            "_validate_written_outputs",
+            return_value={"valid": False, "errors": ["simulated failure"]},
+        ):
+            with self.assertRaisesRegex(RuntimeError, "simulated failure"):
+                runner.execute_week11_pilot(
+                    root,
+                    execution_id=TEST_EXECUTION_ID,
+                )
+
+        paths = runner.build_pilot_paths(
+            root,
+            execution_id=TEST_EXECUTION_ID,
+        )
+        self.assertTrue(paths.run_dir.is_dir())
+        self.assertTrue(paths.config_json.is_file())
+        self.assertTrue(paths.environment_json.is_file())
+        self.assertTrue(paths.raw_csv.is_file())
+        self.assertTrue(paths.manifest_json.is_file())
+        with self.assertRaisesRegex(RuntimeError, "already in use"):
+            runner.require_unused_output(paths)
+
     def test_initialize_evidence_rejects_unavailable_power_status(self):
         temporary, root = self._temporary_project()
         self.addCleanup(temporary.cleanup)
@@ -1688,13 +1912,6 @@ class RunWeek11PilotTests(unittest.TestCase):
         written = json.loads(print_mock.call_args.args[0])
         self.assertEqual(written, result)
         preflight.assert_called_once_with(execution_id=TEST_EXECUTION_ID)
-
-    def test_day3_timing_path_is_not_reachable_from_cli(self):
-        with patch.object(runner, "run_pilot_in_memory") as pilot:
-            with self.assertRaisesRegex(RuntimeError, "Day 5 preflight"):
-                runner.main(["--execution-id", TEST_EXECUTION_ID])
-        pilot.assert_not_called()
-
 
 if __name__ == "__main__":
     unittest.main()

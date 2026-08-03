@@ -132,8 +132,8 @@ checked diagnostic per case, compares every audit metric, recomputes summaries,
 verifies manifest hashes, and fails closed on malformed or coordinatedly
 changed evidence. Power evidence is cross-platform, anonymous, and fail-closed:
 Linux `not_applicable` is used only after a successful sysfs scan confirms that
-no battery exists. The formal CLI remains disabled and no formal Week 11
-execution has run. The Day 5 read-only preflight now additionally requires AC
+no battery exists. The Week 11 execution entry is wired but has not been run;
+the Day 5 read-only preflight additionally requires AC
 power for battery-backed systems; `charging` and `full` are accepted directly,
 while `discharging` requires at least 50% battery and disabled low-power mode.
 On macOS, low-power status is read only from the active `pmset` profile and
@@ -345,7 +345,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 485 tests
+Ran 488 tests
 OK
 ```
 
@@ -459,9 +459,9 @@ Important project documents:
 
 Immediate next task:
 
-- review the W11D5 final read-only preflight checkpoint;
+- review the W11D6 execution and archival wiring;
 - keep the historical v1/v2 and planned execution directories absent;
-- do not enable or execute the formal pilot before W11D5 review passes;
+- do not execute the single pilot before the W11D6 wiring review passes;
 - keep recognition separate from valid-input paper sorting;
 - do not treat the ordinary-list pilot as a linear-time claim.
 

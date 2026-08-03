@@ -482,15 +482,15 @@ Implementation verification before the final clean/pushed preflight:
 
 ```text
 tests/test_run_week11_pilot.py:
-    Ran 64 tests
+    Ran 67 tests
     OK
 
 runner + validator focused suite:
-    Ran 85 tests
+    Ran 88 tests
     OK
 
 python -m unittest discover -s tests:
-    Ran 485 tests
+    Ran 488 tests
     OK
 
 python -m compileall -q src experiments tests:
@@ -514,14 +514,26 @@ Week 9 recognition evidence:
     rows = 180 / 60 / 42
 ```
 
-The final command must be run only after this checkpoint is committed and
-pushed, because the Git gate intentionally rejects a dirty or unpushed tree.
-
-The frozen pilot cannot run until this gate is executed and formally approved.
+The final read-only preflight passed against the clean pushed checkpoint with
+`ready = true` and one advisory load warning. No output directory was created.
 
 ## Day 6: Execute and Archive One Pilot
 
-Status: blocked by the Day 5 gate.
+Status: execution and archival wiring complete; awaiting review before the
+single real pilot.
+
+- [x] recaptured Git, power, low-power mode, load, and disk immediately before
+  evidence initialization;
+- [x] reused the `execution_stage = pilot` readiness policy;
+- [x] prewrote and revalidated `config.json` and `environment.json` before any
+  case generation, warm-up, or timed call;
+- [x] wired the frozen in-memory pipeline to exclusive CSV writes and a
+  SHA-256 manifest;
+- [x] wired the independent fail-closed validator after archival;
+- [x] preserved partial or failed evidence and prohibited execution-ID reuse;
+- [x] tested the complete control flow with stubbed timing in temporary
+  directories only;
+- [ ] execute `week11_pilot_v1__run001` exactly once after this wiring review.
 
 ## Day 7: Analysis and Week 12 Gate
 
@@ -532,6 +544,6 @@ Status: blocked by validated Day 6 evidence.
 Week 11 Day 1, the repaired Day 2 framework, the historical Day 2.5 migration,
 Day 3 timing control flow, and the approved Day 4 validator are complete.
 The active protocol is machine-independent; each run records an anonymous
-benchmark environment and explicit execution ID. W11D5 preflight
-implementation now awaits execution against a clean pushed checkpoint and
-review. No formal Week 11 execution has run.
+benchmark environment and explicit execution ID. W11D5 preflight is approved
+and passed with an advisory load warning. W11D6 execution wiring awaits review.
+No formal Week 11 execution has run.

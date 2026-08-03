@@ -1,6 +1,7 @@
 """Build and preflight executions of the frozen Week 11 protocol."""
 
 import argparse
+import csv
 import gc
 import hashlib
 import json
@@ -64,6 +65,14 @@ EVIDENCE_FILENAMES = (
     "manifest.json",
     "validation_report.json",
 )
+MANIFEST_FILE_ATTRIBUTES = {
+    "raw": "raw_csv",
+    "case_summary": "case_summary_csv",
+    "group_summary": "group_summary_csv",
+    "case_audit": "case_audit_csv",
+    "config": "config_json",
+    "environment": "environment_json",
+}
 POWER_STATUS_FIELDS = (
     "source",
     "status",
@@ -1656,6 +1665,95 @@ def initialize_evidence_directory(
     }
 
 
+def _write_csv_exclusive(path, fieldnames, rows):
+    for row_number, row in enumerate(rows, start=1):
+        if not isinstance(row, dict) or set(row) != set(fieldnames):
+            raise ValueError(
+                f"CSV row {row_number} does not match {path.name} fields"
+            )
+    with path.open("x", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def _file_sha256(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def write_pilot_evidence_products(
+    paths,
+    products,
+    environment_record,
+    protocol=WEEK11_EXPERIMENT_PROTOCOL,
+):
+    """Write measured products and their manifest without overwriting files."""
+    validate_week11_experiment_protocol(protocol)
+    expected_product_keys = {
+        "raw_rows",
+        "case_summary_rows",
+        "group_summary_rows",
+        "case_audit_rows",
+    }
+    if not isinstance(products, dict) or set(products) != expected_product_keys:
+        raise ValueError("pilot products do not match the output contract")
+    expected_counts = {
+        "raw": protocol.raw_row_count,
+        "case_summary": protocol.case_summary_row_count,
+        "group_summary": protocol.group_summary_row_count,
+        "case_audit": protocol.case_count,
+    }
+    rows_by_label = {
+        "raw": products["raw_rows"],
+        "case_summary": products["case_summary_rows"],
+        "group_summary": products["group_summary_rows"],
+        "case_audit": products["case_audit_rows"],
+    }
+    actual_counts = {
+        label: len(rows) for label, rows in rows_by_label.items()
+    }
+    if actual_counts != expected_counts:
+        raise RuntimeError(
+            "Week 11 evidence row counts changed: "
+            f"expected={expected_counts}, actual={actual_counts}"
+        )
+    if not paths.config_json.is_file() or not paths.environment_json.is_file():
+        raise RuntimeError("config and environment must exist before timing output")
+    fieldnames_by_label = {
+        "raw": RAW_FIELDS,
+        "case_summary": CASE_SUMMARY_FIELDS,
+        "group_summary": GROUP_SUMMARY_FIELDS,
+        "case_audit": CASE_AUDIT_FIELDS,
+    }
+    for label in ("raw", "case_summary", "group_summary", "case_audit"):
+        path = getattr(paths, MANIFEST_FILE_ATTRIBUTES[label])
+        _write_csv_exclusive(
+            path,
+            fieldnames_by_label[label],
+            rows_by_label[label],
+        )
+
+    manifest_files = {}
+    for label, attribute in MANIFEST_FILE_ATTRIBUTES.items():
+        path = getattr(paths, attribute)
+        manifest_files[label] = {
+            "path": path.name,
+            "sha256": _file_sha256(path),
+        }
+    manifest = {
+        "protocol_version": protocol.protocol_version,
+        "execution_id": environment_record["execution_id"],
+        "source_commit": environment_record["source_commit"],
+        "row_counts": actual_counts,
+        "files": manifest_files,
+    }
+    _write_json_exclusive(paths.manifest_json, manifest)
+    return {
+        "row_counts": actual_counts,
+        "manifest": manifest,
+    }
+
+
 def initialize_formal_evidence(
     project_root=PROJECT_ROOT,
     *,
@@ -1685,6 +1783,66 @@ def initialize_formal_evidence(
         environment,
         protocol,
     )
+
+
+def _validate_written_outputs(run_dir):
+    from validate_week11_pilot_outputs import validate_outputs
+
+    return validate_outputs(run_dir)
+
+
+def execute_week11_pilot(
+    project_root=PROJECT_ROOT,
+    *,
+    execution_id,
+    protocol=WEEK11_EXPERIMENT_PROTOCOL,
+):
+    """Initialize, execute, archive, and validate one frozen pilot run."""
+    validate_week11_experiment_protocol(protocol)
+    validate_execution_id(execution_id)
+    paths = build_pilot_paths(project_root, execution_id=execution_id)
+
+    # This call recaptures Git, power, load, and disk immediately before the
+    # evidence reservation and before any case generation or timed call.
+    initialize_formal_evidence(
+        project_root,
+        execution_id=execution_id,
+        protocol=protocol,
+    )
+    config_record = _read_json_object(paths.config_json)
+    environment_record = _read_json_object(paths.environment_json)
+    if config_record != protocol_to_dict(protocol):
+        raise RuntimeError("prewritten config changed before pilot execution")
+    validate_timing_readiness_record(
+        environment_record,
+        environment_record.get("timing_readiness"),
+        expected_stage="pilot",
+    )
+
+    products = run_pilot_in_memory(
+        build_execution_config(protocol),
+        execution_id,
+    )
+    archive = write_pilot_evidence_products(
+        paths,
+        products,
+        environment_record,
+        protocol,
+    )
+    report = _validate_written_outputs(paths.run_dir)
+    if report.get("valid") is not True:
+        raise RuntimeError(
+            "Week 11 pilot evidence failed validation: "
+            + "; ".join(report.get("errors", []))
+        )
+    return {
+        "status": "validated_pilot_complete",
+        "execution_id": execution_id,
+        "run_dir": str(paths.run_dir),
+        "timing_readiness": environment_record["timing_readiness"],
+        "row_counts": archive["row_counts"],
+        "validation_valid": True,
+    }
 
 
 def run_preflight(
@@ -1760,16 +1918,11 @@ def parse_args(argv=None):
 
 def main(argv=None):
     args = parse_args(argv)
-    if not args.preflight_only:
-        raise RuntimeError(
-            "formal Week 11 execution is disabled until the Day 5 preflight"
-        )
-    print(
-        json.dumps(
-            run_preflight(execution_id=args.execution_id),
-            indent=2,
-        )
-    )
+    if args.preflight_only:
+        result = run_preflight(execution_id=args.execution_id)
+    else:
+        result = execute_week11_pilot(execution_id=args.execution_id)
+    print(json.dumps(result, indent=2))
 
 
 if __name__ == "__main__":
