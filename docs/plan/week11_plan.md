@@ -2,8 +2,8 @@
 
 Last updated: 2026-08-03
 
-Status: W11D6 wiring approved; run001 and run002 retired before evidence
-initialization; exact `finishing charge` parser correction awaits review.
+Status: W11D6 wiring and parser correction approved; run003 read-only preflight
+passed and awaits review before formal execution.
 
 ## Core Goal
 
@@ -432,9 +432,8 @@ Seal Week 11 pilot preflight gates
 
 ## Day 6: Execute and Archive One Pilot
 
-Status: wiring approved; run001 and run002 retired before evidence
-initialization. The run002 parser gap is corrected and awaits review before a
-new attempt.
+Status: wiring and parser correction approved; run001 and run002 are retired.
+The run003 read-only preflight passed and awaits review before formal execution.
 
 The original command was attempted exactly once:
 
@@ -464,10 +463,16 @@ evidence directory was created. The record is:
 docs/analysis/week11_pilot_run002_failure.md
 ```
 
-`run002` is retired. The parser now maps only the exact `finishing charge`
-phrase to normalized `charging`; near matches remain `unknown`. Focused and
-full regression tests pass, but the correction and any future `run003` attempt
-require review first.
+`run002` is retired. The approved parser maps only the exact `finishing charge`
+phrase to normalized `charging`; near matches remain `unknown`. The subsequent
+`run003` read-only preflight returned `ready_not_executed` with clean timing
+quality and no warnings. The formal command still requires review first.
+
+Preflight record:
+
+```text
+docs/analysis/week11_pilot_run003_preflight.md
+```
 
 Required result:
 

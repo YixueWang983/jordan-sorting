@@ -459,9 +459,9 @@ Important project documents:
 
 Immediate next task:
 
-- review the exact `finishing charge -> charging` parser correction;
+- review the successful `run003` read-only preflight record;
 - keep `run001` and `run002` retired and their output directories absent;
-- keep `run003` unused until that correction checkpoint is approved;
+- keep the formal `run003` pilot unexecuted until preflight review approval;
 - keep recognition separate from valid-input paper sorting;
 - do not treat the ordinary-list pilot as a linear-time claim.
 
