@@ -1,0 +1,33 @@
+{
+  "algorithm_order_seed": 20268642,
+  "algorithms": [
+    "python_sort",
+    "simplified_jordan_reference",
+    "simplified_jordan_paper_ordinary_list"
+  ],
+  "audit_execution_mode": "checked",
+  "case_count": 35,
+  "case_order_seed": 20262266,
+  "case_summary_row_count": 105,
+  "group_summary_row_count": 45,
+  "measured_runs": 10,
+  "paper_execution_mode": "minimal",
+  "protocol_version": "week11_pilot_v1",
+  "randomized_cases": 5,
+  "raw_row_count": 1050,
+  "seed": 20260723,
+  "sizes": [
+    32,
+    64,
+    128,
+    256,
+    512
+  ],
+  "status": "frozen",
+  "valid_families": [
+    "flat_valid",
+    "nested_valid",
+    "incremental_valid"
+  ],
+  "warmup_runs": 3
+}

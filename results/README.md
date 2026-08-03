@@ -714,19 +714,29 @@ Inspect the machine-independent contract with:
 python experiments/week11_experiment_protocol.py
 ```
 
-One planned execution uses:
+The first two execution IDs were retired before evidence initialization:
 
 ```text
-execution_id = week11_pilot_v1__run001
-output = results/runs/week11_pilot_v1__run001/
+week11_pilot_v1__run001
+week11_pilot_v1__run002
 ```
 
-The protocol expects `1,050` raw rows, `105` case-summary rows, and `45`
-group-summary rows. A rerun uses a different execution ID and
-`environment.json`, not a different protocol version. The execution ID is
-always supplied explicitly; there is no machine-named default. Anonymous
-benchmark metadata is recorded, but concrete device identity is not. These
-files do not exist yet and must not be described as Week 10 results.
+The validated pilot evidence is archived at:
+
+```text
+results/runs/week11_pilot_v1__run003/
+```
+
+It contains `1,050` raw rows, `105` case-summary rows, `45` group-summary
+rows, and `35` checked case-audit rows. Its independent validator reports
+`valid = true`, with zero timing errors, incorrect outputs, or failed audits.
+The manifest records source commit `01f6480` and SHA-256 hashes for the raw
+data, summaries, protocol config, environment, and audit evidence.
+
+A future rerun uses a different execution ID and `environment.json`, not a
+different protocol version. The execution ID is always supplied explicitly;
+there is no machine-named default. Anonymous benchmark metadata is recorded,
+but concrete device identity is not.
 
 Power metadata is also platform-neutral: macOS uses `pmset`, Linux uses sysfs,
 and systems without a battery record `not_applicable`. The audit CSV is

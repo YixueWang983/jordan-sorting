@@ -1,0 +1,37 @@
+{
+  "execution_id": "week11_pilot_v1__run003",
+  "files": {
+    "case_audit": {
+      "path": "case_audit.csv",
+      "sha256": "8a13154279cf7862c3d953c5089a9a43836f4c4b3dc51c63bcc494cd4055ff56"
+    },
+    "case_summary": {
+      "path": "case_summary.csv",
+      "sha256": "97774a5e6bf33fcfab7afdd8f00aa0041b7fde7954da89324741e86d14dfbe33"
+    },
+    "config": {
+      "path": "config.json",
+      "sha256": "74b50fc0a463e51587634c7e039360343cbb570b013ac0f906ef123d41a276fe"
+    },
+    "environment": {
+      "path": "environment.json",
+      "sha256": "06271200cc5898c4d94ee535044a280579c0aad36badad09ab8a72cca9a5f36e"
+    },
+    "group_summary": {
+      "path": "group_summary.csv",
+      "sha256": "d7e665f6cbbe3c0302d29f2932840596ea0b5de5e151192afa17cc26311373a4"
+    },
+    "raw": {
+      "path": "raw.csv",
+      "sha256": "94bfdcc2a63a50590f2e1c9f94844fa02bf7a36e11857faf6d94e2ade992a0a5"
+    }
+  },
+  "protocol_version": "week11_pilot_v1",
+  "row_counts": {
+    "case_audit": 35,
+    "case_summary": 105,
+    "group_summary": 45,
+    "raw": 1050
+  },
+  "source_commit": "01f6480fe179dcbe0f99486be86384b61dd4121f"
+}

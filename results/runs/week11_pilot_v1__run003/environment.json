@@ -1,0 +1,60 @@
+{
+  "audit_execution_mode": "checked",
+  "available_disk_bytes": 62759849984,
+  "benchmark_environment": {
+    "architecture": "arm64",
+    "logical_cpu_count": 10,
+    "memory_gb": 16.0,
+    "os_build": "25G72",
+    "os_name": "macOS",
+    "os_version": "26.6",
+    "processor_class": "Apple M4",
+    "python_implementation": "CPython",
+    "python_version": "3.12.4"
+  },
+  "captured_before_timing": true,
+  "execution_id": "week11_pilot_v1__run003",
+  "git_dirty": false,
+  "head_matches_origin_main": true,
+  "load_command_success": true,
+  "load_snapshot": "21:32  up 22:10, 2 users, load averages: 2.19 2.02 1.92",
+  "output_dir": "results/runs/week11_pilot_v1__run003",
+  "paper_execution_mode": "minimal",
+  "perf_counter_resolution": 4.166666666666667e-08,
+  "power_status": {
+    "battery_percent": 100,
+    "battery_state": "full",
+    "low_power_mode": false,
+    "on_ac_power": true,
+    "source": "pmset",
+    "status": "available"
+  },
+  "protocol_version": "week11_pilot_v1",
+  "source_commit": "01f6480fe179dcbe0f99486be86384b61dd4121f",
+  "timestamp_utc": "2026-08-03T19:32:04.447429+00:00",
+  "timing_readiness": {
+    "available_disk_bytes": 62759849984,
+    "disk_ready": true,
+    "execution_stage": "pilot",
+    "load_low": true,
+    "load_stable": true,
+    "load_status": {
+      "fifteen_minute_load": 1.919921875,
+      "five_minute_load": 2.01611328125,
+      "five_minute_load_per_cpu": 0.201611328125,
+      "logical_cpu_count": 10,
+      "low": true,
+      "max_allowed_delta_per_cpu": 0.1,
+      "max_allowed_load_per_cpu": 0.25,
+      "one_five_delta_per_cpu": 0.017822265625,
+      "one_minute_load": 2.1943359375,
+      "one_minute_load_per_cpu": 0.21943359375,
+      "stable": true
+    },
+    "minimum_disk_bytes": 1073741824,
+    "power_ready": true,
+    "quality": "clean",
+    "ready": true,
+    "warnings": []
+  }
+}

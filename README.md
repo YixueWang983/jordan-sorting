@@ -459,9 +459,9 @@ Important project documents:
 
 Immediate next task:
 
-- review the successful `run003` read-only preflight record;
+- review the archived, independently validated `run003` pilot evidence;
 - keep `run001` and `run002` retired and their output directories absent;
-- keep the formal `run003` pilot unexecuted until preflight review approval;
+- do not start W11D7 analysis before the evidence review passes;
 - keep recognition separate from valid-input paper sorting;
 - do not treat the ordinary-list pilot as a linear-time claim.
 

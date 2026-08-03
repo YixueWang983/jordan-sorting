@@ -29,7 +29,7 @@ status:
 execution IDs:
     week11_pilot_v1__run001 = retired, no evidence created
     week11_pilot_v1__run002 = retired, read-only power preflight failed
-    week11_pilot_v1__run003 = read-only preflight passed; reserved for review
+    week11_pilot_v1__run003 = validated pilot complete; evidence archived
 
 expected rows:
     raw = 1,050
@@ -521,8 +521,7 @@ The final read-only preflight passed against the clean pushed checkpoint with
 
 ## Day 6: Execute and Archive One Pilot
 
-Status: wiring and parser correction approved; run003 read-only preflight passed
-and awaits review before the single formal pilot.
+Status: complete; run003 executed exactly once and independently validated.
 
 - [x] recaptured Git, power, low-power mode, load, and disk immediately before
   evidence initialization;
@@ -557,9 +556,18 @@ and awaits review before the single formal pilot.
 - [x] obtained `ready_not_executed`, clean timing quality, and no warnings;
 - [x] confirmed `formal_execution_enabled = false` and the run directory is
   absent;
-- [ ] review and approve the real run003 preflight checkpoint;
-- [ ] execute the formal run003 pilot exactly once after approval;
-- [ ] produce and independently validate one complete pilot evidence set.
+- [x] received approval for the real run003 preflight checkpoint;
+- [x] executed the formal run003 pilot exactly once;
+- [x] recaptured clean Git state and clean timing readiness at the formal
+  entry;
+- [x] produced 1,050 raw, 105 case-summary, 45 group-summary, and 35 case-audit
+  rows;
+- [x] recorded zero raw errors, incorrect outputs, failed audits, and case
+  summary errors;
+- [x] completed the runner's built-in validation with `valid = true`;
+- [x] reran the independent validator and obtained `valid = true`;
+- [x] archived config, environment, four CSVs, manifest, and validation report;
+- [x] preserved source commit `01f6480` and manifest SHA-256 evidence.
 
 Failure record:
 
@@ -571,7 +579,7 @@ docs/analysis/week11_pilot_run003_preflight.md
 
 ## Day 7: Analysis and Week 12 Gate
 
-Status: blocked pending run003 preflight review and validated Day 6 evidence.
+Status: ready after review of the archived Day 6 evidence; analysis not started.
 
 ## Current Status
 
@@ -582,6 +590,7 @@ benchmark environment and explicit execution ID. W11D5 preflight and W11D6
 wiring are approved. `run001` failed during sandboxed physical-memory capture.
 The subsequent read-only `run002` preflight failed closed because macOS reported
 `finishing charge`. The approved exact-state correction maps that phrase to
-`charging` while rejecting near matches. The `run003` read-only preflight now
-passes with clean timing readiness and no warnings. Its directory remains
-absent, the formal pilot has not run, and W11D7 remains blocked pending review.
+`charging` while rejecting near matches. `run003` then passed preflight and
+completed exactly once with clean timing readiness. The archived evidence has
+1,050 / 105 / 45 / 35 rows, zero observed errors or correctness failures, and
+an independent `valid = true` report. W11D7 analysis has not started.
