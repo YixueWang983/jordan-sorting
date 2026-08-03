@@ -459,11 +459,11 @@ Important project documents:
 
 Immediate next task:
 
-- review the recorded W11D6 `run001` pre-evidence failure;
-- keep `week11_pilot_v1__run001` retired and its output directory absent;
-- select a new execution ID only after the failure review;
-- run the next attempt from a normal terminal where the required environment
-  probes are permitted;
+- review the recorded W11D6 `run002` power-preflight failure;
+- keep `run001` and `run002` retired and their output directories absent;
+- decide whether to support macOS `finishing charge` as an accepted power
+  state, with focused tests;
+- select `run003` only after that correction checkpoint is reviewed;
 - keep recognition separate from valid-input paper sorting;
 - do not treat the ordinary-list pilot as a linear-time claim.
 

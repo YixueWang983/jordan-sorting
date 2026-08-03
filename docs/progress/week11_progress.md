@@ -24,11 +24,12 @@ protocol_version:
     week11_pilot_v1
 
 status:
-    frozen; run001 retired after a pre-evidence environment-capture failure
+    frozen; run001 and run002 retired before evidence initialization
 
 execution IDs:
     week11_pilot_v1__run001 = retired, no evidence created
-    next ID = pending failure review; expected run002
+    week11_pilot_v1__run002 = retired, read-only power preflight failed
+    next ID = pending failure review; expected run003
 
 expected rows:
     raw = 1,050
@@ -520,8 +521,8 @@ The final read-only preflight passed against the clean pushed checkpoint with
 
 ## Day 6: Execute and Archive One Pilot
 
-Status: wiring approved; the first execution attempt failed before evidence
-initialization and is awaiting failure review.
+Status: wiring approved; run001 and run002 failed before evidence initialization
+and W11D6 is awaiting the run002 failure review.
 
 - [x] recaptured Git, power, low-power mode, load, and disk immediately before
   evidence initialization;
@@ -539,18 +540,24 @@ initialization and is awaiting failure review.
 - [x] confirmed no run directory, case generation, diagnostics, warm-up, or
   timing occurred;
 - [x] retired `week11_pilot_v1__run001` permanently;
-- [ ] select a new execution ID only after the failure record is reviewed;
+- [x] ran the `run002` read-only preflight exactly once outside the sandbox;
+- [x] recorded its fail-closed rejection of macOS `finishing charge`;
+- [x] confirmed no `run002` directory or timing evidence was created;
+- [x] retired `week11_pilot_v1__run002` permanently;
+- [ ] review and, if approved, correct the power-state parser with tests;
+- [ ] select a new execution ID only after that checkpoint is reviewed;
 - [ ] produce and independently validate one complete pilot evidence set.
 
 Failure record:
 
 ```text
 docs/analysis/week11_pilot_run001_failure.md
+docs/analysis/week11_pilot_run002_failure.md
 ```
 
 ## Day 7: Analysis and Week 12 Gate
 
-Status: blocked pending failure review and validated Day 6 evidence.
+Status: blocked pending run002 failure review and validated Day 6 evidence.
 
 ## Current Status
 
@@ -558,6 +565,8 @@ Week 11 Day 1, the repaired Day 2 framework, the historical Day 2.5 migration,
 Day 3 timing control flow, and the approved Day 4 validator are complete.
 The active protocol is machine-independent; each run records an anonymous
 benchmark environment and explicit execution ID. W11D5 preflight and W11D6
-wiring are approved. The single `run001` attempt failed during physical-memory
-capture in the Codex sandbox, before evidence initialization or timing. The ID
-is retired, no output directory exists, and W11D7 remains blocked.
+wiring are approved. `run001` failed during sandboxed physical-memory capture.
+The subsequent read-only `run002` preflight failed closed because macOS reported
+`finishing charge`, which is not covered by the current exact-state parser.
+Both IDs are retired, neither output directory exists, and W11D7 remains
+blocked.
