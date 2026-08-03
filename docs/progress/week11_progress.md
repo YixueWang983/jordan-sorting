@@ -1,6 +1,6 @@
 # Week 11 Progress
 
-Last updated: 2026-08-02
+Last updated: 2026-08-03
 
 ## Goal
 
@@ -24,10 +24,11 @@ protocol_version:
     week11_pilot_v1
 
 status:
-    frozen; no formal execution
+    frozen; run001 retired after a pre-evidence environment-capture failure
 
-planned execution_id:
-    week11_pilot_v1__run001
+execution IDs:
+    week11_pilot_v1__run001 = retired, no evidence created
+    next ID = pending failure review; expected run002
 
 expected rows:
     raw = 1,050
@@ -519,8 +520,8 @@ The final read-only preflight passed against the clean pushed checkpoint with
 
 ## Day 6: Execute and Archive One Pilot
 
-Status: execution and archival wiring complete; awaiting review before the
-single real pilot.
+Status: wiring approved; the first execution attempt failed before evidence
+initialization and is awaiting failure review.
 
 - [x] recaptured Git, power, low-power mode, load, and disk immediately before
   evidence initialization;
@@ -533,17 +534,30 @@ single real pilot.
 - [x] preserved partial or failed evidence and prohibited execution-ID reuse;
 - [x] tested the complete control flow with stubbed timing in temporary
   directories only;
-- [ ] execute `week11_pilot_v1__run001` exactly once after this wiring review.
+- [x] attempted `week11_pilot_v1__run001` exactly once after wiring review;
+- [x] recorded the sandbox-blocked physical-memory capture failure;
+- [x] confirmed no run directory, case generation, diagnostics, warm-up, or
+  timing occurred;
+- [x] retired `week11_pilot_v1__run001` permanently;
+- [ ] select a new execution ID only after the failure record is reviewed;
+- [ ] produce and independently validate one complete pilot evidence set.
+
+Failure record:
+
+```text
+docs/analysis/week11_pilot_run001_failure.md
+```
 
 ## Day 7: Analysis and Week 12 Gate
 
-Status: blocked by validated Day 6 evidence.
+Status: blocked pending failure review and validated Day 6 evidence.
 
 ## Current Status
 
 Week 11 Day 1, the repaired Day 2 framework, the historical Day 2.5 migration,
 Day 3 timing control flow, and the approved Day 4 validator are complete.
 The active protocol is machine-independent; each run records an anonymous
-benchmark environment and explicit execution ID. W11D5 preflight is approved
-and passed with an advisory load warning. W11D6 execution wiring awaits review.
-No formal Week 11 execution has run.
+benchmark environment and explicit execution ID. W11D5 preflight and W11D6
+wiring are approved. The single `run001` attempt failed during physical-memory
+capture in the Codex sandbox, before evidence initialization or timing. The ID
+is retired, no output directory exists, and W11D7 remains blocked.

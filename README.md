@@ -459,9 +459,11 @@ Important project documents:
 
 Immediate next task:
 
-- review the W11D6 execution and archival wiring;
-- keep the historical v1/v2 and planned execution directories absent;
-- do not execute the single pilot before the W11D6 wiring review passes;
+- review the recorded W11D6 `run001` pre-evidence failure;
+- keep `week11_pilot_v1__run001` retired and its output directory absent;
+- select a new execution ID only after the failure review;
+- run the next attempt from a normal terminal where the required environment
+  probes are permitted;
 - keep recognition separate from valid-input paper sorting;
 - do not treat the ordinary-list pilot as a linear-time claim.
 

@@ -1,8 +1,9 @@
 # Week 11 Plan: Paper Ordinary-List Sorting Integration Pilot
 
-Last updated: 2026-08-02
+Last updated: 2026-08-03
 
-Status: W11D5 preflight implemented; awaiting review; pilot not executed.
+Status: W11D6 wiring approved; run001 failed before evidence initialization;
+failure review required before a new execution ID is used.
 
 ## Core Goal
 
@@ -82,10 +83,12 @@ performance-relevant metadata appears only in the nested
 equal the protocol. Host names, serial numbers, hardware UUIDs, account data,
 and device nicknames are not collected.
 
-The planned execution ID is `week11_pilot_v1__run001`. A rerun uses a new
-execution ID but the same `week11_pilot_v1` protocol. Absolute runtimes from
-different benchmark environments remain separate; within-execution ratios and
-cross-environment trend consistency may be compared.
+The original execution ID `week11_pilot_v1__run001` is retired after a
+pre-evidence environment-capture failure. Any later attempt must use a new
+execution ID, expected to be `week11_pilot_v1__run002`, while retaining the
+same `week11_pilot_v1` protocol. Absolute runtimes from different benchmark
+environments remain separate; within-execution ratios and cross-environment
+trend consistency may be compared.
 
 ## Runner Responsibility
 
@@ -427,18 +430,27 @@ Seal Week 11 pilot preflight gates
 
 ## Day 6: Execute and Archive One Pilot
 
-Status: execution and archival wiring implemented; awaiting review before the
-single real pilot is run.
+Status: wiring approved; run001 attempted once and retired after failing before
+evidence initialization. A new attempt requires failure review first.
 
-Run exactly once:
+The original command was attempted exactly once:
 
 ```bash
 python experiments/run_week11_pilot.py \
   --execution-id week11_pilot_v1__run001
-
-python experiments/validate_week11_pilot_outputs.py \
-  --run-dir results/runs/week11_pilot_v1__run001
 ```
+
+It failed while the Codex sandbox blocked `sysctl -n hw.memsize`. No run
+directory, cases, diagnostics, warm-up, or timing were created. The immutable
+record is:
+
+```text
+docs/analysis/week11_pilot_run001_failure.md
+```
+
+After review, a future attempt must use a new execution ID and should run from
+a normal terminal environment in which the required environment probes work.
+The independent validator was not run because no evidence directory existed.
 
 Required result:
 
