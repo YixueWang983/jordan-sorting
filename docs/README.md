@@ -130,8 +130,26 @@ Current files:
   contamination evidence, and Week 11 handoff.
 
 - `week11_progress.md`
-  Week 11 daily execution record through the independent Day 4 evidence
-  validator, with no formal execution.
+  Week 11 daily execution record through the archived pilot, reproducible
+  analysis, and frozen Week 12 gate.
+
+- `week11_summary.md`
+  Week 11 validated run003 evidence, runtime findings, limitations, process
+  decision, and Week 12 handoff.
+
+## Analysis Documents
+
+Path:
+
+```text
+docs/analysis/
+```
+
+Current Week 11 analysis:
+
+- `week11_pilot_analysis.md`
+  Reproducible runtime, ratio, variability, structure, and checked-counter
+  analysis derived from immutable run003 evidence.
 
 ## Plan Documents
 

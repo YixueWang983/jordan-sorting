@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="480.0" y="31" font-family="Arial, sans-serif" font-size="19" text-anchor="middle" font-weight="bold" fill="#202020">Week 11 median case runtime by input size</text>
+<text x="480.0" y="53" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" fill="#202020">Equal-weighted case medians; logarithmic runtime axis</text>
+<line x1="92" y1="482.00" x2="690" y2="482.00" stroke="#dddddd"/>
+<text x="83" y="486.0" font-family="Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" fill="#202020">0.000221 ms</text>
+<line x1="92" y1="400.00" x2="690" y2="400.00" stroke="#dddddd"/>
+<text x="83" y="404.0" font-family="Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" fill="#202020">0.00309 ms</text>
+<line x1="92" y1="318.00" x2="690" y2="318.00" stroke="#dddddd"/>
+<text x="83" y="322.00000000000006" font-family="Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" fill="#202020">0.0433 ms</text>
+<line x1="92" y1="236.00" x2="690" y2="236.00" stroke="#dddddd"/>
+<text x="83" y="240.00000000000003" font-family="Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" fill="#202020">0.608 ms</text>
+<line x1="92" y1="154.00" x2="690" y2="154.00" stroke="#dddddd"/>
+<text x="83" y="158.0" font-family="Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" fill="#202020">8.52 ms</text>
+<line x1="92" y1="72.00" x2="690" y2="72.00" stroke="#dddddd"/>
+<text x="83" y="76.0" font-family="Arial, sans-serif" font-size="12" text-anchor="end" font-weight="normal" fill="#202020">119 ms</text>
+<text x="92.0" y="509" font-family="Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#202020">32</text>
+<text x="241.5" y="509" font-family="Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#202020">64</text>
+<text x="391.0" y="509" font-family="Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#202020">128</text>
+<text x="540.5" y="509" font-family="Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#202020">256</text>
+<text x="690.0" y="509" font-family="Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="normal" fill="#202020">512</text>
+<line x1="92" y1="72" x2="92" y2="482" stroke="#333333" stroke-width="1.5"/>
+<line x1="92" y1="482" x2="690" y2="482" stroke="#333333" stroke-width="1.5"/>
+<text x="391.0" y="538" font-family="Arial, sans-serif" font-size="13" text-anchor="middle" font-weight="bold" fill="#202020">Input size n</text>
+<text x="20" y="277.0" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="bold" fill="#202020" transform="rotate(-90 20 277.0)">Median runtime</text>
+<polyline points="92.00,442.32 241.50,424.26 391.00,404.11 540.50,384.44 690.00,361.24" fill="none" stroke="#3f6f4e" stroke-width="3"/>
+<circle cx="92.00" cy="442.32" r="4.5" fill="#3f6f4e" stroke="#ffffff"/>
+<circle cx="241.50" cy="424.26" r="4.5" fill="#3f6f4e" stroke="#ffffff"/>
+<circle cx="391.00" cy="404.11" r="4.5" fill="#3f6f4e" stroke="#ffffff"/>
+<circle cx="540.50" cy="384.44" r="4.5" fill="#3f6f4e" stroke="#ffffff"/>
+<circle cx="690.00" cy="361.24" r="4.5" fill="#3f6f4e" stroke="#ffffff"/>
+<line x1="718" y1="90" x2="745" y2="90" stroke="#3f6f4e" stroke-width="3"/>
+<text x="754" y="95" font-family="Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#202020">python_sort</text>
+<polyline points="92.00,273.43 241.50,237.14 391.00,197.52 540.50,156.14 690.00,111.68" fill="none" stroke="#2f6db0" stroke-width="3"/>
+<circle cx="92.00" cy="273.43" r="4.5" fill="#2f6db0" stroke="#ffffff"/>
+<circle cx="241.50" cy="237.14" r="4.5" fill="#2f6db0" stroke="#ffffff"/>
+<circle cx="391.00" cy="197.52" r="4.5" fill="#2f6db0" stroke="#ffffff"/>
+<circle cx="540.50" cy="156.14" r="4.5" fill="#2f6db0" stroke="#ffffff"/>
+<circle cx="690.00" cy="111.68" r="4.5" fill="#2f6db0" stroke="#ffffff"/>
+<line x1="718" y1="132" x2="745" y2="132" stroke="#2f6db0" stroke-width="3"/>
+<text x="754" y="137" font-family="Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#202020">simplified_jordan_reference</text>
+<polyline points="92.00,238.00 241.50,213.25 391.00,188.40 540.50,162.94 690.00,129.46" fill="none" stroke="#c0523b" stroke-width="3"/>
+<circle cx="92.00" cy="238.00" r="4.5" fill="#c0523b" stroke="#ffffff"/>
+<circle cx="241.50" cy="213.25" r="4.5" fill="#c0523b" stroke="#ffffff"/>
+<circle cx="391.00" cy="188.40" r="4.5" fill="#c0523b" stroke="#ffffff"/>
+<circle cx="540.50" cy="162.94" r="4.5" fill="#c0523b" stroke="#ffffff"/>
+<circle cx="690.00" cy="129.46" r="4.5" fill="#c0523b" stroke="#ffffff"/>
+<line x1="718" y1="174" x2="745" y2="174" stroke="#c0523b" stroke-width="3"/>
+<text x="754" y="179" font-family="Arial, sans-serif" font-size="11" text-anchor="start" font-weight="normal" fill="#202020">simplified_jordan_paper_ordinary_list</text>
+</svg>

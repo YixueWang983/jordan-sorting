@@ -1,0 +1,28 @@
+{
+  "case_runtime_rows": 105,
+  "counter_relationship_rows": 25,
+  "high_relative_iqr_rows": 5,
+  "high_relative_iqr_threshold": 0.25,
+  "maximum_relative_iqr": 0.3232026828757074,
+  "measured_call_total_seconds": 4.987387604,
+  "overall_case_median_ratios": {
+    "paper/python": 1076.4578163771712,
+    "paper/reference": 1.3542391532476235,
+    "reference/python": 779.3170910423155
+  },
+  "ratio_rows": 72,
+  "row_counts": {
+    "case_audit": 35,
+    "case_summary": 105,
+    "group_summary": 45,
+    "raw": 1050
+  },
+  "runtime_by_family_rows": 9,
+  "runtime_by_family_size_rows": 45,
+  "runtime_by_size_rows": 15,
+  "source_commit": "01f6480fe179dcbe0f99486be86384b61dd4121f",
+  "source_run": "results/runs/week11_pilot_v1__run003",
+  "structure_relationship_rows": 15,
+  "validation_valid": true,
+  "wall_clock_elapsed_available": false
+}

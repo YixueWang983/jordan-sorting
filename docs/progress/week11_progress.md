@@ -579,18 +579,34 @@ docs/analysis/week11_pilot_run003_preflight.md
 
 ## Day 7: Analysis and Week 12 Gate
 
-Status: ready after review of the archived Day 6 evidence; analysis not started.
+Status: complete.
+
+- [x] added a read-only analysis script with a live validator gate;
+- [x] proved the archived run hashes remain unchanged during analysis;
+- [x] produced case, size, family, family-size, ratio, variability, structure,
+  and checked-counter summaries;
+- [x] generated deterministic runtime and runtime-ratio SVG figures;
+- [x] documented the measured-call total and the absence of a full wall-clock
+  field;
+- [x] recorded family imbalance, timer-noise, sample-size, backend, and
+  non-linearity limitations;
+- [x] froze `week12_formal_sorting_v1` with `3,600 / 180 / 45 / 60` expected
+  rows and `frozen_not_executed` status;
+- [x] bound the Week 12 gate to the exact archived run003 manifest SHA-256;
+- [x] kept recognition separate and did not execute Week 12;
+- [x] documented advisory preflight and authoritative formal-entry checks.
+- [x] passed 15 focused W11D7 tests and 506 full tests;
+- [x] passed 2,074 exhaustive valid permutations and 48 fixed generated cases;
+- [x] revalidated Week 9 sorting/recognition and Week 10 archived evidence;
+- [x] passed `compileall`, SVG XML parsing, and diff checks.
 
 ## Current Status
 
-Week 11 Day 1, the repaired Day 2 framework, the historical Day 2.5 migration,
-Day 3 timing control flow, and the approved Day 4 validator are complete.
-The active protocol is machine-independent; each run records an anonymous
-benchmark environment and explicit execution ID. W11D5 preflight and W11D6
-wiring are approved. `run001` failed during sandboxed physical-memory capture.
-The subsequent read-only `run002` preflight failed closed because macOS reported
-`finishing charge`. The approved exact-state correction maps that phrase to
-`charging` while rejecting near matches. `run003` then passed preflight and
-completed exactly once with clean timing readiness. The archived evidence has
-1,050 / 105 / 45 / 35 rows, zero observed errors or correctness failures, and
-an independent `valid = true` report. W11D7 analysis has not started.
+Week 11 is complete. The active protocol is machine-independent; each run
+records an anonymous benchmark environment and explicit execution ID. `run001`
+and `run002` are permanently retired after documented pre-evidence failures.
+`run003` completed exactly once and is archived with 1,050 / 105 / 45 / 35
+rows, zero observed errors or correctness failures, and an independent
+`valid = true` report. W11D7 analysis is reproducible from that immutable
+archive. The separate Week 12 valid-input sorting gate is frozen but has not
+been executed.

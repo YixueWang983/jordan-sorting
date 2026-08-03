@@ -1,0 +1,11 @@
+{
+  "errors": [],
+  "row_counts": {
+    "case_audit": 35,
+    "case_summary": 105,
+    "group_summary": 45,
+    "raw": 1050
+  },
+  "run_dir": "results/runs/week11_pilot_v1__run003",
+  "valid": true
+}

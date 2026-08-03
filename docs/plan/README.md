@@ -54,6 +54,12 @@ This folder stores the approved thesis scope and research-question documents.
   validator, formal preflight, single 1,050-row pilot, evidence archive,
   analysis, and Week 12 gate freeze.
 
+The frozen, unexecuted Week 12 valid-input sorting choices are in:
+
+```text
+experiments/week12_experiment_gate.py
+```
+
 The canonical machine-independent Week 11 integration-pilot values are in:
 
 ```text

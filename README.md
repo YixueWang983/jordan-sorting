@@ -121,27 +121,17 @@ one oracle certification and one complete `checked` diagnostic per exact case
 outside timing. The machine-independent Week 11 integration-pilot protocol is
 frozen but has not been executed.
 
-Week 11 now separates the machine-independent protocol from per-execution
-identity, anonymous benchmark metadata, output paths, and source commits. The
-unexecuted v1 M1 and v2 M4 gate files remain historical records. The runner
-constructs and checks all 35 cases before any warm-up, records one checked
-audit per case, times the three protocol algorithms with the paper path fixed
-to `minimal`, and builds the `1,050 / 105 / 45 / 35` in-memory row products.
-The independent Day 4 validator regenerates cases and scheduling, reruns one
-checked diagnostic per case, compares every audit metric, recomputes summaries,
-verifies manifest hashes, and fails closed on malformed or coordinatedly
-changed evidence. Power evidence is cross-platform, anonymous, and fail-closed:
-Linux `not_applicable` is used only after a successful sysfs scan confirms that
-no battery exists. The Week 11 execution entry is wired but has not been run;
-the Day 5 read-only preflight additionally requires AC
-power for battery-backed systems; `charging` and `full` are accepted directly,
-while `discharging` requires at least 50% battery and disabled low-power mode.
-On macOS, low-power status is read only from the active `pmset` profile and
-supports both `lowpowermode` and `powermode` output formats. The Week 11 pilot
-records high or unstable load as a warning; the same thresholds remain
-fail-closed for a later formal experiment. The preflight still requires at
-least 1 GiB of free disk, a clean pushed source commit, and an unused execution
-directory.
+Week 11 is complete. Its machine-independent protocol and per-execution
+environment evidence remain separate. The archived `run003` pilot contains
+`1,050 / 105 / 45 / 35` raw, case-summary, group-summary, and checked-audit
+rows, with zero observed errors, incorrect outputs, or failed audits. The
+independent validator regenerates all 35 cases, reruns checked diagnostics,
+recomputes summaries, verifies manifest hashes, and reports `valid = true`.
+The reproducible analysis shows the paper/reference case-median ratio falling
+from `3.096x` at `n=32` to `0.564x` at `n=512`; this is ordinary-list pilot
+evidence, not a linear-time claim. The separate Week 12 valid-input sorting
+gate is frozen at `3,600 / 180 / 45 / 60` expected rows and remains
+`frozen_not_executed`.
 
 ## Project Structure
 
@@ -345,7 +335,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 491 tests
+Ran 506 tests
 OK
 ```
 
@@ -405,7 +395,9 @@ Important project documents:
 - [docs/analysis/week10_contamination_pilot.md](docs/analysis/week10_contamination_pilot.md): validated Day 6 full-pilot evidence, overhead tables, scaling and family comparisons, figure, and interpretation boundary.
 - [docs/progress/week10_progress.md](docs/progress/week10_progress.md): Week 10 daily execution record through final timing-mode selection and the frozen Week 11 gate.
 - [docs/progress/week10_summary.md](docs/progress/week10_summary.md): Week 10 mode decision, correctness/timing boundary, contamination evidence, and Week 11 handoff.
-- [docs/progress/week11_progress.md](docs/progress/week11_progress.md): Week 11 daily execution record through the independent Day 4 evidence validator.
+- [docs/progress/week11_progress.md](docs/progress/week11_progress.md): Week 11 daily execution record through the archived pilot, analysis, and Week 12 gate.
+- [docs/progress/week11_summary.md](docs/progress/week11_summary.md): Week 11 validated pilot, reproducible analysis, limitations, and frozen Week 12 handoff.
+- [docs/analysis/week11_pilot_analysis.md](docs/analysis/week11_pilot_analysis.md): reproducible runtime, ratio, variability, structure, and counter analysis of archived run003 evidence.
 - [docs/analysis/week11_machine_preflight_v1_m1.md](docs/analysis/week11_machine_preflight_v1_m1.md): preserved v1 M1 preflight record for the unexecuted historical gate.
 - [docs/analysis/week11_machine_preflight_v2_m4.md](docs/analysis/week11_machine_preflight_v2_m4.md): preserved M4 preflight from the historical v2 machine-bound design.
 - [docs/analysis/week11_machine_baseline_v1_m1.json](docs/analysis/week11_machine_baseline_v1_m1.json): preserved structured v1 M1 identity.
@@ -453,16 +445,18 @@ Important project documents:
   ordinary-list split materialization, local safety checks, `stage_results`,
   and output recovery. The Week 9 pilot is not final performance evidence.
 - No level-linked or heterogeneous finger-tree backend is implemented.
-- Visualization is still future work.
+- Current figures summarize the Week 10 contamination study and Week 11 pilot;
+  broader thesis visualization remains future work.
 
 ## Next Steps
 
 Immediate next task:
 
-- review the archived, independently validated `run003` pilot evidence;
-- keep `run001` and `run002` retired and their output directories absent;
-- do not start W11D7 analysis before the evidence review passes;
+- review the frozen `week12_formal_sorting_v1` gate;
+- implement a dedicated Week 12 runner and validator without executing the
+  formal experiment;
 - keep recognition separate from valid-input paper sorting;
+- preserve `run003` as immutable evidence;
 - do not treat the ordinary-list pilot as a linear-time claim.
 
 Later cleanup:

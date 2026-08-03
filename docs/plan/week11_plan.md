@@ -2,8 +2,8 @@
 
 Last updated: 2026-08-03
 
-Status: W11D6 run003 pilot completed and independently validated; archived
-evidence awaits review before W11D7 analysis.
+Status: complete. Run003 is archived and independently validated, W11D7
+analysis is reproducible, and the Week 12 gate is frozen but unexecuted.
 
 ## Core Goal
 
@@ -18,7 +18,7 @@ freeze machine and baseline
 -> implement dedicated runner
 -> implement timing control flow
 -> implement dedicated fail-closed validator
--> pass the complete preflight gate
+-> use preflight as an advisory local diagnosis
 -> execute one immutable pilot
 -> archive and analyze evidence
 -> freeze Week 12 gate
@@ -377,8 +377,8 @@ Add fail-closed Week 11 pilot validator
 
 ## Day 5: Formal Preflight Gate
 
-Status: implementation complete; final preflight must run against the clean,
-pushed checkpoint before approval.
+Status: complete. The formal runner repeated the authoritative checks before
+run003 evidence initialization.
 
 The read-only timing-readiness gate is separate from the frozen protocol. It
 requires:
@@ -423,6 +423,12 @@ Expected preflight status:
 ```text
 ready_not_executed
 ```
+
+Preflight is advisory and is not a separately reviewed authorization gate. A
+successful preflight should lead directly to formal execution without an
+intermediate documentation commit. The formal runner performs the
+authoritative source, environment, output, and timing-readiness checks again
+immediately before evidence initialization.
 
 Suggested commit:
 
@@ -520,6 +526,8 @@ Archive validated Week 11 paper sorting pilot
 
 ## Day 7: Analysis and Week 12 Gate
 
+Status: complete.
+
 Add:
 
 ```text
@@ -555,6 +563,17 @@ frozen_not_executed
 ```
 
 Week 11 must not execute the Week 12 formal experiment.
+
+Completed output:
+
+```text
+experiments/analyze_week11_pilot.py
+tests/test_analyze_week11_pilot.py
+docs/analysis/week11_pilot_analysis.md
+docs/progress/week11_summary.md
+experiments/week12_experiment_gate.py
+tests/test_week12_experiment_gate.py
+```
 
 ## Non-Goals
 

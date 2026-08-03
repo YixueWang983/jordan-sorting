@@ -742,3 +742,21 @@ Power metadata is also platform-neutral: macOS uses `pmset`, Linux uses sysfs,
 and systems without a battery record `not_applicable`. The audit CSV is
 authoritative only after the dedicated validator independently reruns checked
 diagnostics and matches every recorded paper metric.
+
+Reproduce the Week 11 analysis without rerunning timing:
+
+```bash
+python experiments/analyze_week11_pilot.py \
+  --run-dir results/runs/week11_pilot_v1__run003 \
+  --output-dir docs/analysis
+```
+
+The command reruns live evidence validation, reads the archive without
+modifying it, and regenerates the Week 11 CSV summaries and SVG figures. The
+frozen Week 12 gate is inspectable with:
+
+```bash
+python experiments/week12_experiment_gate.py
+```
+
+That command prints an unexecuted protocol; it does not run an experiment.

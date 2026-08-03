@@ -1,0 +1,5 @@
+algorithm,measured_call_count,measured_call_total_ns,measured_call_total_seconds
+python_sort,350,1338881,0.001338881
+simplified_jordan_reference,350,3045208795,3.045208795
+simplified_jordan_paper_ordinary_list,350,1940839928,1.940839928
+all_algorithms,1050,4987387604,4.987387604
