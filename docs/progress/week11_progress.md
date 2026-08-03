@@ -29,7 +29,7 @@ status:
 execution IDs:
     week11_pilot_v1__run001 = retired, no evidence created
     week11_pilot_v1__run002 = retired, read-only power preflight failed
-    next ID = pending failure review; expected run003
+    next ID = pending parser-correction review; expected run003
 
 expected rows:
     raw = 1,050
@@ -521,8 +521,8 @@ The final read-only preflight passed against the clean pushed checkpoint with
 
 ## Day 6: Execute and Archive One Pilot
 
-Status: wiring approved; run001 and run002 failed before evidence initialization
-and W11D6 is awaiting the run002 failure review.
+Status: wiring approved; run001 and run002 failed before evidence initialization.
+The exact run002 parser correction is implemented and awaiting review.
 
 - [x] recaptured Git, power, low-power mode, load, and disk immediately before
   evidence initialization;
@@ -544,7 +544,14 @@ and W11D6 is awaiting the run002 failure review.
 - [x] recorded its fail-closed rejection of macOS `finishing charge`;
 - [x] confirmed no `run002` directory or timing evidence was created;
 - [x] retired `week11_pilot_v1__run002` permanently;
-- [ ] review and, if approved, correct the power-state parser with tests;
+- [x] mapped only exact macOS `finishing charge` to normalized `charging`;
+- [x] retained `unknown` for `not charging`, `finish charge`, and
+  `finishing charging`;
+- [x] verified AC plus `finishing charge` plus disabled low-power mode passes
+  pilot readiness;
+- [x] passed 70 runner tests, 91 runner/validator tests, 491 full tests, and
+  `compileall`;
+- [ ] review and approve the focused parser correction;
 - [ ] select a new execution ID only after that checkpoint is reviewed;
 - [ ] produce and independently validate one complete pilot evidence set.
 
@@ -557,7 +564,7 @@ docs/analysis/week11_pilot_run002_failure.md
 
 ## Day 7: Analysis and Week 12 Gate
 
-Status: blocked pending run002 failure review and validated Day 6 evidence.
+Status: blocked pending parser-correction review and validated Day 6 evidence.
 
 ## Current Status
 
@@ -567,6 +574,7 @@ The active protocol is machine-independent; each run records an anonymous
 benchmark environment and explicit execution ID. W11D5 preflight and W11D6
 wiring are approved. `run001` failed during sandboxed physical-memory capture.
 The subsequent read-only `run002` preflight failed closed because macOS reported
-`finishing charge`, which is not covered by the current exact-state parser.
-Both IDs are retired, neither output directory exists, and W11D7 remains
-blocked.
+`finishing charge`. The parser now maps that exact phrase to `charging` while
+rejecting near matches, and all 491 tests pass. Both IDs remain retired,
+`run003` is unused, neither output directory exists, and W11D7 remains blocked
+pending review.

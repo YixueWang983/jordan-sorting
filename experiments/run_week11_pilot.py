@@ -1209,6 +1209,8 @@ def _pmset_battery_reading(battery_output):
     raw_state = match.group(2).strip().casefold()
     battery_state = {
         "charging": "charging",
+        # macOS reports this exact state during the final charging phase.
+        "finishing charge": "charging",
         "charged": "full",
         "full": "full",
         "discharging": "discharging",

@@ -3,7 +3,7 @@
 Last updated: 2026-08-03
 
 Status: W11D6 wiring approved; run001 and run002 retired before evidence
-initialization; run002 power-parser failure review required.
+initialization; exact `finishing charge` parser correction awaits review.
 
 ## Core Goal
 
@@ -433,7 +433,8 @@ Seal Week 11 pilot preflight gates
 ## Day 6: Execute and Archive One Pilot
 
 Status: wiring approved; run001 and run002 retired before evidence
-initialization. The run002 parser gap requires review before a new attempt.
+initialization. The run002 parser gap is corrected and awaits review before a
+new attempt.
 
 The original command was attempted exactly once:
 
@@ -463,8 +464,10 @@ evidence directory was created. The record is:
 docs/analysis/week11_pilot_run002_failure.md
 ```
 
-`run002` is retired. Any parser correction and future `run003` attempt require
-review first.
+`run002` is retired. The parser now maps only the exact `finishing charge`
+phrase to normalized `charging`; near matches remain `unknown`. Focused and
+full regression tests pass, but the correction and any future `run003` attempt
+require review first.
 
 Required result:
 

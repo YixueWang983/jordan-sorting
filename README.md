@@ -345,7 +345,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 488 tests
+Ran 491 tests
 OK
 ```
 
@@ -459,11 +459,9 @@ Important project documents:
 
 Immediate next task:
 
-- review the recorded W11D6 `run002` power-preflight failure;
+- review the exact `finishing charge -> charging` parser correction;
 - keep `run001` and `run002` retired and their output directories absent;
-- decide whether to support macOS `finishing charge` as an accepted power
-  state, with focused tests;
-- select `run003` only after that correction checkpoint is reviewed;
+- keep `run003` unused until that correction checkpoint is approved;
 - keep recognition separate from valid-input paper sorting;
 - do not treat the ordinary-list pilot as a linear-time claim.
 

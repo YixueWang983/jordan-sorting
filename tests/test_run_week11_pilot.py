@@ -1803,6 +1803,70 @@ class RunWeek11PilotTests(unittest.TestCase):
         self.assertEqual(result["battery_percent"], 80)
         self.assertFalse(result["low_power_mode"])
 
+    def test_pmset_finishing_charge_normalizes_to_charging(self):
+        snapshot = (
+            "Now drawing from 'AC Power'\n"
+            " -InternalBattery-0\t100%; finishing charge; 0:04 remaining"
+        )
+
+        self.assertEqual(
+            runner._pmset_battery_reading(snapshot),
+            (100, "charging"),
+        )
+
+    def test_macos_finishing_charge_is_timing_ready(self):
+        snapshot = (
+            "Now drawing from 'AC Power'\n"
+            " -InternalBattery-0\t100%; finishing charge; 0:04 remaining"
+        )
+
+        def capture(command):
+            if command[-1] == "batt":
+                return {"success": True, "output": snapshot}
+            return {
+                "success": True,
+                "output": "AC Power:\n lowpowermode 0\n",
+            }
+
+        with patch.object(
+            runner.platform,
+            "system",
+            return_value="Darwin",
+        ), patch.object(
+            runner,
+            "_capture_command",
+            side_effect=capture,
+        ):
+            power_status = runner.capture_power_status()
+
+        environment = self._minimal_environment_record()
+        environment["available_disk_bytes"] = runner.MIN_TIMING_DISK_BYTES
+        environment["power_status"] = power_status
+        readiness = runner.require_timing_ready_environment(
+            environment,
+            self._load_status(),
+        )
+
+        self.assertEqual(power_status["battery_state"], "charging")
+        self.assertTrue(readiness["ready"])
+        self.assertTrue(readiness["power_ready"])
+
+    def test_pmset_similar_charge_phrases_remain_unknown(self):
+        for raw_state in (
+            "not charging",
+            "finish charge",
+            "finishing charging",
+        ):
+            with self.subTest(raw_state=raw_state):
+                snapshot = (
+                    "Now drawing from 'AC Power'\n"
+                    f" -InternalBattery-0\t80%; {raw_state}; 0:00 remaining"
+                )
+                self.assertEqual(
+                    runner._pmset_battery_reading(snapshot),
+                    (80, "unknown"),
+                )
+
     def test_macos_power_status_uses_only_active_profile_settings(self):
         snapshot = (
             "Now drawing from 'AC Power'\n"
