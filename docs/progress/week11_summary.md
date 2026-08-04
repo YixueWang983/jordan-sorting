@@ -63,6 +63,13 @@ The paper/reference case-median ratio falls from `3.096x` at `n=32` to
 first three tested sizes and faster for the final two in this pilot. The same
 broad crossover appears within flat, nested, and incremental families.
 
+This is a pipeline-scope comparison rather than a like-for-like end-to-end
+speedup. `simplified_jordan_reference` is timed with its oracle validation,
+family-tree construction, structural profiling, and reference-output work.
+The paper path times only the pre-certified `minimal` sorting call; oracle
+certification and the checked diagnostic remain outside timing. The ratio
+therefore does not establish superior asymptotic complexity.
+
 Python sort remains orders of magnitude faster than both research pipelines.
 The five high-relative-IQR cells all belong to Python sort, whose extremely
 short calls are more exposed to timer and system noise. Reference and paper

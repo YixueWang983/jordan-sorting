@@ -99,6 +99,14 @@ paper / Python:  1,076.458x
 reference / Python: 779.317x
 ```
 
+Timing-scope boundary: `simplified_jordan_reference` is timed as its complete
+reference pipeline, including oracle validation, family-tree construction,
+structural profiling, and reference-output work. The paper implementation is
+timed only as the pre-certified `minimal` sorting call; oracle certification
+and the checked diagnostic are outside its timed region. Paper/reference
+ratios are therefore pipeline-scope comparisons, not like-for-like end-to-end
+speedups or evidence of superior asymptotic complexity.
+
 ![Runtime ratios by size](week11_runtime_ratio_by_size.svg)
 
 The logarithmic axis is necessary because ratios involving Python sort are
