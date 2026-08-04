@@ -54,6 +54,11 @@ This folder stores the approved thesis scope and research-question documents.
   validator, formal preflight, single 1,050-row pilot, evidence archive,
   analysis, and Week 12 gate freeze.
 
+- `week12_plan.md`
+  Three-checkpoint plan for the frozen 3,600-row formal valid-input sorting
+  experiment: runner/validator review, one immutable evidence execution, and
+  reproducible thesis-facing analysis.
+
 The frozen, unexecuted Week 12 valid-input sorting choices are in:
 
 ```text

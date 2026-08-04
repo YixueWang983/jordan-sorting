@@ -137,6 +137,11 @@ Current files:
   Week 11 validated run003 evidence, runtime findings, limitations, process
   decision, and Week 12 handoff.
 
+- `week12_progress.md`
+  Week 12 three-checkpoint execution record. Checkpoint 1 implements the
+  formal runner, independent validator, elapsed-time contract, and corruption
+  tests while keeping formal execution disabled.
+
 ## Analysis Documents
 
 Path:
@@ -176,6 +181,7 @@ Current files:
 - `week9_plan.md`
 - `week10_plan.md`
 - `week11_plan.md`
+- `week12_plan.md`
 - `thesis_scope_and_research_questions.pdf`
 
 Planned files:

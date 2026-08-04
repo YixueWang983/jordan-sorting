@@ -133,6 +133,12 @@ evidence, not a linear-time claim. The separate Week 12 valid-input sorting
 gate is frozen at `3,600 / 180 / 45 / 60` expected rows and remains
 `frozen_not_executed`.
 
+Week 12 Checkpoint 1 is implemented and awaiting review. It adds a dedicated
+formal runner, an independent fail-closed validator, exact experiment and
+validation wall-clock contracts, and adversarial evidence tests. Both the CLI
+and public Python formal-execution entry remain disabled, and no Week 12
+formal result directory has been created.
+
 ## Project Structure
 
 ```text
@@ -180,6 +186,9 @@ tests/
   test_week11_experiment_protocol.py
   test_run_week11_pilot.py
   test_validate_week11_pilot_outputs.py
+  test_week12_experiment_gate.py
+  test_run_week12_formal_sorting.py
+  test_validate_week12_formal_sorting_outputs.py
 
 experiments/
   run_small_tests.py
@@ -201,6 +210,11 @@ experiments/
   week11_execution_context.py
   run_week11_pilot.py
   validate_week11_pilot_outputs.py
+  week12_experiment_gate.py
+  experiment_validation_support.py
+  formal_execution_support.py
+  run_week12_formal_sorting.py
+  validate_week12_formal_sorting_outputs.py
 
 results/
   week1_baseline_results.csv
@@ -335,7 +349,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 506 tests
+Ran 527 tests
 OK
 ```
 
@@ -390,6 +404,7 @@ Important project documents:
 - [docs/plan/week9_plan.md](docs/plan/week9_plan.md): detailed Day 1-Day 7 ordinary-list implementation plan.
 - [docs/plan/week10_plan.md](docs/plan/week10_plan.md): timing-contamination study, execution-policy design, controlled pilot, and Week 11 experiment gate.
 - [docs/plan/week11_plan.md](docs/plan/week11_plan.md): machine-independent Week 11 protocol, isolated executions, validator, preflight, pilot, evidence, analysis, and Week 12 handoff plan.
+- [docs/plan/week12_plan.md](docs/plan/week12_plan.md): corrected three-checkpoint formal sorting plan, evidence contract, wall-clock boundary, independent validation, and analysis limits.
 - [docs/design/paper_timing_modes.md](docs/design/paper_timing_modes.md): current timed call graph, contamination sources, fixed execution modes, and validation boundaries.
 - [docs/analysis/week10_timing_baseline.md](docs/analysis/week10_timing_baseline.md): frozen Week 10 Day 1 commit, environment, validation evidence, pilot timings, findings, and open questions.
 - [docs/analysis/week10_contamination_pilot.md](docs/analysis/week10_contamination_pilot.md): validated Day 6 full-pilot evidence, overhead tables, scaling and family comparisons, figure, and interpretation boundary.
@@ -397,6 +412,7 @@ Important project documents:
 - [docs/progress/week10_summary.md](docs/progress/week10_summary.md): Week 10 mode decision, correctness/timing boundary, contamination evidence, and Week 11 handoff.
 - [docs/progress/week11_progress.md](docs/progress/week11_progress.md): Week 11 daily execution record through the archived pilot, analysis, and Week 12 gate.
 - [docs/progress/week11_summary.md](docs/progress/week11_summary.md): Week 11 validated pilot, reproducible analysis, limitations, and frozen Week 12 handoff.
+- [docs/progress/week12_progress.md](docs/progress/week12_progress.md): Week 12 Checkpoint 1 runner/validator implementation and verification status; formal execution remains disabled.
 - [docs/analysis/week11_pilot_analysis.md](docs/analysis/week11_pilot_analysis.md): reproducible runtime, ratio, variability, structure, and counter analysis of archived run003 evidence.
 - [docs/analysis/week11_machine_preflight_v1_m1.md](docs/analysis/week11_machine_preflight_v1_m1.md): preserved v1 M1 preflight record for the unexecuted historical gate.
 - [docs/analysis/week11_machine_preflight_v2_m4.md](docs/analysis/week11_machine_preflight_v2_m4.md): preserved M4 preflight from the historical v2 machine-bound design.
@@ -452,9 +468,9 @@ Important project documents:
 
 Immediate next task:
 
-- review the frozen `week12_formal_sorting_v1` gate;
-- implement a dedicated Week 12 runner and validator without executing the
-  formal experiment;
+- review the Week 12 Checkpoint 1 runner, validator, wall-clock contract, and
+  corruption gates;
+- keep formal execution disabled until that review passes;
 - keep recognition separate from valid-input paper sorting;
 - preserve `run003` as immutable evidence;
 - do not treat the ordinary-list pilot as a linear-time claim.

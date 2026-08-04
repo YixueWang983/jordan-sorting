@@ -760,3 +760,38 @@ python experiments/week12_experiment_gate.py
 ```
 
 That command prints an unexecuted protocol; it does not run an experiment.
+
+## Frozen Week 12 Formal Sorting Experiment
+
+Week 12 keeps valid-input sorting separate from recognition and derives its
+complete protocol from:
+
+```text
+experiments/week12_experiment_gate.py
+```
+
+Inspect the gate without running timing:
+
+```bash
+python experiments/week12_experiment_gate.py
+```
+
+Checkpoint 1 adds the dedicated runner and independent validator, but formal
+execution remains disabled pending review:
+
+```text
+experiments/run_week12_formal_sorting.py
+experiments/validate_week12_formal_sorting_outputs.py
+```
+
+The planned immutable execution is:
+
+```text
+results/runs/week12_formal_sorting_v1__run001/
+```
+
+It does not exist yet. A successful future archive will contain `3,600` raw
+rows, `180` case-summary rows, `45` group-summary rows, and `60` checked audit
+rows plus complete config, environment, manifest, and initial validation
+evidence. Later independent validation must write its report outside the
+archive so the original eight files remain immutable.
