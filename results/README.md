@@ -776,22 +776,34 @@ Inspect the gate without running timing:
 python experiments/week12_experiment_gate.py
 ```
 
-Checkpoint 1 adds the dedicated runner and independent validator, but formal
-execution remains disabled pending review:
+The dedicated runner and independent validator are:
 
 ```text
 experiments/run_week12_formal_sorting.py
 experiments/validate_week12_formal_sorting_outputs.py
 ```
 
-The planned immutable execution is:
+The immutable formal execution is archived at:
 
 ```text
 results/runs/week12_formal_sorting_v1__run001/
 ```
 
-It does not exist yet. A successful future archive will contain `3,600` raw
-rows, `180` case-summary rows, `45` group-summary rows, and `60` checked audit
-rows plus complete config, environment, manifest, and initial validation
-evidence. Later independent validation must write its report outside the
-archive so the original eight files remain immutable.
+It contains `3,600` raw rows, `180` case-summary rows, `45` group-summary rows,
+and `60` checked audit rows plus complete config, environment, manifest, and
+initial validation evidence. Built-in and independent validation both report
+`valid = true`, with zero timing errors, incorrect outputs, or failed audits.
+The execution is bound to source commit `98868b1`; `run001` is retired and must
+not be rerun or modified.
+
+Revalidate without rerunning timing:
+
+```bash
+python experiments/validate_week12_formal_sorting_outputs.py \
+  --run-dir results/runs/week12_formal_sorting_v1__run001 \
+  --report-json docs/analysis/week12_formal_sorting_run001_independent_validation.json
+```
+
+The external report remains outside the immutable archive. Checkpoint 3 may
+read and live-validate this evidence, but it must not modify the original eight
+files.

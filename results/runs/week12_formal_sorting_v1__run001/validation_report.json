@@ -1,0 +1,14 @@
+{
+  "errors": [],
+  "row_counts": {
+    "case_audit": 60,
+    "case_summary": 180,
+    "group_summary": 45,
+    "raw": 3600
+  },
+  "run_dir": "/Users/schneeshini/Documents/Codex/2026-06-05/files-mentioned-by-the-user-thesis/jordan-sorting/results/runs/week12_formal_sorting_v1__run001",
+  "valid": true,
+  "validation_completed_at_utc": "2026-08-05T18:24:19.814080+00:00",
+  "validation_elapsed_ns": 823776325792,
+  "validation_started_at_utc": "2026-08-05T18:10:36.068568+00:00"
+}

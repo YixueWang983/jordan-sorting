@@ -18,7 +18,7 @@ docs/plan/week12_plan.md
 
 ```text
 protocol:          week12_formal_sorting_v1
-status:            frozen_not_executed
+gate status at freeze: frozen_not_executed
 cases:             60
 raw rows:          3,600
 case summaries:    180
@@ -31,8 +31,7 @@ recognition:       separate
 
 ## Checkpoint 1: Formal Execution Before Review
 
-Status: implemented and repaired after review; awaiting renewed approval.
-Formal execution remains disabled.
+Status: approved and complete.
 
 - [x] added the corrected three-checkpoint Week 12 plan;
 - [x] derived an immutable execution config from the frozen gate;
@@ -114,25 +113,54 @@ git diff --check:
     passed
 
 formal execution enabled:
-    false
+    true at source commit 98868b1
 
-planned run001 directory:
-    absent
+formal run001 directory:
+    created once after Checkpoint 1 approval
 ```
 
 ## Checkpoint 2: Formal Evidence
 
-Status: not started.
+Status: complete. The immutable run is archived for review.
 
-- [ ] pass Checkpoint 1 review;
-- [ ] enable the reviewed formal entry only;
-- [ ] execute `week12_formal_sorting_v1__run001` exactly once;
-- [ ] obtain 3,600 / 180 / 45 / 60 rows;
-- [ ] obtain built-in `valid=true`;
-- [ ] rerun independent validation to `docs/analysis/`;
-- [ ] verify zero errors, incorrect outputs, and failed audits;
-- [ ] archive immutable evidence;
-- [ ] retire run001 permanently after success or failure.
+- [x] pass Checkpoint 1 review;
+- [x] enable only the reviewed formal entry in source commit `98868b1`;
+- [x] execute `week12_formal_sorting_v1__run001` exactly once;
+- [x] obtain 3,600 / 180 / 45 / 60 rows;
+- [x] obtain built-in `valid=true`;
+- [x] rerun independent validation to `docs/analysis/`;
+- [x] verify zero errors, incorrect outputs, and failed audits;
+- [x] archive immutable evidence;
+- [x] retire run001 permanently after success.
+
+Execution record:
+
+```text
+execution ID:             week12_formal_sorting_v1__run001
+source commit:            98868b1b705f6d5f22404ee8ad7b88ad7a834f52
+environment quality:      clean
+environment warnings:     none
+experiment elapsed:       837,682,385,541 ns
+measured-call total:      17,369,623,904 ns
+built-in validation:      valid = true
+independent validation:   valid = true
+raw errors:               0
+incorrect outputs:        0
+failed audits:            0
+manifest SHA-256:         f42ab0b77cb7ea91ed66c66bc6947a81cd8746b5d2b67d526472260d2b47f850
+```
+
+Immutable evidence:
+
+```text
+results/runs/week12_formal_sorting_v1__run001/
+```
+
+Independent report:
+
+```text
+docs/analysis/week12_formal_sorting_run001_independent_validation.json
+```
 
 ## Checkpoint 3: Formal Analysis
 
@@ -148,6 +176,6 @@ Status: not started.
 
 ## Current Boundary
 
-No Week 12 formal output directory has been created. Checkpoint 1 may be
-reviewed, but the formal experiment must not run until that review explicitly
-passes.
+Week 12 run001 has completed exactly once and is retired. Its archived evidence
+must be treated as immutable and must not be rerun or overwritten. Checkpoint 3
+may read and live-validate the archive, but formal timing must not run again.

@@ -1,0 +1,42 @@
+{
+  "execution_id": "week12_formal_sorting_v1__run001",
+  "experiment_completed_at_utc": "2026-08-05T18:10:36.066881+00:00",
+  "experiment_elapsed_ns": 837682385541,
+  "experiment_elapsed_scope": "From formal evidence-directory reservation through config/environment writes, case generation, oracle certification, checked diagnostics, warm-ups, measured calls, summary construction, and CSV writes; excludes manifest writing and output validation.",
+  "experiment_started_at_utc": "2026-08-05T17:56:38.379690+00:00",
+  "files": {
+    "case_audit": {
+      "path": "case_audit.csv",
+      "sha256": "47871cc4ff8835604b10e44eba1e0be7389d293e9309c43d80617e3ae3784eec"
+    },
+    "case_summary": {
+      "path": "case_summary.csv",
+      "sha256": "22e8d227dded8860ff8a6a1bae4ae32b979f4332177e10a2994a44ff06411124"
+    },
+    "config": {
+      "path": "config.json",
+      "sha256": "7092b4c8bd50d8e4db042730b65197799280251eaa3987e704e39048893cf49e"
+    },
+    "environment": {
+      "path": "environment.json",
+      "sha256": "81a6208ff5241d5e6ede9ef788d89aad36e6c8b200aee956713ef4a0474caeca"
+    },
+    "group_summary": {
+      "path": "group_summary.csv",
+      "sha256": "3722324b1fa295bbf0c9e2edc21d6cd120e6716d09d8a7d16a172b990fc7acf9"
+    },
+    "raw": {
+      "path": "raw.csv",
+      "sha256": "5261c9058e46bf6dc5a9c5589ee2c417106d4b47b6107fc37b6820a4146285bf"
+    }
+  },
+  "measured_call_total_ns": 17369623904,
+  "protocol_version": "week12_formal_sorting_v1",
+  "row_counts": {
+    "case_audit": 60,
+    "case_summary": 180,
+    "group_summary": 45,
+    "raw": 3600
+  },
+  "source_commit": "98868b1b705f6d5f22404ee8ad7b88ad7a834f52"
+}

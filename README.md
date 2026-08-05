@@ -133,12 +133,13 @@ evidence, not a linear-time claim. The separate Week 12 valid-input sorting
 gate is frozen at `3,600 / 180 / 45 / 60` expected rows and remains
 `frozen_not_executed`.
 
-Week 12 Checkpoint 1 is implemented and awaiting renewed review after its
-wall-clock contract was hardened. It adds a dedicated formal runner, an
-independent fail-closed validator, exact experiment and validation wall-clock
-contracts, and adversarial evidence tests. Both the CLI and public Python
-formal-execution entry remain disabled, and no Week 12 formal result directory
-has been created.
+Week 12 Checkpoints 1 and 2 are complete. The dedicated runner, independent
+fail-closed validator, wall-clock contracts, and adversarial evidence tests
+were approved before the formal execution. The archived `run001` contains
+`3,600 / 180 / 45 / 60` raw, case-summary, group-summary, and checked-audit
+rows with zero errors, incorrect outputs, or failed audits. Built-in and
+independent validation both report `valid = true`; Checkpoint 3 analysis has
+not started.
 
 ## Project Structure
 
@@ -413,7 +414,8 @@ Important project documents:
 - [docs/progress/week10_summary.md](docs/progress/week10_summary.md): Week 10 mode decision, correctness/timing boundary, contamination evidence, and Week 11 handoff.
 - [docs/progress/week11_progress.md](docs/progress/week11_progress.md): Week 11 daily execution record through the archived pilot, analysis, and Week 12 gate.
 - [docs/progress/week11_summary.md](docs/progress/week11_summary.md): Week 11 validated pilot, reproducible analysis, limitations, and frozen Week 12 handoff.
-- [docs/progress/week12_progress.md](docs/progress/week12_progress.md): Week 12 Checkpoint 1 runner/validator implementation and verification status; formal execution remains disabled.
+- [docs/progress/week12_progress.md](docs/progress/week12_progress.md): Week 12 Checkpoints 1 and 2 implementation, validated run001 evidence, and Checkpoint 3 boundary.
+- [docs/analysis/week12_formal_sorting_run001_independent_validation.json](docs/analysis/week12_formal_sorting_run001_independent_validation.json): independent fail-closed validation report for the archived Week 12 formal run.
 - [docs/analysis/week11_pilot_analysis.md](docs/analysis/week11_pilot_analysis.md): reproducible runtime, ratio, variability, structure, and counter analysis of archived run003 evidence.
 - [docs/analysis/week11_machine_preflight_v1_m1.md](docs/analysis/week11_machine_preflight_v1_m1.md): preserved v1 M1 preflight record for the unexecuted historical gate.
 - [docs/analysis/week11_machine_preflight_v2_m4.md](docs/analysis/week11_machine_preflight_v2_m4.md): preserved M4 preflight from the historical v2 machine-bound design.
@@ -469,12 +471,11 @@ Important project documents:
 
 Immediate next task:
 
-- review the Week 12 Checkpoint 1 runner, validator, wall-clock contract, and
-  corruption gates;
-- keep formal execution disabled until that review passes;
+- preserve Week 12 `run001` and Week 11 `run003` as immutable evidence;
+- begin only the live-validated Week 12 Checkpoint 3 analysis;
 - keep recognition separate from valid-input paper sorting;
-- preserve `run003` as immutable evidence;
-- do not treat the ordinary-list pilot as a linear-time claim.
+- compare Week 11 and Week 12 trends without pooling absolute timings;
+- do not treat ordinary-list timing as a linear-time claim.
 
 Later cleanup:
 

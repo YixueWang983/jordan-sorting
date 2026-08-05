@@ -1,0 +1,14 @@
+{
+  "errors": [],
+  "row_counts": {
+    "case_audit": 60,
+    "case_summary": 180,
+    "group_summary": 45,
+    "raw": 3600
+  },
+  "run_dir": "results/runs/week12_formal_sorting_v1__run001",
+  "valid": true,
+  "validation_completed_at_utc": "2026-08-05T18:37:57.155555+00:00",
+  "validation_elapsed_ns": 803779330625,
+  "validation_started_at_utc": "2026-08-05T18:24:33.377451+00:00"
+}

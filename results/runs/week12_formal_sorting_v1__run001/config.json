@@ -1,0 +1,40 @@
+{
+  "algorithm_order_seed": 20261202,
+  "algorithms": [
+    "python_sort",
+    "simplified_jordan_reference",
+    "simplified_jordan_paper_ordinary_list"
+  ],
+  "audit_execution_mode": "checked",
+  "case_audit_row_count": 60,
+  "case_count": 60,
+  "case_order_seed": 20261203,
+  "case_summary_row_count": 180,
+  "group_summary_row_count": 45,
+  "measured_runs": 20,
+  "paper_execution_mode": "minimal",
+  "protocol_version": "week12_formal_sorting_v1",
+  "randomized_cases": 10,
+  "raw_row_count": 3600,
+  "recognition_separate": true,
+  "scope": "oracle_certified_valid_input_sorting",
+  "seed": 20261201,
+  "sizes": [
+    32,
+    64,
+    128,
+    256,
+    512
+  ],
+  "source_pilot_commit": "01f6480fe179dcbe0f99486be86384b61dd4121f",
+  "source_pilot_execution_id": "week11_pilot_v1__run003",
+  "source_pilot_manifest_path": "results/runs/week11_pilot_v1__run003/manifest.json",
+  "source_pilot_manifest_sha256": "ef6a9d17df644eab8c3284d04dc356ce4b68b4efdfc0da7eecb5a9c7136c5141",
+  "status": "frozen_not_executed",
+  "valid_families": [
+    "flat_valid",
+    "nested_valid",
+    "incremental_valid"
+  ],
+  "warmup_runs": 5
+}

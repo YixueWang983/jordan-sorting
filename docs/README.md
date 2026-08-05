@@ -138,9 +138,8 @@ Current files:
   decision, and Week 12 handoff.
 
 - `week12_progress.md`
-  Week 12 three-checkpoint execution record. Checkpoint 1 implements the
-  formal runner, independent validator, elapsed-time contract, and corruption
-  tests while keeping formal execution disabled.
+  Week 12 three-checkpoint execution record through the validated and archived
+  formal run001, with Checkpoint 3 analysis still pending.
 
 ## Analysis Documents
 
@@ -155,6 +154,10 @@ Current Week 11 analysis:
 - `week11_pilot_analysis.md`
   Reproducible runtime, ratio, variability, structure, and checked-counter
   analysis derived from immutable run003 evidence.
+
+- `week12_formal_sorting_run001_independent_validation.json`
+  Independent fail-closed validation report for the immutable Week 12 formal
+  sorting evidence.
 
 ## Plan Documents
 

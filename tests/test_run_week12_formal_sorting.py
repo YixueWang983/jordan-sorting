@@ -120,8 +120,12 @@ class RunWeek12FormalSortingTests(unittest.TestCase):
         with redirect_stderr(Mock()), self.assertRaises(SystemExit):
             runner.parse_args(["--execution-id", EXECUTION_ID, "--sizes", "8"])
 
-    def test_public_formal_execution_is_hard_disabled(self):
-        with tempfile.TemporaryDirectory() as tmpdir:
+    def test_public_formal_execution_respects_disabled_gate(self):
+        with tempfile.TemporaryDirectory() as tmpdir, patch.object(
+            runner,
+            "FORMAL_EXECUTION_ENABLED",
+            False,
+        ):
             with self.assertRaisesRegex(RuntimeError, "disabled"):
                 runner.execute_week12_formal(tmpdir, execution_id=EXECUTION_ID)
             self.assertFalse(
