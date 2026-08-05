@@ -53,7 +53,7 @@ from week12_experiment_gate import (  # noqa: E402
 )
 
 
-FORMAL_EXECUTION_ENABLED = False
+FORMAL_EXECUTION_ENABLED = True
 EXPERIMENT_ELAPSED_SCOPE = (
     "From formal evidence-directory reservation through config/environment "
     "writes, case generation, oracle certification, checked diagnostics, "
