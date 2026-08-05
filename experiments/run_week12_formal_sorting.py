@@ -390,9 +390,9 @@ def initialize_formal_evidence(project_root, execution_id):
         paper_execution_mode=gate.paper_execution_mode,
         audit_execution_mode=gate.audit_execution_mode,
     )
-    reserve_formal_run_directory(paths)
     started_at = datetime.now(timezone.utc)
     started_ns = time.perf_counter_ns()
+    reserve_formal_run_directory(paths)
     config_record = gate_to_dict(gate)
     write_json_exclusive(paths.config_json, config_record)
     write_json_exclusive(paths.environment_json, environment)
@@ -518,7 +518,7 @@ def run_preflight(project_root=PROJECT_ROOT, *, execution_id):
         "execution_id": execution_id,
         "run_dir": str(paths.run_dir),
         "timing_readiness": environment["timing_readiness"],
-        "formal_execution_enabled": False,
+        "formal_execution_enabled": FORMAL_EXECUTION_ENABLED,
     }
 
 

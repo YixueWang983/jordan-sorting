@@ -271,6 +271,39 @@ class RunWeek12FormalSortingTests(unittest.TestCase):
         self.assertIn("source_pilot_manifest_sha256", stored_config)
         self.assertIn("scope", stored_config)
 
+    def test_formal_elapsed_clock_starts_before_directory_reservation(self):
+        environment = self._environment()
+        events = []
+
+        def reserve(paths):
+            events.append("reserve")
+            paths.run_dir.mkdir(parents=True)
+
+        def start_clock():
+            events.append("start_clock")
+            return 100
+
+        with tempfile.TemporaryDirectory() as tmpdir, patch.object(
+            runner,
+            "build_formal_environment_record",
+            return_value=environment,
+        ), patch.object(
+            runner,
+            "validate_formal_environment_record",
+            return_value=environment,
+        ), patch.object(
+            runner,
+            "reserve_formal_run_directory",
+            side_effect=reserve,
+        ), patch.object(
+            runner.time,
+            "perf_counter_ns",
+            side_effect=start_clock,
+        ):
+            runner.initialize_formal_evidence(tmpdir, EXECUTION_ID)
+
+        self.assertEqual(events, ["start_clock", "reserve"])
+
     def test_manifest_separates_pipeline_and_measured_call_time(self):
         gate = WEEK12_EXPERIMENT_GATE
 
@@ -296,7 +329,7 @@ class RunWeek12FormalSortingTests(unittest.TestCase):
             paths.run_dir.mkdir(parents=True)
             runner.write_json_exclusive(paths.config_json, gate_to_dict())
             runner.write_json_exclusive(paths.environment_json, self._environment())
-            with patch.object(runner.time, "perf_counter_ns", return_value=250):
+            with patch.object(runner.time, "perf_counter_ns", return_value=40_100):
                 manifest = runner.write_formal_products(
                     paths,
                     products,
@@ -305,7 +338,7 @@ class RunWeek12FormalSortingTests(unittest.TestCase):
                     started_ns=100,
                 )
 
-        self.assertEqual(manifest["experiment_elapsed_ns"], 150)
+        self.assertEqual(manifest["experiment_elapsed_ns"], 40_000)
         self.assertEqual(
             manifest["measured_call_total_ns"], gate.raw_row_count * 7
         )
@@ -326,7 +359,10 @@ class RunWeek12FormalSortingTests(unittest.TestCase):
             self.assertFalse(run_dir.exists())
 
         self.assertEqual(result["status"], "ready_not_executed")
-        self.assertFalse(result["formal_execution_enabled"])
+        self.assertIs(
+            result["formal_execution_enabled"],
+            runner.FORMAL_EXECUTION_ENABLED,
+        )
 
 
 if __name__ == "__main__":

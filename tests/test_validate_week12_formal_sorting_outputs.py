@@ -458,6 +458,50 @@ class ValidateWeek12FormalSortingOutputsTests(unittest.TestCase):
                 report = self._validate(run_dir)
                 self.assertFalse(report["valid"])
 
+    def test_manifest_wall_clock_relationships_fail_closed(self):
+        scenarios = {
+            "elapsed below measured total": (
+                lambda manifest: manifest.__setitem__(
+                    "experiment_elapsed_ns",
+                    manifest["measured_call_total_ns"] - 1,
+                ),
+                False,
+            ),
+            "elapsed inconsistent with UTC duration": (
+                lambda manifest: manifest.__setitem__(
+                    "experiment_elapsed_ns", 100_000_000_000
+                ),
+                False,
+            ),
+            "reversed UTC timestamps": (
+                lambda manifest: manifest.__setitem__(
+                    "experiment_completed_at_utc",
+                    "2026-08-04T09:59:00+00:00",
+                ),
+                False,
+            ),
+            "small UTC and monotonic difference": (
+                lambda manifest: manifest.__setitem__(
+                    "experiment_elapsed_ns", 599_500_000_000
+                ),
+                True,
+            ),
+        }
+        for label, (mutate, expected_valid) in scenarios.items():
+            with self.subTest(label=label):
+                run_dir = self._build_evidence()
+                manifest_path = run_dir / "manifest.json"
+                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+                mutate(manifest)
+                manifest_path.write_text(
+                    json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+                    encoding="utf-8",
+                )
+
+                report = self._validate(run_dir)
+
+                self.assertIs(report["valid"], expected_valid, report["errors"])
+
     def test_external_report_must_be_outside_archive(self):
         run_dir = self._build_evidence()
         built_in = self._validate(run_dir)

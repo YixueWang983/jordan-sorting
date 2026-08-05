@@ -133,11 +133,12 @@ evidence, not a linear-time claim. The separate Week 12 valid-input sorting
 gate is frozen at `3,600 / 180 / 45 / 60` expected rows and remains
 `frozen_not_executed`.
 
-Week 12 Checkpoint 1 is implemented and awaiting review. It adds a dedicated
-formal runner, an independent fail-closed validator, exact experiment and
-validation wall-clock contracts, and adversarial evidence tests. Both the CLI
-and public Python formal-execution entry remain disabled, and no Week 12
-formal result directory has been created.
+Week 12 Checkpoint 1 is implemented and awaiting renewed review after its
+wall-clock contract was hardened. It adds a dedicated formal runner, an
+independent fail-closed validator, exact experiment and validation wall-clock
+contracts, and adversarial evidence tests. Both the CLI and public Python
+formal-execution entry remain disabled, and no Week 12 formal result directory
+has been created.
 
 ## Project Structure
 
@@ -349,7 +350,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 527 tests
+Ran 529 tests
 OK
 ```
 

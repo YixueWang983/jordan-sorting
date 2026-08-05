@@ -1,6 +1,6 @@
 # Week 12 Progress
 
-Last updated: 2026-08-04
+Last updated: 2026-08-05
 
 ## Goal
 
@@ -31,7 +31,8 @@ recognition:       separate
 
 ## Checkpoint 1: Formal Execution Before Review
 
-Status: implemented; awaiting review. Formal execution remains disabled.
+Status: implemented and repaired after review; awaiting renewed approval.
+Formal execution remains disabled.
 
 - [x] added the corrected three-checkpoint Week 12 plan;
 - [x] derived an immutable execution config from the frozen gate;
@@ -51,14 +52,19 @@ Status: implemented; awaiting review. Formal execution remains disabled.
 - [x] reuse reviewed Week 11 timing, GC, scheduling, and summary functions;
 - [x] define the 3,600 / 180 / 45 / 60 evidence contract;
 - [x] record pipeline wall-clock scope separately from measured-call total;
+- [x] start the pipeline clock before formal evidence-directory reservation;
+- [x] reject elapsed times shorter than the measured-call total;
+- [x] cross-check monotonic elapsed time against UTC timestamps with a bounded
+  tolerance;
 - [x] record validator wall-clock in validation reports;
 - [x] implement an independent fail-closed Week 12 validator;
 - [x] regenerate cases, oracle results, profiles, and diagnostics in validation;
 - [x] recompute schedules, summaries, measured totals, and hashes;
 - [x] require later independent validation reports outside the archive;
 - [x] add a full 3,600-row synthetic corruption matrix in temporary directories;
-- [x] run 21 focused Week 12 tests;
-- [x] run all 527 unit tests;
+- [x] make preflight report the actual frozen formal-execution switch;
+- [x] run 23 focused Week 12 tests;
+- [x] run all 529 unit tests;
 - [x] pass `compileall` and `git diff --check`;
 - [x] reproduce 2,074 exhaustive valid permutations and 48 fixed generated
   cases;
@@ -84,11 +90,11 @@ Verification so far:
 
 ```text
 focused Week 12 tests:
-    Ran 21 tests
+    Ran 23 tests
     OK
 
 full suite:
-    Ran 527 tests
+    Ran 529 tests
     OK
 
 compileall:

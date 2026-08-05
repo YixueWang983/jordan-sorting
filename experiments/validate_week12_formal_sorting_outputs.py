@@ -399,8 +399,11 @@ def _validate_manifest(
         "manifest experiment_completed_at_utc",
         errors,
     )
+    timestamps_ordered = (
+        started is not None and completed is not None and completed >= started
+    )
     if started is not None and completed is not None:
-        require(completed >= started, "manifest experiment timestamps are reversed", errors)
+        require(timestamps_ordered, "manifest experiment timestamps are reversed", errors)
     elapsed = parse_int(
         manifest.get("experiment_elapsed_ns"),
         "manifest experiment_elapsed_ns",
@@ -423,6 +426,22 @@ def _validate_manifest(
         require(
             stored_measured_total == measured_total_ns,
             "manifest measured-call total mismatch",
+            errors,
+        )
+    if elapsed is not None and stored_measured_total is not None:
+        require(
+            elapsed >= stored_measured_total,
+            "manifest experiment elapsed time is smaller than measured-call total",
+            errors,
+        )
+    if timestamps_ordered and elapsed is not None:
+        timestamp_elapsed_ns = int(
+            (completed - started).total_seconds() * 1_000_000_000
+        )
+        tolerance_ns = max(1_000_000_000, elapsed // 100)
+        require(
+            abs(timestamp_elapsed_ns - elapsed) <= tolerance_ns,
+            "manifest experiment elapsed time does not match UTC timestamps",
             errors,
         )
     files = manifest.get("files")
