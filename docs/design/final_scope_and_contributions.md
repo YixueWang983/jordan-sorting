@@ -1,8 +1,22 @@
 # Final Scope and Contributions
 
-Last updated: 2026-07-24
+Historical decision date: 2026-07-24
 
-Status: scope confirmed by the supervisor on 2026-07-24.
+Scope notice added: 2026-08-06
+
+Status: historical supervisor-confirmed baseline scope, accepted on
+2026-07-24.
+
+> Historical scope notice
+>
+> This document preserves the minimum reference-framework boundary accepted by
+> the supervisor on 2026-07-24. It must not be rewritten as though the later
+> paper-algorithm implementation already existed at that date. For the current
+> implementation and evaluation scope, read this decision record together with
+> `docs/design/final_scope_amendment_paper_ordinary_list.md`. Where the two
+> documents differ about current code behavior, the dated amendment is the
+> authoritative technical record; this file remains authoritative for the
+> historical supervisor decision.
 
 ## Thesis Position
 
@@ -76,10 +90,10 @@ Confirmed scope:
    heterogeneous finger trees, or a full dynamic split/update engine have been
    implemented.
 
-## Current Gate
+## Historical Gate at 2026-07-24
 
-Week 9 formal experiments may start because the supervisor has accepted the
-core boundary:
+At this checkpoint, Week 9 formal experiments could start because the
+supervisor had accepted the minimum core boundary:
 
 ```text
 The project implements and evaluates a correctness-oriented reference framework

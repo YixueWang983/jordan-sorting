@@ -19,10 +19,24 @@ docs/analysis/week12_*.csv
 docs/analysis/week12_*.svg
 docs/design/paper_algorithm_ordinary_list.md
 docs/design/final_scope_and_contributions.md
+docs/design/final_scope_amendment_paper_ordinary_list.md
 ```
 
 The archive is read-only. Analysis may be regenerated only through the live
 validator and `experiments/analyze_week12_formal_sorting.py`.
+
+Scope authority is layered rather than interchangeable:
+
+- `final_scope_and_contributions.md` is the historical supervisor decision
+  accepted on 2026-07-24;
+- `final_scope_amendment_paper_ordinary_list.md` is the current technical
+  scope for implementation and evaluation claims;
+- `paper_algorithm_ordinary_list.md` specifies the implemented control flow;
+- the Week 12 report and artifacts are the authority for empirical claims.
+
+The historical statement that sorted output comes from
+`oracle_result["sorted"]` applies to the reference pipeline, not to
+`paper_jordan_sort_valid`.
 
 ## Tasks
 
@@ -40,6 +54,8 @@ validator and `experiments/analyze_week12_formal_sorting.py`.
    non-asymptotic, and non-linear-time boundaries.
 7. Keep recognition results in their own subsection and do not infer them from
    the valid-input sorting experiment.
+8. Distinguish every reference-pipeline statement from every independent
+   paper-core statement, especially sorted-output provenance.
 
 ## Fixed Non-Goals
 
@@ -62,6 +78,7 @@ Week 13 is complete when:
 - every headline number is traceable to immutable evidence;
 - tables preserve family balance and timing-scope context;
 - recognition and valid-input sorting remain distinct;
+- reference and paper output provenance are never conflated;
 - the claim audit contains no unsupported linear-time, asymptotic, or causal
   statement;
 - all existing validators and tests remain green without a formal rerun.

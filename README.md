@@ -244,6 +244,7 @@ docs/
     oracle_and_test_generation.md
     simplified_algorithm_design.md
     final_scope_and_contributions.md
+    final_scope_amendment_paper_ordinary_list.md
     final_experiment_spec.md
     theory_to_implementation_mapping.md
     paper_algorithm_ordinary_list.md
@@ -412,6 +413,8 @@ Important project documents:
 - [docs/plan/week11_plan.md](docs/plan/week11_plan.md): machine-independent Week 11 protocol, isolated executions, validator, preflight, pilot, evidence, analysis, and Week 12 handoff plan.
 - [docs/plan/week12_plan.md](docs/plan/week12_plan.md): corrected three-checkpoint formal sorting plan, evidence contract, wall-clock boundary, independent validation, and analysis limits.
 - [docs/plan/week13_plan.md](docs/plan/week13_plan.md): frozen thesis-synthesis and claim-audit handoff based on immutable Week 12 evidence.
+- [docs/design/final_scope_and_contributions.md](docs/design/final_scope_and_contributions.md): historical supervisor-confirmed minimum reference-framework boundary from 2026-07-24.
+- [docs/design/final_scope_amendment_paper_ordinary_list.md](docs/design/final_scope_amendment_paper_ordinary_list.md): current technical scope distinguishing the oracle-backed reference pipeline from independent ordinary-list paper output recovery.
 - [docs/design/paper_timing_modes.md](docs/design/paper_timing_modes.md): current timed call graph, contamination sources, fixed execution modes, and validation boundaries.
 - [docs/analysis/week10_timing_baseline.md](docs/analysis/week10_timing_baseline.md): frozen Week 10 Day 1 commit, environment, validation evidence, pilot timings, findings, and open questions.
 - [docs/analysis/week10_contamination_pilot.md](docs/analysis/week10_contamination_pilot.md): validated Day 6 full-pilot evidence, overhead tables, scaling and family comparisons, figure, and interpretation boundary.

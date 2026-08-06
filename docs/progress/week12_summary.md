@@ -139,4 +139,5 @@ The detailed handoff is:
 
 ```text
 docs/plan/week13_plan.md
+docs/design/final_scope_amendment_paper_ordinary_list.md
 ```

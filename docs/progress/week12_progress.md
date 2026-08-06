@@ -183,6 +183,8 @@ Status: complete.
 - [x] add `docs/analysis/week12_formal_sorting_analysis.md`;
 - [x] add `docs/progress/week12_summary.md`;
 - [x] freeze the Week 13 thesis-synthesis handoff.
+- [x] preserve the 2026-07-24 supervisor decision as a historical baseline and
+  add the current ordinary-list scope amendment required by Week 13.
 
 Primary result:
 
@@ -208,6 +210,7 @@ tests/test_analyze_week12_formal_sorting.py
 docs/analysis/week12_formal_sorting_analysis.md
 docs/progress/week12_summary.md
 docs/plan/week13_plan.md
+docs/design/final_scope_amendment_paper_ordinary_list.md
 ```
 
 Checkpoint 3 verification:

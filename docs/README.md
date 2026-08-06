@@ -34,8 +34,12 @@ Current files:
   protocol.
 
 - `final_scope_and_contributions.md`
-  Week 8 supervisor-confirmed scope freeze, contribution claims, non-contributions, success
-  criteria, and supervisor decision record.
+  Historical Week 8 supervisor-confirmed minimum scope, contribution claims,
+  non-contributions, success criteria, and decision record.
+
+- `final_scope_amendment_paper_ordinary_list.md`
+  Current implementation and evaluation scope after the ordinary-list paper
+  algorithm was completed; distinguishes reference and paper output provenance.
 
 - `theory_to_implementation_mapping.md`
   Week 8 mapping from theoretical Jordan-sorting concepts to current code,
