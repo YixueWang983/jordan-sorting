@@ -129,17 +129,21 @@ independent validator regenerates all 35 cases, reruns checked diagnostics,
 recomputes summaries, verifies manifest hashes, and reports `valid = true`.
 The reproducible analysis shows the paper/reference case-median ratio falling
 from `3.096x` at `n=32` to `0.564x` at `n=512`; this is ordinary-list pilot
-evidence, not a linear-time claim. The separate Week 12 valid-input sorting
-gate is frozen at `3,600 / 180 / 45 / 60` expected rows and remains
-`frozen_not_executed`.
+evidence, not a linear-time claim. That pilot froze the separate Week 12
+valid-input sorting gate at `3,600 / 180 / 45 / 60` expected rows; Week 12 has
+since executed and archived that formal protocol exactly once.
 
-Week 12 Checkpoints 1 and 2 are complete. The dedicated runner, independent
+Week 12 is complete. The dedicated runner, independent
 fail-closed validator, wall-clock contracts, and adversarial evidence tests
 were approved before the formal execution. The archived `run001` contains
 `3,600 / 180 / 45 / 60` raw, case-summary, group-summary, and checked-audit
 rows with zero errors, incorrect outputs, or failed audits. Built-in and
 independent validation both report `valid = true`. The formal execution entry
-is disabled again after archival; Checkpoint 3 analysis has not started.
+is disabled again after archival. Its reproducible analysis reports a
+paper/reference ratio decline from `3.226x` at `n=32` to `0.567x` at `n=512`
+and the same directional size trend as Week 11. This remains a pipeline-scope
+ordinary-list result, not a like-for-like end-to-end speedup or linear-time
+claim. Week 13 is frozen as thesis synthesis and claim audit.
 
 ## Project Structure
 
@@ -351,7 +355,7 @@ python -m unittest discover -s tests
 Current status:
 
 ```text
-Ran 529 tests
+Ran 537 tests
 OK
 ```
 
@@ -407,6 +411,7 @@ Important project documents:
 - [docs/plan/week10_plan.md](docs/plan/week10_plan.md): timing-contamination study, execution-policy design, controlled pilot, and Week 11 experiment gate.
 - [docs/plan/week11_plan.md](docs/plan/week11_plan.md): machine-independent Week 11 protocol, isolated executions, validator, preflight, pilot, evidence, analysis, and Week 12 handoff plan.
 - [docs/plan/week12_plan.md](docs/plan/week12_plan.md): corrected three-checkpoint formal sorting plan, evidence contract, wall-clock boundary, independent validation, and analysis limits.
+- [docs/plan/week13_plan.md](docs/plan/week13_plan.md): frozen thesis-synthesis and claim-audit handoff based on immutable Week 12 evidence.
 - [docs/design/paper_timing_modes.md](docs/design/paper_timing_modes.md): current timed call graph, contamination sources, fixed execution modes, and validation boundaries.
 - [docs/analysis/week10_timing_baseline.md](docs/analysis/week10_timing_baseline.md): frozen Week 10 Day 1 commit, environment, validation evidence, pilot timings, findings, and open questions.
 - [docs/analysis/week10_contamination_pilot.md](docs/analysis/week10_contamination_pilot.md): validated Day 6 full-pilot evidence, overhead tables, scaling and family comparisons, figure, and interpretation boundary.
@@ -414,7 +419,9 @@ Important project documents:
 - [docs/progress/week10_summary.md](docs/progress/week10_summary.md): Week 10 mode decision, correctness/timing boundary, contamination evidence, and Week 11 handoff.
 - [docs/progress/week11_progress.md](docs/progress/week11_progress.md): Week 11 daily execution record through the archived pilot, analysis, and Week 12 gate.
 - [docs/progress/week11_summary.md](docs/progress/week11_summary.md): Week 11 validated pilot, reproducible analysis, limitations, and frozen Week 12 handoff.
-- [docs/progress/week12_progress.md](docs/progress/week12_progress.md): Week 12 Checkpoints 1 and 2 implementation, validated run001 evidence, and Checkpoint 3 boundary.
+- [docs/progress/week12_progress.md](docs/progress/week12_progress.md): completed Week 12 runner, evidence, validation, formal analysis, and Week 13 handoff record.
+- [docs/progress/week12_summary.md](docs/progress/week12_summary.md): Week 12 formal evidence, findings, interpretation boundary, reproduction, and handoff.
+- [docs/analysis/week12_formal_sorting_analysis.md](docs/analysis/week12_formal_sorting_analysis.md): reproducible correctness, runtime, ratio, variability, structure, counter, and Week 11 trend analysis.
 - [docs/analysis/week12_formal_sorting_run001_independent_validation.json](docs/analysis/week12_formal_sorting_run001_independent_validation.json): independent fail-closed validation report for the archived Week 12 formal run.
 - [docs/analysis/week11_pilot_analysis.md](docs/analysis/week11_pilot_analysis.md): reproducible runtime, ratio, variability, structure, and counter analysis of archived run003 evidence.
 - [docs/analysis/week11_machine_preflight_v1_m1.md](docs/analysis/week11_machine_preflight_v1_m1.md): preserved v1 M1 preflight record for the unexecuted historical gate.
@@ -464,18 +471,20 @@ Important project documents:
   ordinary-list split materialization, local safety checks, `stage_results`,
   and output recovery. The Week 9 pilot is not final performance evidence.
 - No level-linked or heterogeneous finger-tree backend is implemented.
-- Current figures summarize the Week 10 contamination study and Week 11 pilot;
-  broader thesis visualization remains future work.
+- Current figures summarize the Week 10 contamination study, Week 11 pilot,
+  and Week 12 formal sorting experiment; thesis chapter integration remains
+  future work.
 
 ## Next Steps
 
 Immediate next task:
 
+- follow the frozen Week 13 thesis-synthesis and claim-audit handoff;
 - preserve Week 12 `run001` and Week 11 `run003` as immutable evidence;
-- begin only the live-validated Week 12 Checkpoint 3 analysis;
+- trace every thesis result to a generated Week 12 artifact and archived file;
 - keep recognition separate from valid-input paper sorting;
-- compare Week 11 and Week 12 trends without pooling absolute timings;
-- do not treat ordinary-list timing as a linear-time claim.
+- do not pool Week 11 and Week 12 absolute timings;
+- do not treat ordinary-list pipeline ratios as linear-time evidence.
 
 Later cleanup:
 

@@ -1,8 +1,9 @@
 # Week 12 Plan: Formal Valid-Input Sorting Experiment
 
-Last updated: 2026-08-04
+Last updated: 2026-08-06
 
-Status: Checkpoint 1 implemented; formal experiment not executed.
+Status: complete; run001 is archived, formal execution is disabled, and the
+analysis and Week 13 handoff are frozen.
 
 ## Goal
 

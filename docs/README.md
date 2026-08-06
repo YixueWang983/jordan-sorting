@@ -138,8 +138,12 @@ Current files:
   decision, and Week 12 handoff.
 
 - `week12_progress.md`
-  Week 12 three-checkpoint execution record through the validated and archived
-  formal run001, with Checkpoint 3 analysis still pending.
+  Completed Week 12 three-checkpoint execution record through immutable
+  run001, formal analysis, and the Week 13 handoff.
+
+- `week12_summary.md`
+  Week 12 formal evidence, primary runtime pattern, interpretation limits,
+  reproduction commands, and thesis-synthesis boundary.
 
 ## Analysis Documents
 
@@ -149,7 +153,7 @@ Path:
 docs/analysis/
 ```
 
-Current Week 11 analysis:
+Current Week 11 and Week 12 analysis:
 
 - `week11_pilot_analysis.md`
   Reproducible runtime, ratio, variability, structure, and checked-counter
@@ -158,6 +162,14 @@ Current Week 11 analysis:
 - `week12_formal_sorting_run001_independent_validation.json`
   Independent fail-closed validation report for the immutable Week 12 formal
   sorting evidence.
+
+- `week12_formal_sorting_analysis.md`
+  Reproducible formal correctness, runtime, ratio, variability, structure,
+  checked-counter, and Week 11 trend analysis.
+
+- `week12_*.csv`, `week12_*.svg`, and `week12_analysis_summary.json`
+  Deterministic thesis-facing tables, figures, and machine-readable summary
+  generated outside the immutable run001 archive.
 
 ## Plan Documents
 
@@ -185,6 +197,7 @@ Current files:
 - `week10_plan.md`
 - `week11_plan.md`
 - `week12_plan.md`
+- `week13_plan.md`
 - `thesis_scope_and_research_questions.pdf`
 
 Planned files:
@@ -246,6 +259,11 @@ Current files:
 - `week10_runtime_ratio_by_family_size.csv`
 - `week10_runtime_ratio_by_size.svg`
 - `week10_observation_ratio_by_size.svg`
+- `week11_pilot_analysis.md`
+- `week11_*.csv` and `week11_*.svg`
+- `week12_formal_sorting_run001_independent_validation.json`
+- `week12_formal_sorting_analysis.md`
+- `week12_*.csv`, `week12_*.svg`, and `week12_analysis_summary.json`
 - `week11_machine_preflight_v1_m1.md`
   Preserved preflight record for the unexecuted historical v1 M1 gate.
 

@@ -761,7 +761,7 @@ python experiments/week12_experiment_gate.py
 
 That command prints an unexecuted protocol; it does not run an experiment.
 
-## Frozen Week 12 Formal Sorting Experiment
+## Archived Week 12 Formal Sorting Experiment
 
 Week 12 keeps valid-input sorting separate from recognition and derives its
 complete protocol from:
@@ -807,3 +807,26 @@ python experiments/validate_week12_formal_sorting_outputs.py \
 The external report remains outside the immutable archive. Checkpoint 3 may
 read and live-validate this evidence, but it must not modify the original eight
 files.
+
+Reproduce the completed Week 12 analysis without rerunning timing:
+
+```bash
+python experiments/analyze_week12_formal_sorting.py \
+  --run-dir results/runs/week12_formal_sorting_v1__run001 \
+  --output-dir docs/analysis
+```
+
+The command reruns the dedicated validator, verifies that archived file hashes
+remain unchanged, and writes all outputs under `docs/analysis/`. The primary
+paper/reference exact-case median ratio decreases from `3.226x` at `n=32` to
+`0.567x` at `n=512`, reproducing the Week 11 directional trend. Week 11 and
+Week 12 absolute runtimes are not pooled.
+
+The detailed interpretation is:
+
+```text
+docs/analysis/week12_formal_sorting_analysis.md
+```
+
+The formal execution entry is disabled after archival. Run001 is immutable and
+permanently retired.

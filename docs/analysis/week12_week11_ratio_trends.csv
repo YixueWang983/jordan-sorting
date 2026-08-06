@@ -1,0 +1,16 @@
+n,comparison,week11_case_count,week12_case_count,week11_median_ratio,week12_median_ratio,week11_change_direction,week12_change_direction,change_direction_consistent,same_side_of_one
+32,paper/reference,7,12,3.095547661466315,3.226420416210818,not_applicable,not_applicable,,True
+32,paper/python,7,12,703.5636923076923,765.8742461754077,not_applicable,not_applicable,,True
+32,reference/python,7,12,227.41692987997473,231.8494318181818,not_applicable,not_applicable,,True
+64,paper/reference,7,12,2.148361164223497,2.2023936977323695,down,down,True,True
+64,paper/python,7,12,912.5071304347827,915.0247175654167,up,up,True,True
+64,reference/python,7,12,412.5766242937853,415.1371826773577,up,up,True,True
+128,paper/reference,7,12,1.3542391532476235,1.3510644671490875,down,down,True,True
+128,paper/python,7,12,1061.6694352159468,1072.8149673029673,up,up,True,True
+128,reference/python,7,12,774.2864525655224,781.8683258723258,up,up,True,True
+256,paper/reference,7,12,0.8176289024310688,0.8505969107881013,down,down,True,True
+256,paper/python,7,12,1295.3741225573895,1302.7073428571427,up,up,True,True
+256,reference/python,7,12,1557.377449059561,1527.2485246140327,up,up,True,True
+512,paper/reference,7,12,0.5639997427101626,0.5671874735791151,down,down,True,True
+512,paper/python,7,12,1690.6289034818349,1768.2906932522433,up,up,True,True
+512,reference/python,7,12,3089.7029385822384,3113.8376318997584,up,up,True,True

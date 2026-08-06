@@ -1,0 +1,12 @@
+metric,value
+raw_row_count,3600
+raw_error_count,0
+raw_incorrect_output_count,0
+raw_oracle_invalid_count,0
+raw_failed_audit_count,0
+case_summary_row_count,180
+case_summary_incorrect_count,0
+case_summary_error_count,0
+case_audit_row_count,60
+case_audit_failed_count,0
+validator_error_count,0

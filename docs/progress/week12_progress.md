@@ -1,6 +1,6 @@
 # Week 12 Progress
 
-Last updated: 2026-08-05
+Last updated: 2026-08-06
 
 ## Goal
 
@@ -166,18 +166,85 @@ docs/analysis/week12_formal_sorting_run001_independent_validation.json
 
 ## Checkpoint 3: Formal Analysis
 
-Status: not started.
+Status: complete.
 
-- [ ] live-validate archived evidence before analysis;
-- [ ] generate `week12_...` CSV and SVG outputs outside the archive;
-- [ ] report size and family results without pooling incompatible scopes;
-- [ ] compare Week 11 and Week 12 trends without pooling absolute timings;
-- [ ] document ordinary-list observations and all non-claims;
-- [ ] add `docs/progress/week12_summary.md`;
-- [ ] freeze the Week 13 handoff.
+- [x] live-validate archived evidence before analysis;
+- [x] hash every archived file before and after analysis;
+- [x] generate `week12_...` CSV and SVG outputs outside the archive;
+- [x] report size and family results without pooling incompatible scopes;
+- [x] compute exact-case ratios before equal-weight aggregation;
+- [x] compare Week 11 and Week 12 ratios without pooling absolute timings;
+- [x] record correctness, audit, variability, measured-call, and wall-clock
+  totals;
+- [x] document exploratory structure and checked-counter relationships;
+- [x] document timing-scope, non-causal, non-asymptotic, and non-linear-time
+  boundaries;
+- [x] visually inspect both SVG figures and correct legend clipping;
+- [x] add `docs/analysis/week12_formal_sorting_analysis.md`;
+- [x] add `docs/progress/week12_summary.md`;
+- [x] freeze the Week 13 thesis-synthesis handoff.
+
+Primary result:
+
+```text
+paper/reference by size:
+    n=32   3.226x
+    n=64   2.202x
+    n=128  1.351x
+    n=256  0.851x
+    n=512  0.567x
+
+Week 11 versus Week 12:
+    all three ratio trends have Spearman = 1.0
+    all adjacent-size directions match
+    absolute runtimes are not pooled
+```
+
+Analysis implementation and report:
+
+```text
+experiments/analyze_week12_formal_sorting.py
+tests/test_analyze_week12_formal_sorting.py
+docs/analysis/week12_formal_sorting_analysis.md
+docs/progress/week12_summary.md
+docs/plan/week13_plan.md
+```
+
+Checkpoint 3 verification:
+
+```text
+focused analysis tests:
+    8 passed
+
+full suite:
+    537 passed
+
+analysis artifact checks:
+    all expected CSV row counts passed
+    both SVG files parsed as XML
+    live Week 12 validator = valid
+    rows = 3,600 / 180 / 45 / 60
+
+paper algorithm validation:
+    2,074 exhaustive valid permutations passed
+    48 fixed generated cases passed
+
+historical validators:
+    Week 9 sorting = valid, 108 / 36 / 27
+    Week 9 recognition = valid, 180 / 60 / 42
+    Week 10 contamination = valid, 1,500 / 100 / 60
+    Week 11 run003 = valid, 1,050 / 105 / 45 / 35
+
+archive integrity:
+    all eight run001 SHA-256 values unchanged
+
+compileall and git diff check:
+    passed
+```
 
 ## Current Boundary
 
-Week 12 run001 has completed exactly once and is retired. Its archived evidence
-must be treated as immutable and must not be rerun or overwritten. Checkpoint 3
-may read and live-validate the archive, but formal timing must not run again.
+Week 12 is complete. Run001 executed exactly once and is retired. Its archived
+evidence remains immutable, and the public formal execution entry remains
+disabled. Week 13 may use the validated analysis for thesis synthesis but must
+not rerun timing, alter the algorithm, or strengthen the documented claims.

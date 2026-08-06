@@ -544,6 +544,8 @@ def _write_line_figure(
     log_scale,
     value_kind,
     baseline=None,
+    canvas_width=960,
+    legend_width=270,
 ):
     output = Path(path)
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -557,8 +559,8 @@ def _write_line_figure(
     padding = max((y_max - y_min) * 0.12, 0.08 if log_scale else 0.05)
     y_min -= padding
     y_max += padding
-    width, height = 960, 560
-    left, right, top, bottom = 92, 270, 72, 78
+    width, height = canvas_width, 560
+    left, right, top, bottom = 92, legend_width, 72, 78
     plot_width = width - left - right
     plot_height = height - top - bottom
 

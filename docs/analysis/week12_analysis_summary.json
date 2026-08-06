@@ -1,0 +1,66 @@
+{
+  "case_runtime_rows": 180,
+  "correctness": {
+    "case_audit_failed_count": 0,
+    "case_audit_row_count": 60,
+    "case_summary_error_count": 0,
+    "case_summary_incorrect_count": 0,
+    "case_summary_row_count": 180,
+    "raw_error_count": 0,
+    "raw_failed_audit_count": 0,
+    "raw_incorrect_output_count": 0,
+    "raw_oracle_invalid_count": 0,
+    "raw_row_count": 3600,
+    "validator_error_count": 0
+  },
+  "counter_relationship_rows": 25,
+  "high_relative_iqr_rows": 1,
+  "high_relative_iqr_threshold": 0.25,
+  "maximum_relative_iqr": 0.2519959355494266,
+  "measured_call_total_seconds": 17.369623904,
+  "overall_case_median_ratios": {
+    "paper/python": 1117.902851953559,
+    "paper/reference": 1.3510644671490875,
+    "reference/python": 784.0158095238095
+  },
+  "pipeline_wall_clock_seconds": 837.682385541,
+  "ratio_rows": 72,
+  "row_counts": {
+    "case_audit": 60,
+    "case_summary": 180,
+    "group_summary": 45,
+    "raw": 3600
+  },
+  "runtime_by_family_rows": 9,
+  "runtime_by_family_size_rows": 45,
+  "runtime_by_size_rows": 15,
+  "source_commit": "98868b1b705f6d5f22404ee8ad7b88ad7a834f52",
+  "source_run": "results/runs/week12_formal_sorting_v1__run001",
+  "structure_relationship_rows": 15,
+  "trend_consistency": {
+    "paper/python": {
+      "matching_transition_count": 4,
+      "ratio_spearman": 1.0,
+      "same_side_of_one_count": 5,
+      "size_count": 5,
+      "transition_count": 4
+    },
+    "paper/reference": {
+      "matching_transition_count": 4,
+      "ratio_spearman": 1.0,
+      "same_side_of_one_count": 5,
+      "size_count": 5,
+      "transition_count": 4
+    },
+    "reference/python": {
+      "matching_transition_count": 4,
+      "ratio_spearman": 1.0,
+      "same_side_of_one_count": 5,
+      "size_count": 5,
+      "transition_count": 4
+    }
+  },
+  "validation_valid": true,
+  "week11_absolute_timings_pooled": false,
+  "week11_week12_trend_rows": 15
+}

@@ -59,11 +59,18 @@ This folder stores the approved thesis scope and research-question documents.
   experiment: runner/validator review, one immutable evidence execution, and
   reproducible thesis-facing analysis.
 
-The frozen, unexecuted Week 12 valid-input sorting choices are in:
+- `week13_plan.md`
+  Frozen thesis-synthesis and claim-audit handoff based on immutable Week 12
+  evidence. It explicitly forbids another formal timing execution.
+
+The frozen Week 12 valid-input sorting choices are in:
 
 ```text
 experiments/week12_experiment_gate.py
 ```
+
+The gate was executed exactly once as `week12_formal_sorting_v1__run001`; its
+evidence is archived and the public execution entry is disabled.
 
 The canonical machine-independent Week 11 integration-pilot values are in:
 
