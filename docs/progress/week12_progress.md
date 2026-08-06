@@ -112,8 +112,9 @@ historical validators:
 git diff --check:
     passed
 
-formal execution enabled:
-    true at source commit 98868b1
+formal execution state:
+    enabled only for source commit 98868b1
+    disabled again after validated evidence archival
 
 formal run001 directory:
     created once after Checkpoint 1 approval
@@ -132,6 +133,7 @@ Status: complete. The immutable run is archived for review.
 - [x] verify zero errors, incorrect outputs, and failed audits;
 - [x] archive immutable evidence;
 - [x] retire run001 permanently after success.
+- [x] disable the public formal execution entry after archival.
 
 Execution record:
 

@@ -138,8 +138,8 @@ fail-closed validator, wall-clock contracts, and adversarial evidence tests
 were approved before the formal execution. The archived `run001` contains
 `3,600 / 180 / 45 / 60` raw, case-summary, group-summary, and checked-audit
 rows with zero errors, incorrect outputs, or failed audits. Built-in and
-independent validation both report `valid = true`; Checkpoint 3 analysis has
-not started.
+independent validation both report `valid = true`. The formal execution entry
+is disabled again after archival; Checkpoint 3 analysis has not started.
 
 ## Project Structure
 
