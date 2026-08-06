@@ -97,8 +97,8 @@ and category fields. Failure at generation, certification, or profiling stops
 the formal run rather than silently dropping the case. [M-01, M-03]
 
 The paper implementation also receives one untimed checked diagnostic per
-exact case. The diagnostic must return the oracle-sorted output, process all
-`n` points, and report valid state invariants. Its trace length and complete
+exact case. The diagnostic output must match `oracle_result["sorted"]`, process
+all `n` points, and report valid state invariants. Its trace length and complete
 paper-operation metrics are saved in `case_audit.csv`. All sixty cases finish
 certification and checked audit before the first warm-up begins. [M-01, M-06,
 M-11]
@@ -114,9 +114,18 @@ For every warm-up and measured call, the runner creates a fresh Python list
 from the stored sequence before starting the clock. It records elapsed time
 with `time.perf_counter_ns()` around only the selected algorithm call. If
 garbage collection is enabled before the call, the runner disables it for the
-timed region and restores the caller's original GC state afterward. Output
-extraction, comparison with the oracle-sorted list, and error recording occur
-after the timer stops. [M-05]
+timed region and restores the caller's original GC state afterward. Each
+algorithm's own output construction or recovery remains inside that call:
+Python sort constructs its list, the reference pipeline constructs its result
+dictionary, and the paper core executes `state.partial_order.to_list()` before
+returning. [M-05, M-06, M-07]
+
+After the timer stops, the runner normalizes the already constructed return
+value, for example by reading `result["sorted"]` from the reference result. It
+then compares the normalized list with the oracle-sorted reference and records
+correctness or error fields. These runner-level operations are outside timing;
+they do not move any algorithm's own output construction outside its timed
+call. [M-05]
 
 Warm-up failures abort the experiment. A measured-call exception is retained as
 an error row with no valid timing rather than omitted. The formal evidence
@@ -149,7 +158,9 @@ round:
 The first aggregation level is the exact case-algorithm cell, giving 180 case
 summaries. Its primary statistic is the median of the twenty measured calls.
 Q1, Q3, IQR, mean, and sample standard deviation are retained to expose
-dispersion. [M-05, M-09, M-11]
+dispersion. Q1 and Q3 use the median-of-halves convention: after sorting the
+measured times, Q1 is the median of the lower half, Q3 is the median of the
+upper half, and IQR is `Q3 - Q1`. [M-05, M-09, M-11]
 
 The second stored level groups case medians by family, size, and algorithm,
 giving 45 group summaries. Higher-level size and family tables used in the

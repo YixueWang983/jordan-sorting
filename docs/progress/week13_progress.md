@@ -69,7 +69,8 @@ docs/thesis/implementation_draft.md
 
 ## Day 3: Experimental Method Chapter
 
-Status: complete; awaiting review before Results drafting.
+Status: complete; timing-scope wording corrected and awaiting final review
+before Results drafting.
 
 - [x] fix the Week 12 valid-input sorting scope and recognition separation;
 - [x] document five sizes, sixty cases, family balance, and frozen seeds;
@@ -81,6 +82,11 @@ Status: complete; awaiting review before Results drafting.
 - [x] explain no-overwrite evidence, manifest, and live validation;
 - [x] bind absolute-time reporting to the run001 environment and source commit;
 - [x] cover `M-01` through `M-13` and required method limitations.
+- [x] distinguish timed algorithm output construction from untimed runner
+  normalization and correctness comparison;
+- [x] state that diagnostic output matches, rather than comes from, the oracle
+  result;
+- [x] define Q1/Q3 with the median-of-halves convention.
 
 Draft:
 
