@@ -6,11 +6,13 @@ Status: Week 13 Results chapter draft; awaiting review.
 
 ## Evidence Status and Correctness
 
-The Results chapter uses only the immutable Week 12 execution
+The primary formal results use the immutable Week 12 execution
 `week12_formal_sorting_v1__run001` and analysis artifacts regenerated from that
-archive. Live validation accepted the archive with no errors and confirmed
-3,600 raw rows, 180 case summaries, 45 group summaries, and 60 checked case
-audits. [R-01]
+archive. The `R-11` directional-replication comparison additionally uses the
+immutable Week 11 execution `week11_pilot_v1__run003`, with its case-summary
+evidence verified against the archived manifest. Live validation accepted the
+Week 12 archive with no errors and confirmed 3,600 raw rows, 180 case
+summaries, 45 group summaries, and 60 checked case audits. [R-01, R-11]
 
 Across the archived evidence, all 3,600 measured rows are oracle-certified,
 have correct sorted output, carry a passed audit, and contain no recorded
