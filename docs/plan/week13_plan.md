@@ -2,7 +2,7 @@
 
 Last updated: 2026-08-06
 
-Status: Implementation reviewed; Experimental Method draft complete and awaiting review.
+Status: Experimental Method reviewed; Results draft complete and awaiting review.
 
 ## Goal
 
@@ -45,9 +45,9 @@ The historical statement that sorted output comes from
    ordinary-list backend, invariants, and deterministic replay audit.
 3. [x] Draft the experimental-method chapter from the frozen protocol, timing
    boundaries, correctness certification, evidence contract, and validator.
-4. Draft the results chapter using the Week 12 size, family, ratio,
+4. [x] Draft the results chapter using the Week 12 size, family, ratio,
    variability, structure, and counter artifacts.
-5. Include the Week 11/Week 12 ratio-trend replication without pooling
+5. [x] Include the Week 11/Week 12 ratio-trend replication without pooling
    absolute timings across executions.
 6. Audit all wording for pipeline-scope, ordinary-list, non-causal,
    non-asymptotic, and non-linear-time boundaries.

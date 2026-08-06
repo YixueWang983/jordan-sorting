@@ -69,8 +69,8 @@ docs/thesis/implementation_draft.md
 
 ## Day 3: Experimental Method Chapter
 
-Status: complete; timing-scope wording corrected and awaiting final review
-before Results drafting.
+Status: complete; timing-scope, diagnostic-provenance, and quartile corrections
+reviewed and approved.
 
 - [x] fix the Week 12 valid-input sorting scope and recognition separation;
 - [x] document five sizes, sixty cases, family balance, and frozen seeds;
@@ -94,15 +94,35 @@ Draft:
 docs/thesis/experimental_methodology_draft.md
 ```
 
+## Day 4: Results Chapter
+
+Status: complete; awaiting review before the dedicated Limitations chapter.
+
+- [x] establish correctness and evidence validity from `R-01`;
+- [x] report absolute runtimes with run001 environment and scope context;
+- [x] place the pipeline-scope boundary beside the first ratio table;
+- [x] report all five size ratios and the observed tested-size crossover;
+- [x] preserve family imbalance beside family-specific results;
+- [x] retain the flagged IQR cell without deletion or causal explanation;
+- [x] separate measured-call totals from whole-pipeline wall-clock;
+- [x] compare Week 11/12 through within-run ratios and direction only;
+- [x] isolate `E-01..E-04` in explicitly exploratory subsections;
+- [x] cover `R-01..R-11` without linear-time or asymptotic claims.
+
+Draft:
+
+```text
+docs/thesis/results_draft.md
+```
+
 ## Remaining Work
 
-- [ ] draft Results from `R-*` and qualified `E-*` claims;
 - [ ] draft Limitations with explicit coverage of every `L-*` row;
 - [ ] perform the final chapter-level claim audit.
 
 ## Boundary
 
-Days 1 through 3 did not modify source code, validators, generated analysis
+Days 1 through 4 did not modify source code, validators, generated analysis
 artifacts, or immutable evidence. No formal timing or validation run was
-repeated. Results drafting remains blocked until Experimental Method is
+repeated. The dedicated Limitations draft remains blocked until Results is
 reviewed.

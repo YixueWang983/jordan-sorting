@@ -308,6 +308,10 @@ Current files:
 - `implementation_draft.md`
   Week 13 implementation-chapter draft covering the reference/paper boundary,
   ordinary-list state, Step 1/2/3, validation, policies, and fixed non-claims.
+- `results_draft.md`
+  Week 13 Results draft covering correctness, runtime, matched-case ratios,
+  family balance, variability, directional replication, and exploratory
+  relationships.
 
 ## Other Files
 
