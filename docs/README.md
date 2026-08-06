@@ -303,6 +303,8 @@ Current files:
   exploratory, and limitation claims to primary evidence locators.
 
 - `experimental_methodology_draft.md`
+  Week 13 method-chapter draft covering the frozen valid-input protocol,
+  timing scopes, scheduling, aggregation, evidence, validator, and provenance.
 - `implementation_draft.md`
   Week 13 implementation-chapter draft covering the reference/paper boundary,
   ordinary-list state, Step 1/2/3, validation, policies, and fixed non-claims.

@@ -46,7 +46,7 @@ docs/thesis/claim_to_evidence_table.md
 
 ## Day 2: Implementation Chapter
 
-Status: complete; awaiting review before Experimental Method drafting.
+Status: complete; reviewed with two locator/wording corrections applied.
 
 - [x] separate the oracle-backed reference path from the paper core;
 - [x] describe the one-based point/pair model and both maintained structures;
@@ -57,6 +57,9 @@ Status: complete; awaiting review before Experimental Method drafting.
 - [x] describe checked diagnostics, deterministic replay, and policy modes;
 - [x] state the ordinary-list and non-linear-time boundaries;
 - [x] cover `I-01` through `I-09` plus `L-01`, `L-04`, and `L-09`.
+- [x] replace the obsolete I-01 `_reference_sorted_output` locator;
+- [x] identify exhaustive checking as repository validation, not external
+  replication.
 
 Draft:
 
@@ -64,16 +67,36 @@ Draft:
 docs/thesis/implementation_draft.md
 ```
 
+## Day 3: Experimental Method Chapter
+
+Status: complete; awaiting review before Results drafting.
+
+- [x] fix the Week 12 valid-input sorting scope and recognition separation;
+- [x] document five sizes, sixty cases, family balance, and frozen seeds;
+- [x] distinguish the three compared timed pipelines;
+- [x] place oracle certification and checked diagnostics outside paper timing;
+- [x] describe fresh inputs, GC restoration, warm-ups, and measured calls;
+- [x] document deterministic case/algorithm scheduling and noise limits;
+- [x] define exact-case aggregation and matched-case ratio construction;
+- [x] explain no-overwrite evidence, manifest, and live validation;
+- [x] bind absolute-time reporting to the run001 environment and source commit;
+- [x] cover `M-01` through `M-13` and required method limitations.
+
+Draft:
+
+```text
+docs/thesis/experimental_methodology_draft.md
+```
+
 ## Remaining Work
 
-- [ ] revise Experimental Method against `M-*` claims;
 - [ ] draft Results from `R-*` and qualified `E-*` claims;
 - [ ] draft Limitations with explicit coverage of every `L-*` row;
 - [ ] perform the final chapter-level claim audit.
 
 ## Boundary
 
-Days 1 and 2 did not modify source code, validators, generated analysis
+Days 1 through 3 did not modify source code, validators, generated analysis
 artifacts, or immutable evidence. No formal timing or validation run was
-repeated. Experimental Method drafting remains blocked until the Implementation
-chapter is reviewed.
+repeated. Results drafting remains blocked until Experimental Method is
+reviewed.

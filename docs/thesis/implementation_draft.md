@@ -189,9 +189,10 @@ separate operations. After successful insertion, Step 3(c) advances
 The geometric endpoint rule and the odd-index output-anchor adjustment are an
 executable interpretation of details that are not fully specified in the 1990
 text. They were fixed through minimal counterexamples, the related 1986
-description, mirrored cases, and exhaustive external tests. The implementation
-should therefore be described as a paper-facing reconstruction rather than a
-verbatim transcription of every omitted detail. [I-04]
+description, mirrored cases, and exhaustive repository validation over
+oracle-certified cases. The implementation should therefore be described as a
+paper-facing reconstruction rather than a verbatim transcription of every
+omitted detail. [I-04]
 
 ## Output and Certification Boundary
 
