@@ -145,12 +145,11 @@ and the same directional size trend as Week 11. This remains a pipeline-scope
 ordinary-list result, not a like-for-like end-to-end speedup or linear-time
 claim. Week 13 is frozen as thesis synthesis and claim audit.
 
-Week 13 has completed the reviewed claim-to-evidence, Implementation, and
-Experimental Method checkpoints. The Results draft now reports correctness,
-absolute runtime with provenance, matched-case pipeline ratios, family balance,
-variability, measured versus pipeline time, Week 11 directional replication,
-and separately labeled exploratory relationships. The dedicated Limitations
-chapter remains gated on review of Results.
+Week 13 has completed the reviewed claim-to-evidence, Implementation,
+Experimental Method, and Results checkpoints. The dedicated Limitations draft
+now records backend fidelity, timing scope, valid-input and recognition,
+sampling, cross-run, exploratory, and statistical boundaries. The final
+chapter-level claim audit remains gated on review of Limitations.
 
 ## Project Structure
 
@@ -484,15 +483,15 @@ Important project documents:
   and output recovery. The Week 9 pilot is not final performance evidence.
 - No level-linked or heterogeneous finger-tree backend is implemented.
 - Current figures summarize the Week 10 contamination study, Week 11 pilot,
-  and Week 12 formal sorting experiment; thesis chapter integration remains
-  future work.
+  and Week 12 formal sorting experiment; formal FU LaTeX integration remains
+  later work after the Week 13 chapter drafts and claim audit are complete.
 
 ## Next Steps
 
 Immediate next task:
 
-- review Results against `R-01` through `R-11` and `E-01` through `E-04`;
-- draft the dedicated Limitations chapter only after that checkpoint passes;
+- review Limitations against `L-01` through `L-09`;
+- perform the final chapter-level claim audit only after that checkpoint passes;
 - preserve Week 12 `run001` and Week 11 `run003` as immutable evidence;
 - trace every thesis result to a generated Week 12 artifact and archived file;
 - keep recognition separate from valid-input paper sorting;

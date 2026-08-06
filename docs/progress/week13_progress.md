@@ -96,7 +96,8 @@ docs/thesis/experimental_methodology_draft.md
 
 ## Day 4: Results Chapter
 
-Status: complete; awaiting review before the dedicated Limitations chapter.
+Status: complete; reviewed and approved after the Week 11/12 provenance
+correction.
 
 - [x] establish correctness and evidence validity from `R-01`;
 - [x] report absolute runtimes with run001 environment and scope context;
@@ -115,14 +116,36 @@ Draft:
 docs/thesis/results_draft.md
 ```
 
+## Day 5: Limitations Chapter
+
+Status: complete; awaiting review before the final chapter-level claim audit.
+
+- [x] distinguish the ordinary-list reconstruction from the theoretical
+  level-linked and heterogeneous finger-tree backend;
+- [x] prohibit linear-time and five-size asymptotic conclusions;
+- [x] explain the non-equivalent paper/reference timing scopes;
+- [x] preserve independent paper output provenance while stating the external
+  valid-input certification boundary;
+- [x] separate recognition from the Week 12 valid-input sorting evidence;
+- [x] state the controlled, unbalanced generator and sample limitations;
+- [x] restrict Week 11/12 comparison to within-run ratios and direction;
+- [x] limit absolute runtime to the recorded execution environment;
+- [x] label structure and checked-counter relationships exploratory and
+  non-causal;
+- [x] cover `L-01` through `L-09` without introducing a new empirical result.
+
+Draft:
+
+```text
+docs/thesis/limitations_draft.md
+```
+
 ## Remaining Work
 
-- [ ] draft Limitations with explicit coverage of every `L-*` row;
 - [ ] perform the final chapter-level claim audit.
 
 ## Boundary
 
-Days 1 through 4 did not modify source code, validators, generated analysis
+Days 1 through 5 did not modify source code, validators, generated analysis
 artifacts, or immutable evidence. No formal timing or validation run was
-repeated. The dedicated Limitations draft remains blocked until Results is
-reviewed.
+repeated. The final claim audit remains blocked until Limitations is reviewed.

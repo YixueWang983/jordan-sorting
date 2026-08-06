@@ -2,7 +2,7 @@
 
 Last updated: 2026-08-06
 
-Status: Experimental Method reviewed; Results draft complete and awaiting review.
+Status: Results reviewed; Limitations draft complete and awaiting review.
 
 ## Goal
 
@@ -49,11 +49,13 @@ The historical statement that sorted output comes from
    variability, structure, and counter artifacts.
 5. [x] Include the Week 11/Week 12 ratio-trend replication without pooling
    absolute timings across executions.
-6. Audit all wording for pipeline-scope, ordinary-list, non-causal,
+6. [x] Draft a dedicated Limitations chapter with explicit coverage of
+   `L-01` through `L-09`.
+7. Audit all wording for pipeline-scope, ordinary-list, non-causal,
    non-asymptotic, and non-linear-time boundaries.
-7. Keep recognition results in their own subsection and do not infer them from
+8. Keep recognition results in their own subsection and do not infer them from
    the valid-input sorting experiment.
-8. Distinguish every reference-pipeline statement from every independent
+9. Distinguish every reference-pipeline statement from every independent
    paper-core statement, especially sorted-output provenance.
 
 ## Fixed Non-Goals

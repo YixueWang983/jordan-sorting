@@ -312,6 +312,9 @@ Current files:
   Week 13 Results draft covering correctness, runtime, matched-case ratios,
   family balance, variability, directional replication, and exploratory
   relationships.
+- `limitations_draft.md`
+  Week 13 Limitations draft covering backend fidelity, finite-size inference,
+  timing scope, recognition, sampling, execution, and exploratory boundaries.
 
 ## Other Files
 
