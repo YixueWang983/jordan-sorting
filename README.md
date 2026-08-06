@@ -145,11 +145,13 @@ and the same directional size trend as Week 11. This remains a pipeline-scope
 ordinary-list result, not a like-for-like end-to-end speedup or linear-time
 claim. Week 13 is frozen as thesis synthesis and claim audit.
 
-Week 13 has started with the claim-to-evidence checkpoint. The authoritative
-table now binds implementation, method, result, exploratory, and limitation
-claims to current source, immutable evidence, derived CSV fields, figures, and
-report sections. Chapter drafting has not started and remains gated on review
-of that table.
+Week 13 has completed the reviewed claim-to-evidence checkpoint and the first
+chapter draft. The authoritative table binds implementation, method, result,
+exploratory, and limitation claims to current source, immutable evidence,
+derived CSV fields, figures, and report sections. The Implementation draft now
+covers the oracle/reference boundary, ordinary-list paper state, Step 1/2/3,
+validation, execution policies, and fixed non-claims. Experimental Method
+drafting remains gated on review of that chapter.
 
 ## Project Structure
 
@@ -490,8 +492,8 @@ Important project documents:
 
 Immediate next task:
 
-- review the Week 13 claim-to-evidence table before drafting chapters;
-- revise the Implementation chapter only after that checkpoint passes;
+- review the Week 13 Implementation chapter against `I-01` through `I-09`;
+- revise Experimental Method only after that checkpoint passes;
 - preserve Week 12 `run001` and Week 11 `run003` as immutable evidence;
 - trace every thesis result to a generated Week 12 artifact and archived file;
 - keep recognition separate from valid-input paper sorting;

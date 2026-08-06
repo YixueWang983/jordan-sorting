@@ -304,6 +304,8 @@ Current files:
 
 - `experimental_methodology_draft.md`
 - `implementation_draft.md`
+  Week 13 implementation-chapter draft covering the reference/paper boundary,
+  ordinary-list state, Step 1/2/3, validation, policies, and fixed non-claims.
 
 ## Other Files
 

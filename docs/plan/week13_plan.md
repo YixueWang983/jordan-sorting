@@ -2,7 +2,7 @@
 
 Last updated: 2026-08-06
 
-Status: claim-to-evidence table complete; chapter drafting not started.
+Status: claim-to-evidence table reviewed; Implementation draft complete and awaiting review.
 
 ## Goal
 
@@ -40,8 +40,8 @@ The historical statement that sorted output comes from
 
 ## Tasks
 
-1. Build and review the claim-to-evidence table before drafting chapters.
-2. Draft the implementation chapter from the paper-facing Step 1/2/3 design,
+1. [x] Build and review the claim-to-evidence table before drafting chapters.
+2. [x] Draft the implementation chapter from the paper-facing Step 1/2/3 design,
    ordinary-list backend, invariants, and deterministic replay audit.
 3. Draft the experimental-method chapter from the frozen protocol, timing
    boundaries, correctness certification, evidence contract, and validator.
