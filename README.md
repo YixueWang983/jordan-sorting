@@ -145,6 +145,12 @@ and the same directional size trend as Week 11. This remains a pipeline-scope
 ordinary-list result, not a like-for-like end-to-end speedup or linear-time
 claim. Week 13 is frozen as thesis synthesis and claim audit.
 
+Week 13 has started with the claim-to-evidence checkpoint. The authoritative
+table now binds implementation, method, result, exploratory, and limitation
+claims to current source, immutable evidence, derived CSV fields, figures, and
+report sections. Chapter drafting has not started and remains gated on review
+of that table.
+
 ## Project Structure
 
 ```text
@@ -424,6 +430,8 @@ Important project documents:
 - [docs/progress/week11_summary.md](docs/progress/week11_summary.md): Week 11 validated pilot, reproducible analysis, limitations, and frozen Week 12 handoff.
 - [docs/progress/week12_progress.md](docs/progress/week12_progress.md): completed Week 12 runner, evidence, validation, formal analysis, and Week 13 handoff record.
 - [docs/progress/week12_summary.md](docs/progress/week12_summary.md): Week 12 formal evidence, findings, interpretation boundary, reproduction, and handoff.
+- [docs/progress/week13_progress.md](docs/progress/week13_progress.md): Week 13 claim-to-evidence checkpoint and chapter-drafting boundary.
+- [docs/thesis/claim_to_evidence_table.md](docs/thesis/claim_to_evidence_table.md): authoritative mapping from permitted thesis claims to code, protocol, immutable evidence, and generated analysis fields.
 - [docs/analysis/week12_formal_sorting_analysis.md](docs/analysis/week12_formal_sorting_analysis.md): reproducible correctness, runtime, ratio, variability, structure, counter, and Week 11 trend analysis.
 - [docs/analysis/week12_formal_sorting_run001_independent_validation.json](docs/analysis/week12_formal_sorting_run001_independent_validation.json): independent fail-closed validation report for the archived Week 12 formal run.
 - [docs/analysis/week11_pilot_analysis.md](docs/analysis/week11_pilot_analysis.md): reproducible runtime, ratio, variability, structure, and counter analysis of archived run003 evidence.
@@ -482,7 +490,8 @@ Important project documents:
 
 Immediate next task:
 
-- follow the frozen Week 13 thesis-synthesis and claim-audit handoff;
+- review the Week 13 claim-to-evidence table before drafting chapters;
+- revise the Implementation chapter only after that checkpoint passes;
 - preserve Week 12 `run001` and Week 11 `run003` as immutable evidence;
 - trace every thesis result to a generated Week 12 artifact and archived file;
 - keep recognition separate from valid-input paper sorting;

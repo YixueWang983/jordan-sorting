@@ -149,6 +149,9 @@ Current files:
   Week 12 formal evidence, primary runtime pattern, interpretation limits,
   reproduction commands, and thesis-synthesis boundary.
 
+- `week13_progress.md`
+  Week 13 claim-to-evidence checkpoint and remaining chapter-drafting gate.
+
 ## Analysis Documents
 
 Path:
@@ -294,6 +297,10 @@ Use this folder for thesis-facing prose drafts promoted from implementation and
 experiment notes.
 
 Current files:
+
+- `claim_to_evidence_table.md`
+  Week 13 drafting authority linking permitted implementation, method, result,
+  exploratory, and limitation claims to primary evidence locators.
 
 - `experimental_methodology_draft.md`
 - `implementation_draft.md`
