@@ -132,9 +132,9 @@ boundary determines the local insertion anchor in $S_{i-1}$.
 \section{Initialization}
 \label{sec:algorithm-initialization}
 
-Inputs of length at most three can be handled by direct fixed-size comparison
-logic. For $n\geq 3$, the incremental state is initialized by ordering only
-$z_1,z_2,z_3$ and creating
+Lengths zero, one, and two are handled directly by fixed-size comparison logic.
+For $n\geq 3$, the incremental state is initialized by ordering
+$z_1,z_2,z_3$ with fixed-size comparison logic and creating
 \begin{align}
   P_2 &= \{z_1,z_2\} &&\text{in the upper family},\\
   P_3 &= \{z_2,z_3\} &&\text{in the lower family}.
@@ -344,10 +344,11 @@ split.
 
 The full valid-input sorting procedure is:
 \begin{enumerate}[itemsep=0.25em]
-  \item Materialize the input once and handle lengths at most three with
-    fixed-size comparison logic.
-  \item Initialize $S_3$, $P_2$, $P_3$, the two dummies, and their singleton
-    sibling lists.
+  \item Materialize the input once and handle lengths zero, one, and two
+    directly.
+  \item For $n\geq 3$, initialize $S_3$ by fixed-size ordering of the first
+    three points, then create $P_2$, $P_3$, the two dummies, and their
+    singleton sibling lists.
   \item For each $i=4,\ldots,n$:
     \begin{description}[itemsep=0.2em]
       \item[Step 1.] Compute predecessor-side boundary $A_i$.
