@@ -4,6 +4,379 @@
 % Audited Markdown baseline:
 % docs/thesis/results_draft.md
 % SHA-256: 969dec6a08461903a1c8dcdc71f5daaf2fc1f07530aa2de54bf9fd1cf28306a1
-\DraftPlaceholder{Content migration source:
-\texttt{docs/thesis/results\_draft.md}. Tables and figures must be regenerated
-or copied from validated analysis outputs without modifying archived evidence.}
+
+\section{Evidence Status and Correctness}
+\label{sec:results-correctness}
+
+% Claims: R-01, R-11
+The primary formal results use the immutable Week~12 execution
+\nolinkurl{week12_formal_sorting_v1__run001} and analysis artifacts
+regenerated from that archive. The directional-replication comparison in
+\cref{sec:results-replication} additionally uses the immutable Week~11
+execution \nolinkurl{week11_pilot_v1__run003}, whose case-summary evidence was
+verified against its archived manifest. Live validation accepted the Week~12
+archive without errors and confirmed 3600 raw rows, 180 case summaries, 45
+group summaries, and 60 checked case audits.
+
+Across the archived evidence, all 3600 measured rows are oracle-certified,
+have correct sorted output, carry a passed audit, and contain no recorded
+error. All 180 case summaries report correct, error-free cells, and all 60
+checked audits pass. This establishes empirical correctness for the frozen
+cases; it is not a proof for every valid Jordan sequence.
+
+\section{Runtime by Input Size}
+\label{sec:results-runtime-size}
+
+% Claims: R-03, R-04; method claims M-06, M-07, M-13
+All absolute times in this section belong to the single recorded execution
+described in \cref{sec:method-environment}: Apple M4/arm64 with
+\SI{16}{\giga\byte} memory, macOS~26.6, and CPython~3.12.4. The reference
+value times the complete oracle-backed reference pipeline. The paper value
+times only the pre-certified ordinary-list core in \texttt{minimal} mode;
+oracle certification and the checked diagnostic are outside timing. The
+Python value includes its own list construction inside the algorithm call.
+
+The median exact-case runtimes are shown in \cref{tab:results-runtime-size}
+and \cref{fig:results-runtime-size}.
+
+\begin{table}[H]
+  \centering
+  \caption{Median exact-case runtime by input size. Values are milliseconds;
+  each size contains twelve exact cases.}
+  \label{tab:results-runtime-size}
+  \small
+  \begin{tabular}{
+    S[table-format=3.0]
+    S[table-format=2.0]
+    S[table-format=1.6]
+    S[table-format=2.6]
+    S[table-format=2.6]
+  }
+    \toprule
+    {$n$} & {Cases} & {Python} & {Reference} & {Paper} \\
+    \midrule
+     32 & 12 & 0.000791 &  0.181177 &  0.586906 \\
+     64 & 12 & 0.001417 &  0.585667 &  1.282198 \\
+    128 & 12 & 0.002635 &  2.077959 &  2.815083 \\
+    256 & 12 & 0.005208 &  7.929646 &  6.721250 \\
+    512 & 12 & 0.010584 & 33.014458 & 18.716687 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{week12_runtime_by_size.pdf}
+  \caption{Week~12 median runtime by input size. The logarithmic vertical axis
+  displays equal-weighted exact-case medians under the distinct timed scopes
+  defined in \cref{sec:method-implementations}.}
+  \label{fig:results-runtime-size}
+\end{figure}
+
+At every tested size, Python sort has the smallest median call time. Under the
+frozen pipeline scopes, the paper call is larger than the reference call at
+$n=32$, $64$, and $128$, and smaller at $n=256$ and $512$. This is a
+comparison of the timed calls shown above, not an end-to-end or asymptotic
+performance claim.
+
+\section{Matched-Case Runtime Ratios}
+\label{sec:results-ratios}
+
+% Claims: R-02, R-03, R-05; limitations L-02, L-03
+The primary comparison is the paper/reference ratio computed within each exact
+case and then aggregated across the twelve cases at a size. A ratio above one
+means that the pre-certified paper call has the larger median time; a ratio
+below one means that it has the smaller median time. Because the reference and
+paper timed scopes differ, these values are pipeline-scope ratios rather than
+like-for-like end-to-end speedups.
+
+\begin{table}[H]
+  \centering
+  \caption{Median exact-case paper/reference ratio by input size.}
+  \label{tab:results-ratio-size}
+  \begin{tabular}{
+    S[table-format=3.0]
+    S[table-format=2.0]
+    S[table-format=1.6]
+  }
+    \toprule
+    {$n$} & {Cases} & {Median ratio} \\
+    \midrule
+     32 & 12 & 3.226420 \\
+     64 & 12 & 2.202394 \\
+    128 & 12 & 1.351064 \\
+    256 & 12 & 0.850597 \\
+    512 & 12 & 0.567187 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{week12_runtime_ratio_by_size.pdf}
+  \caption{Week~12 case-median runtime ratios by input size. Ratios are formed
+  within exact cases before equal-weight aggregation; the dashed line marks a
+  ratio of one.}
+  \label{fig:results-ratio-size}
+\end{figure}
+
+The median exact-case paper/reference ratio declines across all five tested
+sizes, from $3.226$ at $n=32$ to $0.567$ at $n=512$. It remains above one
+through $n=128$ and is below one at $n=256$ and $n=512$. Thus, the observed
+crossover lies between the tested sizes 128 and 256. The five points describe
+the frozen sample and do not establish an asymptotic rate.
+
+Across all sixty exact cases, the overall median ratios are given in
+\cref{tab:results-ratio-overall}.
+
+\begin{table}[H]
+  \centering
+  \caption{Overall median exact-case runtime ratios across all sixty cases.}
+  \label{tab:results-ratio-overall}
+  \begin{tabular}{l S[table-format=2.0] S[table-format=4.6]}
+    \toprule
+    Comparison & {Cases} & {Median ratio} \\
+    \midrule
+    Paper/reference  & 60 &    1.351064 \\
+    Paper/Python     & 60 & 1117.902852 \\
+    Reference/Python & 60 &  784.015810 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The two research implementations are therefore orders of magnitude above the
+Python baseline in the overall exact-case ratios. These medians aggregate the
+tested cases across sizes and are not asymptotic growth estimates.
+
+\section{Family-Specific Ratios}
+\label{sec:results-family}
+
+% Claims: R-06, R-07; limitation L-08
+The paper/reference ratio also decreases with size within each of the three
+controlled families, as shown in \cref{tab:results-family-ratios}.
+
+\begin{table}[H]
+  \centering
+  \caption{Median exact-case paper/reference ratio by family and input size.}
+  \label{tab:results-family-ratios}
+  \scriptsize
+  \begin{tabular}{@{}l S[table-format=2.0] *{5}{S[table-format=1.6]}@{}}
+    \toprule
+    Family & {Cases/$n$} & {$32$} & {$64$} & {$128$} & {$256$} & {$512$} \\
+    \midrule
+    Flat        &  1 & 2.550795 & 1.609025 & 0.919051 & 0.509697 & 0.281381 \\
+    Nested      &  1 & 2.563670 & 1.748004 & 1.099397 & 0.726798 & 0.525490 \\
+    Incremental & 10 & 3.281790 & 2.217258 & 1.358474 & 0.859922 & 0.569733 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The flat case first falls below one at $n=128$; the nested and incremental
+families first fall below one at $n=256$. These crossing statements apply only
+to the listed constructions and sizes. Flat and nested each contribute one
+deterministic case per size, whereas incremental contributes ten seeded cases.
+
+The overall size medians are consequently not balanced family averages. Ten
+of the twelve cases at each size are incremental, so the incremental rows have
+the largest influence on the size-level median. The family table is retained
+to make that composition visible.
+
+\section{Runtime Variability}
+\label{sec:results-variability}
+
+% Claim: R-08
+Relative IQR is the IQR divided by the median for one exact
+case-algorithm cell. The analysis flagged cells at or above $0.25$ for
+inspection without removing them.
+
+\begin{table}[H]
+  \centering
+  \caption{Relative-IQR summary over exact case-algorithm cells.}
+  \label{tab:results-iqr}
+  \small
+  \begin{tabular}{l S[table-format=1.4] S[table-format=1.4] S[table-format=1.0]}
+    \toprule
+    Algorithm & {Median} & {Maximum} & {Flagged cells} \\
+    \midrule
+    Python sort         & 0.0556 & 0.2520 & 1 \\
+    Reference pipeline  & 0.0119 & 0.0661 & 0 \\
+    Paper ordinary-list & 0.0152 & 0.0242 & 0 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The only flagged cell is
+\nolinkurl{incremental_valid_n512_001} under Python sort, with relative IQR
+$0.251996$. It remains in every aggregation. No reference or paper cell
+reaches the inspection threshold. The threshold is a study-specific flag, not
+a universal outlier definition, and the table does not assign a cause to the
+observed variation.
+
+\section{Measured Calls and Pipeline Wall-Clock}
+\label{sec:results-elapsed}
+
+% Claims: R-09, R-10
+The captured measured calls sum to the values in
+\cref{tab:results-measured-time}.
+
+\begin{table}[H]
+  \centering
+  \caption{Captured measured-call time by algorithm.}
+  \label{tab:results-measured-time}
+  \begin{tabular}{l S[table-format=4.0] S[table-format=2.9]}
+    \toprule
+    Algorithm & {Measured calls} & {Total time (s)} \\
+    \midrule
+    Python sort         & 1200 &  0.004750632 \\
+    Reference pipeline  & 1200 & 10.445239255 \\
+    Paper ordinary-list & 1200 &  6.919634017 \\
+    All algorithms      & 3600 & 17.369623904 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+These sums contain only measured algorithm calls. They exclude warm-ups,
+generation, certification, diagnostics, summaries, and file operations and
+must not be interpreted as complete experiment duration.
+
+The recorded formal pipeline wall-clock is \SI{837.682385541}{\second}. Its
+scope begins at formal evidence-directory reservation and covers
+configuration and environment writes, case generation, oracle certification,
+checked diagnostics, warm-ups, measured calls, summary construction, and CSV
+writes. Manifest writing and validation are excluded. This is a pipeline
+duration, not algorithm runtime, and it is not allocated among the three
+algorithms.
+
+\section{Week 11 Directional Replication}
+\label{sec:results-replication}
+
+% Claim: R-11; limitation L-06
+Week~11 and Week~12 are compared only through ratios formed within each run.
+Their absolute runtimes are not pooled. The paper/reference size medians are
+shown in \cref{tab:results-replication}.
+
+\begin{table}[H]
+  \centering
+  \caption{Paper/reference size medians in Week~11 and Week~12.}
+  \label{tab:results-replication}
+  \begin{tabular}{S[table-format=3.0] S[table-format=1.6] S[table-format=1.6]}
+    \toprule
+    {$n$} & {Week~11} & {Week~12} \\
+    \midrule
+     32 & 3.095548 & 3.226420 \\
+     64 & 2.148361 & 2.202394 \\
+    128 & 1.354239 & 1.351064 \\
+    256 & 0.817629 & 0.850597 \\
+    512 & 0.564000 & 0.567187 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+For paper/reference, paper/Python, and reference/Python, the size-rank Spearman
+coefficient between Week~11 and Week~12 is $1.0$. Each comparison has matching
+direction on all four adjacent-size transitions and remains on the same side
+of ratio one at all five sizes.
+
+This supports directional replication of the pilot pattern under the larger
+Week~12 protocol. It does not show equality between runs, provide a pooled
+estimate, or establish hardware-independent absolute time.
+
+\section{Exploratory Relationships}
+\label{sec:results-exploratory}
+
+The analyses in this section are explicitly exploratory. They use the twelve
+mixed-family cases at each fixed size and retain the unbalanced family
+composition. The coefficients are descriptive and do not support causal or
+asymptotic interpretation.
+
+\subsection{Structure and Runtime}
+\label{sec:results-exploratory-structure}
+
+% Claims: E-01, E-02; limitations L-07, L-08
+\begin{table}[H]
+  \centering
+  \caption{Within-size Spearman coefficients between runtime and two
+  structural measures.}
+  \label{tab:results-structure-correlations}
+  \scriptsize
+  \begin{tabular}{
+    S[table-format=3.0]
+    S[table-format=1.3]
+    S[table-format=1.3]
+    S[table-format=-1.3]
+    S[table-format=-1.3]
+  }
+    \toprule
+    {$n$} & {Ref./depth} & {Ref./density} & {Paper/depth} & {Paper/density} \\
+    \midrule
+     32 & 0.814 & 0.895 & -0.246 & -0.238 \\
+     64 & 0.885 & 0.944 &  0.011 &  0.112 \\
+    128 & 0.856 & 0.944 &  0.414 &  0.469 \\
+    256 & 0.897 & 0.979 &  0.448 &  0.559 \\
+    512 & 0.932 & 0.951 &  0.340 &  0.462 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Reference runtime has a positive descriptive association with both maximum
+depth and containment-pair density at every size. The corresponding paper
+coefficients are smaller and vary in sign or magnitude across sizes. This does
+not show that paper runtime is independent of structure; it records only the
+observed coefficients in this generated sample.
+
+\subsection{Checked Counters and Paper Runtime}
+\label{sec:results-exploratory-counters}
+
+% Claims: E-03, E-04; limitation L-07
+Checked diagnostic counters and paper runtime come from different policies:
+the counters are collected by an untimed \texttt{checked} diagnostic, while
+runtime uses the \texttt{minimal} paper call. Their within-size Spearman
+coefficients are shown in \cref{tab:results-counter-correlations}.
+
+\begin{table}[H]
+  \centering
+  \caption{Within-size Spearman coefficients between checked paper counters
+  and minimal paper runtime.}
+  \label{tab:results-counter-correlations}
+  \scriptsize
+  \begin{tabular}{
+    S[table-format=3.0]
+    S[table-format=1.3]
+    S[table-format=1.3]
+    S[table-format=1.3]
+    S[table-format=1.3]
+  }
+    \toprule
+    {$n$} & {Scans} & {Splits} & {Copied} & {Transferred} \\
+    \midrule
+     32 & 0.919 & 0.965 & 0.919 & 0.919 \\
+     64 & 0.646 & 0.842 & 0.646 & 0.598 \\
+    128 & 0.418 & 0.429 & 0.418 & 0.260 \\
+    256 & 0.326 & 0.319 & 0.326 & 0.249 \\
+    512 & 0.417 & 0.253 & 0.417 & 0.285 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+All four selected counters have positive descriptive associations with minimal
+paper runtime at every tested size, although magnitudes differ by size and
+counter. The relationship is not a causal cost decomposition: the checked
+diagnostic work is observed outside the timed minimal call.
+
+The \nolinkurl{paper_invariant_checks} counter is constant across the twelve
+cases within each size: 30, 62, 126, 254, and 510 checks from $n=32$ through
+$512$. Its within-size Spearman coefficient is therefore undefined and remains
+empty in the analysis artifact; it must not be interpreted as zero
+association.
+
+\section{Results Boundary}
+\label{sec:results-boundary}
+
+% Claims: R-01, R-02, R-11; limitations L-01, L-02, L-03, L-05, L-07, L-08
+The formal evidence supports empirical correctness on the sixty frozen cases,
+the reported runtime distributions and matched-case ratios, and directional
+replication of the three within-run ratio series. It also supports the labeled
+exploratory coefficients above. It does not establish linear-time Jordan
+sorting, asymptotic complexity from five sizes, recognition performance,
+causal structural effects, representative sampling of all Jordan sequences,
+or a like-for-like end-to-end paper/reference speedup.
