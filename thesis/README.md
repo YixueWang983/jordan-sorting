@@ -35,7 +35,11 @@ and university rules take precedence over the old example.
 
 ## Build
 
-Requirements: LuaLaTeX, Latexmk, and Biber.
+Requirements: LuaLaTeX, Latexmk, Biber, and the system font
+`DejaVu Sans Mono`. The body fonts come from the TeX-distributed Libertinus
+package, while `main.tex` selects `DejaVu Sans Mono` through LuaLaTeX's system
+font lookup. Confirm that it is discoverable before a clean build, for example
+with `fc-match "DejaVu Sans Mono"` where Fontconfig is available.
 
 ```bash
 cd thesis

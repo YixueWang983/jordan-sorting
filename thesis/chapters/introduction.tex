@@ -129,11 +129,12 @@ a proof of linear running time for the Python implementation.
 \section{Headline Findings}
 \label{sec:introduction-findings}
 
-All 3600 measured rows in the frozen Week~12 run have oracle-certified inputs,
-correct output, passed checked audits, and no recorded error. The 180
-case-algorithm summaries and all 60 case audits also pass. This is empirical
-correctness evidence for the frozen cases, not a proof for every Jordan
-sequence.
+All 3600 measured rows in the frozen Week~12 run belong to 60 exact cases that
+each passed one untimed checked audit before timing. Every row records an
+oracle-certified input, correct output, and no recorded error. All 180
+case-algorithm summaries are correct and error-free, and all 60 case audits
+pass. This is empirical correctness evidence for the frozen cases, not a proof
+for every Jordan sequence.
 
 The median exact-case paper/reference runtime ratio decreases across the five
 tested sizes, from $3.226$ at $n=32$ to $0.567$ at $n=512$. It is above one

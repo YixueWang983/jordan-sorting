@@ -105,6 +105,34 @@ submission blocker rather than a cosmetic issue.
 The official Declaration of Authorship must be completed and signed separately
 under the examination-office instructions current at submission time.
 
+## Submission-Review Follow-Up
+
+The submission-level review identified three repository-local clarifications,
+all resolved without changing experiment evidence or rerunning formal timing:
+
+- `R-01` now distinguishes the 3600 measured rows from the 60 exact-case
+  checked audits. Each case was audited once before timing; the raw-row audit
+  field carries that case-level result rather than representing 3600 separate
+  audit executions. The wording is synchronized across the claim authority,
+  Introduction, Results, and Conclusion.
+- The odd-index $z_1$ output-anchor anomaly is now pinpointed to page 175 of
+  Hoffmann et al. (1986), verified directly against the repository copy of the
+  primary paper.
+- The build requirements now record the system-font dependency on
+  `DejaVu Sans Mono` selected by `main.tex`.
+
+The resulting claim-to-evidence table has SHA-256
+`cc88363a5aa25d55a56b614b02826aa1862d7c48c8a1a54bd2c66da17715e2ea`,
+which is also recorded in the Claim Traceability appendix.
+
+Follow-up verification reran all 537 repository tests and `compileall`, then
+ran the independent Week 12 validator against immutable `run001`. The live
+report returned `valid=true`, no errors, and row counts
+`3600 / 180 / 45 / 60`; the report was written outside the archive. A clean
+LuaLaTeX/Biber build produced a 61-page A4 PDF with resolved references and no
+box warnings, and the changed pages plus full-document contact sheets passed
+visual inspection.
+
 ## Gate
 
 ```text

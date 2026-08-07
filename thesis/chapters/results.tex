@@ -18,11 +18,14 @@ verified against its archived manifest. Live validation accepted the Week~12
 archive without errors and confirmed 3600 raw rows, 180 case summaries, 45
 group summaries, and 60 checked case audits.
 
-Across the archived evidence, all 3600 measured rows are oracle-certified,
-have correct sorted output, carry a passed audit, and contain no recorded
-error. All 180 case summaries report correct, error-free cells, and all 60
-checked audits pass. This establishes empirical correctness for the frozen
-cases; it is not a proof for every valid Jordan sequence.
+Across the archived evidence, all 3600 measured rows belong to 60 exact cases
+that each passed one untimed checked audit before timing. Every row has an
+oracle-certified input, correct sorted output, and no recorded error. All 180
+case summaries report correct, error-free cells, and all 60 checked audits
+pass. The row-level audit field carries the corresponding case-level outcome;
+it does not represent 3600 distinct audit executions. This establishes
+empirical correctness for the frozen cases; it is not a proof for every valid
+Jordan sequence.
 
 \section{Runtime by Input Size}
 \label{sec:results-runtime-size}

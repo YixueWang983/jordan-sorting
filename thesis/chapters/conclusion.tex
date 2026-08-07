@@ -40,9 +40,11 @@ executes the shared paper-facing control flow and independently recovers sorted
 order from maintained state. Focused tests, bounded exhaustive repository
 validation, checked state audits, and deterministic replay exercise the
 partial-order and sibling-family invariants. In the frozen Week~12 experiment,
-all 3600 measured rows have correct output, passed audit, and no recorded
-error; all 180 case-algorithm summaries and all 60 case audits also pass.
-These records are summarized in \cref{sec:results-correctness}.
+all 3600 measured rows belong to 60 exact cases that each passed one untimed
+checked audit before timing. Every row has correct output and no recorded
+error; all 180 case-algorithm summaries are correct and error-free, and all 60
+case audits pass. These records are summarized in
+\cref{sec:results-correctness}.
 
 This answer is empirical and bounded. It does not constitute a mathematical
 proof for every Jordan sequence, nor does it establish recognition of
