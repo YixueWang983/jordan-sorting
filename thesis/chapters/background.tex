@@ -1,6 +1,190 @@
 \chapter{Background}
 \label{chap:background}
 
-\DraftPlaceholder{This chapter will introduce Jordan sequences, valid-input
-sorting, and the 1990 algorithm from primary literature. Citation claims must
-be checked during the bibliography pass.}
+\section{Jordan Sequences and the Sorting Problem}
+\label{sec:background-problem}
+
+Let $C$ be a simple plane curve that crosses the $x$-axis wherever it meets
+the axis. Listing the abscissas of the intersection points in the order in
+which they occur along $C$ gives a sequence
+\begin{equation}
+  z_1,z_2,\ldots,z_n.
+\end{equation}
+Such a realizable sequence is called a \emph{Jordan sequence}. The Jordan
+sorting problem is to recover the order of the same points along the
+$x$-axis, that is, their increasing coordinate order, from their order along
+the curve \parencite[p.~170]{hoffmann1986sorting}. The 1990 presentation uses
+the term Jordan curve for both open and closed simple curves; the property
+needed here is the absence of self-intersections
+\parencite[pp.~85--86]{fung1990simplified}.
+
+This formulation gives two distinct orders on one set of points:
+\begin{description}
+  \item[Curve order] is the input order $z_1,\ldots,z_n$ obtained by
+    traversing $C$.
+  \item[Axis order] is the output order obtained by moving from left to right
+    along the $x$-axis.
+\end{description}
+The values are therefore not arbitrary keys presented in an arbitrary
+permutation. They carry a geometric realizability constraint inherited from
+the simplicity of $C$. The implementation studied in this thesis specializes
+this model to distinct, mutually comparable coordinate values, as stated in
+\cref{sec:implementation-input-model}.
+
+The problem arose from geometric applications rather than from a desire to
+replace general-purpose sorting. The 1986 paper relates it to ordering the
+intersections of a simple polygon with a line and to ordering intersections
+of two Jordan curves. The 1990 paper develops polygon clipping as its main
+application and also notes the role of Jordan sorting in simple-polygon
+triangulation
+\parencites[pp.~170--171]{hoffmann1986sorting}[pp.~85--86]{fung1990simplified}.
+In these settings, intersection
+points can be obtained naturally in boundary or curve order, while the next
+geometric stage requires their order along another line or boundary.
+
+\section{The Structural Restriction Behind Jordan Sorting}
+\label{sec:background-structure}
+
+Assume, after reflection about the $x$-axis if necessary, that the first arc
+lies above the axis. Consecutive intersections delimit alternating arcs above
+and below it. The pairs
+\begin{equation}
+  \{z_1,z_2\},\{z_3,z_4\},\ldots
+\end{equation}
+belong to the upper side, while
+\begin{equation}
+  \{z_2,z_3\},\{z_4,z_5\},\ldots
+\end{equation}
+belong to the lower side. Each pair determines the open interval between its
+two coordinates on the axis.
+
+Two intervals from the same side cannot cross. If one endpoint of one such
+pair lies strictly inside another pair's interval, then its other endpoint
+must lie there as well; otherwise the corresponding arcs would intersect.
+Consequently, same-side intervals are disjoint or nested. Replacing the
+smaller endpoint by a left parenthesis and the larger by a right parenthesis
+therefore produces one properly nested parenthesis system for each side
+\parencite[pp.~172--173]{hoffmann1986sorting}.
+
+The containment relation gives an ordered forest for each parity family. A
+pair's parent is its smallest same-family enclosing pair, and siblings are
+ordered by their left endpoints. Adding a dummy pair spanning
+$(-\infty,+\infty)$ turns each forest into a rooted ordered tree. These are
+the upper and lower family trees used by both historical algorithms
+\parencites[p.~173]{hoffmann1986sorting}[p.~87]{fung1990simplified}. The full
+notation and executable pair model used in this thesis are developed in
+\cref{sec:algorithm-families}; here the important point is that simplicity
+turns a geometric constraint into nested ordered structure.
+
+This structure is what makes specialized algorithms possible for valid
+inputs. While processing points in curve order, the algorithms maintain both
+a sorted list of the processed coordinates and the two family trees.
+Inserting the next pair into its family identifies a local position for the
+new coordinate in the sorted list
+\parencite[pp.~173--175]{hoffmann1986sorting}. The remaining difficulty is not
+an unrestricted search through all processed values, but the efficient
+maintenance and splitting of ordered family lists.
+
+\section{The 1986 Linear-Time Algorithm}
+\label{sec:background-1986}
+
+\textcite{hoffmann1986sorting} gave an algorithm that both recognizes and
+sorts Jordan sequences in $O(n)$ time. It processes the sequence from left to
+right in curve order, maintaining a doubly linked sorted list and the upper
+and lower family trees. When a new interval would violate the required
+nesting, the recognition algorithm aborts; if all points are processed, the
+maintained list is the sorted result \parencite[pp.~173--175]{hoffmann1986sorting}.
+
+The central data-structural operation is splitting a family list around the
+new interval. A circular doubly linked representation permits local insertion
+but can require a scan proportional to the smaller side of a split. Across a
+sequence of splits this yields an $O(n\log n)$ implementation, no better
+asymptotically than general sorting \parencite[pp.~175--176]{hoffmann1986sorting}.
+The paper obtains its linear bound by replacing those lists with circular
+level-linked $(2,4)$ trees.
+
+A level-linked $(2,4)$ tree stores list items at the leaves of a balanced
+multiway search tree and connects nodes at equal height. These links support
+finger searches whose cost depends on the shorter circular distance between
+the starting item and the target. Together with tree splitting,
+concatenation, and an amortized analysis, the representation supports the
+family-list operations within $O(n)$ total time
+\parencite[pp.~177--183]{hoffmann1986sorting}. Thus the 1986 result couples
+two ideas:
+\begin{enumerate}
+  \item reduce Jordan recognition and sorting to incremental family-list
+    manipulation; and
+  \item realize that manipulation with a specialized level-linked data
+    structure.
+\end{enumerate}
+The second component is essential to the published linear-time bound.
+
+\section{The 1990 Simplification}
+\label{sec:background-1990}
+
+\textcite{fung1990simplified} retained the linear theoretical bound while
+simplifying both the primary structure and the operations required of it. A
+locality lemma shows that, after a pair has been added, the relevant children
+of a family remain in one or two contiguous sibling lists. As a result, the
+sorting algorithm needs only three abstract list operations:
+\begin{enumerate}
+  \item create a singleton list;
+  \item insert an item at the front or back of a known list; and
+  \item split a list at a specified item or key.
+\end{enumerate}
+In particular, the simplified formulation avoids the 1986 operation that
+extracts a middle section and concatenates the two remaining ends
+\parencite[pp.~86,88--90]{fung1990simplified}.
+
+The algorithm again processes intersections incrementally. It maintains a
+sorted list, upper and lower family trees, and sibling lists encoding the
+local family order. Neighboring processed coordinates locate the relevant
+same-family boundaries; insertion of the new pair and any necessary sibling
+split then determine where the new point enters the sorted list. The exact
+Step~1/2/3 reconstruction used in this project, including the symmetric
+orientation and endpoint clarifications, is the subject of
+\cref{chap:algorithm} and is not repeated here.
+
+For the theoretical implementation, the 1990 paper proposes heterogeneous
+finger trees. It states constant amortized time for singleton-list creation
+and boundary insertion, and a logarithmic-in-the-smaller-side amortized bound
+for splitting. A potential argument charges the split cost across the
+operation sequence, giving $O(m)$ total time for $m$ list operations and
+hence an $O(n)$ Jordan-sorting bound
+\parencite[pp.~90--91]{fung1990simplified}. This is a theorem about the
+algorithm together with that efficient list representation, not about every
+concrete implementation of the three-operation interface.
+
+The 1990 paper also observes that the sorting method can be extended to
+recognition and error-correcting variants without changing its stated
+asymptotic bound \parencite[p.~91]{fung1990simplified}. That observation is
+part of the historical setting, but it does not make recognition an evaluated
+task in this thesis.
+
+\section{Position and Scope of This Thesis}
+\label{sec:background-thesis-scope}
+
+This project separates three layers that are easy to conflate:
+\begin{description}
+  \item[Geometric validity.] A candidate sequence is checked against the
+    project's Jordan-validity model before the paper core is timed.
+  \item[Valid-input sorting.] The reconstructed paper control flow maintains
+    its own partial order and recovers the final output from that state.
+  \item[List representation.] Sibling lists are implemented with ordinary
+    Python lists rather than either historical theoretical backend.
+\end{description}
+
+Accordingly, the empirical study concerns sorting of oracle-certified valid
+inputs. Recognition remains separate, as specified in
+\cref{sec:method-scope}. The paper core does not consume oracle-sorted output,
+whereas the simplified reference pipeline deliberately remains oracle-backed;
+the implementation boundary is detailed in
+\cref{sec:implementation-certification}.
+
+The ordinary-list representation supports an executable and auditable
+reconstruction, but it may scan, slice, copy, and rebind list contents. This
+thesis therefore does not claim to implement the level-linked trees of 1986
+or the heterogeneous finger trees of 1990, and it does not transfer the
+papers' linear-time theorem to the concrete Python backend. The consequences
+for empirical interpretation are stated in
+\cref{sec:limitations-backend,sec:limitations-timing-scopes}.
