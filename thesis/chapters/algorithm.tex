@@ -1,6 +1,411 @@
 \chapter{Algorithm Reconstruction}
 \label{chap:algorithm}
 
-\DraftPlaceholder{This chapter will be migrated from the reviewed ordinary-list
-algorithm specification without strengthening claims about the paper's
-unstated implementation details.}
+\section{Purpose and Reconstruction Boundary}
+\label{sec:algorithm-boundary}
+
+The Jordan sorting problem starts with the intersections of a simple curve
+and the $x$-axis in curve order,
+\begin{equation}
+  z_1,z_2,\ldots,z_n,
+\end{equation}
+and asks for the same points in increasing $x$-coordinate order. The 1990
+algorithm of \textcite{fung1990simplified} processes this sequence
+incrementally while maintaining a sorted list and two ordered family trees.
+Its presentation is compact: the increasing case is described explicitly,
+the decreasing case is called symmetric, and some endpoint details are left
+implicit. This chapter states the executable reconstruction used in the
+project.
+
+Three kinds of statements must therefore remain distinct:
+\begin{description}
+  \item[Explicit source rule.] A definition or step is stated directly in the
+    1990 paper, such as the upper/lower family trees, predecessor and successor
+    boundary searches, and increasing Step~3.
+  \item[Symmetric reconstruction.] A decreasing rule is obtained by reflecting
+    the explicit increasing rule: predecessor and successor roles, left and
+    right split sides, child extremes, and insertion direction are exchanged.
+  \item[Executable clarification.] A detail is fixed so that the compact paper
+    description becomes unambiguous code. The geometric child endpoint and
+    the odd-index $z_1$ output-anchor rule fall into this category.
+\end{description}
+
+The last category is not presented as the unique intended wording of an
+unstated paper detail. It is an implementation-level interpretation supported
+by the related 1986 algorithm of \textcite{hoffmann1986sorting}, by reflected
+counterexamples, and by repository validation over oracle-certified inputs.
+The validation evidence checks this reconstruction; it does not replace a
+topological proof of the source algorithm.
+
+The chapter also separates algorithmic control flow from data-structure
+complexity. The 1990 paper obtains its linear bound with heterogeneous finger
+trees. The project implements the same high-level list operations with
+ordinary Python lists. Consequently, the reconstruction supports an
+executable sorting algorithm but no linear-time or asymptotic-complexity claim
+for its concrete backend.
+
+\section{Pairs, Intervals, and the Two Families}
+\label{sec:algorithm-families}
+
+Input values are assumed to be distinct and mutually comparable. For each
+$i\geq 2$, define the curve-order pair
+\begin{equation}
+  P_i=\{z_{i-1},z_i\}.
+\end{equation}
+The two stored endpoints retain curve order. Their geometric interval is
+described separately by
+\begin{equation}
+  \ell_i=\min\{z_{i-1},z_i\},
+  \qquad
+  r_i=\max\{z_{i-1},z_i\}.
+\end{equation}
+A pair $P_i$ encloses a finite point $x$ when
+\begin{equation}
+  \ell_i < x < r_i,
+\end{equation}
+and it encloses another pair $P_j$ when
+\begin{equation}
+  \ell_i < \ell_j < r_j < r_i.
+\end{equation}
+
+After reflecting the curve about the $x$-axis if necessary, the pairs with
+even end index belong to the upper family and those with odd end index belong
+to the lower family:
+\begin{equation}
+  P_{2},P_{4},P_{6},\ldots \in \mathcal{F}^{+},
+  \qquad
+  P_{3},P_{5},P_{7},\ldots \in \mathcal{F}^{-}.
+\end{equation}
+For pairs in one family, simplicity of the curve implies that their intervals
+are disjoint or nested. The enclosure relation therefore forms a forest. Each
+set of siblings is ordered from left to right by increasing $\ell_i$.
+
+The reconstruction adds a distinct dummy pair to each family. Each dummy
+conceptually spans $(-\infty,+\infty)$ and becomes the parent of every pair
+that has no finite enclosing parent. The two forests are thereby represented
+as rooted ordered trees, but the upper and lower dummy identities remain
+separate.
+
+\subsection{Families and Sibling Lists}
+\label{sec:algorithm-sibling-lists}
+
+Following the locality argument of \textcite{fung1990simplified}, the children
+associated with a family can be represented by one or two ordered sibling
+lists. The most recently added pair divides the family region into a left and
+a right part; children on either side remain contiguous in sibling order.
+This locality is what reduces the update to three abstract list operations:
+\begin{enumerate}
+  \item create a singleton sibling list;
+  \item insert a pair at a known list boundary; and
+  \item split a sibling list at the value of the new point.
+\end{enumerate}
+The algorithm never requires arbitrary insertion into the middle of a sibling
+list. A split may produce an empty side, but an empty side is not retained as
+a live sibling list.
+
+\section{Maintained State and Prefix Invariant}
+\label{sec:algorithm-state}
+
+After processing $z_1,\ldots,z_k$, the conceptual state contains:
+\begin{itemize}
+  \item a partial-order list $S_k$ containing exactly those $k$ points in
+    increasing value order;
+  \item every finite pair $P_2,\ldots,P_k$ in its parity family;
+  \item one parent and one sibling-list owner for every finite pair; and
+  \item the two family-specific dummy roots.
+\end{itemize}
+The central prefix invariant is
+\begin{equation}
+  S_k=\operatorname{sort}(z_1,\ldots,z_k).
+  \label{eq:algorithm-prefix-invariant}
+\end{equation}
+Here \texttt{sort} is mathematical notation for the required order, not an
+operation invoked by the paper core. The maintained list is bounded by
+identity-based negative- and positive-infinity sentinels so that predecessor
+and successor queries are defined at both ends.
+
+The family-tree invariant and \cref{eq:algorithm-prefix-invariant} are updated
+together. Pair insertion locates the interval in which $z_i$ belongs, sibling
+splitting transfers any newly enclosed children, and the resulting family
+boundary determines the local insertion anchor in $S_{i-1}$.
+
+\section{Initialization}
+\label{sec:algorithm-initialization}
+
+Inputs of length at most three can be handled by direct fixed-size comparison
+logic. For $n\geq 3$, the incremental state is initialized by ordering only
+$z_1,z_2,z_3$ and creating
+\begin{align}
+  P_2 &= \{z_1,z_2\} &&\text{in the upper family},\\
+  P_3 &= \{z_2,z_3\} &&\text{in the lower family}.
+\end{align}
+The upper dummy owns a singleton sibling list containing $P_2$, and the lower
+dummy owns one containing $P_3$. Thus $S_3$ satisfies
+\cref{eq:algorithm-prefix-invariant}, both parity families have a root, and
+every finite pair has exactly one owner before the main loop begins.
+
+\section{Boundary Selection}
+\label{sec:algorithm-boundary-selection}
+
+Iteration $i\geq 4$ creates $P_i$ in the family determined by the parity of
+$i$. Steps~1 and~2 inspect the immediate neighbors of $z_{i-1}$ in
+$S_{i-1}$.
+
+\subsection{Step 1: Predecessor-Side Boundary}
+\label{sec:algorithm-step1}
+
+Let $v$ be the predecessor of $z_{i-1}$. If $i$ is odd and $v=z_1$, replace
+$v$ by the predecessor of $z_1$. If the resulting neighbor is the negative
+sentinel, let $A_i$ be the dummy pair of the current family. Otherwise, let
+$A_i$ be the already processed same-family pair containing $v$.
+
+\subsection{Step 2: Successor-Side Boundary}
+\label{sec:algorithm-step2}
+
+Let $w$ be the successor of $z_{i-1}$. If $i$ is odd and $w=z_1$, replace
+$w$ by the successor of $z_1$. If the resulting neighbor is the positive
+sentinel, let $B_i$ be the current family dummy. Otherwise, let $B_i$ be the
+processed same-family pair containing $w$.
+
+A processed point can belong to both an upper and a lower pair. The parity of
+$i$ selects the relevant incident pair without using a global rank map. The
+special treatment of $z_1$ is necessary because $z_1$ belongs to $P_2$ but to
+no lower-family pair. These two neighbor adjustments select family-tree
+boundaries; they are distinct from the output-anchor adjustment introduced in
+\cref{sec:algorithm-z1-anchor}.
+
+\section{Step 3: Increasing Orientation}
+\label{sec:algorithm-step3-increasing}
+
+Assume first that $z_{i-1}<z_i$. Let $N=P_i$ denote the new pair. The
+predecessor-side pair $A_i$ controls where $N$ enters the family tree, while
+the successor-side pair $B_i$ controls whether an existing sibling list must
+be split.
+
+\subsection{Step 3(a): Insert the New Pair}
+\label{sec:algorithm-step3a-increasing}
+
+If $A_i$ encloses $z_{i-1}$, then $N$ becomes its child in a new singleton
+sibling list. Otherwise, $A_i$ is the last item of its sibling list; $N$ is
+inserted immediately after $A_i$ and inherits the same parent. In either case,
+$N$ obtains exactly one parent and one sibling-list owner.
+
+\subsection{Step 3(b): Split Off Newly Enclosed Children}
+\label{sec:algorithm-step3b-increasing}
+
+If $B_i$ encloses $z_{i-1}$, $N$ acquires no child list. Otherwise, $B_i$ is
+the first item of an existing sibling list $L$. Splitting $L$ at $z_i$
+produces a left side and a right side. For a valid input, no pair may straddle
+the split value: both endpoints of each child lie on one side. The left side,
+whose pairs are newly enclosed by $N$, becomes a child list of $N$; the right
+side remains with the previous owner of $L$.
+
+\subsection{Step 3(c): Insert the New Point}
+\label{sec:algorithm-step3c-increasing}
+
+If $N$ acquired no children, the base output anchor is $z_{i-1}$. Otherwise,
+let $C$ be the rightmost child pair of $N$ and choose the geometric right
+endpoint $r(C)$ as the base anchor. After the possible odd-index adjustment
+in \cref{sec:algorithm-z1-anchor}, insert $z_i$ immediately after the output
+anchor.
+
+\section{Step 3: Decreasing Orientation}
+\label{sec:algorithm-step3-decreasing}
+
+For $z_i<z_{i-1}$, the project uses the order reflection of the increasing
+case. This is the executable meaning assigned to the 1990 paper's statement
+that the other case is symmetric.
+
+Step~3(a) now uses $B_i$. If $B_i$ encloses $z_{i-1}$, $N$ becomes its child
+in a singleton sibling list. Otherwise, $B_i$ is the first item of its list;
+$N$ is inserted immediately before it and inherits its parent.
+
+Step~3(b) uses $A_i$. If $A_i$ encloses $z_{i-1}$, no split is needed.
+Otherwise, $A_i$ is the last item of its sibling list. The list is split at
+$z_i$; the right side is transferred to $N$, while the left side remains with
+the old owner.
+
+For Step~3(c), the no-child base anchor is again $z_{i-1}$. With children, let
+$C$ be the leftmost child pair of $N$ and use its geometric left endpoint
+$\ell(C)$. After the reflected odd-index adjustment, insert $z_i$ immediately
+before the output anchor.
+
+The complete reflection is summarized in \cref{tab:algorithm-reflection}.
+\begin{table}[htbp]
+  \centering
+  \caption{Increasing and decreasing Step~3 roles in the executable
+  reconstruction.}
+  \label{tab:algorithm-reflection}
+  \begin{tabular}{lll}
+    \toprule
+    Operation & Increasing & Decreasing \\
+    \midrule
+    Step~3(a) boundary & predecessor-side $A_i$ & successor-side $B_i$ \\
+    Boundary insertion & after last sibling & before first sibling \\
+    Step~3(b) boundary & successor-side $B_i$ & predecessor-side $A_i$ \\
+    Acquired split side & left & right \\
+    Child extreme & rightmost child & leftmost child \\
+    Geometric anchor & right endpoint & left endpoint \\
+    Output insertion & after anchor & before anchor \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Executable Anchor Clarifications}
+\label{sec:algorithm-anchor-clarifications}
+
+The point insertion in Step~3(c) is where the compact paper notation requires
+the most care. Two independent distinctions are necessary.
+
+\subsection{Curve Endpoint Versus Geometric Endpoint}
+\label{sec:algorithm-geometric-anchor}
+
+The 1990 increasing step refers to the rightmost child
+$\{z_{m-1},z_m\}$ and inserts the new point after $z_m$. A pair record,
+however, stores its endpoints in curve order, and its second curve endpoint is
+not necessarily its geometric right endpoint. Reading $z_m$ mechanically as
+the second stored endpoint fails on valid reflected orientations.
+
+For example, consider
+\begin{equation}
+  (3,2,1,4).
+\end{equation}
+At $i=4$, the acquired child is $P_2=\{3,2\}$. Inserting $4$ after the second
+curve endpoint $2$ would yield $(1,2,4,3)$. Inserting after the child's
+geometric right endpoint $3$ yields the correct order. The decreasing
+counterpart
+\begin{equation}
+  (2,3,4,1)
+\end{equation}
+similarly requires insertion before the child's geometric left endpoint $2$,
+not before its second curve endpoint $3$.
+
+The reconstruction therefore uses $r(C)$ for the increasing branch and
+$\ell(C)$ for the decreasing branch. This choice agrees with the earlier
+family-list account of \textcite{hoffmann1986sorting}, in which both endpoints
+occur in sorted family lists and the new point is inserted next to the located
+boundary item. It is nevertheless labeled an executable clarification rather
+than attributed to a fully explicit sentence in the 1990 presentation.
+
+\subsection{Odd-Index \texorpdfstring{$z_1$}{z1} Output Anchor}
+\label{sec:algorithm-z1-anchor}
+
+Steps~1 and~2 compensate for the fact that $z_1$ has no lower-family pair.
+That boundary-pair correction does not cover every final output insertion.
+The 1986 description records a separate anomaly: on an odd iteration, if
+$z_1$ lies between the ordinary family-list boundary and the new point, the
+new point is inserted next to $z_1$ \parencite{hoffmann1986sorting}.
+
+The executable increasing rule is
+\begin{equation}
+  \text{if $i$ is odd and } a_i<z_1<z_i,
+  \quad a_i\gets z_1,
+  \label{eq:algorithm-z1-increasing}
+\end{equation}
+where $a_i$ is the geometric base anchor. The decreasing reflection is
+\begin{equation}
+  \text{if $i$ is odd and } z_i<z_1<a_i,
+  \quad a_i\gets z_1.
+  \label{eq:algorithm-z1-decreasing}
+\end{equation}
+
+For the decreasing sequence prefix
+\begin{equation}
+  (1,2,3,4,6,7,0),
+\end{equation}
+the ordinary geometric base anchor at $i=7$ is $2$. Inserting $0$ before $2$
+would leave $1$ on the wrong side. Because $0<z_1=1<2$, the output anchor is
+changed to $z_1$, and insertion before it gives the correct prefix order. The
+reflected sequence $(6,5,4,3,1,0,7)$ exercises
+\cref{eq:algorithm-z1-increasing}. These cases demonstrate why boundary
+selection and output-anchor correction must be modeled as separate stages.
+
+\section{Atomic Ownership Transfer}
+\label{sec:algorithm-ownership}
+
+A sibling split changes several linked facts at once: the old list ceases to
+exist, up to two nonempty output lists are created, the retained side stays
+with the old parent, the acquired side moves under $N$, and every moved pair
+must name its new list and parent. Publishing only part of this transition
+would make the family forest inconsistent.
+
+The reconstruction therefore treats Step~3(b) as a transaction. It first
+forms a split plan without changing live state. Commit validates that the plan
+is current, that the proposed parent is live and cannot introduce a cycle,
+and that no pair straddles the split. It then publishes the new lists and
+ownership links together. If a local postcondition fails, all touched lists,
+owners, pair links, and list identifiers are restored. These mechanics are
+implemented concretely in \cref{sec:implementation-sibling-lists}, but the
+algorithmic requirement is simply conservation of unique ownership across the
+split.
+
+\section{End-to-End Procedure}
+\label{sec:algorithm-procedure}
+
+The full valid-input sorting procedure is:
+\begin{enumerate}[itemsep=0.25em]
+  \item Materialize the input once and handle lengths at most three with
+    fixed-size comparison logic.
+  \item Initialize $S_3$, $P_2$, $P_3$, the two dummies, and their singleton
+    sibling lists.
+  \item For each $i=4,\ldots,n$:
+    \begin{description}[itemsep=0.2em]
+      \item[Step 1.] Compute predecessor-side boundary $A_i$.
+      \item[Step 2.] Compute successor-side boundary $B_i$.
+      \item[Orient.] Choose increasing or decreasing Step~3 from the
+        comparison of $z_{i-1}$ and $z_i$.
+      \item[Update.] Insert $P_i$, split and transfer any enclosed children,
+        and insert $z_i$ using the resulting geometric output anchor.
+      \item[Commit.] Advance the processed prefix only after the output
+        insertion succeeds.
+    \end{description}
+  \item Return the values obtained by traversing $S_n$.
+\end{enumerate}
+
+At the end of each successful iteration, the required online conditions are:
+\begin{itemize}[itemsep=0.2em]
+  \item $S_i$ contains each processed point exactly once and is strictly
+    increasing;
+  \item every processed finite pair exists in the family dictated by its
+    parity;
+  \item every finite pair belongs to exactly one live sibling list and names
+    that list's owner as its parent;
+  \item sibling order follows geometric left endpoints, parent chains are
+    acyclic, and each chain reaches the appropriate dummy root; and
+  \item split outputs are disjoint and preserve the input pair set.
+\end{itemize}
+
+\medskip
+
+\noindent
+The final return value is thus recovered from the maintained order $S_n$.
+Oracle certification may establish the valid-input precondition before this
+procedure is called, but oracle-sorted output is not an input to these steps.
+The implementation-level certification boundary is detailed in
+\cref{sec:implementation-certification}.
+
+\clearpage
+\section{Correctness and Complexity Boundaries}
+\label{sec:algorithm-correctness-boundary}
+
+The source-level correctness argument rests on the nesting property of
+same-family pairs and the locality lemma: the boundary pairs found beside
+$z_{i-1}$ identify where $P_i$ belongs, and newly enclosed children form a
+contiguous split side. The executable reconstruction turns those facts into
+the prefix and ownership invariants above. Focused counterexamples fix the
+ambiguous anchors; mirrored tests check the decreasing reconstruction; and
+full state diagnostics compare the maintained order and family forest with a
+deterministic replay. These are repository correctness controls, not an
+independent proof that every unspecified detail has only one possible
+interpretation.
+
+The theoretical papers and the project have different backend claims.
+\textcite{hoffmann1986sorting} use level-linked search trees, while
+\textcite{fung1990simplified} reduce the required operations to singleton-list
+creation, boundary insertion, and splitting, then implement them with
+heterogeneous finger trees. The project preserves those abstract operations
+but realizes sibling lists as ordinary Python lists. A sibling split scans and
+materializes list contents, front insertion can shift elements, and ownership
+rebinding can depend on list size. The observed implementation is therefore
+an ordinary-list reconstruction of the paper-facing control flow, not an
+implementation of either theoretical linear-time data structure.
