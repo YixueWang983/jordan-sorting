@@ -1,5 +1,164 @@
 \chapter{Introduction}
 \label{chap:introduction}
 
-\DraftPlaceholder{This chapter has no Week 13 audited Markdown source yet. It
-will be drafted only after the four audited core chapters have been migrated.}
+\section{Motivation}
+\label{sec:introduction-motivation}
+
+Sorting normally starts with an arbitrary sequence of keys. Jordan sorting
+starts with more information: the keys are coordinates of intersections
+encountered while traversing a simple plane curve. Their input order along the
+curve and their desired order along a line differ, but the absence of
+self-intersections restricts how consecutive curve segments can be nested.
+That geometric restriction permits specialized recognition and sorting
+algorithms with a theoretical linear-time bound
+\parencites{hoffmann1986sorting}{fung1990simplified}.
+
+The published bound, however, combines an algorithmic control flow with
+specialized dynamic-list representations. The 1986 algorithm uses
+level-linked search trees, while the 1990 simplification relies on
+heterogeneous finger trees to support local list operations efficiently. A
+direct implementation with ordinary arrays or lists can preserve the
+high-level algorithm while having different operation costs. Moreover, the
+1990 presentation is concise: translating its incremental steps into
+executable code requires explicit choices about pair orientation, sibling-list
+ownership, geometric endpoints, and the exceptional role of the first point.
+
+This thesis studies that implementation gap. It reconstructs the 1990
+Step~1/2/3 sorting procedure as an executable Python core, maintains its own
+partial sorted order and family state, and evaluates the resulting
+ordinary-list implementation on controlled, oracle-certified valid inputs.
+The aim is not to reproduce the historical linear-time data structure or to
+infer asymptotic complexity from runtime measurements. It is to make the
+paper-facing control flow concrete, auditable, and empirically observable
+while keeping the boundary between theorem, implementation, and experiment
+explicit.
+
+\section{Problem and Scope}
+\label{sec:introduction-scope}
+
+For a Jordan sequence $z_1,\ldots,z_n$, the computational task considered here
+is to recover increasing coordinate order from curve-traversal order. The
+geometric model and its nested upper and lower pair families are introduced in
+\cref{chap:background}; the executable reconstruction is specified in
+\cref{chap:algorithm}.
+
+The project contains two deliberately different research implementations. The
+\emph{simplified reference pipeline} performs oracle validation, constructs
+structural information, and returns oracle-derived sorted output. The
+\emph{paper ordinary-list core} instead accepts a pre-certified valid input,
+executes the reconstructed incremental procedure, and recovers its output from
+the maintained partial order. It does not consume the oracle's sorted result.
+An outer wrapper may certify the input before calling the core, and the
+experiment may compare its return value with the oracle afterward; both
+operations are outside the timed paper call. This provenance boundary is
+formalized in \cref{sec:implementation-certification}.
+
+The empirical scope is valid-input sorting. Recognition of arbitrary or
+invalid sequences, error correction, polygon clipping, and the historical
+theoretical backends are not evaluated. Sibling lists use ordinary Python
+lists, so scans, slicing, copying, and ownership rebinding remain part of the
+implemented cost. Consequently, the historical linear-time theorem does not
+transfer to this implementation.
+
+\section{Research Questions}
+\label{sec:introduction-questions}
+
+Within those boundaries, the thesis addresses three questions:
+
+\begin{enumerate}[label=\textbf{RQ\arabic*:},leftmargin=*]
+  \item \textbf{Executable reconstruction and correctness.} Can an
+    ordinary-list reconstruction of the 1990 incremental sorting procedure
+    independently recover sorted order for oracle-certified valid inputs while
+    maintaining the required partial-order and sibling-family invariants?
+
+  \item \textbf{Observed runtime behavior.} Across the frozen input sizes and
+    controlled families, how does the pre-certified paper call in
+    \texttt{minimal} mode behave relative to Python sort and the complete
+    oracle-backed reference pipeline under their explicitly different timing
+    scopes?
+
+  \item \textbf{Structure and implementation cost.} Within the controlled
+    sample, what descriptive relationships appear between structural
+    properties, checked operation counters, and the runtime of the ordinary-list
+    implementation?
+\end{enumerate}
+
+The first question is addressed through focused tests, exhaustive repository
+validation over bounded oracle-certified cases, checked state audits, and
+deterministic replay. The second uses the frozen Week~12 formal experiment.
+The third is exploratory: its associations are descriptive rather than causal
+or asymptotic.
+
+\section{Contributions}
+\label{sec:introduction-contributions}
+
+The work presented in this thesis makes four implementation and empirical
+contributions.
+
+\begin{enumerate}
+  \item It gives an executable reconstruction of the 1990 Step~1/2/3 control
+    flow, informed by the 1986 algorithm where the later presentation leaves
+    operational details implicit. The reconstruction records its endpoint,
+    orientation, and first-point clarifications rather than presenting them as
+    the only possible reading of the paper.
+
+  \item It implements separate partial-order and sibling-family structures
+    with explicit ownership, transactional splitting, rollback, local safety
+    checks, and full invariant auditing. The paper core recovers output from
+    this maintained state rather than from the oracle-backed reference path.
+
+  \item It separates optional observation and complete audit machinery from
+    the timed path through fixed execution policies. Production sorting and
+    checked diagnostics share one core control flow, while deterministic replay
+    and complete state validation provide an untimed audit of recorded state.
+    The \texttt{minimal} policy still retains local safety, stage state, and
+    final output recovery.
+
+  \item It establishes a reproducible empirical workflow with frozen cases,
+    documented timing scopes, immutable run evidence, and an independent
+    fail-closed validator. The resulting study compares Python sort, the
+    oracle-backed reference pipeline, and the paper ordinary-list call without
+    treating their scopes as interchangeable.
+\end{enumerate}
+
+These contributions concern reconstruction, correctness engineering, and
+empirical characterization. They do not include level-linked search trees,
+heterogeneous finger trees, a theoretical linear-time split/update backend, or
+a proof of linear running time for the Python implementation.
+
+\section{Headline Findings}
+\label{sec:introduction-findings}
+
+All 3600 measured rows in the frozen Week~12 run have oracle-certified inputs,
+correct output, passed checked audits, and no recorded error. The 180
+case-algorithm summaries and all 60 case audits also pass. This is empirical
+correctness evidence for the frozen cases, not a proof for every Jordan
+sequence.
+
+The median exact-case paper/reference runtime ratio decreases across the five
+tested sizes, from $3.226$ at $n=32$ to $0.567$ at $n=512$. It is above one
+through $n=128$ and below one at $n=256$ and $n=512$. This ratio compares two
+different timed pipelines: the reference value includes its complete
+oracle-backed reference work, whereas the paper value includes only the
+pre-certified \texttt{minimal} sorting call, with certification and checked
+diagnostics outside timing. The observation is therefore a pipeline-scope
+comparison over five tested sizes, not a like-for-like end-to-end speedup or
+evidence of asymptotic complexity. Python sort has the lowest median call time
+at every tested size. Full numerical results and variability information are
+reported in \cref{chap:results}, with interpretation limits collected in
+\cref{chap:limitations}.
+
+\section{Thesis Structure}
+\label{sec:introduction-structure}
+
+\Cref{chap:background} defines Jordan sorting, explains the nested family
+structure, and places the 1986 and 1990 algorithms in context.
+\Cref{chap:algorithm} develops the implementation-facing reconstruction of the
+incremental procedure. \Cref{chap:implementation} describes the concrete
+partial-order, sibling-list, audit, and execution-policy components.
+\Cref{chap:methodology} specifies the frozen valid-input experiment, timing
+boundaries, statistical units, and evidence contract. \Cref{chap:results}
+presents correctness, runtime, variability, replication, and exploratory
+findings. \Cref{chap:limitations} states the backend, timing, sampling, and
+inferential boundaries. Finally, \cref{chap:conclusion} summarizes the answers
+to the research questions and identifies work that remains outside the thesis.
