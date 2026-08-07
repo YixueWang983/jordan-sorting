@@ -1,5 +1,132 @@
 \chapter{Claim Traceability}
 \label{app:claim-traceability}
 
-\DraftPlaceholder{The final appendix will map thesis claims to the audited
-claim-to-evidence table and immutable Week 11 and Week 12 evidence.}
+This appendix records how the thesis-facing claim groups connect to the
+audited claim inventory and immutable experiment evidence. It is a
+traceability aid rather than an additional source of empirical results. The
+controlled inventory contains 46 claims: nine implementation claims, thirteen
+method claims, eleven quantitative result claims, four exploratory claims,
+and nine required limitations.
+
+\section{Claim Groups and Thesis Locations}
+
+\begin{table}[htbp]
+  \centering
+  \footnotesize
+  \caption{Controlled claim groups and their principal locations in the
+  thesis.}
+  \label{tab:appendix-claim-groups}
+  \begin{tabular}{@{}
+    >{\raggedright\arraybackslash}p{0.15\textwidth}
+    >{\raggedright\arraybackslash}p{0.34\textwidth}
+    >{\raggedright\arraybackslash}p{0.43\textwidth}@{}}
+    \toprule
+    Claim IDs & Principal thesis location & Primary authority class \\
+    \midrule
+    \texttt{I-01--I-03}
+      & \cref{sec:implementation-scope,sec:implementation-certification}
+      & Reference and paper-core output provenance in the implementation
+        source and certified-wrapper boundary. \\
+    \texttt{I-04--I-05}
+      & \cref{sec:implementation-state,sec:implementation-control-flow}
+      & Shared Step~1/2/3 runner, partial-order state, and ordinary-list
+        sibling backend. \\
+    \texttt{I-06--I-08}
+      & \cref{sec:implementation-validation,sec:implementation-policies,sec:implementation-certification}
+      & Diagnostics, deterministic replay, fixed execution policies, and
+        pre-call certification. \\
+    \texttt{I-09}
+      & \cref{sec:implementation-complexity}
+      & Dated ordinary-list scope amendment and missing-theoretical-backend
+        boundary. \\
+    \texttt{M-01--M-08}
+      & \cref{sec:method-scope,sec:method-protocol,sec:method-implementations,sec:method-timing,sec:method-scheduling}
+      & Frozen Week~12 configuration and the reused timing and scheduling
+        control flow. \\
+    \texttt{M-09--M-13}
+      & \cref{sec:method-aggregation,sec:method-evidence,sec:method-validation,sec:method-environment}
+      & Immutable summaries, manifest, independent validator, and recorded
+        execution environment. \\
+    \texttt{R-01--R-11}
+      & \cref{sec:results-correctness,sec:results-runtime-size,sec:results-ratios,sec:results-family,sec:results-variability,sec:results-elapsed,sec:results-replication}
+      & Week~12 validated evidence and generated analysis tables; Week~11 is
+        used only for the directional replication claim. \\
+    \texttt{E-01--E-04}
+      & \cref{sec:results-exploratory}
+      & Generated structure/runtime and checked-counter relationship tables,
+        interpreted descriptively and non-causally. \\
+    \texttt{L-01--L-09}
+      & \cref{chap:limitations}
+      & Scope amendment, frozen protocol, timing boundaries, sampling design,
+        and the formal analysis limitations. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The detailed wording, evidence locator, and required boundary for every ID are
+maintained in
+\nolinkurl{docs/thesis/claim_to_evidence_table.md}. The audited copy has the
+following SHA-256:
+
+\begin{center}
+  \footnotesize\ttfamily
+  7f48e28a2ea0324dcc81a28330957bc2\allowbreak\newline
+  80989e509f8c1f4f29a3f525ea77d6d4
+\end{center}
+
+The chapter-level audit is recorded in
+\nolinkurl{docs/thesis/final_claim_audit.md}; it verifies coverage of all 46
+controlled claims and the cross-chapter interpretation boundaries.
+
+\section{Immutable Evidence Bindings}
+
+\begin{table}[htbp]
+  \centering
+  \footnotesize
+  \caption{Immutable run manifests used by the thesis analysis.}
+  \label{tab:appendix-evidence-bindings}
+  \begin{tabular}{@{}
+    >{\raggedright\arraybackslash}p{0.20\textwidth}
+    >{\raggedright\arraybackslash}p{0.31\textwidth}
+    >{\raggedright\arraybackslash}p{0.41\textwidth}@{}}
+    \toprule
+    Evidence role & Execution identifier & Manifest SHA-256 \\
+    \midrule
+    Week~11 pilot replication
+      & \texttt{week11\_pilot\_v1\_\_run003}
+      & \texttt{ef6a9d17df644eab8c3284d04dc356ce}\newline
+        \texttt{4b68b4efdfc0da7eecb5a9c7136c5141} \\
+    Week~12 primary formal evidence
+      & \texttt{week12\_formal\_sorting\_v1\_\_run001}
+      & \texttt{f42ab0b77cb7ea91ed66c66bc6947a81}\newline
+        \texttt{cd8746b5d2b67d526472260d2b47f850} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Each manifest binds six archive files: raw measurements, case summaries,
+group summaries, case audits, the frozen configuration, and the recorded
+runtime environment. The Week~12 independent validator regenerates cases and
+checked diagnostics, recomputes scheduling and summaries, and verifies these
+hashes before analysis. The thesis-facing PDF figures are conversions of the
+validated Week~12 SVG analysis outputs; their source and generated hashes are
+recorded in \nolinkurl{thesis/figures/README.md}.
+
+\section{Interpretation Boundaries}
+
+The traceability record preserves the following boundaries across chapters:
+
+\begin{itemize}
+  \item the paper core recovers output from maintained state, while
+    oracle-derived sorted output belongs to the reference pipeline;
+  \item Week~12 evaluates oracle-certified valid-input sorting, not
+    recognition;
+  \item paper/reference ratios compare different timed pipeline scopes and
+    are not like-for-like end-to-end speedups;
+  \item Week~11 and Week~12 absolute runtimes are not pooled;
+  \item structure and counter relationships are exploratory and non-causal;
+    and
+  \item the ordinary-list implementation does not implement the historical
+    theoretical backend and carries no linear-time or asymptotic-complexity
+    claim.
+\end{itemize}

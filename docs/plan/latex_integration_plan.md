@@ -1,9 +1,8 @@
 # FU Berlin LaTeX Integration Plan
 
-Last updated: 2026-08-07
+Last updated: 2026-08-08
 
-Status: Phase 1 correction complete; awaiting scaffold review before audited
-prose migration.
+Status: narrative migration complete; thesis-wide final audit in progress.
 
 ## Goal
 
@@ -56,19 +55,20 @@ The active metadata identifies the document as a Master's Thesis.
 
 1. [x] Create a clean `scrreprt` scaffold, FU title page, bibliography, chapter
    tree, figure area, appendix, and reproducible LuaLaTeX build.
-2. [ ] Migrate Implementation while retaining `I-01..I-09` and local
+2. [x] Migrate Implementation while retaining `I-01..I-09` and local
    limitations.
-3. [ ] Migrate Experimental Method while retaining `M-01..M-13` and exact
+3. [x] Migrate Experimental Method while retaining `M-01..M-13` and exact
    timing/statistical definitions.
-4. [ ] Migrate Results and validated figures while retaining `R-01..R-11`,
+4. [x] Migrate Results and validated figures while retaining `R-01..R-11`,
    separately labeled `E-01..E-04`, and pipeline-scope context.
-5. [ ] Migrate Limitations while retaining `L-01..L-09`.
-6. [ ] Draft Introduction, Background, Algorithm Reconstruction, Abstract, and
+5. [x] Migrate Limitations while retaining `L-01..L-09`.
+6. [x] Draft Introduction, Background, Algorithm Reconstruction, Abstract, and
    Conclusion from primary literature and the audited claim inventory.
-7. [ ] Complete bibliography, cross-reference, figure-source, and
+7. [x] Complete bibliography, cross-reference, figure-source, and
    claim-traceability passes.
-8. [ ] Perform final PDF layout, accessibility, metadata, and submission-format
-   checks after personal and examination metadata are confirmed.
+8. [ ] Complete final PDF layout, metadata, and submission-format checks after
+   personal and examination metadata are confirmed. Technical layout and
+   source checks are complete; personal title-page fields remain open.
 
 ## Phase 1 Verification
 
@@ -90,6 +90,15 @@ audited Markdown SHA-256 values:
 
 The generated PDF and all TeX caches remain under ignored `thesis/build/` and
 are not content authority or submission artifacts.
+
+## Current Assembly Audit
+
+The thesis-wide audit is recorded in
+`docs/thesis/latex_final_audit.md`. It covers the complete narrative,
+cross-references, bibliography, figure provenance, claim traceability, current
+FU public guidance, and full-PDF layout. Submission readiness remains blocked
+only by personal/examination metadata and the separately signed official
+declaration.
 
 ## Fixed Boundaries
 

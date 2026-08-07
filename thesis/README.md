@@ -1,6 +1,7 @@
 # FU Berlin LaTeX Thesis Scaffold
 
-Status: scaffold complete; audited chapter prose not yet migrated.
+Status: thesis narrative and claim-traceability appendix complete; final audit
+in progress pending personal and examination metadata.
 
 ## Template Basis
 
@@ -47,10 +48,23 @@ outputs.
 
 ## Before Submission
 
-Replace every personal placeholder in `config/metadata.tex` and obtain the
-current required declaration wording from the responsible FU office or
-supervisor. The scaffold is configured as a Master's Thesis. The declaration
-is intentionally not included yet.
+Replace every personal placeholder in `config/metadata.tex` and confirm the
+exact registered title, supervisor, second examiner, and submission date. The
+scaffold is configured as a Master's Thesis.
+
+The current joint Mathematics/Computer Science and Physics examination office
+provides an official `Declaration of Authorship` form and states that its
+signed original must be submitted to the examination office. The declaration
+is therefore kept separate from this PDF instead of copying potentially stale
+wording into the thesis. Current forms and submission instructions:
+
+- [Declaration of Authorship](https://www.imp.fu-berlin.de/fbv/pruefungsbuero/Formulare/Selbstaendigkeitserklaerung_EN.pdf)
+- [Examination-office forms](https://www.imp.fu-berlin.de/fbv/pruefungsbuero/Formulare/index.html)
+- [Computer Science submission instructions](https://www.imp.fu-berlin.de/fbv/pruefungsbuero/index.html)
+
+As of the final audit, Computer Science theses are submitted electronically;
+the signed declaration original is submitted separately. Recheck the live
+instructions immediately before submission.
 
 ## Audited Content Boundary
 
