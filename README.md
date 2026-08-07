@@ -148,8 +148,10 @@ claim. Week 13 is frozen as thesis synthesis and claim audit.
 Week 13 has completed the reviewed claim-to-evidence, Implementation,
 Experimental Method, Results, and Limitations checkpoints. The final
 chapter-level audit now binds all 46 controlled claims to the four drafts,
-checks numerical and provenance consistency, and records no findings. It is
-awaiting review before Week 13 closes and formal FU LaTeX integration begins.
+checks numerical and provenance consistency, and records no substantive
+findings. Week 13 is closed. The four audited Markdown drafts retain their
+historical status headers because their exact hashes are part of the audit.
+The separate FU Berlin LaTeX scaffold is now available under `thesis/`.
 
 ## Project Structure
 
@@ -483,15 +485,15 @@ Important project documents:
   and output recovery. The Week 9 pilot is not final performance evidence.
 - No level-linked or heterogeneous finger-tree backend is implemented.
 - Current figures summarize the Week 10 contamination study, Week 11 pilot,
-  and Week 12 formal sorting experiment; formal FU LaTeX integration remains
-  later work after the Week 13 chapter drafts and claim audit are complete.
+  and Week 12 formal sorting experiment. FU LaTeX integration is a separate
+  post-Week-13 migration phase and must preserve the audited claim boundaries.
 
 ## Next Steps
 
 Immediate next task:
 
-- review the final chapter-level claim audit and close Week 13;
-- begin formal FU LaTeX integration only after that review passes;
+- migrate the audited Implementation chapter into the FU LaTeX scaffold;
+- preserve the SHA-bound Markdown drafts as the content baseline;
 - preserve Week 12 `run001` and Week 11 `run003` as immutable evidence;
 - trace every thesis result to a generated Week 12 artifact and archived file;
 - keep recognition separate from valid-input paper sorting;

@@ -1,0 +1,108 @@
+\documentclass[
+  parskip=half-,
+  listof=totoc,
+  bibliography=totoc,
+  twoside=true,
+  open=right,
+  fontsize=11pt
+]{scrreprt}
+
+\usepackage{libertinus}
+\setmonofont{DejaVu Sans Mono}[FakeStretch=0.9,Scale=MatchLowercase]
+\usepackage{microtype}
+
+\usepackage[main=english,ngerman]{babel}
+\usepackage[
+  a4paper,
+  inner=3.0cm,
+  outer=2.5cm,
+  top=2.5cm,
+  bottom=2.5cm,
+  includeheadfoot
+]{geometry}
+
+\usepackage[automark]{scrlayer-scrpage}
+\clearpairofpagestyles
+\ihead{\headmark}
+\ohead{\pagemark}
+\pagestyle{scrheadings}
+\DeclareTOCStyleEntry[linefill=\TOCLineLeaderFill]{tocline}{chapter}
+
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{enumitem}
+\setlist{nosep}
+
+\usepackage{graphicx}
+\graphicspath{{figures/}{assets/}}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\sisetup{detect-all}
+
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=authoryear,
+  maxcitenames=2,
+  maxbibnames=99,
+  giveninits=true,
+  uniquename=init
+]{biblatex}
+\addbibresource{bibliography.bib}
+
+\usepackage[
+  unicode=true,
+  linktoc=all,
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=black
+]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\input{config/metadata}
+
+\hypersetup{
+  pdftitle={\ThesisTitle},
+  pdfauthor={\ThesisAuthor},
+  pdfsubject={\ThesisType},
+  pdfkeywords={Jordan sorting, algorithms, experimental evaluation}
+}
+
+\newcommand{\DraftPlaceholder}[1]{%
+  \begin{quote}
+    \small\itshape Scaffold placeholder. #1
+  \end{quote}
+}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\input{frontmatter/titlepage}
+
+\cleardoublepage
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\input{frontmatter/abstract}
+\tableofcontents
+\listoffigures
+\listoftables
+
+\cleardoublepage
+\pagenumbering{arabic}
+\input{chapters/introduction}
+\input{chapters/background}
+\input{chapters/algorithm}
+\input{chapters/implementation}
+\input{chapters/methodology}
+\input{chapters/results}
+\input{chapters/limitations}
+\input{chapters/conclusion}
+
+\appendix
+\input{appendix/claim_traceability}
+
+\nocite{fung1990simplified}
+\printbibliography
+
+% Add frontmatter/declaration.tex only after the approved wording is known.
+\end{document}

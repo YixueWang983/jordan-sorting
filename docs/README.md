@@ -319,6 +319,23 @@ Current files:
   Final Week 13 cross-chapter audit binding the 46 controlled claims to the
   reviewed drafts, evidence targets, and fixed interpretation boundaries.
 
+The four audited draft files retain their historical `awaiting review` headers
+because the final audit binds their exact SHA-256 values. Week 13 is closed;
+`docs/progress/week13_progress.md` is the current status record.
+
+## LaTeX Thesis
+
+Path:
+
+```text
+thesis/
+```
+
+The post-Week-13 FU Berlin scaffold contains the title page, chapter tree,
+bibliography, figure area, appendix, and reproducible LuaLaTeX build. Its
+content migration plan and template provenance are recorded in
+`plan/latex_integration_plan.md` and `../thesis/README.md`.
+
 ## Other Files
 
 - `notes.md`

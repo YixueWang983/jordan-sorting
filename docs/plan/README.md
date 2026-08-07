@@ -63,6 +63,10 @@ This folder stores the approved thesis scope and research-question documents.
   Frozen thesis-synthesis and claim-audit handoff based on immutable Week 12
   evidence. It explicitly forbids another formal timing execution.
 
+- `latex_integration_plan.md`
+  Post-Week-13 plan for migrating the audited Markdown baseline into the FU
+  Berlin LaTeX structure while preserving claim and evidence boundaries.
+
 The frozen Week 12 valid-input sorting choices are in:
 
 ```text

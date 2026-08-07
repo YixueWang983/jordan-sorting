@@ -2,8 +2,7 @@
 
 Last updated: 2026-08-07
 
-Status: Limitations reviewed; final chapter-level claim audit complete and
-awaiting review.
+Status: complete and closed after final chapter-level claim-audit review.
 
 ## Goal
 
@@ -87,6 +86,11 @@ Week 13 is complete when:
 
 ## Post-Week 13 Handoff
 
-After the final audit is reviewed, promote the Markdown drafts into the FU
-Berlin LaTeX thesis structure as a separate formatting phase. Formatting must
-preserve the audited claim wording, evidence links, and chapter boundaries.
+The final audit passed with one non-blocking metadata note: the four audited
+Markdown drafts retain their historical `awaiting review` headers. Those files
+remain unchanged because the audit binds their exact SHA-256 values. Current
+review status is recorded in `docs/progress/week13_progress.md`.
+
+The separate FU Berlin LaTeX phase is tracked in
+`docs/plan/latex_integration_plan.md`. Formatting must preserve the audited
+claim wording, evidence links, and chapter boundaries.

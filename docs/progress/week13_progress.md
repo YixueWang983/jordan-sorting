@@ -142,7 +142,7 @@ docs/thesis/limitations_draft.md
 
 ## Day 6: Final Chapter-Level Claim Audit
 
-Status: complete; awaiting review before Week 13 closure.
+Status: complete; reviewed and approved with one non-blocking metadata note.
 
 - [x] confirm the 46-claim inventory and category counts;
 - [x] confirm every controlled ID appears in its assigned chapter;
@@ -164,12 +164,19 @@ docs/thesis/final_claim_audit.md
 
 ## Remaining Review Gate
 
-- [ ] review the final claim audit and close Week 13.
-- [ ] begin FU LaTeX integration only after Week 13 closure.
+- [x] review the final claim audit and close Week 13.
+- [x] begin FU LaTeX integration only after Week 13 closure.
+
+The review reported no claim, evidence, or conclusion finding. Its only LOW
+note was that the four hash-bound Markdown drafts still contain historical
+`awaiting review` status lines. They remain unchanged deliberately so the
+audited SHA-256 baseline remains valid. This progress record is the current
+status authority.
 
 ## Boundary
 
 Days 1 through 6 did not modify source code, validators, generated analysis
 artifacts, or immutable evidence. No formal timing or validation run was
-repeated. FU LaTeX integration remains blocked until the final audit is
-reviewed.
+repeated. Week 13 is closed. The separate FU LaTeX integration phase may use
+the audited drafts as immutable content baselines but must not silently change
+a controlled claim.
