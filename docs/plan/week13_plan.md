@@ -1,8 +1,9 @@
 # Week 13 Plan: Thesis Synthesis and Claim Audit
 
-Last updated: 2026-08-06
+Last updated: 2026-08-07
 
-Status: Results reviewed; Limitations draft complete and awaiting review.
+Status: Limitations reviewed; final chapter-level claim audit complete and
+awaiting review.
 
 ## Goal
 
@@ -51,11 +52,11 @@ The historical statement that sorted output comes from
    absolute timings across executions.
 6. [x] Draft a dedicated Limitations chapter with explicit coverage of
    `L-01` through `L-09`.
-7. Audit all wording for pipeline-scope, ordinary-list, non-causal,
+7. [x] Audit all wording for pipeline-scope, ordinary-list, non-causal,
    non-asymptotic, and non-linear-time boundaries.
-8. Keep recognition results in their own subsection and do not infer them from
-   the valid-input sorting experiment.
-9. Distinguish every reference-pipeline statement from every independent
+8. [x] Keep recognition results in their own subsection and do not infer them
+   from the valid-input sorting experiment.
+9. [x] Distinguish every reference-pipeline statement from every independent
    paper-core statement, especially sorted-output provenance.
 
 ## Fixed Non-Goals
@@ -83,3 +84,9 @@ Week 13 is complete when:
 - the claim audit contains no unsupported linear-time, asymptotic, or causal
   statement;
 - all existing validators and tests remain green without a formal rerun.
+
+## Post-Week 13 Handoff
+
+After the final audit is reviewed, promote the Markdown drafts into the FU
+Berlin LaTeX thesis structure as a separate formatting phase. Formatting must
+preserve the audited claim wording, evidence links, and chapter boundaries.

@@ -146,10 +146,10 @@ ordinary-list result, not a like-for-like end-to-end speedup or linear-time
 claim. Week 13 is frozen as thesis synthesis and claim audit.
 
 Week 13 has completed the reviewed claim-to-evidence, Implementation,
-Experimental Method, and Results checkpoints. The dedicated Limitations draft
-now records backend fidelity, timing scope, valid-input and recognition,
-sampling, cross-run, exploratory, and statistical boundaries. The final
-chapter-level claim audit remains gated on review of Limitations.
+Experimental Method, Results, and Limitations checkpoints. The final
+chapter-level audit now binds all 46 controlled claims to the four drafts,
+checks numerical and provenance consistency, and records no findings. It is
+awaiting review before Week 13 closes and formal FU LaTeX integration begins.
 
 ## Project Structure
 
@@ -490,8 +490,8 @@ Important project documents:
 
 Immediate next task:
 
-- review Limitations against `L-01` through `L-09`;
-- perform the final chapter-level claim audit only after that checkpoint passes;
+- review the final chapter-level claim audit and close Week 13;
+- begin formal FU LaTeX integration only after that review passes;
 - preserve Week 12 `run001` and Week 11 `run003` as immutable evidence;
 - trace every thesis result to a generated Week 12 artifact and archived file;
 - keep recognition separate from valid-input paper sorting;

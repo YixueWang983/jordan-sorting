@@ -1,6 +1,6 @@
 # Week 13 Progress
 
-Last updated: 2026-08-06
+Last updated: 2026-08-07
 
 ## Goal
 
@@ -118,7 +118,7 @@ docs/thesis/results_draft.md
 
 ## Day 5: Limitations Chapter
 
-Status: complete; awaiting review before the final chapter-level claim audit.
+Status: complete; reviewed and approved.
 
 - [x] distinguish the ordinary-list reconstruction from the theoretical
   level-linked and heterogeneous finger-tree backend;
@@ -140,12 +140,36 @@ Draft:
 docs/thesis/limitations_draft.md
 ```
 
-## Remaining Work
+## Day 6: Final Chapter-Level Claim Audit
 
-- [ ] perform the final chapter-level claim audit.
+Status: complete; awaiting review before Week 13 closure.
+
+- [x] confirm the 46-claim inventory and category counts;
+- [x] confirm every controlled ID appears in its assigned chapter;
+- [x] resolve all local evidence and source links;
+- [x] verify Week 11 `run003` and Week 12 `run001` manifest-bound hashes;
+- [x] recheck Results headline numbers against generated artifacts;
+- [x] audit reference/paper output provenance across all chapters;
+- [x] audit timing-scope, recognition, backend, complexity, sampling,
+  cross-week, and exploratory boundaries;
+- [x] rerun 537 unit tests, `compileall`, 2,074 exhaustive valid permutations,
+  and 48 fixed generated cases;
+- [x] avoid formal timing, formal validation, and evidence modification.
+
+Audit record:
+
+```text
+docs/thesis/final_claim_audit.md
+```
+
+## Remaining Review Gate
+
+- [ ] review the final claim audit and close Week 13.
+- [ ] begin FU LaTeX integration only after Week 13 closure.
 
 ## Boundary
 
-Days 1 through 5 did not modify source code, validators, generated analysis
+Days 1 through 6 did not modify source code, validators, generated analysis
 artifacts, or immutable evidence. No formal timing or validation run was
-repeated. The final claim audit remains blocked until Limitations is reviewed.
+repeated. FU LaTeX integration remains blocked until the final audit is
+reviewed.

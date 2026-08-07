@@ -315,6 +315,9 @@ Current files:
 - `limitations_draft.md`
   Week 13 Limitations draft covering backend fidelity, finite-size inference,
   timing scope, recognition, sampling, execution, and exploratory boundaries.
+- `final_claim_audit.md`
+  Final Week 13 cross-chapter audit binding the 46 controlled claims to the
+  reviewed drafts, evidence targets, and fixed interpretation boundaries.
 
 ## Other Files
 
