@@ -2,8 +2,8 @@
 
 Last updated: 2026-08-07
 
-Status: Phase 1 scaffold complete and build-verified; audited prose migration
-not started.
+Status: Phase 1 correction complete; awaiting scaffold review before audited
+prose migration.
 
 ## Goal
 
@@ -42,6 +42,16 @@ The source is an FU-hosted course resource rather than a current
 Computer-Science-specific mandatory format. Supervisor or examination-office
 requirements take precedence if they differ.
 
+The old course example includes the FU Logo. Current Informatik thesis and FU
+Corporate Design guidance prohibit student use of that Logo on an
+Abschlussarbeit, so the active scaffold deliberately excludes the Logo and its
+asset. Sources:
+
+- [Informatik thesis FAQ](https://www.mi.fu-berlin.de/stud/beratungszentrum/FAQ-Hilfe/FAQ-Abschlussarbeit/faq_abschlussarbeit_info/index.html)
+- [FU Logo guidance](https://www.fu-berlin.de/presse/service/logo/logo-leitfaden/index.html)
+
+The active metadata identifies the document as a Master's Thesis.
+
 ## Phases
 
 1. [x] Create a clean `scrreprt` scaffold, FU title page, bibliography, chapter
@@ -69,7 +79,7 @@ make pdf:
     no LaTeX warnings, undefined references, or overfull/underfull boxes
 
 visual PDF review:
-    FU title page, contents, chapter page, and bibliography passed
+    unbranded title page, contents, chapter page, and bibliography passed
 
 unit tests:
     537 passed

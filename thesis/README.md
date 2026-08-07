@@ -14,19 +14,23 @@ ZIP SHA-256:
 09cde171fbe210b3ede1644844ab57594b19e40136e7b50832bbb6f6fe8e6423
 ```
 
-The original `FULogoRGB.pdf` is retained at `assets/FULogoRGB.pdf` with
-SHA-256:
-
-```text
-d07b8f4abe1e53507e66d1a6a8d8dea76749764e57574e3704a9a62aefe8af2d
-```
-
 The downloaded example includes demonstration prose and stale build outputs.
-Those files are not part of this repository. The scaffold retains the FU title
-page composition and KOMA-Script basis, uses English as the main language, and
-adapts the affiliation to the Department of Mathematics and Computer Science.
-The public template is a useful FU resource, not a claim that the Institute of
-Computer Science mandates one exact thesis layout.
+Those files are not part of this repository. The scaffold retains the
+KOMA-Script basis and general title-page structure, uses English as the main
+language, and adapts the affiliation to the Department of Mathematics and
+Computer Science.
+
+The old course example includes the FU Logo, but the current Informatik thesis
+FAQ explicitly prohibits using the Logo on Abschlussarbeiten. The current FU
+Corporate Design guidance likewise reserves Logo use for authorized contexts.
+This scaffold therefore contains no FU Logo file or Logo reference. See the
+[Informatik thesis FAQ](https://www.mi.fu-berlin.de/stud/beratungszentrum/FAQ-Hilfe/FAQ-Abschlussarbeit/faq_abschlussarbeit_info/index.html)
+and the current
+[FU Logo guidance](https://www.fu-berlin.de/presse/service/logo/logo-leitfaden/index.html).
+
+The public template is a useful historical FU resource, not a claim that the
+Institute of Computer Science mandates one exact thesis layout. Current faculty
+and university rules take precedence over the old example.
 
 ## Build
 
@@ -43,9 +47,10 @@ outputs.
 
 ## Before Submission
 
-Replace every placeholder in `config/metadata.tex`, confirm the thesis type,
-and obtain the current required declaration wording from the responsible FU
-office or supervisor. The declaration is intentionally not included yet.
+Replace every personal placeholder in `config/metadata.tex` and obtain the
+current required declaration wording from the responsible FU office or
+supervisor. The scaffold is configured as a Master's Thesis. The declaration
+is intentionally not included yet.
 
 ## Audited Content Boundary
 
