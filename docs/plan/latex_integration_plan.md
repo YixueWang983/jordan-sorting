@@ -2,7 +2,8 @@
 
 Last updated: 2026-08-08
 
-Status: narrative migration complete; thesis-wide final audit in progress.
+Status: Thesis Content Gate ready and frozen at `c99218b`; Technical Assembly
+Gate passed on local clean-checkout evidence; Submission Gate not ready.
 
 ## Goal
 
@@ -12,10 +13,16 @@ rerunning formal experiments.
 
 ## Content Authority
 
-The content baseline is commit
+The historical Week 13 Markdown content baseline is commit
 `752e2791f972c10604a532d5c98fbdb653471bb8`, as bound by
 `docs/thesis/final_claim_audit.md` at commit
 `f676215b0dfb4415dee8afe42e36e7b1f7ce6814`.
+
+The current complete LaTeX thesis content-freeze baseline is commit
+`c99218b6116eb5b7530654beb6c0da5ee595966d`. It incorporates the reviewed
+chapter migrations, synthesis chapters, Abstract, traceability appendix, and
+submission-review corrections while preserving the historical Markdown
+baseline as provenance.
 
 The four audited drafts retain their historical `awaiting review` headers.
 They are not edited merely to update status because their exact bytes are
@@ -96,9 +103,10 @@ are not content authority or submission artifacts.
 The thesis-wide audit is recorded in
 `docs/thesis/latex_final_audit.md`. It covers the complete narrative,
 cross-references, bibliography, figure provenance, claim traceability, current
-FU public guidance, and full-PDF layout. Submission readiness remains blocked
-only by personal/examination metadata and the separately signed official
-declaration.
+FU public guidance, and full-PDF layout. The content and technical assembly
+gates are closed. Submission readiness remains blocked only by
+personal/examination metadata and external submission requirements, including
+the official declaration and examination-office procedure.
 
 ## Fixed Boundaries
 

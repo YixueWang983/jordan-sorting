@@ -1,7 +1,9 @@
 # FU Berlin LaTeX Thesis Scaffold
 
-Status: thesis narrative and claim-traceability appendix complete; final audit
-in progress pending personal and examination metadata.
+Status: Thesis Content Gate **READY / FROZEN** at
+`c99218b6116eb5b7530654beb6c0da5ee595966d`; Technical Assembly Gate **PASS**
+on local clean-checkout evidence; Submission Gate **NOT READY** pending
+personal/examination metadata and external submission requirements.
 
 ## Template Basis
 
@@ -82,3 +84,8 @@ LaTeX migration must preserve claim meaning. Any wording change that alters a
 controlled claim requires a new claim audit. Formatting, citation syntax,
 cross-references, table layout, and figure placement do not by themselves
 change claim authority.
+
+After the content freeze, do not perform general prose polishing. Accept only
+supervisor-requested changes, corrections to newly identified factual,
+algorithmic, numerical, or citation errors, and defects found by the final
+build. Review each accepted change before moving the content-freeze baseline.

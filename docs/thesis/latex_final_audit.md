@@ -2,7 +2,29 @@
 
 Last updated: 2026-08-08
 
-Status: technical thesis assembly complete; submission metadata pending.
+Status: thesis content ready and frozen; technical assembly passed locally;
+submission metadata and external procedure pending.
+
+## Gate Separation and Freeze Baseline
+
+The three completion gates are intentionally independent:
+
+| Gate | Status | Meaning |
+| --- | --- | --- |
+| Thesis Content Gate | **READY / FROZEN** | The research content, algorithm account, method, results, limitations, conclusion, and claim boundaries are frozen. |
+| Technical Assembly Gate | **PASS (local clean-checkout evidence)** | The full tests, validator, clean LaTeX build, PDF inspection, and hash checks passed on the recorded local environment. |
+| Submission Gate | **NOT READY** | Personal and examination metadata, the registered title, the official declaration, and the examination-office submission procedure remain external prerequisites. |
+
+The current thesis content-freeze baseline is:
+
+```text
+c99218b6116eb5b7530654beb6c0da5ee595966d
+```
+
+The execution results supporting the Technical Assembly Gate were produced in
+a clean checkout of that commit. They are local verification evidence and are
+not represented as a GitHub Actions or independently re-executed third-party
+result.
 
 ## Scope
 
@@ -145,7 +167,10 @@ personal/examination metadata:    pending
 official signed declaration:      pending external action
 ```
 
-No new research prose should be added after this point without a new claim
-review. The remaining repository work is limited to confirmed submission
-metadata, any supervisor-requested citation style change, and one final build
-and visual check of the resulting submission PDF.
+No general polishing or new research prose should be added after this point.
+Content changes are accepted only for explicit supervisor requests, newly
+identified factual/algorithmic/numerical/citation errors, or defects exposed
+by the final build. Any such change requires a targeted review. The remaining
+routine repository work is limited to confirmed submission metadata, any
+supervisor-requested citation style change, and one final build and visual
+check of the resulting submission PDF.
