@@ -18,7 +18,7 @@ The three completion gates are intentionally independent:
 The current thesis content-freeze baseline is:
 
 ```text
-9541b8c982645dc63aa18392acbdb4c683c4a897
+1514d8fb7d37c192b6d9d695b1a7086894c4fd0a
 ```
 
 The repository tests and immutable-evidence validator results supporting the
@@ -175,6 +175,13 @@ Step~3(c) explanatory figure so that its final node remains inside the panel
 frame. The committed TikZ source and generated PDF hashes were updated, and a
 fresh 70-page LuaLaTeX/Biber build plus inspection of the standalone figure and
 its thesis page confirmed the corrected boundary with no new warnings.
+
+A second targeted visual correction constrained the three Step~3 boxes in the
+running-example figure and recentered its seven-node input and output rows.
+The committed TikZ source and generated PDF hashes were updated, and a fresh
+70-page LuaLaTeX/Biber build plus inspection of the standalone figure and
+physical PDF page 32 confirmed that every element remains inside its panel with
+no new warnings.
 
 ## Gate
 

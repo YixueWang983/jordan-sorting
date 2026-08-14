@@ -1,7 +1,7 @@
 # FU Berlin LaTeX Thesis Scaffold
 
 Status: Thesis Content Gate **READY / FROZEN** at
-`9541b8c982645dc63aa18392acbdb4c683c4a897`; Technical Assembly Gate **PASS**
+`1514d8fb7d37c192b6d9d695b1a7086894c4fd0a`; Technical Assembly Gate **PASS**
 on local clean-checkout evidence; Submission Gate **NOT READY** pending
 personal/examination metadata and external submission requirements.
 
