@@ -18,7 +18,7 @@ The three completion gates are intentionally independent:
 The current thesis content-freeze baseline is:
 
 ```text
-6d90e5f384a177f11b9850812bf2a7927695a092
+9541b8c982645dc63aa18392acbdb4c683c4a897
 ```
 
 The repository tests and immutable-evidence validator results supporting the
@@ -169,6 +169,12 @@ traceability appendix, and added the Brown--Tarjan 1978 DOI. A fresh
 LuaLaTeX/Biber build again produced a 70-page A4 PDF with 13 resolved citekeys,
 no reference, citation, or box warnings, and visually verified corrected figure
 pages. No source, experiment, validator, or immutable evidence file changed.
+
+A subsequent targeted visual correction tightened the seven-node row in the
+Step~3(c) explanatory figure so that its final node remains inside the panel
+frame. The committed TikZ source and generated PDF hashes were updated, and a
+fresh 70-page LuaLaTeX/Biber build plus inspection of the standalone figure and
+its thesis page confirmed the corrected boundary with no new warnings.
 
 ## Gate
 
