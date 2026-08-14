@@ -56,9 +56,9 @@ as vector PDFs. The shared style SHA-256 is:
 - Thesis figure: `thesis/figures/running_example_reconstruction.pdf`
 - TikZ source: `thesis/figures/source/running_example_reconstruction.tex`
 - Source SHA-256:
-  `2e045ab4fc74fae77d444c656f93da5876b71dfd655d6ed7c3dc9f4759fef5e1`
+  `435e6f2914a81ccbc930091b8d7dc163b3d1941d801c6e45e93bfcf344a2ef97`
 - Generated PDF SHA-256:
-  `91827eafc183ac6b7e750103613e8ba6308f83d5702cb183a4c93de827a79e72`
+  `f36fccb79ad29f3414385e97b0b6ac238f527567ca1273d14b124a485d6bbe09`
 - Example provenance: the sequence $(2,3,1,7,6,4,5)$ is oracle-valid. Its
   checked diagnostic records an increasing iteration at $i=4$, a performed
   left-side split, transfer of $P_2$ to $P_4$, and insertion after output

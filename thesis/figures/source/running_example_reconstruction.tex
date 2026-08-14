@@ -24,7 +24,7 @@
 
   % (a) Input.
   \foreach \value [count=\i] in {2,3,1,7,6,4,5} {
-    \seqnode[minimum width=.82cm]{a\i}{$ (a0)+(0.72+0.91*\i,-1.42) $}{$z_{\i}$\\[-2pt]\scriptsize $\value$}
+    \seqnode[minimum width=.82cm]{a\i}{$ (a0)+(0.42+0.86*\i,-1.42) $}{$z_{\i}$\\[-2pt]\scriptsize $\value$}
     \ifnum\i>1
       \draw[flow] (a\the\numexpr\i-1\relax.east) -- (a\i.west);
     \fi
@@ -51,11 +51,11 @@
     {new point $z_4=7$};
   \draw[accent flow] (s3) -- (newp);
 
-  \node[box,font=\scriptsize,anchor=west] (s3a) at ($(c0)+(.35,-2.05)$)
+  \node[box,font=\scriptsize,text width=1.55cm,anchor=west] (s3a) at ($(c0)+(.35,-2.05)$)
     {Step 3(a)\\add $P_4=\{z_3,z_4\}$};
-  \node[box,font=\scriptsize,anchor=west] (s3b) at ($(c0)+(2.80,-2.05)$)
+  \node[box,font=\scriptsize,text width=1.70cm,anchor=west] (s3b) at ($(c0)+(2.60,-2.05)$)
     {Step 3(b)\\transfer $P_2$ to $P_4$};
-  \node[accent box,font=\scriptsize,anchor=west] (s3c) at ($(c0)+(5.27,-2.05)$)
+  \node[accent box,font=\scriptsize,text width=1.95cm,anchor=west] (s3c) at ($(c0)+(4.90,-2.05)$)
     {Step 3(c)\\insert after anchor $z_2$};
   \draw[flow] (s3a) -- (s3b);
   \draw[accent flow] (s3b) -- (s3c);
@@ -64,7 +64,7 @@
 
   % (d) Final order.
   \foreach \label/\value [count=\i] in {z_3/1,z_1/2,z_2/3,z_6/4,z_7/5,z_5/6,z_4/7} {
-    \seqnode[minimum width=.88cm]{d\i}{$ (d0)+(0.65+0.91*\i,-1.50) $}{$\label$\\[-2pt]\scriptsize $\value$}
+    \seqnode[minimum width=.88cm]{d\i}{$ (d0)+(0.42+0.86*\i,-1.50) $}{$\label$\\[-2pt]\scriptsize $\value$}
     \ifnum\i>1
       \draw[flow] (d\the\numexpr\i-1\relax.east) -- (d\i.west);
     \fi
