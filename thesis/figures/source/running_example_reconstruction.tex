@@ -24,7 +24,7 @@
 
   % (a) Input.
   \foreach \value [count=\i] in {2,3,1,7,6,4,5} {
-    \seqnode{a\i}{$ (a0)+(0.72+0.91*\i,-1.42) $}{$z_{\i}$\\[-2pt]\scriptsize $\value$}
+    \seqnode[minimum width=.82cm]{a\i}{$ (a0)+(0.72+0.91*\i,-1.42) $}{$z_{\i}$\\[-2pt]\scriptsize $\value$}
     \ifnum\i>1
       \draw[flow] (a\the\numexpr\i-1\relax.east) -- (a\i.west);
     \fi

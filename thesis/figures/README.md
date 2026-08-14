@@ -56,9 +56,9 @@ as vector PDFs. The shared style SHA-256 is:
 - Thesis figure: `thesis/figures/running_example_reconstruction.pdf`
 - TikZ source: `thesis/figures/source/running_example_reconstruction.tex`
 - Source SHA-256:
-  `535d1e417c3c60457b36a6e99ea56366d30eee35c6a73b6c34fe7062f4b3a743`
+  `2e045ab4fc74fae77d444c656f93da5876b71dfd655d6ed7c3dc9f4759fef5e1`
 - Generated PDF SHA-256:
-  `0071cc1c77c06f46782be7c26398a578588ccdb01678f4839c7240139c507217`
+  `91827eafc183ac6b7e750103613e8ba6308f83d5702cb183a4c93de827a79e72`
 - Example provenance: the sequence $(2,3,1,7,6,4,5)$ is oracle-valid. Its
   checked diagnostic records an increasing iteration at $i=4$, a performed
   left-side split, transfer of $P_2$ to $P_4$, and insertion after output
@@ -78,9 +78,9 @@ as vector PDFs. The shared style SHA-256 is:
 - Thesis figure: `thesis/figures/family_sibling_structure.pdf`
 - TikZ source: `thesis/figures/source/family_sibling_structure.tex`
 - Source SHA-256:
-  `de9fedd08be7c1ae53a33c198e8bf568ba5106a735e3701e38bbd3ed40fd82d6`
+  `3acf769706606c13c4842819ac2cebcc85a5c971eee38e7cfcffb46240786d93`
 - Generated PDF SHA-256:
-  `6f3754550a2365f00f6087a54892cb9605a3e439b29ff627e1710ea48f60f29e`
+  `6160c56c3f51eb6ff2348427b06024e661543400b1be60a0529fc3ac79d1f752`
 - Example provenance: the displayed final family/list layout and the $i=4$
   transfer are derived from the same checked sequence used by the running
   reconstruction example.
