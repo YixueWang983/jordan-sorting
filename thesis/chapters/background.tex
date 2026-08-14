@@ -25,6 +25,18 @@ This formulation gives two distinct orders on one set of points:
   \item[Axis order] is the output order obtained by moving from left to right
     along the $x$-axis.
 \end{description}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.92\textwidth]{jordan_sorting_problem.pdf}
+  \caption[Jordan sorting from curve order to axis order.]{Illustration of the
+  Jordan sorting problem. The simple curve encounters the five intersections
+  in curve order $(p_1,p_5,p_2,p_4,p_3)$, whereas their axis order is
+  $(p_1,p_2,p_3,p_4,p_5)$. Jordan sorting recovers the axis order from the
+  curve order.}
+  \label{fig:jordan-sorting-problem}
+\end{figure}
+
 The values are therefore not arbitrary keys presented in an arbitrary
 permutation. They carry a geometric realizability constraint inherited from
 the simplicity of $C$. The implementation studied in this thesis specializes
@@ -161,6 +173,45 @@ algorithm of \textcite{tarjan1988triangulating}, and that neither extension
 changes its $O(n)$ bound \parencite[p.~91]{fung1990simplified}. The
 error-correction task belongs to that separate triangulation work; neither it
 nor recognition is evaluated in this thesis.
+
+\section{Related Work and Positioning}
+\label{sec:background-related-work}
+
+\subsection{Ordered Lists and Finger Search}
+
+The specialized list backends used for Jordan sorting belong to a broader
+line of work on ordered-list representations with fingers and
+locality-sensitive access. \Textcite{brown1978movable} study linear lists with
+movable fingers, and \textcite{brown1980sorted} analyze a 2--3-tree
+representation for sorted lists whose costs reflect locality of reference.
+\Textcite{huddleston1982sorted} develop level-linked weak B-trees for arbitrary
+sequences of sorted-list updates. The level-linked $(2,4)$ trees used by the
+1986 Jordan-sorting algorithm are part of this historical data-structure
+lineage, rather than a property of Jordan sequences alone.
+
+These works provide context for the historical linear-time theorem, but they
+do not describe the backend implemented in this thesis. The reconstruction
+uses ordinary Python lists and therefore retains explicit scan, copy, slice,
+and rebinding costs.
+
+\subsection{Jordan Sorting and Geometric Applications}
+
+The first symposium publication of the linear-time Jordan-sorting result
+appeared in 1985 \parencite{hoffmann1985sorting}; the 1986 journal article used
+throughout this thesis gives the expanded algorithm and data-structure account.
+The later simplification connected Jordan sorting to polygon clipping
+\parencite{fung1990simplified}, while the error-correcting task appears in the
+polygon-triangulation algorithm of \textcite{tarjan1988triangulating}.
+Subsequent work by \textcite{baryehuda1994triangulating} used a generalized
+form of Jordan sorting together with point location and interval trees to
+triangulate collections of disjoint Jordan polygonal chains.
+
+This literature shows that Jordan sorting participates in a wider
+computational-geometry research line, rather than being only an isolated
+sorting problem. The present thesis nevertheless has a narrower target: it
+reconstructs and evaluates valid-input sorting. It does not implement a new
+theoretical list structure, polygon clipping, triangulation, error correction,
+or recognition.
 
 \section{Position and Scope of This Thesis}
 \label{sec:background-thesis-scope}

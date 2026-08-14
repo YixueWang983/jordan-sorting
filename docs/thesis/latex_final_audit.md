@@ -68,13 +68,15 @@ bindings.
 
 ## Citations, References, and Figures
 
-The bibliography contains the three primary historical sources used in the
-thesis. LuaLaTeX/Biber resolves all citations and cross-references. The final
-log contains no undefined reference, citation warning, overfull box, or
-underfull box.
+The bibliography contains 13 cited works spanning the primary Jordan-sorting
+lineage, ordered-list and finger-search data structures, computational-geometry
+applications, and experimental-algorithmics methodology. LuaLaTeX/Biber
+resolves all citations and cross-references. The final log contains no
+undefined reference, citation warning, overfull box, or underfull box.
 
-The two thesis-facing Week 12 figures remain vector PDFs. Their source SVG and
-generated PDF SHA-256 values exactly match the records in
+The thesis contains seven vector PDF figures: two converted from the validated
+Week 12 analysis outputs and five explanatory figures generated from committed
+TikZ sources. Source and generated SHA-256 values match the records in
 `thesis/figures/README.md`. No analysis source or immutable evidence file was
 modified.
 
@@ -151,7 +153,7 @@ Follow-up verification reran all 537 repository tests and `compileall`, then
 ran the independent Week 12 validator against immutable `run001`. The live
 report returned `valid=true`, no errors, and row counts
 `3600 / 180 / 45 / 60`; the report was written outside the archive. A clean
-LuaLaTeX/Biber build produced a 61-page A4 PDF with resolved references and no
+LuaLaTeX/Biber build produced a 70-page A4 PDF with resolved references and no
 box warnings, and the changed pages plus full-document contact sheets passed
 visual inspection.
 

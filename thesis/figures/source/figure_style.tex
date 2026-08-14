@@ -1,0 +1,41 @@
+\usepackage{libertinus}
+\usepackage{amsmath}
+\usetikzlibrary{
+  arrows.meta,
+  backgrounds,
+  calc,
+  decorations.markings,
+  fit,
+  positioning
+}
+
+\definecolor{accent}{RGB}{38,103,115}
+\definecolor{softgray}{RGB}{244,245,246}
+\definecolor{midgray}{RGB}{123,128,132}
+
+\tikzset{
+  >={Latex[length=2.2mm,width=1.5mm]},
+  flow/.style={-Latex,semithick,draw=black!72},
+  accent flow/.style={-Latex,semithick,draw=accent},
+  box/.style={
+    draw=black!68,
+    fill=softgray,
+    rounded corners=1.2pt,
+    align=center,
+    inner xsep=5pt,
+    inner ysep=4pt
+  },
+  accent box/.style={
+    draw=accent,
+    fill=accent!8,
+    rounded corners=1.2pt,
+    align=center,
+    inner xsep=5pt,
+    inner ysep=4pt
+  },
+  point/.style={circle,draw=black!75,fill=white,inner sep=1.7pt},
+  accent point/.style={circle,draw=accent,fill=accent!10,inner sep=1.7pt},
+  tinylabel/.style={font=\scriptsize,align=center},
+  smalllabel/.style={font=\small,align=center},
+  panel/.style={draw=black!28,rounded corners=2pt,inner sep=6pt}
+}

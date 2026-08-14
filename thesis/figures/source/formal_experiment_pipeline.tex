@@ -1,0 +1,50 @@
+\documentclass[tikz,border=7pt]{standalone}
+\input{figure_style}
+
+\begin{document}
+\begin{tikzpicture}[font=\small,node distance=8mm and 10mm]
+  \node[box,minimum width=3.1cm] (reserve) {reserve evidence\\directory};
+  \node[box,minimum width=3.1cm,right=of reserve] (config) {write config and\\runtime environment};
+  \node[box,minimum width=3.1cm,right=of config] (generate) {controlled case\\generation};
+
+  \node[box,minimum width=3.1cm,below=of generate] (oracle) {oracle\\certification};
+  \node[box,minimum width=3.1cm,left=of oracle] (audit) {checked audit\\one per exact case};
+  \node[box,minimum width=3.1cm,left=of audit] (warmup) {warm-up calls};
+
+  \node[accent box,minimum width=3.1cm,below=of warmup] (measured) {
+    measured calls\\[2pt]
+    \fcolorbox{accent}{accent!5}{\strut paper: minimal call}
+  };
+  \node[box,minimum width=3.1cm,right=of measured] (summary) {case and group\\summaries};
+  \node[box,minimum width=3.1cm,right=of summary] (csv) {write four CSV\\evidence files};
+
+  \draw[flow] (reserve) -- (config);
+  \draw[flow] (config) -- (generate);
+  \draw[flow] (generate) -- (oracle);
+  \draw[flow] (oracle) -- (audit);
+  \draw[flow] (audit) -- (warmup);
+  \draw[accent flow] (warmup) -- (measured);
+  \draw[flow] (measured) -- (summary);
+  \draw[flow] (summary) -- (csv);
+
+  \node[tinylabel,text=black!68,below=2pt of oracle]
+    {outside measured call};
+  \node[tinylabel,text=black!68,below=2pt of audit]
+    {outside measured call};
+
+  \begin{scope}[on background layer]
+    \node[draw=black!45,dashed,rounded corners=3pt,fit=(reserve)(generate)(oracle)(warmup)(measured)(csv),
+      inner sep=9pt,label={[font=\small\bfseries,anchor=south west]north west:pipeline wall-clock scope}] (pipeline) {};
+  \end{scope}
+
+  \node[box,minimum width=3.1cm,below=17mm of csv] (manifest) {write manifest\\\scriptsize excluded from pipeline time};
+  \node[box,minimum width=3.1cm,left=of manifest] (validate) {independent validation\\\scriptsize excluded from pipeline time};
+  \node[accent box,minimum width=3.1cm,left=of validate] (archive) {immutable archived\\evidence};
+  \draw[flow,dashed] (csv) -- (manifest);
+  \draw[flow] (manifest) -- (validate);
+  \draw[accent flow] (validate) -- (archive);
+
+  \node[font=\scriptsize,align=center,text=black!70,below=5pt of archive]
+    {validation must return\\\texttt{valid=true}};
+\end{tikzpicture}
+\end{document}

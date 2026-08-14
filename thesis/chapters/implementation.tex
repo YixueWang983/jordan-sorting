@@ -104,6 +104,18 @@ list and materializes new Python lists. These choices make ownership behavior
 explicit and testable but do not reproduce the theoretical data structures or
 their complexity bounds.
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{family_sibling_structure.pdf}
+  \caption[Pair families and sibling-list ownership.]{Pair-family containment
+  and sibling-list ownership in the running
+  example from \cref{fig:algorithm-running-example}. Upper family and lower
+  family pairs remain separate, while each live sibling list has one owner.
+  The local Step~3(b) transition shows $P_2$ moving from a list owned by the
+  upper dummy to a child sibling list owned by the new pair $P_4$.}
+  \label{fig:implementation-family-sibling-structure}
+\end{figure}
+
 \section{Initialization}
 \label{sec:implementation-initialization}
 

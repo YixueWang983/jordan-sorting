@@ -321,6 +321,17 @@ reflected sequence $(6,5,4,3,1,0,7)$ exercises
 \cref{eq:algorithm-z1-increasing}. These cases demonstrate why boundary
 selection and output-anchor correction must be modeled as separate stages.
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.88\textwidth]{step3c_anchor_z1_anomaly.pdf}
+  \caption[Step 3(c) output-anchor correction for $z_1$.]{Local output-anchor
+  selection in decreasing Step~3(c) for the
+  prefix $(1,2,3,4,6,7,0)$. The ordinary geometric base anchor is $z_2$.
+  Because the odd-index condition $z_7<z_1<z_2$ holds, the output anchor is
+  corrected to $z_1$ before $z_7$ is inserted.}
+  \label{fig:step3c-z1-anchor}
+\end{figure}
+
 \section{Atomic Ownership Transfer}
 \label{sec:algorithm-ownership}
 
@@ -385,6 +396,17 @@ Oracle certification may establish the valid-input precondition before this
 procedure is called, but oracle-sorted output is not an input to these steps.
 The implementation-level certification boundary is detailed in
 \cref{sec:implementation-certification}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{running_example_reconstruction.pdf}
+  \caption[Running example of the ordinary-list reconstruction.]{Running
+  example on the valid sequence $(2,3,1,7,6,4,5)$. The panels show the input,
+  initialization, the representative update at $i=4$, and the recovered axis
+  order. At $i=4$, $P_4$ acquires $P_2$ in Step~3(b), then Step~3(c) inserts
+  $z_4$ after the geometric anchor $z_2$.}
+  \label{fig:algorithm-running-example}
+\end{figure}
 
 \clearpage
 \section{Correctness and Complexity Boundaries}

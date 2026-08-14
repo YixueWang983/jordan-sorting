@@ -13,6 +13,14 @@ That geometric restriction permits specialized recognition and sorting
 algorithms with a theoretical linear-time bound
 \parencites{hoffmann1986sorting}{fung1990simplified}.
 
+Jordan sorting lies at the intersection of computational geometry, algorithm
+design, and data-structure engineering. More generally, computational
+geometry studies how geometric restrictions can be converted into algorithmic
+structure and supported by purpose-built data structures
+\parencite{deberg2008computational}. This setting makes Jordan sorting a useful
+case study in the difference between an abstract algorithmic result and the
+costs of a concrete representation.
+
 The published bound, however, combines an algorithmic control flow with
 specialized dynamic-list representations. The 1986 algorithm uses
 level-linked search trees, while the 1990 simplification relies on
@@ -32,6 +40,13 @@ infer asymptotic complexity from runtime measurements. It is to make the
 paper-facing control flow concrete, auditable, and empirically observable
 while keeping the boundary between theorem, implementation, and experiment
 explicit.
+
+This combination of reconstruction, implementation, and controlled evaluation
+follows the algorithm-engineering view that design, analysis, implementation,
+and experimentation are related but distinct parts of algorithmic research
+\parencite{sanders2009engineering}. The experimental component is likewise
+treated as a source of bounded evidence about implemented algorithms, not as a
+replacement for theoretical analysis \parencite{mcgeoch2012guide}.
 
 \section{Problem and Scope}
 \label{sec:introduction-scope}
