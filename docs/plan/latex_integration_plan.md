@@ -1,8 +1,8 @@
 # FU Berlin LaTeX Integration Plan
 
-Last updated: 2026-08-08
+Last updated: 2026-08-14
 
-Status: Thesis Content Gate ready and frozen at `c99218b`; Technical Assembly
+Status: Thesis Content Gate ready and frozen at `6d90e5f`; Technical Assembly
 Gate passed on local clean-checkout evidence; Submission Gate not ready.
 
 ## Goal
@@ -19,10 +19,11 @@ The historical Week 13 Markdown content baseline is commit
 `f676215b0dfb4415dee8afe42e36e7b1f7ce6814`.
 
 The current complete LaTeX thesis content-freeze baseline is commit
-`c99218b6116eb5b7530654beb6c0da5ee595966d`. It incorporates the reviewed
+`6d90e5f384a177f11b9850812bf2a7927695a092`. It incorporates the reviewed
 chapter migrations, synthesis chapters, Abstract, traceability appendix, and
-submission-review corrections while preserving the historical Markdown
-baseline as provenance.
+submission-review corrections, together with the reviewed literature expansion
+and seven figure artifacts, while preserving the historical Markdown baseline
+as provenance.
 
 The four audited drafts retain their historical `awaiting review` headers.
 They are not edited merely to update status because their exact bytes are

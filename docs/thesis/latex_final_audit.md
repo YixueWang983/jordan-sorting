@@ -1,6 +1,6 @@
 # LaTeX Thesis-Wide Final Audit
 
-Last updated: 2026-08-08
+Last updated: 2026-08-14
 
 Status: thesis content ready and frozen; technical assembly passed locally;
 submission metadata and external procedure pending.
@@ -18,13 +18,16 @@ The three completion gates are intentionally independent:
 The current thesis content-freeze baseline is:
 
 ```text
-c99218b6116eb5b7530654beb6c0da5ee595966d
+6d90e5f384a177f11b9850812bf2a7927695a092
 ```
 
-The execution results supporting the Technical Assembly Gate were produced in
-a clean checkout of that commit. They are local verification evidence and are
-not represented as a GitHub Actions or independently re-executed third-party
-result.
+The repository tests and immutable-evidence validator results supporting the
+Technical Assembly Gate remain the recorded clean-checkout results because the
+changes leading to this freeze are thesis-only. The complete LuaLaTeX/Biber
+build, citation resolution, figure rendering, and figure hash checks were
+rerun against the exact tracked thesis content frozen at this commit. These are
+local verification results, not GitHub Actions or independently re-executed
+third-party evidence.
 
 ## Scope
 
@@ -156,6 +159,16 @@ report returned `valid=true`, no errors, and row counts
 LuaLaTeX/Biber build produced a 70-page A4 PDF with resolved references and no
 box warnings, and the changed pages plus full-document contact sheets passed
 visual inspection.
+
+The 2026-08-14 literature-and-figure follow-up expanded the cited bibliography
+to 13 works and added five committed TikZ explanatory figures. Targeted
+re-review corrected the running-example arrow direction and the family/sibling
+layout, updated the affected source and generated hashes, distinguished the two
+validated Week 12 result figures from the five explanatory figures in the
+traceability appendix, and added the Brown--Tarjan 1978 DOI. A fresh
+LuaLaTeX/Biber build again produced a 70-page A4 PDF with 13 resolved citekeys,
+no reference, citation, or box warnings, and visually verified corrected figure
+pages. No source, experiment, validator, or immutable evidence file changed.
 
 ## Gate
 
