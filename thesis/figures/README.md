@@ -90,9 +90,9 @@ as vector PDFs. The shared style SHA-256 is:
 - Thesis figure: `thesis/figures/step3c_anchor_z1_anomaly.pdf`
 - TikZ source: `thesis/figures/source/step3c_anchor_z1_anomaly.tex`
 - Source SHA-256:
-  `f4245cba96e0614954924de2ddfeb7e66eddc59957a2ffc2b5fdd453cd8ee06e`
+  `b00432a7f457046b1ad6b856004a120cfef012f1e100295dfea28e1a26d4873e`
 - Generated PDF SHA-256:
-  `aa6ad0f4fbc4c54a3aa4daea686019ad9ae2bb723a691627e2212a9f32874ca8`
+  `f5d8522b2d7a5e440eccde5adb31cf7d3009a499de59fe1452100f852bb6c268`
 - Example provenance: for the oracle-valid prefix $(1,2,3,4,6,7,0)$, the
   checked implementation records base anchor $z_2$, output anchor $z_1$, and
   `adjusted_for_z1=true` at decreasing iteration $i=7$.

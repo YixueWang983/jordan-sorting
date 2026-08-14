@@ -32,9 +32,11 @@
 
   \foreach \label/\value [count=\i] in {z_7/0,z_1/1,z_2/2,z_3/3,z_4/4,z_5/6,z_6/7} {
     \ifnum\i=1
-      \ordernode[draw=accent,fill=accent!8]{b\i}{.50+1.38*\i,-2.47}{$\label$}{$\value$}
+      \ordernode[draw=accent,fill=accent!8,minimum width=1.02cm]
+        {b\i}{.40+1.31*\i,-2.47}{$\label$}{$\value$}
     \else
-      \ordernode{b\i}{.50+1.38*\i,-2.47}{$\label$}{$\value$}
+      \ordernode[minimum width=1.02cm]
+        {b\i}{.40+1.31*\i,-2.47}{$\label$}{$\value$}
     \fi
     \ifnum\i>1
       \draw[flow] (b\the\numexpr\i-1\relax.east) -- (b\i.west);
