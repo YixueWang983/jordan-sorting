@@ -2,7 +2,7 @@
 
 Last updated: 2026-08-20
 
-Status: Thesis Content Gate ready and frozen at `3043671`; Technical Assembly
+Status: Thesis Content Gate ready and frozen at `e2f1af3`; Technical Assembly
 Gate passed on local clean-checkout evidence; Submission Gate not ready.
 
 ## Goal
@@ -19,11 +19,13 @@ The historical Week 13 Markdown content baseline is commit
 `f676215b0dfb4415dee8afe42e36e7b1f7ce6814`.
 
 The current complete LaTeX thesis content-freeze baseline is commit
-`3043671cfcf199a8e24550695d41f5e2392b10c3`. It incorporates the reviewed
+`e2f1af3ebafda7abd49b06f83914e8041e10c8d2`. It incorporates the reviewed
 chapter migrations, synthesis chapters, Abstract, traceability appendix, and
 submission-review corrections, together with the reviewed literature expansion
-and seven figure artifacts, while preserving the historical Markdown baseline
-as provenance.
+and seven figure artifacts. Thesis-facing descriptions now use academic
+pilot/formal-experiment terminology; exact archived execution identifiers are
+retained only where needed for provenance. The historical Markdown baseline
+remains preserved as provenance.
 
 The four audited drafts retain their historical `awaiting review` headers.
 They are not edited merely to update status because their exact bytes are

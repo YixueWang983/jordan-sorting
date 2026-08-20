@@ -18,7 +18,7 @@ The three completion gates are intentionally independent:
 The current thesis content-freeze baseline is:
 
 ```text
-3043671cfcf199a8e24550695d41f5e2392b10c3
+e2f1af3ebafda7abd49b06f83914e8041e10c8d2
 ```
 
 The repository tests and immutable-evidence validator results supporting the
@@ -195,6 +195,18 @@ no reference, citation, or box warnings. The changed Background and Conclusion
 pages and a full-document contact sheet passed visual inspection. No algorithm
 source, experiment, validator, formal timing, or immutable evidence file
 changed.
+
+The 2026-08-20 terminology follow-up replaced thesis-facing week-number,
+repository-audit, and gate language with academic pilot/formal-experiment,
+bounded-validation, checked-state-audit, and evidence-contract terminology.
+Exact archived execution identifiers remain only in the Method and Claim
+Traceability appendix as provenance. The formal-experiment pipeline figure was
+regenerated from its tracked TikZ source and both hashes were updated. A clean
+LuaLaTeX/Biber build produced a 70-page A4 PDF with 16 resolved citekeys and no
+reference, citation, or box warnings. The standalone changed figure, selected
+affected pages, and a full-document contact sheet passed visual inspection. No
+algorithm source, experiment, test, validator, formal timing, or archived
+evidence file changed.
 
 ## Gate
 
