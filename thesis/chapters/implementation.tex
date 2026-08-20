@@ -9,14 +9,14 @@
 \label{sec:implementation-scope}
 
 % Claims: I-01, I-02, I-03
-The project contains two deliberately separate sorting paths. The first is an
+The implementation contains two deliberately separate sorting paths. The first is an
 oracle-backed reference pipeline. The second is an ordinary-list
 reconstruction of the high-level control flow described for simplified Jordan
 sorting by \textcite{fung1990simplified}. The distinction matters because the
 two paths obtain their output differently and support different claims.
 
 The reference function \texttt{simplified\_jordan\_sort} copies the input, runs
-the project oracle, constructs structural data for valid inputs, records
+the certification oracle, constructs structural data for valid inputs, records
 reference trace and statistics fields, and returns the sorted list supplied by
 the oracle. It is a reproducible baseline and structural-observation pipeline;
 it does not recover sorted order by executing the paper-facing sibling-list
@@ -212,8 +212,8 @@ separate operations. After successful insertion, Step~3(c) advances
 The geometric endpoint rule and the odd-index output-anchor adjustment are an
 executable interpretation of details that are not fully specified in the 1990
 text. They were fixed through minimal counterexamples, the related 1986
-algorithm of \textcite{hoffmann1986sorting}, mirrored cases, and exhaustive
-repository validation over oracle-certified cases. The implementation is
+algorithm of \textcite{hoffmann1986sorting}, mirrored cases, and bounded
+exhaustive validation over oracle-certified cases. The implementation is
 therefore described as a paper-facing reconstruction rather than a verbatim
 transcription of every omitted detail.
 

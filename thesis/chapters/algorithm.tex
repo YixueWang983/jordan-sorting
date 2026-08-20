@@ -15,7 +15,7 @@ incrementally while maintaining a sorted list and two ordered family trees.
 Its presentation is compact: the increasing case is described explicitly,
 the decreasing case is called symmetric, and some endpoint details are left
 implicit. This chapter states the executable reconstruction used in the
-project.
+thesis.
 
 Three kinds of statements must therefore remain distinct:
 \begin{description}
@@ -33,13 +33,15 @@ Three kinds of statements must therefore remain distinct:
 The last category is not presented as the unique intended wording of an
 unstated paper detail. It is an implementation-level interpretation supported
 by the related 1986 algorithm of \textcite{hoffmann1986sorting}, by reflected
-counterexamples, and by repository validation over oracle-certified inputs.
+counterexamples, and by bounded exhaustive validation over oracle-certified
+inputs.
 The validation evidence checks this reconstruction; it does not replace a
 topological proof of the source algorithm.
 
 The chapter also separates algorithmic control flow from data-structure
 complexity. The 1990 paper obtains its linear bound with heterogeneous finger
-trees. The project implements the same high-level list operations with
+trees. The thesis implementation realizes the same high-level list operations
+with
 ordinary Python lists. Consequently, the reconstruction supports an
 executable sorting algorithm but no linear-time or asymptotic-complexity claim
 for its concrete backend.
@@ -212,9 +214,9 @@ anchor.
 \section{Step 3: Decreasing Orientation}
 \label{sec:algorithm-step3-decreasing}
 
-For $z_i<z_{i-1}$, the project uses the order reflection of the increasing
-case. This is the executable meaning assigned to the 1990 paper's statement
-that the other case is symmetric.
+For $z_i<z_{i-1}$, the reconstruction uses the order reflection of the
+increasing case. This is the executable meaning assigned to the 1990 paper's
+statement that the other case is symmetric.
 
 Step~3(a) now uses $B_i$. If $B_i$ encloses $z_{i-1}$, $N$ becomes its child
 in a singleton sibling list. Otherwise, $B_i$ is the first item of its list;
@@ -419,15 +421,16 @@ contiguous split side. The executable reconstruction turns those facts into
 the prefix and ownership invariants above. Focused counterexamples fix the
 ambiguous anchors; mirrored tests check the decreasing reconstruction; and
 full state diagnostics compare the maintained order and family forest with a
-deterministic replay. These are repository correctness controls, not an
+deterministic replay. These are implementation correctness controls, not an
 independent proof that every unspecified detail has only one possible
 interpretation.
 
-The theoretical papers and the project have different backend claims.
+The theoretical papers and the thesis implementation have different backend
+claims.
 \textcite{hoffmann1986sorting} use level-linked search trees, while
 \textcite{fung1990simplified} reduce the required operations to singleton-list
 creation, boundary insertion, and splitting, then implement them with
-heterogeneous finger trees. The project preserves those abstract operations
+heterogeneous finger trees. The implementation preserves those abstract operations
 but realizes sibling lists as ordinary Python lists. A sibling split scans and
 materializes list contents, front insertion can shift elements, and ownership
 rebinding can depend on list size. The observed implementation is therefore

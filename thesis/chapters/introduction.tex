@@ -57,7 +57,7 @@ geometric model and its nested upper and lower pair families are introduced in
 \cref{chap:background}; the executable reconstruction is specified in
 \cref{chap:algorithm}.
 
-The project contains two deliberately different research implementations. The
+The thesis considers two deliberately different research implementations. The
 \emph{simplified reference pipeline} performs oracle validation, constructs
 structural information, and returns oracle-derived sorted output. The
 \emph{paper ordinary-list core} instead accepts a pre-certified valid input,
@@ -86,7 +86,7 @@ Within those boundaries, the thesis addresses three questions:
     independently recover sorted order for oracle-certified valid inputs while
     maintaining the required partial-order and sibling-family invariants?
 
-  \item \textbf{Observed runtime behavior.} Across the frozen input sizes and
+  \item \textbf{Observed runtime behavior.} Across the pre-specified input sizes and
     controlled families, how does the pre-certified paper call in
     \texttt{minimal} mode behave relative to Python sort and the complete
     oracle-backed reference pipeline under their explicitly different timing
@@ -98,9 +98,9 @@ Within those boundaries, the thesis addresses three questions:
     implementation?
 \end{enumerate}
 
-The first question is addressed through focused tests, exhaustive repository
-validation over bounded oracle-certified cases, checked state audits, and
-deterministic replay. The second uses the frozen Week~12 formal experiment.
+The first question is addressed through focused tests, bounded exhaustive
+validation over oracle-certified cases, checked-state audits, and deterministic
+replay. The second uses the formal experiment under its pre-specified protocol.
 The third is exploratory: its associations are descriptive rather than causal
 or asymptotic.
 
@@ -129,11 +129,11 @@ contributions.
     The \texttt{minimal} policy still retains local safety, stage state, and
     final output recovery.
 
-  \item It establishes a reproducible empirical workflow with frozen cases,
-    documented timing scopes, immutable run evidence, and an independent
-    fail-closed validator. The resulting study compares Python sort, the
-    oracle-backed reference pipeline, and the paper ordinary-list call without
-    treating their scopes as interchangeable.
+  \item It establishes a reproducible empirical workflow with pre-specified
+    cases, documented timing scopes, archived manifest-bound evidence, and a
+    separate fail-closed evidence-contract validator. The resulting study
+    compares Python sort, the oracle-backed reference pipeline, and the paper
+    ordinary-list call without treating their scopes as interchangeable.
 \end{enumerate}
 
 These contributions concern reconstruction, correctness engineering, and
@@ -144,11 +144,11 @@ a proof of linear running time for the Python implementation.
 \section{Headline Findings}
 \label{sec:introduction-findings}
 
-All 3600 measured rows in the frozen Week~12 run belong to 60 exact cases that
-each passed one untimed checked audit before timing. Every row records an
+All 3600 measured rows in the formal experiment belong to 60 exact cases that
+each passed one untimed checked-state audit before timing. Every row records an
 oracle-certified input, correct output, and no recorded error. All 180
 case-algorithm summaries are correct and error-free, and all 60 case audits
-pass. This is empirical correctness evidence for the frozen cases, not a proof
+pass. This is empirical correctness evidence for the pre-specified cases, not a proof
 for every Jordan sequence.
 
 The median exact-case paper/reference runtime ratio decreases across the five
@@ -172,7 +172,7 @@ structure, and places the 1986 and 1990 algorithms in context.
 \Cref{chap:algorithm} develops the implementation-facing reconstruction of the
 incremental procedure. \Cref{chap:implementation} describes the concrete
 partial-order, sibling-list, audit, and execution-policy components.
-\Cref{chap:methodology} specifies the frozen valid-input experiment, timing
+\Cref{chap:methodology} specifies the pre-specified valid-input experiment, timing
 boundaries, statistical units, and evidence contract. \Cref{chap:results}
 presents correctness, runtime, variability, replication, and exploratory
 findings. \Cref{chap:limitations} states the backend, timing, sampling, and

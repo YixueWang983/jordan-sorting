@@ -7,7 +7,7 @@ evidence remains under `results/runs/`. Do not modify either source in order to
 fit the LaTeX document. Record the source path and SHA-256 whenever a figure is
 copied or converted for the thesis.
 
-## Week 12 Results Figures
+## Formal Experiment Results Figures
 
 ### Median runtime by size
 
@@ -69,9 +69,9 @@ as vector PDFs. The shared style SHA-256 is:
 - Thesis figure: `thesis/figures/formal_experiment_pipeline.pdf`
 - TikZ source: `thesis/figures/source/formal_experiment_pipeline.tex`
 - Source SHA-256:
-  `3316dd1ca055a439a5fa9991f042b5ed0663c1d3e61ce8cd091afcd8de4280db`
+  `012d8379a4daa96afc0e0750edf795a99fe34b3bbd578a7991ef074f40f89930`
 - Generated PDF SHA-256:
-  `7083ace32989942aa633f97f9f4c002ed1eb3139811de9b627203432c0510e06`
+  `159542a54791acc93be1f82c388b3056b9379575a688c2188d15f04add6f7ad8`
 
 ### Pair families and sibling-list ownership
 

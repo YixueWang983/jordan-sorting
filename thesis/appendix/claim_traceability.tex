@@ -2,8 +2,8 @@
 \label{app:claim-traceability}
 
 This appendix records how the thesis-facing claim groups connect to the
-audited claim inventory and immutable experiment evidence. It is a
-traceability aid rather than an additional source of empirical results. The
+audited claim inventory and archived, manifest-bound experiment evidence. It is
+a traceability aid rather than an additional source of empirical results. The
 controlled inventory contains 46 claims: nine implementation claims, thirteen
 method claims, eleven quantitative result claims, four exploratory claims,
 and nine required limitations.
@@ -41,23 +41,23 @@ and nine required limitations.
         boundary. \\
     \texttt{M-01--M-08}
       & \cref{sec:method-scope,sec:method-protocol,sec:method-implementations,sec:method-timing,sec:method-scheduling}
-      & Frozen Week~12 configuration and the reused timing and scheduling
+      & Pre-specified formal configuration and the reused timing and scheduling
         control flow. \\
     \texttt{M-09--M-13}
       & \cref{sec:method-aggregation,sec:method-evidence,sec:method-validation,sec:method-environment}
-      & Immutable summaries, manifest, independent validator, and recorded
-        execution environment. \\
+      & Archived manifest-bound summaries, manifest, evidence-contract
+        validator, and recorded execution environment. \\
     \texttt{R-01--R-11}
       & \cref{sec:results-correctness,sec:results-runtime-size,sec:results-ratios,sec:results-family,sec:results-variability,sec:results-elapsed,sec:results-replication}
-      & Week~12 validated evidence and generated analysis tables; Week~11 is
-        used only for the directional replication claim. \\
+      & Formal-experiment validated evidence and generated analysis tables; the
+        pilot experiment is used only for the directional replication claim. \\
     \texttt{E-01--E-04}
       & \cref{sec:results-exploratory}
       & Generated structure/runtime and checked-counter relationship tables,
         interpreted descriptively and non-causally. \\
     \texttt{L-01--L-09}
       & \cref{chap:limitations}
-      & Scope amendment, frozen protocol, timing boundaries, sampling design,
+      & Scope amendment, fixed protocol, timing boundaries, sampling design,
         and the formal analysis limitations. \\
     \bottomrule
   \end{tabular}
@@ -78,12 +78,12 @@ The chapter-level audit is recorded in
 \nolinkurl{docs/thesis/final_claim_audit.md}; it verifies coverage of all 46
 controlled claims and the cross-chapter interpretation boundaries.
 
-\section{Immutable Evidence Bindings}
+\section{Archived Evidence Bindings}
 
 \begin{table}[htbp]
   \centering
   \footnotesize
-  \caption{Immutable run manifests used by the thesis analysis.}
+  \caption{Archived run manifests used by the thesis analysis.}
   \label{tab:appendix-evidence-bindings}
   \begin{tabular}{@{}
     >{\raggedright\arraybackslash}p{0.20\textwidth}
@@ -92,11 +92,11 @@ controlled claims and the cross-chapter interpretation boundaries.
     \toprule
     Evidence role & Execution identifier & Manifest SHA-256 \\
     \midrule
-    Week~11 pilot replication
+    Pilot experiment
       & \texttt{week11\_pilot\_v1\_\_run003}
       & \texttt{ef6a9d17df644eab8c3284d04dc356ce}\newline
         \texttt{4b68b4efdfc0da7eecb5a9c7136c5141} \\
-    Week~12 primary formal evidence
+    Formal experiment
       & \texttt{week12\_formal\_sorting\_v1\_\_run001}
       & \texttt{f42ab0b77cb7ea91ed66c66bc6947a81}\newline
         \texttt{cd8746b5d2b67d526472260d2b47f850} \\
@@ -105,11 +105,12 @@ controlled claims and the cross-chapter interpretation boundaries.
 \end{table}
 
 Each manifest binds six archive files: raw measurements, case summaries,
-group summaries, case audits, the frozen configuration, and the recorded
-runtime environment. The Week~12 independent validator regenerates cases and
-checked diagnostics, recomputes scheduling and summaries, and verifies these
-hashes before analysis. The two thesis-facing Week~12 result figures are
-conversions of the validated SVG analysis outputs. The five explanatory
+group summaries, case audits, the fixed configuration, and the recorded
+runtime environment. The separate formal evidence-contract validator
+regenerates cases and checked diagnostics, recomputes scheduling and summaries,
+and verifies these hashes before analysis. The two thesis-facing formal
+experiment result figures are conversions of the validated SVG analysis
+outputs. The five explanatory
 figures are generated from committed TikZ sources. Source and generated hashes
 for all seven figures are recorded in
 \nolinkurl{thesis/figures/README.md}.
@@ -121,11 +122,11 @@ The traceability record preserves the following boundaries across chapters:
 \begin{itemize}
   \item the paper core recovers output from maintained state, while
     oracle-derived sorted output belongs to the reference pipeline;
-  \item Week~12 evaluates oracle-certified valid-input sorting, not
+  \item the formal experiment evaluates oracle-certified valid-input sorting, not
     recognition;
   \item paper/reference ratios compare different timed pipeline scopes and
     are not like-for-like end-to-end speedups;
-  \item Week~11 and Week~12 absolute runtimes are not pooled;
+  \item pilot and formal absolute runtimes are not pooled;
   \item structure and counter relationships are exploratory and non-causal;
     and
   \item the ordinary-list implementation does not implement the historical

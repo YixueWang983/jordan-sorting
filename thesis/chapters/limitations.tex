@@ -10,7 +10,7 @@
 
 The implementation and formal experiment establish a reproducible
 ordinary-list reconstruction of the paper-facing sorting control flow and its
-behavior on the frozen valid inputs. They do not establish every property of
+behavior on the pre-specified valid inputs. They do not establish every property of
 the theoretical 1990 algorithm or every behavior of Jordan-sequence inputs.
 The following boundaries determine how the implementation and empirical
 results may be interpreted.
@@ -24,8 +24,8 @@ maintains a partial sorted order and sibling-list ownership state, and recovers
 its final output from that maintained order. Some executable details,
 including the geometric endpoint used by Step~3(c) and the odd-index $z_1$
 output-anchor adjustment, resolve omissions in the short 1990 description
-through counterexamples, the related 1986 account, mirrored cases, and
-repository validation. This supports a paper-facing reconstruction, but not a
+through counterexamples, the related 1986 account, mirrored cases, and bounded
+exhaustive validation. This supports a paper-facing reconstruction, but not a
 claim that the implementation is the unique verbatim interpretation of every
 omitted detail.
 
@@ -60,7 +60,7 @@ structural profiling, and reference output work. The paper measurement times
 only the pre-certified ordinary-list core in \texttt{minimal} mode. Oracle
 certification and the full checked diagnostic occur before paper timing.
 
-The ratio is therefore useful as a reproducible comparison of the two frozen
+The ratio is therefore useful as a reproducible comparison of the two fixed
 timed scopes, but it is not a like-for-like end-to-end speedup. In particular,
 the ratios below one at $n=256$ and $n=512$ mean only that the paper timed call
 has the lower exact-case median under these scopes. They do not establish
@@ -81,8 +81,8 @@ reference path.
 The paper core also assumes a pre-certified valid input. The public
 \texttt{certified\_paper\_jordan\_sort} wrapper invokes the oracle to enforce
 that precondition before calling the core, but certification is outside the
-timed paper call and does not make the core a recognition algorithm. Week~12
-contains only oracle-certified valid-input sorting cases and explicitly
+timed paper call and does not make the core a recognition algorithm. The formal
+experiment contains only oracle-certified valid-input sorting cases and explicitly
 records \texttt{recognition\_separate=true}. It cannot support claims about
 invalid-input recognition accuracy, failure reasons, or recognition runtime.
 
@@ -98,22 +98,23 @@ median.
 
 These constructions expose selected flat, nested, and incremental patterns;
 they are not a representative sample of all Jordan-sequence distributions.
-The all-correct result is empirical evidence for the frozen cases, not a proof
+The all-correct result is empirical evidence for the pre-specified cases, not a proof
 for every valid Jordan sequence. Generalization to other valid constructions,
 other family balances, or larger sizes is not established by this experiment.
 
-\section{Execution Environment and Cross-Week Replication}
+\section{Execution Environment and Cross-Experiment Replication}
 \label{sec:limitations-execution}
 
 % Method claim M-13, result claim R-11; limitation L-06
-The absolute Week~12 runtimes come from one execution in the recorded Apple M4
-environment running CPython 3.12.4. Warm-ups, repeated calls, randomized
+The absolute runtimes from the formal experiment come from one execution in the
+recorded Apple M4 environment running CPython 3.12.4. Warm-ups, repeated calls, randomized
 scheduling, and environment checks reduce selected sources of measurement
 noise, but one run on one machine does not establish hardware- or
 software-independent absolute time.
 
-Week~11 and Week~12 also used distinct executions. Their absolute runtimes are
-not pooled. The replication analysis forms ratios within each run and compares
+The pilot and formal experiments were executed in different recorded
+environments; their absolute runtimes are therefore not pooled. The replication
+analysis forms ratios within each run and compares
 size ordering, adjacent-size direction, and position relative to ratio one.
 Matching directions support reproducibility of the observed ratio pattern,
 but they do not prove equality between runs or provide a pooled performance
@@ -150,7 +151,7 @@ relative-IQR inspection threshold remains included, and the evidence does not
 identify its cause.
 
 The overall ratios are medians across exact-case ratios. They summarize the
-frozen case set and its unbalanced family composition, not a population
+pre-specified case set and its unbalanced family composition, not a population
 parameter for all valid Jordan sequences. Absolute runtime and ratio precision
 should consequently be reported only to the level needed to reproduce the
 archived tables, without implying broader statistical certainty.
@@ -160,10 +161,12 @@ archived tables, without implying broader statistical certainty.
 
 % Limitations L-01 through L-09
 Within these limits, the thesis may conclude that the ordinary-list paper core
-independently recovers sorted output for the frozen oracle-certified cases;
+independently recovers sorted output for the pre-specified oracle-certified
+cases;
 that the evidence and diagnostics for those cases validate successfully; and
 that the paper/reference pipeline-scope ratio declines across the five tested
-sizes with the same directional pattern in Week~11 and Week~12. It may also
+sizes with the same directional pattern in the pilot and formal experiments. It
+may also
 report the explicitly exploratory associations preserved in the analysis.
 
 The thesis may not convert those observations into claims of linear time,

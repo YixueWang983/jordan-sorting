@@ -8,7 +8,7 @@
   \node[box,minimum width=3.1cm,right=of config] (generate) {controlled case\\generation};
 
   \node[box,minimum width=3.1cm,below=of generate] (oracle) {oracle\\certification};
-  \node[box,minimum width=3.1cm,left=of oracle] (audit) {checked audit\\one per exact case};
+  \node[box,minimum width=3.1cm,left=of oracle] (audit) {checked-state audit\\one per exact case};
   \node[box,minimum width=3.1cm,left=of audit] (warmup) {warm-up calls};
 
   \node[accent box,minimum width=3.1cm,below=of warmup] (measured) {
@@ -38,8 +38,8 @@
   \end{scope}
 
   \node[box,minimum width=3.1cm,below=17mm of csv] (manifest) {write manifest\\\scriptsize excluded from pipeline time};
-  \node[box,minimum width=3.1cm,left=of manifest] (validate) {independent validation\\\scriptsize excluded from pipeline time};
-  \node[accent box,minimum width=3.1cm,left=of validate] (archive) {immutable archived\\evidence};
+  \node[box,minimum width=3.1cm,left=of manifest] (validate) {evidence-contract\\validation\\\scriptsize excluded from pipeline time};
+  \node[accent box,minimum width=3.1cm,left=of validate] (archive) {archived,\\manifest-bound evidence};
   \draw[flow,dashed] (csv) -- (manifest);
   \draw[flow] (manifest) -- (validate);
   \draw[accent flow] (validate) -- (archive);

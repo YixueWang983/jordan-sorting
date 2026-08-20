@@ -9,22 +9,21 @@
 \label{sec:results-correctness}
 
 % Claims: R-01, R-11
-The primary formal results use the immutable Week~12 execution
-\nolinkurl{week12_formal_sorting_v1__run001} and analysis artifacts
-regenerated from that archive. The directional-replication comparison in
-\cref{sec:results-replication} additionally uses the immutable Week~11
-execution \nolinkurl{week11_pilot_v1__run003}, whose case-summary evidence was
-verified against its archived manifest. Live validation accepted the Week~12
-archive without errors and confirmed 3600 raw rows, 180 case summaries, 45
-group summaries, and 60 checked case audits.
+The primary results use the archived, manifest-bound formal evidence and
+analysis artifacts regenerated from that archive. The directional-replication
+comparison in \cref{sec:results-replication} additionally uses archived,
+manifest-bound pilot evidence. Exact evidence locators and version bindings are
+given in \cref{sec:method-evidence,tab:appendix-evidence-bindings}. Live
+validation accepted the formal archive without errors and confirmed 3600 raw
+rows, 180 case summaries, 45 group summaries, and 60 checked-state audits.
 
 Across the archived evidence, all 3600 measured rows belong to 60 exact cases
-that each passed one untimed checked audit before timing. Every row has an
+that each passed one untimed checked-state audit before timing. Every row has an
 oracle-certified input, correct sorted output, and no recorded error. All 180
-case summaries report correct, error-free cells, and all 60 checked audits
-pass. The row-level audit field carries the corresponding case-level outcome;
+case summaries report correct, error-free cells, and all 60 checked-state
+audits pass. The row-level audit field carries the corresponding case-level outcome;
 it does not represent 3600 distinct audit executions. This establishes
-empirical correctness for the frozen cases; it is not a proof for every valid
+empirical correctness for the pre-specified cases; it is not a proof for every valid
 Jordan sequence.
 
 \section{Runtime by Input Size}
@@ -70,14 +69,14 @@ and \cref{fig:results-runtime-size}.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{week12_runtime_by_size.pdf}
-  \caption{Week~12 median runtime by input size. The logarithmic vertical axis
+  \caption{Median runtime by input size in the formal experiment. The logarithmic vertical axis
   displays equal-weighted exact-case medians under the distinct timed scopes
   defined in \cref{sec:method-implementations}.}
   \label{fig:results-runtime-size}
 \end{figure}
 
 At every tested size, Python sort has the smallest median call time. Under the
-frozen pipeline scopes, the paper call is larger than the reference call at
+fixed pipeline scopes, the paper call is larger than the reference call at
 $n=32$, $64$, and $128$, and smaller at $n=256$ and $512$. This is a
 comparison of the timed calls shown above, not an end-to-end or asymptotic
 performance claim.
@@ -117,7 +116,7 @@ like-for-like end-to-end speedups.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{week12_runtime_ratio_by_size.pdf}
-  \caption{Week~12 case-median runtime ratios by input size. Ratios are formed
+  \caption{Case-median runtime ratios by input size in the formal experiment. Ratios are formed
   within exact cases before equal-weight aggregation; the dashed line marks a
   ratio of one.}
   \label{fig:results-ratio-size}
@@ -127,7 +126,7 @@ The median exact-case paper/reference ratio declines across all five tested
 sizes, from $3.226$ at $n=32$ to $0.567$ at $n=512$. It remains above one
 through $n=128$ and is below one at $n=256$ and $n=512$. Thus, the observed
 crossover lies between the tested sizes 128 and 256. The five points describe
-the frozen sample and do not establish an asymptotic rate.
+the pre-specified sample and do not establish an asymptotic rate.
 
 Across all sixty exact cases, the overall median ratios are given in
 \cref{tab:results-ratio-overall}.
@@ -250,21 +249,21 @@ writes. Manifest writing and validation are excluded. This is a pipeline
 duration, not algorithm runtime, and it is not allocated among the three
 algorithms.
 
-\section{Week 11 Directional Replication}
+\section{Pilot--Formal Directional Replication}
 \label{sec:results-replication}
 
 % Claim: R-11; limitation L-06
-Week~11 and Week~12 are compared only through ratios formed within each run.
-Their absolute runtimes are not pooled. The paper/reference size medians are
-shown in \cref{tab:results-replication}.
+The pilot and formal experiments are compared only through ratios formed within
+each run. Their absolute runtimes are not pooled. The paper/reference size
+medians are shown in \cref{tab:results-replication}.
 
 \begin{table}[H]
   \centering
-  \caption{Paper/reference size medians in Week~11 and Week~12.}
+  \caption{Paper/reference size medians in the pilot and formal experiments.}
   \label{tab:results-replication}
   \begin{tabular}{S[table-format=3.0] S[table-format=1.6] S[table-format=1.6]}
     \toprule
-    {$n$} & {Week~11} & {Week~12} \\
+    {$n$} & {Pilot} & {Formal} \\
     \midrule
      32 & 3.095548 & 3.226420 \\
      64 & 2.148361 & 2.202394 \\
@@ -276,12 +275,12 @@ shown in \cref{tab:results-replication}.
 \end{table}
 
 For paper/reference, paper/Python, and reference/Python, the size-rank Spearman
-coefficient between Week~11 and Week~12 is $1.0$. Each comparison has matching
-direction on all four adjacent-size transitions and remains on the same side
-of ratio one at all five sizes.
+coefficient between the pilot and formal experiments is $1.0$. Each comparison
+has matching direction on all four adjacent-size transitions and remains on the
+same side of ratio one at all five sizes.
 
-This supports directional replication of the pilot pattern under the larger
-Week~12 protocol. It does not show equality between runs, provide a pooled
+The formal experiment thus reproduces the directional trend observed in the
+pilot experiment. This does not show equality between runs, provide a pooled
 estimate, or establish hardware-independent absolute time.
 
 \section{Exploratory Relationships}
@@ -376,8 +375,8 @@ association.
 \label{sec:results-boundary}
 
 % Claims: R-01, R-02, R-11; limitations L-01, L-02, L-03, L-05, L-07, L-08
-The formal evidence supports empirical correctness on the sixty frozen cases,
-the reported runtime distributions and matched-case ratios, and directional
+The formal evidence supports empirical correctness on the sixty pre-specified
+cases, the reported runtime distributions and matched-case ratios, and directional
 replication of the three within-run ratio series. It also supports the labeled
 exploratory coefficients above. It does not establish linear-time Jordan
 sorting, asymptotic complexity from five sizes, recognition performance,

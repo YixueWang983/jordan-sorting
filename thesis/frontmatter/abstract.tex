@@ -13,16 +13,17 @@ The reconstruction maintains its own partial sorted order, upper and lower
 pair families, and sibling-list ownership while executing the paper-facing
 Step~1/2/3 procedure. For oracle-certified valid inputs, the paper core
 recovers its result from the maintained partial order and does not consume the
-oracle's sorted output. Transactional sibling-list updates, checked state
-audits, deterministic replay, and fixed execution policies separate
+oracle's sorted output. Transactional sibling-list updates, untimed
+checked-state audits, deterministic replay, and fixed execution policies separate
 correctness instrumentation from the pre-certified \texttt{minimal} call used
-for timing. A frozen formal experiment evaluates 60 controlled cases at five
-sizes from $n=32$ to $n=512$, comparing Python sort, a complete oracle-backed
-reference pipeline, and the ordinary-list paper reconstruction.
+for timing. Under a pre-specified protocol, the formal experiment evaluates 60
+controlled cases at five sizes from $n=32$ to $n=512$, comparing Python sort, a
+complete oracle-backed reference pipeline, and the ordinary-list paper
+reconstruction.
 
-All 3600 measured rows in the formal run have correct output and no recorded
-error, and all 60 untimed checked audits pass. The median exact-case
-paper/reference runtime ratio decreases from $3.226$ at $n=32$ to $0.567$ at
+All 3600 measured rows in the formal experiment have correct output and no
+recorded error, and all 60 untimed checked-state audits pass. The median
+exact-case paper/reference runtime ratio decreases from $3.226$ at $n=32$ to $0.567$ at
 $n=512$; it is above one through $n=128$ and below one at $n=256$ and
 $n=512$. Python sort has the lowest median call time at every tested size.
 These ratios are pipeline-scope comparisons: the reference measurement

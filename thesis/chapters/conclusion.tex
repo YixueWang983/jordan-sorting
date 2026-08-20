@@ -15,7 +15,7 @@ the paper.
 
 The concrete backend uses ordinary Python lists. It therefore separates the
 incremental algorithmic structure from the specialized data structures on
-which the historical linear-time results depend. The project further separates
+which the historical linear-time results depend. The thesis further separates
 the independently recovering paper core from an oracle-backed reference
 pipeline: the paper core obtains its output from its maintained partial order,
 whereas the reference path deliberately returns oracle-derived sorted output.
@@ -23,11 +23,11 @@ Fixed execution policies, checked diagnostics, deterministic replay, and
 transactional sibling-list updates make this boundary observable and testable.
 
 The empirical study evaluated oracle-certified valid-input sorting under a
-frozen protocol. It compared Python sort, the complete oracle-backed reference
-pipeline, and the pre-certified paper core in \texttt{minimal} mode. Immutable
-run evidence and a separate evidence-contract validator preserved the cases,
-schedules, correctness fields, summaries, and audit records used for the
-analysis.
+pre-specified protocol. It compared Python sort, the complete oracle-backed
+reference pipeline, and the pre-certified paper core in \texttt{minimal} mode.
+Archived, manifest-bound evidence and a separate evidence-contract validator
+preserved the cases, schedules, correctness fields, summaries, and audit records
+used for the analysis.
 
 \section{Answers to the Research Questions}
 \label{sec:conclusion-questions}
@@ -38,11 +38,11 @@ analysis.
 The available evidence supports an affirmative answer within the evaluated
 scope. For pre-certified valid inputs, the ordinary-list reconstruction
 executes the shared paper-facing control flow and independently recovers sorted
-order from maintained state. Focused tests, bounded exhaustive repository
-validation, checked state audits, and deterministic replay exercise the
-partial-order and sibling-family invariants. In the frozen Week~12 experiment,
-all 3600 measured rows belong to 60 exact cases that each passed one untimed
-checked audit before timing. Every row has correct output and no recorded
+order from maintained state. Focused tests, bounded exhaustive validation,
+checked-state audits, and deterministic replay exercise the partial-order and
+sibling-family invariants. In the formal experiment, all 3600 measured rows
+belong to 60 exact cases that each passed one untimed checked-state audit before
+timing. Every row has correct output and no recorded
 error; all 180 case-algorithm summaries are correct and error-free, and all 60
 case audits pass. These records are summarized in
 \cref{sec:results-correctness}.
@@ -58,17 +58,17 @@ but not the paper core's sorted output.
 Across the five tested sizes, the median exact-case paper/reference ratio
 decreases from $3.226$ at $n=32$ to $0.567$ at $n=512$. It is above one through
 $n=128$ and below one at $n=256$ and $n=512$. The same size ordering and
-adjacent-size direction occur in the Week~11 pilot and the larger Week~12
-formal run when each run is compared through its own within-case ratios.
+adjacent-size direction occur in the pilot and formal experiments when each run
+is compared through its own within-case ratios.
 Python sort has the lowest median call time at every tested size.
 
-These observations answer the question only under the frozen timing scopes.
+These observations answer the question only under the fixed timing scopes.
 The reference measurement includes its complete oracle-backed pipeline; the
 paper measurement includes only the pre-certified \texttt{minimal} call, with
 oracle certification and checked diagnostics outside timing. The ratio is
 therefore not a like-for-like end-to-end speedup. Five tested sizes and an
 ordinary-list backend also do not establish an asymptotic complexity result.
-Week~11 and Week~12 absolute runtimes are not pooled.
+Absolute runtimes from the pilot and formal experiments are not pooled.
 The matched-case ratios and directional comparison are reported in
 \cref{sec:results-ratios,sec:results-replication}.
 
@@ -97,7 +97,7 @@ sequences. The underlying coefficients are reported in
 \label{sec:conclusion-contributions}
 
 The central contribution is a separation of concerns that the theoretical
-description can obscure when read as an implementation recipe. The project
+description can obscure when read as an implementation recipe. The thesis
 distinguishes:
 \begin{enumerate}
   \item geometric validity and external certification;
@@ -128,8 +128,8 @@ require its own correctness argument and complexity analysis; faster measured
 calls alone would not establish the theoretical bound.
 
 Second, the executable anchor and orientation clarifications could be given a
-formal proof against an explicit Jordan-sequence model. The present repository
-validation supplies strong bounded evidence and counterexample-driven
+formal proof against an explicit Jordan-sequence model. The present bounded
+exhaustive validation supplies strong evidence and counterexample-driven
 regression tests, but a proof would address all valid inputs rather than only
 enumerated and generated cases.
 
@@ -142,10 +142,10 @@ separate extensions.
 Finally, future experiments could use larger size ranges, more balanced and
 more varied case families, equivalent end-to-end pipeline scopes, and multiple
 recorded runtime environments. These changes would improve empirical reach,
-but they should retain matched-case ratios, immutable evidence, separate
-evidence-contract validation, and explicit separation between descriptive
-trends and asymptotic claims. Absolute runtimes from distinct environments
-should remain separate.
+but they should retain matched-case ratios, archived manifest-bound evidence,
+separate evidence-contract validation, and explicit separation between
+descriptive trends and asymptotic claims. Absolute runtimes from distinct
+environments should remain separate.
 
 \section{Closing Perspective}
 \label{sec:conclusion-closing}

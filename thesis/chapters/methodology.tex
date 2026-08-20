@@ -21,43 +21,52 @@ Performance measurements also require explicit treatment of uncertainty and
 experimental setup. \Textcite{kalibera2013benchmarking} motivate repetition
 and reporting of variation, while \textcite{mytkowicz2009wrong} demonstrate
 that apparently innocuous setup choices can bias performance conclusions. The
-frozen protocol therefore retains repeated raw measurements, rotates algorithm
+pre-specified protocol therefore retains repeated raw measurements, rotates algorithm
 positions, records the runtime environment, and limits inference to the tested
 cases and machine. These references motivate the design; the study does not
 claim to implement every hierarchical statistical procedure proposed in that
 literature.
 
+\section{Pilot and Formal Experiments}
+\label{sec:method-experiment-stages}
+
+The evaluation was conducted in two stages: a pilot experiment used to verify
+the protocol and a subsequent formal experiment used as the thesis-facing
+quantitative evidence. Their archived repository identifiers are retained only
+for provenance. The pilot is used in this thesis solely for the directional
+replication analysis; all primary quantitative results come from the formal
+experiment.
+
 \section{Study Scope}
 \label{sec:method-scope}
 
 % Claims: M-01, M-02, M-09; limitations L-02, L-05, L-07
-The Week~12 formal experiment evaluates sorting on oracle-certified valid
-Jordan sequences. It does not evaluate recognition of arbitrary candidates or
+The formal experiment evaluates sorting on oracle-certified valid Jordan
+sequences. It does not evaluate recognition of arbitrary candidates or
 invalid-input classification. Recognition remains a separate experimental
-question, and no Week~12 sorting result is used as recognition evidence.
+question, and no formal-experiment result is used as recognition evidence.
 
 Within this scope, the experiment asks three empirical questions:
 \begin{enumerate}
   \item Do all three implementations return the expected sorted output on the
-        frozen valid cases?
+        pre-specified valid cases?
   \item How do their measured-call runtime distributions vary across the
         tested sizes and controlled input families?
   \item What descriptive relationships appear between structural
         measurements, checked paper-operation counters, and runtime?
 \end{enumerate}
-The design answers these questions for one frozen collection of cases and one
+The design answers these questions for one fixed collection of cases and one
 recorded execution environment. Five input sizes are not used to infer
 asymptotic complexity, and exploratory relationships are not interpreted as
 causal effects.
 
-\section{Frozen Protocol}
+\section{Pre-Specified Formal Protocol}
 \label{sec:method-protocol}
 
 % Claims: M-02, M-03; limitation L-08
-The formal protocol identifier is
-\nolinkurl{week12_formal_sorting_v1}. Its complete configuration was written to
-\nolinkurl{run001/config.json} before case generation or timing. The experiment
-uses the five input sizes
+The formal protocol was fixed before execution, and its complete configuration
+was written before case generation or timing. The experiment uses the five
+input sizes
 \begin{equation}
   n \in \{32,64,128,256,512\}.
 \end{equation}
@@ -79,7 +88,7 @@ from all valid Jordan sequences.
 \label{sec:method-implementations}
 
 % Claims: M-04, M-06, M-07; limitation L-03
-The frozen algorithm set contains three implementations.
+The pre-specified algorithm set contains three implementations.
 
 \subsection{Python Sort}
 \label{sec:method-python-sort}
@@ -101,7 +110,7 @@ reference pipeline rather than only a sorting primitive.
 \subsection{Paper Ordinary-List Implementation}
 \label{sec:method-paper-implementation}
 
-The frozen registry names this entry
+The fixed protocol registry names this entry
 \nolinkurl{simplified_jordan_paper_ordinary_list}.
 
 Its timed call invokes \texttt{paper\_jordan\_sort\_valid} with execution mode
@@ -133,16 +142,17 @@ Every sequence is passed to the oracle before any warm-up or measured call.
 The runner requires a valid result with distinct values. It then computes the
 structural profile, including interval counts, roots, nesting, depth, density,
 and category fields. Failure at generation, certification, or profiling stops
-the formal run rather than silently dropping the case.
+the formal experiment rather than silently dropping the case.
 
-The paper implementation also receives one untimed checked diagnostic per
-exact case. The diagnostic output must match
+The paper implementation also receives one untimed checked-state audit per
+exact case through the checked diagnostic. The diagnostic output must match
 \texttt{oracle\_result["sorted"]}, process all $n$ points, and report valid
 state invariants. Its trace length and complete paper-operation metrics are
 saved in \nolinkurl{case_audit.csv}. All sixty cases finish certification and
-checked audit before the first warm-up begins. This check compares independently
-constructed outputs; it does not make the paper core consume oracle-sorted
-output, whose boundary is described in \cref{sec:implementation-certification}.
+their checked-state audit before the first warm-up begins. This audit compares
+independently constructed outputs; it does not make the paper core consume
+oracle-sorted output, whose boundary is described in
+\cref{sec:implementation-certification}.
 
 \section{Timing Procedure}
 \label{sec:method-timing}
@@ -232,15 +242,25 @@ matched case records. They are reported with explicit sample composition and
 are not used as causal estimates, formal cost decompositions, or complexity
 proofs.
 
-\section{Evidence and No-Overwrite Contract}
+\section{Evidence and Version Binding}
 \label{sec:method-evidence}
 
 % Claims: M-11, M-13
-The execution ID \nolinkurl{week12_formal_sorting_v1__run001} identifies one
-immutable formal run. Before generation, the runner confirms the frozen
-configuration, recaptures the environment, reserves an unused output directory,
-and writes \nolinkurl{config.json} and \nolinkurl{environment.json} with
-exclusive-create semantics. Existing directories or files are not overwritten.
+The formal evidence directory is
+\nolinkurl{results/runs/week12_formal_sorting_v1__run001}. It records protocol
+version \nolinkurl{week12_formal_sorting_v1}, source commit
+\nolinkurl{98868b1b705f6d5f22404ee8ad7b88ad7a834f52}, and manifest SHA-256
+\nolinkurl{f42ab0b77cb7ea91ed66c66bc6947a81cd8746b5d2b67d526472260d2b47f850}.
+The pilot evidence used only for directional replication is archived at
+\nolinkurl{results/runs/week11_pilot_v1__run003}; it records protocol version
+\nolinkurl{week11_pilot_v1}, source commit
+\nolinkurl{01f6480fe179dcbe0f99486be86384b61dd4121f}, and manifest SHA-256
+\nolinkurl{ef6a9d17df644eab8c3284d04dc356ce4b68b4efdfc0da7eecb5a9c7136c5141}.
+
+Before generation, the formal execution procedure confirms the fixed protocol,
+recaptures the environment, reserves an unused output directory, and writes
+\nolinkurl{config.json} and \nolinkurl{environment.json} with exclusive-create
+semantics. Existing directories or files are not overwritten.
 
 The completed archive contains:
 \begin{itemize}
@@ -261,20 +281,21 @@ whole-pipeline duration is distinct from algorithm runtime.
   \includegraphics[width=.94\textwidth]{formal_experiment_pipeline.pdf}
   \caption[Formal experiment pipeline and timing scopes.]{Formal experiment
   pipeline and timing scopes. Oracle certification
-  and one checked audit per exact case occur before warm-up and outside the
-  measured calls. The paper measured-call scope contains only the
+  and one untimed checked-state audit per exact case occur before warm-up and
+  outside the measured calls. The paper measured-call scope contains only the
   pre-certified \texttt{minimal} call. The broader pipeline wall-clock starts
   at evidence-directory reservation and ends after the four CSV writes;
-  manifest writing and independent validation are excluded.}
+  manifest writing and evidence-contract validation are excluded.}
   \label{fig:method-formal-pipeline}
 \end{figure}
 
-\section{Independent Validation}
+\section{Evidence-Contract Validation}
 \label{sec:method-validation}
 
 % Claims: M-11, M-12
-The Week~12 validator does not trust row-to-row consistency alone. It reads the
-frozen gate, independently regenerates all sixty cases, recomputes case seeds
+The separate fail-closed evidence-contract validator does not trust row-to-row
+consistency alone. It reads the pre-specified and fixed protocol, independently
+regenerates all sixty cases, recomputes case seeds
 and sequence hashes, reruns oracle certification and structural profiling, and
 executes checked paper diagnostics again. It compares the reconstructed
 diagnostic output, processed count, trace count, and every paper metric with
@@ -290,18 +311,16 @@ before a run is accepted. Malformed or inconsistent evidence produces
 
 The archived validation report is retained with the run, and the analysis
 performs a new validation pass before reading the evidence. This establishes
-validation under the repository's explicit evidence contract; it is not a
+validation under the study's explicit evidence contract; it is not a
 proof-theoretic formal verification of the algorithm.
 
 \section{Execution Environment and Provenance}
 \label{sec:method-environment}
 
 % Claim: M-13; limitation L-06
-The accepted formal execution was
-\nolinkurl{week12_formal_sorting_v1__run001}, produced from source commit
-\nolinkurl{98868b1b705f6d5f22404ee8ad7b88ad7a834f52}. The recorded benchmark
-environment was Apple M4/arm64 with \SI{16}{\giga\byte} memory, ten logical
-CPUs, macOS~26.6, and CPython~3.12.4.
+The accepted formal experiment, bound to its exact execution and source version
+in \cref{sec:method-evidence}, was recorded on Apple M4/arm64 with
+\SI{16}{\giga\byte} memory, ten logical CPUs, macOS~26.6, and CPython~3.12.4.
 
 Before timing, the runner recorded a clean Git worktree whose HEAD matched
 remote \texttt{main}, AC power, a full battery, low-power mode disabled, low and
@@ -311,8 +330,9 @@ identifiable device.
 
 Absolute runtimes in \cref{chap:results} apply to this one recorded execution.
 They must not be generalized to other processors, operating systems, Python
-versions, or machine states. Week~11 and Week~12 absolute times are not pooled;
-their comparison is restricted to within-run ratios and directional patterns.
+versions, or machine states. Absolute times from the pilot and formal
+experiments are not pooled; their comparison is restricted to within-run ratios
+and directional patterns.
 
 \section{Method Boundaries}
 \label{sec:method-boundaries}
@@ -328,7 +348,7 @@ The method fixes the following interpretation limits:
   \item repeated timing calls are not independent generated cases;
   \item one execution environment does not establish hardware-independent
         absolute time;
-  \item cross-week comparison must not pool absolute runtimes; and
+  \item cross-experiment comparison must not pool absolute runtimes; and
   \item structural and counter relationships remain exploratory and
         non-causal.
 \end{itemize}
