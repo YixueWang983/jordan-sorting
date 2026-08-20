@@ -1,6 +1,6 @@
 # LaTeX Thesis-Wide Final Audit
 
-Last updated: 2026-08-14
+Last updated: 2026-08-20
 
 Status: thesis content ready and frozen; technical assembly passed locally;
 submission metadata and external procedure pending.
@@ -18,7 +18,7 @@ The three completion gates are intentionally independent:
 The current thesis content-freeze baseline is:
 
 ```text
-1514d8fb7d37c192b6d9d695b1a7086894c4fd0a
+3043671cfcf199a8e24550695d41f5e2392b10c3
 ```
 
 The repository tests and immutable-evidence validator results supporting the
@@ -71,7 +71,7 @@ bindings.
 
 ## Citations, References, and Figures
 
-The bibliography contains 13 cited works spanning the primary Jordan-sorting
+The bibliography contains 16 cited works spanning the primary Jordan-sorting
 lineage, ordered-list and finger-search data structures, computational-geometry
 applications, and experimental-algorithmics methodology. LuaLaTeX/Biber
 resolves all citations and cross-references. The final log contains no
@@ -182,6 +182,19 @@ The committed TikZ source and generated PDF hashes were updated, and a fresh
 70-page LuaLaTeX/Biber build plus inspection of the standalone figure and
 physical PDF page 32 confirmed that every element remains inside its panel with
 no new warnings.
+
+The 2026-08-20 first-stage optimization follow-up added three directly relevant
+Jordan-sorting works: Aurenhammer's convex-hull approach and Sojka's 1997
+worst-case and 1999 average-case alternatives. The Background positions them as
+distinct directions rather than implementations or experimental comparators in
+this thesis. The Conclusion now distinguishes same-core deterministic
+replay-based state-consistency validation from the separate evidence-contract
+validator, avoiding an unsupported claim of independent state validation. A
+clean LuaLaTeX/Biber build produced a 70-page A4 PDF with 16 resolved citekeys,
+no reference, citation, or box warnings. The changed Background and Conclusion
+pages and a full-document contact sheet passed visual inspection. No algorithm
+source, experiment, validator, formal timing, or immutable evidence file
+changed.
 
 ## Gate
 
