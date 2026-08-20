@@ -25,8 +25,9 @@ transactional sibling-list updates make this boundary observable and testable.
 The empirical study evaluated oracle-certified valid-input sorting under a
 frozen protocol. It compared Python sort, the complete oracle-backed reference
 pipeline, and the pre-certified paper core in \texttt{minimal} mode. Immutable
-run evidence and an independent validator preserved the cases, schedules,
-correctness fields, summaries, and audit records used for the analysis.
+run evidence and a separate evidence-contract validator preserved the cases,
+schedules, correctness fields, summaries, and audit records used for the
+analysis.
 
 \section{Answers to the Research Questions}
 \label{sec:conclusion-questions}
@@ -141,9 +142,10 @@ separate extensions.
 Finally, future experiments could use larger size ranges, more balanced and
 more varied case families, equivalent end-to-end pipeline scopes, and multiple
 recorded runtime environments. These changes would improve empirical reach,
-but they should retain matched-case ratios, immutable evidence, independent
-validation, and explicit separation between descriptive trends and asymptotic
-claims. Absolute runtimes from distinct environments should remain separate.
+but they should retain matched-case ratios, immutable evidence, separate
+evidence-contract validation, and explicit separation between descriptive
+trends and asymptotic claims. Absolute runtimes from distinct environments
+should remain separate.
 
 \section{Closing Perspective}
 \label{sec:conclusion-closing}
@@ -156,5 +158,6 @@ the incremental algorithm with ordinary lists and making those distinctions
 explicit, this thesis provides a testable bridge between the historical
 description and an executable research implementation. Its conclusions are
 deliberately bounded, but within those bounds the reconstruction recovers its
-own sorted output, survives independent state and evidence validation, and
+own sorted output, is checked by same-core deterministic replay-based
+state-consistency validation and separate evidence-contract validation, and
 exhibits a reproducible runtime pattern across the tested cases.

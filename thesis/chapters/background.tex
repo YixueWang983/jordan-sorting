@@ -206,6 +206,20 @@ Subsequent work by \textcite{baryehuda1994triangulating} used a generalized
 form of Jordan sorting together with point location and interval trees to
 triangulate collections of disjoint Jordan polygonal chains.
 
+Other work pursued alternatives to the 1986 and 1990 dynamic-list algorithms.
+\Textcite{aurenhammer1987convex} related Jordan sorting to convex-hull
+computation for certain non-simple polygons. \Textcite{sojka1997simple}
+instead emphasized simpler algorithms intended to be practical at moderate
+input sizes, including an $O(n\log n)$ worst-case method and an
+$O(n\log\log n)$ worst-case method. A later average-case study analyzed a new
+simple algorithm under an explicit random-Jordan-sequence model, identified
+conditions for linear expected time, and supplemented the analysis with
+simulation \parencite{sojka1999average}. These are distinct algorithmic and
+analytical directions. This thesis selects the 1990 procedure as an object of
+executable reconstruction; it neither claims that procedure is the only
+post-1986 approach nor implements or compares the alternatives in this
+paragraph.
+
 This literature shows that Jordan sorting participates in a wider
 computational-geometry research line, rather than being only an isolated
 sorting problem. The present thesis nevertheless has a narrower target: it
