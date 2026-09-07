@@ -18,6 +18,12 @@ a `[Sources]` block that uses repository-relative paths or bibliographic
 references. The visible English and Chinese decks share the same technical
 claims, experiment boundaries, and slide structure.
 
+The main presentation is written for a midterm progress discussion rather than
+as a final-defense or repository-audit deck. Slides 7 through 10 retain the
+technical reconstruction detail; validation mechanics and the proposed
+finger-tree backend boundary remain available in the backup slides. The English
+notes for slides 1 through 16 contain 1,982 words.
+
 ## Source and rebuild boundary
 
 `scripts/build-progress-deck.mjs` is the editable source for the English deck
@@ -41,10 +47,10 @@ development.
 SHA-256 at the time of archival:
 
 ```text
-b2470d16008a1af9617255ef49da8ed3338ab90552c6c1ef4ff61577459a4a1e  Jordan_Sorting_Progress_Report.pptx
-9f53c4d536310492ea9c04f3eaf277e4d65644235d6d3f393ab97f090f5d0460  Jordan_Sorting_Progress_Report_ZH.pptx
-0c0af8143c712c8e94eef9ed479d39642c46504068314e6db8550fd3fc6c76ea  Jordan_Sorting_Progress_Report_Speaker_Script.txt
-b6b28e131983b58c3c2ee94547557f5e323acf13d982b7faa00dfff303a0dd76  Jordan_Sorting_Progress_Report_Speaker_Script_ZH.txt
+15ecdbcc4ba3ee983a1f64bb68f30c0c46b10a062f5717f6b4bcaf18e177f272  Jordan_Sorting_Progress_Report.pptx
+a25544f7188c7dc0472464007b588a68e4150eac739e9ab78d9bc6b09fd060e8  Jordan_Sorting_Progress_Report_ZH.pptx
+d13ee91eb33ac2d7ffd3a74219a5a435afa3ebc9556e4c02998d6269e2259c03  Jordan_Sorting_Progress_Report_Speaker_Script.txt
+d294c6512f77715e672dd9eaecbde2f25c0547a511e81fc872f7aaabe1015f7b  Jordan_Sorting_Progress_Report_Speaker_Script_ZH.txt
 ```
 
 These files report the validated ordinary-list implementation as the evidence

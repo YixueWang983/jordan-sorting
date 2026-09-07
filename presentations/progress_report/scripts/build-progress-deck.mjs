@@ -4,11 +4,19 @@ import { fileURLToPath } from "node:url";
 import { Presentation, PresentationFile } from "@oai/artifact-tool";
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
-const PRESENTATION_DIR = path.resolve(SCRIPT_DIR, "..");
-const REPO = path.resolve(PRESENTATION_DIR, "../..");
+const PRESENTATION_DIR = process.env.PRESENTATION_DIR
+  ? path.resolve(process.env.PRESENTATION_DIR)
+  : path.resolve(SCRIPT_DIR, "..");
+const REPO = process.env.REPO_ROOT
+  ? path.resolve(process.env.REPO_ROOT)
+  : path.resolve(PRESENTATION_DIR, "../..");
 const BUILD = path.join(PRESENTATION_DIR, "build");
-const OUT = path.join(PRESENTATION_DIR, "Jordan_Sorting_Progress_Report.pptx");
-const SCRIPT_OUT = path.join(PRESENTATION_DIR, "Jordan_Sorting_Progress_Report_Speaker_Script.txt");
+const OUT = process.env.PRESENTATION_OUT
+  ? path.resolve(process.env.PRESENTATION_OUT)
+  : path.join(PRESENTATION_DIR, "Jordan_Sorting_Progress_Report.pptx");
+const SCRIPT_OUT = process.env.SCRIPT_OUT
+  ? path.resolve(process.env.SCRIPT_OUT)
+  : path.join(PRESENTATION_DIR, "Jordan_Sorting_Progress_Report_Speaker_Script.txt");
 
 const W = 1280;
 const H = 720;
@@ -37,37 +45,37 @@ const ASSET = {
 };
 
 const TALK = {
-  1: `Good afternoon. This presentation gives an update on my master's thesis on the executable reconstruction of Simplified Jordan Sorting. In the previous seminar report, I focused mainly on the structural framework: rank intervals, upper and lower pair families, family trees, and an oracle-backed reference implementation. The central question since then has been whether the dynamic procedure described in the paper can be turned into an executable and auditable implementation using ordinary Python lists. Today I will show how that gap was addressed, how correctness and evidence integrity were checked, and what the formal experiment shows under clearly defined timing scopes.`,
+  1: `Good afternoon. This presentation updates my master's thesis on an executable reconstruction of Simplified Jordan Sorting. My previous report focused on static structure: rank intervals, upper and lower pair families, family trees, and an oracle-backed reference. Since then, I have focused on one question. Can the paper's dynamic procedure run with ordinary Python lists while preserving its own state and recovering its own output? I will explain the reconstruction issues, the checks I used, and the runtime pattern observed in the formal experiment. I will spend most of the time on the two places where the paper description needed an explicit executable decision.`,
 
-  2: `The previous report established a useful static baseline. It represented the input by rank intervals, separated the upper and lower pair families, reconstructed their laminar family trees, and computed structural metrics. It also used an oracle to validate inputs and to provide a reference output. That framework explained why intervals within each family are nested or disjoint, but it did not yet execute the dynamic Jordan-sorting procedure. In particular, it did not maintain the processed prefix while new points were inserted, split sibling lists or transfer ownership, or recover the final output from the algorithm's own maintained state. So the main gap was not another static data model. It was the transition from a structural description to a sequence of safe dynamic updates.`,
+  2: `The earlier implementation made the static structure explicit. It represented rank intervals, separated the upper and lower families, rebuilt their laminar family trees, and computed structural metrics. The oracle checked whether an input was valid and supplied a reference answer. However, the code did not yet execute the dynamic procedure. It did not update the processed prefix as new points arrived. It also did not split sibling lists, transfer ownership, or recover the final order from the algorithm's own state. These operations matter because an error in one update can corrupt both the partial order and the family structure. The main gap was therefore the move from a structural description to safe dynamic updates.`,
 
-  3: `I organized that transition into four connected work packages. First, I stabilized the scope by separating valid-input sorting from recognition and from the specialized backend required for the historical linear-time bound. Second, I reconstructed the paper-facing Step 1, Step 2, and Step 3 control flow as executable code. Third, I added state invariants, ownership checks, transactional updates, deterministic replay, and bounded validation. Fourth, only after the implementation and validation boundaries were stable, I carried out an initial formal evaluation under a pre-specified protocol. The result is a stable implementation baseline using ordinary lists. The distinction is important: this is an executable reconstruction of the control flow, not an implementation of the specialized data structures required for the historical linear-time bound.`,
+  3: `Since the previous report, I have worked on four areas. I first narrowed the scope to sorting inputs that an external oracle has already certified. I then implemented the Step 1, Step 2, and Step 3 control flow. Next, I added ownership checks, transactional updates, replay, and bounded validation. Finally, after the implementation was working and checked, I ran a formal experiment with a fixed protocol. These areas depend on each other. The experiment only became meaningful after the output source and state checks were clear. The result is an executable ordinary-list implementation. The specialized backend used in the historical linear-time analysis remains future work.`,
 
-  4: `The scope changed in a deliberate way as the implementation became more precise. Earlier planning combined several adjacent questions: generation of valid and invalid inputs, static family trees, recognition, a broad reference evaluation, and possible work on the theoretical backend. The current research scope is narrower and technically clearer. The thesis reconstructs the 1990 sorting procedure for inputs that have already been certified as valid. It compares three concrete calls: Python sort, the complete oracle-backed reference pipeline, and the reconstructed paper core. Recognition remains outside the formal experiment, and the backend remains ordinary Python lists. This refinement keeps the study focused on a single, defensible implementation and evaluation question. This ordinary-list implementation remains the validated baseline. Following the supervisor's suggestion, I am also investigating whether the sibling-list representation can be replaced by a finger-tree backend without changing the paper-facing control flow.`,
+  4: `As the implementation became clearer, I narrowed the scope. The thesis now studies the 1990 sorting procedure on inputs that an oracle has already certified as valid. The experiment compares Python sort, the complete oracle-backed reference pipeline, and the reconstructed paper core. Recognition remains a separate question. I do not use the experiment to classify invalid inputs. The paper core also uses ordinary Python lists rather than the specialized historical backend. This scope lets the thesis study one concrete issue: whether the dynamic procedure can run correctly and recover output from its own maintained state. A finger-tree backend remains a possible extension.`,
 
-  5: `This leads to three research questions. The first, and primary technical question, is whether an ordinary-list reconstruction can recover the correct sorted order from its own maintained state for oracle-certified valid inputs. The second question concerns observed runtime behavior: how does the paper core, when called on a pre-certified input, behave relative to Python sort and the complete reference pipeline under the timing scope defined for each call? The third question is exploratory. It asks which descriptive relationships appear between input structure, checked operation counters, and runtime. These distinctions matter throughout the presentation. The first question is about executable reconstruction and bounded correctness evidence. The second is about measurements under different timing scopes, not a general performance claim. The third is descriptive rather than causal.`,
+  5: `The work has three research questions. RQ1 asks whether the ordinary-list reconstruction can recover the correct sorted order from its maintained state on certified valid inputs. RQ2 asks how the paper call behaves relative to Python sort and the complete reference pipeline under their stated timing scopes. RQ3 looks for descriptive relationships between input structure, checked operation counters, and runtime. These questions keep reconstruction, measurement, and interpretation separate. RQ1 is the main technical question. RQ2 reports measured behavior. RQ3 remains exploratory and does not claim a causal explanation.`,
 
-  6: `Before discussing the control flow, I need to separate the roles of the oracle, the reference pipeline, and the paper core. The oracle has two external roles. Before the paper call, it establishes the valid-input precondition. After the call, its expected sorted order is used for comparison. By contrast, the reference pipeline intentionally uses the complete oracle result, including the sorted output, together with family trees and structural information. The ordinary-list paper core receives the original sequence under a certified precondition. It runs Step 1, Step 2, and Step 3, maintains its own partial sorted order and sibling-list state, and returns the order reconstructed from that state. The dashed box on the right is deliberately outside the core: output comparison happens only after the call. Therefore, the expected answer is shared, but the output provenance is not. The oracle-derived sorted list is never passed into the paper core and never determines its return value. This lets correctness be checked without giving the implementation its answer.`,
+  6: `The oracle, reference pipeline, and paper core play different roles. Before the paper call, the oracle checks the valid-input condition. After the call, the runner uses the oracle's sorted result as the expected answer. The reference pipeline intentionally consumes the complete oracle result, including that sorted output. The paper core receives only the original sequence under the certified precondition. It runs Step 1, Step 2, and Step 3, updates its partial order and sibling-list state, and returns the order recovered from that state. The dashed comparison box sits outside the paper core. Both methods are checked against the same expected answer, but they produce their outputs differently. This distinction lets me test the paper core without supplying the answer as input. The oracle-sorted list never enters the paper core and never determines its return value.`,
 
-  7: `The executable reconstruction has one main control-flow skeleton. After ordering the first three points, every new point is processed through Step 1, Step 2, and Step 3. Step 1 identifies the predecessor-side boundary. Step 2 identifies the successor-side boundary. Step 3(a) inserts the new pair, Step 3(b) performs any required sibling-list split and ownership transfer, and Step 3(c) inserts the new point into the maintained sorted order. Step 1 always computes the predecessor-side boundary A-i, and Step 2 always computes the successor-side boundary B-i. The reflection appears in Step 3: an increasing iteration uses A-i for Step 3(a) and B-i for Step 3(b), while a decreasing iteration uses them in the opposite roles. The evidence categories are shown separately below. The 1990 paper explicitly describes the increasing case, while the decreasing case is reconstructed by reflection. Two local details require executable clarification: selecting the geometric endpoint and handling the odd-index z-one output anchor. This distinction makes clear what is directly stated, what is symmetric reconstruction, and what is an operational clarification.`,
+  7: `The reconstruction follows one control-flow skeleton. It first orders z one, z two, and z three, then initializes the partial order and the first upper and lower pairs. After that, each new point passes through Step 1, Step 2, and Step 3. Step 1 finds the predecessor boundary, which I call A sub i. Step 2 finds the successor boundary, B sub i. Step 3(a) inserts the new pair. Step 3(b) performs any required sibling-list split and ownership transfer. Step 3(c) inserts the new point into the maintained order. The increasing and decreasing cases share these stages. Their local roles are reflected. In an increasing iteration, Step 3(a) uses A sub i and Step 3(b) uses B sub i. A decreasing iteration swaps those uses. The 1990 paper states the increasing case, while the decreasing case follows by symmetry. Two operational details still need explicit rules in code: the geometric endpoint and the odd-index z one output anchor. The next two slides explain why those choices matter.`,
 
-  8: `The first clarification concerns the endpoint used in Step 3(c). Consider the valid prefix shown here: three, two, one, four. The acquired pair is P-two, stored as the curve-order pair three, two. A mechanical reading might treat the second stored element, two, as the insertion anchor. That choice produces one, two, four, three, which is not sorted on the axis. The reason is that curve order and axis order are different concepts. The pair is stored according to traversal along the curve, while Step 3(c) needs the geometric extreme on the axis. For this example, the correct geometric endpoint is three, and inserting four after three produces the correct order: one, two, three, four. In the reflected control flow, the orientation determines which geometric extreme is used: the increasing case uses the right endpoint, while the decreasing case uses the left endpoint. That is different from asking which element happens to appear second in the stored pair. The executable rule is therefore to choose the geometric extreme, not simply the second stored endpoint. I treat this as a reconstruction clarification rather than attributing the rule directly to the 1990 paper. Without it, the maintained order fails on valid inputs.`,
+  8: `The first issue concerns the endpoint used in Step 3(c). Consider the valid prefix three, two, one, four. The acquired pair P two is stored in curve order as three, two. A mechanical reading might choose the second stored element, two, as the insertion anchor. That produces one, two, four, three, which is wrong on the axis. Curve order and axis order describe different things. The pair records traversal along the curve, while Step 3(c) needs the geometric extreme on the axis. Here the correct endpoint is three. Inserting four after three gives one, two, three, four. The example exposes a representation issue rather than a special case for these four values. The stored pair order follows the curve, so its second item does not always represent the required side of the current axis order. The increasing orientation uses the right geometric endpoint, and the decreasing orientation uses the left endpoint. The rule therefore selects the geometric extreme rather than the second stored element. I describe this as an executable clarification because the 1990 paper does not state it in this form. Without the clarification, valid examples fail.`,
 
-  9: `The second clarification is the odd-index z-one anomaly. Here the valid prefix is one, two, three, four, six, seven, zero. On this decreasing iteration, the ordinary geometric base anchor is z-two, whose value is two. If the new point zero is inserted immediately before that anchor, the result is one, zero, two, three, four, six, seven. That leaves z-one, whose value is one, on the wrong side of the new point. Here, zero is smaller than z-one, which is smaller than the original anchor. Under this odd-index condition, the required correction changes the output anchor from z-two to z-one. Inserting zero before z-one gives the correct axis order: zero, one, two, three, four, six, seven. It is important not to merge this with the predecessor and successor boundary adjustment. They are two separate decisions. One selects the boundary pair used by the family update; the other selects the output anchor used to update the maintained order. Keeping those responsibilities separate was necessary for the maintained order to remain correct.`,
+  9: `The second issue is the odd-index z one case. The valid prefix here is one, two, three, four, six, seven, zero. During this decreasing iteration, the ordinary geometric base anchor is z two, with value two. Inserting zero directly before z two gives one, zero, two, three, four, six, seven. Z one remains on the wrong side of the new point. Because zero is smaller than z one, and z one is smaller than the original anchor, the output anchor changes from z two to z one. Inserting zero before z one gives the correct order. The important point is that this change affects the output insertion only. It does not replace the earlier predecessor or successor boundary calculation. Those two decisions solve different problems. One selects the pair used by the family update. The other selects the point used to update the output order. The implementation records both decisions separately, which also makes the diagnostic trace easier to check.`,
 
-  10: `Correct insertion is only one part of the state problem. Every finite pair must also have one parent and one sibling-list owner. The left-hand diagram shows the local transaction. Before a split, an existing owner controls a sibling list that contains a retained segment and a segment that will be acquired. After the split, the existing owner keeps the retained segment, while the new owner receives the acquired nonempty segment. Only the transferred segment is rebound. The implementation therefore treats split and transfer as a transaction: save the affected state, execute the split, publish the ownership transfer, check local postconditions, and roll back if any check fails. The checks also reject invalid split boundaries and inconsistent ownership state. The maintained state includes the sorted processed prefix and the upper and lower pair families. Because the backend uses ordinary lists, scanning, copying, slicing, and ownership rebinding remain concrete costs. The transaction protects correctness, but ordinary lists do not provide the update bounds required by the historical linear-time analysis.`,
+  10: `Correct insertion also requires consistent ownership. Every finite pair has one parent and one sibling-list owner. Before a split, the existing owner controls both the retained and acquired segments. After the split, the existing owner keeps the retained segment, and the new owner receives the acquired segment. The implementation may create new sibling lists for both nonempty sides. Their list identifiers can therefore change. Only the acquired segment changes parent ownership. The code treats the split and transfer as one transaction. It saves the affected state, performs the update, and checks the split boundary, ownership, and local postconditions. If a check fails, it restores the old registry, ownership links, and list identifiers. The maintained state also contains the sorted processed prefix and both pair families. Ordinary lists make scanning, copying, slicing, and ownership rebinding visible costs. These checks protect correctness, but they do not provide the update bounds used in the historical linear-time analysis.`,
 
-  11: `The validation strategy has two distinct sides. On the left are implementation and state checks. Focused regression cases exercise known edge conditions. Bounded exhaustive validation covers 2,074 oracle-valid permutations through size eight. Checked-state audits inspect the complete maintained state, including parent chains, ownership, list registries, split pairs, and the recovered output. Same-core deterministic replay checks deterministic consistency of the resulting state. Replay is not a second independent Jordan-sorting implementation; it is a consistency check over the same core. On the right is evidence integrity and reproducibility. The formal experiment used a pre-specified protocol, a manifest-bound archive, schema and schedule checks, row-count checks, summary recomputation, and hash verification. A separate evidence-contract validator regenerates the expected cases, recomputes the relevant summaries, and verifies the archive. These layers support different claims. Together they provide bounded correctness evidence and a reproducible evidence chain, but they do not constitute a mathematical proof for every Jordan sequence.`,
+  11: `I use four main checks for the implementation. Focused regression cases cover known edge conditions. Exhaustive validation runs all 2,074 oracle-valid permutations up to size eight. Checked-state audits inspect parent links, ownership, sibling lists, and recovered output. Deterministic replay runs the same core again and compares the resulting state. Replay checks consistency. It does not provide a second Jordan-sorting implementation. Separately, an experiment validation path checks that the saved outputs match the fixed setup and recomputed summaries. I keep the detailed archive checks in Backup C because the main research point here is the algorithm state. These checks support the evaluated cases, but they do not prove correctness for every Jordan sequence.`,
 
-  12: `The formal experiment was designed so that the paper timing boundary is visible. The protocol contains five input sizes, twelve exact cases per size, three algorithms, and twenty measured calls per case-algorithm cell. That produces 3,600 measured rows. Each exact case is generated once, certified once, and receives one checked-state audit before timing. Each case-algorithm cell receives five warm-up calls followed by twenty measured calls. The schedule is deterministic and rotates algorithm positions across measured rounds. Each timed call receives a fresh input list. For the paper algorithm, certification and the checked-state audit are outside the timer, while the minimal paper-core call on a pre-certified input is inside. Importantly, output recovery from the maintained partial order remains inside that paper call. Runner-level normalization and comparison occur after timing. The comparison pipelines do not have identical timing scopes. Python timing covers the complete sorting call. Reference timing includes its complete oracle-backed pipeline. This is why the paper/reference value later in the presentation is called a pipeline-scope ratio. It describes the recorded experiment, but it is not a like-for-like end-to-end speedup. After measurement, the runner aggregates the rows, writes the manifest-bound archive, and validates the evidence contract.`,
+  12: `The formal experiment covers five sizes and twelve exact cases per size. It compares three algorithms. Each case-algorithm cell has five warm-up calls and twenty measured calls, producing 3,600 rows. These are repeated calls on the same exact case, not twenty independent inputs. Each call receives a fresh list containing the same values. The schedule rotates algorithm positions so that one method does not always run first. For the paper algorithm, oracle certification and the checked-state audit happen before timing. The minimal paper call runs inside the timer, including output recovery from the maintained order. The runner compares the returned output after timing. Python timing covers its sorting call. Reference timing covers the complete oracle-backed reference pipeline. Paper and reference therefore use different timing scopes, so their ratio is not an end-to-end speedup.`,
 
-  13: `All sixty cases in the formal experiment passed the relevant checks. The archive contains 3,600 measured rows; all 60 case-level checked-state audits passed; and no correctness errors were recorded. Each case was oracle-certified before timing, and every measured call returned the expected output. The distinction between rows and audits matters. There were sixty audits, one for each exact case; the audit result is then associated with that case's timing rows. There were not 3,600 independent audits. These results provide empirical correctness evidence for the controlled valid cases in the protocol. They do not evaluate recognition of arbitrary inputs, and they do not prove correctness for all Jordan sequences.`,
+  13: `All 60 evaluated cases passed certification and the case-level checked-state audit. Every measured call returned the expected output, and the run recorded no correctness errors. The experiment used one audit per exact case. Its 3,600 timing rows carry the corresponding case-level audit result, so the row count does not mean 3,600 independent audits. These results support the tested valid cases only. They do not evaluate recognition of arbitrary inputs or prove correctness for every Jordan sequence.`,
 
-  14: `The main runtime pattern is the decrease in the median exact-case paper/reference ratio across the five tested sizes. The ratio is first computed within each exact case by dividing the paper median by the reference median; those case ratios are then summarized with equal case weight. At size thirty-two, the median ratio is 3.226, so the paper call is larger than the reference call under the defined timing scopes. It falls to 2.202 at size 64 and to 1.351 at size 128. At size 256 it is 0.851, and at size 512 it is 0.567. The observed crossover therefore lies between the tested sizes 128 and 256. This is a finite empirical pattern, not an asymptotic claim. It also does not mean that the paper implementation is universally faster, because the numerator and denominator represent different pipelines. The reference call includes oracle-backed work, while the paper call starts from a certified valid input and times only the minimal core. Python sort, shown in the backup material, still has the lowest median call time at every tested size.`,
+  14: `The main runtime pattern is the decrease in the paper/reference ratio across the five tested sizes. I first compute the ratio for each exact case. Each case then has equal weight in the size-level median. The ratio is 3.226 at n equals 32, 2.202 at 64, and 1.351 at 128. It falls below one at 256, where it is 0.851, and reaches 0.567 at 512. The observed crossover lies between the tested sizes 128 and 256. The pilot experiment showed the same downward direction, although I do not combine absolute times across the two runs. Under these timing scopes, the recorded paper call is smaller than the reference-pipeline call at the two larger sizes. The scopes differ, so this pattern does not establish a general speedup. Five sizes also do not establish asymptotic behavior. Python sort, shown in Backup A, has the lowest median call time at every tested size.`,
 
-  15: `The evidence supports four bounded conclusions. The ordinary-list reconstruction is executable. It recovers output from maintained state rather than from the oracle result. It returned correct output on every evaluated valid case, and its runtime observations are reproducible under the defined timing scopes. Four stronger conclusions are not established: this is not a linear-time implementation, five sizes do not determine asymptotic complexity, recognition of arbitrary inputs was not evaluated, and the paper/reference ratio is not a like-for-like end-to-end speedup. The limitations on this slide apply to the ordinary-list evidence reported today. A future finger-tree backend would require its own correctness validation, complexity analysis, and experimental evidence.`,
+  15: `The current evidence supports an executable ordinary-list reconstruction whose output comes from maintained state. It also supports correct output on the evaluated valid cases and a recorded runtime trend under the stated timing scopes. The main limits are equally important. Ordinary Python lists do not establish a linear-time implementation, and five tested sizes do not establish asymptotic complexity. Recognition was not evaluated. The paper/reference comparison still uses different timing scopes. I therefore present the runtime values as observations for this implementation and experiment, not as a general algorithmic bound.`,
 
-  16: `The validated baseline now gives a controlled starting point for a finger-tree extension. The executable ordinary-list reconstruction has stabilized, its output is recovered from maintained state, state and ownership validation is in place, and the formal evidence has been archived. The archived ordinary-list experiment remains the fixed baseline and will not be overwritten. If the finger-tree backend becomes thesis-facing, it will receive a separate source version, validation pass, and experiment rather than reusing the existing results. The first goal is a semantically equivalent backend that passes differential and Jordan-sorting correctness tests. A stronger complexity claim would require an additional argument that splitting, boundary insertion, and ownership handling satisfy the operation bounds used by the historical analysis. I would therefore welcome guidance on whether the extension should target the historical heterogeneous finger tree or an equivalent backend with the required list operations, and whether semantic equivalence plus experimental comparison is sufficient or an amortized operation-bound argument is also expected.`,
+  16: `A possible next step is to investigate a finger-tree backend while keeping the same Step 1, Step 2, and Step 3 behavior. The ordinary-list implementation gives a tested reference point for that work. The detailed backend boundary appears in Backup E, including the ownership-transfer difficulty. I would like guidance on two questions. First, should the extension target the historical heterogeneous finger tree, or an equivalent backend with the required list operations? Second, would semantic equivalence and an experimental comparison be sufficient, or should the thesis also include an amortized operation-bound argument? This choice determines whether the extension remains mainly experimental or also requires a proof-level component.`,
 
   17: `If exact runtimes are requested, this backup slide reports the median call times for all three algorithms. The values belong to one recorded Apple M4 and CPython 3.12.4 execution. The logarithmic scale makes the Python values visible beside the reference and paper values. These absolute times should not be generalized to other environments.`,
 
@@ -81,27 +89,27 @@ const TALK = {
 };
 
 const TALK_TIMES = {
-  1: "0:45", 2: "0:55", 3: "0:50", 4: "1:10", 5: "0:55", 6: "1:25", 7: "1:30", 8: "1:35",
-  9: "1:20", 10: "1:25", 11: "1:05", 12: "1:40", 13: "0:50", 14: "1:20", 15: "0:45", 16: "1:00",
+  1: "0:50", 2: "0:55", 3: "0:50", 4: "0:50", 5: "0:45", 6: "1:10", 7: "1:30", 8: "1:40",
+  9: "1:25", 10: "1:25", 11: "1:00", 12: "1:10", 13: "0:40", 14: "1:20", 15: "0:45", 16: "0:55",
 };
 
 const TALK_TITLES = {
   1: "Progress on the Executable Reconstruction of Simplified Jordan Sorting",
   2: "The previous report established a static structural baseline",
-  3: "Four work packages addressed the main implementation gap",
-  4: "The thesis now isolates valid-input sorting from two adjacent questions",
+  3: "Progress since the previous report",
+  4: "Current scope: valid-input sorting",
   5: "Three questions connect reconstruction, measurement, and interpretation",
   6: "The oracle, reference pipeline, and paper core have distinct roles",
-  7: "One Step 1/2/3 control flow supports a reflected decreasing orientation",
+  7: "Step 1/2/3 control flow and reflected orientation",
   8: "Step 3(c) uses the geometric extreme, not the second stored endpoint",
   9: "Odd iterations require a separate z1 output-anchor correction",
-  10: "Correct insertion also requires ownership-safe transactional updates",
-  11: "Validation spans implementation state and evidence integrity",
+  10: "Ownership-safe split and transfer",
+  11: "Implementation checks and experiment consistency",
   12: "The formal experiment keeps certification and audit outside paper timing",
-  13: "Every pre-specified formal case passed certification, audit, and output checks",
+  13: "All 60 evaluated cases returned the correct output",
   14: "The paper/reference ratio decreases across the five tested sizes",
-  15: "Evidence supports a bounded reconstruction, not a linear-time claim",
-  16: "The validated baseline provides a controlled basis for a scoped finger-tree extension",
+  15: "What the current evidence shows",
+  16: "Possible next step: a finger-tree backend",
   17: "Backup A: Median runtime by size",
   18: "Backup B: Paper output provenance",
   19: "Backup C: Validation summary",
@@ -364,7 +372,7 @@ async function main() {
 
   // 3. Work packages
   {
-    const slide = baseSlide(presentation, "Four work packages addressed the main implementation gap", "Progress", "3 / 16");
+    const slide = baseSlide(presentation, "Progress since the previous report", "Progress", "3 / 16");
     const xs = [76, 371, 666, 961];
     const colors = [C.navy, C.teal, C.coral, C.slate];
     const fills = [C.paleBlue, C.paleTeal, C.paleCoral, "#EDF2F7"];
@@ -382,7 +390,7 @@ async function main() {
       addBox(slide, xs[i], 350, 226, 170, { fill: fills[i], line: fills[i], radius: 8 });
       addText(slide, bodies[i], xs[i] + 14, 366, 198, 140, { fontSize: 19, color: C.ink, align: "center", valign: "middle", lineSpacing: 1.08 });
     }
-    addText(slide, "The outcome is a stable ordinary-list research baseline, not the historical linear-time backend.", 130, 580, 1020, 56, { fontSize: 23, bold: true, color: C.navy, align: "center", valign: "middle" });
+    addText(slide, "Current result: an executable ordinary-list implementation. The historical backend remains future work.", 130, 580, 1020, 56, { fontSize: 23, bold: true, color: C.navy, align: "center", valign: "middle" });
     setNotes(
       slide,
       "I organized the work into four technical packages. The largest part was the transition from the structural model to an executable dynamic state. The experiment was conducted only after the implementation and validation boundaries had been stabilized.",
@@ -396,19 +404,19 @@ async function main() {
 
   // 4. Refined scope
   {
-    const slide = baseSlide(presentation, "The thesis now isolates valid-input sorting from two adjacent questions", "Scope", "4 / 16");
+    const slide = baseSlide(presentation, "Current scope: valid-input sorting", "Scope", "4 / 16");
     addBox(slide, 76, 152, 520, 410, { fill: C.white, line: C.line, radius: 8 });
     addBox(slide, 684, 152, 520, 410, { fill: C.white, line: C.teal, lineWidth: 2, radius: 8 });
     addText(slide, "Earlier planning emphasis", 100, 176, 470, 44, { fontSize: 25, bold: true, color: C.slate });
     addText(slide, "Current research scope", 708, 176, 470, 44, { fontSize: 25, bold: true, color: C.teal });
     const left = ["General structural framework", "Valid and invalid generators", "Static family trees", "Broad reference evaluation", "Recognition as a possible experiment", "Theoretical backend implementation"];
-    const right = ["Executable reconstruction of the 1990 procedure", "Oracle-certified valid-input sorting", "Dynamic sibling-list state", "Paper core, reference pipeline, Python sort", "Recognition remains separate", "Ordinary-list backend as the validated baseline"];
+    const right = ["Executable reconstruction of the 1990 procedure", "Oracle-certified valid-input sorting", "Dynamic sibling-list state", "Paper core, reference pipeline, Python sort", "Recognition remains separate", "Ordinary lists in the current implementation"];
     left.forEach((t, i) => {
       addText(slide, t, 102, 238 + i * 50, 455, 38, { fontSize: 18, color: C.slate, valign: "middle" });
       addText(slide, "→", 610, 238 + i * 50, 58, 38, { fontSize: 26, bold: true, color: C.coral, align: "center", valign: "middle" });
       addText(slide, right[i], 710, 238 + i * 50, 455, 38, { fontSize: 18, bold: i === 0 || i === 2, color: C.ink, valign: "middle" });
     });
-    addText(slide, "The current evidence remains bound to the ordinary-list baseline; a finger-tree backend is being investigated as a separate extension.", 120, 578, 1040, 64, { fontSize: 22, bold: true, color: C.navy, align: "center", valign: "middle" });
+    addText(slide, "The experiment evaluates the ordinary-list implementation. A finger-tree backend remains a possible extension.", 120, 578, 1040, 64, { fontSize: 22, bold: true, color: C.navy, align: "center", valign: "middle" });
     setNotes(
       slide,
       "During implementation, it became important to separate three different questions: whether an input is valid, whether the reconstructed core sorts a valid input correctly, and whether the historical data structure achieves the theoretical bound. The thesis now focuses on the second question while using the first as an external precondition and leaving the third unimplemented.",
@@ -480,7 +488,7 @@ async function main() {
 
   // 7. Step flow
   {
-    const slide = baseSlide(presentation, "One Step 1/2/3 control flow supports a reflected decreasing orientation", "Reconstruction", "7 / 16");
+    const slide = baseSlide(presentation, "Step 1/2/3 control flow and reflected orientation", "Reconstruction", "7 / 16");
     const nodes = [
       { x: 86, y: 170, w: 184, h: 84, title: "Initialize", body: "order z₁, z₂, z₃" },
       { x: 310, y: 170, w: 184, h: 84, title: "Step 1", body: "predecessor-side boundary" },
@@ -507,7 +515,6 @@ async function main() {
       addText(slide, e.title, e.x + 14, 484, 298, 30, { fontSize: 19, bold: true, color: e.color, align: "center" });
       addText(slide, e.body, e.x + 18, 526, 290, 42, { fontSize: 17, color: C.ink, align: "center", valign: "middle" });
     });
-    addText(slide, "The colors describe reconstruction evidence, not ownership of individual algorithm steps.", 156, 606, 968, 34, { fontSize: 18, bold: true, color: C.navy, align: "center", valign: "middle" });
     setNotes(
       slide,
       "The reconstruction is not a line-by-line transcription. Some rules are explicit in the 1990 paper, the decreasing orientation is reconstructed by symmetry, and a small number of operational details must be fixed to obtain unambiguous executable behavior.",
@@ -597,7 +604,7 @@ async function main() {
 
   // 10. State and transactions
   {
-    const slide = baseSlide(presentation, "Correct insertion also requires ownership-safe transactional updates", "Maintained State", "10 / 16");
+    const slide = baseSlide(presentation, "Ownership-safe split and transfer", "Maintained State", "10 / 16");
     addBox(slide, 68, 150, 656, 420, { fill: C.white, line: C.line, radius: 8 });
     addText(slide, "Local split and ownership transfer", 94, 170, 606, 38, { fontSize: 25, bold: true, color: C.navy, align: "center" });
 
@@ -622,7 +629,7 @@ async function main() {
     addText(slide, "→", 365, 468, 54, 36, { fontSize: 24, bold: true, color: C.teal, align: "center", valign: "middle" });
     addBox(slide, 424, 460, 146, 52, { fill: C.paleTeal, line: C.teal, radius: 6 });
     addText(slide, "acquired", 434, 468, 126, 36, { fontSize: 18, bold: true, color: C.teal, align: "center", valign: "middle" });
-    addText(slide, "Only the acquired nonempty segment is rebound.", 120, 526, 552, 28, { fontSize: 17, color: C.slate, align: "center" });
+    addText(slide, "Only the acquired nonempty segment changes parent ownership.", 110, 526, 572, 28, { fontSize: 17, color: C.slate, align: "center" });
 
     addText(slide, "Maintained state", 765, 152, 390, 36, { fontSize: 25, bold: true, color: C.navy });
     addBulletList(slide, ["sorted processed prefix", "upper and lower pair families", "one parent per finite pair", "one sibling-list owner per finite pair"], 770, 205, 410, { fontSize: 19, gap: 45 });
@@ -643,23 +650,22 @@ async function main() {
 
   // 11. Correctness evidence
   {
-    const slide = baseSlide(presentation, "Validation spans implementation state and evidence integrity", "Validation", "11 / 16");
+    const slide = baseSlide(presentation, "Implementation checks and experiment consistency", "Validation", "11 / 16");
     addText(slide, "IMPLEMENTATION AND STATE VALIDATION", 92, 158, 450, 28, { fontSize: 15, bold: true, color: C.teal });
-    addText(slide, "EVIDENCE INTEGRITY AND REPRODUCIBILITY", 728, 158, 450, 28, { fontSize: 15, bold: true, color: C.coral });
+    addText(slide, "EXPERIMENT OUTPUT CHECK", 728, 158, 450, 28, { fontSize: 15, bold: true, color: C.coral });
     const left = ["Focused regression cases", "Bounded exhaustive validation\n2,074 oracle-valid permutations, n ≤ 8", "Checked-state audits", "Same-core deterministic replay"];
-    const right = ["Pre-specified protocol", "Manifest-bound archive", "Schema, schedule, count, and hash checks", "Separate evidence-contract validation"];
     const ys = [202, 294, 402, 494];
     for (let i = 0; i < 4; i++) {
       addBox(slide, 88, ys[i], 470, i === 1 ? 82 : 64, { fill: C.paleTeal, line: C.teal, radius: 7 });
       addText(slide, left[i], 104, ys[i] + 8, 438, i === 1 ? 66 : 48, { fontSize: i === 1 ? 18 : 20, bold: i === 1, color: C.ink, align: "center", valign: "middle" });
-      addBox(slide, 722, ys[i], 470, i === 2 ? 82 : 64, { fill: C.paleCoral, line: C.coral, radius: 7 });
-      addText(slide, right[i], 738, ys[i] + 8, 438, i === 2 ? 66 : 48, { fontSize: i === 2 ? 18 : 20, bold: i === 2, color: C.ink, align: "center", valign: "middle" });
       if (i < 3) {
         addText(slide, "↓", 286, ys[i] + (i === 1 ? 79 : 61), 72, 28, { fontSize: 26, bold: true, color: C.teal, align: "center" });
-        addText(slide, "↓", 920, ys[i] + (i === 2 ? 79 : 61), 72, 28, { fontSize: 26, bold: true, color: C.coral, align: "center" });
       }
     }
-    addText(slide, "Together: bounded correctness evidence and a reproducible evidence chain—not a universal proof.", 140, 610, 1000, 40, { fontSize: 21, bold: true, color: C.navy, align: "center", valign: "middle" });
+    addBox(slide, 722, 232, 470, 250, { fill: C.paleCoral, line: C.coral, lineWidth: 1.5, radius: 8 });
+    addText(slide, "A separate validation path checked that the saved outputs match the fixed experiment setup and recomputed summaries.", 758, 282, 398, 142, { fontSize: 23, bold: true, color: C.ink, align: "center", valign: "middle" });
+    addText(slide, "Full consistency checks: Backup C", 760, 506, 394, 34, { fontSize: 17, color: C.slate, align: "center", valign: "middle" });
+    addText(slide, "These checks support the evaluated cases. They do not prove correctness for every Jordan sequence.", 140, 610, 1000, 40, { fontSize: 21, bold: true, color: C.navy, align: "center", valign: "middle" });
     setNotes(
       slide,
       "Replay checks state consistency and determinism; it is not a second independent implementation. The evidence-contract validator checks the archive and its schedule, counts, summaries, and hashes. Together these layers provide strong bounded empirical evidence, but not a mathematical proof for every Jordan sequence.",
@@ -701,9 +707,9 @@ async function main() {
       addText(slide, s.title, s.x + 16, 424, 306, 42, { fontSize: 18, bold: true, color: s.line, align: "center", valign: "middle" });
       addText(slide, s.body, s.x + 18, 472, 302, 28, { fontSize: 17, color: C.ink, align: "center", valign: "middle" });
     });
-    addText(slide, "Reference timing includes its complete oracle-backed pipeline; Python timing covers its complete sorting call.", 120, 538, 1040, 32, { fontSize: 18, color: C.slate, align: "center", valign: "middle" });
+    addText(slide, "Reference timing includes its complete oracle-backed pipeline. Python timing covers its complete sorting call.", 120, 538, 1040, 32, { fontSize: 18, color: C.slate, align: "center", valign: "middle" });
     addBox(slide, 212, 586, 856, 52, { fill: C.paleCoral, line: C.coral, lineWidth: 1.5, radius: 6 });
-    addText(slide, "Paper/reference is a pipeline-scope ratio, not a like-for-like end-to-end speedup.", 230, 592, 820, 40, { fontSize: 18, bold: true, color: C.coral, align: "center", valign: "middle" });
+    addText(slide, "Paper and reference use different timing scopes, so this ratio is not an end-to-end speedup.", 230, 592, 820, 40, { fontSize: 18, bold: true, color: C.coral, align: "center", valign: "middle" });
     setNotes(
       slide,
       "Each exact case is generated once, oracle-certified, structurally profiled, and checked once before timing. The paper call is timed only after certification. The reference call includes its full oracle-backed workflow. This difference is deliberate and must remain visible when interpreting the ratio.",
@@ -718,17 +724,16 @@ async function main() {
 
   // 13. Correctness results
   {
-    const slide = baseSlide(presentation, "Every pre-specified formal case passed certification, audit, and output checks", "Results", "13 / 16");
-    const xs = [76, 364, 652, 940];
-    metric(slide, "60", "exact cases", xs[0], 170, 250, C.navy);
-    metric(slide, "3,600", "measured rows", xs[1], 170, 250, C.teal);
-    metric(slide, "60 / 60", "checked-state audits passed", xs[2], 170, 250, C.coral);
-    metric(slide, "0", "recorded correctness errors", xs[3], 170, 250, C.green);
-    addRule(slide, 76, 322, 1128, C.line, 2);
-    addText(slide, "Every case was oracle-certified before timing.", 160, 360, 960, 56, { fontSize: 30, bold: true, color: C.navy, align: "center", valign: "middle" });
-    addBox(slide, 166, 458, 948, 112, { fill: C.paleBlue, line: C.navy, lineWidth: 1.5, radius: 8 });
-    addText(slide, "All 3,600 rows belong to 60 exact cases; each case received one untimed checked-state audit before timing.", 194, 476, 892, 72, { fontSize: 22, color: C.ink, align: "center", valign: "middle" });
-    addText(slide, "Evidence for controlled valid cases, not recognition evidence and not a proof for all Jordan sequences.", 156, 602, 968, 42, { fontSize: 19, bold: true, color: C.coral, align: "center", valign: "middle" });
+    const slide = baseSlide(presentation, "All 60 evaluated cases returned the correct output", "Results", "13 / 16");
+    addText(slide, "60", 130, 176, 410, 100, { fontSize: 72, bold: true, color: C.teal, align: "center", valign: "middle" });
+    addText(slide, "exact cases", 130, 278, 410, 46, { fontSize: 26, bold: true, color: C.navy, align: "center", valign: "middle" });
+    addText(slide, "0", 740, 176, 410, 100, { fontSize: 72, bold: true, color: C.green, align: "center", valign: "middle" });
+    addText(slide, "recorded correctness errors", 740, 278, 410, 46, { fontSize: 26, bold: true, color: C.navy, align: "center", valign: "middle" });
+    addRule(slide, 76, 354, 1128, C.line, 2);
+    addText(slide, "Each case was oracle-certified and checked once before timing.", 160, 382, 960, 56, { fontSize: 29, bold: true, color: C.navy, align: "center", valign: "middle" });
+    addBox(slide, 166, 474, 948, 92, { fill: C.paleBlue, line: C.navy, lineWidth: 1.5, radius: 8 });
+    addText(slide, "The 3,600 timing rows carry the corresponding case-level audit result.", 194, 492, 892, 56, { fontSize: 22, color: C.ink, align: "center", valign: "middle" });
+    addText(slide, "These results cover the tested valid cases only.", 156, 606, 968, 36, { fontSize: 20, bold: true, color: C.coral, align: "center", valign: "middle" });
     setNotes(
       slide,
       "All formal cases passed certification and the untimed checked-state audit. Every measured row returned the expected output without a recorded error. The important boundary is that these are sixty controlled valid cases; the experiment does not evaluate arbitrary-input recognition.",
@@ -785,15 +790,14 @@ async function main() {
 
   // 15. Interpretation boundaries
   {
-    const slide = baseSlide(presentation, "Evidence supports a bounded reconstruction, not a linear-time claim", "Interpretation", "15 / 16");
+    const slide = baseSlide(presentation, "What the current evidence shows", "Interpretation", "15 / 16");
     addBox(slide, 78, 152, 536, 404, { fill: C.paleTeal, line: C.teal, lineWidth: 2, radius: 8 });
     addBox(slide, 666, 152, 536, 404, { fill: C.paleCoral, line: C.coral, lineWidth: 2, radius: 8 });
-    addText(slide, "Supported by the current evidence", 106, 178, 480, 52, { fontSize: 26, bold: true, color: C.teal, align: "center", valign: "middle" });
-    addText(slide, "Not established", 694, 178, 480, 52, { fontSize: 26, bold: true, color: C.coral, align: "center", valign: "middle" });
-    addBulletList(slide, ["executable ordinary-list reconstruction", "output recovery from maintained state", "correctness on evaluated valid cases", "reproducible runtime observations under fixed scopes"], 112, 252, 456, { fontSize: 20, gap: 66, bulletColor: C.teal });
-    addBulletList(slide, ["linear-time implementation", "asymptotic complexity", "arbitrary-input recognition", "like-for-like end-to-end speedup"], 700, 252, 456, { fontSize: 20, gap: 66, bulletColor: C.coral });
-    addText(slide, "Structural relationships remain descriptive. A finger-tree backend is not yet part of the validated baseline.", 150, 576, 980, 30, { fontSize: 18, color: C.slate, align: "center", valign: "middle" });
-    addText(slide, "The reported conclusions remain specific to the ordinary-list baseline.", 150, 616, 980, 36, { fontSize: 21, bold: true, color: C.navy, align: "center", valign: "middle" });
+    addText(slide, "Current results", 106, 178, 480, 52, { fontSize: 26, bold: true, color: C.teal, align: "center", valign: "middle" });
+    addText(slide, "Main limits", 694, 178, 480, 52, { fontSize: 26, bold: true, color: C.coral, align: "center", valign: "middle" });
+    addBulletList(slide, ["Executable reconstruction with output recovered from maintained state", "Correct outputs and a recorded runtime trend for the evaluated cases"], 112, 270, 456, { fontSize: 22, gap: 132, bulletColor: C.teal });
+    addBulletList(slide, ["Ordinary lists do not establish a linear-time implementation", "Five tested sizes do not establish asymptotic complexity"], 700, 270, 456, { fontSize: 22, gap: 132, bulletColor: C.coral });
+    addText(slide, "Recognition was not evaluated. Paper and reference use different timing scopes.", 150, 600, 980, 40, { fontSize: 20, bold: true, color: C.navy, align: "center", valign: "middle" });
     setNotes(
       slide,
       "The main result is not that a linear-time algorithm has been implemented. The contribution is that the paper-facing control flow has become executable and auditable, with explicit backend and evidence boundaries.",
@@ -807,15 +811,13 @@ async function main() {
 
   // 16. Milestone and next phase
   {
-    const slide = baseSlide(presentation, "The validated baseline provides a controlled basis for a scoped finger-tree extension", "Milestone", "16 / 16");
-    addText(slide, "VALIDATED BASELINE", 88, 158, 470, 28, { fontSize: 15, bold: true, color: C.teal });
-    addText(slide, "FINGER-TREE EXTENSION", 722, 158, 470, 28, { fontSize: 15, bold: true, color: C.coral });
-    addBulletList(slide, ["executable ordinary-list reconstruction", "output recovered from maintained state", "state and ownership validation", "archived ordinary-list formal evidence"], 94, 208, 488, { fontSize: 21, gap: 66, bulletColor: C.teal });
-    addBulletList(slide, ["extract a backend-independent interface", "implement a finger-tree sibling-list backend", "compare it with the ordinary-list baseline", "assess whether required operation bounds can be justified"], 728, 202, 474, { fontSize: 19, gap: 57, bulletColor: C.coral });
-    addText(slide, "The existing ordinary-list evidence remains read-only; finger-tree results require a separate validation and experiment version.", 92, 484, 1096, 28, { fontSize: 14, color: C.slate, align: "center", valign: "middle" });
-    addBox(slide, 92, 520, 1096, 112, { fill: C.navy, line: C.navy, radius: 8 });
-    addText(slide, "Discussion", 120, 540, 160, 30, { fontSize: 21, bold: true, color: C.teal });
-    addText(slide, "1. Should the extension target the historical heterogeneous finger tree specifically, or an equivalent backend supporting the required list operations?\n2. Is semantic equivalence plus an experimental comparison sufficient, or should the thesis also include an amortized operation-bound argument?", 288, 526, 862, 92, { fontSize: 20, color: C.white, valign: "middle" });
+    const slide = baseSlide(presentation, "Possible next step: a finger-tree backend", "Next Step", "16 / 16");
+    addText(slide, "The ordinary-list implementation provides a tested reference point.", 112, 156, 1056, 54, { fontSize: 28, bold: true, color: C.navy, align: "center", valign: "middle" });
+    addBox(slide, 172, 244, 936, 100, { fill: C.paleTeal, line: C.teal, lineWidth: 1.5, radius: 8 });
+    addText(slide, "A new backend would keep the same Step 1/2/3 behavior while changing the sibling-list operations.", 204, 268, 872, 54, { fontSize: 24, color: C.ink, align: "center", valign: "middle" });
+    addText(slide, "Discussion with the supervisor", 112, 402, 1056, 38, { fontSize: 25, bold: true, color: C.teal, align: "center", valign: "middle" });
+    addBox(slide, 112, 456, 1056, 162, { fill: C.navy, line: C.navy, radius: 8 });
+    addText(slide, "1. Should I target the historical heterogeneous finger tree or an equivalent backend?\n2. Should the thesis include only semantic and experimental evaluation, or also an amortized operation-bound argument?", 154, 476, 972, 122, { fontSize: 24, color: C.white, valign: "middle" });
     setNotes(
       slide,
       "The main technical gap identified in the previous report has now been addressed at the ordinary-list level. The current implementation and formal evidence form a stable thesis baseline. The next phase is consolidation and review rather than an expansion of the algorithmic scope. I would particularly welcome feedback on whether the reconstruction boundary and the balance between implementation and evaluation are sufficiently clear.",
