@@ -1,0 +1,38 @@
+Primary thesis sources
+- jordan-sorting/thesis/frontmatter/abstract.tex
+- jordan-sorting/thesis/chapters/introduction.tex
+- jordan-sorting/thesis/chapters/background.tex
+- jordan-sorting/thesis/chapters/algorithm.tex
+- jordan-sorting/thesis/chapters/implementation.tex
+- jordan-sorting/thesis/chapters/methodology.tex
+- jordan-sorting/thesis/chapters/results.tex
+- jordan-sorting/thesis/chapters/limitations.tex
+- jordan-sorting/thesis/chapters/conclusion.tex
+- jordan-sorting/thesis/appendix/claim_traceability.tex
+
+Primary evidence sources
+- jordan-sorting/results/runs/week12_formal_sorting_v1__run001/config.json
+- jordan-sorting/results/runs/week12_formal_sorting_v1__run001/raw.csv
+- jordan-sorting/results/runs/week12_formal_sorting_v1__run001/case_summary.csv
+- jordan-sorting/results/runs/week12_formal_sorting_v1__run001/group_summary.csv
+- jordan-sorting/results/runs/week12_formal_sorting_v1__run001/case_audit.csv
+- jordan-sorting/results/runs/week12_formal_sorting_v1__run001/manifest.json
+- jordan-sorting/results/runs/week12_formal_sorting_v1__run001/validation_report.json
+
+Visual assets
+- jordan-sorting/thesis/figures/jordan_sorting_problem.pdf
+- jordan-sorting/thesis/figures/family_sibling_structure.pdf
+- jordan-sorting/thesis/figures/step3c_anchor_z1_anomaly.pdf
+- jordan-sorting/thesis/figures/formal_experiment_pipeline.pdf
+- jordan-sorting/thesis/figures/week12_runtime_by_size.pdf
+- jordan-sorting/thesis/figures/week12_runtime_ratio_by_size.pdf
+
+Historical literature
+- Hoffmann, Mehlhorn, Rosenstiehl, Tarjan (1986), Sorting Jordan Sequences in
+  Linear Time Using Level-Linked Search Trees, doi:10.1016/S0019-9958(86)80033-X
+- Fung, Nicholl, Tarjan, Van Wyk (1990), Simplified Linear-Time Jordan Sorting
+  and Polygon Clipping, doi:10.1016/0020-0190(90)90111-A
+
+User-supplied narrative source
+- Supervisor feedback, September 2026: investigate a finger-tree sibling-list
+  backend as a separate extension above the validated ordinary-list baseline.

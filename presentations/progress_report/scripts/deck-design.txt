@@ -1,0 +1,26 @@
+Communication job
+By the end, the research-seminar audience should understand that the main gap
+between the earlier structural framework and an executable Jordan-sorting
+algorithm has been closed at the ordinary-list level, supported by bounded
+correctness evidence and a formal experiment under explicit timing scopes.
+
+Audience
+Supervisor, examiners, and computer-science research-seminar participants.
+
+Purpose
+Report one technical research period, solicit feedback on reconstruction and
+presentation balance, and avoid presenting the thesis as already submitted.
+
+Narrative
+Previous static baseline -> refined scope -> executable reconstruction ->
+state safety -> validation -> formal evidence -> bounded interpretation ->
+consolidation phase.
+
+Visual system
+16:9, white/light-gray canvas, dark navy #102A43, teal #2A9D8F, coral
+#E76F51, slate #52606D. Aptos-like Office typography. 36 pt slide titles,
+18-22 pt body text, sparse flat layouts, one main claim per slide.
+
+Deck structure
+16 main slides plus 4 backup slides. Speaker notes contain the talk track and
+source blocks. Main presentation targets about 18 minutes.

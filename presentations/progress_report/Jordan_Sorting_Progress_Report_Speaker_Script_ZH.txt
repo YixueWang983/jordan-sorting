@@ -1,0 +1,296 @@
+JORDAN SORTING 硕士论文进度汇报
+中文逐页参考讲稿
+
+对应文件：Jordan_Sorting_Progress_Report_ZH.pptx
+主讲范围：第 1-16 页
+目标时长：18.5-20 分钟
+说明：本稿用于中文理解、演练和内容核对，并已同步写入中文版演示稿的 speaker notes。
+
+============================================================
+主报告：第 1-16 页
+============================================================
+
+第 1 页 | 建议 0:45
+Simplified Jordan Sorting 的可执行重构进展
+
+大家好。这次汇报介绍我的硕士论文目前的进展，研究主题是 Simplified Jordan Sorting 的可执行重构。
+
+在上一次研究讨论课汇报中，我主要介绍了静态结构框架，包括 rank interval、upper family 和 lower family、family tree，以及一个由 oracle 支持的 reference implementation。此后的核心问题是：论文中描述的动态过程，能否在普通 Python list 上被重构成一套真正可执行、可以检查、并且能够从自身状态恢复输出的实现。
+
+今天我会依次介绍这套重构、验证策略，以及在明确限定的计时范围下得到的正式实验结果。
+
+============================================================
+
+第 2 页 | 建议 0:55
+上一次汇报建立了静态结构基线
+
+上一次实现已经提供了一个有用的静态基线。它用 rank interval 表示输入，区分 upper 和 lower 两个 pair family，重构它们的 laminar family tree，并计算相应的结构指标。它还使用 oracle 验证输入，并提供 reference output。
+
+这个框架能够解释为什么同一 family 内的 interval 只能 nested 或 disjoint，但它还没有真正执行动态的 Jordan-sorting procedure。具体来说，它没有随着新 point 的加入持续维护 processed prefix，没有执行 sibling list 的 split 或 transfer ownership，也没有从算法自己维护的状态中恢复最终 sorted output。
+
+因此，主要缺口不是再增加一个静态数据模型，而是把结构描述转化成一系列安全、明确、可执行的动态更新。
+
+============================================================
+
+第 3 页 | 建议 0:50
+四个工作包共同处理主要实现缺口
+
+我把这个过程分成四个相互关联的工作包。
+
+第一，稳定研究 scope，把 valid-input sorting、recognition 和历史 linear-time bound 所需的 specialized backend 分开。
+
+第二，把论文中的 Step 1、Step 2 和 Step 3 控制流重构为可执行代码。
+
+第三，加入 state invariant、ownership 检查、transactional update、deterministic replay 和 bounded validation。
+
+第四，在 implementation 和 validation boundary 稳定之后，按照预先固定的 protocol 完成第一轮正式 evaluation。
+
+最终得到的是一套稳定的 ordinary-list implementation baseline。这里的区别很重要：它是对算法控制流的可执行重构，但不是对历史 linear-time bound 所需 specialized data structure 的实现。
+
+============================================================
+
+第 4 页 | 建议 1:10
+当前论文把 valid-input sorting 与两个相邻问题分开
+
+随着实现逐渐明确，研究范围也进行了有意的收敛。
+
+早期计划把几个相邻问题放在一起，包括 valid 和 invalid input 的生成、静态 family tree、recognition、更广泛的 reference evaluation，以及理论 backend 的可能实现。
+
+当前 scope 更窄，但技术上更清楚。论文重构的是 1990 年 sorting procedure，而且输入已经预先通过 oracle certification。实验比较三个具体调用：Python sort、完整的 oracle-backed reference pipeline，以及重构后的 paper core。
+
+Recognition 不属于正式实验，backend 只使用普通 Python list。
+
+这种调整让研究集中在一个明确、可辩护的实现与评估问题上。这个 ordinary-list implementation 继续作为已经验证的基线。按照导师的新建议，我也在研究是否可以在不改变 paper-facing control flow 的前提下，把 sibling-list representation 替换成 finger-tree backend。
+
+============================================================
+
+第 5 页 | 建议 0:55
+三个研究问题连接重构、测量和解释
+
+由此得到三个研究问题。
+
+第一个，也是主要技术问题，是 ordinary-list reconstruction 能否针对 oracle-certified valid input，从自己维护的状态中恢复正确的 sorted order。
+
+第二个问题关注观测到的 runtime behavior：paper core 在 pre-certified input 上调用时，相对于 Python sort 和完整 reference pipeline，在各自定义的 timing scope 下表现如何。
+
+第三个问题是 exploratory 的：input structure、checked operation counter 和 runtime 之间出现了哪些描述性关系。
+
+这些区别会贯穿整个汇报。第一个问题对应可执行重构和有限正确性证据；第二个问题对应不同 timing scope 下的测量，而不是一般性能主张；第三个问题只做描述，不做因果解释。
+
+============================================================
+
+第 6 页 | 建议 1:25
+Oracle、reference pipeline 和 paper core 承担不同角色
+
+在介绍控制流之前，需要先明确 oracle、reference pipeline 和 paper core 的不同角色。
+
+Oracle 有两个外部角色。在 paper call 之前，它确认 valid-input precondition；在调用之后，它提供用于 correctness comparison 的 expected sorted order。
+
+相比之下，reference pipeline 有意使用完整的 oracle result，包括 sorted output，并把它与 family tree 和 structural information 组合起来。
+
+Paper ordinary-list core 接收原始 sequence，以及已经成立的 valid-input precondition。它执行 Step 1、Step 2 和 Step 3，维护自己的 partial sorted order 和 sibling-list state，最后从这些状态中恢复输出。
+
+右下方的虚线框明确位于 core 之外，说明 output comparison 只在调用结束后发生。
+
+因此，两条路径共享同一个 expected answer，但输出来源完全不同。Oracle-derived sorted list 从未传入 paper core，也不会决定它的返回值。这样可以使用 oracle 检查正确性，而不把答案交给被研究的实现。
+
+============================================================
+
+第 7 页 | 建议 1:30
+一套 Step 1/2/3 控制流支持反射后的 decreasing orientation
+
+可执行重构使用一套统一的主控制流。
+
+在最初三个 point 排序完成后，每个新 point 都依次经过 Step 1、Step 2 和 Step 3。
+
+Step 1 找到 predecessor-side boundary；Step 2 找到 successor-side boundary。Step 3(a) 插入新 pair，Step 3(b) 在需要时执行 sibling-list split 和 ownership transfer，Step 3(c) 把新 point 插入 maintained sorted order。
+
+更精确地说，Step 1 始终计算 predecessor-side boundary A_i，Step 2 始终计算 successor-side boundary B_i。真正发生反射的是 Step 3：increasing iteration 在 Step 3(a) 使用 A_i、在 Step 3(b) 使用 B_i；decreasing iteration 则交换这两个 boundary 的用途。
+
+下方单独列出了不同的重构依据。1990 年论文明确描述 increasing case；decreasing case 通过 reflection 重构；geometric endpoint 和 odd-index z_1 output anchor 则属于局部 executable clarification。
+
+这样可以清楚区分：哪些规则由论文直接给出，哪些由镜像对称性重构，哪些是为了得到无歧义的可执行行为而明确补充的。
+
+============================================================
+
+第 8 页 | 建议 1:35
+Step 3(c) 使用 geometric extreme，而不是第二个 stored endpoint
+
+第一个 clarification 与 Step 3(c) 使用的 endpoint 有关。
+
+考虑这里的 valid prefix：3、2、1、4。Acquired pair 是 P_2，并按照 curve order 保存为 3、2。
+
+一种机械式解释是：直接把 stored pair 的第二个元素 2 当作 insertion anchor。这样会得到 1、2、4、3，它并没有按 axis order 排序。
+
+原因是 curve order 和 axis order 是两个不同概念。Pair 的存储顺序来自沿 curve 的遍历顺序，而 Step 3(c) 需要的是 x-axis 上的 geometric extreme。
+
+在这个例子中，正确的 geometric endpoint 是 3，把 4 插在 3 之后会得到正确顺序 1、2、3、4。
+
+在反射后的控制流中，orientation 决定使用哪一个 geometric extreme：increasing case 使用 right endpoint，decreasing case 使用 left endpoint。这和“哪个元素刚好排在 stored pair 的第二位”不是同一个问题。
+
+因此，可执行规则是选择 geometric extreme，而不是简单选择第二个 stored endpoint。我把它视为 reconstruction clarification，而不把这条规则直接归于 1990 年论文。缺少它时，maintained order 会在有效输入上出错。
+
+============================================================
+
+第 9 页 | 建议 1:20
+Odd iteration 需要独立的 z_1 output-anchor correction
+
+第二个 clarification 是 odd-index z_1 anomaly。
+
+这里的 valid prefix 是 1、2、3、4、6、7、0。在这个 decreasing iteration 中，普通 geometric base anchor 是 z_2，它的值为 2。
+
+如果直接把新 point 0 插入 2 之前，会得到 1、0、2、3、4、6、7。这样 z_1，也就是值 1，仍然位于新 point 的错误一侧。
+
+这里的关键顺序是：0 小于 z_1，而 z_1 又小于原来的 anchor 2。在这个 odd-index condition 下，output anchor 必须从 z_2 修正为 z_1。
+
+把 0 插入 z_1 之前后，得到正确 axis order：0、1、2、3、4、6、7。
+
+这里不能把它和 predecessor/successor boundary adjustment 合并。它们是两个独立决定：一个选择 family update 使用的 boundary pair，另一个选择 maintained order 更新时使用的 output anchor。只有明确分离这两个职责，maintained order 才能保持正确。
+
+============================================================
+
+第 10 页 | 建议 1:25
+正确插入还要求 ownership-safe transactional update
+
+Sorted-order insertion 只是 state 问题的一部分。每个 finite pair 还必须恰好拥有一个 parent 和一个 sibling-list owner。
+
+左侧图展示了局部 transaction。Split 之前，existing owner 控制一个 sibling list，其中包含 retained segment 和即将被 acquired 的 segment。Split 之后，existing owner 保留 retained segment，而 new owner 接收 acquired 的非空 segment。只有 transferred segment 的 ownership 会被重新绑定。
+
+因此，实现把 split 和 transfer 当作 transaction：先保存受影响状态，再执行 split，发布 ownership transfer，检查局部 postcondition；如果任何检查失败，就 rollback。
+
+检查还会拒绝无效的 split boundary 和不一致的 ownership state。
+
+Maintained state 同时还包括 sorted processed prefix，以及 upper 和 lower pair family。
+
+由于 backend 使用 ordinary list，scanning、copying、slicing 和 ownership rebinding 都仍然是实际成本。Transaction 可以保护正确性，但 ordinary list 并不提供历史 linear-time analysis 所需的 update bound。
+
+============================================================
+
+第 11 页 | 建议 1:05
+Validation 同时覆盖 implementation state 和 evidence integrity
+
+验证策略分成两个不同侧面。
+
+左侧是 implementation 和 state validation。Focused regression case 覆盖已知 edge condition；bounded exhaustive validation 覆盖 n 不超过 8 的 2,074 个 oracle-valid permutation；checked-state audit 检查完整 maintained state，包括 parent chain、ownership、list registry、split pair 和 recovered output；same-core deterministic replay 检查结果状态的 deterministic consistency。
+
+Replay 不是第二套独立的 Jordan-sorting implementation，而是对同一 core 的一致性检查。
+
+右侧是 evidence integrity 和 reproducibility。正式实验采用 pre-specified protocol、manifest-bound archive、schema 和 schedule 检查、row count、summary recomputation 和 hash verification。单独的 evidence-contract validator 会重新生成 expected case、重算相关 summary，并验证 archive。
+
+这两类 validation 支持不同主张。它们共同提供 bounded correctness evidence 和可复现的 evidence chain，但不构成对所有 Jordan sequence 的数学证明。
+
+============================================================
+
+第 12 页 | 建议 1:40
+正式实验把 certification 和 audit 放在 paper timing 之外
+
+正式实验的设计重点之一，是让 paper timing boundary 可以被清楚观察。
+
+Protocol 包含 5 个 input size、每个 size 12 个 exact case、3 个 algorithm，以及每个 case-algorithm cell 的 20 次 measured call，因此一共产生 3,600 条 measured row。
+
+每个 exact case 只生成一次、certify 一次，并在计时前执行一次 checked-state audit。每个 case-algorithm cell 先执行 5 次 warm-up，再执行 20 次 measured call。Schedule 是确定性的，并在 measured round 中轮转 algorithm position。每次 timed call 都使用 fresh input list。
+
+对 paper algorithm 来说，certification 和 checked-state audit 位于 timer 之外，而 pre-certified input 上的 minimal paper-core call 位于 timer 内。需要特别强调的是，从 maintained partial order 恢复 output 仍属于 paper timed call。Runner-level normalization 和 correctness comparison 在计时后执行。
+
+三个 pipeline 的 timed scope 并不相同。Python timing 覆盖完整 sorting call；reference timing 包含完整 oracle-backed pipeline。
+
+因此，后面看到的 paper/reference 数值被称为 pipeline-scope ratio。它可以描述这次固定实验，但不是 like-for-like end-to-end speedup。
+
+测量完成后，runner 聚合 raw row，写入 manifest-bound archive，并执行 evidence-contract validation。
+
+============================================================
+
+第 13 页 | 建议 0:50
+所有预先指定的 formal case 都通过检查
+
+全部 60 个 pre-specified formal case 都通过了相应检查。
+
+Archive 包含 3,600 条 measured row，60 个 case-level checked-state audit 全部通过，并且没有记录 correctness error。每个 case 在计时前都通过 oracle certification，每次 measured call 都返回 expected output。
+
+这里必须区分 row 和 audit。实验只执行了 60 次 audit，也就是每个 exact case 一次；audit result 随后关联到该 case 的 timing row。并不是执行了 3,600 次独立 audit。
+
+这些结果为 protocol 中受控的 valid case 提供经验正确性证据。它们不评估 arbitrary-input recognition，也不是对所有 Jordan sequence 的正确性证明。
+
+============================================================
+
+第 14 页 | 建议 1:20
+Paper/reference ratio 随五个测试规模下降
+
+主要 runtime pattern 是 median exact-case paper/reference ratio 随五个 tested size 持续下降。
+
+计算时，先在每个 exact case 内用 paper median 除以 reference median，再让各个 case 以相同权重进行汇总。
+
+在 n 等于 32 时，median ratio 是 3.226，因此在定义的 timing scope 下，paper call 大于 reference call。在 n 等于 64 时 ratio 降到 2.202，在 n 等于 128 时降到 1.351。在 n 等于 256 时，ratio 是 0.851；在 n 等于 512 时，ratio 是 0.567。
+
+因此，observed crossover 位于测试规模 128 和 256 之间。
+
+这只是有限范围内的 empirical pattern，不是 asymptotic claim。它也不代表 paper implementation 在一般意义上更快，因为 numerator 和 denominator 对应不同 pipeline。Reference call 包含 oracle-backed work，而 paper call 从 certified valid input 开始，只计时 minimal core。
+
+Backup A 中还可以看到，Python sort 在每个 tested size 上仍然具有最低的 median call time。
+
+============================================================
+
+第 15 页 | 建议 0:45
+证据支持有限重构结论，而不支持 linear-time claim
+
+当前 evidence 支持四个有限结论。
+
+第一，ordinary-list reconstruction 是可执行的；第二，它从 maintained state 中恢复 output，而不是使用 oracle result；第三，每个 evaluated valid case 都返回了正确结果；第四，它在定义的 timing scope 下产生了可复现的 runtime observation。
+
+但有四个更强结论尚未成立：这不是 linear-time implementation；五个 tested size 不能确定 asymptotic complexity；实验没有评估 arbitrary-input recognition；paper/reference ratio 也不是 like-for-like end-to-end speedup。
+
+本页的限制适用于今天报告的 ordinary-list evidence。未来的 finger-tree backend 必须拥有自己的正确性验证、复杂度分析和实验证据。
+
+============================================================
+
+第 16 页 | 建议 1:00
+已验证基线为限定范围的 finger-tree 扩展提供受控基础
+
+已验证的 ordinary-list baseline 现在为 finger-tree 扩展提供了一个受控起点。
+
+Executable reconstruction 已经稳定，output 从 maintained state 恢复，state 和 ownership validation 已经建立，formal evidence 也已经归档。归档的 ordinary-list experiment 会继续作为固定基线，不会被覆盖。
+
+如果 finger-tree backend 进入论文，它必须使用独立的源码版本、validation pass 和 experiment，不能复用现有结果。第一目标是实现语义等价的 backend，并通过 differential tests 与 Jordan-sorting correctness tests。
+
+更强的 complexity claim 还需要额外论证：split、boundary insertion 和 ownership handling 必须满足历史分析所使用的 operation bounds。因此我希望向导师确认两点：扩展应特别针对历史 heterogeneous finger tree，还是一个支持所需列表操作的等价后端；语义等价加实验比较是否足够，还是还需要 amortized operation-bound 论证。
+
+============================================================
+问答备用页：第 17-21 页
+============================================================
+
+第 17 页 | Backup A
+按输入规模列出的 median runtime
+
+如果有人询问精确 runtime，可以使用这一页。表格给出三个 algorithm 的 median call time。数值只属于一次记录的 Apple M4、CPython 3.12.4 执行环境。图采用 logarithmic scale，使 Python 数值能够与 reference 和 paper 数值同时显示。绝对时间不能直接推广到其他硬件或软件环境。
+
+------------------------------------------------------------
+
+第 18 页 | Backup B
+Paper output 的来源
+
+这一页直接回答 output provenance 问题。Reference pipeline 返回 oracle_result["sorted"]；paper core 返回 state.partial_order.to_list()。Certification 位于 paper call 之前，comparison 位于调用之后，因此两者都不会向 paper core 提供返回值。
+
+------------------------------------------------------------
+
+第 19 页 | Backup C
+当前 implementation baseline 的 validation summary
+
+这一页汇总 bounded validation evidence，包括 repository tests、n 不超过 8 的 exhaustive valid permutation、fixed generated case、formal case-level checked-state audit，以及一份通过 evidence-contract validation 的 formal evidence archive。这些检查相互补充，但都不是 universal proof。
+
+------------------------------------------------------------
+
+第 20 页 | Backup D
+Increasing 和 decreasing iteration 的反射关系
+
+Step 1 始终选择 predecessor-side boundary A_i，Step 2 始终选择 successor-side boundary B_i。Step 3 反射的是这些 boundary 的使用方式。Increasing iteration 获取 left split side，并使用 rightmost child 和 right endpoint；decreasing iteration 对这些局部选择进行镜像。
+
+------------------------------------------------------------
+
+第 21 页 | Backup E
+拟议的 finger-tree 后端边界
+
+这一拟议边界把 paper-facing 的 Step 1、Step 2 和 Step 3 control flow 放在一个小型 sibling-list interface 之上。当前 ordinary-list backend 继续作为已验证基线；finger-tree backend 则是同一组语义操作的独立实现，包括 singleton creation、boundary insertion、split、extreme-child access、ownership preservation 和 stable handles。
+
+具体的数据结构目标——是历史 heterogeneous finger tree，还是一个具有等价效率的后端——仍需与导师确认。
+
+最关键的风险是：高效的 tree splitting 本身并不足够。如果 ownership transfer 仍然扫描 acquired segment 并逐个重新绑定元素，这个 backend 仍可能无法满足历史分析所需的 operation bounds。因此第一里程碑是语义等价和 differential correctness；任何复杂度主张都需要另外的证明层论证。
