@@ -1,7 +1,7 @@
 JORDAN SORTING MASTER'S THESIS PROGRESS REPORT
 FULL SPEAKER SCRIPT
 
-Main presentation word count: 1919
+Main presentation word count: 1926
 Target duration: 18.5-20 minutes, including slide transitions and brief pauses.
 Recommended delivery: approximately 105-110 words per minute, with brief pauses for slide transitions and figure explanation.
 Slides 17-21 are Q&A material and are not included in the main word count.
@@ -80,10 +80,10 @@ Correct insertion also requires consistent ownership. Every finite pair has one 
 
 ============================================================
 
-SLIDE 11 | TARGET 1:00 | 112 WORDS
+SLIDE 11 | TARGET 1:00 | 113 WORDS
 Implementation checks and experiment consistency
 
-I use four main checks for the implementation. Focused regression cases cover known edge conditions. Exhaustive validation runs all 2,074 oracle-valid permutations up to size eight. Checked-state audits inspect parent links, ownership, sibling lists, and recovered output. Deterministic replay runs the same core again and compares the resulting state. Replay checks consistency. It does not provide a second Jordan-sorting implementation. Separately, an experiment validation path checks that the saved outputs match the fixed setup and recomputed summaries. I keep the detailed archive checks in Backup C because the main research point here is the algorithm state. These checks support the evaluated cases, but they do not prove correctness for every Jordan sequence.
+I use four main checks for the implementation. Focused regression cases cover known edge conditions. Bounded exhaustive validation covers all 2,074 oracle-valid permutations up to size eight. Checked-state audits inspect parent links, ownership, sibling lists, and recovered output. Deterministic replay runs the same core again and compares the resulting state. Replay checks consistency. It does not provide a second Jordan-sorting implementation. Separately, an experiment validation path checks that the saved outputs match the fixed setup and recomputed summaries. I keep the detailed archive checks in Backup C because the main research point here is the algorithm state. These checks support the evaluated cases, but they do not prove correctness for every Jordan sequence.
 
 ============================================================
 
@@ -94,17 +94,17 @@ The formal experiment covers five sizes and twelve exact cases per size. It comp
 
 ============================================================
 
-SLIDE 13 | TARGET 0:40 | 76 WORDS
+SLIDE 13 | TARGET 0:40 | 77 WORDS
 All 60 evaluated cases returned the correct output
 
-All 60 evaluated cases passed certification and the case-level checked-state audit. Every measured call returned the expected output, and the run recorded no correctness errors. The experiment used one audit per exact case. Its 3,600 timing rows carry the corresponding case-level audit result, so the row count does not mean 3,600 independent audits. These results support the tested valid cases only. They do not evaluate recognition of arbitrary inputs or prove correctness for every Jordan sequence.
+All 60 evaluated cases passed certification and one case-level checked-state audit each. Every measured call returned the expected output, and the run recorded no correctness errors. The experiment used one audit per exact case. Its 3,600 timing rows carry the corresponding case-level audit result, so the row count does not mean 3,600 independent audits. These results support the tested valid cases only. They do not evaluate recognition of arbitrary inputs or prove correctness for every Jordan sequence.
 
 ============================================================
 
-SLIDE 14 | TARGET 1:20 | 131 WORDS
+SLIDE 14 | TARGET 1:20 | 136 WORDS
 The paper/reference ratio decreases across the five tested sizes
 
-The main runtime pattern is the decrease in the paper/reference ratio across the five tested sizes. I first compute the ratio for each exact case. Each case then has equal weight in the size-level median. The ratio is 3.226 at n equals 32, 2.202 at 64, and 1.351 at 128. It falls below one at 256, where it is 0.851, and reaches 0.567 at 512. The observed crossover lies between the tested sizes 128 and 256. Under these timing scopes, the recorded paper call is smaller than the reference-pipeline call at the two larger sizes. The scopes differ, so this pattern does not establish a general speedup. Five sizes also do not establish asymptotic behavior. Python sort, shown in Backup A, has the lowest median call time at every tested size.
+The main runtime pattern is the decrease in the paper/reference ratio across the five tested sizes. I first compute the ratio for each exact case. Each case then has equal weight in the size-level median. The ratio is 3.226 at n equals 32, 2.202 at 64, and 1.351 at 128. It falls below one at 256, where it is 0.851, and reaches 0.567 at 512. The ratio is above one at n = 128 and below one at n = 256. Under these timing scopes, the recorded paper call is smaller than the reference-pipeline call at the two larger sizes. The scopes differ, so this pattern does not establish a general speedup. Five sizes also do not establish asymptotic behavior. Python sort, shown in Backup A, has the lowest median call time at every tested size.
 
 ============================================================
 

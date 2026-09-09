@@ -22,7 +22,7 @@ The main presentation is written for a midterm progress discussion rather than
 as a final-defense or repository-audit deck. Slides 7 through 10 retain the
 technical reconstruction detail; validation mechanics and the proposed
 finger-tree backend boundary remain available in the backup slides. The English
-notes for slides 1 through 16 contain 1,919 words.
+notes for slides 1 through 16 contain 1,926 words.
 
 ## Source and rebuild boundary
 
@@ -47,9 +47,9 @@ development.
 SHA-256 at the time of archival:
 
 ```text
-7793fd8627e633fb728b8d6756bd5af889c8f1addb40f086a49e76460e25b69b  Jordan_Sorting_Progress_Report.pptx
+f681d50b595917eede9652b27198d491d7c86d66b6ebfdf36d9af4ca8f3905b6  Jordan_Sorting_Progress_Report.pptx
 a25544f7188c7dc0472464007b588a68e4150eac739e9ab78d9bc6b09fd060e8  Jordan_Sorting_Progress_Report_ZH.pptx
-8b382b2e8784d783660ace9f80c1a762f51894fda4f73deb85485d87cb88a488  Jordan_Sorting_Progress_Report_Speaker_Script.txt
+eb2c36ad84c854e3baad473a8f22decb3a4052db34424fbadb78725ac2aa9758  Jordan_Sorting_Progress_Report_Speaker_Script.txt
 d294c6512f77715e672dd9eaecbde2f25c0547a511e81fc872f7aaabe1015f7b  Jordan_Sorting_Progress_Report_Speaker_Script_ZH.txt
 ```
 
