@@ -2,8 +2,8 @@ JORDAN SORTING MASTER'S THESIS PROGRESS REPORT
 FULL SPEAKER SCRIPT
 
 Main presentation word count: 1919
-Target duration: 18.5-20 minutes
-Recommended delivery: approximately 125-130 words per minute, with brief pauses at slide transitions
+Target duration: 18.5-20 minutes, including slide transitions and brief pauses.
+Recommended delivery: approximately 105-110 words per minute, with brief pauses for slide transitions and figure explanation.
 Slides 17-21 are Q&A material and are not included in the main word count.
 
 ============================================================
