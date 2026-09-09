@@ -1,7 +1,7 @@
 JORDAN SORTING MASTER'S THESIS PROGRESS REPORT
 FULL SPEAKER SCRIPT
 
-Main presentation word count: 1982
+Main presentation word count: 1919
 Target duration: 18.5-20 minutes
 Recommended delivery: approximately 125-130 words per minute, with brief pauses at slide transitions
 Slides 17-21 are Q&A material and are not included in the main word count.
@@ -24,10 +24,10 @@ The earlier implementation made the static structure explicit. It represented ra
 
 ============================================================
 
-SLIDE 3 | TARGET 0:50 | 105 WORDS
+SLIDE 3 | TARGET 0:50 | 85 WORDS
 Progress since the previous report
 
-Since the previous report, I have worked on four areas. I first narrowed the scope to sorting inputs that an external oracle has already certified. I then implemented the Step 1, Step 2, and Step 3 control flow. Next, I added ownership checks, transactional updates, replay, and bounded validation. Finally, after the implementation was working and checked, I ran a formal experiment with a fixed protocol. These areas depend on each other. The experiment only became meaningful after the output source and state checks were clear. The result is an executable ordinary-list implementation. The specialized backend used in the historical linear-time analysis remains future work.
+Since the previous report, I have worked on four areas. I first narrowed the scope to sorting inputs that an external oracle has already certified. I then implemented the Step 1, Step 2, and Step 3 control flow. Next, I added ownership checks, transactional updates, replay, and bounded validation. Finally, after the implementation was working and checked, I ran a formal experiment with a fixed protocol. The result is an executable ordinary-list implementation. The specialized backend used in the historical linear-time analysis remains future work.
 
 ============================================================
 
@@ -59,24 +59,24 @@ The reconstruction follows one control-flow skeleton. It first orders z one, z t
 
 ============================================================
 
-SLIDE 8 | TARGET 1:40 | 188 WORDS
+SLIDE 8 | TARGET 1:40 | 173 WORDS
 Step 3(c) uses the geometric extreme, not the second stored endpoint
 
-The first issue concerns the endpoint used in Step 3(c). Consider the valid prefix three, two, one, four. The acquired pair P two is stored in curve order as three, two. A mechanical reading might choose the second stored element, two, as the insertion anchor. That produces one, two, four, three, which is wrong on the axis. Curve order and axis order describe different things. The pair records traversal along the curve, while Step 3(c) needs the geometric extreme on the axis. Here the correct endpoint is three. Inserting four after three gives one, two, three, four. The example exposes a representation issue rather than a special case for these four values. The stored pair order follows the curve, so its second item does not always represent the required side of the current axis order. The increasing orientation uses the right geometric endpoint, and the decreasing orientation uses the left endpoint. The rule therefore selects the geometric extreme rather than the second stored element. I describe this as an executable clarification because the 1990 paper does not state it in this form. Without the clarification, valid examples fail.
+The first issue concerns the endpoint used in Step 3(c). Consider the valid prefix three, two, one, four. The acquired pair P two is stored in curve order as three, two. A mechanical reading might choose the second stored element, two, as the insertion anchor. That produces one, two, four, three, which is wrong on the axis. Curve order and axis order describe different things. The pair records traversal along the curve, while Step 3(c) needs the geometric extreme on the axis. Here the correct endpoint is three. Inserting four after three gives one, two, three, four. This is a representation issue, not a special case for these four numbers. The stored pair order follows the curve, so its second item does not always represent the required side of the current axis order. The increasing orientation uses the right geometric endpoint, and the decreasing orientation uses the left endpoint. I describe this as an executable clarification because the 1990 paper does not state it in this form. Without the clarification, valid examples fail.
 
 ============================================================
 
 SLIDE 9 | TARGET 1:25 | 160 WORDS
 Odd iterations require a separate z1 output-anchor correction
 
-The second issue is the odd-index z one case. The valid prefix here is one, two, three, four, six, seven, zero. During this decreasing iteration, the ordinary geometric base anchor is z two, with value two. Inserting zero directly before z two gives one, zero, two, three, four, six, seven. Z one remains on the wrong side of the new point. Because zero is smaller than z one, and z one is smaller than the original anchor, the output anchor changes from z two to z one. Inserting zero before z one gives the correct order. The important point is that this change affects the output insertion only. It does not replace the earlier predecessor or successor boundary calculation. Those two decisions solve different problems. One selects the pair used by the family update. The other selects the point used to update the output order. The implementation records both decisions separately, which also makes the diagnostic trace easier to check.
+The second issue is the odd-index z one case. The valid prefix here is one, two, three, four, six, seven, zero. During this decreasing iteration, the ordinary geometric base anchor is z two, with value two. Inserting zero directly before z two gives one, zero, two, three, four, six, seven. Z one remains on the wrong side of the new point. Zero is smaller than z one. Z one is also smaller than the original anchor. Therefore, the output anchor changes from z two to z one. Inserting zero before z one gives the correct order. The important point is that this change affects the output insertion only. It does not replace the earlier predecessor or successor boundary calculation. Those two decisions solve different problems. One selects the pair used by the family update. The other selects the point used to update the output order. The implementation records both decisions separately, which also makes the diagnostic trace easier to check.
 
 ============================================================
 
-SLIDE 10 | TARGET 1:25 | 154 WORDS
+SLIDE 10 | TARGET 1:25 | 147 WORDS
 Ownership-safe split and transfer
 
-Correct insertion also requires consistent ownership. Every finite pair has one parent and one sibling-list owner. Before a split, the existing owner controls both the retained and acquired segments. After the split, the existing owner keeps the retained segment, and the new owner receives the acquired segment. The implementation may create new sibling lists for both nonempty sides. Their list identifiers can therefore change. Only the acquired segment changes parent ownership. The code treats the split and transfer as one transaction. It saves the affected state, performs the update, and checks the split boundary, ownership, and local postconditions. If a check fails, it restores the old registry, ownership links, and list identifiers. The maintained state also contains the sorted processed prefix and both pair families. Ordinary lists make scanning, copying, slicing, and ownership rebinding visible costs. These checks protect correctness, but they do not provide the update bounds used in the historical linear-time analysis.
+Correct insertion also requires consistent ownership. Every finite pair has one parent and one sibling-list owner. Before a split, the existing owner controls both the retained and acquired segments. After the split, the existing owner keeps the retained segment, and the new owner receives the acquired segment. The split may create new lists for both nonempty sides, but only the acquired segment changes parent. The code treats the split and transfer as one transaction. It saves the affected state, performs the update, and checks the split boundary, ownership, and local postconditions. If a check fails, it restores the old registry, ownership links, and list identifiers. The maintained state also contains the sorted processed prefix and both pair families. Ordinary lists make scanning, copying, slicing, and ownership rebinding visible costs. These checks protect correctness, but they do not provide the update bounds used in the historical linear-time analysis.
 
 ============================================================
 
@@ -101,10 +101,10 @@ All 60 evaluated cases passed certification and the case-level checked-state aud
 
 ============================================================
 
-SLIDE 14 | TARGET 1:20 | 150 WORDS
+SLIDE 14 | TARGET 1:20 | 131 WORDS
 The paper/reference ratio decreases across the five tested sizes
 
-The main runtime pattern is the decrease in the paper/reference ratio across the five tested sizes. I first compute the ratio for each exact case. Each case then has equal weight in the size-level median. The ratio is 3.226 at n equals 32, 2.202 at 64, and 1.351 at 128. It falls below one at 256, where it is 0.851, and reaches 0.567 at 512. The observed crossover lies between the tested sizes 128 and 256. The pilot experiment showed the same downward direction, although I do not combine absolute times across the two runs. Under these timing scopes, the recorded paper call is smaller than the reference-pipeline call at the two larger sizes. The scopes differ, so this pattern does not establish a general speedup. Five sizes also do not establish asymptotic behavior. Python sort, shown in Backup A, has the lowest median call time at every tested size.
+The main runtime pattern is the decrease in the paper/reference ratio across the five tested sizes. I first compute the ratio for each exact case. Each case then has equal weight in the size-level median. The ratio is 3.226 at n equals 32, 2.202 at 64, and 1.351 at 128. It falls below one at 256, where it is 0.851, and reaches 0.567 at 512. The observed crossover lies between the tested sizes 128 and 256. Under these timing scopes, the recorded paper call is smaller than the reference-pipeline call at the two larger sizes. The scopes differ, so this pattern does not establish a general speedup. Five sizes also do not establish asymptotic behavior. Python sort, shown in Backup A, has the lowest median call time at every tested size.
 
 ============================================================
 
@@ -115,10 +115,10 @@ The current evidence supports an executable ordinary-list reconstruction whose o
 
 ============================================================
 
-SLIDE 16 | TARGET 0:55 | 106 WORDS
+SLIDE 16 | TARGET 0:55 | 104 WORDS
 Possible next step: a finger-tree backend
 
-A possible next step is to investigate a finger-tree backend while keeping the same Step 1, Step 2, and Step 3 behavior. The ordinary-list implementation gives a tested reference point for that work. The detailed backend boundary appears in Backup E, including the ownership-transfer difficulty. I would like guidance on two questions. First, should the extension target the historical heterogeneous finger tree, or an equivalent backend with the required list operations? Second, would semantic equivalence and an experimental comparison be sufficient, or should the thesis also include an amortized operation-bound argument? This choice determines whether the extension remains mainly experimental or also requires a proof-level component.
+A possible next step is to investigate a finger-tree backend while keeping the same Step 1, Step 2, and Step 3 behavior. The ordinary-list implementation gives a tested reference point for that work. The detailed backend boundary appears in Backup E, including the ownership-transfer difficulty. I would like guidance on two questions. First, should the extension target the historical heterogeneous finger tree, or an equivalent backend with the required list operations? Second, is a tested, semantically equivalent prototype enough, or should I also prove the required amortized operation bounds? The answer determines whether this stays an implementation experiment or also needs a complexity proof.
 
 ============================================================
 Q&A NOTES: SLIDES 17-21
