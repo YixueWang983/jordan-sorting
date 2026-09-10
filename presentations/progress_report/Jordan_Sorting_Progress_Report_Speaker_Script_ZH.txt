@@ -13,21 +13,21 @@ JORDAN SORTING 硕士论文进度汇报
 第 1 页 | 建议 0:50
 Simplified Jordan Sorting 的可执行重构进展
 
-大家好。这次汇报介绍我的硕士论文进展，主题是 Simplified Jordan Sorting 的可执行重构。上次我主要讨论静态结构，包括 rank interval、upper 和 lower family、family tree，以及 oracle 支持的 reference implementation。此后的核心问题是，论文描述的动态过程能否在普通 Python list 上成为真正可执行、可检查，并能从自身状态恢复输出的实现。今天我会介绍重构中的关键决定、验证方法，以及在明确计时范围下得到的实验结果。
+大家好。这次汇报介绍我的硕士论文进展，主题是 Simplified Jordan Sorting 的可执行重构。上次我主要讨论静态结构，包括 rank interval、upper 和 lower family、family tree，以及 oracle 支持的 reference implementation。此后的核心问题是，论文描述的动态过程能否在普通 Python list 上成为真正可执行、可检查，并能从自身状态恢复输出的实现。今天我会介绍重构中的关键决定、验证方法，以及正式实验中在明确计时范围下观察到的运行时间趋势。汇报将重点解释两处需要将论文描述明确为可执行规则的地方。
 
 ============================================================
 
 第 2 页 | 建议 0:55
 上一次汇报建立了静态结构基线
 
-上一次实现已经把静态结构说明得比较清楚。它用 rank interval 表示输入，区分 upper 和 lower pair family，重构 laminar family tree，并计算结构指标。Oracle 用来确认输入和提供 reference output。但它还没有执行动态 Jordan-sorting procedure：没有持续维护 processed prefix，没有完成 sibling-list 的 split 和 ownership transfer，也没有从算法自己的状态恢复最终输出。因此，主要缺口是把结构描述转化为安全而明确的动态更新。
+上一次实现已经把静态结构说明得比较清楚。它用 rank interval 表示输入，区分 upper 和 lower pair family，重构 laminar family tree，并计算结构指标。Oracle 用来确认输入和提供 reference output。但它还没有执行动态 Jordan-sorting procedure：没有持续维护 processed prefix，没有完成 sibling-list 的 split 和 ownership transfer，也没有从算法自己的状态恢复最终输出。这些操作中任何一次更新出错，都可能同时破坏 partial order 和 family structure。因此，主要缺口是把结构描述转化为安全而明确的动态更新。
 
 ============================================================
 
 第 3 页 | 建议 0:50
 上次汇报后的进展
 
-上次汇报之后，我集中完成了四项工作。第一，缩小范围，把有效输入排序、recognition 和理论后端主张分开。第二，实现 Step 1、Step 2 和 Step 3 的控制流。第三，加入 ownership 不变量、事务式更新、重放和有界验证。第四，在实现和验证边界稳定后，执行固定协议的正式实验。这些工作相互依赖，尤其是输出来源与状态检查明确之后，实验才有解释意义。当前成果是可执行的普通列表实现，历史论文中的专用后端仍属于未来工作。
+上次汇报之后，我集中完成了四项工作。第一，缩小范围，聚焦外部 oracle 已认证的有效输入排序。第二，实现 Step 1、Step 2 和 Step 3 的控制流。第三，加入 ownership 不变量、事务式更新、重放和有界验证。第四，在实现和验证边界稳定后，执行固定协议的正式实验。当前成果是可执行的普通列表实现，历史线性时间分析所使用的专用后端仍属于未来工作。
 
 ============================================================
 
@@ -48,77 +48,77 @@ Simplified Jordan Sorting 的可执行重构进展
 第 6 页 | 建议 1:10
 Oracle、reference pipeline 与 paper core 承担不同角色
 
-Oracle、reference pipeline 和 paper core 的角色必须明确区分。Paper call 之前，oracle 只确认有效输入条件；调用之后，runner 才用 oracle 的排序结果作正确性比较。Reference pipeline 则有意消费完整 oracle result，包括 sorted output。Paper core 只接收原始 sequence 和已经成立的有效输入前提。它执行 Step 1、2、3，维护 partial order 与 sibling-list 状态，并从这些状态恢复输出。图中的虚线比较框位于 core 外部。两条路径面对同一个 expected answer，但输出来源不同。Oracle 排序结果不会进入 paper core，也不会决定它的返回值。
+Oracle、reference pipeline 和 paper core 的角色必须明确区分。Paper call 之前，oracle 只确认有效输入条件；调用之后，runner 才用 oracle 的排序结果作正确性比较。Reference pipeline 则有意消费完整 oracle result，包括 sorted output。Paper core 只接收原始 sequence 和已经成立的有效输入前提。它执行 Step 1、2、3，维护 partial order 与 sibling-list 状态，并从这些状态恢复输出。图中的虚线比较框位于 core 外部。两条路径面对同一个 expected answer，但输出来源不同。这样就能在不把答案作为输入的情况下检查 paper core。Oracle 排序结果不会进入 paper core，也不会决定它的返回值。
 
 ============================================================
 
 第 7 页 | 建议 1:30
 Step 1/2/3 控制流与镜像方向
 
-可执行重构采用统一的控制流。先排序 z1、z2、z3并初始化 partial order 与首批 upper、lower pair；随后每个新点都依次经过 Step 1、Step 2 和 Step 3。Step 1 计算 predecessor-side boundary A_i，Step 2 计算 successor-side boundary B_i。Step 3(a) 插入新 pair，Step 3(b) 在需要时拆分 sibling list 并转移 ownership，Step 3(c) 把新点插入维护的顺序。Increasing 与 decreasing 方向共享这些阶段，真正镜像的是 Step 3 对两个 boundary 的使用。1990 年论文直接描述 increasing case，decreasing case由对称性重构。几何端点和奇数索引 z1 输出锚点则是为了得到无歧义执行行为而明确补充的局部规则。
+可执行重构采用统一的控制流。先排序 z1、z2、z3，并初始化 partial order 与首批 upper、lower pair；随后每个新点都依次经过 Step 1、Step 2 和 Step 3。Step 1 计算 predecessor-side boundary A_i，Step 2 计算 successor-side boundary B_i。Step 3(a) 插入新 pair，Step 3(b) 在需要时拆分 sibling list 并转移 ownership，Step 3(c) 把新点插入维护的顺序。Increasing 与 decreasing 方向共享这些阶段，局部角色则互为镜像。在 increasing iteration 中，Step 3(a) 使用 A_i，Step 3(b) 使用 B_i；decreasing iteration 交换这两个边界的用途。1990 年论文直接描述 increasing case，decreasing case 由对称性重构。几何端点和奇数索引 z1 输出锚点则是为了得到无歧义执行行为而明确补充的局部规则。
 
 ============================================================
 
 第 8 页 | 建议 1:40
 Step 3(c) 使用几何极值，而非第二个存储端点
 
-第一个关键问题是 Step 3(c) 应使用哪个端点。考虑有效前缀 3、2、1、4。Acquired pair P2 按 curve order 存为 3、2。如果机械地取第二个存储元素 2 作为锚点，插入 4 后得到 1、2、4、3，在 axis order 上是错误的。原因是 curve order 和 axis order 描述不同关系。Pair 的存储顺序来自曲线遍历，但 Step 3(c) 需要 x 轴上的几何极值。在这里正确端点是 3，把 4 插在 3 后得到 1、2、3、4。于是可执行规则选择几何极值，而不是固定选择第二个存储元素。Increasing 使用右端几何极值，decreasing 使用左端几何极值。我把它称为可执行化澄清，而不是直接归为 1990 年论文的原文规则。
+第一个关键问题是 Step 3(c) 应使用哪个端点。考虑有效前缀 3、2、1、4。Acquired pair P2 按 curve order 存为 3、2。如果机械地取第二个存储元素 2 作为锚点，插入 4 后得到 1、2、4、3，在 axis order 上是错误的。原因是 curve order 和 axis order 描述不同关系。Pair 的存储顺序来自曲线遍历，但 Step 3(c) 需要 x 轴上的几何极值。在这里正确端点是 3，把 4 插在 3 后得到 1、2、3、4。这是表示方式的问题，并不只是这四个数字的特例：pair 的存储顺序沿曲线排列，所以第二个元素未必位于当前 axis order 所需的一侧。于是可执行规则选择几何极值，而不是固定选择第二个存储元素。Increasing 使用右端几何极值，decreasing 使用左端几何极值。我把它称为可执行化澄清，因为 1990 年论文没有以这种形式明确给出规则。缺少这一澄清时，有效输入的例子也会失败。
 
 ============================================================
 
 第 9 页 | 建议 1:25
 奇数迭代需要单独的 z1 输出锚点修正
 
-第二个问题是奇数索引的 z1 特例。例子中的有效前缀为 1、2、3、4、6、7、0。当前是 decreasing iteration，普通几何锚点为 z2，也就是值 2。若直接把 0 插到 z2 前，会得到 1、0、2、3、4、6、7，z1 仍在新点错误的一侧。因为 0 小于 z1，且 z1 小于原锚点，所以输出锚点必须从 z2 改为 z1。这样插入后得到正确顺序 0、1、2、3、4、6、7。这个修正只影响输出插入，不替代 predecessor 或 successor boundary 的计算。二者分别决定 family update 的 pair 与 partial order 更新的点，代码也将它们分开记录。
+第二个问题是奇数索引的 z1 特例。例子中的有效前缀为 1、2、3、4、6、7、0。当前是 decreasing iteration，普通几何锚点为 z2，也就是值 2。若直接把 0 插到 z2 前，会得到 1、0、2、3、4、6、7，z1 仍在新点错误的一侧。因为 0 小于 z1，且 z1 小于原锚点，所以输出锚点必须从 z2 改为 z1。这样插入后得到正确顺序 0、1、2、3、4、6、7。这个修正只影响输出插入，不替代 predecessor 或 successor boundary 的计算。二者分别决定 family update 的 pair 与 partial order 更新的点，代码也将它们分开记录，便于检查诊断 trace。
 
 ============================================================
 
 第 10 页 | 建议 1:25
 Ownership 安全的拆分与转移
 
-正确插入还要求 ownership 一致。每个有限 pair 必须只有一个 parent 和一个 sibling-list owner。拆分前，原 owner 控制 retained 与 acquired 两部分；拆分后，原 owner 保留 retained segment，新 owner 接收 acquired segment。实现可能为两个非空侧都创建新的 sibling list，所以两侧的 list ID 都可能改变。但只有 acquired segment 改变 parent ownership。代码把 split 与 transfer 当作一个 transaction：保存受影响状态，执行更新，检查 split boundary、ownership 与局部后置条件；失败时恢复 registry、ownership link 与 list ID。普通列表使扫描、复制、切片和 ownership rebinding 都成为明确成本。这些检查保护正确性，但不提供历史线性时间分析所需的更新界。
+正确插入还要求 ownership 一致。每个有限 pair 必须只有一个 parent 和一个 sibling-list owner。拆分前，原 owner 控制 retained 与 acquired 两部分；拆分后，原 owner 保留 retained segment，新 owner 接收 acquired segment。实现可能为两个非空侧都创建新的 sibling list，所以两侧的 list ID 都可能改变。但只有 acquired segment 改变 parent ownership。代码把 split 与 transfer 当作一个 transaction：保存受影响状态，执行更新，检查 split boundary、ownership 与局部后置条件；失败时恢复 registry、ownership link 与 list ID。维护状态还包括已处理前缀的排序结果，以及 upper 和 lower 两类 pair family。普通列表使扫描、复制、切片和 ownership rebinding 都成为明确成本。这些检查保护正确性，但不提供历史线性时间分析所需的更新界。
 
 ============================================================
 
 第 11 页 | 建议 1:00
 实现检查与实验一致性
 
-实现层面使用四类主要检查。Focused regression case 覆盖已知边界；有界穷举验证覆盖 n 不超过 8 的 2,074 个 oracle-valid permutation；checked-state audit 检查 parent、ownership、sibling list 与恢复输出；确定性重放再次运行同一 core 并比较状态。重放检查一致性，不是第二套独立算法。另有一条实验验证路径确认保存结果与固定实验设置及重算汇总一致，详细合同放在 Backup C。这里的重点仍是算法状态。这些检查支持已评估用例，但不是对所有 Jordan sequence 的数学证明。
+实现层面使用四类主要检查。Focused regression case 覆盖已知边界；有界穷举验证覆盖 n 不超过 8 的全部 2,074 个 oracle-valid permutation；checked-state audit 检查 parent、ownership、sibling list 与恢复输出；确定性重放再次运行同一 core 并比较状态。重放检查一致性，不是第二套独立算法。另有一条实验验证路径确认保存结果与固定实验设置及重算汇总一致，详细合同放在 Backup C。这里的重点仍是算法状态。这些检查支持已评估用例，但不是对所有 Jordan sequence 的数学证明。
 
 ============================================================
 
 第 12 页 | 建议 1:10
 正式实验将认证与 audit 保持在 paper 计时之外
 
-正式实验覆盖 5 个规模，每个规模 12 个 exact case，并比较 3 个算法。每个 case-algorithm cell 先做 5 次 warm-up，再做 20 次 measured call，因此得到 3,600 条记录。这 20 次是同一个 exact case 的重复调用，不是 20 个独立输入；每次调用会获得包含相同值的 fresh list。调度会轮转算法位置。对 paper algorithm，oracle certification 与 checked-state audit 在计时前完成，minimal paper call 位于计时内，其中包括从维护顺序恢复输出。返回值比较发生在计时后。Python 与 reference 的计时范围也各自不同，因此 paper/reference 只能作为 pipeline-scope 比值，不能解释为同口径端到端加速。
+正式实验覆盖 5 个规模，每个规模 12 个 exact case，并比较 3 个算法。每个 case-algorithm cell 先做 5 次 warm-up，再做 20 次 measured call，因此得到 3,600 条记录。这 20 次是同一个 exact case 的重复调用，不是 20 个独立输入；每次调用会获得包含相同值的 fresh list。调度会轮转算法位置，避免某个算法总是先运行。对 paper algorithm，oracle certification 与 checked-state audit 在计时前完成，minimal paper call 位于计时内，其中包括从维护顺序恢复输出。返回值比较发生在计时后。Python 计时覆盖排序调用，reference 计时覆盖完整的 oracle-backed reference pipeline。Paper 与 reference 的计时范围不同，因此 paper/reference 比值不能解释为端到端加速。
 
 ============================================================
 
 第 13 页 | 建议 0:40
 全部 60 个评估用例均返回正确输出
 
-全部 60 个评估用例都通过认证与 case-level checked-state audit。每次 measured call 都返回 expected output，正式运行没有记录正确性错误。实验是每个 exact case 做一次 audit；3,600 条 timing row 携带对应的 case-level audit 结果，并不表示执行了 3,600 次独立 audit。这些结果只支持本次测试的有效用例，不评估任意输入 recognition，也不是对全部 Jordan sequence 的证明。
+全部 60 个评估用例均通过认证，并且每个用例各通过一次 case-level checked-state audit。每次 measured call 都返回 expected output，正式运行没有记录正确性错误。实验是每个 exact case 做一次 audit；3,600 条 timing row 携带对应的 case-level audit 结果，并不表示执行了 3,600 次独立 audit。这些结果只支持本次测试的有效用例，不评估任意输入 recognition，也不是对全部 Jordan sequence 的证明。
 
 ============================================================
 
 第 14 页 | 建议 1:20
 Paper/reference 比值随五个测试规模下降
 
-主要运行时间模式是 paper/reference 比值随五个测试规模下降。比值先在每个 exact case 内计算，再让每个 case 在规模中位数中具有相同权重。它从 n 等于 32 时的 3.226，降到 64 时的 2.202、128 时的 1.351，并在 256 时低于 1，达到 0.851；在 512 时为 0.567。观测到的 crossover 位于 128 和 256 之间。Pilot 也呈现相同下降方向，但两次运行的绝对时间不会合并。由于 paper 与 reference 的计时范围不同，这个趋势不是一般性能加速，也不能用五个规模推断渐近行为。
+主要运行时间模式是 paper/reference 比值随五个测试规模下降。比值先在每个 exact case 内计算，再让每个 case 在规模中位数中具有相同权重。它从 n 等于 32 时的 3.226，降到 64 时的 2.202、128 时的 1.351，并在 256 时低于 1，达到 0.851；在 512 时为 0.567。在 n = 128 时，比值大于 1；在 n = 256 时，比值小于 1。在上述计时范围下，两个较大规模中记录的 paper 调用时间均小于 reference pipeline 调用时间。由于两者计时范围不同，这一趋势不能证明一般性的加速，五个测试规模也不能确定渐近行为。备用 A 中的 Python sort 在每个测试规模上都有最低的调用时间中位数。
 
 ============================================================
 
 第 15 页 | 建议 0:45
 当前证据说明了什么
 
-当前证据支持两类主要结论：普通列表重构可以执行，并从自身维护状态恢复输出；在测试的有效用例和固定计时范围下，记录到了正确输出与明确的运行时间趋势。主要限制也同样明确：普通 Python list 不构成线性时间实现，五个规模不能确定渐近复杂度。此外，本实验没有评估 recognition，paper 与 reference 也采用不同计时范围。因此这些数值只是固定条件下的运行时间观测。
+当前证据支持两类主要结论：普通列表重构可以执行，并从自身维护状态恢复输出；在测试的有效用例和固定计时范围下，记录到了正确输出与明确的运行时间趋势。主要限制也同样明确：普通 Python list 不构成线性时间实现，五个规模不能确定渐近复杂度。此外，本实验没有评估 recognition，paper 与 reference 也采用不同计时范围。因此这些数值只是当前实现和实验条件下的运行时间观测，不能作为一般性的算法复杂度界。
 
 ============================================================
 
 第 16 页 | 建议 0:55
 可能的下一步：finger-tree 后端
 
-一个可能的下一步是在保持 Step 1、Step 2 和 Step 3 语义不变的前提下研究 finger-tree 后端。普通列表实现提供了经过测试的参照点，详细的接口与 ownership-transfer 难点放在 Backup E。我希望向导师确认两个问题：第一，应专门实现历史 heterogeneous finger tree，还是实现支持所需列表操作的等价后端？第二，论文只做语义等价和实验比较是否足够，还是还应给出 amortized operation-bound 论证？这个选择决定扩展主要是实验性工作，还是还需要证明层面的内容。
+一个可能的下一步是在保持 Step 1、Step 2 和 Step 3 语义不变的前提下研究 finger-tree 后端。普通列表实现提供了经过测试的参照点，详细的接口与 ownership-transfer 难点放在 Backup E。我希望向导师确认两个问题：第一，应专门实现历史 heterogeneous finger tree，还是实现支持所需列表操作的等价后端？第二，一个经过测试、语义等价的原型是否足够，还是还应证明所需的摊还操作界（amortized operation bounds）？这个选择决定扩展主要是实验性工作，还是还需要证明层面的内容。
 
 ============================================================
 问答备用页：第 17-21 页
@@ -148,11 +148,11 @@ Paper/reference 比值随五个测试规模下降
 第 20 页 | 问答备用
 备用 D：镜像后的局部选择
 
-这张表汇总镜像后的局部选择。Step 1 始终计算 predecessor-side boundary A_i，Step 2 始终计算 successor-side boundary B_i。镜像发生在 Step 3 如何使用这些 boundary，以及 split side、extreme child 与几何端点的选择上。
+这张表汇总镜像后的局部选择。Step 1 始终计算 predecessor-side boundary A_i，Step 2 始终计算 successor-side boundary B_i。镜像发生在 Step 3 如何使用这些 boundary。在 increasing iteration 中，获得左侧拆分片段，并使用最右 child 与右侧几何端点；decreasing iteration 则镜像为右侧拆分片段、最左 child 与左侧几何端点。
 
 ------------------------------------------------------------
 
 第 21 页 | 问答备用
 备用 E：拟议的 finger-tree 后端边界
 
-拟议结构把 Step 1、Step 2 和 Step 3 放在一个小型 sibling-list 接口之上。普通列表后端保留为当前参照，finger-tree 后端实现相同语义操作。具体目标是历史 heterogeneous finger tree，还是具有等价操作界的后端，仍需与导师确认。主要风险是，高效 tree split 本身不够；若 ownership transfer 仍逐项扫描并重新绑定，就无法得到历史分析所需的操作界。第一步应先保证语义等价与 differential correctness，任何复杂度主张都需要独立的证明论证。
+拟议结构把 Step 1、Step 2 和 Step 3 放在一个小型 sibling-list 接口之上。普通列表后端仍是当前已验证的基线。拟议的 finger-tree 后端将独立实现相同的语义操作：创建 singleton list、在左或右边界插入、按新点值拆分、访问 first/last child，以及保持 ownership 和 stable handle。具体目标是历史 heterogeneous finger tree，还是具有等价操作界的后端，仍需与导师确认。主要风险是，高效 tree split 本身不够；若 ownership transfer 仍扫描 acquired segment 并逐项重新绑定，后端就可能无法满足历史分析所需的操作界。第一步应先保证语义等价与 differential correctness，任何复杂度主张都需要独立的证明论证。
