@@ -1,124 +1,116 @@
-JORDAN SORTING MASTER'S THESIS PROGRESS REPORT
-FULL SPEAKER SCRIPT
-
-Main presentation word count: 1926
-Target duration: 18.5-20 minutes, including slide transitions and brief pauses.
-Recommended delivery: approximately 105-110 words per minute, with brief pauses for slide transitions and figure explanation.
-Slides 17-21 are Q&A material and are not included in the main word count.
-
 ============================================================
 MAIN PRESENTATION: SLIDES 1-16
 ============================================================
 
-SLIDE 1 | TARGET 0:50 | 103 WORDS
+SLIDE 1
 Progress on the Executable Reconstruction of Simplified Jordan Sorting
 
-Good afternoon. This presentation updates my master's thesis on an executable reconstruction of Simplified Jordan Sorting. My previous report focused on static structure: rank intervals, upper and lower pair families, family trees, and an oracle-backed reference. Since then, I have focused on one question. Can the paper's dynamic procedure run with ordinary Python lists while preserving its own state and recovering its own output? I will explain the reconstruction issues, the checks I used, and the runtime pattern observed in the formal experiment. I will spend most of the time on the two places where the paper description needed an explicit executable decision.
+Good afternoon. This presentation updates my master's thesis on an executable reconstruction of Simplified Jordan Sorting using ordinary Python lists. My previous report focused on static structure: rank intervals, upper and lower pair families, family trees, and an oracle-backed reference. The main question is whether the paper's dynamic procedure can maintain its own state and recover its own output. I will focus on two reconstruction decisions, then explain the validation checks and the runtime results from the formal experiment.
 
 ============================================================
 
-SLIDE 2 | TARGET 0:55 | 114 WORDS
+SLIDE 2
 The previous report established a static structural baseline
 
-The earlier implementation made the static structure explicit. It represented rank intervals, separated the upper and lower families, rebuilt their laminar family trees, and computed structural metrics. The oracle checked whether an input was valid and supplied a reference answer. However, the code did not yet execute the dynamic procedure. It did not update the processed prefix as new points arrived. It also did not split sibling lists, transfer ownership, or recover the final order from the algorithm's own state. These operations matter because an error in one update can corrupt both the partial order and the family structure. The main gap was therefore the move from a structural description to safe dynamic updates.
+The previous implementation represented rank intervals, separated upper and lower pair families, rebuilt their laminar family trees, and computed structural metrics. An oracle checked input validity and supplied a reference answer. The missing part was the dynamic procedure: updating the processed prefix, splitting sibling lists, transferring ownership, and recovering output from maintained state. Each update must preserve both the partial order and the family structure. An error in one update can corrupt both, so safe dynamic updates were the main implementation gap.
 
 ============================================================
 
-SLIDE 3 | TARGET 0:50 | 85 WORDS
+SLIDE 3
 Progress since the previous report
 
-Since the previous report, I have worked on four areas. I first narrowed the scope to sorting inputs that an external oracle has already certified. I then implemented the Step 1, Step 2, and Step 3 control flow. Next, I added ownership checks, transactional updates, replay, and bounded validation. Finally, after the implementation was working and checked, I ran a formal experiment with a fixed protocol. The result is an executable ordinary-list implementation. The specialized backend used in the historical linear-time analysis remains future work.
+Since then, I narrowed the scope to externally certified valid inputs and implemented the Step 1, Step 2, and Step 3 control flow. I added ownership checks, transactional updates, replay, and bounded validation. Once the implementation passed these checks, I ran a formal experiment with a fixed protocol. The result is an executable ordinary-list reconstruction.
 
 ============================================================
 
-SLIDE 4 | TARGET 0:50 | 102 WORDS
+SLIDE 4
 Current scope: valid-input sorting
 
-As the implementation became clearer, I narrowed the scope. The thesis now studies the 1990 sorting procedure on inputs that an oracle has already certified as valid. The experiment compares Python sort, the complete oracle-backed reference pipeline, and the reconstructed paper core. Recognition remains a separate question. I do not use the experiment to classify invalid inputs. The paper core also uses ordinary Python lists rather than the specialized historical backend. This scope lets the thesis study one concrete issue: whether the dynamic procedure can run correctly and recover output from its own maintained state. A finger-tree backend remains a possible extension.
+The thesis studies the 1990 sorting procedure on inputs already certified as valid by an oracle. The experiment compares Python sort, the complete oracle-backed reference pipeline, and the reconstructed paper core. Recognition remains outside this experiment. The current core uses ordinary Python lists. It does not implement the specialized backend used in the historical linear-time analysis.
 
 ============================================================
 
-SLIDE 5 | TARGET 0:45 | 88 WORDS
+SLIDE 5
 Three questions connect reconstruction, measurement, and interpretation
 
-The work has three research questions. RQ1 asks whether the ordinary-list reconstruction can recover the correct sorted order from its maintained state on certified valid inputs. RQ2 asks how the paper call behaves relative to Python sort and the complete reference pipeline under their stated timing scopes. RQ3 looks for descriptive relationships between input structure, checked operation counters, and runtime. These questions keep reconstruction, measurement, and interpretation separate. RQ1 is the main technical question. RQ2 reports measured behavior. RQ3 remains exploratory and does not claim a causal explanation.
+RQ1 is the main technical question: can the ordinary-list reconstruction recover the correct sorted order from maintained state on certified valid inputs? RQ2 compares the paper call with Python sort and the complete reference pipeline under their stated timing scopes. RQ3 explores descriptive relationships between input structure, checked operation counters, and runtime. It does not claim a causal explanation.
 
 ============================================================
 
-SLIDE 6 | TARGET 1:10 | 135 WORDS
+SLIDE 6
 The oracle, reference pipeline, and paper core have distinct roles
 
-The oracle, reference pipeline, and paper core play different roles. Before the paper call, the oracle checks the valid-input condition. After the call, the runner uses the oracle's sorted result as the expected answer. The reference pipeline intentionally consumes the complete oracle result, including that sorted output. The paper core receives only the original sequence under the certified precondition. It runs Step 1, Step 2, and Step 3, updates its partial order and sibling-list state, and returns the order recovered from that state. The dashed comparison box sits outside the paper core. Both methods are checked against the same expected answer, but they produce their outputs differently. This distinction lets me test the paper core without supplying the answer as input. The oracle-sorted list never enters the paper core and never determines its return value.
+Before the paper call, the oracle certifies input validity. After the call, the runner compares the returned output with the oracle's sorted result. The reference pipeline uses the complete oracle result, including that sorted output. The paper core receives only the original sequence under the certified precondition. It executes Step 1, Step 2, and Step 3, maintains the partial order and sibling lists, and recovers output from the partial order. Both methods are checked against the same expected answer, but they produce their outputs differently. The oracle-sorted answer never enters the paper core. The dashed comparison box therefore sits outside it.
 
 ============================================================
 
-SLIDE 7 | TARGET 1:30 | 167 WORDS
+SLIDE 7
 Step 1/2/3 control flow and reflected orientation
 
-The reconstruction follows one control-flow skeleton. It first orders z one, z two, and z three, then initializes the partial order and the first upper and lower pairs. After that, each new point passes through Step 1, Step 2, and Step 3. Step 1 finds the predecessor boundary, which I call A sub i. Step 2 finds the successor boundary, B sub i. Step 3(a) inserts the new pair. Step 3(b) performs any required sibling-list split and ownership transfer. Step 3(c) inserts the new point into the maintained order. The increasing and decreasing cases share these stages. Their local roles are reflected. In an increasing iteration, Step 3(a) uses A sub i and Step 3(b) uses B sub i. A decreasing iteration swaps those uses. The 1990 paper states the increasing case, while the decreasing case follows by symmetry. Two operational details still need explicit rules in code: the geometric endpoint and the odd-index z one output anchor. The next two slides explain why those choices matter.
+The procedure first orders z one, z two, and z three, then initializes the partial order and the first upper and lower pairs. For each new point, Step 1 finds predecessor boundary pair A sub i, and Step 2 finds successor boundary pair B sub i. Step 3(a) inserts a pair. Step 3(b) splits a sibling list and transfers ownership when needed. These steps update the pair families. Step 3(c) inserts the point into the maintained order. In an increasing iteration, Step 3(a) uses A sub i and Step 3(b) uses B sub i. A decreasing iteration swaps these uses. The paper states the increasing case; the decreasing case follows by symmetry. The two orientations share the same stages, but reflect the local roles. The next slides explain two executable clarifications: the geometric endpoint and the odd-index z one output anchor.
 
 ============================================================
 
-SLIDE 8 | TARGET 1:40 | 173 WORDS
+SLIDE 8
 Step 3(c) uses the geometric extreme, not the second stored endpoint
 
-The first issue concerns the endpoint used in Step 3(c). Consider the valid prefix three, two, one, four. The acquired pair P two is stored in curve order as three, two. A mechanical reading might choose the second stored element, two, as the insertion anchor. That produces one, two, four, three, which is wrong on the axis. Curve order and axis order describe different things. The pair records traversal along the curve, while Step 3(c) needs the geometric extreme on the axis. Here the correct endpoint is three. Inserting four after three gives one, two, three, four. This is a representation issue, not a special case for these four numbers. The stored pair order follows the curve, so its second item does not always represent the required side of the current axis order. The increasing orientation uses the right geometric endpoint, and the decreasing orientation uses the left endpoint. I describe this as an executable clarification because the 1990 paper does not state it in this form. Without the clarification, valid examples fail.
+Consider the valid prefix three, two, one, four. The acquired pair P two is stored in curve order as three, two. Using its second stored element, two, as the anchor gives one, two, four, three, which is wrong on the axis. Step 3(c) needs the geometric extreme, not the second element in curve order. Here the correct anchor is three. Inserting four after three gives one, two, three, four. The pair records traversal along the curve, while insertion must follow the axis order. This is a representation issue: curve order does not always identify the required side of the axis order. Increasing iterations use the right geometric endpoint; decreasing iterations use the left. This is an executable clarification, since the 1990 paper does not state the rule in this form. Without this clarification, even valid examples fail.
 
 ============================================================
 
-SLIDE 9 | TARGET 1:25 | 160 WORDS
+SLIDE 9
 Odd iterations require a separate z1 output-anchor correction
 
-The second issue is the odd-index z one case. The valid prefix here is one, two, three, four, six, seven, zero. During this decreasing iteration, the ordinary geometric base anchor is z two, with value two. Inserting zero directly before z two gives one, zero, two, three, four, six, seven. Z one remains on the wrong side of the new point. Zero is smaller than z one. Z one is also smaller than the original anchor. Therefore, the output anchor changes from z two to z one. Inserting zero before z one gives the correct order. The important point is that this change affects the output insertion only. It does not replace the earlier predecessor or successor boundary calculation. Those two decisions solve different problems. One selects the pair used by the family update. The other selects the point used to update the output order. The implementation records both decisions separately, which also makes the diagnostic trace easier to check.
+The odd-index z one case uses the valid prefix one, two, three, four, six, seven, zero. In this decreasing iteration, the ordinary anchor is z two, with value two. Inserting zero before it gives one, zero, two, three, four, six, seven. Z one remains on the wrong side of the new point. Here zero is smaller than z one, and z one is smaller than the original anchor. The output anchor must therefore change to z one. Inserting zero before z one gives zero, one, two, three, four, six, seven. This correction changes only output insertion. It does not replace the earlier predecessor or successor boundary calculation. Boundary selection still chooses the pair for the family update; the output anchor chooses the point for insertion into the partial order.
 
 ============================================================
 
-SLIDE 10 | TARGET 1:25 | 147 WORDS
+SLIDE 10
 Ownership-safe split and transfer
 
-Correct insertion also requires consistent ownership. Every finite pair has one parent and one sibling-list owner. Before a split, the existing owner controls both the retained and acquired segments. After the split, the existing owner keeps the retained segment, and the new owner receives the acquired segment. The split may create new lists for both nonempty sides, but only the acquired segment changes parent. The code treats the split and transfer as one transaction. It saves the affected state, performs the update, and checks the split boundary, ownership, and local postconditions. If a check fails, it restores the old registry, ownership links, and list identifiers. The maintained state also contains the sorted processed prefix and both pair families. Ordinary lists make scanning, copying, slicing, and ownership rebinding visible costs. These checks protect correctness, but they do not provide the update bounds used in the historical linear-time analysis.
+Every finite pair has one parent and one sibling-list owner. Before a split, the existing owner controls both the retained and acquired segments. After a split, the original owner keeps the retained segment, while the new owner receives the acquired segment. Both nonempty sides may get new lists, but only the acquired segment changes parent. Split and transfer form one transaction: save the affected state, update it, then check the split boundary, ownership, and local postconditions. If a check fails, rollback restores the registry, ownership links, and list identifiers. The maintained state also contains the sorted processed prefix and both pair families. Ordinary lists incur scanning, copying, slicing, and ownership-rebinding costs. These correctness checks do not establish the update bounds required by the historical linear-time analysis.
 
 ============================================================
 
-SLIDE 11 | TARGET 1:00 | 113 WORDS
+SLIDE 11
 Implementation checks and experiment consistency
 
-I use four main checks for the implementation. Focused regression cases cover known edge conditions. Bounded exhaustive validation covers all 2,074 oracle-valid permutations up to size eight. Checked-state audits inspect parent links, ownership, sibling lists, and recovered output. Deterministic replay runs the same core again and compares the resulting state. Replay checks consistency. It does not provide a second Jordan-sorting implementation. Separately, an experiment validation path checks that the saved outputs match the fixed setup and recomputed summaries. I keep the detailed archive checks in Backup C because the main research point here is the algorithm state. These checks support the evaluated cases, but they do not prove correctness for every Jordan sequence.
+Focused regression cases cover known edge conditions. Bounded exhaustive validation covers all 2,074 oracle-valid permutations up to size eight. Checked-state audits inspect parent links, ownership, sibling lists, and recovered output. Deterministic replay compares states from repeated runs of the same core; it is not a second independent implementation. Replay checks whether the same procedure gives a consistent state. Separate experiment checks compare saved outputs with the fixed setup and recomputed summaries. Backup C gives the details. This finite evidence supports the evaluated cases, but is not a mathematical proof for every Jordan sequence.
 
 ============================================================
 
-SLIDE 12 | TARGET 1:10 | 133 WORDS
+SLIDE 12
 The formal experiment keeps certification and audit outside paper timing
 
-The formal experiment covers five sizes and twelve exact cases per size. It compares three algorithms. Each case-algorithm cell has five warm-up calls and twenty measured calls, producing 3,600 rows. These are repeated calls on the same exact case, not twenty independent inputs. Each call receives a fresh list containing the same values. The schedule rotates algorithm positions so that one method does not always run first. For the paper algorithm, oracle certification and the checked-state audit happen before timing. The minimal paper call runs inside the timer, including output recovery from the maintained order. The runner compares the returned output after timing. Python timing covers its sorting call. Reference timing covers the complete oracle-backed reference pipeline. Paper and reference therefore use different timing scopes, so their ratio is not an end-to-end speedup.
+The experiment uses five sizes, twelve exact cases per size, and three algorithms. Each case-algorithm cell has five warm-up calls and twenty measured calls, giving 3,600 measured rows. The twenty calls repeat one exact case; they are not twenty independent inputs. Each call receives a fresh list with the same values. Algorithm positions rotate so that one method does not always run first. Paper certification and the checked-state audit happen before timing. Paper timing includes the minimal core call and output recovery from maintained order. Output comparison follows timing. Python timing covers its sorting call; reference timing covers the complete oracle-backed pipeline. These are three different timing scopes.
 
 ============================================================
 
-SLIDE 13 | TARGET 0:40 | 77 WORDS
+SLIDE 13
 All 60 evaluated cases returned the correct output
 
-All 60 evaluated cases passed certification and one case-level checked-state audit each. Every measured call returned the expected output, and the run recorded no correctness errors. The experiment used one audit per exact case. Its 3,600 timing rows carry the corresponding case-level audit result, so the row count does not mean 3,600 independent audits. These results support the tested valid cases only. They do not evaluate recognition of arbitrary inputs or prove correctness for every Jordan sequence.
+All 60 cases passed certification and one checked-state audit each. Every measured call returned the expected output, with no recorded correctness errors. The 3,600 measured rows carry their case-level audit results; they do not represent 3,600 independent audits. These results cover the tested valid cases only.
 
 ============================================================
 
-SLIDE 14 | TARGET 1:20 | 136 WORDS
+SLIDE 14
 The paper/reference ratio decreases across the five tested sizes
 
-The main runtime pattern is the decrease in the paper/reference ratio across the five tested sizes. I first compute the ratio for each exact case. Each case then has equal weight in the size-level median. The ratio is 3.226 at n equals 32, 2.202 at 64, and 1.351 at 128. It falls below one at 256, where it is 0.851, and reaches 0.567 at 512. The ratio is above one at n = 128 and below one at n = 256. Under these timing scopes, the recorded paper call is smaller than the reference-pipeline call at the two larger sizes. The scopes differ, so this pattern does not establish a general speedup. Five sizes also do not establish asymptotic behavior. Python sort, shown in Backup A, has the lowest median call time at every tested size.
+I compute the paper/reference ratio for each exact case, then take the median at each size with equal weight per case. The ratios are 3.226 at n equals 32, 2.202 at 64, 1.351 at 128, 0.851 at 256, and 0.567 at 512. Thus, the ratio is above one at 128 and below one at 256. Paper calls take less time at the two larger sizes under these scopes. Since the scopes differ, this does not establish an end-to-end speedup. Python sort has the lowest median call time at every tested size, as shown in Backup A.
 
 ============================================================
 
-SLIDE 15 | TARGET 0:45 | 89 WORDS
+SLIDE 15
 What the current evidence shows
 
-The current evidence supports an executable ordinary-list reconstruction whose output comes from maintained state. It also supports correct output on the evaluated valid cases and a recorded runtime trend under the stated timing scopes. The main limits are equally important. Ordinary Python lists do not establish a linear-time implementation, and five tested sizes do not establish asymptotic complexity. Recognition was not evaluated. The paper/reference comparison still uses different timing scopes. I therefore present the runtime values as observations for this implementation and experiment, not as a general algorithmic bound.
+The evidence supports an executable ordinary-list reconstruction that recovers output from maintained state, with correct results on the evaluated cases. The runtime trend describes this implementation under the stated timing scopes. Ordinary lists do not establish a linear-time implementation, and five tested sizes do not establish asymptotic complexity. Recognition was not evaluated.
 
 ============================================================
 
-SLIDE 16 | TARGET 0:55 | 104 WORDS
+SLIDE 16
 Possible next step: a finger-tree backend
 
-A possible next step is to investigate a finger-tree backend while keeping the same Step 1, Step 2, and Step 3 behavior. The ordinary-list implementation gives a tested reference point for that work. The detailed backend boundary appears in Backup E, including the ownership-transfer difficulty. I would like guidance on two questions. First, should the extension target the historical heterogeneous finger tree, or an equivalent backend with the required list operations? Second, is a tested, semantically equivalent prototype enough, or should I also prove the required amortized operation bounds? The answer determines whether this stays an implementation experiment or also needs a complexity proof.
+A finger-tree backend is a possible future extension, outside the current experimental evidence. It would keep the same Step 1, Step 2, and Step 3 behavior. The ordinary-list implementation provides a tested reference point for checking the behavior of a new backend. Backup E explains the interface and ownership-transfer difficulty. I would like guidance on two questions. Should I target the historical heterogeneous finger tree, or an equivalent backend supporting the required list operations? Is a tested, semantically equivalent prototype enough, or should I also prove the required amortized operation bounds?
 
 ============================================================
 Q&A NOTES: SLIDES 17-21

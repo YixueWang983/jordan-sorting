@@ -22,7 +22,7 @@ The main presentation is written for a midterm progress discussion rather than
 as a final-defense or repository-audit deck. Slides 7 through 10 retain the
 technical reconstruction detail; validation mechanics and the proposed
 finger-tree backend boundary remain available in the backup slides. The English
-notes for slides 1 through 16 contain 1,926 words.
+notes for slides 1 through 16 contain 1,451 words.
 
 ## Source and rebuild boundary
 
@@ -47,10 +47,10 @@ development.
 SHA-256 at the time of archival:
 
 ```text
-f681d50b595917eede9652b27198d491d7c86d66b6ebfdf36d9af4ca8f3905b6  Jordan_Sorting_Progress_Report.pptx
-7a86702d525944dc9b42a8da9f2090d0565b2f07ffd20c4bb01dcbd51367bbbe  Jordan_Sorting_Progress_Report_ZH.pptx
-eb2c36ad84c854e3baad473a8f22decb3a4052db34424fbadb78725ac2aa9758  Jordan_Sorting_Progress_Report_Speaker_Script.txt
-dcc10f366ab8686ca4a4da731afcb098f72ea7ccb05d875f06d07331fc3f19d5  Jordan_Sorting_Progress_Report_Speaker_Script_ZH.txt
+fc9ce9625fa7462cfeef8dfc69900f172b2cb3d81c8f96999c460c44d6cd8746  Jordan_Sorting_Progress_Report.pptx
+55bbf8ab9b5f056b0a21d0798c8265dfdebb82726c1562377640727ab56a9b6e  Jordan_Sorting_Progress_Report_ZH.pptx
+b3c008ee53f8d2b7f0e09c4719282fe062baae7dbd79aedf9e3a1496aa06ce31  Jordan_Sorting_Progress_Report_Speaker_Script.txt
+efb8d4207955c631897d7d0a8727a57f66752dd19936afd4b3bbf2fd7c68aa19  Jordan_Sorting_Progress_Report_Speaker_Script_ZH.txt
 ```
 
 These files report the validated ordinary-list implementation as the evidence
