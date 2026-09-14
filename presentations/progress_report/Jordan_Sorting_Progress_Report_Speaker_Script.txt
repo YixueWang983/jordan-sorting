@@ -61,7 +61,7 @@ Consider the valid prefix three, two, one, four. The acquired pair P two is stor
 SLIDE 9
 Why z₁ needs a separate output-anchor check
 
-Here we insert zero at iteration seven. The odd index makes the new pair a lower pair. Zero below seven makes this iteration decreasing. After Step three B, the new pair has children P three and P five, shown here. Step three C takes the left endpoint of the leftmost child, P three, with endpoints two and three. So the base anchor is two. However, z one, with value one, is not an endpoint of any lower pair. It is still in the sorted list. Inserting zero before two would leave zero after one. Here the index is odd, and zero is smaller than z one, which is smaller than the base anchor. We therefore change the anchor to z one. This changes only output insertion, not the earlier boundary-pair selection.
+Here we insert zero at iteration seven. The odd index makes the new pair a lower pair. Since zero is less than seven, this iteration is decreasing. After Step three B, the new pair has children P three and P five, shown here. Step three C takes the left endpoint of the leftmost child, P three, with endpoints two and three. So the base anchor is two. However, z one, with value one, is not an endpoint of any lower pair. It is still in the sorted list. Inserting zero before two would leave zero after one. Here the index is odd, and zero is smaller than z one, which is smaller than the base anchor. We therefore change the anchor to z one. This changes only output insertion, not the earlier boundary-pair selection.
 
 ============================================================
 
