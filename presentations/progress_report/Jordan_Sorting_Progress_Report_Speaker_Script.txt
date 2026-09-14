@@ -45,16 +45,16 @@ Before the paper call, the oracle certifies input validity. After the call, the 
 ============================================================
 
 SLIDE 7
-Step 1/2/3 control flow and reflected orientation
+Initialize once, then update one point at a time
 
-The procedure first orders z one, z two, and z three, then initializes the partial order and the first upper and lower pairs. For each new point, Step 1 finds predecessor boundary pair A sub i, and Step 2 finds successor boundary pair B sub i. Step 3(a) inserts a pair. Step 3(b) splits a sibling list and transfers ownership when needed. These steps update the pair families. Step 3(c) inserts the point into the maintained order. In an increasing iteration, Step 3(a) uses A sub i and Step 3(b) uses B sub i. A decreasing iteration swaps these uses. The paper states the increasing case; the decreasing case follows by symmetry. The two orientations share the same stages, but reflect the local roles. The next slides explain two executable clarifications: the geometric endpoint and the odd-index z one output anchor.
+We initialize once. The core sorts only the first three points by x-coordinate to build S three and the upper and lower pair families. It uses no oracle answer. Labels and stored pair endpoints keep curve order. From point four onward, each round adds one point. Steps one and two inspect the neighbors of z i minus one in S i minus one. They do not simply take z i minus two or first locate the new point. They find predecessor boundary A sub i and successor boundary B sub i. Step three A inserts the new pair. Step three B splits sibling lists and transfers ownership when needed. Step three C inserts the new point into the sorted list. Increasing Step three A uses A sub i, and three B uses B sub i. Decreasing swaps these uses and reflects left and right operations. Steps one and two still return A and B. The paper explicitly states the increasing case. Decreasing is a symmetric reconstruction; anchor details are executable clarifications. These categories do not correspond to separate steps. The next two slides explain the anchor clarifications.
 
 ============================================================
 
 SLIDE 8
-Step 3(c) uses the geometric extreme, not the second stored endpoint
+From S₃ to S₄: the geometric insertion anchor
 
-Consider the valid prefix three, two, one, four. The acquired pair P two is stored in curve order as three, two. Using its second stored element, two, as the anchor gives one, two, four, three, which is wrong on the axis. Step 3(c) needs the geometric extreme, not the second element in curve order. Here the correct anchor is three. Inserting four after three gives one, two, three, four. The pair records traversal along the curve, while insertion must follow the axis order. This is a representation issue: curve order does not always identify the required side of the axis order. Increasing iterations use the right geometric endpoint; decreasing iterations use the left. This is an executable clarification, since the 1990 paper does not state the rule in this form. Without this clarification, even valid examples fail.
+Take the input three, two, one, four. Initialization sorts only the first three values into one, two, three. Their IDs remain z three, z two, z one. We now insert z four, with value four. The new upper pair P four has endpoints one and four. After Step three B, it has child P two, stored as three, two. This update goes from one to four, so it is increasing. We choose the child's geometric right endpoint as the anchor: the existing point after which we insert four. Choosing the second stored endpoint, two, would give one, two, four, three. Choosing the geometric right endpoint, three, gives one, two, three, four. The wrong order is illustrative. Stored curve order is not geometric order. This is an executable clarification, not a rule stated in exactly this form in the 1990 paper.
 
 ============================================================
 

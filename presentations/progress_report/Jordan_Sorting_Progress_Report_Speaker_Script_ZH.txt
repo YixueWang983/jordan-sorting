@@ -45,16 +45,16 @@ Paper call 之前，oracle 认证输入有效性；调用之后，runner 将返�
 ============================================================
 
 第 7 页
-Step 1/2/3 控制流与镜像方向
+初始化一次，再逐点更新
 
-算法先排序 z1、z2、z3，再初始化 partial order 和首批 upper、lower pair。对每个新点，Step 1 找 predecessor boundary pair A_i，Step 2 找 successor boundary pair B_i。Step 3(a) 插入 pair，Step 3(b) 在需要时拆分 sibling list 并转移 ownership；这两步更新 pair family。Step 3(c) 将新点插入维护的顺序。在 increasing iteration 中，Step 3(a) 使用 A_i，Step 3(b) 使用 B_i；decreasing iteration 交换两者的用途。论文直接描述 increasing case，decreasing case 由对称性重构。两个方向共享相同阶段，但局部角色互为镜像。接下来两页解释两处可执行化澄清：几何端点与奇数索引 z1 输出 anchor。
+初始化只做一次。Core 仅将前三个点按 x 坐标排序，建立 S₃ 和 upper、lower pair family，不使用 oracle 的排序答案。点的编号和 pair 的端点存储仍保持曲线顺序。从第 4 个点开始，每轮加入一个新点。Step 1、2 查看旧端点 zᵢ₋₁ 在维护列表中的邻居，不是直接取前一个曲线点 zᵢ₋₂，也不是先查新点的排序位置。它们分别找到 predecessor boundary Aᵢ 和 successor boundary Bᵢ。Step 3(a) 插入新 pair；Step 3(b) 在需要时拆分 sibling list 并转移 ownership；Step 3(c) 将新点插入有序列表。Increasing 时，Step 3(a) 使用 Aᵢ，3(b) 使用 Bᵢ。Decreasing 交换这两者的用途，并镜像左右操作；Step 1、2 仍分别返回 Aᵢ、Bᵢ。论文明确描述 increasing 情形；decreasing 来自对称重构，anchor 的细节属于可执行化澄清。这三个类别并不分别对应某个步骤。接下来两页解释 anchor 的澄清。
 
 ============================================================
 
 第 8 页
-Step 3(c) 使用几何极值，而非第二个存储端点
+从 S₃ 到 S₄：插入需要几何 anchor
 
-考虑有效前缀 (3,2,1,4)。Acquired pair P2 按 curve order 存为 (3,2)。若取第二个存储元素 2 为 anchor，得到 (1,2,4,3)，在 axis order 上是错误的。Step 3(c) 需要几何极值，而不是 curve order 中的第二个元素。这里正确的 anchor 是 3，将 4 插在 3 后得到 (1,2,3,4)。Pair 记录沿曲线的遍历顺序，插入则必须遵循 axis order。这是表示方式的问题：curve order 未必能标识 axis order 中所需的一侧。Increasing iteration 使用右端几何极值，decreasing iteration 使用左端几何极值。这属于可执行化澄清，因为 1990 年论文没有以这种形式明确给出规则。缺少这一澄清时，有效输入的例子也会失败。
+输入是 (3,2,1,4)。初始化只将前三个值排成 [1,2,3]，对应编号仍是 [z₃,z₂,z₁]。现在插入值为 4 的 z₄。新 upper pair P₄ 的端点是 (1,4)。Step 3(b) 后，它获得 child P₂；P₂ 仍按曲线顺序存为 (3,2)。本次从 1 到 4，因此是 increasing。我们取 child 的几何右端点作为 anchor，也就是要紧接着插入 4 的已有点。若取第二个存储端点 2，会得到 [1,2,4,3]；取几何右端点 3，则得到 [1,2,3,4]。错误顺序只是示意。存储的曲线顺序不等于几何顺序。这属于可执行化澄清，1990 年论文并未以这一具体形式表述该规则。
 
 ============================================================
 

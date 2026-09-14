@@ -57,9 +57,9 @@ const TALK = {
 
   6: `Before the paper call, the oracle certifies input validity. After the call, the runner compares the returned output with the oracle's sorted result. The reference pipeline uses the complete oracle result, including that sorted output. The paper core receives only the original sequence under the certified precondition. It executes Step 1, Step 2, and Step 3, maintains the partial order and sibling lists, and recovers output from the partial order. Both methods are checked against the same expected answer, but they produce their outputs differently. The oracle-sorted answer never enters the paper core. The dashed comparison box therefore sits outside it.`,
 
-  7: `The procedure first orders z one, z two, and z three, then initializes the partial order and the first upper and lower pairs. For each new point, Step 1 finds predecessor boundary pair A sub i, and Step 2 finds successor boundary pair B sub i. Step 3(a) inserts a pair. Step 3(b) splits a sibling list and transfers ownership when needed. These steps update the pair families. Step 3(c) inserts the point into the maintained order. In an increasing iteration, Step 3(a) uses A sub i and Step 3(b) uses B sub i. A decreasing iteration swaps these uses. The paper states the increasing case; the decreasing case follows by symmetry. The two orientations share the same stages, but reflect the local roles. The next slides explain two executable clarifications: the geometric endpoint and the odd-index z one output anchor.`,
+  7: `We initialize once. The core sorts only the first three points by x-coordinate to build S three and the upper and lower pair families. It uses no oracle answer. Labels and stored pair endpoints keep curve order. From point four onward, each round adds one point. Steps one and two inspect the neighbors of z i minus one in S i minus one. They do not simply take z i minus two or first locate the new point. They find predecessor boundary A sub i and successor boundary B sub i. Step three A inserts the new pair. Step three B splits sibling lists and transfers ownership when needed. Step three C inserts the new point into the sorted list. Increasing Step three A uses A sub i, and three B uses B sub i. Decreasing swaps these uses and reflects left and right operations. Steps one and two still return A and B. The paper explicitly states the increasing case. Decreasing is a symmetric reconstruction; anchor details are executable clarifications. These categories do not correspond to separate steps. The next two slides explain the anchor clarifications.`,
 
-  8: `Consider the valid prefix three, two, one, four. The acquired pair P two is stored in curve order as three, two. Using its second stored element, two, as the anchor gives one, two, four, three, which is wrong on the axis. Step 3(c) needs the geometric extreme, not the second element in curve order. Here the correct anchor is three. Inserting four after three gives one, two, three, four. The pair records traversal along the curve, while insertion must follow the axis order. This is a representation issue: curve order does not always identify the required side of the axis order. Increasing iterations use the right geometric endpoint; decreasing iterations use the left. This is an executable clarification, since the 1990 paper does not state the rule in this form. Without this clarification, even valid examples fail.`,
+  8: `Take the input three, two, one, four. Initialization sorts only the first three values into one, two, three. Their IDs remain z three, z two, z one. We now insert z four, with value four. The new upper pair P four has endpoints one and four. After Step three B, it has child P two, stored as three, two. This update goes from one to four, so it is increasing. We choose the child's geometric right endpoint as the anchor: the existing point after which we insert four. Choosing the second stored endpoint, two, would give one, two, four, three. Choosing the geometric right endpoint, three, gives one, two, three, four. The wrong order is illustrative. Stored curve order is not geometric order. This is an executable clarification, not a rule stated in exactly this form in the 1990 paper.`,
 
   9: `Here we insert zero at iteration seven. The odd index makes the new pair a lower pair. Since zero is less than seven, this iteration is decreasing. After Step three B, the new pair has children P three and P five, shown here. Step three C takes the left endpoint of the leftmost child, P three, with endpoints two and three. So the base anchor is two. However, z one, with value one, is not an endpoint of any lower pair. It is still in the sorted list. Inserting zero before two would leave zero after one. Here the index is odd, and zero is smaller than z one, which is smaller than the base anchor. We therefore change the anchor to z one. This changes only output insertion, not the earlier boundary-pair selection.`,
 
@@ -95,8 +95,8 @@ const TALK_TITLES = {
   4: "Current scope: valid-input sorting",
   5: "Three questions connect reconstruction, measurement, and interpretation",
   6: "The oracle, reference pipeline, and paper core have distinct roles",
-  7: "Step 1/2/3 control flow and reflected orientation",
-  8: "Step 3(c) uses the geometric extreme, not the second stored endpoint",
+  7: "Initialize once, then update one point at a time",
+  8: "From S₃ to S₄: the geometric insertion anchor",
   9: "Why z₁ needs a separate output-anchor check",
   10: "Ownership-safe split and transfer",
   11: "Implementation checks and experiment consistency",
@@ -479,78 +479,82 @@ async function main() {
 
   // 7. Step flow
   {
-    const slide = baseSlide(presentation, "Step 1/2/3 control flow and reflected orientation", "Reconstruction", "7 / 16");
+    const slide = baseSlide(presentation, "Initialize once, then update one point at a time", "Reconstruction", "7 / 16");
+    addBox(slide, 76, 138, 1128, 158, { fill: C.paleBlue, line: C.slate, radius: 8 });
+    addText(slide, "A. Initialize once (n ≥ 3)", 92, 146, 1088, 30, { fontSize: 23, bold: true, color: C.navy });
+    addText(slide, "Sort only z₁, z₂, z₃\nby x-coordinate", 96, 190, 300, 62, { fontSize: 23, color: C.ink, align: "center" });
+    addText(slide, "→", 398, 194, 46, 40, { fontSize: 30, color: C.teal, align: "center" });
+    addText(slide, "Initial sorted list S₃", 452, 194, 310, 42, { fontSize: 24, bold: true, color: C.teal, align: "center" });
+    addText(slide, "→", 766, 194, 46, 40, { fontSize: 30, color: C.teal, align: "center" });
+    addText(slide, "Upper/lower families\nP₂, P₃ and dummy roots", 822, 186, 360, 64, { fontSize: 22, color: C.ink, align: "center" });
+    addText(slide, "Core-local initialization. No oracle answer. Labels and stored pair endpoints keep curve order.", 94, 258, 1092, 28, { fontSize: 20, color: C.slate, align: "center" });
+
+    addText(slide, "B. For i = 4, …, n: process one new point", 76, 312, 1128, 32, { fontSize: 24, bold: true, color: C.teal });
+    addText(slide, "Sᵢ₋₁ + new point zᵢ → one round below → Sᵢ", 76, 350, 1128, 32, { fontSize: 23, bold: true, color: C.navy, align: "center" });
     const nodes = [
-      { x: 86, y: 170, w: 184, h: 84, title: "Initialize", body: "order z₁, z₂, z₃" },
-      { x: 310, y: 170, w: 184, h: 84, title: "Step 1", body: "predecessor-side boundary" },
-      { x: 534, y: 170, w: 184, h: 84, title: "Step 2", body: "successor-side boundary" },
-      { x: 758, y: 170, w: 184, h: 84, title: "Step 3(a)", body: "insert new pair" },
-      { x: 982, y: 170, w: 184, h: 84, title: "Step 3(b)", body: "split + transfer" },
-      { x: 500, y: 316, w: 280, h: 88, title: "Step 3(c)", body: "insert new point into maintained order" },
+      { title: "Step 1", body: "Find predecessor-side\nboundary Aᵢ" },
+      { title: "Step 2", body: "Find successor-side\nboundary Bᵢ" },
+      { title: "Step 3(a)", body: "Insert new pair\nPᵢ = (zᵢ₋₁, zᵢ)" },
+      { title: "Step 3(b)", body: "Split sibling lists\nTransfer ownership\nwhen needed" },
+      { title: "Step 3(c)", body: "Insert zᵢ into the\nmaintained sorted list" },
     ];
-    const shapes = nodes.map((n) => {
-      const s = addBox(slide, n.x, n.y, n.w, n.h, { fill: C.paleBlue, line: C.slate, lineWidth: 2, radius: 8 });
-      addText(slide, n.title, n.x + 8, n.y + 10, n.w - 16, 30, { fontSize: 22, bold: true, color: C.navy, align: "center" });
-      addText(slide, n.body, n.x + 10, n.y + 42, n.w - 20, n.h - 48, { fontSize: 16, color: C.ink, align: "center", valign: "middle" });
-      return s;
+    const shapes = nodes.map((n, i) => {
+      const x = 76 + i * 230;
+      const shape = addBox(slide, x, 398, 208, 114, { fill: i < 2 ? C.paleBlue : C.paleTeal, line: C.slate, radius: 6 });
+      addText(slide, n.title, x + 8, 406, 192, 30, { fontSize: 22, bold: true, color: C.navy, align: "center" });
+      addText(slide, n.body, x + 7, 441, 194, 66, { fontSize: 19, color: C.ink, align: "center", valign: "middle" });
+      return shape;
     });
-    for (let i = 0; i < 4; i++) slide.shapes.connect(shapes[i], shapes[i + 1], { kind: "straight", fromSide: "right", toSide: "left", line: { style: "solid", fill: C.slate, width: 2 }, tail: { type: "arrow", width: "med", length: "med" } });
-    slide.shapes.connect(shapes[4], shapes[5], { kind: "elbow", fromSide: "bottom", toSide: "top", line: { style: "solid", fill: C.slate, width: 2 }, tail: { type: "arrow", width: "med", length: "med" } });
+    for (let i = 0; i < 4; i++) slide.shapes.connect(shapes[i], shapes[i + 1], { kind: "straight", fromSide: "right", toSide: "left", line: { style: "solid", fill: C.teal, width: 2 }, tail: { type: "arrow", width: "sm", length: "sm" } });
+    addText(slide, "Step 1 → Aᵢ and Step 2 → Bᵢ in both orientations", 76, 522, 1128, 28, { fontSize: 21, bold: true, color: C.navy, align: "center" });
+    addText(slide, "Increasing: 3(a) uses Aᵢ, 3(b) uses Bᵢ. Decreasing swaps these uses and reflects left/right operations.", 76, 552, 1128, 28, { fontSize: 20, color: C.slate, align: "center" });
+    addText(slide, "How the reconstruction is justified (categories, not algorithm stages)", 76, 594, 1128, 26, { fontSize: 19, color: C.muted });
     const evidence = [
-      { x: 82, color: C.navy, fill: C.paleBlue, title: "Explicit source rule", body: "Increasing Step 1/2/3 structure" },
-      { x: 447, color: C.teal, fill: C.paleTeal, title: "Symmetric reconstruction", body: "Reflected decreasing orientation" },
-      { x: 812, color: C.coral, fill: C.paleCoral, title: "Executable clarifications", body: "Geometric endpoint and odd-index z₁ anchor" },
+      { x: 76, color: C.navy, fill: C.paleBlue, text: "Explicit source rules" },
+      { x: 460, color: C.teal, fill: C.paleTeal, text: "Symmetric reconstruction" },
+      { x: 844, color: C.coral, fill: C.paleCoral, text: "Executable clarifications" },
     ];
     evidence.forEach((e) => {
-      addBox(slide, e.x, 470, 326, 112, { fill: e.fill, line: e.color, lineWidth: 1.5, radius: 8 });
-      addText(slide, e.title, e.x + 14, 484, 298, 30, { fontSize: 19, bold: true, color: e.color, align: "center" });
-      addText(slide, e.body, e.x + 18, 526, 290, 42, { fontSize: 17, color: C.ink, align: "center", valign: "middle" });
+      addBox(slide, e.x, 630, 360, 40, { fill: e.fill, line: e.color, radius: 6 });
+      addText(slide, e.text, e.x + 8, 634, 344, 30, { fontSize: 21, bold: true, color: e.color, align: "center" });
     });
-    setNotes(
-      slide,
-      "The reconstruction is not a line-by-line transcription. Some rules are explicit in the 1990 paper, the decreasing orientation is reconstructed by symmetry, and a small number of operational details must be fixed to obtain unambiguous executable behavior.",
-      [
-        `${REPO}/thesis/chapters/algorithm.tex`,
-        `${REPO}/thesis/chapters/implementation.tex`,
-        "Fung et al. (1990), doi:10.1016/0020-0190(90)90111-A",
-      ],
-    );
+    setNotes(slide, TALK[7], [
+      `${REPO}/thesis/chapters/algorithm.tex`,
+      `${REPO}/thesis/chapters/implementation.tex`,
+      "Fung et al. (1990), doi:10.1016/0020-0190(90)90111-A",
+    ]);
   }
 
   // 8. Endpoint semantics
   {
-    const slide = baseSlide(presentation, "Step 3(c) uses the geometric extreme, not the second stored endpoint", "Reconstruction Issue I", "8 / 16");
-    addText(slide, "Input prefix", 84, 156, 170, 30, { fontSize: 16, bold: true, color: C.muted });
-    addText(slide, "(3, 2, 1, 4)", 84, 188, 280, 48, { fontSize: 32, bold: true, color: C.navy });
-    addText(slide, "Acquired pair", 84, 254, 170, 30, { fontSize: 16, bold: true, color: C.muted });
-    addText(slide, "P₂ = (3, 2)", 84, 286, 280, 48, { fontSize: 30, bold: true, color: C.coral });
+    const slide = baseSlide(presentation, "From S₃ to S₄: the geometric insertion anchor", "Reconstruction Issue I", "8 / 16");
+    addText(slide, "Input in curve order: (z₁, z₂, z₃, z₄) = (3, 2, 1, 4)", 76, 138, 1128, 34, { fontSize: 25, bold: true, color: C.navy });
+    addBox(slide, 76, 188, 690, 112, { fill: C.paleBlue, line: C.slate, radius: 6 });
+    addText(slide, "After initialization: S₃ = [1, 2, 3]", 92, 198, 658, 36, { fontSize: 25, bold: true, color: C.navy });
+    addText(slide, "Point IDs: [z₃, z₂, z₁]. Curve labels stay unchanged.", 92, 250, 658, 32, { fontSize: 22, color: C.slate });
+    addBox(slide, 790, 188, 414, 112, { fill: C.paleTeal, line: C.teal, radius: 6 });
+    addText(slide, "Now process z₄ = 4", 806, 198, 382, 36, { fontSize: 25, bold: true, color: C.teal });
+    addText(slide, "z₃ = 1 → z₄ = 4: increasing", 806, 250, 382, 32, { fontSize: 22, color: C.ink });
+    addText(slide, "After Step 3(b)", 76, 324, 242, 32, { fontSize: 22, bold: true, color: C.navy });
+    addText(slide, "New upper P₄ = (z₃, z₄) = (1, 4)", 320, 324, 420, 32, { fontSize: 22, bold: true, color: C.teal });
+    addText(slide, "→ child", 744, 324, 106, 32, { fontSize: 22, color: C.teal });
+    addText(slide, "Upper P₂ = (z₁, z₂) = (3, 2)", 850, 324, 354, 32, { fontSize: 21, bold: true, color: C.navy });
+    addText(slide, "P₄ has child P₂. In this increasing update, use its geometric right endpoint.", 76, 373, 1128, 32, { fontSize: 23, bold: true, color: C.navy, align: "center" });
 
-    addRule(slide, 410, 252, 680, C.slate, 3);
-    const points = [1, 2, 3, 4];
-    points.forEach((p, i) => {
-      const x = 430 + i * 205;
-      slide.shapes.add({ geometry: "ellipse", position: { left: x, top: 232, width: 40, height: 40 }, fill: i === 1 ? C.paleCoral : i === 2 ? C.paleTeal : C.white, line: { style: "solid", fill: i === 1 ? C.coral : i === 2 ? C.teal : C.slate, width: 2 } });
-      addText(slide, String(p), x, 234, 40, 36, { fontSize: 20, bold: true, color: C.navy, align: "center", valign: "middle" });
-    });
-    addText(slide, "stored direction 3 → 2", 720, 166, 250, 42, { fontSize: 20, bold: true, color: C.coral, align: "center" });
-    addText(slide, "geometric axis", 646, 286, 260, 34, { fontSize: 16, color: C.muted, align: "center" });
-
-    addBox(slide, 414, 358, 330, 154, { fill: C.paleCoral, line: C.coral, lineWidth: 2, radius: 8 });
-    addText(slide, "Curve-order endpoint", 436, 374, 286, 34, { fontSize: 23, bold: true, color: C.coral, align: "center" });
-    addText(slide, "anchor = 2\nresult: [1, 2, 4, 3]", 438, 418, 282, 70, { fontSize: 20, color: C.ink, align: "center", valign: "middle" });
-    addBox(slide, 790, 358, 330, 154, { fill: C.paleTeal, line: C.teal, lineWidth: 2, radius: 8 });
-    addText(slide, "Geometric endpoint", 812, 374, 286, 34, { fontSize: 23, bold: true, color: C.teal, align: "center" });
-    addText(slide, "anchor = 3\nresult: [1, 2, 3, 4]", 814, 418, 282, 70, { fontSize: 20, color: C.ink, align: "center", valign: "middle" });
-    addText(slide, "Executable rule: choose the geometric extreme.", 390, 558, 760, 48, { fontSize: 25, bold: true, color: C.teal, align: "center", valign: "middle" });
-    addText(slide, "Recorded as a reconstruction clarification, not as a verbatim 1990-paper rule.", 390, 610, 760, 34, { fontSize: 17, color: C.slate, align: "center", valign: "middle" });
-    setNotes(
-      slide,
-      "A pair is stored in curve order, but Step 3(c) needs a geometric boundary. These are not always the same endpoint. A mechanical interpretation of the second stored endpoint produces an incorrect order on this valid example. The executable reconstruction therefore selects the geometric extreme.",
-      [
-        `${REPO}/thesis/chapters/algorithm.tex`,
-        `${REPO}/src/paper_jordan.py`,
-      ],
-    );
+    addBox(slide, 76, 427, 552, 160, { fill: C.paleCoral, line: C.coral, lineWidth: 2, radius: 8 });
+    addText(slide, "Second stored endpoint of P₂: 2", 92, 437, 520, 34, { fontSize: 23, bold: true, color: C.coral });
+    addText(slide, "Insert 4 immediately after 2", 92, 484, 520, 32, { fontSize: 23, color: C.ink });
+    addText(slide, "[1, 2, 4, 3]  Incorrect (illustration)", 92, 535, 520, 36, { fontSize: 24, bold: true, color: C.coral });
+    addBox(slide, 652, 427, 552, 160, { fill: C.paleTeal, line: C.teal, lineWidth: 2, radius: 8 });
+    addText(slide, "Geometric right endpoint of P₂: 3", 668, 437, 520, 34, { fontSize: 23, bold: true, color: C.teal });
+    addText(slide, "Insert 4 immediately after 3", 668, 484, 520, 32, { fontSize: 23, color: C.ink });
+    addText(slide, "[1, 2, 3, 4]  Correct", 668, 535, 520, 36, { fontSize: 24, bold: true, color: C.teal });
+    addText(slide, "Here, the anchor is the existing point immediately after which we insert 4.", 76, 605, 1128, 30, { fontSize: 22, color: C.navy, align: "center" });
+    addText(slide, "Executable clarification, not a verbatim 1990-paper rule. Stored curve order ≠ geometric order.", 76, 644, 1128, 28, { fontSize: 20, color: C.slate, align: "center" });
+    setNotes(slide, TALK[8], [
+      `${REPO}/thesis/chapters/algorithm.tex`,
+      `${REPO}/src/paper_jordan.py`,
+    ]);
   }
 
   // 9. z1 output-anchor check
