@@ -61,7 +61,7 @@ const TALK = {
 
   8: `Consider the valid prefix three, two, one, four. The acquired pair P two is stored in curve order as three, two. Using its second stored element, two, as the anchor gives one, two, four, three, which is wrong on the axis. Step 3(c) needs the geometric extreme, not the second element in curve order. Here the correct anchor is three. Inserting four after three gives one, two, three, four. The pair records traversal along the curve, while insertion must follow the axis order. This is a representation issue: curve order does not always identify the required side of the axis order. Increasing iterations use the right geometric endpoint; decreasing iterations use the left. This is an executable clarification, since the 1990 paper does not state the rule in this form. Without this clarification, even valid examples fail.`,
 
-  9: `The odd-index z one case uses the valid prefix one, two, three, four, six, seven, zero. In this decreasing iteration, the ordinary anchor is z two, with value two. Inserting zero before it gives one, zero, two, three, four, six, seven. Z one remains on the wrong side of the new point. Here zero is smaller than z one, and z one is smaller than the original anchor. The output anchor must therefore change to z one. Inserting zero before z one gives zero, one, two, three, four, six, seven. This correction changes only output insertion. It does not replace the earlier predecessor or successor boundary calculation. Boundary selection still chooses the pair for the family update; the output anchor chooses the point for insertion into the partial order.`,
+  9: `Here we insert zero at iteration seven. The odd index makes the new pair a lower pair. Zero below seven makes this iteration decreasing. After Step three B, the new pair has children P three and P five, shown here. Step three C takes the left endpoint of the leftmost child, P three, with endpoints two and three. So the base anchor is two. However, z one, with value one, is not an endpoint of any lower pair. It is still in the sorted list. Inserting zero before two would leave zero after one. Here the index is odd, and zero is smaller than z one, which is smaller than the base anchor. We therefore change the anchor to z one. This changes only output insertion, not the earlier boundary-pair selection.`,
 
   10: `Every finite pair has one parent and one sibling-list owner. Before a split, the existing owner controls both the retained and acquired segments. After a split, the original owner keeps the retained segment, while the new owner receives the acquired segment. Both nonempty sides may get new lists, but only the acquired segment changes parent. Split and transfer form one transaction: save the affected state, update it, then check the split boundary, ownership, and local postconditions. If a check fails, rollback restores the registry, ownership links, and list identifiers. The maintained state also contains the sorted processed prefix and both pair families. Ordinary lists incur scanning, copying, slicing, and ownership-rebinding costs. These correctness checks do not establish the update bounds required by the historical linear-time analysis.`,
 
@@ -97,7 +97,7 @@ const TALK_TITLES = {
   6: "The oracle, reference pipeline, and paper core have distinct roles",
   7: "Step 1/2/3 control flow and reflected orientation",
   8: "Step 3(c) uses the geometric extreme, not the second stored endpoint",
-  9: "Odd iterations require a separate z1 output-anchor correction",
+  9: "Why z₁ needs a separate output-anchor check",
   10: "Ownership-safe split and transfer",
   11: "Implementation checks and experiment consistency",
   12: "The formal experiment keeps certification and audit outside paper timing",
@@ -553,38 +553,44 @@ async function main() {
     );
   }
 
-  // 9. z1 anomaly
+  // 9. z1 output-anchor check
   {
-    const slide = baseSlide(presentation, "Odd iterations require a separate z₁ output-anchor correction", "Reconstruction Issue II", "9 / 16");
-    addBox(slide, 72, 150, 760, 196, { fill: C.white, line: C.coral, lineWidth: 1.5, radius: 8 });
-    addText(slide, "Ordinary geometric base anchor = z₂ = 2", 96, 168, 712, 34, { fontSize: 23, bold: true, color: C.coral });
-    addText(slide, "new point 0", 106, 230, 142, 34, { fontSize: 20, bold: true, color: C.navy, align: "center" });
-    addText(slide, "→", 248, 226, 62, 38, { fontSize: 28, bold: true, color: C.coral, align: "center" });
-    addText(slide, "insert before 2", 312, 230, 170, 34, { fontSize: 20, bold: true, color: C.coral, align: "center" });
-    addText(slide, "→", 482, 226, 62, 38, { fontSize: 28, bold: true, color: C.coral, align: "center" });
-    addText(slide, "1, 0, 2, 3, 4, 6, 7", 548, 230, 246, 34, { fontSize: 21, bold: true, color: C.ink, align: "center" });
-    addText(slide, "z₁ = 1 remains on the wrong side of the new point.", 116, 290, 670, 34, { fontSize: 19, color: C.slate, align: "center" });
+    const slide = baseSlide(presentation, "Why z₁ needs a separate output-anchor check", "Reconstruction Issue II", "9 / 16");
+    addText(slide, "Input (z₁, …, z₇) = (1, 2, 3, 4, 6, 7, 0)", 76, 136, 700, 32, { fontSize: 22, bold: true, color: C.navy });
+    addText(slide, "S₆ = [1, 2, 3, 4, 6, 7]", 802, 138, 402, 30, { fontSize: 21, color: C.slate });
+    addText(slide, "i = 7 (odd) → lower family", 76, 182, 530, 30, { fontSize: 22, bold: true, color: C.teal });
+    addText(slide, "z₇ = 0 < z₆ = 7 → decreasing", 668, 182, 536, 30, { fontSize: 22, bold: true, color: C.teal });
 
-    addBox(slide, 72, 372, 760, 196, { fill: C.paleTeal, line: C.teal, lineWidth: 2, radius: 8 });
-    addText(slide, "Corrected output anchor = z₁ = 1", 96, 390, 712, 34, { fontSize: 23, bold: true, color: C.teal });
-    addText(slide, "new point 0", 106, 452, 142, 34, { fontSize: 20, bold: true, color: C.navy, align: "center" });
-    addText(slide, "→", 248, 448, 62, 38, { fontSize: 28, bold: true, color: C.teal, align: "center" });
-    addText(slide, "insert before z₁", 312, 452, 170, 34, { fontSize: 20, bold: true, color: C.teal, align: "center" });
-    addText(slide, "→", 482, 448, 62, 38, { fontSize: 28, bold: true, color: C.teal, align: "center" });
-    addText(slide, "0, 1, 2, 3, 4, 6, 7", 548, 452, 246, 34, { fontSize: 21, bold: true, color: C.ink, align: "center" });
-    addText(slide, "The maintained partial order now matches the geometric axis order.", 116, 512, 670, 34, { fontSize: 19, color: C.slate, align: "center" });
+    addText(slide, "Decreasing: leftmost child → left endpoint", 76, 234, 552, 32, { fontSize: 22, bold: true, color: C.navy });
+    const parent = addBox(slide, 230, 308, 240, 48, { fill: C.paleBlue, line: C.navy, radius: 6 });
+    addText(slide, "P₇ = (7, 0)", 238, 314, 224, 36, { fontSize: 25, bold: true, color: C.navy, align: "center" });
+    addText(slide, "curve order (7, 0); interval [0, 7]", 126, 274, 454, 28, { fontSize: 18, color: C.slate, align: "center" });
+    const left = addBox(slide, 94, 384, 220, 48, { fill: C.paleTeal, line: C.teal, lineWidth: 2, radius: 6 });
+    const right = addBox(slide, 374, 384, 220, 48, { fill: C.white, line: C.slate, radius: 6 });
+    slide.shapes.connect(parent, left, { kind: "elbow", fromSide: "left", toSide: "top", line: { style: "solid", fill: C.teal, width: 2 }, tail: { type: "arrow", width: "sm", length: "sm" } });
+    slide.shapes.connect(parent, right, { kind: "elbow", fromSide: "right", toSide: "top", line: { style: "solid", fill: C.slate, width: 2 }, tail: { type: "arrow", width: "sm", length: "sm" } });
+    addText(slide, "P₃ = (2, 3)", 102, 389, 204, 36, { fontSize: 24, bold: true, color: C.teal, align: "center" });
+    addText(slide, "P₅ = (4, 6)", 382, 389, 204, 36, { fontSize: 24, bold: true, color: C.navy, align: "center" });
+    addText(slide, "leftmost child", 98, 434, 210, 26, { fontSize: 18, bold: true, color: C.teal, align: "center" });
+    addText(slide, "P₃ → left endpoint 2 → base anchor z₂", 76, 468, 552, 32, { fontSize: 21, bold: true, color: C.teal, align: "center" });
 
-    addBox(slide, 870, 160, 330, 164, { fill: C.white, line: C.line, radius: 8 });
-    addText(slide, "Valid prefix", 892, 178, 286, 26, { fontSize: 16, bold: true, color: C.muted });
-    addText(slide, "(1, 2, 3, 4, 6, 7, 0)", 892, 210, 286, 52, { fontSize: 21, bold: true, color: C.navy, align: "center", valign: "middle" });
-    addText(slide, "0 < z₁ < 2", 892, 268, 286, 38, { fontSize: 27, bold: true, color: C.coral, align: "center", valign: "middle" });
-    addBox(slide, 870, 372, 330, 174, { fill: C.white, line: C.teal, lineWidth: 1.5, radius: 8 });
-    addText(slide, "Two separate decisions", 892, 390, 286, 34, { fontSize: 22, bold: true, color: C.teal, align: "center" });
-    addText(slide, "boundary-pair selection\n≠\noutput-anchor selection", 900, 432, 270, 92, { fontSize: 19, color: C.ink, align: "center", valign: "middle" });
-    addText(slide, "This correction is separate from predecessor/successor boundary selection.", 864, 580, 342, 58, { fontSize: 18, bold: true, color: C.navy, align: "center", valign: "middle" });
+    addText(slide, "Why check z₁?", 668, 234, 536, 32, { fontSize: 24, bold: true, color: C.navy });
+    addText(slide, "z₁ = 1 belongs to upper pair P₂ = (1, 2).", 668, 282, 536, 34, { fontSize: 22, color: C.ink });
+    addText(slide, "It is not an endpoint of any lower pair.", 668, 322, 536, 34, { fontSize: 22, bold: true, color: C.navy });
+    addText(slide, "It is still in the sorted list S₆.", 668, 362, 536, 34, { fontSize: 22, color: C.ink });
+    addText(slide, "Odd i and 0 < z₁ = 1 < base anchor = 2", 668, 416, 536, 38, { fontSize: 24, bold: true, color: C.coral });
+    addText(slide, "Final output anchor: z₁", 668, 463, 536, 34, { fontSize: 23, bold: true, color: C.teal });
+
+    addBox(slide, 76, 522, 552, 104, { fill: C.paleCoral, line: C.coral, radius: 6 });
+    addText(slide, "Without correction (illustration)", 92, 530, 520, 30, { fontSize: 21, bold: true, color: C.coral });
+    addText(slide, "insert 0 before 2 → [1, 0, 2, 3, 4, 6, 7]", 92, 574, 520, 34, { fontSize: 22, color: C.ink });
+    addBox(slide, 652, 522, 552, 104, { fill: C.paleTeal, line: C.teal, radius: 6 });
+    addText(slide, "With correction", 668, 530, 520, 30, { fontSize: 21, bold: true, color: C.teal });
+    addText(slide, "insert 0 before z₁ → [0, 1, 2, 3, 4, 6, 7]", 668, 574, 520, 34, { fontSize: 22, color: C.ink });
+    addText(slide, "This changes the output anchor, not the earlier boundary-pair selection.", 76, 642, 1128, 30, { fontSize: 21, bold: true, color: C.navy, align: "center" });
     setNotes(
       slide,
-      "The special role of the first point is not completely handled by predecessor and successor boundary selection. On certain odd iterations, the final output anchor must be adjusted to z1. Treating these as two separate corrections was necessary to make the reconstructed state correct.",
+      TALK[9],
       [
         `${REPO}/thesis/chapters/algorithm.tex`,
         `${REPO}/thesis/figures/step3c_anchor_z1_anomaly.pdf`,
@@ -592,6 +598,7 @@ async function main() {
       ],
     );
   }
+
 
   // 10. State and transactions
   {

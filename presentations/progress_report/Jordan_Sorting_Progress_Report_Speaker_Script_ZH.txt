@@ -59,9 +59,9 @@ Step 3(c) 使用几何极值，而非第二个存储端点
 ============================================================
 
 第 9 页
-奇数迭代需要单独的 z1 输出锚点修正
+为什么需要单独检查 z₁ 输出锚点
 
-奇数索引 z1 的例子使用有效前缀 (1,2,3,4,6,7,0)。当前是 decreasing iteration，普通 anchor 为 z2，值为 2。直接把 0 插在它前面会得到 (1,0,2,3,4,6,7)。Z1 仍位于新点的错误一侧。这里 0 小于 z1，且 z1 小于原 anchor，因此输出 anchor 必须改为 z1。把 0 插在 z1 前得到 (0,1,2,3,4,6,7)。这一修正只改变输出插入，不替代先前的 predecessor 或 successor boundary 计算。Boundary selection 仍负责为 family update 选择 pair；输出 anchor 则选择用于 partial order 插入的点。
+这里在第 7 次迭代插入 0。结束下标为奇数，因此新 pair 属于 lower family；0 小于旧端点 7，因此本次为 decreasing。Step 3(b) 后，新 pair 获得图中的 P₃ 和 P₅。Step 3(c) 取最左 child P₃ 的几何左端点。P₃ 的端点为 2 和 3，所以 base anchor 是 2。但是 z₁ 的值为 1，它不是任何 lower pair 的端点，却仍在有序列表中。若直接把 0 插在 2 前，会让 0 留在 1 后面。本例下标为奇数，且 0 小于 z₁，z₁ 又小于 base anchor，因此最终 anchor 改为 z₁。这只改变输出插入，不替代先前的 boundary-pair selection。
 
 ============================================================
 
