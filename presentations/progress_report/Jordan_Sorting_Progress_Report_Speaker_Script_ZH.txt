@@ -47,7 +47,7 @@ Paper call 之前，oracle 认证输入有效性；调用之后，runner 将返�
 第 7 页
 初始化一次，再逐点更新
 
-初始化只做一次。Core 仅将前三个点按 x 坐标排序，建立 S₃ 和 upper、lower pair family，不使用 oracle 的排序答案。点的编号和 pair 的端点存储仍保持曲线顺序。从第 4 个点开始，每轮加入一个新点。Step 1、2 查看旧端点 zᵢ₋₁ 在维护列表中的邻居，不是直接取前一个曲线点 zᵢ₋₂，也不是先查新点的排序位置。它们分别找到 predecessor boundary Aᵢ 和 successor boundary Bᵢ。Step 3(a) 插入新 pair；Step 3(b) 在需要时拆分 sibling list 并转移 ownership；Step 3(c) 将新点插入有序列表。Increasing 时，Step 3(a) 使用 Aᵢ，3(b) 使用 Bᵢ。Decreasing 交换这两者的用途，并镜像左右操作；Step 1、2 仍分别返回 Aᵢ、Bᵢ。论文明确描述 increasing 情形；decreasing 来自对称重构，anchor 的细节属于可执行化澄清。这三个类别并不分别对应某个步骤。接下来两页解释 anchor 的澄清。
+我们同时维护两种信息：已处理点的排序，以及 pairs 之间的父子关系。初始化只做一次，仅将前三个点按 x 坐标排序，这个有序列表称为 S₃。同时建立 upper、lower pair family，不使用 oracle 的排序答案。点的编号和 pair 的端点存储仍保持曲线顺序。从第 4 个点开始，每轮加入一个新点。我们从沿曲线的前一个点出发。Step 1、2 利用它在有序列表中的邻居，分别找到 predecessor boundary Aᵢ 和 successor boundary Bᵢ。Step 3(a) 将新 pair 放入 family 结构，并确定它的 parent。Step 3(b) 在需要时拆分 sibling list，让新包含的旧 pairs 成为新 pair 的 children。到这时，Step 3(c) 才根据维护的状态选择 anchor，将新点插入有序列表。Increasing 时，Step 3(a) 使用 Aᵢ，3(b) 使用 Bᵢ。Decreasing 交换两者的用途，并镜像左右操作；Step 1、2 仍分别返回 Aᵢ、Bᵢ。论文描述 increasing 情形；decreasing 来自对称重构，anchor 的细节属于可执行化澄清。这些类别说明重构的依据，并不分别对应某个步骤。
 
 ============================================================
 
