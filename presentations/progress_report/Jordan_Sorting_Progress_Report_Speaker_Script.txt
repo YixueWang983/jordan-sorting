@@ -54,7 +54,17 @@ We maintain two things: the sorted order of the processed points, and the parent
 SLIDE 8
 From S₃ to S₄: the geometric insertion anchor
 
-Take the input three, two, one, four. Initialization sorts only the first three values into one, two, three. Their IDs remain z three, z two, z one. We now insert z four, with value four. The new upper pair P four has endpoints one and four. After Step three B, it has child P two, stored as three, two. This update goes from one to four, so it is increasing. We choose the child's geometric right endpoint as the anchor: the existing point after which we insert four. Choosing the second stored endpoint, two, would give one, two, four, three. Choosing the geometric right endpoint, three, gives one, two, three, four. The wrong order is illustrative. Stored curve order is not geometric order. This is an executable clarification, not a rule stated in exactly this form in the 1990 paper.
+Take the input three, two, one, four. After initialization, the sorted list is one, two, three. The point labels still follow curve order.
+
+We now insert the fourth point, four. After Step three B, the new upper pair P four, with endpoints one and four, has one child: P two, stored as three, two.
+
+This update goes from one to four, so it is increasing. The child’s interval, from two to three, lies inside the new interval, from one to four. Four must therefore come after both child endpoints. The child’s right boundary is three, so three is our anchor.
+
+Inserting four immediately after two would put it between the child endpoints, giving one, two, four, three. Inserting it after three gives one, two, three, four.
+
+We could also store the endpoints from left to right, provided we keep their curve-order identities. The mistake is treating the second curve-order endpoint as the right endpoint.
+
+I record this as an executable clarification, not a verbatim rule from the 1990 paper.
 
 ============================================================
 
