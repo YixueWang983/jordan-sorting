@@ -85,14 +85,14 @@ Ownership 安全的拆分与转移
 第 11 页
 实现检查与实验一致性
 
-Focused regression case 覆盖已知边界条件。有界穷举验证覆盖 n 不超过 8 的全部 2,074 个 oracle-valid permutation。Checked-state audit 检查 parent link、ownership、sibling list 与恢复输出。确定性重放比较同一 core 多次运行后的状态，并不是第二套独立实现。重放检查的是同一过程是否得到一致状态。另有实验检查，将保存的输出与固定设置及重算汇总比较，详情见 Backup C。这些有限证据支持已评估用例，但不是对所有 Jordan sequence 的数学证明。
+Focused regression case 覆盖已知边界条件。有界穷举验证覆盖 n 不超过 8 的全部 2,074 个 oracle-valid permutation。Checked-state audit 检查 parent link、ownership、sibling list 与恢复输出。确定性重放比较同一 core 多次运行后的状态，并不是第二套独立实现。重放检查的是同一过程是否得到一致状态。另有实验检查，将保存的输出与固定设置及重算汇总比较。这些有限证据支持已评估用例，但不是对所有 Jordan sequence 的数学证明。
 
 ============================================================
 
 第 12 页
 正式实验将认证与 audit 保持在 paper 计时之外
 
-实验使用 5 个规模，每个规模 12 个 exact case，并比较 3 个算法。每个 case-algorithm cell 包含 5 次 warm-up 和 20 次 measured call，共得到 3,600 条测量记录。这 20 次调用重复同一个 exact case，并非 20 个独立输入。每次调用获得包含相同值的 fresh list。算法位置轮转，避免某个算法总是先运行。Paper 的认证与 checked-state audit 在计时前完成。Paper 计时包含 minimal core call，以及从维护顺序恢复输出。输出比较发生在计时后。Python 计时覆盖排序调用；reference 计时覆盖完整的 oracle-backed pipeline。这是三种不同的计时范围。
+实验使用 5 个规模，每个规模 12 个 exact case，并比较 3 个算法。每个 case-algorithm cell 包含 5 次 warm-up 和 20 次 measured call，共得到 3,600 条测量记录。这 20 次调用重复同一个 exact case，并非 20 个独立输入。每次调用获得包含相同值的 fresh list。算法位置轮转，避免某个算法总是先运行。Paper 的认证与 checked-state audit 在计时前完成。Paper 计时包含 minimal 模式下的初始化、Step 1 至 3，以及从维护顺序恢复输出。输出比较发生在计时后。Python 计时覆盖排序调用；reference 计时覆盖完整的 oracle-backed pipeline。这是三种不同的计时范围。 原实验测量了三种实现；接下来的运行时间页重点展示 paper core 和 Python sort。
 
 ============================================================
 
@@ -104,19 +104,17 @@ Focused regression case 覆盖已知边界条件。有界穷举验证覆盖 n �
 ============================================================
 
 第 14 页
-Paper/reference 比值随五个测试规模下降
+普通列表实现的运行时间基线
 
-对每个 exact case，我用 20 次 paper 调用耗时的中位数除以 20 次 reference 调用耗时的中位数。然后对同一输入规模下的这些比值取中位数，每个 case 权重相同。
+这一页展示普通列表 paper core 的运行时间，并以 Python sort 作为实际排序基线。
 
-比值从 32 个点时的 3.226，下降到 64 时的 2.202、128 时的 1.351、256 时的 0.851，以及 512 时的 0.567。128 时比值仍大于 1，256 时已经小于 1。
+两种方法接收相同的有效输入，各自产生排序结果。认证和外部检查位于计时之外。每种方法自身的输出构造仍在计时内。
 
-在已报告的规模级汇总中，两种调用的中位耗时都随这些测试规模增加，但 reference 的耗时增长更快。
+图中每个数值是同一规模下 12 个 case 中位数的中位数，每个 case 权重相同。每个 case 的中位数来自 20 次计时调用。纵轴采用对数刻度。
 
-一个可能的贡献因素是 oracle 的区间检查。对于这些有效输入，它会在每个 family 内逐对比较所有区间。这些检查的次数呈二次增长。这项工作包含在 reference 计时内，而 paper 输入在计时前完成认证。Paper 的初始化、Step 1 至 3 和输出恢复仍在计时内。
+Paper 的耗时从 32 个点时约 0.59 毫秒，上升到 512 个点时约 18.72 毫秒。Python sort 在每个测试规模上的中位耗时都低得多。
 
-当前测量没有单独隔离这项成本，因此尚未确认它对该趋势的贡献。
-
-这些是不同的计时范围，不能视为同口径的端到端加速，也不是线性时间的证据。Python sort 在每个测试规模上仍有最低的调用时间中位数。
+这些结果描述当前实现，不能证明线性时间性能，也没有隔离各个组成部分的成本。它们为后续优化和后端比较提供基线。
 
 ============================================================
 
@@ -130,41 +128,4 @@ Paper/reference 比值随五个测试规模下降
 第 16 页
 可能的下一步：finger-tree 后端
 
-Finger-tree 后端是可能的未来扩展，不属于当前实验证据。它将保持相同的 Step 1、Step 2 和 Step 3 行为。普通列表实现为检查新后端的行为提供了经过测试的参照点。Backup E 说明接口及 ownership-transfer 难点。我希望向导师确认两个问题：应实现历史 heterogeneous finger tree，还是支持所需列表操作的等价后端？一个经过测试、语义等价的原型是否足够，还是还应证明所需的摊还操作界？
-
-============================================================
-问答备用页：第 17-21 页
-============================================================
-
-第 17 页 | 问答备用
-备用 A：各规模的中位运行时间
-
-如果需要查看绝对时间，这一页列出三个算法在五个规模上的 median call time。数值来自一次 Apple M4、CPython 3.12.4 的执行，不能推广到其他环境。对数坐标只是为了让 Python sort 与另外两条 pipeline 同时可见。
-
-------------------------------------------------------------
-
-第 18 页 | 问答备用
-备用 B：Paper 输出来源
-
-这页直接回答输出来源问题。Reference pipeline 返回 oracle_result 中的 sorted output；paper core 返回 state.partial_order.to_list。认证发生在 paper call 之前，比较发生在调用之后，因此二者都不会向 paper core 提供返回值。
-
-------------------------------------------------------------
-
-第 19 页 | 问答备用
-备用 C：验证汇总
-
-这页汇总有界验证证据，包括仓库测试、n 不超过 8 的有效排列穷举、固定生成用例、正式 case-level checked-state audit，以及通过 evidence-contract validation 的实验输出。这些检查互相补充，但都不是普遍性证明。
-
-------------------------------------------------------------
-
-第 20 页 | 问答备用
-备用 D：镜像后的局部选择
-
-这张表汇总镜像后的局部选择。Step 1 始终计算 predecessor-side boundary A_i，Step 2 始终计算 successor-side boundary B_i。镜像发生在 Step 3 如何使用这些 boundary。在 increasing iteration 中，获得左侧拆分片段，并使用最右 child 与右侧几何端点；decreasing iteration 则镜像为右侧拆分片段、最左 child 与左侧几何端点。
-
-------------------------------------------------------------
-
-第 21 页 | 问答备用
-备用 E：拟议的 finger-tree 后端边界
-
-拟议结构把 Step 1、Step 2 和 Step 3 放在一个小型 sibling-list 接口之上。普通列表后端仍是当前已验证的基线。拟议的 finger-tree 后端将独立实现相同的语义操作：创建 singleton list、在左或右边界插入、按新点值拆分、访问 first/last child，以及保持 ownership 和 stable handle。具体目标是历史 heterogeneous finger tree，还是具有等价操作界的后端，仍需与导师确认。主要风险是，高效 tree split 本身不够；若 ownership transfer 仍扫描 acquired segment 并逐项重新绑定，后端就可能无法满足历史分析所需的操作界。第一步应先保证语义等价与 differential correctness，任何复杂度主张都需要独立的证明论证。
+Finger-tree 后端是可能的未来扩展，不属于当前实验证据。它将保持相同的 Step 1、Step 2 和 Step 3 行为。普通列表实现为检查新后端的行为提供了经过测试的参照点。我希望向导师确认两个问题：应实现历史 heterogeneous finger tree，还是支持所需列表操作的等价后端？一个经过测试、语义等价的原型是否足够，还是还应证明所需的摊还操作界？

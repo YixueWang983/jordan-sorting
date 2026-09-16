@@ -41,7 +41,6 @@ const ASSET = {
   family: `${PRESENTATION_DIR}/assets/family_sibling_structure.png`,
   z1: `${PRESENTATION_DIR}/assets/step3c_anchor_z1_anomaly.png`,
   pipeline: `${PRESENTATION_DIR}/assets/formal_experiment_pipeline.png`,
-  runtime: `${PRESENTATION_DIR}/assets/week12_runtime_by_size.png`,
 };
 
 const TALK = {
@@ -75,37 +74,30 @@ I record this as an executable clarification, not a verbatim rule from the 1990 
 
   10: `Every finite pair has one parent and one sibling-list owner. Before a split, the existing owner controls both the retained and acquired segments. After a split, the original owner keeps the retained segment, while the new owner receives the acquired segment. Both nonempty sides may get new lists, but only the acquired segment changes parent. Split and transfer form one transaction: save the affected state, update it, then check the split boundary, ownership, and local postconditions. If a check fails, rollback restores the registry, ownership links, and list identifiers. The maintained state also contains the sorted processed prefix and both pair families. Ordinary lists incur scanning, copying, slicing, and ownership-rebinding costs. These correctness checks do not establish the update bounds required by the historical linear-time analysis.`,
 
-  11: `Focused regression cases cover known edge conditions. Bounded exhaustive validation covers all 2,074 oracle-valid permutations up to size eight. Checked-state audits inspect parent links, ownership, sibling lists, and recovered output. Deterministic replay compares states from repeated runs of the same core; it is not a second independent implementation. Replay checks whether the same procedure gives a consistent state. Separate experiment checks compare saved outputs with the fixed setup and recomputed summaries. Backup C gives the details. This finite evidence supports the evaluated cases, but is not a mathematical proof for every Jordan sequence.`,
+  11: `Focused regression cases cover known edge conditions. Bounded exhaustive validation covers all 2,074 oracle-valid permutations up to size eight. Checked-state audits inspect parent links, ownership, sibling lists, and recovered output. Deterministic replay compares states from repeated runs of the same core; it is not a second independent implementation. Replay checks whether the same procedure gives a consistent state. Separate experiment checks compare saved outputs with the fixed setup and recomputed summaries. This finite evidence supports the evaluated cases, but is not a mathematical proof for every Jordan sequence.`,
 
-  12: `The experiment uses five sizes, twelve exact cases per size, and three algorithms. Each case-algorithm cell has five warm-up calls and twenty measured calls, giving 3,600 measured rows. The twenty calls repeat one exact case; they are not twenty independent inputs. Each call receives a fresh list with the same values. Algorithm positions rotate so that one method does not always run first. Paper certification and the checked-state audit happen before timing. Paper timing includes the minimal core call and output recovery from maintained order. Output comparison follows timing. Python timing covers its sorting call; reference timing covers the complete oracle-backed pipeline. These are three different timing scopes.`,
+  12: `The experiment uses five sizes, twelve exact cases per size, and three algorithms. Each case-algorithm cell has five warm-up calls and twenty measured calls, giving 3,600 measured rows. The twenty calls repeat one exact case; they are not twenty independent inputs. Each call receives a fresh list with the same values. Algorithm positions rotate so that one method does not always run first. Paper certification and the checked-state audit happen before timing. Paper timing includes initialization, Steps one to three, and output recovery from maintained order in minimal mode. Output comparison follows timing. Python timing covers its sorting call; reference timing covers the complete oracle-backed pipeline. These are three different timing scopes. The experiment measured three implementations; the next runtime slide focuses on the paper core and Python sort.`,
 
   13: `All 60 cases passed certification and one checked-state audit each. Every measured call returned the expected output, with no recorded correctness errors. The 3,600 measured rows carry their case-level audit results; they do not represent 3,600 independent audits. These results cover the tested valid cases only.`,
 
-  14: `For each exact case, I divide the median of twenty paper times by the median of twenty reference times. I then take the median of these ratios for each input size, with equal weight per case.
+  14: `This slide shows the runtime of the ordinary-list paper core, with Python sort as a practical baseline.
 
-The ratio falls from 3.226 at 32 points to 2.202 at 64, 1.351 at 128, 0.851 at 256, and 0.567 at 512. It is above one at 128 and below one at 256.
+Both methods receive the same valid inputs and produce their own sorted outputs. Certification and external checks are outside timing. Each method's output construction remains timed.
 
-In the reported size-level summaries, both median call times increase across these tested sizes, but the reference time grows more rapidly.
+Each plotted value is the median of twelve case medians, with equal weight per case. Each case median comes from twenty timed calls. The vertical axis uses a logarithmic scale.
 
-One possible contributor is the oracle's interval checks. For these valid inputs, it compares every pair of intervals within each family. The number of these checks grows quadratically. This work is included in reference timing, while the paper input is certified before timing. Paper initialization, Steps one to three, and output recovery remain timed.
+The paper time rises from about 0.59 milliseconds at 32 points to 18.72 milliseconds at 512 points. Python sort has a much lower median time at every tested size.
 
-The current measurements do not isolate this cost, so its contribution to the trend is not confirmed.
-
-These are different timing scopes, not a like-for-like end-to-end speedup or evidence of linear time. Python sort still has the lowest median call time at every tested size.`,
+These results describe the current implementation. They do not establish linear-time performance or isolate the cost of individual components. They give us a baseline for later optimization and backend comparisons.`,
 
   15: `The evidence supports an executable ordinary-list reconstruction that recovers output from maintained state, with correct results on the evaluated cases. The runtime trend describes this implementation under the stated timing scopes. Ordinary lists do not establish a linear-time implementation, and five tested sizes do not establish asymptotic complexity. Recognition was not evaluated.`,
 
-  16: `A finger-tree backend is a possible future extension, outside the current experimental evidence. It would keep the same Step 1, Step 2, and Step 3 behavior. The ordinary-list implementation provides a tested reference point for checking the behavior of a new backend. Backup E explains the interface and ownership-transfer difficulty. I would like guidance on two questions. Should I target the historical heterogeneous finger tree, or an equivalent backend supporting the required list operations? Is a tested, semantically equivalent prototype enough, or should I also prove the required amortized operation bounds?`,
+  16: `A finger-tree backend is a possible future extension, outside the current experimental evidence. It would keep the same Step 1, Step 2, and Step 3 behavior. The ordinary-list implementation provides a tested reference point for checking the behavior of a new backend. I would like guidance on two questions. Should I target the historical heterogeneous finger tree, or an equivalent backend supporting the required list operations? Is a tested, semantically equivalent prototype enough, or should I also prove the required amortized operation bounds?`,
 
-  17: `If exact runtimes are requested, this backup slide reports the median call times for all three algorithms. The values belong to one recorded Apple M4 and CPython 3.12.4 execution. The logarithmic scale makes the Python values visible beside the reference and paper values. These absolute times should not be generalized to other environments.`,
 
-  18: `This slide answers the output-provenance question directly. The reference pipeline returns oracle_result sorted. The paper core returns state.partial_order.to_list. Certification precedes the paper call and comparison follows it, so neither operation supplies the paper core's return value.`,
 
-  19: `This inventory summarizes the bounded validation evidence: repository tests, exhaustive valid permutations through size eight, fixed generated cases, formal case-level checked-state audits, and a formal evidence archive that passed evidence-contract validation. These checks are complementary; none is a universal proof.`,
 
-  20: `This table summarizes the reflected local choices. Step 1 always selects the predecessor-side boundary A-i, and Step 2 always selects the successor-side boundary B-i. Step 3 reflects how those boundaries are used. Increasing iterations acquire the left split side and use the rightmost child and right endpoint; decreasing iterations mirror those choices.`,
 
-  21: `This proposed boundary keeps the paper-facing Step 1, Step 2, and Step 3 control flow above a small sibling-list interface. The current ordinary-list backend remains the validated baseline. A finger-tree backend would be a separate implementation of the same semantic operations: singleton creation, boundary insertion, split, extreme-child access, ownership preservation, and stable handles. The exact data-structure target—either the historical heterogeneous finger tree or an equivalently efficient backend—remains to be agreed with the supervisor. The main risk is that efficient tree splitting is not enough by itself. If ownership transfer still scans the acquired segment and rebinds every item, the backend may not satisfy the operation bounds needed by the historical analysis. The first milestone is therefore semantic equivalence and differential correctness; any complexity claim requires a separate proof-level argument.`,
 };
 
 const TALK_TITLES = {
@@ -122,14 +114,9 @@ const TALK_TITLES = {
   11: "Implementation checks and experiment consistency",
   12: "The formal experiment keeps certification and audit outside paper timing",
   13: "All 60 evaluated cases returned the correct output",
-  14: "The paper/reference ratio decreases across the five tested sizes",
+  14: "Runtime baseline for the ordinary-list implementation",
   15: "What the current evidence shows",
   16: "Possible next step: a finger-tree backend",
-  17: "Backup A: Median runtime by size",
-  18: "Backup B: Paper output provenance",
-  19: "Backup C: Validation summary",
-  20: "Backup D: Reflected local choices",
-  21: "Backup E: Proposed finger-tree backend boundary",
 };
 
 async function imageBytes(path) {
@@ -207,12 +194,12 @@ function addBulletList(slide, items, x, y, width, options = {}) {
   });
 }
 
-function addFooter(slide, pageLabel, backup = false) {
+function addFooter(slide, pageLabel) {
   addRule(slide, 64, 680, 1152, C.line, 1);
-  addText(slide, backup ? "BACKUP" : "MASTER'S THESIS PROGRESS REPORT", 68, 686, 380, 20, {
+  addText(slide, "MASTER'S THESIS PROGRESS REPORT", 68, 686, 380, 20, {
     fontSize: 11,
     bold: true,
-    color: backup ? C.coral : C.muted,
+    color: C.muted,
     valign: "middle",
   });
   addText(slide, pageLabel, 1120, 686, 92, 20, {
@@ -224,13 +211,13 @@ function addFooter(slide, pageLabel, backup = false) {
   });
 }
 
-function baseSlide(presentation, title, section, pageLabel, backup = false) {
+function baseSlide(presentation, title, section, pageLabel) {
   const slide = presentation.slides.add();
   slide.background.fill = C.light;
   addText(slide, section.toUpperCase(), 66, 26, 360, 22, {
     fontSize: 12,
     bold: true,
-    color: backup ? C.coral : C.teal,
+    color: C.teal,
     valign: "middle",
   });
   addText(slide, title, 64, 54, 1152, 55, {
@@ -240,8 +227,8 @@ function baseSlide(presentation, title, section, pageLabel, backup = false) {
     valign: "middle",
     lineSpacing: 0.95,
   });
-  addRule(slide, 64, 114, 1152, backup ? C.coral : C.teal, 3);
-  addFooter(slide, pageLabel, backup);
+  addRule(slide, 64, 114, 1152, C.teal, 3);
+  addFooter(slide, pageLabel);
   return slide;
 }
 
@@ -686,7 +673,7 @@ async function main() {
     }
     addBox(slide, 722, 232, 470, 250, { fill: C.paleCoral, line: C.coral, lineWidth: 1.5, radius: 8 });
     addText(slide, "A separate validation path checked that the saved outputs match the fixed experiment setup and recomputed summaries.", 758, 282, 398, 142, { fontSize: 23, bold: true, color: C.ink, align: "center", valign: "middle" });
-    addText(slide, "Full consistency checks: Backup C", 760, 506, 394, 34, { fontSize: 17, color: C.slate, align: "center", valign: "middle" });
+    addText(slide, "Checks against archived experiment outputs", 760, 506, 394, 34, { fontSize: 17, color: C.slate, align: "center", valign: "middle" });
     addText(slide, "These checks support the evaluated cases. They do not prove correctness for every Jordan sequence.", 140, 610, 1000, 40, { fontSize: 21, bold: true, color: C.navy, align: "center", valign: "middle" });
     setNotes(
       slide,
@@ -731,10 +718,10 @@ async function main() {
     });
     addText(slide, "Reference timing includes its complete oracle-backed pipeline. Python timing covers its complete sorting call.", 120, 538, 1040, 32, { fontSize: 18, color: C.slate, align: "center", valign: "middle" });
     addBox(slide, 212, 586, 856, 52, { fill: C.paleCoral, line: C.coral, lineWidth: 1.5, radius: 6 });
-    addText(slide, "Paper and reference use different timing scopes, so this ratio is not an end-to-end speedup.", 230, 592, 820, 40, { fontSize: 18, bold: true, color: C.coral, align: "center", valign: "middle" });
+    addText(slide, "Three implementations measured; runtime focus: paper core and Python sort.", 230, 592, 820, 40, { fontSize: 18, bold: true, color: C.coral, align: "center", valign: "middle" });
     setNotes(
       slide,
-      "Each exact case is generated once, oracle-certified, structurally profiled, and checked once before timing. The paper call is timed only after certification. The reference call includes its full oracle-backed workflow. This difference is deliberate and must remain visible when interpreting the ratio.",
+      "Each exact case is generated once, oracle-certified, structurally profiled, and checked once before timing. The paper call is timed only after certification. The reference call includes its full oracle-backed workflow. The next runtime slide focuses on the paper core and Python sort.",
       [
         `${REPO}/thesis/chapters/methodology.tex`,
         `${REPO}/thesis/figures/formal_experiment_pipeline.pdf`,
@@ -768,55 +755,35 @@ async function main() {
     );
   }
 
-  // 14. Runtime chart
+  // 14. Runtime baseline; equal-weight median of 12 exact-case medians.
   {
-    const slide = baseSlide(presentation, "The paper/reference ratio decreases across the five tested sizes", "Results", "14 / 16");
+    const slide = baseSlide(presentation, "Runtime baseline for the ordinary-list implementation", "Results", "14 / 16");
+    // Milliseconds from the frozen run's case_summary.csv (20 calls per case).
     slide.charts.add("line", {
-      position: { left: 68, top: 148, width: 720, height: 430 },
+      position: { left: 68, top: 148, width: 750, height: 450 },
       categories: ["32", "64", "128", "256", "512"],
       series: [
-        { name: "paper/reference", values: [3.22642, 2.202394, 1.351064, 0.850597, 0.567187], line: { style: "solid", fill: C.teal, width: 4 }, marker: { symbol: "circle", size: 9 } },
-        { name: "ratio = 1", values: [1, 1, 1, 1, 1], line: { style: "dashed", fill: C.coral, width: 2 }, marker: { symbol: "none" } },
+        { name: "Paper ordinary-list core", values: [0.58690625, 1.2821975, 2.81508325, 6.72124975, 18.71668725], line: { style: "solid", fill: C.teal, width: 3 }, marker: { symbol: "circle", size: 8 } },
+        { name: "Python sort", values: [0.000791, 0.00141675, 0.00263525, 0.00520825, 0.0105835], line: { style: "solid", fill: C.coral, width: 3 }, marker: { symbol: "square", size: 8 } },
       ],
       hasLegend: true,
-      legend: { position: "bottom", overlay: false, textStyle: { fill: C.slate, fontSize: 15 } },
+      legend: { position: "bottom", overlay: false, textStyle: { fill: C.slate, fontSize: 17 } },
       lineOptions: { grouping: "standard", smooth: false },
       chartFill: C.white,
       chartLine: { style: "solid", fill: C.line, width: 1 },
       plotAreaFill: C.white,
       plotAreaLine: { style: "solid", fill: C.line, width: 1 },
-      xAxis: { title: { text: "input size n", textStyle: { fill: C.slate, fontSize: 15 } }, textStyle: { fill: C.slate, fontSize: 15 }, line: { style: "solid", fill: C.line, width: 1 }, majorGridlines: null },
-      yAxis: { title: { text: "median exact-case ratio", textStyle: { fill: C.slate, fontSize: 15 } }, min: 0, max: 3.5, majorUnit: 0.5, numberFormatCode: "0.0", textStyle: { fill: C.slate, fontSize: 14 }, line: { style: "solid", fill: C.line, width: 1 }, majorGridlines: { style: "solid", fill: "#E6EDF3", width: 1 } },
+      xAxis: { title: { text: "Input size n", textStyle: { fill: C.slate, fontSize: 17 } }, textStyle: { fill: C.slate, fontSize: 16 }, line: { style: "solid", fill: C.line, width: 1 }, majorGridlines: null },
+      yAxis: { title: { text: "Median call time (ms, log scale)", textStyle: { fill: C.slate, fontSize: 17 } }, logBase: 10, min: 0.0001, max: 100, numberFormatCode: "0.####", textStyle: { fill: C.slate, fontSize: 15 }, line: { style: "solid", fill: C.line, width: 1 }, majorGridlines: { style: "solid", fill: "#E6EDF3", width: 1 } },
     });
-    addBox(slide, 830, 160, 350, 104, { fill: C.paleTeal, line: C.teal, radius: 8 });
-    addText(slide, "3.226", 850, 172, 126, 54, { fontSize: 38, bold: true, color: C.teal, align: "center" });
-    addText(slide, "at n = 32", 980, 184, 176, 34, { fontSize: 20, color: C.ink, valign: "middle" });
-    addBox(slide, 830, 282, 350, 104, { fill: C.paleCoral, line: C.coral, radius: 8 });
-    addText(slide, "0.567", 850, 294, 126, 54, { fontSize: 38, bold: true, color: C.coral, align: "center" });
-    addText(slide, "at n = 512", 980, 306, 176, 34, { fontSize: 20, color: C.ink, valign: "middle" });
-    addBox(slide, 830, 418, 350, 112, { fill: C.white, line: C.navy, lineWidth: 1.5, radius: 8 });
-    addText(slide, "Observed crossover", 850, 432, 310, 34, { fontSize: 24, bold: true, color: C.navy, align: "center" });
-    addText(slide, "between tested sizes 128 and 256", 852, 476, 306, 38, { fontSize: 19, color: C.ink, align: "center", valign: "middle" });
-    addBox(slide, 820, 566, 372, 68, { fill: C.navy, line: C.navy, radius: 6 });
-    addText(slide, "five sizes  |  ordinary lists  |  different timed scopes", 838, 576, 336, 48, { fontSize: 17, bold: true, color: C.white, align: "center", valign: "middle" });
-    setNotes(
-      slide,
-      TALK[14],
-      [
-        "thesis/chapters/results.tex",
-        "results/runs/week12_formal_sorting_v1__run001/case_summary.csv",
-        "docs/analysis/week12_runtime_ratios.csv",
-        "thesis/chapters/methodology.tex",
-        "results/runs/week12_formal_sorting_v1__run001/config.json",
-        "results/runs/week12_formal_sorting_v1__run001/manifest.json (source_commit: 98868b1b705f6d5f22404ee8ad7b88ad7a834f52; all source-code mechanisms below checked at this revision)",
-        "src/oracle.py",
-        "src/simplified_jordan.py",
-        "experiments/run_week11_pilot.py (run_timed_algorithm, _time_once_algorithm)",
-        "experiments/run_week12_formal_sorting.py (build_cases_and_audits, make_raw_rows)",
-        "src/paper_jordan_sort.py",
-        "src/paper_jordan.py",
-      ],
-    );
+    addBox(slide, 850, 170, 340, 165, { fill: C.paleTeal, line: C.teal, radius: 8 });
+    addText(slide, "Observed result", 872, 188, 296, 36, { fontSize: 24, bold: true, color: C.teal });
+    addText(slide, "Python sort has a much lower median call time at every tested size.", 872, 239, 296, 78, { fontSize: 23, color: C.ink });
+    addBox(slide, 850, 370, 340, 165, { fill: C.paleBlue, line: C.navy, radius: 8 });
+    addText(slide, "Use of this baseline", 872, 388, 296, 36, { fontSize: 24, bold: true, color: C.navy });
+    addText(slide, "A reference point for future optimization and backend comparisons.", 872, 439, 296, 78, { fontSize: 23, color: C.ink });
+    addText(slide, "60 valid cases · Apple M4 / CPython 3.12.4 · no asymptotic conclusion", 84, 622, 1112, 34, { fontSize: 19, color: C.slate, align: "center", valign: "middle" });
+    setNotes(slide, TALK[14], ["thesis/chapters/results.tex", "thesis/chapters/methodology.tex", "results/runs/week12_formal_sorting_v1__run001/case_summary.csv", "results/runs/week12_formal_sorting_v1__run001/config.json", "results/runs/week12_formal_sorting_v1__run001/manifest.json (source_commit: 98868b1b705f6d5f22404ee8ad7b88ad7a834f52)", "results/runs/week12_formal_sorting_v1__run001/environment.json", "experiments/run_week11_pilot.py (timing boundaries at the manifest source_commit)", "src/paper_jordan_sort.py (output recovery at the manifest source_commit)"]);
   }
 
   // 15. Interpretation boundaries
@@ -862,134 +829,6 @@ async function main() {
     );
   }
 
-  // Backup A: full runtime table
-  {
-    const slide = baseSlide(presentation, "Median runtime by size under the recorded call scopes", "Backup A", "A", true);
-    addImage(slide, imgs.runtime, "Median exact-case runtime by input size", 66, 164, 720, 408, { fit: "contain" });
-    addBox(slide, 66, 164, 720, 50, { fill: C.white, line: C.white, geometry: "rect", radius: 0 });
-    addBox(slide, 630, 216, 152, 118, { fill: C.white, line: C.white, geometry: "rect", radius: 0 });
-    addRule(slide, 646, 238, 24, C.green, 3);
-    addText(slide, "Python sort", 680, 225, 94, 28, { fontSize: 13, color: C.ink, valign: "middle" });
-    addRule(slide, 646, 274, 24, "#2E75B6", 3);
-    addText(slide, "Reference pipeline", 680, 261, 98, 28, { fontSize: 13, color: C.ink, valign: "middle" });
-    addRule(slide, 646, 310, 24, C.coral, 3);
-    addText(slide, "Paper ordinary-list core", 680, 297, 98, 32, { fontSize: 12, color: C.ink, valign: "middle" });
-    const rows = [
-      ["n", "Python (ms)", "Reference (ms)", "Paper (ms)"],
-      ["32", "0.000791", "0.181177", "0.586906"],
-      ["64", "0.001417", "0.585667", "1.282198"],
-      ["128", "0.002635", "2.077959", "2.815083"],
-      ["256", "0.005208", "7.929646", "6.721250"],
-      ["512", "0.010584", "33.014458", "18.716687"],
-    ];
-    const x0 = 816;
-    const widths = [70, 112, 128, 112];
-    let y = 172;
-    rows.forEach((row, ri) => {
-      let x = x0;
-      row.forEach((cell, ci) => {
-        const fill = ri === 0 ? C.navy : ri % 2 === 0 ? C.paleBlue : C.white;
-        addBox(slide, x, y, widths[ci], 55, { fill, line: C.line, geometry: "rect", radius: 0 });
-        addText(slide, cell, x + 2, y + 4, widths[ci] - 4, 47, { fontSize: ri === 0 ? 14 : 16, bold: ri === 0, color: ri === 0 ? C.white : C.ink, align: "center", valign: "middle" });
-        x += widths[ci];
-      });
-      y += 55;
-    });
-    addText(slide, "Absolute times belong to one recorded Apple M4 / CPython 3.12.4 execution.", 824, 534, 410, 58, { fontSize: 17, color: C.slate, align: "center", valign: "middle" });
-    setNotes(slide, "Use this table only if exact runtime values are requested. Emphasize that the vertical scales and timed scopes differ and that Python sort remains the lowest median call time.", [`${REPO}/thesis/chapters/results.tex`, `${REPO}/results/runs/week12_formal_sorting_v1__run001/case_summary.csv`]);
-  }
-
-  // Backup B: provenance
-  {
-    const slide = baseSlide(presentation, "Paper output is recovered from state, not from the oracle result", "Backup B", "B", true);
-    addBox(slide, 102, 162, 430, 374, { fill: C.paleCoral, line: C.coral, lineWidth: 2, radius: 8 });
-    addBox(slide, 748, 162, 430, 374, { fill: C.paleTeal, line: C.teal, lineWidth: 2, radius: 8 });
-    addText(slide, "Reference pipeline", 130, 188, 374, 42, { fontSize: 28, bold: true, color: C.coral, align: "center" });
-    addText(slide, "oracle_result[\"sorted\"]", 130, 270, 374, 58, { fontSize: 25, bold: true, color: C.navy, align: "center", valign: "middle" });
-    addText(slide, "Oracle validation, structure, trace, and serializable result assembly are part of the reference call.", 150, 360, 334, 106, { fontSize: 19, color: C.ink, align: "center", valign: "middle" });
-    addText(slide, "Paper core", 776, 188, 374, 42, { fontSize: 28, bold: true, color: C.teal, align: "center" });
-    addText(slide, "state.partial_order.to_list()", 776, 270, 374, 58, { fontSize: 23, bold: true, color: C.navy, align: "center", valign: "middle" });
-    addText(slide, "Certification precedes the call. Output comparison follows it. Neither provides the paper core's return value.", 796, 352, 334, 122, { fontSize: 19, color: C.ink, align: "center", valign: "middle" });
-    addText(slide, "Same expected answer, different output provenance.", 230, 590, 820, 44, { fontSize: 25, bold: true, color: C.navy, align: "center", valign: "middle" });
-    setNotes(slide, "Show this slide if asked whether the paper core is only a wrapper around the oracle. The outer certification wrapper and the post-call comparison are deliberately separate from the paper core's output construction.", [`${REPO}/thesis/chapters/implementation.tex`, `${REPO}/src/paper_jordan.py`, `${REPO}/src/simplified_jordan.py`]);
-  }
-
-  // Backup C: validation inventory
-  {
-    const slide = baseSlide(presentation, "Validation summary for the current implementation baseline", "Backup C", "C", true);
-    const items = [
-      ["537", "repository tests"],
-      ["2,074", "bounded exhaustive valid permutations, n ≤ 8"],
-      ["48", "fixed generated cases"],
-      ["60", "formal case-level checked-state audits"],
-      ["passed", "formal evidence-contract validation"],
-    ];
-    items.forEach((it, i) => {
-      const y = 158 + i * 88;
-      addText(slide, it[0], 104, y, 250, 60, { fontSize: i === 4 ? 34 : 42, bold: true, color: i % 2 === 0 ? C.teal : C.coral, align: "right", valign: "middle" });
-      addBox(slide, 386, y + 12, 4, 36, { fill: i % 2 === 0 ? C.teal : C.coral, line: i % 2 === 0 ? C.teal : C.coral, geometry: "rect", radius: 0 });
-      addText(slide, it[1], 420, y, 720, 60, { fontSize: 23, color: C.ink, valign: "middle" });
-    });
-    addBox(slide, 196, 610, 888, 48, { fill: C.paleCoral, line: C.coral, radius: 6 });
-    addText(slide, "Finite validation evidence is not a proof for every Jordan sequence.", 216, 614, 848, 40, { fontSize: 20, bold: true, color: C.coral, align: "center", valign: "middle" });
-    setNotes(slide, "Use this inventory only if the audience asks for test counts. The main presentation focuses on the validation logic because raw test totals can be mistaken for independent proofs.", [`${REPO}/docs/thesis/latex_final_audit.md`, `${REPO}/experiments/validate_paper_algorithm.py`, `${REPO}/results/runs/week12_formal_sorting_v1__run001/validation_report.json`]);
-  }
-
-  // Backup D: reflection table
-  {
-    const slide = baseSlide(presentation, "Increasing and decreasing iterations use reflected local choices", "Backup D", "D", true);
-    const headers = ["Control choice", "Increasing orientation", "Decreasing orientation"];
-    const body = [
-      ["Step 3(a) boundary", "predecessor-side (Aᵢ)", "successor-side (Bᵢ)"],
-      ["Boundary insertion", "after last sibling", "before first sibling"],
-      ["Step 3(b) boundary", "successor-side (Bᵢ)", "predecessor-side (Aᵢ)"],
-      ["Acquired split side", "left", "right"],
-      ["Child extreme", "rightmost child", "leftmost child"],
-      ["Geometric anchor", "right endpoint", "left endpoint"],
-      ["Output insertion", "after anchor", "before anchor"],
-    ];
-    const x = [92, 440, 786];
-    const widths = [348, 346, 394];
-    headers.forEach((h, i) => {
-      addBox(slide, x[i], 154, widths[i], 52, { fill: i === 0 ? C.navy : i === 1 ? C.paleTeal : C.paleCoral, line: C.line, geometry: "rect", radius: 0 });
-      addText(slide, h, x[i] + 8, 160, widths[i] - 16, 40, { fontSize: 19, bold: true, color: i === 0 ? C.white : i === 1 ? C.teal : C.coral, align: "center", valign: "middle" });
-    });
-    body.forEach((row, ri) => {
-      row.forEach((cell, ci) => {
-        const y = 206 + ri * 54;
-        addBox(slide, x[ci], y, widths[ci], 54, { fill: ri % 2 === 0 ? C.white : "#F0F4F8", line: C.line, geometry: "rect", radius: 0 });
-        addText(slide, cell, x[ci] + 8, y + 6, widths[ci] - 16, 42, { fontSize: 17, bold: ci === 0, color: C.ink, align: "center", valign: "middle" });
-      });
-    });
-    addText(slide, "Step 1 always selects Aᵢ and Step 2 always selects Bᵢ; Step 3 reflects how those boundaries are used.", 120, 602, 1040, 42, { fontSize: 18, bold: true, color: C.navy, align: "center", valign: "middle" });
-    setNotes(slide, "Use this table if asked how one implementation supports both orientations. The table is a compact reconstruction summary, not a verbatim table from the source paper.", [`${REPO}/thesis/chapters/algorithm.tex`, `${REPO}/thesis/chapters/implementation.tex`, "Fung et al. (1990), doi:10.1016/0020-0190(90)90111-A"]);
-  }
-
-  // Backup E: proposed finger-tree backend boundary
-  {
-    const slide = baseSlide(presentation, "Proposed finger-tree backend boundary", "Backup E", "E", true);
-    const stepBox = addBox(slide, 94, 160, 290, 72, { fill: C.paleTeal, line: C.teal, lineWidth: 1.5, radius: 8 });
-    addText(slide, "Paper Step 1/2/3", 108, 174, 262, 44, { fontSize: 22, bold: true, color: C.navy, align: "center", valign: "middle" });
-    const interfaceBox = addBox(slide, 500, 148, 686, 96, { fill: C.white, line: C.navy, lineWidth: 1.5, radius: 8 });
-    addText(slide, "Sibling-list backend interface", 520, 156, 646, 36, { fontSize: 22, bold: true, color: C.navy, align: "center", valign: "middle" });
-    addText(slide, "make singleton • insert at left/right boundary • split at new-point value\naccess first/last child • preserve ownership and stable handles", 524, 194, 638, 42, { fontSize: 14, color: C.slate, align: "center", valign: "middle" });
-
-    const ordinaryBox = addBox(slide, 92, 352, 500, 182, { fill: C.paleTeal, line: C.teal, lineWidth: 1.5, radius: 8 });
-    const fingerBox = addBox(slide, 688, 352, 500, 182, { fill: C.paleCoral, line: C.coral, lineWidth: 1.5, radius: 8 });
-    addText(slide, "Ordinary-list backend", 122, 370, 440, 40, { fontSize: 26, bold: true, color: C.teal, align: "center", valign: "middle" });
-    addText(slide, "CURRENT VALIDATED BASELINE", 122, 414, 440, 42, { fontSize: 23, bold: true, color: C.navy, align: "center", valign: "middle" });
-    addText(slide, "ordinary Python lists\narchived correctness and timing evidence", 142, 462, 400, 54, { fontSize: 19, color: C.ink, align: "center", valign: "middle" });
-    addText(slide, "Finger-tree backend", 718, 370, 440, 40, { fontSize: 26, bold: true, color: C.coral, align: "center", valign: "middle" });
-    addText(slide, "PROPOSED EXTENSION", 718, 414, 440, 42, { fontSize: 23, bold: true, color: C.navy, align: "center", valign: "middle" });
-    addText(slide, "semantic-equivalence target\nnew validation and experiment version", 738, 462, 400, 54, { fontSize: 19, color: C.ink, align: "center", valign: "middle" });
-    addText(slide, "Efficient tree splitting alone is insufficient if ownership transfer still scans and\nrebinds every item.", 174, 570, 932, 64, { fontSize: 25, bold: true, color: C.navy, align: "center", valign: "middle" });
-
-    slide.shapes.connect(stepBox, interfaceBox, { kind: "straight", fromSide: "right", toSide: "left", line: { style: "solid", fill: C.teal, width: 2 }, tail: { type: "arrow", width: "med", length: "med" } });
-    slide.shapes.connect(interfaceBox, ordinaryBox, { kind: "elbow", fromSide: "bottom", toSide: "top", line: { style: "solid", fill: C.teal, width: 2 }, tail: { type: "arrow", width: "med", length: "med" } });
-    slide.shapes.connect(interfaceBox, fingerBox, { kind: "elbow", fromSide: "bottom", toSide: "top", line: { style: "solid", fill: C.coral, width: 2 }, tail: { type: "arrow", width: "med", length: "med" } });
-    setNotes(slide, TALK[21], [`${REPO}/thesis/chapters/implementation.tex`, `${REPO}/thesis/chapters/limitations.tex`, "Fung et al. (1990), doi:10.1016/0020-0190(90)90111-A", "Supervisor feedback, September 2026"]);
-  }
-
   // Render slide previews and export.
   for (const [index, slide] of presentation.slides.items.entries()) {
     const stem = `slide-${String(index + 1).padStart(2, "0")}`;
@@ -1011,27 +850,12 @@ async function main() {
       TALK[slideNumber],
     ].join("\n");
   }).join("\n\n============================================================\n\n");
-  const qaScript = Array.from({ length: 5 }, (_, index) => {
-    const slideNumber = index + 17;
-    return [
-      `SLIDE ${slideNumber} | Q&A ONLY`,
-      TALK_TITLES[slideNumber],
-      "",
-      TALK[slideNumber],
-    ].join("\n");
-  }).join("\n\n------------------------------------------------------------\n\n");
   const scriptDocument = [
     "============================================================",
     "MAIN PRESENTATION: SLIDES 1-16",
     "============================================================",
     "",
     mainScript,
-    "",
-    "============================================================",
-    "Q&A NOTES: SLIDES 17-21",
-    "============================================================",
-    "",
-    qaScript,
     "",
   ].join("\n");
   await fs.writeFile(SCRIPT_OUT, scriptDocument, "utf8");

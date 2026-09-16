@@ -5,29 +5,30 @@ September 2026.
 
 ## Presentation files
 
-- `Jordan_Sorting_Progress_Report.pptx`: English presentation, 21 slides
-  (16 main slides and 5 backup slides).
+- `Jordan_Sorting_Progress_Report.pptx`: English presentation, 16 main slides.
 - `Jordan_Sorting_Progress_Report_ZH.pptx`: Chinese presentation with the same
-  21-slide structure.
+  16-slide structure.
 - `Jordan_Sorting_Progress_Report_Speaker_Script.txt`: English speaker script.
 - `Jordan_Sorting_Progress_Report_Speaker_Script_ZH.txt`: Chinese reference
   script.
 
-Both PPTX files contain speaker notes on all 21 slides. Each notes page includes
+Both PPTX files contain speaker notes on all 16 slides. Each notes page includes
 a `[Sources]` block that uses repository-relative paths or bibliographic
 references. The visible English and Chinese decks share the same technical
 claims, experiment boundaries, and slide structure.
 
 The main presentation is written for a midterm progress discussion rather than
 as a final-defense or repository-audit deck. Slides 7 through 10 retain the
-technical reconstruction detail; validation mechanics and the proposed
-finger-tree backend boundary remain available in the backup slides. The English
-notes for slides 1 through 16 contain 1,657 words.
+technical reconstruction detail. Slide 14 shows an ordinary-list runtime
+baseline against Python sort. The English notes for slides 1 through 16 contain
+1,608 words.
 
 ## Source and rebuild boundary
 
 `scripts/build-progress-deck.mjs` is the editable source for the English deck
-and English speaker script. It uses the local images in `assets/` and resolves
+and the 16-page English speaker script. Slide 14 uses a native two-series
+chart with a logarithmic millisecond axis and data from the frozen formal run.
+It uses the local images in `assets/` and resolves
 all repository sources relative to this checkout. The script requires a Node.js
 runtime in which `@oai/artifact-tool` is available. It writes temporary renders
 to the ignored `build/` directory and overwrites the English PPTX and script, so
@@ -47,10 +48,10 @@ development.
 SHA-256 at the time of archival:
 
 ```text
-6bb81487a4203d1d662a95465dd365dab9e7c01acdf8c41ede3cb4f2ddb48c9c  Jordan_Sorting_Progress_Report.pptx
-8f1e336ab1da4e126c2eea049252d2c2ff682fb6d347406b67481d2f550e610a  Jordan_Sorting_Progress_Report_ZH.pptx
-8d8fe87d910d68130b08d3319fb254b1ab57499ea2807f7fd3b10948109e4fa8  Jordan_Sorting_Progress_Report_Speaker_Script.txt
-223ee77ddd34f354628a1d44a1e848ff2d89b6953783d5a527b5e27ac19c618b  Jordan_Sorting_Progress_Report_Speaker_Script_ZH.txt
+5da1ae6c99b2fc0270fd7622ee0298ddc30ac6a603d766f00677cf3f35ffec90  Jordan_Sorting_Progress_Report.pptx
+c7d54128924733383f0659568fec6fba1473c16ed7831b426ee67cc02be622b9  Jordan_Sorting_Progress_Report_ZH.pptx
+57763074233ae0fee16a3ee5af62127a18f010c2a34b637489685db1dff55c80  Jordan_Sorting_Progress_Report_Speaker_Script.txt
+9313b731c64c40cc1c2bf64a04c3b1c2c7470c762f5a5a02b7ae48794f799696  Jordan_Sorting_Progress_Report_Speaker_Script_ZH.txt
 ```
 
 These files report the validated ordinary-list implementation as the evidence

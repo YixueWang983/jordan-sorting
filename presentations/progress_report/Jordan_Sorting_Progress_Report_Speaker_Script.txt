@@ -85,14 +85,14 @@ Every finite pair has one parent and one sibling-list owner. Before a split, the
 SLIDE 11
 Implementation checks and experiment consistency
 
-Focused regression cases cover known edge conditions. Bounded exhaustive validation covers all 2,074 oracle-valid permutations up to size eight. Checked-state audits inspect parent links, ownership, sibling lists, and recovered output. Deterministic replay compares states from repeated runs of the same core; it is not a second independent implementation. Replay checks whether the same procedure gives a consistent state. Separate experiment checks compare saved outputs with the fixed setup and recomputed summaries. Backup C gives the details. This finite evidence supports the evaluated cases, but is not a mathematical proof for every Jordan sequence.
+Focused regression cases cover known edge conditions. Bounded exhaustive validation covers all 2,074 oracle-valid permutations up to size eight. Checked-state audits inspect parent links, ownership, sibling lists, and recovered output. Deterministic replay compares states from repeated runs of the same core; it is not a second independent implementation. Replay checks whether the same procedure gives a consistent state. Separate experiment checks compare saved outputs with the fixed setup and recomputed summaries. This finite evidence supports the evaluated cases, but is not a mathematical proof for every Jordan sequence.
 
 ============================================================
 
 SLIDE 12
 The formal experiment keeps certification and audit outside paper timing
 
-The experiment uses five sizes, twelve exact cases per size, and three algorithms. Each case-algorithm cell has five warm-up calls and twenty measured calls, giving 3,600 measured rows. The twenty calls repeat one exact case; they are not twenty independent inputs. Each call receives a fresh list with the same values. Algorithm positions rotate so that one method does not always run first. Paper certification and the checked-state audit happen before timing. Paper timing includes the minimal core call and output recovery from maintained order. Output comparison follows timing. Python timing covers its sorting call; reference timing covers the complete oracle-backed pipeline. These are three different timing scopes.
+The experiment uses five sizes, twelve exact cases per size, and three algorithms. Each case-algorithm cell has five warm-up calls and twenty measured calls, giving 3,600 measured rows. The twenty calls repeat one exact case; they are not twenty independent inputs. Each call receives a fresh list with the same values. Algorithm positions rotate so that one method does not always run first. Paper certification and the checked-state audit happen before timing. Paper timing includes initialization, Steps one to three, and output recovery from maintained order in minimal mode. Output comparison follows timing. Python timing covers its sorting call; reference timing covers the complete oracle-backed pipeline. These are three different timing scopes. The experiment measured three implementations; the next runtime slide focuses on the paper core and Python sort.
 
 ============================================================
 
@@ -104,19 +104,17 @@ All 60 cases passed certification and one checked-state audit each. Every measur
 ============================================================
 
 SLIDE 14
-The paper/reference ratio decreases across the five tested sizes
+Runtime baseline for the ordinary-list implementation
 
-For each exact case, I divide the median of twenty paper times by the median of twenty reference times. I then take the median of these ratios for each input size, with equal weight per case.
+This slide shows the runtime of the ordinary-list paper core, with Python sort as a practical baseline.
 
-The ratio falls from 3.226 at 32 points to 2.202 at 64, 1.351 at 128, 0.851 at 256, and 0.567 at 512. It is above one at 128 and below one at 256.
+Both methods receive the same valid inputs and produce their own sorted outputs. Certification and external checks are outside timing. Each method's output construction remains timed.
 
-In the reported size-level summaries, both median call times increase across these tested sizes, but the reference time grows more rapidly.
+Each plotted value is the median of twelve case medians, with equal weight per case. Each case median comes from twenty timed calls. The vertical axis uses a logarithmic scale.
 
-One possible contributor is the oracle's interval checks. For these valid inputs, it compares every pair of intervals within each family. The number of these checks grows quadratically. This work is included in reference timing, while the paper input is certified before timing. Paper initialization, Steps one to three, and output recovery remain timed.
+The paper time rises from about 0.59 milliseconds at 32 points to 18.72 milliseconds at 512 points. Python sort has a much lower median time at every tested size.
 
-The current measurements do not isolate this cost, so its contribution to the trend is not confirmed.
-
-These are different timing scopes, not a like-for-like end-to-end speedup or evidence of linear time. Python sort still has the lowest median call time at every tested size.
+These results describe the current implementation. They do not establish linear-time performance or isolate the cost of individual components. They give us a baseline for later optimization and backend comparisons.
 
 ============================================================
 
@@ -130,41 +128,4 @@ The evidence supports an executable ordinary-list reconstruction that recovers o
 SLIDE 16
 Possible next step: a finger-tree backend
 
-A finger-tree backend is a possible future extension, outside the current experimental evidence. It would keep the same Step 1, Step 2, and Step 3 behavior. The ordinary-list implementation provides a tested reference point for checking the behavior of a new backend. Backup E explains the interface and ownership-transfer difficulty. I would like guidance on two questions. Should I target the historical heterogeneous finger tree, or an equivalent backend supporting the required list operations? Is a tested, semantically equivalent prototype enough, or should I also prove the required amortized operation bounds?
-
-============================================================
-Q&A NOTES: SLIDES 17-21
-============================================================
-
-SLIDE 17 | Q&A ONLY
-Backup A: Median runtime by size
-
-If exact runtimes are requested, this backup slide reports the median call times for all three algorithms. The values belong to one recorded Apple M4 and CPython 3.12.4 execution. The logarithmic scale makes the Python values visible beside the reference and paper values. These absolute times should not be generalized to other environments.
-
-------------------------------------------------------------
-
-SLIDE 18 | Q&A ONLY
-Backup B: Paper output provenance
-
-This slide answers the output-provenance question directly. The reference pipeline returns oracle_result sorted. The paper core returns state.partial_order.to_list. Certification precedes the paper call and comparison follows it, so neither operation supplies the paper core's return value.
-
-------------------------------------------------------------
-
-SLIDE 19 | Q&A ONLY
-Backup C: Validation summary
-
-This inventory summarizes the bounded validation evidence: repository tests, exhaustive valid permutations through size eight, fixed generated cases, formal case-level checked-state audits, and a formal evidence archive that passed evidence-contract validation. These checks are complementary; none is a universal proof.
-
-------------------------------------------------------------
-
-SLIDE 20 | Q&A ONLY
-Backup D: Reflected local choices
-
-This table summarizes the reflected local choices. Step 1 always selects the predecessor-side boundary A-i, and Step 2 always selects the successor-side boundary B-i. Step 3 reflects how those boundaries are used. Increasing iterations acquire the left split side and use the rightmost child and right endpoint; decreasing iterations mirror those choices.
-
-------------------------------------------------------------
-
-SLIDE 21 | Q&A ONLY
-Backup E: Proposed finger-tree backend boundary
-
-This proposed boundary keeps the paper-facing Step 1, Step 2, and Step 3 control flow above a small sibling-list interface. The current ordinary-list backend remains the validated baseline. A finger-tree backend would be a separate implementation of the same semantic operations: singleton creation, boundary insertion, split, extreme-child access, ownership preservation, and stable handles. The exact data-structure target—either the historical heterogeneous finger tree or an equivalently efficient backend—remains to be agreed with the supervisor. The main risk is that efficient tree splitting is not enough by itself. If ownership transfer still scans the acquired segment and rebinds every item, the backend may not satisfy the operation bounds needed by the historical analysis. The first milestone is therefore semantic equivalence and differential correctness; any complexity claim requires a separate proof-level argument.
+A finger-tree backend is a possible future extension, outside the current experimental evidence. It would keep the same Step 1, Step 2, and Step 3 behavior. The ordinary-list implementation provides a tested reference point for checking the behavior of a new backend. I would like guidance on two questions. Should I target the historical heterogeneous finger tree, or an equivalent backend supporting the required list operations? Is a tested, semantically equivalent prototype enough, or should I also prove the required amortized operation bounds?

@@ -24,8 +24,6 @@ Visual assets
 - jordan-sorting/thesis/figures/family_sibling_structure.pdf
 - jordan-sorting/thesis/figures/step3c_anchor_z1_anomaly.pdf
 - jordan-sorting/thesis/figures/formal_experiment_pipeline.pdf
-- jordan-sorting/thesis/figures/week12_runtime_by_size.pdf
-- jordan-sorting/thesis/figures/week12_runtime_ratio_by_size.pdf
 
 Historical literature
 - Hoffmann, Mehlhorn, Rosenstiehl, Tarjan (1986), Sorting Jordan Sequences in

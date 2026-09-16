@@ -23,9 +23,7 @@ Visual system
 18-22 pt body text, sparse flat layouts, one main claim per slide.
 
 Deck structure
-16 main slides plus 5 backup slides, 21 slides in total. Slides 17–21 are
-backup slides. Speaker notes contain the talk track and source blocks.
-Main presentation targets about 18 minutes.
+16 main slides in total. Speaker notes contain the talk track and source blocks.
 
 Final main slide discussion
 1. Historical heterogeneous finger tree specifically, or an equivalent
@@ -34,32 +32,13 @@ Final main slide discussion
    sufficient, or should the thesis also include an amortized operation-bound
    argument?
 
-Backup slide design
-Backup A — Median runtime by size
-Show all three algorithms under the recorded call scopes; absolute times
-belong to the recorded environment.
-
-Backup B — Paper output provenance
-Contrast oracle-derived reference output with paper output recovered from
-maintained state; certification and comparison remain outside the paper call.
-
-Backup C — Validation summary
-Summarize bounded validation for the current implementation baseline, without
-presenting finite checks as a universal correctness proof.
-
-Backup D — Reflected local choices
-Show the increasing/decreasing Step 3 choices; Step 1 always selects the
-predecessor boundary and Step 2 the successor boundary.
-
-Backup E — Proposed finger-tree backend boundary
-Keep paper-facing Step 1/2/3 above a small sibling-list backend interface.
-Show the ordinary-list backend as the current validated baseline and the
-finger-tree backend as a proposed extension. The semantic operations include
-singleton-list creation, insertion at the left or right boundary, splitting
-at the new-point value, first/last-child access, ownership preservation, and
-stable handles. Efficient tree splitting alone is insufficient if ownership
-transfer still scans and rebinds every item. Semantic equivalence is the first
-target; any complexity claim requires a separate operation-bound argument.
+Slide 14 runtime baseline
+Native editable line chart for Paper ordinary-list core and Python sort only.
+Input sizes 32, 64, 128, 256, 512; logarithmic y-axis in milliseconds.
+Values are equal-weight medians of 12 exact-case medians, each based on 20
+measured calls, from week12_formal_sorting_v1__run001. Two short side blocks
+state the observed result and use as a future comparison baseline. No fitted
+complexity curve, extrapolation, component-cost attribution, or dual axis.
 
 Evidence boundary
 Existing results belong only to the ordinary-list baseline. The current
