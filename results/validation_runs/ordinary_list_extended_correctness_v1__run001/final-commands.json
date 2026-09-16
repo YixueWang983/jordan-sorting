@@ -1,0 +1,21 @@
+{
+  "main_exit": 2,
+  "postflight_exit": 0,
+  "git_checks": [
+    {
+      "command": "git diff --check",
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "command": "git diff --stat",
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "command": "git status --short",
+      "exit": 0,
+      "output": "?? docs/validation/\n?? experiments/validate_ordinary_list_extended.py\n?? presentations/progress_report/.~lock.Jordan_Sorting_Progress_Report.pptx#\n?? presentations/progress_report/.~lock.Jordan_Sorting_Progress_Report_ZH.pptx#\n?? tests/test_validate_ordinary_list_extended.py\n"
+    }
+  ]
+}

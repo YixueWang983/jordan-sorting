@@ -1,0 +1,14 @@
+{
+  "base_case_id": "incremental_valid_n1025_001",
+  "case_id": "incremental_valid_n1025_001_reflect",
+  "family": "incremental_valid",
+  "kind": "derived",
+  "mode_calls": {},
+  "n": 1025,
+  "prefix_check": false,
+  "reason": "large-tier eligibility failed after smaller-case error/timeout",
+  "seed": 21285917,
+  "source": null,
+  "status": "NOT_RUN_BUDGET",
+  "transform": "min(sequence)+max(sequence)-x"
+}

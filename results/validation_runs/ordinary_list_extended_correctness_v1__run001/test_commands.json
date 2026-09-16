@@ -1,0 +1,12 @@
+[
+  {
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:experiments:tests /Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest test_validate_ordinary_list_extended test_paper_jordan_sort test_paper_execution_policy test_sibling_list_backend test_validate_paper_algorithm -v",
+    "exit_code": 0,
+    "log": "preflight-tests.log"
+  },
+  {
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:experiments:tests /Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest test_paper_jordan -v",
+    "exit_code": 0,
+    "log": "preflight-step-tests.log"
+  }
+]

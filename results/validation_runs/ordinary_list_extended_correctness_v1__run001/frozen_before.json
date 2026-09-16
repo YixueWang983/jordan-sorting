@@ -1,0 +1,18 @@
+{
+  "results/runs/week11_pilot_v1__run003/case_audit.csv": "8a13154279cf7862c3d953c5089a9a43836f4c4b3dc51c63bcc494cd4055ff56",
+  "results/runs/week11_pilot_v1__run003/case_summary.csv": "97774a5e6bf33fcfab7afdd8f00aa0041b7fde7954da89324741e86d14dfbe33",
+  "results/runs/week11_pilot_v1__run003/config.json": "74b50fc0a463e51587634c7e039360343cbb570b013ac0f906ef123d41a276fe",
+  "results/runs/week11_pilot_v1__run003/environment.json": "06271200cc5898c4d94ee535044a280579c0aad36badad09ab8a72cca9a5f36e",
+  "results/runs/week11_pilot_v1__run003/group_summary.csv": "d7e665f6cbbe3c0302d29f2932840596ea0b5de5e151192afa17cc26311373a4",
+  "results/runs/week11_pilot_v1__run003/manifest.json": "ef6a9d17df644eab8c3284d04dc356ce4b68b4efdfc0da7eecb5a9c7136c5141",
+  "results/runs/week11_pilot_v1__run003/raw.csv": "94bfdcc2a63a50590f2e1c9f94844fa02bf7a36e11857faf6d94e2ade992a0a5",
+  "results/runs/week11_pilot_v1__run003/validation_report.json": "65d8a173fd9426a0e00b663dad3433faea3c72b75b852b542dee5e010c1c3a53",
+  "results/runs/week12_formal_sorting_v1__run001/case_audit.csv": "47871cc4ff8835604b10e44eba1e0be7389d293e9309c43d80617e3ae3784eec",
+  "results/runs/week12_formal_sorting_v1__run001/case_summary.csv": "22e8d227dded8860ff8a6a1bae4ae32b979f4332177e10a2994a44ff06411124",
+  "results/runs/week12_formal_sorting_v1__run001/config.json": "7092b4c8bd50d8e4db042730b65197799280251eaa3987e704e39048893cf49e",
+  "results/runs/week12_formal_sorting_v1__run001/environment.json": "81a6208ff5241d5e6ede9ef788d89aad36e6c8b200aee956713ef4a0474caeca",
+  "results/runs/week12_formal_sorting_v1__run001/group_summary.csv": "3722324b1fa295bbf0c9e2edc21d6cd120e6716d09d8a7d16a172b990fc7acf9",
+  "results/runs/week12_formal_sorting_v1__run001/manifest.json": "f42ab0b77cb7ea91ed66c66bc6947a81cd8746b5d2b67d526472260d2b47f850",
+  "results/runs/week12_formal_sorting_v1__run001/raw.csv": "5261c9058e46bf6dc5a9c5589ee2c417106d4b47b6107fc37b6820a4146285bf",
+  "results/runs/week12_formal_sorting_v1__run001/validation_report.json": "b361405c9ca7e4bd04166d94b6bff478728c4ea6b9863e9fc84ce680de9eec9a"
+}

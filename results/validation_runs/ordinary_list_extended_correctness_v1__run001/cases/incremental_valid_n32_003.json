@@ -1,0 +1,567 @@
+{
+  "base_case_id": null,
+  "case_id": "incremental_valid_n32_003",
+  "certification": {
+    "distinct_values": true,
+    "lower_ok": true,
+    "reason": null,
+    "upper_ok": true,
+    "valid": true
+  },
+  "checked": {
+    "checks": {
+      "elements": true,
+      "length": true,
+      "matches_expected": true,
+      "strictly_increasing": true
+    },
+    "invariants_valid": true,
+    "output_sha256": "4d459b563c403474d2f85cbb867d86fd52e6f44fff3cd9448aaa3ff4efb3f2b7",
+    "passed": true,
+    "processed_count": 32
+  },
+  "coverage": {
+    "counts": {
+      "children.none": 24,
+      "children.one": 5,
+      "end_index.even": 15,
+      "end_index.odd": 14,
+      "endpoint.mismatch": 4,
+      "endpoint.mismatch.decreasing": 1,
+      "endpoint.mismatch.increasing": 3,
+      "family.lower": 14,
+      "family.upper": 15,
+      "orientation.decreasing": 17,
+      "orientation.increasing": 12,
+      "ownership.transfer": 5,
+      "split.left_only": 7,
+      "split.right_only": 3,
+      "step3a.boundary_insertion": 9,
+      "step3a.boundary_insertion.decreasing": 5,
+      "step3a.boundary_insertion.increasing": 4,
+      "step3a.singleton_list": 20,
+      "step3a.singleton_list.decreasing": 12,
+      "step3a.singleton_list.increasing": 8,
+      "step3b.skip": 19,
+      "step3b.split": 10
+    },
+    "max_live_sibling_list_length": {
+      "event": {
+        "boundary_pair_id": 12,
+        "family": "upper",
+        "insertion_mode": "boundary_insertion",
+        "iteration": 14,
+        "orientation": "increasing",
+        "pair_id": 14,
+        "parent_pair_id": 6,
+        "sibling_list_id": 11,
+        "step": "step3a_insert_pair"
+      },
+      "execution_mode": "checked",
+      "iteration": 14,
+      "value": 3
+    },
+    "transferred_pairs": 5,
+    "witnesses": {
+      "children.none": {
+        "child_count": 0,
+        "event": {
+          "acquired_side": null,
+          "boundary_pair_id": 2,
+          "family": "upper",
+          "input_list_id": null,
+          "input_size": 0,
+          "iteration": 4,
+          "left_list_id": null,
+          "left_size": 0,
+          "orientation": "decreasing",
+          "pair_id": 4,
+          "performed": false,
+          "reason": "boundary pair encloses previous point",
+          "right_list_id": null,
+          "right_size": 0,
+          "step": "step3b_split_sibling_list"
+        },
+        "execution_mode": "checked",
+        "iteration": 4
+      },
+      "children.one": {
+        "child_count": 1,
+        "event": {
+          "acquired_side": "left",
+          "boundary_pair_id": 10,
+          "family": "upper",
+          "input_list_id": 10,
+          "input_size": 1,
+          "iteration": 12,
+          "left_list_id": 13,
+          "left_size": 1,
+          "orientation": "increasing",
+          "pair_id": 12,
+          "performed": true,
+          "reason": null,
+          "right_list_id": null,
+          "right_size": 0,
+          "step": "step3b_split_sibling_list"
+        },
+        "execution_mode": "checked",
+        "iteration": 12
+      },
+      "end_index.even": {
+        "event": {
+          "boundary_pair_id": 2,
+          "family": "upper",
+          "insertion_mode": "singleton_list",
+          "iteration": 4,
+          "orientation": "decreasing",
+          "pair_id": 4,
+          "parent_pair_id": 2,
+          "sibling_list_id": 3,
+          "step": "step3a_insert_pair"
+        },
+        "execution_mode": "checked",
+        "iteration": 4
+      },
+      "end_index.odd": {
+        "event": {
+          "boundary_pair_id": 3,
+          "family": "lower",
+          "insertion_mode": "singleton_list",
+          "iteration": 5,
+          "orientation": "increasing",
+          "pair_id": 5,
+          "parent_pair_id": 3,
+          "sibling_list_id": 4,
+          "step": "step3a_insert_pair"
+        },
+        "execution_mode": "checked",
+        "iteration": 5
+      },
+      "endpoint.mismatch": {
+        "child_stored_values": [
+          8,
+          7
+        ],
+        "event": {
+          "adjusted_for_z1": false,
+          "base_anchor_point_id": 9,
+          "child_pair_id": 10,
+          "family": "upper",
+          "insertion_side": "after",
+          "iteration": 12,
+          "orientation": "increasing",
+          "output_anchor_point_id": 9,
+          "pair_id": 12,
+          "processed_count": 12,
+          "step": "step3c_insert_output_point"
+        },
+        "execution_mode": "checked",
+        "geometric_anchor_value": 8,
+        "iteration": 12
+      },
+      "endpoint.mismatch.decreasing": {
+        "child_stored_values": [
+          22,
+          27
+        ],
+        "event": {
+          "adjusted_for_z1": false,
+          "base_anchor_point_id": 20,
+          "child_pair_id": 21,
+          "family": "lower",
+          "insertion_side": "before",
+          "iteration": 23,
+          "orientation": "decreasing",
+          "output_anchor_point_id": 20,
+          "pair_id": 23,
+          "processed_count": 23,
+          "step": "step3c_insert_output_point"
+        },
+        "execution_mode": "checked",
+        "geometric_anchor_value": 22,
+        "iteration": 23
+      },
+      "endpoint.mismatch.increasing": {
+        "child_stored_values": [
+          8,
+          7
+        ],
+        "event": {
+          "adjusted_for_z1": false,
+          "base_anchor_point_id": 9,
+          "child_pair_id": 10,
+          "family": "upper",
+          "insertion_side": "after",
+          "iteration": 12,
+          "orientation": "increasing",
+          "output_anchor_point_id": 9,
+          "pair_id": 12,
+          "processed_count": 12,
+          "step": "step3c_insert_output_point"
+        },
+        "execution_mode": "checked",
+        "geometric_anchor_value": 8,
+        "iteration": 12
+      },
+      "family.lower": {
+        "event": {
+          "boundary_pair_id": 3,
+          "family": "lower",
+          "insertion_mode": "singleton_list",
+          "iteration": 5,
+          "orientation": "increasing",
+          "pair_id": 5,
+          "parent_pair_id": 3,
+          "sibling_list_id": 4,
+          "step": "step3a_insert_pair"
+        },
+        "execution_mode": "checked",
+        "iteration": 5
+      },
+      "family.upper": {
+        "event": {
+          "boundary_pair_id": 2,
+          "family": "upper",
+          "insertion_mode": "singleton_list",
+          "iteration": 4,
+          "orientation": "decreasing",
+          "pair_id": 4,
+          "parent_pair_id": 2,
+          "sibling_list_id": 3,
+          "step": "step3a_insert_pair"
+        },
+        "execution_mode": "checked",
+        "iteration": 4
+      },
+      "orientation.decreasing": {
+        "event": {
+          "boundary_pair_id": 2,
+          "family": "upper",
+          "insertion_mode": "singleton_list",
+          "iteration": 4,
+          "orientation": "decreasing",
+          "pair_id": 4,
+          "parent_pair_id": 2,
+          "sibling_list_id": 3,
+          "step": "step3a_insert_pair"
+        },
+        "execution_mode": "checked",
+        "iteration": 4
+      },
+      "orientation.increasing": {
+        "event": {
+          "boundary_pair_id": 3,
+          "family": "lower",
+          "insertion_mode": "singleton_list",
+          "iteration": 5,
+          "orientation": "increasing",
+          "pair_id": 5,
+          "parent_pair_id": 3,
+          "sibling_list_id": 4,
+          "step": "step3a_insert_pair"
+        },
+        "execution_mode": "checked",
+        "iteration": 5
+      },
+      "ownership.transfer": {
+        "event": {
+          "acquired_side": "left",
+          "boundary_pair_id": 10,
+          "family": "upper",
+          "input_list_id": 10,
+          "input_size": 1,
+          "iteration": 12,
+          "left_list_id": 13,
+          "left_size": 1,
+          "orientation": "increasing",
+          "pair_id": 12,
+          "performed": true,
+          "reason": null,
+          "right_list_id": null,
+          "right_size": 0,
+          "step": "step3b_split_sibling_list"
+        },
+        "execution_mode": "checked",
+        "iteration": 12,
+        "transferred_pair_count": 1
+      },
+      "split.left_only": {
+        "event": {
+          "acquired_side": "right",
+          "boundary_pair_id": 5,
+          "family": "lower",
+          "input_list_id": 4,
+          "input_size": 1,
+          "iteration": 7,
+          "left_list_id": 7,
+          "left_size": 1,
+          "orientation": "decreasing",
+          "pair_id": 7,
+          "performed": true,
+          "reason": null,
+          "right_list_id": null,
+          "right_size": 0,
+          "step": "step3b_split_sibling_list"
+        },
+        "execution_mode": "checked",
+        "iteration": 7
+      },
+      "split.right_only": {
+        "event": {
+          "acquired_side": "right",
+          "boundary_pair_id": 15,
+          "family": "lower",
+          "input_list_id": 17,
+          "input_size": 1,
+          "iteration": 19,
+          "left_list_id": null,
+          "left_size": 0,
+          "orientation": "decreasing",
+          "pair_id": 19,
+          "performed": true,
+          "reason": null,
+          "right_list_id": 21,
+          "right_size": 1,
+          "step": "step3b_split_sibling_list"
+        },
+        "execution_mode": "checked",
+        "iteration": 19
+      },
+      "step3a.boundary_insertion": {
+        "event": {
+          "boundary_pair_id": 8,
+          "family": "upper",
+          "insertion_mode": "boundary_insertion",
+          "iteration": 12,
+          "orientation": "increasing",
+          "pair_id": 12,
+          "parent_pair_id": 6,
+          "sibling_list_id": 11,
+          "step": "step3a_insert_pair"
+        },
+        "execution_mode": "checked",
+        "iteration": 12
+      },
+      "step3a.boundary_insertion.decreasing": {
+        "event": {
+          "boundary_pair_id": 21,
+          "family": "lower",
+          "insertion_mode": "boundary_insertion",
+          "iteration": 25,
+          "orientation": "decreasing",
+          "pair_id": 25,
+          "parent_pair_id": 23,
+          "sibling_list_id": 27,
+          "step": "step3a_insert_pair"
+        },
+        "execution_mode": "checked",
+        "iteration": 25
+      },
+      "step3a.boundary_insertion.increasing": {
+        "event": {
+          "boundary_pair_id": 8,
+          "family": "upper",
+          "insertion_mode": "boundary_insertion",
+          "iteration": 12,
+          "orientation": "increasing",
+          "pair_id": 12,
+          "parent_pair_id": 6,
+          "sibling_list_id": 11,
+          "step": "step3a_insert_pair"
+        },
+        "execution_mode": "checked",
+        "iteration": 12
+      },
+      "step3a.singleton_list": {
+        "event": {
+          "boundary_pair_id": 2,
+          "family": "upper",
+          "insertion_mode": "singleton_list",
+          "iteration": 4,
+          "orientation": "decreasing",
+          "pair_id": 4,
+          "parent_pair_id": 2,
+          "sibling_list_id": 3,
+          "step": "step3a_insert_pair"
+        },
+        "execution_mode": "checked",
+        "iteration": 4
+      },
+      "step3a.singleton_list.decreasing": {
+        "event": {
+          "boundary_pair_id": 2,
+          "family": "upper",
+          "insertion_mode": "singleton_list",
+          "iteration": 4,
+          "orientation": "decreasing",
+          "pair_id": 4,
+          "parent_pair_id": 2,
+          "sibling_list_id": 3,
+          "step": "step3a_insert_pair"
+        },
+        "execution_mode": "checked",
+        "iteration": 4
+      },
+      "step3a.singleton_list.increasing": {
+        "event": {
+          "boundary_pair_id": 3,
+          "family": "lower",
+          "insertion_mode": "singleton_list",
+          "iteration": 5,
+          "orientation": "increasing",
+          "pair_id": 5,
+          "parent_pair_id": 3,
+          "sibling_list_id": 4,
+          "step": "step3a_insert_pair"
+        },
+        "execution_mode": "checked",
+        "iteration": 5
+      },
+      "step3b.skip": {
+        "event": {
+          "acquired_side": null,
+          "boundary_pair_id": 2,
+          "family": "upper",
+          "input_list_id": null,
+          "input_size": 0,
+          "iteration": 4,
+          "left_list_id": null,
+          "left_size": 0,
+          "orientation": "decreasing",
+          "pair_id": 4,
+          "performed": false,
+          "reason": "boundary pair encloses previous point",
+          "right_list_id": null,
+          "right_size": 0,
+          "step": "step3b_split_sibling_list"
+        },
+        "execution_mode": "checked",
+        "iteration": 4
+      },
+      "step3b.split": {
+        "event": {
+          "acquired_side": "right",
+          "boundary_pair_id": 5,
+          "family": "lower",
+          "input_list_id": 4,
+          "input_size": 1,
+          "iteration": 7,
+          "left_list_id": 7,
+          "left_size": 1,
+          "orientation": "decreasing",
+          "pair_id": 7,
+          "performed": true,
+          "reason": null,
+          "right_list_id": null,
+          "right_size": 0,
+          "step": "step3b_split_sibling_list"
+        },
+        "execution_mode": "checked",
+        "iteration": 7
+      }
+    }
+  },
+  "expected_sha256": "4d459b563c403474d2f85cbb867d86fd52e6f44fff3cd9448aaa3ff4efb3f2b7",
+  "family": "incremental_valid",
+  "kind": "base",
+  "metrics": {
+    "boundary_pair_checks": 58,
+    "invariant_checks": 30,
+    "output_insertions": 29,
+    "predecessor_accesses": 29,
+    "sibling_list_insertions": 9,
+    "sibling_list_splits": 10,
+    "sibling_lists_created": 20,
+    "sibling_scan_checks": 13,
+    "split_items_copied": 13,
+    "split_items_scanned": 13,
+    "split_items_transferred": 5,
+    "successor_accesses": 29,
+    "trace_event_count": 205,
+    "z1_boundary_adjustments": 0,
+    "z1_output_anchor_adjustments": 0
+  },
+  "minimal": {
+    "checks": {
+      "elements": true,
+      "length": true,
+      "matches_expected": true,
+      "strictly_increasing": true
+    },
+    "output_sha256": "4d459b563c403474d2f85cbb867d86fd52e6f44fff3cd9448aaa3ff4efb3f2b7",
+    "passed": true
+  },
+  "mode_calls": {
+    "checked": "COMPLETED",
+    "minimal": "COMPLETED"
+  },
+  "modes_equal": true,
+  "n": 32,
+  "phase": "complete",
+  "prefix_check": false,
+  "prefix_snapshots": [],
+  "seed": 20292919,
+  "sequence": [
+    32,
+    1,
+    31,
+    2,
+    3,
+    30,
+    4,
+    5,
+    8,
+    7,
+    6,
+    9,
+    10,
+    25,
+    24,
+    11,
+    29,
+    26,
+    23,
+    22,
+    27,
+    28,
+    12,
+    21,
+    13,
+    20,
+    19,
+    18,
+    17,
+    16,
+    15,
+    14
+  ],
+  "sequence_sha256": "92f48c751a868ef91a3388b420eb4da0f9edc5b923450c2221f6606c896cea97",
+  "source": null,
+  "status": "PASS",
+  "structure": {
+    "category": "nested_heavy_valid",
+    "containment_pair_count": 112,
+    "containment_pair_density": 0.49777777777777776,
+    "lower_containment_pair_count": 48,
+    "lower_crossing_pair_count": 0,
+    "lower_interval_count": 15,
+    "lower_max_depth": 6,
+    "lower_nesting_count": 14,
+    "lower_root_count": 1,
+    "max_depth": 7,
+    "nesting_count": 29,
+    "nesting_density": 0.9354838709677419,
+    "parented_interval_ratio": 0.9354838709677419,
+    "reason": null,
+    "total_crossing_pair_count": 0,
+    "total_interval_count": 31,
+    "upper_containment_pair_count": 64,
+    "upper_crossing_pair_count": 0,
+    "upper_interval_count": 16,
+    "upper_max_depth": 7,
+    "upper_nesting_count": 15,
+    "upper_root_count": 1,
+    "valid": true
+  },
+  "transform": null
+}

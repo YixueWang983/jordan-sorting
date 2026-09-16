@@ -1,0 +1,711 @@
+{
+  "branch_evidence": {
+    "odd_length": {
+      "definition": "n % 2 == 1",
+      "positive_cases": 0,
+      "status": "NOT_OBSERVED"
+    },
+    "ownership.transfer": {
+      "field": "paper_split_items_transferred",
+      "positive_cases": 50,
+      "scope": "case-level aggregate, no iteration/subbranch witness",
+      "status": "OBSERVED",
+      "total": 1487,
+      "witness": {
+        "case_id": "incremental_valid_n32_001",
+        "paper_split_items_transferred": "7",
+        "sequence_sha256": "0fba973cfcad5cc23a33b98747f27ad018b8199b6b0f39b9e22b3bb48767fad1"
+      }
+    },
+    "step3a.boundary_insertion": {
+      "field": "paper_sibling_list_insertions",
+      "positive_cases": 55,
+      "scope": "case-level aggregate, no iteration/subbranch witness",
+      "status": "OBSERVED",
+      "total": 4070,
+      "witness": {
+        "case_id": "flat_valid_n32_001",
+        "paper_sibling_list_insertions": "29",
+        "sequence_sha256": "4d459b563c403474d2f85cbb867d86fd52e6f44fff3cd9448aaa3ff4efb3f2b7"
+      }
+    },
+    "step3a.singleton_list": {
+      "field": "paper_sibling_lists_created",
+      "positive_cases": 55,
+      "scope": "case-level aggregate, no iteration/subbranch witness",
+      "status": "OBSERVED",
+      "total": 7654,
+      "witness": {
+        "case_id": "nested_valid_n32_001",
+        "paper_sibling_lists_created": "29",
+        "sequence_sha256": "c4ce843cb915959f6acab25ba8a3acf43bee7a477a9a8b49500ec9d597b318f8"
+      }
+    },
+    "step3b.skip": {
+      "definition": "n-3 minus successful split count; one 3b event per completed iteration",
+      "positive_cases": 60,
+      "status": "OBSERVED",
+      "witness": {
+        "case_id": "flat_valid_n32_001",
+        "n": "32",
+        "paper_sibling_list_splits": "0",
+        "sequence_sha256": "4d459b563c403474d2f85cbb867d86fd52e6f44fff3cd9448aaa3ff4efb3f2b7"
+      }
+    },
+    "step3b.split": {
+      "field": "paper_sibling_list_splits",
+      "positive_cases": 50,
+      "scope": "case-level aggregate, no iteration/subbranch witness",
+      "status": "OBSERVED",
+      "total": 3925,
+      "witness": {
+        "case_id": "incremental_valid_n32_001",
+        "paper_sibling_list_splits": "10",
+        "sequence_sha256": "0fba973cfcad5cc23a33b98747f27ad018b8199b6b0f39b9e22b3bb48767fad1"
+      }
+    },
+    "z1.boundary": {
+      "field": "paper_z1_boundary_adjustments",
+      "positive_cases": 27,
+      "scope": "case-level aggregate, no iteration/subbranch witness",
+      "status": "OBSERVED",
+      "total": 40,
+      "witness": {
+        "case_id": "incremental_valid_n32_001",
+        "paper_z1_boundary_adjustments": "1",
+        "sequence_sha256": "0fba973cfcad5cc23a33b98747f27ad018b8199b6b0f39b9e22b3bb48767fad1"
+      }
+    },
+    "z1.output": {
+      "field": "paper_z1_output_anchor_adjustments",
+      "positive_cases": 13,
+      "scope": "case-level aggregate, no iteration/subbranch witness",
+      "status": "OBSERVED",
+      "total": 17,
+      "witness": {
+        "case_id": "incremental_valid_n32_001",
+        "paper_z1_output_anchor_adjustments": "1",
+        "sequence_sha256": "0fba973cfcad5cc23a33b98747f27ad018b8199b6b0f39b9e22b3bb48767fad1"
+      }
+    }
+  },
+  "categories": {
+    "nested_heavy_valid": 55,
+    "strict_flat": 5
+  },
+  "config": {
+    "algorithm_order_seed": 20261202,
+    "algorithms": [
+      "python_sort",
+      "simplified_jordan_reference",
+      "simplified_jordan_paper_ordinary_list"
+    ],
+    "audit_execution_mode": "checked",
+    "case_audit_row_count": 60,
+    "case_count": 60,
+    "case_order_seed": 20261203,
+    "case_summary_row_count": 180,
+    "group_summary_row_count": 45,
+    "measured_runs": 20,
+    "paper_execution_mode": "minimal",
+    "protocol_version": "week12_formal_sorting_v1",
+    "randomized_cases": 10,
+    "raw_row_count": 3600,
+    "recognition_separate": true,
+    "scope": "oracle_certified_valid_input_sorting",
+    "seed": 20261201,
+    "sizes": [
+      32,
+      64,
+      128,
+      256,
+      512
+    ],
+    "source_pilot_commit": "01f6480fe179dcbe0f99486be86384b61dd4121f",
+    "source_pilot_execution_id": "week11_pilot_v1__run003",
+    "source_pilot_manifest_path": "results/runs/week11_pilot_v1__run003/manifest.json",
+    "source_pilot_manifest_sha256": "ef6a9d17df644eab8c3284d04dc356ce4b68b4efdfc0da7eecb5a9c7136c5141",
+    "status": "frozen_not_executed",
+    "valid_families": [
+      "flat_valid",
+      "nested_valid",
+      "incremental_valid"
+    ],
+    "warmup_runs": 5
+  },
+  "duplicate_hashes": {},
+  "group_counts": {
+    "128/flat_valid": 1,
+    "128/incremental_valid": 10,
+    "128/nested_valid": 1,
+    "256/flat_valid": 1,
+    "256/incremental_valid": 10,
+    "256/nested_valid": 1,
+    "32/flat_valid": 1,
+    "32/incremental_valid": 10,
+    "32/nested_valid": 1,
+    "512/flat_valid": 1,
+    "512/incremental_valid": 10,
+    "512/nested_valid": 1,
+    "64/flat_valid": 1,
+    "64/incremental_valid": 10,
+    "64/nested_valid": 1
+  },
+  "group_structure_ranges": {
+    "128/flat_valid": {
+      "containment_pair_count": [
+        0.0,
+        0.0
+      ],
+      "containment_pair_density": [
+        0.0,
+        0.0
+      ],
+      "lower_root_count": [
+        63.0,
+        63.0
+      ],
+      "max_depth": [
+        0.0,
+        0.0
+      ],
+      "nesting_count": [
+        0.0,
+        0.0
+      ],
+      "parented_interval_ratio": [
+        0.0,
+        0.0
+      ],
+      "upper_root_count": [
+        64.0,
+        64.0
+      ]
+    },
+    "128/incremental_valid": {
+      "containment_pair_count": [
+        1035.0,
+        2026.0
+      ],
+      "containment_pair_density": [
+        0.26077097505668934,
+        0.5104560342655581
+      ],
+      "lower_root_count": [
+        1.0,
+        3.0
+      ],
+      "max_depth": [
+        20.0,
+        35.0
+      ],
+      "nesting_count": [
+        119.0,
+        125.0
+      ],
+      "parented_interval_ratio": [
+        0.937007874015748,
+        0.984251968503937
+      ],
+      "upper_root_count": [
+        1.0,
+        5.0
+      ]
+    },
+    "128/nested_valid": {
+      "containment_pair_count": [
+        3969.0,
+        3969.0
+      ],
+      "containment_pair_density": [
+        1.0,
+        1.0
+      ],
+      "lower_root_count": [
+        1.0,
+        1.0
+      ],
+      "max_depth": [
+        63.0,
+        63.0
+      ],
+      "nesting_count": [
+        125.0,
+        125.0
+      ],
+      "parented_interval_ratio": [
+        0.984251968503937,
+        0.984251968503937
+      ],
+      "upper_root_count": [
+        1.0,
+        1.0
+      ]
+    },
+    "256/flat_valid": {
+      "containment_pair_count": [
+        0.0,
+        0.0
+      ],
+      "containment_pair_density": [
+        0.0,
+        0.0
+      ],
+      "lower_root_count": [
+        127.0,
+        127.0
+      ],
+      "max_depth": [
+        0.0,
+        0.0
+      ],
+      "nesting_count": [
+        0.0,
+        0.0
+      ],
+      "parented_interval_ratio": [
+        0.0,
+        0.0
+      ],
+      "upper_root_count": [
+        128.0,
+        128.0
+      ]
+    },
+    "256/incremental_valid": {
+      "containment_pair_count": [
+        5020.0,
+        7811.0
+      ],
+      "containment_pair_density": [
+        0.31124062248124496,
+        0.4842829685659371
+      ],
+      "lower_root_count": [
+        1.0,
+        5.0
+      ],
+      "max_depth": [
+        48.0,
+        66.0
+      ],
+      "nesting_count": [
+        248.0,
+        253.0
+      ],
+      "parented_interval_ratio": [
+        0.9725490196078431,
+        0.9921568627450981
+      ],
+      "upper_root_count": [
+        1.0,
+        3.0
+      ]
+    },
+    "256/nested_valid": {
+      "containment_pair_count": [
+        16129.0,
+        16129.0
+      ],
+      "containment_pair_density": [
+        1.0,
+        1.0
+      ],
+      "lower_root_count": [
+        1.0,
+        1.0
+      ],
+      "max_depth": [
+        127.0,
+        127.0
+      ],
+      "nesting_count": [
+        253.0,
+        253.0
+      ],
+      "parented_interval_ratio": [
+        0.9921568627450981,
+        0.9921568627450981
+      ],
+      "upper_root_count": [
+        1.0,
+        1.0
+      ]
+    },
+    "32/flat_valid": {
+      "containment_pair_count": [
+        0.0,
+        0.0
+      ],
+      "containment_pair_density": [
+        0.0,
+        0.0
+      ],
+      "lower_root_count": [
+        15.0,
+        15.0
+      ],
+      "max_depth": [
+        0.0,
+        0.0
+      ],
+      "nesting_count": [
+        0.0,
+        0.0
+      ],
+      "parented_interval_ratio": [
+        0.0,
+        0.0
+      ],
+      "upper_root_count": [
+        16.0,
+        16.0
+      ]
+    },
+    "32/incremental_valid": {
+      "containment_pair_count": [
+        59.0,
+        148.0
+      ],
+      "containment_pair_density": [
+        0.26222222222222225,
+        0.6577777777777778
+      ],
+      "lower_root_count": [
+        1.0,
+        4.0
+      ],
+      "max_depth": [
+        6.0,
+        10.0
+      ],
+      "nesting_count": [
+        25.0,
+        29.0
+      ],
+      "parented_interval_ratio": [
+        0.8064516129032258,
+        0.9354838709677419
+      ],
+      "upper_root_count": [
+        1.0,
+        3.0
+      ]
+    },
+    "32/nested_valid": {
+      "containment_pair_count": [
+        225.0,
+        225.0
+      ],
+      "containment_pair_density": [
+        1.0,
+        1.0
+      ],
+      "lower_root_count": [
+        1.0,
+        1.0
+      ],
+      "max_depth": [
+        15.0,
+        15.0
+      ],
+      "nesting_count": [
+        29.0,
+        29.0
+      ],
+      "parented_interval_ratio": [
+        0.9354838709677419,
+        0.9354838709677419
+      ],
+      "upper_root_count": [
+        1.0,
+        1.0
+      ]
+    },
+    "512/flat_valid": {
+      "containment_pair_count": [
+        0.0,
+        0.0
+      ],
+      "containment_pair_density": [
+        0.0,
+        0.0
+      ],
+      "lower_root_count": [
+        255.0,
+        255.0
+      ],
+      "max_depth": [
+        0.0,
+        0.0
+      ],
+      "nesting_count": [
+        0.0,
+        0.0
+      ],
+      "parented_interval_ratio": [
+        0.0,
+        0.0
+      ],
+      "upper_root_count": [
+        256.0,
+        256.0
+      ]
+    },
+    "512/incremental_valid": {
+      "containment_pair_count": [
+        25144.0,
+        31859.0
+      ],
+      "containment_pair_density": [
+        0.3866820453671665,
+        0.4899500192233756
+      ],
+      "lower_root_count": [
+        1.0,
+        3.0
+      ],
+      "max_depth": [
+        108.0,
+        131.0
+      ],
+      "nesting_count": [
+        506.0,
+        509.0
+      ],
+      "parented_interval_ratio": [
+        0.9902152641878669,
+        0.9960861056751468
+      ],
+      "upper_root_count": [
+        1.0,
+        3.0
+      ]
+    },
+    "512/nested_valid": {
+      "containment_pair_count": [
+        65025.0,
+        65025.0
+      ],
+      "containment_pair_density": [
+        1.0,
+        1.0
+      ],
+      "lower_root_count": [
+        1.0,
+        1.0
+      ],
+      "max_depth": [
+        255.0,
+        255.0
+      ],
+      "nesting_count": [
+        509.0,
+        509.0
+      ],
+      "parented_interval_ratio": [
+        0.9960861056751468,
+        0.9960861056751468
+      ],
+      "upper_root_count": [
+        1.0,
+        1.0
+      ]
+    },
+    "64/flat_valid": {
+      "containment_pair_count": [
+        0.0,
+        0.0
+      ],
+      "containment_pair_density": [
+        0.0,
+        0.0
+      ],
+      "lower_root_count": [
+        31.0,
+        31.0
+      ],
+      "max_depth": [
+        0.0,
+        0.0
+      ],
+      "nesting_count": [
+        0.0,
+        0.0
+      ],
+      "parented_interval_ratio": [
+        0.0,
+        0.0
+      ],
+      "upper_root_count": [
+        32.0,
+        32.0
+      ]
+    },
+    "64/incremental_valid": {
+      "containment_pair_count": [
+        252.0,
+        603.0
+      ],
+      "containment_pair_density": [
+        0.26222684703433924,
+        0.627471383975026
+      ],
+      "lower_root_count": [
+        1.0,
+        4.0
+      ],
+      "max_depth": [
+        8.0,
+        21.0
+      ],
+      "nesting_count": [
+        56.0,
+        60.0
+      ],
+      "parented_interval_ratio": [
+        0.8888888888888888,
+        0.9523809523809523
+      ],
+      "upper_root_count": [
+        1.0,
+        3.0
+      ]
+    },
+    "64/nested_valid": {
+      "containment_pair_count": [
+        961.0,
+        961.0
+      ],
+      "containment_pair_density": [
+        1.0,
+        1.0
+      ],
+      "lower_root_count": [
+        1.0,
+        1.0
+      ],
+      "max_depth": [
+        31.0,
+        31.0
+      ],
+      "nesting_count": [
+        61.0,
+        61.0
+      ],
+      "parented_interval_ratio": [
+        0.9682539682539683,
+        0.9682539682539683
+      ],
+      "upper_root_count": [
+        1.0,
+        1.0
+      ]
+    }
+  },
+  "hash_to_case": {
+    "0130f1f0ad0a37335c3c392cf5e142842beeae8d9e26b340aa0d1c3f1d2f56d5": "historical:incremental_valid_n512_005",
+    "0378d767e08ad8e6a8f27c84cc37fb7b73d222831c97b618e2e07608305c1338": "historical:incremental_valid_n64_007",
+    "06a07d86aa90d21ce00f79070704ecf6b2d0cae6ee9af3723b49e812d5327d9d": "historical:incremental_valid_n32_006",
+    "07f69fb5288951e3b213da15a66bfe02ffcf15a4197cca3fdc818b9d773e1f9e": "historical:incremental_valid_n256_007",
+    "083f2c24bd07c07802ed045dbd299caf03100e9506df8a8cae0aac89a6a32511": "historical:flat_valid_n64_001",
+    "0fba973cfcad5cc23a33b98747f27ad018b8199b6b0f39b9e22b3bb48767fad1": "historical:incremental_valid_n32_001",
+    "13a2482a74b08c69d4618f7b700a650fc123d2818597c7f1914ba5d4f5f9efed": "historical:incremental_valid_n256_008",
+    "13bc8dc29aff70825daa06a33f41a4e022b51287a1fa614702a68854a1734867": "historical:incremental_valid_n64_001",
+    "15c98e68e54a57398f2c6b6a9129da60693da35b10f171f65be2db856f475849": "historical:incremental_valid_n256_005",
+    "1752920e2c571eed0202773e39f1e0b4ae12ced13426d04301bb77160e130ac7": "historical:incremental_valid_n128_008",
+    "18222fa4075c41573032a4d2a7f5be653e9f1d7930fe22f9475d6999857a5ddc": "historical:incremental_valid_n256_004",
+    "1e5944e30a8df11751e6069254b5c51327a83546fe2ef7b1bf8c5580427f0127": "historical:incremental_valid_n256_002",
+    "2303e0f045c3082f44a6a34f63acb93995ea2a18eeaac58934b203c77e5ec4e5": "historical:incremental_valid_n64_009",
+    "2311c72f7d04cc5271cb27f70be4916c6143bb3159de20a6aa72623752eb6ece": "historical:incremental_valid_n128_004",
+    "25306f818bbbedb45325db39136e6ce57a22c662cc200bfc3f3927afded7aef6": "historical:incremental_valid_n128_003",
+    "26195f7243238dcdb1e9f9be4af4c8d236e20f1d9d2179df98986c7832b82500": "historical:incremental_valid_n64_010",
+    "2d7d7106286103e0d16d559de14d99b2d379e79e5a9167799a09bc2a22f03902": "historical:incremental_valid_n128_001",
+    "35a4a942a09ff9692b8263b4cc8b108234482ec6116ddf1910887d380e54fc52": "historical:nested_valid_n512_001",
+    "3852a0e203c5d50f8301f2f6f0a4fbb0b40dfefabee90066a19646ba19380d0d": "historical:incremental_valid_n64_006",
+    "48b31df0fd7d495c207fc0e551580369ccda8f4a6c9777270cb787e749d7f113": "historical:incremental_valid_n32_008",
+    "49bacd1b967f8651fbe48017f044109e44875f1b21d3e1d21ecca16ebb312206": "historical:incremental_valid_n512_003",
+    "4d459b563c403474d2f85cbb867d86fd52e6f44fff3cd9448aaa3ff4efb3f2b7": "historical:flat_valid_n32_001",
+    "5a82ab1725b081ca4137edf03ee715d2f5b48a1dd8fc4db88f183d32adee81dd": "historical:incremental_valid_n512_010",
+    "5a9dcb0c1b1d13dcf3642af48ca5c0a6fea8ac745aaafc0ef721c0f54d232b96": "historical:incremental_valid_n32_007",
+    "66222bf53f6ca2c89dfb54ba480d8298b16ca28aa71b70b0171da0d4486e850b": "historical:incremental_valid_n32_010",
+    "67a3f6035d7208e3856b9debc1e7bb55784f63c53912ad93fc6ee3b754861f40": "historical:incremental_valid_n512_004",
+    "6f17c0f78a7a9888fbd7e954b508a090489c63bdbf9676410b67f79c10a0b162": "historical:incremental_valid_n512_007",
+    "720fa395f9ba4e81a14b1d67a09566668cd61d2dcdc72171d441e1c0a5e5cc52": "historical:incremental_valid_n256_003",
+    "767323ba7cd5322788135e51a8704602cc0413d28c285fed62e66a9560dd20f6": "historical:incremental_valid_n128_006",
+    "77a8703114b9763d7cbbf4d4ca8756b499ce1b1eb56ecd5ec5c73fde5fcbcea5": "historical:incremental_valid_n128_009",
+    "7850b78aa12865a62a9f796b6fd156903294b547fade352fb52e60ef9e37677d": "historical:incremental_valid_n512_009",
+    "7fd17e63868ec8551085737fb8a24d3c1613cc365f5de2d5d0a69e6b35400091": "historical:incremental_valid_n512_006",
+    "84b2d345819154bee03817aaa7addcfd1cdeb098f99c5604a315b7fa1582bdb4": "historical:nested_valid_n256_001",
+    "8e259d8d137fc20035d6c68993057ea5ab77d2e19230e547888768a8e52d88db": "historical:incremental_valid_n128_010",
+    "9a1ec79632a7bad84064c001b4b26dace7477b3e19ac23e7a65d1a48253169d5": "historical:incremental_valid_n256_010",
+    "9b4b350acd05591a065985d32888e4ac10f4d06d2872eb7526053ad6db55f693": "historical:incremental_valid_n512_008",
+    "9d9a7e34414166815d78f271cd927bab82b9f31669efb59dfe35b5dd27b22e99": "historical:incremental_valid_n256_009",
+    "a92c4384cfd4729495b762d53f9c0eb833d1d0c47be0d7dc8d9a901c7c35bd1e": "historical:incremental_valid_n512_001",
+    "ae28da9972a41b6dd4fd90ac7d97b07b0e46a9a453c9bfc25271f3a81bc841d7": "historical:incremental_valid_n32_004",
+    "b40a3c59b9210c43d777311458ab46c42631c2af18fd940829a494e77fe3a9dd": "historical:incremental_valid_n128_007",
+    "bb767a218eea44228fa875578f45c09a0f075ba5192d2f455237d67e4bf4ca3f": "historical:incremental_valid_n32_009",
+    "bc927b53f118105807e7885f68c81a2a8407af232a0d41bee722594875104242": "historical:incremental_valid_n64_003",
+    "c4ce843cb915959f6acab25ba8a3acf43bee7a477a9a8b49500ec9d597b318f8": "historical:nested_valid_n32_001",
+    "c693be5522cc7781d95fbdffc360ac8dd244e6d8ca913ce4f3e9eecc856cd7a2": "historical:incremental_valid_n64_008",
+    "c71b70903cdc8e2d30ba2b2cfe709cb50e8806c04c7946881d8134c6e9224fce": "historical:nested_valid_n128_001",
+    "cb4e861edc4134d6ebece3527e8ad0cd6d7288711e4635628b32a4e5cd79ad7d": "historical:incremental_valid_n64_002",
+    "cd095f49e534e18d8cd5be896b1d644ec58567b1e334366b4baa24a10cade754": "historical:flat_valid_n256_001",
+    "cee2d84d07588bde247877928568e20c93ac99dfc7b4c4e8524423bbe6910632": "historical:flat_valid_n512_001",
+    "d1048f3e590d114446d860b425f0b8b744def084b698f4ddee5aae68bb9cc918": "historical:incremental_valid_n64_005",
+    "d20c947284ffa25d9eba1bbb7fceba33a63f0a88083e51b649c2bb20161fd705": "historical:incremental_valid_n32_005",
+    "d49ad87d3ede3725f3abbea6f26140bdf93786b8cda21735ce50c06d6d3b15e2": "historical:incremental_valid_n64_004",
+    "d4aed11d55ac5aad43ea53c0164231a6beebc1f5a93b1e5a4e0a589abba947ec": "historical:incremental_valid_n32_002",
+    "db4a5bf8a9661ee648c929363d36c69310f7cbd05ff0ac74316c4e8e6d7ff024": "historical:incremental_valid_n512_002",
+    "ea059a873c98f3c61b9df811763c08bfca2290d8372a4983505916ba09df8e37": "historical:nested_valid_n64_001",
+    "ed65a232261b7ac9e6382be915d75783cce4e1c8dc28095d54fdb8b98549a519": "historical:incremental_valid_n256_001",
+    "ee99f31d71163bf4a747074f6da58c7634689ff697b972ead6cc7b02336049f5": "historical:incremental_valid_n128_005",
+    "f0d76dfdfbf5467a030817361d4cedd8ddc8e86a9b24ee55e7749eb72a658b53": "historical:flat_valid_n128_001",
+    "f220236a8c3e53b6808069e8412f27f13f38c8d724261966160e4b6fb724012b": "historical:incremental_valid_n32_003",
+    "f7e0138f25f8a4156130da5df96580af23d5ccaeee9c45b7c537530f1a034a50": "historical:incremental_valid_n128_002",
+    "f84416a0a1e6915d73b03592fe8bd73bddf0e514c199c5d247b48bd536db1526": "historical:incremental_valid_n256_006"
+  },
+  "input_hash_scope": "hashes recorded in manifest-verified case_audit; historical input bytes not re-generated in this task",
+  "insufficient_fields": {
+    "children zero/one/multiple": "INSUFFICIENT_ARCHIVED_FIELDS; no historical trace rerun",
+    "endpoint mismatch": "INSUFFICIENT_ARCHIVED_FIELDS; no historical trace rerun",
+    "family/orientation intersections": "INSUFFICIENT_ARCHIVED_FIELDS; no historical trace rerun",
+    "maximum live sibling-list length": "INSUFFICIENT_ARCHIVED_FIELDS; no historical trace rerun",
+    "orientation": "INSUFFICIENT_ARCHIVED_FIELDS; no historical trace rerun",
+    "split sides single/both nonempty": "INSUFFICIENT_ARCHIVED_FIELDS; no historical trace rerun",
+    "z1 adjustment direction": "INSUFFICIENT_ARCHIVED_FIELDS; no historical trace rerun"
+  },
+  "recorded_cases": 60,
+  "recorded_unique_hashes": 60,
+  "source_commit": "98868b1b705f6d5f22404ee8ad7b88ad7a834f52",
+  "structure_ranges": {
+    "containment_pair_count": {
+      "max": 65025.0,
+      "min": 0.0
+    },
+    "containment_pair_density": {
+      "max": 1.0,
+      "min": 0.0
+    },
+    "lower_root_count": {
+      "max": 255.0,
+      "min": 1.0
+    },
+    "max_depth": {
+      "max": 255.0,
+      "min": 0.0
+    },
+    "nesting_count": {
+      "max": 509.0,
+      "min": 0.0
+    },
+    "parented_interval_ratio": {
+      "max": 0.9960861056751468,
+      "min": 0.0
+    },
+    "upper_root_count": {
+      "max": 256.0,
+      "min": 1.0
+    }
+  }
+}

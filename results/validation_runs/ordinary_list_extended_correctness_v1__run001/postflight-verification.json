@@ -1,0 +1,23 @@
+{
+  "changed_original_tracked_files": [],
+  "complete_trace_independently_replayed": false,
+  "coverage_aggregation_and_witness_membership_verified": true,
+  "frozen_file_count": 16,
+  "frozen_file_sets_and_sha256_unchanged": true,
+  "manifest_file_set_and_hashes_verified": 232,
+  "mode_checks_independently_recounted": true,
+  "original_tracked_files_verified": 289,
+  "pass_rows_verified": 209,
+  "per_case_input_and_output_hashes_verified": true,
+  "planned_rows_verified": 220,
+  "prefix_snapshots_verified": 27,
+  "source_hashes_verified": true,
+  "status": "PASS",
+  "status_counts": {
+    "DUPLICATE": 6,
+    "NOT_RUN_BUDGET": 4,
+    "PASS": 209,
+    "TIMEOUT": 1
+  },
+  "verification_scope": "Archive consistency and external sorted output digests; no second implementation or rerun of formal experiment."
+}

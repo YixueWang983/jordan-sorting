@@ -1,0 +1,115 @@
+{
+  "attempted": 216,
+  "by_n": {
+    "0": {
+      "PASS": 1
+    },
+    "1": {
+      "PASS": 1
+    },
+    "1024": {
+      "NOT_RUN_BUDGET": 2
+    },
+    "1025": {
+      "NOT_RUN_BUDGET": 2
+    },
+    "128": {
+      "DUPLICATE": 2,
+      "PASS": 23
+    },
+    "129": {
+      "PASS": 25
+    },
+    "2": {
+      "PASS": 2
+    },
+    "256": {
+      "PASS": 21
+    },
+    "257": {
+      "PASS": 21
+    },
+    "32": {
+      "DUPLICATE": 2,
+      "PASS": 23
+    },
+    "33": {
+      "PASS": 25
+    },
+    "4": {
+      "PASS": 2
+    },
+    "512": {
+      "DUPLICATE": 2,
+      "PASS": 8
+    },
+    "513": {
+      "PASS": 9,
+      "TIMEOUT": 1
+    },
+    "64": {
+      "PASS": 21
+    },
+    "65": {
+      "PASS": 21
+    },
+    "7": {
+      "PASS": 4
+    },
+    "8": {
+      "PASS": 2
+    }
+  },
+  "completed": 215,
+  "count_semantics": "completed excludes TIMEOUT and NOT_RUN; duplicate certification is completed but not a new core execution; calls count top-level APIs, not internal deterministic replay",
+  "duplicates": 6,
+  "failed": 0,
+  "frozen_unchanged": true,
+  "generated_unique_inputs": 216,
+  "limitations": {
+    "all_prefix_tree_depths": "NOT MEASURABLE WITH CURRENT OBSERVABILITY: public diagnostics return trace, not every historical tree snapshot. Final profile is measured; dynamic depths would require a state callback on every case.",
+    "minimal_branch_coverage": "NOT MEASURABLE WITH CURRENT OBSERVABILITY: minimal disables trace/counters. Its output is independently recovered, but branch witnesses come from checked only.",
+    "rollback": "NOT MEASURABLE WITH CURRENT OBSERVABILITY: success traces do not expose injected failures; separate rollback regression tests are required.",
+    "universal_correctness": "Finite cases and same-core replay are not a proof or a second independent Jordan Sorting implementation."
+  },
+  "max_passed_n": 513,
+  "mode_calls_completed": {
+    "checked": 209,
+    "minimal": 209,
+    "prefix": 8
+  },
+  "mode_calls_started": {
+    "checked": 210,
+    "minimal": 209,
+    "prefix": 8
+  },
+  "mode_output_passes": {
+    "checked": 209,
+    "minimal": 209
+  },
+  "new_unique_inputs_executed": 210,
+  "not_run": 4,
+  "passed": 209,
+  "passed_by_family": {
+    "fixed": 12,
+    "flat_valid": 9,
+    "incremental_valid": 179,
+    "nested_valid": 9
+  },
+  "passed_by_kind": {
+    "base": 183,
+    "derived": 26
+  },
+  "plan_fully_accounted": true,
+  "planned": 220,
+  "prefix_snapshots_passed": 27,
+  "resource_elapsed_seconds": 1781.9975583329942,
+  "resource_errors": 0,
+  "statuses": {
+    "DUPLICATE": 6,
+    "NOT_RUN_BUDGET": 4,
+    "PASS": 209,
+    "TIMEOUT": 1
+  },
+  "timed_out": 1
+}
