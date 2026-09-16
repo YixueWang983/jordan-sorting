@@ -1,0 +1,125 @@
+{
+  "case_id": "incremental_valid_n513_005",
+  "case_file_sha256": "222d2af158e4fc756423edecbecef9a8a60482499961d6cb08fd38bedda58520",
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "platform": "macOS-27.0-arm64-arm-64bit",
+  "budget_seconds": 180,
+  "source_sha256": {
+    "src/baselines.py": "d24b0cc37ae6e6fd7ae05fca74552d39bb3435fcca7e03d5f48dab768b9b56ec",
+    "src/certified_paper_jordan.py": "36a61581fbaf3d9178eaa53b655783b2c44fdf0ae2d30b3403e53df03bd5d3ce",
+    "src/family_tree.py": "7ea1d0903f577f2088046d380bed08dacb149b1e8a91f02d9adf5ab7becef729",
+    "src/generators.py": "199ea83ce95e7817f244b899fd416c74848ca3e430068b11cd9e055da886a605",
+    "src/instrumentation.py": "c32ab3815abd7815b06a2e15d386526f2ebe8f61cafb75bf53ed20fb7f750cc3",
+    "src/jordan_operations.py": "bc72bf7b6fad92c79b851d3d35d4ee00ce638303c89db312f9459380a5182507",
+    "src/oracle.py": "be8d8ae0848775ef4a36ea37cb0dd7f166246e30a3cc9d5ba44e0de0f7c7d001",
+    "src/paper_execution_policy.py": "310bb7734da8184dc20a57844cbffd3a3377d60db06731b862306a7d41e7738c",
+    "src/paper_jordan.py": "1aae1e161a925dfdecdabab62f3a2e87f4613a16433a6354b4f4510da86b0d20",
+    "src/paper_jordan_sort.py": "dcdb298d8ef564ef317f927170ecd54b36cbf543fbdfe8fcf0b3c7c0e08bfa0a",
+    "src/partial_sorted_list.py": "29273f2afdb3352ea6393dfc444a82b1834532a234e1df5077c73fb0743cd05d",
+    "src/sibling_list_backend.py": "bc8df8a6e4fb133fcdf47d26b2ab3ec7c9afec171068c43caab625397daa1ff9",
+    "src/simplified_jordan.py": "a2aef7aa5431c3e3ef0d0d9724ac962c32bdb2d57fbcbac29df40207f14a272e",
+    "src/stats.py": "486a2895b22464db2cff7e0e16fd05c4b793193e45502802e4c40e78699b4208"
+  },
+  "purpose": "Single-input instrumented resource diagnosis; NOT a sorting benchmark; historical archive unchanged.",
+  "oracle_valid": true,
+  "active_prefix": 513,
+  "last_completed_prefix": 513,
+  "elapsed_seconds": 97.36496179099777,
+  "stats": {
+    "backend_invariants": {
+      "calls": 54825,
+      "inclusive_seconds": 85.8613680395938,
+      "exclusive_seconds": 85.8613680395938
+    },
+    "full_state_validation": {
+      "calls": 511,
+      "inclusive_seconds": 96.69281563394179,
+      "exclusive_seconds": 3.41004490875639
+    },
+    "deterministic_replay": {
+      "calls": 511,
+      "inclusive_seconds": 91.7597491430206,
+      "exclusive_seconds": 8.041448978648987
+    }
+  },
+  "prefix_progress": [
+    {
+      "prefix": 32,
+      "elapsed_seconds": 0.03957420799997635
+    },
+    {
+      "prefix": 64,
+      "elapsed_seconds": 0.18617129098856822
+    },
+    {
+      "prefix": 96,
+      "elapsed_seconds": 0.4855961249995744
+    },
+    {
+      "prefix": 128,
+      "elapsed_seconds": 1.0403842499945313
+    },
+    {
+      "prefix": 160,
+      "elapsed_seconds": 1.9957629580021603
+    },
+    {
+      "prefix": 192,
+      "elapsed_seconds": 3.431065832992317
+    },
+    {
+      "prefix": 224,
+      "elapsed_seconds": 5.5932734579982935
+    },
+    {
+      "prefix": 256,
+      "elapsed_seconds": 8.411797290988034
+    },
+    {
+      "prefix": 288,
+      "elapsed_seconds": 12.588048290999723
+    },
+    {
+      "prefix": 320,
+      "elapsed_seconds": 18.154681207990507
+    },
+    {
+      "prefix": 352,
+      "elapsed_seconds": 25.36616612499347
+    },
+    {
+      "prefix": 384,
+      "elapsed_seconds": 34.302210290989024
+    },
+    {
+      "prefix": 416,
+      "elapsed_seconds": 45.72755679099646
+    },
+    {
+      "prefix": 448,
+      "elapsed_seconds": 59.344143665992306
+    },
+    {
+      "prefix": 480,
+      "elapsed_seconds": 75.48665283300215
+    },
+    {
+      "prefix": 512,
+      "elapsed_seconds": 96.68057258299086
+    },
+    {
+      "prefix": 513,
+      "elapsed_seconds": 97.36368937499356
+    }
+  ],
+  "active_stack": [],
+  "checked_status": "PASS",
+  "checked_output_matches_oracle": true,
+  "minimal_output_matches_oracle": true,
+  "minimal_status": "PASS",
+  "source_hashes_unchanged": true,
+  "archived_files_checked": 234,
+  "archive_hashes_valid": true,
+  "tracked_diff": "",
+  "status_short": "?? presentations/progress_report/.~lock.Jordan_Sorting_Progress_Report.pptx#\n?? presentations/progress_report/.~lock.Jordan_Sorting_Progress_Report_ZH.pptx#\n"
+}
