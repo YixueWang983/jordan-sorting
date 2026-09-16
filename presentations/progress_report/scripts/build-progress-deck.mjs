@@ -81,7 +81,17 @@ I record this as an executable clarification, not a verbatim rule from the 1990 
 
   13: `All 60 cases passed certification and one checked-state audit each. Every measured call returned the expected output, with no recorded correctness errors. The 3,600 measured rows carry their case-level audit results; they do not represent 3,600 independent audits. These results cover the tested valid cases only.`,
 
-  14: `For each case, I divide the median paper time by the median reference time. I then take the median of these ratios for each size. The ratios are 3.226 at n equals 32, 2.202 at 64, 1.351 at 128, 0.851 at 256, and 0.567 at 512. Thus, the ratio is above one at 128 and below one at 256. Paper calls take less time at the two larger sizes under these scopes. Since the scopes differ, this does not establish an end-to-end speedup. Python sort has the lowest median call time at every tested size, as shown in Backup A.`,
+  14: `For each exact case, I divide the median of twenty paper times by the median of twenty reference times. I then take the median of these ratios for each input size, with equal weight per case.
+
+The ratio falls from 3.226 at 32 points to 2.202 at 64, 1.351 at 128, 0.851 at 256, and 0.567 at 512. It is above one at 128 and below one at 256.
+
+In the reported size-level summaries, both median call times increase across these tested sizes, but the reference time grows more rapidly.
+
+One possible contributor is the oracle's interval checks. For these valid inputs, it compares every pair of intervals within each family. The number of these checks grows quadratically. This work is included in reference timing, while the paper input is certified before timing. Paper initialization, Steps one to three, and output recovery remain timed.
+
+The current measurements do not isolate this cost, so its contribution to the trend is not confirmed.
+
+These are different timing scopes, not a like-for-like end-to-end speedup or evidence of linear time. Python sort still has the lowest median call time at every tested size.`,
 
   15: `The evidence supports an executable ordinary-list reconstruction that recovers output from maintained state, with correct results on the evaluated cases. The runtime trend describes this implementation under the stated timing scopes. Ordinary lists do not establish a linear-time implementation, and five tested sizes do not establish asymptotic complexity. Recognition was not evaluated.`,
 
@@ -791,11 +801,20 @@ async function main() {
     addText(slide, "five sizes  |  ordinary lists  |  different timed scopes", 838, 576, 336, 48, { fontSize: 17, bold: true, color: C.white, align: "center", valign: "middle" });
     setNotes(
       slide,
-      "Under the fixed scopes, the median paper/reference ratio decreases over the five tested sizes. It is above one through n equals 128 and below one at 256 and 512. This means that the measured paper call is smaller than the measured reference call for the larger tested cases. It does not establish an end-to-end speedup or an asymptotic result.",
+      TALK[14],
       [
-        `${REPO}/thesis/chapters/results.tex`,
-        `${REPO}/results/runs/week12_formal_sorting_v1__run001/case_summary.csv`,
-        `${REPO}/docs/analysis/week12_runtime_ratios.csv`,
+        "thesis/chapters/results.tex",
+        "results/runs/week12_formal_sorting_v1__run001/case_summary.csv",
+        "docs/analysis/week12_runtime_ratios.csv",
+        "thesis/chapters/methodology.tex",
+        "results/runs/week12_formal_sorting_v1__run001/config.json",
+        "results/runs/week12_formal_sorting_v1__run001/manifest.json (source_commit: 98868b1b705f6d5f22404ee8ad7b88ad7a834f52; all source-code mechanisms below checked at this revision)",
+        "src/oracle.py",
+        "src/simplified_jordan.py",
+        "experiments/run_week11_pilot.py (run_timed_algorithm, _time_once_algorithm)",
+        "experiments/run_week12_formal_sorting.py (build_cases_and_audits, make_raw_rows)",
+        "src/paper_jordan_sort.py",
+        "src/paper_jordan.py",
       ],
     );
   }

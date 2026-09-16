@@ -106,7 +106,17 @@ All 60 cases passed certification and one checked-state audit each. Every measur
 SLIDE 14
 The paper/reference ratio decreases across the five tested sizes
 
-For each case, I divide the median paper time by the median reference time. I then take the median of these ratios for each size. The ratios are 3.226 at n equals 32, 2.202 at 64, 1.351 at 128, 0.851 at 256, and 0.567 at 512. Thus, the ratio is above one at 128 and below one at 256. Paper calls take less time at the two larger sizes under these scopes. Since the scopes differ, this does not establish an end-to-end speedup. Python sort has the lowest median call time at every tested size, as shown in Backup A.
+For each exact case, I divide the median of twenty paper times by the median of twenty reference times. I then take the median of these ratios for each input size, with equal weight per case.
+
+The ratio falls from 3.226 at 32 points to 2.202 at 64, 1.351 at 128, 0.851 at 256, and 0.567 at 512. It is above one at 128 and below one at 256.
+
+In the reported size-level summaries, both median call times increase across these tested sizes, but the reference time grows more rapidly.
+
+One possible contributor is the oracle's interval checks. For these valid inputs, it compares every pair of intervals within each family. The number of these checks grows quadratically. This work is included in reference timing, while the paper input is certified before timing. Paper initialization, Steps one to three, and output recovery remain timed.
+
+The current measurements do not isolate this cost, so its contribution to the trend is not confirmed.
+
+These are different timing scopes, not a like-for-like end-to-end speedup or evidence of linear time. Python sort still has the lowest median call time at every tested size.
 
 ============================================================
 
