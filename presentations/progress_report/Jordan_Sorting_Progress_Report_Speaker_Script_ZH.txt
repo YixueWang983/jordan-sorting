@@ -5,7 +5,7 @@
 第 1 页
 Simplified Jordan Sorting 的可执行重构进展
 
-大家好。这次汇报介绍我的硕士论文进展，主题是使用普通 Python list 对 Simplified Jordan Sorting 进行可执行重构。上次汇报聚焦静态结构，包括 rank interval、upper 和 lower pair family、family tree，以及 oracle 支持的 reference。核心问题是，论文中的动态过程能否维护自身状态，并从中恢复输出。我将重点解释两处重构决定，再介绍验证检查和正式实验的运行时间结果。
+大家好。这次汇报介绍我的硕士论文进展，主题是使用普通 Python list 对 Simplified Jordan Sorting 进行可执行重构。输入按沿曲线遇到交点的顺序给出；任务是恢复这些点沿横坐标轴的顺序。上次汇报聚焦静态结构，包括 rank interval、upper 和 lower pair family、family tree，以及 oracle 支持的 reference。核心问题是，论文中的动态过程能否维护自身状态，并从中恢复输出。我将重点解释两处重构决定，再介绍验证检查和正式实验的运行时间结果。
 
 ============================================================
 
@@ -33,7 +33,7 @@ Simplified Jordan Sorting 的可执行重构进展
 第 5 页
 三个问题连接重构、测量与解释
 
-RQ1 是主要技术问题：普通列表重构能否在认证后的有效输入上，从维护状态恢复正确排序？RQ2 比较 paper call、Python sort 和完整 reference pipeline 在各自计时范围下的表现。RQ3 探索输入结构、checked operation counter 与运行时间之间的描述性关系，不作因果解释。
+RQ1 是主要技术问题：普通列表重构能否在认证后的有效输入上，从维护状态恢复正确排序？RQ2 比较 paper call、Python sort 和完整 reference pipeline 在各自计时范围下的表现。RQ3 探索输入结构、checked operation counter 与运行时间之间的描述性关系，不作因果解释。 本次汇报重点介绍 RQ1，以及 RQ2 中的运行时间基线；不展开结构与成本关系的分析。
 
 ============================================================
 
@@ -78,28 +78,28 @@ Paper call 之前，oracle 认证输入有效性；调用之后，runner 将返�
 第 10 页
 Ownership 安全的拆分与转移
 
-每个有限 pair 只有一个 parent 和一个 sibling-list owner。拆分前，原 owner 控制 retained 和 acquired 两部分。拆分后，原 owner 保留 retained segment，新 owner 接收 acquired segment。两个非空侧都可能得到新 list，但只有 acquired segment 改变 parent。Split 和 transfer 构成一个 transaction：保存受影响状态，执行更新，再检查 split boundary、ownership 和局部后置条件。若检查失败，rollback 恢复 registry、ownership link 和 list ID。维护状态还包括已处理前缀的排序结果，以及两类 pair family。普通列表会产生扫描、复制、切片和 ownership rebinding 成本。这些正确性检查不能建立历史线性时间分析所需的更新界。
+这里的 ownership 指一张 children list 归哪个 parent pair 管理。当 children 转移时，parent 记录和列表归属必须一起保持一致。拆分前，原 parent 拥有两个片段。拆分后，它保留 retained segment，新 parent 接收 acquired segment。两个非空侧都可能得到新 list，但只有 acquired segment 改变 parent。Split 和 transfer 构成一个 transaction：保存受影响状态，执行更新，再检查边界和 ownership。若检查失败，rollback 恢复之前的状态。普通列表会产生扫描、复制、切片和 ownership rebinding 成本。这些检查不能建立历史线性时间分析所需的更新界。
 
 ============================================================
 
 第 11 页
 实现检查与实验一致性
 
-Focused regression case 覆盖已知边界条件。有界穷举验证覆盖 n 不超过 8 的全部 2,074 个 oracle-valid permutation。Checked-state audit 检查 parent link、ownership、sibling list 与恢复输出。确定性重放比较同一 core 多次运行后的状态，并不是第二套独立实现。重放检查的是同一过程是否得到一致状态。另有实验检查，将保存的输出与固定设置及重算汇总比较。这些有限证据支持已评估用例，但不是对所有 Jordan sequence 的数学证明。
+左侧检查实现及其内部状态；右侧检查保存的实验记录，并重新计算汇总。左侧是互补的检查方式，包括重点回归用例、n 不超过 8 的全部 2,074 个 oracle-valid permutation，以及对 parent link、ownership、sibling list 和恢复输出的 checked-state audit。确定性重放比较同一 core 多次运行后的状态，并不是第二套独立实现。右侧将归档记录与固定实验设置及重算汇总核对。这些有限证据不是对所有 Jordan sequence 的数学证明。
 
 ============================================================
 
 第 12 页
-正式实验将认证与 audit 保持在 paper 计时之外
+运行时间实验：输入与测量
 
-实验使用 5 个规模，每个规模 12 个 exact case，并比较 3 个算法。每个 case-algorithm cell 包含 5 次 warm-up 和 20 次 measured call，共得到 3,600 条测量记录。这 20 次调用重复同一个 exact case，并非 20 个独立输入。每次调用获得包含相同值的 fresh list。算法位置轮转，避免某个算法总是先运行。Paper 的认证与 checked-state audit 在计时前完成。Paper 计时包含 minimal 模式下的初始化、Step 1 至 3，以及从维护顺序恢复输出。输出比较发生在计时后。Python 计时覆盖排序调用；reference 计时覆盖完整的 oracle-backed pipeline。这是三种不同的计时范围。 原实验测量了三种实现；接下来的运行时间页重点展示 paper core 和 Python sort。
+实验测试从 32 到 512 个点的 5 个规模。每个规模有 1 个 flat、1 个 nested 和 10 个逐步生成的有效输入，共 60 个。Flat 输入递增；nested 输入交替取剩余值中的最小值和最大值。Incremental 生成使用固定种子并检查有效性。每种算法对每个输入预热 5 次、测量 20 次，共 3,600 条记录。重复调用使用 fresh list，算法位置轮转。认证及每个 case 一次的 checked-state audit 位于 paper 计时前。Minimal 模式对全部点运行相同核心，省略详细 trace 和部分诊断检查。Paper 计时包含初始化、Step 1 至 3 和输出恢复。输出比较在计时后。Python 计时覆盖排序；reference 计时覆盖完整 oracle-backed pipeline。运行时间页展示 paper 和 Python。
 
 ============================================================
 
 第 13 页
-全部 60 个评估用例均返回正确输出
+运行时间实验中的 60 个用例均返回正确输出
 
-全部 60 个 case 均通过认证，并各通过一次 checked-state audit。每次 measured call 都返回 expected output，没有记录正确性错误。3,600 条测量记录携带各自的 case-level audit 结果，不代表进行了 3,600 次独立 audit。这些结果仅覆盖本次测试的有效用例。
+本次运行时间实验中的 60 个 case 均通过认证，并各通过一次 checked-state audit。每次 measured call 都返回 expected output，没有记录正确性错误。3,600 条测量记录携带各自的 case-level audit 结果，不代表进行了 3,600 次独立 audit。这些结果仅覆盖本次测试的有效用例。
 
 ============================================================
 
@@ -121,7 +121,7 @@ Paper 的耗时从 32 个点时约 0.59 毫秒，上升到 512 个点时约 18.7
 第 15 页
 当前证据说明了什么
 
-当前证据支持一个从维护状态恢复输出的可执行普通列表重构，并在已评估用例上得到正确结果。运行时间趋势描述的是当前实现及其计时范围。普通列表不构成线性时间实现，五个测试规模也不能确定渐近复杂度。本实验没有评估 recognition。
+当前证据支持一个从维护状态恢复输出的可执行普通列表重构，并在运行时间实验中的 60 个用例上得到正确结果。运行时间趋势描述的是当前实现及其计时范围。普通列表不构成线性时间实现，五个测试规模也不能确定渐近复杂度。本实验没有评估 recognition。
 
 ============================================================
 

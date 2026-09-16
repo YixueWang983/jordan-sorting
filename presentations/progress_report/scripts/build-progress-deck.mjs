@@ -44,7 +44,7 @@ const ASSET = {
 };
 
 const TALK = {
-  1: `Good afternoon. This presentation updates my master's thesis on an executable reconstruction of Simplified Jordan Sorting using ordinary Python lists. My previous report focused on static structure: rank intervals, upper and lower pair families, family trees, and an oracle-backed reference. The main question is whether the paper's dynamic procedure can maintain its own state and recover its own output. I will focus on two reconstruction decisions, then explain the validation checks and the runtime results from the formal experiment.`,
+  1: `Good afternoon. This presentation updates my master's thesis on an executable reconstruction of Simplified Jordan Sorting using ordinary Python lists. The input gives the intersection points in curve order. The task is to recover their order along the x-axis. My previous report focused on static structure: rank intervals, upper and lower pair families, family trees, and an oracle-backed reference. The main question is whether the paper's dynamic procedure can maintain its own state and recover its own output. I will focus on two reconstruction decisions, then explain the validation checks and the runtime results from the formal experiment.`,
 
   2: `The previous implementation represented rank intervals, separated upper and lower pair families, rebuilt their laminar family trees, and computed structural metrics. An oracle checked input validity and supplied a reference answer. The missing part was the dynamic procedure: updating the processed prefix, splitting sibling lists, transferring ownership, and recovering output from maintained state. Each update must preserve both the partial order and the family structure. An error in one update can corrupt both, so safe dynamic updates were the main implementation gap.`,
 
@@ -52,7 +52,7 @@ const TALK = {
 
   4: `The thesis studies the 1990 sorting procedure on inputs already certified as valid by an oracle. The experiment compares Python sort, the complete oracle-backed reference pipeline, and the reconstructed paper core. Recognition remains outside this experiment. The current core uses ordinary Python lists. It does not implement the specialized backend used in the historical linear-time analysis.`,
 
-  5: `RQ1 is the main technical question: can the ordinary-list reconstruction recover the correct sorted order from maintained state on certified valid inputs? RQ2 compares the paper call with Python sort and the complete reference pipeline under their stated timing scopes. RQ3 explores descriptive relationships between input structure, checked operation counters, and runtime. It does not claim a causal explanation.`,
+  5: `RQ1 is the main technical question: can the ordinary-list reconstruction recover the correct sorted order from maintained state on certified valid inputs? RQ2 compares the paper call with Python sort and the complete reference pipeline under their stated timing scopes. RQ3 explores descriptive relationships between input structure, checked operation counters, and runtime. It does not claim a causal explanation. This talk focuses on RQ1 and the runtime baseline in RQ2. I do not present the structure–cost analysis here.`,
 
   6: `Before the paper call, the oracle certifies input validity. After the call, the runner compares the returned output with the oracle's sorted result. The reference pipeline uses the complete oracle result, including that sorted output. The paper core receives only the original sequence under the certified precondition. It executes Step 1, Step 2, and Step 3, maintains the partial order and sibling lists, and recovers output from the partial order. Both methods are checked against the same expected answer, but they produce their outputs differently. The oracle-sorted answer never enters the paper core. The dashed comparison box therefore sits outside it.`,
 
@@ -72,13 +72,13 @@ I record this as an executable clarification, not a verbatim rule from the 1990 
 
   9: `Here we insert zero at iteration seven. The odd index makes the new pair a lower pair. Since zero is less than seven, this iteration is decreasing. After Step three B, the new pair has children P three and P five, shown here. Step three C takes the left endpoint of the leftmost child, P three, with endpoints two and three. So the base anchor is two. However, z one, with value one, is not an endpoint of any lower pair. It is still in the sorted list. Inserting zero before two would leave zero after one. Here the index is odd, and zero is smaller than z one, which is smaller than the base anchor. We therefore change the anchor to z one. This changes only output insertion, not the earlier boundary-pair selection.`,
 
-  10: `Every finite pair has one parent and one sibling-list owner. Before a split, the existing owner controls both the retained and acquired segments. After a split, the original owner keeps the retained segment, while the new owner receives the acquired segment. Both nonempty sides may get new lists, but only the acquired segment changes parent. Split and transfer form one transaction: save the affected state, update it, then check the split boundary, ownership, and local postconditions. If a check fails, rollback restores the registry, ownership links, and list identifiers. The maintained state also contains the sorted processed prefix and both pair families. Ordinary lists incur scanning, copying, slicing, and ownership-rebinding costs. These correctness checks do not establish the update bounds required by the historical linear-time analysis.`,
+  10: `Here, ownership means which parent pair a child list belongs to. When children move, their parent links and list membership must stay consistent. Before a split, the existing parent owns both segments. After the split, it keeps the retained segment, while the new parent receives the acquired segment. Both nonempty sides may get new lists, but only the acquired segment changes parent. Split and transfer form one transaction: save the affected state, update it, then check the boundary and ownership. If a check fails, rollback restores the previous state. Ordinary lists incur scanning, copying, slicing, and ownership-rebinding costs. These checks do not establish the update bounds required by the historical linear-time analysis.`,
 
-  11: `Focused regression cases cover known edge conditions. Bounded exhaustive validation covers all 2,074 oracle-valid permutations up to size eight. Checked-state audits inspect parent links, ownership, sibling lists, and recovered output. Deterministic replay compares states from repeated runs of the same core; it is not a second independent implementation. Replay checks whether the same procedure gives a consistent state. Separate experiment checks compare saved outputs with the fixed setup and recomputed summaries. This finite evidence supports the evaluated cases, but is not a mathematical proof for every Jordan sequence.`,
+  11: `The left side checks the implementation and its state. The right side checks the saved experiment records and recomputes their summaries. On the left, complementary checks include focused regression cases, all 2,074 oracle-valid permutations up to size eight, and checked-state audits of parent links, ownership, sibling lists, and recovered output. Deterministic replay compares states from repeated runs of the same core; it is not a second independent implementation. On the right, checks compare the archived records with the fixed experiment setup and recomputed summaries. This finite evidence is not a mathematical proof for every Jordan sequence.`,
 
-  12: `The experiment uses five sizes, twelve exact cases per size, and three algorithms. Each case-algorithm cell has five warm-up calls and twenty measured calls, giving 3,600 measured rows. The twenty calls repeat one exact case; they are not twenty independent inputs. Each call receives a fresh list with the same values. Algorithm positions rotate so that one method does not always run first. Paper certification and the checked-state audit happen before timing. Paper timing includes initialization, Steps one to three, and output recovery from maintained order in minimal mode. Output comparison follows timing. Python timing covers its sorting call; reference timing covers the complete oracle-backed pipeline. These are three different timing scopes. The experiment measured three implementations; the next runtime slide focuses on the paper core and Python sort.`,
+  12: `We test five sizes from 32 to 512 points. Each size has one flat case, one nested case, and ten incrementally generated valid cases: 60 inputs. Flat inputs increase; nested inputs alternate the smallest and largest remaining values. Incremental generation uses fixed seeds and validity checks. Each algorithm has five warm-ups and twenty measured calls per input, giving 3,600 rows. Repeated calls use fresh lists; algorithm positions rotate. Certification and one checked-state audit per case precede paper timing. Minimal mode runs the same core on all points, omitting detailed trace and some diagnostic checks. Paper timing includes initialization, Steps one to three, and output recovery. Output comparison follows timing. Python times sorting; reference times its complete oracle-backed pipeline. The runtime slide shows paper and Python.`,
 
-  13: `All 60 cases passed certification and one checked-state audit each. Every measured call returned the expected output, with no recorded correctness errors. The 3,600 measured rows carry their case-level audit results; they do not represent 3,600 independent audits. These results cover the tested valid cases only.`,
+  13: `All 60 cases in this runtime experiment passed certification and one checked-state audit each. Every measured call returned the expected output, with no recorded correctness errors. The 3,600 measured rows carry their case-level audit results; they do not represent 3,600 independent audits. These results cover the tested valid cases only.`,
 
   14: `This slide shows the runtime of the ordinary-list paper core, with Python sort as a practical baseline.
 
@@ -90,7 +90,7 @@ The paper time rises from about 0.59 milliseconds at 32 points to 18.72 millisec
 
 These results describe the current implementation. They do not establish linear-time performance or isolate the cost of individual components. They give us a baseline for later optimization and backend comparisons.`,
 
-  15: `The evidence supports an executable ordinary-list reconstruction that recovers output from maintained state, with correct results on the evaluated cases. The runtime trend describes this implementation under the stated timing scopes. Ordinary lists do not establish a linear-time implementation, and five tested sizes do not establish asymptotic complexity. Recognition was not evaluated.`,
+  15: `The evidence supports an executable ordinary-list reconstruction that recovers output from maintained state, with correct results on the 60 cases in the runtime experiment. The runtime trend describes this implementation under the stated timing scopes. Ordinary lists do not establish a linear-time implementation, and five tested sizes do not establish asymptotic complexity. Recognition was not evaluated.`,
 
   16: `A finger-tree backend is a possible future extension, outside the current experimental evidence. It would keep the same Step 1, Step 2, and Step 3 behavior. The ordinary-list implementation provides a tested reference point for checking the behavior of a new backend. I would like guidance on two questions. Should I target the historical heterogeneous finger tree, or an equivalent backend supporting the required list operations? Is a tested, semantically equivalent prototype enough, or should I also prove the required amortized operation bounds?`,
 
@@ -112,8 +112,8 @@ const TALK_TITLES = {
   9: "Why z₁ needs a separate output-anchor check",
   10: "Ownership-safe split and transfer",
   11: "Implementation checks and experiment consistency",
-  12: "The formal experiment keeps certification and audit outside paper timing",
-  13: "All 60 evaluated cases returned the correct output",
+  12: "Runtime experiment: inputs and measurement",
+  13: "All 60 cases in the runtime experiment returned the correct output",
   14: "Runtime baseline for the ordinary-list implementation",
   15: "What the current evidence shows",
   16: "Possible next step: a finger-tree backend",
@@ -615,7 +615,7 @@ async function main() {
   {
     const slide = baseSlide(presentation, "Ownership-safe split and transfer", "Maintained State", "10 / 16");
     addBox(slide, 68, 150, 656, 420, { fill: C.white, line: C.line, radius: 8 });
-    addText(slide, "Local split and ownership transfer", 94, 170, 606, 38, { fontSize: 25, bold: true, color: C.navy, align: "center" });
+    addText(slide, "Owner: the parent pair that owns this child list", 94, 170, 606, 38, { fontSize: 21, bold: true, color: C.navy, align: "center" });
 
     addText(slide, "Before", 94, 226, 92, 30, { fontSize: 18, bold: true, color: C.muted });
     addBox(slide, 194, 218, 164, 52, { fill: C.paleBlue, line: C.navy, lineWidth: 1.5, radius: 6 });
@@ -641,7 +641,7 @@ async function main() {
     addText(slide, "Only the acquired nonempty segment changes parent ownership.", 110, 526, 572, 28, { fontSize: 17, color: C.slate, align: "center" });
 
     addText(slide, "Maintained state", 765, 152, 390, 36, { fontSize: 25, bold: true, color: C.navy });
-    addBulletList(slide, ["sorted processed prefix", "upper and lower pair families", "one parent per finite pair", "one sibling-list owner per finite pair"], 770, 205, 410, { fontSize: 19, gap: 45 });
+    addBulletList(slide, ["sorted processed prefix", "upper and lower pair families", "one parent per finite pair", "one sibling-list membership per finite pair"], 770, 205, 410, { fontSize: 19, gap: 45 });
     addText(slide, "Transactional update", 765, 408, 390, 36, { fontSize: 25, bold: true, color: C.teal });
     addText(slide, "save state  →  split  →  transfer  →\ncheck postconditions  →  roll back on failure", 770, 454, 410, 92, { fontSize: 20, color: C.ink, align: "center", valign: "middle" });
     addBox(slide, 112, 600, 1056, 50, { fill: C.paleCoral, line: C.coral, radius: 6 });
@@ -660,20 +660,17 @@ async function main() {
   // 11. Correctness evidence
   {
     const slide = baseSlide(presentation, "Implementation checks and experiment consistency", "Validation", "11 / 16");
-    addText(slide, "IMPLEMENTATION AND STATE VALIDATION", 92, 158, 450, 28, { fontSize: 15, bold: true, color: C.teal });
-    addText(slide, "EXPERIMENT OUTPUT CHECK", 728, 158, 450, 28, { fontSize: 15, bold: true, color: C.coral });
+    addText(slide, "Is the output and maintained state correct?", 88, 146, 470, 50, { fontSize: 21, bold: true, color: C.teal });
+    addText(slide, "Are the experiment records and summaries consistent?", 722, 146, 470, 66, { fontSize: 21, bold: true, color: C.coral });
     const left = ["Focused regression cases", "Bounded exhaustive validation\n2,074 oracle-valid permutations, n ≤ 8", "Checked-state audits", "Same-core deterministic replay"];
     const ys = [202, 294, 402, 494];
     for (let i = 0; i < 4; i++) {
       addBox(slide, 88, ys[i], 470, i === 1 ? 82 : 64, { fill: C.paleTeal, line: C.teal, radius: 7 });
       addText(slide, left[i], 104, ys[i] + 8, 438, i === 1 ? 66 : 48, { fontSize: i === 1 ? 18 : 20, bold: i === 1, color: C.ink, align: "center", valign: "middle" });
-      if (i < 3) {
-        addText(slide, "↓", 286, ys[i] + (i === 1 ? 79 : 61), 72, 28, { fontSize: 26, bold: true, color: C.teal, align: "center" });
-      }
     }
     addBox(slide, 722, 232, 470, 250, { fill: C.paleCoral, line: C.coral, lineWidth: 1.5, radius: 8 });
-    addText(slide, "A separate validation path checked that the saved outputs match the fixed experiment setup and recomputed summaries.", 758, 282, 398, 142, { fontSize: 23, bold: true, color: C.ink, align: "center", valign: "middle" });
-    addText(slide, "Checks against archived experiment outputs", 760, 506, 394, 34, { fontSize: 17, color: C.slate, align: "center", valign: "middle" });
+    addText(slide, "Check saved experiment records against the fixed setup and recompute their summaries.", 758, 282, 398, 142, { fontSize: 23, bold: true, color: C.ink, align: "center", valign: "middle" });
+    addText(slide, "Experiment records and summary consistency", 760, 506, 394, 34, { fontSize: 17, color: C.slate, align: "center", valign: "middle" });
     addText(slide, "These checks support the evaluated cases. They do not prove correctness for every Jordan sequence.", 140, 610, 1000, 40, { fontSize: 21, bold: true, color: C.navy, align: "center", valign: "middle" });
     setNotes(
       slide,
@@ -689,36 +686,30 @@ async function main() {
 
   // 12. Formal experiment
   {
-    const slide = baseSlide(presentation, "The formal experiment keeps certification and audit outside paper timing", "Experimental Method", "12 / 16");
-    addBox(slide, 76, 148, 1128, 82, { fill: C.navy, line: C.navy, radius: 8 });
-    addText(slide, "5 sizes  ×  12 cases  ×  3 algorithms  ×  20 calls", 98, 158, 728, 54, { fontSize: 23, bold: true, color: C.white, align: "center", valign: "middle" });
-    addText(slide, "3,600 measured rows", 850, 158, 326, 54, { fontSize: 25, bold: true, color: C.teal, align: "center", valign: "middle" });
-
-    const stages = ["Generate", "Certify", "Checked-state\naudit", "Warm-up", "Measure", "Aggregate", "Validate\nand archive"];
-    const stageShapes = stages.map((stage, i) => {
-      const x = 74 + i * 164;
-      const timed = stage === "Measure";
-      const s = addBox(slide, x, 278, 136, 82, { fill: timed ? C.paleCoral : C.white, line: timed ? C.coral : C.slate, lineWidth: timed ? 2 : 1.5, radius: 7 });
-      addText(slide, stage, x + 8, 290, 120, 58, { fontSize: stage.startsWith("Checked") ? 15 : 18, bold: true, color: timed ? C.coral : C.navy, align: "center", valign: "middle" });
-      return s;
-    });
-    for (let i = 0; i < stageShapes.length - 1; i++) {
-      slide.shapes.connect(stageShapes[i], stageShapes[i + 1], { kind: "straight", fromSide: "right", toSide: "left", line: { style: "solid", fill: C.slate, width: 1.6 }, tail: { type: "arrow", width: "sm", length: "sm" } });
-    }
-
-    const scopes = [
-      { x: 76, fill: C.paleTeal, line: C.teal, title: "Certification outside paper timing", body: "valid-input precondition" },
-      { x: 446, fill: C.paleTeal, line: C.teal, title: "Checked-state audit outside paper timing", body: "one audit per exact case" },
-      { x: 816, fill: C.paleCoral, line: C.coral, title: "Minimal paper call inside timing", body: "output recovery remains timed" },
+    const slide = baseSlide(presentation, "Runtime experiment: inputs and measurement", "Experimental Method", "12 / 16");
+    addText(slide, "n = 32, 64, 128, 256, 512", 82, 142, 650, 38, { fontSize: 26, bold: true, color: C.navy });
+    addText(slide, "12 inputs per size · 60 total", 760, 142, 434, 38, { fontSize: 24, bold: true, color: C.teal, align: "right" });
+    const inputRows = [
+      ["Flat", "1", "[1, 2, 3, …, n]"],
+      ["Nested", "1", "[1, n, 2, n−1, …]"],
+      ["Incremental", "10", "Fixed seeds; validity checked during construction"],
     ];
-    scopes.forEach((s) => {
-      addBox(slide, s.x, 410, 338, 104, { fill: s.fill, line: s.line, lineWidth: 1.5, radius: 8 });
-      addText(slide, s.title, s.x + 16, 424, 306, 42, { fontSize: 18, bold: true, color: s.line, align: "center", valign: "middle" });
-      addText(slide, s.body, s.x + 18, 472, 302, 28, { fontSize: 17, color: C.ink, align: "center", valign: "middle" });
+    addText(slide, "Input type", 90, 197, 230, 30, { fontSize: 19, bold: true, color: C.slate });
+    addText(slide, "Per size", 342, 197, 120, 30, { fontSize: 19, bold: true, color: C.slate });
+    addText(slide, "Construction", 518, 197, 662, 30, { fontSize: 19, bold: true, color: C.slate });
+    inputRows.forEach((row, i) => {
+      const y = 235 + i * 46;
+      addText(slide, row[0], 90, y, 230, 38, { fontSize: 23, bold: true, color: C.navy });
+      addText(slide, row[1], 362, y, 100, 38, { fontSize: 23, color: C.teal });
+      addText(slide, row[2], 518, y, 662, 38, { fontSize: 22, color: C.ink });
     });
-    addText(slide, "Reference timing includes its complete oracle-backed pipeline. Python timing covers its complete sorting call.", 120, 538, 1040, 32, { fontSize: 18, color: C.slate, align: "center", valign: "middle" });
-    addBox(slide, 212, 586, 856, 52, { fill: C.paleCoral, line: C.coral, lineWidth: 1.5, radius: 6 });
-    addText(slide, "Three implementations measured; runtime focus: paper core and Python sort.", 230, 592, 820, 40, { fontSize: 18, bold: true, color: C.coral, align: "center", valign: "middle" });
+    addText(slide, "5 warm-ups, then 20 measured calls per input and algorithm", 84, 385, 1112, 34, { fontSize: 23, bold: true, color: C.navy });
+    addText(slide, "60 inputs × 3 algorithms × 20 calls = 3,600 measured rows", 84, 423, 1112, 34, { fontSize: 23, bold: true, color: C.teal });
+    addText(slide, "Before paper timing: certification and one checked-state audit per case", 84, 474, 1112, 32, { fontSize: 20, color: C.ink });
+    addText(slide, "Paper minimal: same core, all points; no detailed trace, fewer diagnostic checks", 84, 510, 1112, 32, { fontSize: 20, color: C.ink });
+    addText(slide, "Timed paper call: initialization, Steps 1–3, and output recovery", 84, 546, 1112, 32, { fontSize: 20, color: C.coral, bold: true });
+    addText(slide, "Python: sorting call. Reference: complete oracle-backed pipeline.", 84, 590, 1112, 32, { fontSize: 20, color: C.slate });
+    addText(slide, "Output comparison follows timing. Runtime focus: paper core and Python sort.", 84, 626, 1112, 30, { fontSize: 19, color: C.slate });
     setNotes(
       slide,
       "Each exact case is generated once, oracle-certified, structurally profiled, and checked once before timing. The paper call is timed only after certification. The reference call includes its full oracle-backed workflow. The next runtime slide focuses on the paper core and Python sort.",
@@ -733,7 +724,7 @@ async function main() {
 
   // 13. Correctness results
   {
-    const slide = baseSlide(presentation, "All 60 evaluated cases returned the correct output", "Results", "13 / 16");
+    const slide = baseSlide(presentation, "All 60 cases in the runtime experiment returned the correct output", "Results", "13 / 16");
     addText(slide, "60", 130, 176, 410, 100, { fontSize: 72, bold: true, color: C.teal, align: "center", valign: "middle" });
     addText(slide, "exact cases", 130, 278, 410, 46, { fontSize: 26, bold: true, color: C.navy, align: "center", valign: "middle" });
     addText(slide, "0", 740, 176, 410, 100, { fontSize: 72, bold: true, color: C.green, align: "center", valign: "middle" });
@@ -793,7 +784,7 @@ async function main() {
     addBox(slide, 666, 152, 536, 404, { fill: C.paleCoral, line: C.coral, lineWidth: 2, radius: 8 });
     addText(slide, "Current results", 106, 178, 480, 52, { fontSize: 26, bold: true, color: C.teal, align: "center", valign: "middle" });
     addText(slide, "Main limits", 694, 178, 480, 52, { fontSize: 26, bold: true, color: C.coral, align: "center", valign: "middle" });
-    addBulletList(slide, ["Executable reconstruction with output recovered from maintained state", "Correct outputs and a recorded runtime trend for the evaluated cases"], 112, 270, 456, { fontSize: 22, gap: 132, bulletColor: C.teal });
+    addBulletList(slide, ["Executable reconstruction with output recovered from maintained state", "Correct outputs and runtime results for the 60 cases in this experiment"], 112, 270, 456, { fontSize: 22, gap: 132, bulletColor: C.teal });
     addBulletList(slide, ["Ordinary lists do not establish a linear-time implementation", "Five tested sizes do not establish asymptotic complexity"], 700, 270, 456, { fontSize: 22, gap: 132, bulletColor: C.coral });
     addText(slide, "Recognition was not evaluated. Paper and reference use different timing scopes.", 150, 600, 980, 40, { fontSize: 20, bold: true, color: C.navy, align: "center", valign: "middle" });
     setNotes(

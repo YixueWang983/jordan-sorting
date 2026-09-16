@@ -5,7 +5,7 @@ MAIN PRESENTATION: SLIDES 1-16
 SLIDE 1
 Progress on the Executable Reconstruction of Simplified Jordan Sorting
 
-Good afternoon. This presentation updates my master's thesis on an executable reconstruction of Simplified Jordan Sorting using ordinary Python lists. My previous report focused on static structure: rank intervals, upper and lower pair families, family trees, and an oracle-backed reference. The main question is whether the paper's dynamic procedure can maintain its own state and recover its own output. I will focus on two reconstruction decisions, then explain the validation checks and the runtime results from the formal experiment.
+Good afternoon. This presentation updates my master's thesis on an executable reconstruction of Simplified Jordan Sorting using ordinary Python lists. The input gives the intersection points in curve order. The task is to recover their order along the x-axis. My previous report focused on static structure: rank intervals, upper and lower pair families, family trees, and an oracle-backed reference. The main question is whether the paper's dynamic procedure can maintain its own state and recover its own output. I will focus on two reconstruction decisions, then explain the validation checks and the runtime results from the formal experiment.
 
 ============================================================
 
@@ -33,7 +33,7 @@ The thesis studies the 1990 sorting procedure on inputs already certified as val
 SLIDE 5
 Three questions connect reconstruction, measurement, and interpretation
 
-RQ1 is the main technical question: can the ordinary-list reconstruction recover the correct sorted order from maintained state on certified valid inputs? RQ2 compares the paper call with Python sort and the complete reference pipeline under their stated timing scopes. RQ3 explores descriptive relationships between input structure, checked operation counters, and runtime. It does not claim a causal explanation.
+RQ1 is the main technical question: can the ordinary-list reconstruction recover the correct sorted order from maintained state on certified valid inputs? RQ2 compares the paper call with Python sort and the complete reference pipeline under their stated timing scopes. RQ3 explores descriptive relationships between input structure, checked operation counters, and runtime. It does not claim a causal explanation. This talk focuses on RQ1 and the runtime baseline in RQ2. I do not present the structure–cost analysis here.
 
 ============================================================
 
@@ -78,28 +78,28 @@ Here we insert zero at iteration seven. The odd index makes the new pair a lower
 SLIDE 10
 Ownership-safe split and transfer
 
-Every finite pair has one parent and one sibling-list owner. Before a split, the existing owner controls both the retained and acquired segments. After a split, the original owner keeps the retained segment, while the new owner receives the acquired segment. Both nonempty sides may get new lists, but only the acquired segment changes parent. Split and transfer form one transaction: save the affected state, update it, then check the split boundary, ownership, and local postconditions. If a check fails, rollback restores the registry, ownership links, and list identifiers. The maintained state also contains the sorted processed prefix and both pair families. Ordinary lists incur scanning, copying, slicing, and ownership-rebinding costs. These correctness checks do not establish the update bounds required by the historical linear-time analysis.
+Here, ownership means which parent pair a child list belongs to. When children move, their parent links and list membership must stay consistent. Before a split, the existing parent owns both segments. After the split, it keeps the retained segment, while the new parent receives the acquired segment. Both nonempty sides may get new lists, but only the acquired segment changes parent. Split and transfer form one transaction: save the affected state, update it, then check the boundary and ownership. If a check fails, rollback restores the previous state. Ordinary lists incur scanning, copying, slicing, and ownership-rebinding costs. These checks do not establish the update bounds required by the historical linear-time analysis.
 
 ============================================================
 
 SLIDE 11
 Implementation checks and experiment consistency
 
-Focused regression cases cover known edge conditions. Bounded exhaustive validation covers all 2,074 oracle-valid permutations up to size eight. Checked-state audits inspect parent links, ownership, sibling lists, and recovered output. Deterministic replay compares states from repeated runs of the same core; it is not a second independent implementation. Replay checks whether the same procedure gives a consistent state. Separate experiment checks compare saved outputs with the fixed setup and recomputed summaries. This finite evidence supports the evaluated cases, but is not a mathematical proof for every Jordan sequence.
+The left side checks the implementation and its state. The right side checks the saved experiment records and recomputes their summaries. On the left, complementary checks include focused regression cases, all 2,074 oracle-valid permutations up to size eight, and checked-state audits of parent links, ownership, sibling lists, and recovered output. Deterministic replay compares states from repeated runs of the same core; it is not a second independent implementation. On the right, checks compare the archived records with the fixed experiment setup and recomputed summaries. This finite evidence is not a mathematical proof for every Jordan sequence.
 
 ============================================================
 
 SLIDE 12
-The formal experiment keeps certification and audit outside paper timing
+Runtime experiment: inputs and measurement
 
-The experiment uses five sizes, twelve exact cases per size, and three algorithms. Each case-algorithm cell has five warm-up calls and twenty measured calls, giving 3,600 measured rows. The twenty calls repeat one exact case; they are not twenty independent inputs. Each call receives a fresh list with the same values. Algorithm positions rotate so that one method does not always run first. Paper certification and the checked-state audit happen before timing. Paper timing includes initialization, Steps one to three, and output recovery from maintained order in minimal mode. Output comparison follows timing. Python timing covers its sorting call; reference timing covers the complete oracle-backed pipeline. These are three different timing scopes. The experiment measured three implementations; the next runtime slide focuses on the paper core and Python sort.
+We test five sizes from 32 to 512 points. Each size has one flat case, one nested case, and ten incrementally generated valid cases: 60 inputs. Flat inputs increase; nested inputs alternate the smallest and largest remaining values. Incremental generation uses fixed seeds and validity checks. Each algorithm has five warm-ups and twenty measured calls per input, giving 3,600 rows. Repeated calls use fresh lists; algorithm positions rotate. Certification and one checked-state audit per case precede paper timing. Minimal mode runs the same core on all points, omitting detailed trace and some diagnostic checks. Paper timing includes initialization, Steps one to three, and output recovery. Output comparison follows timing. Python times sorting; reference times its complete oracle-backed pipeline. The runtime slide shows paper and Python.
 
 ============================================================
 
 SLIDE 13
-All 60 evaluated cases returned the correct output
+All 60 cases in the runtime experiment returned the correct output
 
-All 60 cases passed certification and one checked-state audit each. Every measured call returned the expected output, with no recorded correctness errors. The 3,600 measured rows carry their case-level audit results; they do not represent 3,600 independent audits. These results cover the tested valid cases only.
+All 60 cases in this runtime experiment passed certification and one checked-state audit each. Every measured call returned the expected output, with no recorded correctness errors. The 3,600 measured rows carry their case-level audit results; they do not represent 3,600 independent audits. These results cover the tested valid cases only.
 
 ============================================================
 
@@ -121,7 +121,7 @@ These results describe the current implementation. They do not establish linear-
 SLIDE 15
 What the current evidence shows
 
-The evidence supports an executable ordinary-list reconstruction that recovers output from maintained state, with correct results on the evaluated cases. The runtime trend describes this implementation under the stated timing scopes. Ordinary lists do not establish a linear-time implementation, and five tested sizes do not establish asymptotic complexity. Recognition was not evaluated.
+The evidence supports an executable ordinary-list reconstruction that recovers output from maintained state, with correct results on the 60 cases in the runtime experiment. The runtime trend describes this implementation under the stated timing scopes. Ordinary lists do not establish a linear-time implementation, and five tested sizes do not establish asymptotic complexity. Recognition was not evaluated.
 
 ============================================================
 

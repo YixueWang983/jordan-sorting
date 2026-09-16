@@ -21,7 +21,7 @@ The main presentation is written for a midterm progress discussion rather than
 as a final-defense or repository-audit deck. Slides 7 through 10 retain the
 technical reconstruction detail. Slide 14 shows an ordinary-list runtime
 baseline against Python sort. The English notes for slides 1 through 16 contain
-1,608 words.
+1,644 words.
 
 ## Source and rebuild boundary
 
@@ -48,10 +48,10 @@ development.
 SHA-256 at the time of archival:
 
 ```text
-5da1ae6c99b2fc0270fd7622ee0298ddc30ac6a603d766f00677cf3f35ffec90  Jordan_Sorting_Progress_Report.pptx
-c7d54128924733383f0659568fec6fba1473c16ed7831b426ee67cc02be622b9  Jordan_Sorting_Progress_Report_ZH.pptx
-57763074233ae0fee16a3ee5af62127a18f010c2a34b637489685db1dff55c80  Jordan_Sorting_Progress_Report_Speaker_Script.txt
-9313b731c64c40cc1c2bf64a04c3b1c2c7470c762f5a5a02b7ae48794f799696  Jordan_Sorting_Progress_Report_Speaker_Script_ZH.txt
+13773fb6274deac8d6cbe5fbfeba07b549c7c45110e34c9bfe0b9192062a0f44  Jordan_Sorting_Progress_Report.pptx
+269c8e7bd486dcc706e884b2a8628eec4643bc95abca10550d53d0034da405c3  Jordan_Sorting_Progress_Report_ZH.pptx
+05f2d8f63a812fede2fb7272f3cae4366205b3c5726b8e83fc1a0d1bcbc5871c  Jordan_Sorting_Progress_Report_Speaker_Script.txt
+a7aa191903e439fbdd7ee7cb04656e439acd71d29735613eb83535f904088161  Jordan_Sorting_Progress_Report_Speaker_Script_ZH.txt
 ```
 
 These files report the validated ordinary-list implementation as the evidence
