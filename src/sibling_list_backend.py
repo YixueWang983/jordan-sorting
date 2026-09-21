@@ -94,7 +94,7 @@ class SplitPlan:
 
 @dataclass(frozen=True)
 class SplitCommitResult:
-    """原子 split 提交后左右两侧的新 list id。"""
+    """成功 split 后左右两侧的新 list id。"""
 
     left_list_id: int | None
     right_list_id: int | None
@@ -117,7 +117,10 @@ def right_endpoint_id(pair, point_value):
 
 
 class OrdinarySiblingListBackend:
-    """维护 sibling lists、pair ownership 和原子 split transaction。"""
+    """维护 sibling lists 和 pair ownership。
+
+    更新失败时异常向上传播；不恢复旧状态，调用方必须丢弃失败状态。
+    """
 
     def __init__(self, point_value, execution_policy=CHECKED_POLICY):
         if not callable(point_value):
@@ -203,21 +206,6 @@ class OrdinarySiblingListBackend:
             return self._lists[list_id]
         except (KeyError, TypeError) as exc:
             raise KeyError(f"unknown sibling-list id: {list_id}") from exc
-
-    def unregister_unowned_pair(self, pair_id):
-        """移除尚未接入 family tree 的 finite pair，用于事务回滚。"""
-        pair = self.get_pair(pair_id)
-        if pair.is_dummy:
-            raise ValueError("dummy pair cannot be unregistered")
-        if (
-            pair.parent_pair_id is not None
-            or pair.sibling_list_id is not None
-            or pair.child_sibling_list_ids
-        ):
-            raise ValueError("only a completely unowned finite pair can be unregistered")
-
-        del self._pairs[pair.pair_id]
-        return pair
 
     def make_list(self, pair_id, owner_parent_pair_id):
         """创建 singleton list，并建立 pair/parent/list 三方 ownership。"""
@@ -317,7 +305,7 @@ class OrdinarySiblingListBackend:
         acquired_side,
         new_parent_pair_id,
     ):
-        """验证 pair 不跨 boundary，然后生成并原子提交 Jordan split。"""
+        """验证 pair 不跨 boundary，然后执行 Jordan split；失败状态不可复用。"""
         sibling_list = self.get_list(list_id)
 
         for pair_id in sibling_list.pair_ids:
@@ -336,7 +324,10 @@ class OrdinarySiblingListBackend:
         return self.commit_split(plan, acquired_side, new_parent_pair_id)
 
     def commit_split(self, plan, acquired_side, new_parent_pair_id):
-        """验证局部 final state 后，原子发布 split ownership 变更。"""
+        """检查 plan 的前置条件，更新 ownership，再验证后置条件。
+
+        内部错误直接终止调用，不撤销已发生的变更。调用方须丢弃状态。
+        """
         if not isinstance(plan, SplitPlan):
             raise TypeError("plan must be a SplitPlan")
         if acquired_side not in {LEFT, RIGHT}:
@@ -414,61 +405,37 @@ class OrdinarySiblingListBackend:
             if pair.parent_pair_id != old_owner.pair_id:
                 raise ValueError("retained pair does not belong to the old parent")
 
-        old_owner_lists_before = list(old_owner.child_sibling_list_ids)
-        new_parent_lists_before = list(new_parent.child_sibling_list_ids)
-        pair_ownership_before = {
-            pair_id: (
-                self.get_pair(pair_id).parent_pair_id,
-                self.get_pair(pair_id).sibling_list_id,
-            )
-            for pair_id in plan.original_pair_ids
-        }
-        next_list_id_before = self._next_list_id
+        del self._lists[retired.list_id]
+        self._lists.update(staged_lists)
+        self._next_list_id = next_list_id
+        old_owner.child_sibling_list_ids = old_owner_lists
+        new_parent.child_sibling_list_ids = new_parent_lists
 
-        try:
-            del self._lists[retired.list_id]
-            self._lists.update(staged_lists)
-            self._next_list_id = next_list_id
-            old_owner.child_sibling_list_ids = old_owner_lists
-            new_parent.child_sibling_list_ids = new_parent_lists
+        for pair_id in plan.left_pair_ids:
+            pair = self.get_pair(pair_id)
+            pair.sibling_list_id = left_list_id
+            pair.parent_pair_id = left_owner_id
+        for pair_id in plan.right_pair_ids:
+            pair = self.get_pair(pair_id)
+            pair.sibling_list_id = right_list_id
+            pair.parent_pair_id = right_owner_id
 
-            for pair_id in plan.left_pair_ids:
-                pair = self.get_pair(pair_id)
-                pair.sibling_list_id = left_list_id
-                pair.parent_pair_id = left_owner_id
-            for pair_id in plan.right_pair_ids:
-                pair = self.get_pair(pair_id)
-                pair.sibling_list_id = right_list_id
-                pair.parent_pair_id = right_owner_id
-
-            self._validate_split_commit_postconditions(
-                plan=plan,
-                retired_list_id=retired.list_id,
-                staged_lists=staged_lists,
-                old_owner=old_owner,
-                new_parent=new_parent,
-                expected_old_owner_lists=old_owner_lists,
-                expected_new_parent_lists=new_parent_lists,
-                left_list_id=left_list_id,
-                right_list_id=right_list_id,
-                left_owner_id=left_owner_id,
-                right_owner_id=right_owner_id,
-                expected_next_list_id=next_list_id,
-            )
-            if self._execution_policy.validate_backend_commits:
-                self.validate_invariants(require_all_owned=False)
-        except Exception:
-            for list_id in staged_lists:
-                self._lists.pop(list_id, None)
-            self._lists[retired.list_id] = retired
-            self._next_list_id = next_list_id_before
-            old_owner.child_sibling_list_ids = old_owner_lists_before
-            new_parent.child_sibling_list_ids = new_parent_lists_before
-            for pair_id, (parent_id, sibling_list_id) in pair_ownership_before.items():
-                pair = self.get_pair(pair_id)
-                pair.parent_pair_id = parent_id
-                pair.sibling_list_id = sibling_list_id
-            raise
+        self._validate_split_commit_postconditions(
+            plan=plan,
+            retired_list_id=retired.list_id,
+            staged_lists=staged_lists,
+            old_owner=old_owner,
+            new_parent=new_parent,
+            expected_old_owner_lists=old_owner_lists,
+            expected_new_parent_lists=new_parent_lists,
+            left_list_id=left_list_id,
+            right_list_id=right_list_id,
+            left_owner_id=left_owner_id,
+            right_owner_id=right_owner_id,
+            expected_next_list_id=next_list_id,
+        )
+        if self._execution_policy.validate_backend_commits:
+            self.validate_invariants(require_all_owned=False)
 
         return SplitCommitResult(left_list_id, right_list_id)
 

@@ -1,0 +1,111 @@
+{
+  "attempted": 88,
+  "by_n": {
+    "0": {
+      "PASS": 1
+    },
+    "1": {
+      "PASS": 1
+    },
+    "128": {
+      "PASS": 3
+    },
+    "129": {
+      "PASS": 3
+    },
+    "16": {
+      "DUPLICATE": 1,
+      "PASS": 10
+    },
+    "17": {
+      "DUPLICATE": 2,
+      "PASS": 9
+    },
+    "2": {
+      "PASS": 1
+    },
+    "3": {
+      "PASS": 1
+    },
+    "32": {
+      "PASS": 11
+    },
+    "33": {
+      "PASS": 11
+    },
+    "4": {
+      "PASS": 2
+    },
+    "512": {
+      "PASS": 3
+    },
+    "513": {
+      "PASS": 3
+    },
+    "64": {
+      "PASS": 11
+    },
+    "65": {
+      "PASS": 11
+    },
+    "7": {
+      "PASS": 4
+    }
+  },
+  "completed": 88,
+  "count_semantics": "completed excludes TIMEOUT and NOT_RUN; duplicate certification is completed but not a new core execution; calls count top-level APIs, not internal deterministic replay",
+  "duplicates": 3,
+  "failed": 0,
+  "generated_unique_inputs": 85,
+  "limitation": "non-timing, structured finite inputs; replay is same core, not independent algorithm or proof",
+  "max_passed_n": 513,
+  "mode_calls_completed": {
+    "checked": 85,
+    "minimal": 85,
+    "prefix": 0
+  },
+  "mode_calls_started": {
+    "checked": 85,
+    "minimal": 85,
+    "prefix": 0
+  },
+  "mode_output_passes": {
+    "checked": 85,
+    "minimal": 85
+  },
+  "new_unique_inputs_executed": 85,
+  "not_run": 0,
+  "passed": 85,
+  "passed_by_family": {
+    "blocks_low": 21,
+    "blocks_medium": 20,
+    "fixed": 10,
+    "flat_valid": 10,
+    "incremental_valid": 18,
+    "nested_valid": 6
+  },
+  "passed_by_kind": {
+    "base": 64,
+    "derived": 21
+  },
+  "planned": 88,
+  "prefix_snapshots_passed": 0,
+  "resource_errors": 0,
+  "resource_wall_seconds": 105.41740504201152,
+  "sampling_counts": {
+    "coverage-guided construction": 67,
+    "seeded incremental": 18
+  },
+  "source_unchanged": true,
+  "statuses": {
+    "DUPLICATE": 3,
+    "PASS": 85
+  },
+  "structure_counts": {
+    "low_nesting_valid": 27,
+    "medium_nesting_valid": 20,
+    "nested_heavy_valid": 24,
+    "strict_flat": 14
+  },
+  "timed_out": 0
+}

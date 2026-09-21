@@ -108,25 +108,6 @@ class SiblingListBackendTests(unittest.TestCase):
 
         self.assertEqual(self.backend.point_value(1), 17)
 
-    def test_unregister_unowned_pair_supports_transaction_rollback(self):
-        pair = self.register_finite_pair(2, 1, 2)
-
-        removed = self.backend.unregister_unowned_pair(pair.pair_id)
-
-        self.assertIs(removed, pair)
-        with self.assertRaises(KeyError):
-            self.backend.get_pair(pair.pair_id)
-
-    def test_unregister_unowned_pair_rejects_live_owned_pair(self):
-        pair = self.register_finite_pair(2, 1, 2)
-        self.backend.make_list(pair.pair_id, UPPER_DUMMY_ID)
-
-        with self.assertRaises(ValueError):
-            self.backend.unregister_unowned_pair(pair.pair_id)
-
-        self.assertIs(self.backend.get_pair(pair.pair_id), pair)
-        self.assertTrue(self.backend.validate_invariants())
-
     def test_make_list_assigns_pair_and_parent_ownership(self):
         pair = self.register_finite_pair(2, 1, 2)
 
@@ -495,16 +476,13 @@ class SiblingListBackendTests(unittest.TestCase):
         self.assertEqual(split_child.parent_pair_id, UPPER_DUMMY_ID)
         self.assertTrue(self.backend.validate_invariants())
 
-    def test_commit_split_rolls_back_when_final_invariant_check_fails(self):
+    def test_commit_split_propagates_final_invariant_failure_without_restoration(self):
         child = self.register_finite_pair(2, 1, 2)
         new_parent = self.register_finite_pair(4, 0, 5)
         list_id = self.backend.make_list(child.pair_id, UPPER_DUMMY_ID)
         new_parent_list_id = self.backend.make_list(
             new_parent.pair_id,
             UPPER_DUMMY_ID,
-        )
-        dummy_children = list(
-            self.backend.get_pair(UPPER_DUMMY_ID).child_sibling_list_ids
         )
 
         with patch.object(
@@ -520,19 +498,11 @@ class SiblingListBackendTests(unittest.TestCase):
                     new_parent_pair_id=new_parent.pair_id,
                 )
 
-        self.assertEqual(self.backend.get_list(list_id).pair_ids, [child.pair_id])
-        self.assertEqual(
-            self.backend.get_list(new_parent_list_id).pair_ids,
-            [new_parent.pair_id],
-        )
-        self.assertEqual(child.parent_pair_id, UPPER_DUMMY_ID)
-        self.assertEqual(child.sibling_list_id, list_id)
-        self.assertEqual(new_parent.child_sibling_list_ids, [])
-        self.assertEqual(
-            self.backend.get_pair(UPPER_DUMMY_ID).child_sibling_list_ids,
-            dummy_children,
-        )
-        self.assertTrue(self.backend.validate_invariants())
+        # The operation reached publication before the check failed. Discard it.
+        with self.assertRaises(KeyError):
+            self.backend.get_list(list_id)
+        self.assertEqual(child.parent_pair_id, new_parent.pair_id)
+        self.assertNotEqual(child.sibling_list_id, list_id)
 
     def test_minimal_commit_skips_global_audit_and_runs_local_postconditions(self):
         self.backend = self.make_backend(MINIMAL_POLICY)
@@ -564,7 +534,7 @@ class SiblingListBackendTests(unittest.TestCase):
         self.assertEqual(local_mock.call_count, 1)
         self.assertTrue(self.backend.validate_invariants())
 
-    def test_minimal_commit_rolls_back_when_local_postcondition_fails(self):
+    def test_minimal_commit_propagates_local_failure_without_restoration(self):
         self.backend = self.make_backend(MINIMAL_POLICY)
         child = self.register_finite_pair(2, 1, 2)
         new_parent = self.register_finite_pair(4, 0, 5)
@@ -588,8 +558,8 @@ class SiblingListBackendTests(unittest.TestCase):
                     new_parent_pair_id=new_parent.pair_id,
                 )
 
-        self.assertEqual(self.backend.audit_snapshot(), before)
-        self.assertTrue(self.backend.validate_invariants())
+        self.assertNotEqual(self.backend.audit_snapshot(), before)
+        # No recovery or reuse guarantee after an internal failure.
 
     def test_minimal_local_postconditions_detect_ownership_corruption(self):
         self.backend = self.make_backend(MINIMAL_POLICY)
@@ -617,8 +587,8 @@ class SiblingListBackendTests(unittest.TestCase):
                     new_parent_pair_id=new_parent.pair_id,
                 )
 
-        self.assertEqual(self.backend.audit_snapshot(), before)
-        self.assertTrue(self.backend.validate_invariants())
+        self.assertNotEqual(self.backend.audit_snapshot(), before)
+        # No recovery or reuse guarantee after an internal failure.
 
     def test_minimal_policy_keeps_invalid_side_and_stale_plan_guards(self):
         self.backend = self.make_backend(MINIMAL_POLICY)

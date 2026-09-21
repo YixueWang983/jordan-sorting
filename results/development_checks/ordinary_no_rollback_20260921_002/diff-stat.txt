@@ -1,0 +1,8 @@
+ .../Jordan_Sorting_Progress_Report.pptx            | Bin 126240 -> 128082 bytes
+ src/paper_jordan.py                                |  47 +++++----
+ src/paper_jordan_sort.py                           |   3 +-
+ src/sibling_list_backend.py                        | 113 ++++++++-------------
+ tests/test_paper_jordan.py                         |   6 +-
+ tests/test_paper_jordan_sort.py                    |  36 +++++++
+ tests/test_sibling_list_backend.py                 |  52 ++--------
+ 7 files changed, 115 insertions(+), 142 deletions(-)

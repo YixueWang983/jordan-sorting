@@ -1,0 +1,18 @@
+{
+  "exhaustive": {
+    "all_valid": true,
+    "max_n": 8,
+    "total_valid_permutations": 2074,
+    "valid_permutations_by_n": {
+      "0": 1,
+      "1": 1,
+      "2": 2,
+      "3": 6,
+      "4": 16,
+      "5": 50,
+      "6": 144,
+      "7": 462,
+      "8": 1392
+    }
+  }
+}

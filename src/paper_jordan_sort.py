@@ -19,6 +19,7 @@ def paper_jordan_sort_valid(seq, execution_mode=CHECKED_MODE):
     validity model。该纯核心不调用 oracle，也不自行识别 invalid 输入。
     execution_mode 仅控制完整 backend audit、trace 和 operation counters，
     不改变 Step 1/2/3、局部安全检查、stage results 或输出恢复。
+    内部错误向调用方抛出，不返回部分输出、不重试或回滚；失败状态必须丢弃。
     """
     execution_policy = resolve_paper_execution_policy(execution_mode)
     values = list(seq)
@@ -39,7 +40,7 @@ def paper_jordan_sort_valid(seq, execution_mode=CHECKED_MODE):
 
 
 def paper_jordan_diagnostics_valid(seq):
-    """在非计时路径运行同一核心，并返回 trace、metrics 和 invariant 结果。"""
+    """在非计时路径运行同一核心；失败时抛出异常，不返回部分诊断结果。"""
     values = list(seq)
     n = len(values)
     if n < 3:

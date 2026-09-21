@@ -1,0 +1,120 @@
+{
+  "base_case_id": null,
+  "case_id": "fixed_n3_3",
+  "certification": {
+    "distinct_values": true,
+    "lower_ok": true,
+    "reason": null,
+    "upper_ok": true,
+    "valid": true
+  },
+  "checked": {
+    "checks": {
+      "elements": true,
+      "length": true,
+      "matches_expected": true,
+      "strictly_increasing": true
+    },
+    "invariants_valid": true,
+    "output_sha256": "a615eeaee21de5179de080de8c3052c8da901138406ba71c38c032845f7d54f4",
+    "passed": true,
+    "processed_count": 3
+  },
+  "coverage": {
+    "counts": {},
+    "max_live_sibling_list_length": {
+      "event": {
+        "lower_list_id": 2,
+        "lower_pair_id": 3,
+        "step": "initialize_pair_families",
+        "upper_list_id": 1,
+        "upper_pair_id": 2
+      },
+      "execution_mode": "checked",
+      "iteration": 3,
+      "value": 1
+    },
+    "transferred_pairs": 0,
+    "witnesses": {}
+  },
+  "expected_sha256": "a615eeaee21de5179de080de8c3052c8da901138406ba71c38c032845f7d54f4",
+  "family": "fixed",
+  "fixed_sequence": [
+    3,
+    1,
+    2
+  ],
+  "kind": "base",
+  "metrics": {
+    "boundary_pair_checks": 0,
+    "invariant_checks": 1,
+    "output_insertions": 0,
+    "predecessor_accesses": 0,
+    "sibling_list_insertions": 0,
+    "sibling_list_splits": 0,
+    "sibling_lists_created": 0,
+    "sibling_scan_checks": 0,
+    "split_items_copied": 0,
+    "split_items_scanned": 0,
+    "split_items_transferred": 0,
+    "successor_accesses": 0,
+    "trace_event_count": 2,
+    "z1_boundary_adjustments": 0,
+    "z1_output_anchor_adjustments": 0
+  },
+  "minimal": {
+    "checks": {
+      "elements": true,
+      "length": true,
+      "matches_expected": true,
+      "strictly_increasing": true
+    },
+    "output_sha256": "a615eeaee21de5179de080de8c3052c8da901138406ba71c38c032845f7d54f4",
+    "passed": true
+  },
+  "mode_calls": {
+    "checked": "COMPLETED",
+    "minimal": "COMPLETED"
+  },
+  "modes_equal": true,
+  "n": 3,
+  "phase": "complete",
+  "prefix_check": false,
+  "prefix_snapshots": [],
+  "sampling": "coverage-guided construction",
+  "seed": 20261224,
+  "sequence": [
+    3,
+    1,
+    2
+  ],
+  "sequence_sha256": "51bda7ab4e44726cde71fcb6e4b515357059bb6b6dd5146d1fc50f73f11678c6",
+  "status": "PASS",
+  "structure": {
+    "category": "strict_flat",
+    "containment_pair_count": 0,
+    "containment_pair_density": 0.0,
+    "lower_containment_pair_count": 0,
+    "lower_crossing_pair_count": 0,
+    "lower_interval_count": 1,
+    "lower_max_depth": 0,
+    "lower_nesting_count": 0,
+    "lower_root_count": 1,
+    "max_depth": 0,
+    "nesting_count": 0,
+    "nesting_density": 0.0,
+    "parented_interval_ratio": 0.0,
+    "reason": null,
+    "total_crossing_pair_count": 0,
+    "total_interval_count": 2,
+    "upper_containment_pair_count": 0,
+    "upper_crossing_pair_count": 0,
+    "upper_interval_count": 1,
+    "upper_max_depth": 0,
+    "upper_nesting_count": 0,
+    "upper_root_count": 1,
+    "valid": true
+  },
+  "transform": null,
+  "worker_resource_wall_seconds": 0.06010729097761214
+}

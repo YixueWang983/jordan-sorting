@@ -525,7 +525,7 @@ class PaperJordanStep3Tests(unittest.TestCase):
         with self.assertRaises(KeyError):
             state.sibling_backend.get_pair(4)
 
-    def test_step3a_boundary_failure_rolls_back_pair_registration(self):
+    def test_step3a_boundary_failure_propagates_and_state_must_be_discarded(self):
         state = initialize_paper_jordan_state([1, 2, 3, 4])
         left = step1_select_predecessor_boundary(state, 4)
         pair_2_list = state.sibling_backend.get_list(state.pairs[2].sibling_list_id)
@@ -536,8 +536,8 @@ class PaperJordanStep3Tests(unittest.TestCase):
 
         self.assertNotIn(4, state.pairs)
         self.assertNotIn(4, state.pair_by_end_index)
-        with self.assertRaises(KeyError):
-            state.sibling_backend.get_pair(4)
+        self.assertEqual(state.sibling_backend.get_pair(4).pair_id, 4)
+        # Registration is not undone; this failed state is never resumed.
 
     def test_increasing_step3b_skips_when_right_boundary_encloses(self):
         state = initialize_paper_jordan_state([1, 2, 3, 4])

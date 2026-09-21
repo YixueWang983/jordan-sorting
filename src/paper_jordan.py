@@ -1,4 +1,7 @@
-"""1990 Jordan-sorting 论文算法的初始化与 Step 1/2/3 结构操作。"""
+"""1990 Jordan-sorting 论文算法的初始化与 Step 1/2/3 结构操作。
+
+内部更新失败时抛出异常并终止排序；状态不回滚，调用方必须丢弃它。
+"""
 
 from __future__ import annotations
 
@@ -1317,30 +1320,26 @@ def _step3a(
         family=pair_family_for_end_index(iteration),
     )
 
+    if not creates_singleton and boundary_pair.is_dummy:
+        raise RuntimeError("dummy boundary must enclose every finite point")
     state.sibling_backend.register_pair(new_pair)
-    try:
-        if creates_singleton:
-            sibling_list_id = state.sibling_backend.make_list(
-                new_pair.pair_id,
-                boundary_pair.pair_id,
-            )
-            insertion_mode = SINGLETON_LIST
-            if state.execution_policy.count_operations:
-                state.metrics["sibling_lists_created"] += 1
-        else:
-            if boundary_pair.is_dummy:
-                raise RuntimeError("dummy boundary must enclose every finite point")
-            sibling_list_id = state.sibling_backend.insert_at_boundary(
-                new_pair.pair_id,
-                boundary_pair.pair_id,
-                insertion_side,
-            )
-            insertion_mode = BOUNDARY_INSERTION
-            if state.execution_policy.count_operations:
-                state.metrics["sibling_list_insertions"] += 1
-    except Exception:
-        state.sibling_backend.unregister_unowned_pair(new_pair.pair_id)
-        raise
+    if creates_singleton:
+        sibling_list_id = state.sibling_backend.make_list(
+            new_pair.pair_id,
+            boundary_pair.pair_id,
+        )
+        insertion_mode = SINGLETON_LIST
+        if state.execution_policy.count_operations:
+            state.metrics["sibling_lists_created"] += 1
+    else:
+        sibling_list_id = state.sibling_backend.insert_at_boundary(
+            new_pair.pair_id,
+            boundary_pair.pair_id,
+            insertion_side,
+        )
+        insertion_mode = BOUNDARY_INSERTION
+        if state.execution_policy.count_operations:
+            state.metrics["sibling_list_insertions"] += 1
 
     state.pairs[new_pair.pair_id] = new_pair
     state.pair_by_end_index[iteration] = new_pair.pair_id

@@ -1,0 +1,427 @@
+diff --git a/src/paper_jordan.py b/src/paper_jordan.py
+index d630da8..97d9a48 100644
+--- a/src/paper_jordan.py
++++ b/src/paper_jordan.py
+@@ -1,4 +1,7 @@
+-"""1990 Jordan-sorting 论文算法的初始化与 Step 1/2/3 结构操作。"""
++"""1990 Jordan-sorting 论文算法的初始化与 Step 1/2/3 结构操作。
++
++内部更新失败时抛出异常并终止排序；状态不回滚，调用方必须丢弃它。
++"""
+ 
+ from __future__ import annotations
+ 
+@@ -1317,30 +1320,26 @@ def _step3a(
+         family=pair_family_for_end_index(iteration),
+     )
+ 
++    if not creates_singleton and boundary_pair.is_dummy:
++        raise RuntimeError("dummy boundary must enclose every finite point")
+     state.sibling_backend.register_pair(new_pair)
+-    try:
+-        if creates_singleton:
+-            sibling_list_id = state.sibling_backend.make_list(
+-                new_pair.pair_id,
+-                boundary_pair.pair_id,
+-            )
+-            insertion_mode = SINGLETON_LIST
+-            if state.execution_policy.count_operations:
+-                state.metrics["sibling_lists_created"] += 1
+-        else:
+-            if boundary_pair.is_dummy:
+-                raise RuntimeError("dummy boundary must enclose every finite point")
+-            sibling_list_id = state.sibling_backend.insert_at_boundary(
+-                new_pair.pair_id,
+-                boundary_pair.pair_id,
+-                insertion_side,
+-            )
+-            insertion_mode = BOUNDARY_INSERTION
+-            if state.execution_policy.count_operations:
+-                state.metrics["sibling_list_insertions"] += 1
+-    except Exception:
+-        state.sibling_backend.unregister_unowned_pair(new_pair.pair_id)
+-        raise
++    if creates_singleton:
++        sibling_list_id = state.sibling_backend.make_list(
++            new_pair.pair_id,
++            boundary_pair.pair_id,
++        )
++        insertion_mode = SINGLETON_LIST
++        if state.execution_policy.count_operations:
++            state.metrics["sibling_lists_created"] += 1
++    else:
++        sibling_list_id = state.sibling_backend.insert_at_boundary(
++            new_pair.pair_id,
++            boundary_pair.pair_id,
++            insertion_side,
++        )
++        insertion_mode = BOUNDARY_INSERTION
++        if state.execution_policy.count_operations:
++            state.metrics["sibling_list_insertions"] += 1
+ 
+     state.pairs[new_pair.pair_id] = new_pair
+     state.pair_by_end_index[iteration] = new_pair.pair_id
+diff --git a/src/paper_jordan_sort.py b/src/paper_jordan_sort.py
+index da786c1..4d1ca07 100644
+--- a/src/paper_jordan_sort.py
++++ b/src/paper_jordan_sort.py
+@@ -19,6 +19,7 @@ def paper_jordan_sort_valid(seq, execution_mode=CHECKED_MODE):
+     validity model。该纯核心不调用 oracle，也不自行识别 invalid 输入。
+     execution_mode 仅控制完整 backend audit、trace 和 operation counters，
+     不改变 Step 1/2/3、局部安全检查、stage results 或输出恢复。
++    内部错误向调用方抛出，不返回部分输出、不重试或回滚；失败状态必须丢弃。
+     """
+     execution_policy = resolve_paper_execution_policy(execution_mode)
+     values = list(seq)
+@@ -39,7 +40,7 @@ def paper_jordan_sort_valid(seq, execution_mode=CHECKED_MODE):
+ 
+ 
+ def paper_jordan_diagnostics_valid(seq):
+-    """在非计时路径运行同一核心，并返回 trace、metrics 和 invariant 结果。"""
++    """在非计时路径运行同一核心；失败时抛出异常，不返回部分诊断结果。"""
+     values = list(seq)
+     n = len(values)
+     if n < 3:
+diff --git a/src/sibling_list_backend.py b/src/sibling_list_backend.py
+index 26b613e..7515380 100644
+--- a/src/sibling_list_backend.py
++++ b/src/sibling_list_backend.py
+@@ -94,7 +94,7 @@ class SplitPlan:
+ 
+ @dataclass(frozen=True)
+ class SplitCommitResult:
+-    """原子 split 提交后左右两侧的新 list id。"""
++    """成功 split 后左右两侧的新 list id。"""
+ 
+     left_list_id: int | None
+     right_list_id: int | None
+@@ -117,7 +117,10 @@ def right_endpoint_id(pair, point_value):
+ 
+ 
+ class OrdinarySiblingListBackend:
+-    """维护 sibling lists、pair ownership 和原子 split transaction。"""
++    """维护 sibling lists 和 pair ownership。
++
++    更新失败时异常向上传播；不恢复旧状态，调用方必须丢弃失败状态。
++    """
+ 
+     def __init__(self, point_value, execution_policy=CHECKED_POLICY):
+         if not callable(point_value):
+@@ -204,21 +207,6 @@ class OrdinarySiblingListBackend:
+         except (KeyError, TypeError) as exc:
+             raise KeyError(f"unknown sibling-list id: {list_id}") from exc
+ 
+-    def unregister_unowned_pair(self, pair_id):
+-        """移除尚未接入 family tree 的 finite pair，用于事务回滚。"""
+-        pair = self.get_pair(pair_id)
+-        if pair.is_dummy:
+-            raise ValueError("dummy pair cannot be unregistered")
+-        if (
+-            pair.parent_pair_id is not None
+-            or pair.sibling_list_id is not None
+-            or pair.child_sibling_list_ids
+-        ):
+-            raise ValueError("only a completely unowned finite pair can be unregistered")
+-
+-        del self._pairs[pair.pair_id]
+-        return pair
+-
+     def make_list(self, pair_id, owner_parent_pair_id):
+         """创建 singleton list，并建立 pair/parent/list 三方 ownership。"""
+         pair = self._require_unowned_finite_pair(pair_id)
+@@ -317,7 +305,7 @@ class OrdinarySiblingListBackend:
+         acquired_side,
+         new_parent_pair_id,
+     ):
+-        """验证 pair 不跨 boundary，然后生成并原子提交 Jordan split。"""
++        """验证 pair 不跨 boundary，然后执行 Jordan split；失败状态不可复用。"""
+         sibling_list = self.get_list(list_id)
+ 
+         for pair_id in sibling_list.pair_ids:
+@@ -336,7 +324,10 @@ class OrdinarySiblingListBackend:
+         return self.commit_split(plan, acquired_side, new_parent_pair_id)
+ 
+     def commit_split(self, plan, acquired_side, new_parent_pair_id):
+-        """验证局部 final state 后，原子发布 split ownership 变更。"""
++        """检查 plan 的前置条件，更新 ownership，再验证后置条件。
++
++        内部错误直接终止调用，不撤销已发生的变更。调用方须丢弃状态。
++        """
+         if not isinstance(plan, SplitPlan):
+             raise TypeError("plan must be a SplitPlan")
+         if acquired_side not in {LEFT, RIGHT}:
+@@ -414,61 +405,37 @@ class OrdinarySiblingListBackend:
+             if pair.parent_pair_id != old_owner.pair_id:
+                 raise ValueError("retained pair does not belong to the old parent")
+ 
+-        old_owner_lists_before = list(old_owner.child_sibling_list_ids)
+-        new_parent_lists_before = list(new_parent.child_sibling_list_ids)
+-        pair_ownership_before = {
+-            pair_id: (
+-                self.get_pair(pair_id).parent_pair_id,
+-                self.get_pair(pair_id).sibling_list_id,
+-            )
+-            for pair_id in plan.original_pair_ids
+-        }
+-        next_list_id_before = self._next_list_id
++        del self._lists[retired.list_id]
++        self._lists.update(staged_lists)
++        self._next_list_id = next_list_id
++        old_owner.child_sibling_list_ids = old_owner_lists
++        new_parent.child_sibling_list_ids = new_parent_lists
+ 
+-        try:
+-            del self._lists[retired.list_id]
+-            self._lists.update(staged_lists)
+-            self._next_list_id = next_list_id
+-            old_owner.child_sibling_list_ids = old_owner_lists
+-            new_parent.child_sibling_list_ids = new_parent_lists
+-
+-            for pair_id in plan.left_pair_ids:
+-                pair = self.get_pair(pair_id)
+-                pair.sibling_list_id = left_list_id
+-                pair.parent_pair_id = left_owner_id
+-            for pair_id in plan.right_pair_ids:
+-                pair = self.get_pair(pair_id)
+-                pair.sibling_list_id = right_list_id
+-                pair.parent_pair_id = right_owner_id
+-
+-            self._validate_split_commit_postconditions(
+-                plan=plan,
+-                retired_list_id=retired.list_id,
+-                staged_lists=staged_lists,
+-                old_owner=old_owner,
+-                new_parent=new_parent,
+-                expected_old_owner_lists=old_owner_lists,
+-                expected_new_parent_lists=new_parent_lists,
+-                left_list_id=left_list_id,
+-                right_list_id=right_list_id,
+-                left_owner_id=left_owner_id,
+-                right_owner_id=right_owner_id,
+-                expected_next_list_id=next_list_id,
+-            )
+-            if self._execution_policy.validate_backend_commits:
+-                self.validate_invariants(require_all_owned=False)
+-        except Exception:
+-            for list_id in staged_lists:
+-                self._lists.pop(list_id, None)
+-            self._lists[retired.list_id] = retired
+-            self._next_list_id = next_list_id_before
+-            old_owner.child_sibling_list_ids = old_owner_lists_before
+-            new_parent.child_sibling_list_ids = new_parent_lists_before
+-            for pair_id, (parent_id, sibling_list_id) in pair_ownership_before.items():
+-                pair = self.get_pair(pair_id)
+-                pair.parent_pair_id = parent_id
+-                pair.sibling_list_id = sibling_list_id
+-            raise
++        for pair_id in plan.left_pair_ids:
++            pair = self.get_pair(pair_id)
++            pair.sibling_list_id = left_list_id
++            pair.parent_pair_id = left_owner_id
++        for pair_id in plan.right_pair_ids:
++            pair = self.get_pair(pair_id)
++            pair.sibling_list_id = right_list_id
++            pair.parent_pair_id = right_owner_id
++
++        self._validate_split_commit_postconditions(
++            plan=plan,
++            retired_list_id=retired.list_id,
++            staged_lists=staged_lists,
++            old_owner=old_owner,
++            new_parent=new_parent,
++            expected_old_owner_lists=old_owner_lists,
++            expected_new_parent_lists=new_parent_lists,
++            left_list_id=left_list_id,
++            right_list_id=right_list_id,
++            left_owner_id=left_owner_id,
++            right_owner_id=right_owner_id,
++            expected_next_list_id=next_list_id,
++        )
++        if self._execution_policy.validate_backend_commits:
++            self.validate_invariants(require_all_owned=False)
+ 
+         return SplitCommitResult(left_list_id, right_list_id)
+ 
+diff --git a/tests/test_paper_jordan.py b/tests/test_paper_jordan.py
+index 7780932..a678723 100644
+--- a/tests/test_paper_jordan.py
++++ b/tests/test_paper_jordan.py
+@@ -525,7 +525,7 @@ class PaperJordanStep3Tests(unittest.TestCase):
+         with self.assertRaises(KeyError):
+             state.sibling_backend.get_pair(4)
+ 
+-    def test_step3a_boundary_failure_rolls_back_pair_registration(self):
++    def test_step3a_boundary_failure_propagates_and_state_must_be_discarded(self):
+         state = initialize_paper_jordan_state([1, 2, 3, 4])
+         left = step1_select_predecessor_boundary(state, 4)
+         pair_2_list = state.sibling_backend.get_list(state.pairs[2].sibling_list_id)
+@@ -536,8 +536,8 @@ class PaperJordanStep3Tests(unittest.TestCase):
+ 
+         self.assertNotIn(4, state.pairs)
+         self.assertNotIn(4, state.pair_by_end_index)
+-        with self.assertRaises(KeyError):
+-            state.sibling_backend.get_pair(4)
++        self.assertEqual(state.sibling_backend.get_pair(4).pair_id, 4)
++        # Registration is not undone; this failed state is never resumed.
+ 
+     def test_increasing_step3b_skips_when_right_boundary_encloses(self):
+         state = initialize_paper_jordan_state([1, 2, 3, 4])
+diff --git a/tests/test_paper_jordan_sort.py b/tests/test_paper_jordan_sort.py
+index 05400e1..9dd6e31 100644
+--- a/tests/test_paper_jordan_sort.py
++++ b/tests/test_paper_jordan_sort.py
+@@ -5,6 +5,7 @@ import inspect
+ import itertools
+ import sys
+ import unittest
++from unittest.mock import patch
+ from dataclasses import replace
+ from pathlib import Path
+ 
+@@ -28,6 +29,41 @@ from paper_jordan_sort import (  # noqa: E402
+ 
+ 
+ class PaperJordanSortValidTests(unittest.TestCase):
++    def test_split_failure_aborts_public_calls_without_output_or_retry(self):
++        from sibling_list_backend import OrdinarySiblingListBackend
++        from partial_sorted_list import SortedOrderList
++
++        calls = [
++            lambda values: paper_jordan_sort_valid(values, execution_mode="checked"),
++            lambda values: paper_jordan_sort_valid(values, execution_mode="minimal"),
++            paper_jordan_diagnostics_valid,
++        ]
++        for call in calls:
++            with self.subTest(call=call):
++                failure = RuntimeError("injected split postcondition failure")
++                with patch.object(OrdinarySiblingListBackend,
++                                  "_validate_split_commit_postconditions",
++                                  side_effect=failure) as update, patch.object(
++                                      SortedOrderList, "to_list") as recover:
++                    with self.assertRaises(RuntimeError) as caught:
++                        call([3, 2, 1, 4])
++                    self.assertIs(caught.exception, failure)
++                    update.assert_called_once()
++                    recover.assert_not_called()
++
++    def test_required_examples_and_mirrors_in_both_policies(self):
++        examples = [[], [1], [2, 1], [3, 1, 2], [3, 2, 1, 4],
++                    [1, 2, 3, 4, 6, 7, 0]]
++        for original in examples:
++            for values in (original, [-x for x in original]):
++                self.assertTrue(oracle(values)["valid"])
++                for mode in ("checked", "minimal"):
++                    with self.subTest(values=values, mode=mode):
++                        fresh = list(values)
++                        self.assertEqual(paper_jordan_sort_valid(
++                            fresh, execution_mode=mode), sorted(values))
++                        self.assertEqual(fresh, values)
++
+     def test_small_inputs_are_handled_without_main_loop(self):
+         self.assertEqual(paper_jordan_sort_valid([]), [])
+         self.assertEqual(paper_jordan_sort_valid([7]), [7])
+diff --git a/tests/test_sibling_list_backend.py b/tests/test_sibling_list_backend.py
+index b77ce8a..2f21a7e 100644
+--- a/tests/test_sibling_list_backend.py
++++ b/tests/test_sibling_list_backend.py
+@@ -108,25 +108,6 @@ class SiblingListBackendTests(unittest.TestCase):
+ 
+         self.assertEqual(self.backend.point_value(1), 17)
+ 
+-    def test_unregister_unowned_pair_supports_transaction_rollback(self):
+-        pair = self.register_finite_pair(2, 1, 2)
+-
+-        removed = self.backend.unregister_unowned_pair(pair.pair_id)
+-
+-        self.assertIs(removed, pair)
+-        with self.assertRaises(KeyError):
+-            self.backend.get_pair(pair.pair_id)
+-
+-    def test_unregister_unowned_pair_rejects_live_owned_pair(self):
+-        pair = self.register_finite_pair(2, 1, 2)
+-        self.backend.make_list(pair.pair_id, UPPER_DUMMY_ID)
+-
+-        with self.assertRaises(ValueError):
+-            self.backend.unregister_unowned_pair(pair.pair_id)
+-
+-        self.assertIs(self.backend.get_pair(pair.pair_id), pair)
+-        self.assertTrue(self.backend.validate_invariants())
+-
+     def test_make_list_assigns_pair_and_parent_ownership(self):
+         pair = self.register_finite_pair(2, 1, 2)
+ 
+@@ -495,7 +476,7 @@ class SiblingListBackendTests(unittest.TestCase):
+         self.assertEqual(split_child.parent_pair_id, UPPER_DUMMY_ID)
+         self.assertTrue(self.backend.validate_invariants())
+ 
+-    def test_commit_split_rolls_back_when_final_invariant_check_fails(self):
++    def test_commit_split_propagates_final_invariant_failure_without_restoration(self):
+         child = self.register_finite_pair(2, 1, 2)
+         new_parent = self.register_finite_pair(4, 0, 5)
+         list_id = self.backend.make_list(child.pair_id, UPPER_DUMMY_ID)
+@@ -503,9 +484,6 @@ class SiblingListBackendTests(unittest.TestCase):
+             new_parent.pair_id,
+             UPPER_DUMMY_ID,
+         )
+-        dummy_children = list(
+-            self.backend.get_pair(UPPER_DUMMY_ID).child_sibling_list_ids
+-        )
+ 
+         with patch.object(
+             self.backend,
+@@ -520,19 +498,11 @@ class SiblingListBackendTests(unittest.TestCase):
+                     new_parent_pair_id=new_parent.pair_id,
+                 )
+ 
+-        self.assertEqual(self.backend.get_list(list_id).pair_ids, [child.pair_id])
+-        self.assertEqual(
+-            self.backend.get_list(new_parent_list_id).pair_ids,
+-            [new_parent.pair_id],
+-        )
+-        self.assertEqual(child.parent_pair_id, UPPER_DUMMY_ID)
+-        self.assertEqual(child.sibling_list_id, list_id)
+-        self.assertEqual(new_parent.child_sibling_list_ids, [])
+-        self.assertEqual(
+-            self.backend.get_pair(UPPER_DUMMY_ID).child_sibling_list_ids,
+-            dummy_children,
+-        )
+-        self.assertTrue(self.backend.validate_invariants())
++        # The operation reached publication before the check failed. Discard it.
++        with self.assertRaises(KeyError):
++            self.backend.get_list(list_id)
++        self.assertEqual(child.parent_pair_id, new_parent.pair_id)
++        self.assertNotEqual(child.sibling_list_id, list_id)
+ 
+     def test_minimal_commit_skips_global_audit_and_runs_local_postconditions(self):
+         self.backend = self.make_backend(MINIMAL_POLICY)
+@@ -564,7 +534,7 @@ class SiblingListBackendTests(unittest.TestCase):
+         self.assertEqual(local_mock.call_count, 1)
+         self.assertTrue(self.backend.validate_invariants())
+ 
+-    def test_minimal_commit_rolls_back_when_local_postcondition_fails(self):
++    def test_minimal_commit_propagates_local_failure_without_restoration(self):
+         self.backend = self.make_backend(MINIMAL_POLICY)
+         child = self.register_finite_pair(2, 1, 2)
+         new_parent = self.register_finite_pair(4, 0, 5)
+@@ -588,8 +558,8 @@ class SiblingListBackendTests(unittest.TestCase):
+                     new_parent_pair_id=new_parent.pair_id,
+                 )
+ 
+-        self.assertEqual(self.backend.audit_snapshot(), before)
+-        self.assertTrue(self.backend.validate_invariants())
++        self.assertNotEqual(self.backend.audit_snapshot(), before)
++        # No recovery or reuse guarantee after an internal failure.
+ 
+     def test_minimal_local_postconditions_detect_ownership_corruption(self):
+         self.backend = self.make_backend(MINIMAL_POLICY)
+@@ -617,8 +587,8 @@ class SiblingListBackendTests(unittest.TestCase):
+                     new_parent_pair_id=new_parent.pair_id,
+                 )
+ 
+-        self.assertEqual(self.backend.audit_snapshot(), before)
+-        self.assertTrue(self.backend.validate_invariants())
++        self.assertNotEqual(self.backend.audit_snapshot(), before)
++        # No recovery or reuse guarantee after an internal failure.
+ 
+     def test_minimal_policy_keeps_invalid_side_and_stale_plan_guards(self):
+         self.backend = self.make_backend(MINIMAL_POLICY)

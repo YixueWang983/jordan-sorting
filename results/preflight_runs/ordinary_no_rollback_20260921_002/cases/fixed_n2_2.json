@@ -1,0 +1,110 @@
+{
+  "base_case_id": null,
+  "case_id": "fixed_n2_2",
+  "certification": {
+    "distinct_values": true,
+    "lower_ok": true,
+    "reason": null,
+    "upper_ok": true,
+    "valid": true
+  },
+  "checked": {
+    "checks": {
+      "elements": true,
+      "length": true,
+      "matches_expected": true,
+      "strictly_increasing": true
+    },
+    "invariants_valid": true,
+    "output_sha256": "49a64717d5d4cb19952e6eac2946415cf6879adacf9908e7d872332d32c6e684",
+    "passed": true,
+    "processed_count": 2
+  },
+  "coverage": {
+    "counts": {},
+    "max_live_sibling_list_length": {
+      "event": null,
+      "value": 0
+    },
+    "transferred_pairs": 0,
+    "witnesses": {}
+  },
+  "expected_sha256": "49a64717d5d4cb19952e6eac2946415cf6879adacf9908e7d872332d32c6e684",
+  "family": "fixed",
+  "fixed_sequence": [
+    2,
+    1
+  ],
+  "kind": "base",
+  "metrics": {
+    "boundary_pair_checks": 0,
+    "invariant_checks": 0,
+    "output_insertions": 0,
+    "predecessor_accesses": 0,
+    "sibling_list_insertions": 0,
+    "sibling_list_splits": 0,
+    "sibling_lists_created": 0,
+    "sibling_scan_checks": 0,
+    "split_items_copied": 0,
+    "split_items_scanned": 0,
+    "split_items_transferred": 0,
+    "successor_accesses": 0,
+    "trace_event_count": 0,
+    "z1_boundary_adjustments": 0,
+    "z1_output_anchor_adjustments": 0
+  },
+  "minimal": {
+    "checks": {
+      "elements": true,
+      "length": true,
+      "matches_expected": true,
+      "strictly_increasing": true
+    },
+    "output_sha256": "49a64717d5d4cb19952e6eac2946415cf6879adacf9908e7d872332d32c6e684",
+    "passed": true
+  },
+  "mode_calls": {
+    "checked": "COMPLETED",
+    "minimal": "COMPLETED"
+  },
+  "modes_equal": true,
+  "n": 2,
+  "phase": "complete",
+  "prefix_check": false,
+  "prefix_snapshots": [],
+  "sampling": "coverage-guided construction",
+  "seed": 20261123,
+  "sequence": [
+    2,
+    1
+  ],
+  "sequence_sha256": "af1a1fc110b6094c48582b0ef83553cb7908d7a4365424eef28e76ef6c88d630",
+  "status": "PASS",
+  "structure": {
+    "category": "strict_flat",
+    "containment_pair_count": 0,
+    "containment_pair_density": 0.0,
+    "lower_containment_pair_count": 0,
+    "lower_crossing_pair_count": 0,
+    "lower_interval_count": 0,
+    "lower_max_depth": 0,
+    "lower_nesting_count": 0,
+    "lower_root_count": 0,
+    "max_depth": 0,
+    "nesting_count": 0,
+    "nesting_density": 0.0,
+    "parented_interval_ratio": 0.0,
+    "reason": null,
+    "total_crossing_pair_count": 0,
+    "total_interval_count": 1,
+    "upper_containment_pair_count": 0,
+    "upper_crossing_pair_count": 0,
+    "upper_interval_count": 1,
+    "upper_max_depth": 0,
+    "upper_nesting_count": 0,
+    "upper_root_count": 1,
+    "valid": true
+  },
+  "transform": null,
+  "worker_resource_wall_seconds": 0.062027874984778464
+}

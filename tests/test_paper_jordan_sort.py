@@ -5,6 +5,7 @@ import inspect
 import itertools
 import sys
 import unittest
+from unittest.mock import patch
 from dataclasses import replace
 from pathlib import Path
 
@@ -28,6 +29,41 @@ from paper_jordan_sort import (  # noqa: E402
 
 
 class PaperJordanSortValidTests(unittest.TestCase):
+    def test_split_failure_aborts_public_calls_without_output_or_retry(self):
+        from sibling_list_backend import OrdinarySiblingListBackend
+        from partial_sorted_list import SortedOrderList
+
+        calls = [
+            lambda values: paper_jordan_sort_valid(values, execution_mode="checked"),
+            lambda values: paper_jordan_sort_valid(values, execution_mode="minimal"),
+            paper_jordan_diagnostics_valid,
+        ]
+        for call in calls:
+            with self.subTest(call=call):
+                failure = RuntimeError("injected split postcondition failure")
+                with patch.object(OrdinarySiblingListBackend,
+                                  "_validate_split_commit_postconditions",
+                                  side_effect=failure) as update, patch.object(
+                                      SortedOrderList, "to_list") as recover:
+                    with self.assertRaises(RuntimeError) as caught:
+                        call([3, 2, 1, 4])
+                    self.assertIs(caught.exception, failure)
+                    update.assert_called_once()
+                    recover.assert_not_called()
+
+    def test_required_examples_and_mirrors_in_both_policies(self):
+        examples = [[], [1], [2, 1], [3, 1, 2], [3, 2, 1, 4],
+                    [1, 2, 3, 4, 6, 7, 0]]
+        for original in examples:
+            for values in (original, [-x for x in original]):
+                self.assertTrue(oracle(values)["valid"])
+                for mode in ("checked", "minimal"):
+                    with self.subTest(values=values, mode=mode):
+                        fresh = list(values)
+                        self.assertEqual(paper_jordan_sort_valid(
+                            fresh, execution_mode=mode), sorted(values))
+                        self.assertEqual(fresh, values)
+
     def test_small_inputs_are_handled_without_main_loop(self):
         self.assertEqual(paper_jordan_sort_valid([]), [])
         self.assertEqual(paper_jordan_sort_valid([7]), [7])
