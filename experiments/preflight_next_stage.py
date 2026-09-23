@@ -145,7 +145,15 @@ def run(output):
         'regressions cover failure handling. The core has no rollback contract.')
     write_json(output/'coverage.json',coverage)
     write_json(output/'manifest.json',{'files':{str(p.relative_to(output)):sha(p) for p in sorted(output.rglob('*')) if p.is_file()}})
-    return 0 if report['passed'] and not report['failed'] and not report['timed_out'] and not report['not_run'] and report['source_unchanged'] else 2
+    success = (
+        report['passed']
+        and not report['failed']
+        and not report['resource_errors']
+        and not report['timed_out']
+        and not report['not_run']
+        and report['source_unchanged']
+    )
+    return 0 if success else 2
 
 
 if __name__=='__main__':
