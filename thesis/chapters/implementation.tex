@@ -116,8 +116,11 @@ equal that list's owner. A finite parent must already be connected to its
 same-family dummy root. Parent chains are acyclic, and one parent may own at
 most two ordered child sibling lists.
 
-The concrete backend uses ordinary Python lists. Boundary insertion may append
-after the last item or insert before the first item. Splitting scans the input
+The concrete backend uses ordinary Python lists. Boundary insertion constructs
+a new list at either end, copying all existing pair IDs before replacing the
+old list. Thus both front and rear insertion incur copying work proportional
+to the sibling-list length; rear insertion is not an in-place Python
+\texttt{list.append()} operation. Splitting scans the input
 list and materializes new Python lists. These choices make ownership behavior
 explicit and testable but do not reproduce the theoretical data structures or
 their complexity bounds.
@@ -308,6 +311,16 @@ validation, cycle prevention, touched-state postconditions, input
 materialization, and the final \texttt{to\_list()} traversal remain. The
 revised implementation performs no rollback in any execution policy.
 
+Here, ``local'' describes which objects a safety check concerns, not its
+running time. The shared core checks finite-pair membership with
+\texttt{pair\_ids.count(pair\_id)}, which scans the containing list.
+The backend also checks finite-parent ancestry, scanning the containing
+sibling list at each visited ancestor. These checks remain enabled in
+\texttt{minimal}; they are separate from the optional complete backend audit.
+For a visited ancestor chain $A$, this ancestry check costs
+$O(\sum_{a\in A}|L(a)|)$, where $L(a)$ is the sibling list containing $a$,
+rather than merely a constant amount of work per ancestor.
+
 The archived timing and timing-contamination studies used the earlier
 implementation, in which recovery backups and handlers were also present in
 \texttt{minimal}. Their measurements retain that historical scope, as
@@ -316,20 +329,45 @@ logical operation counters do not account for every Python-level copy or
 backup; unchanged counter values alone cannot establish unchanged runtime or
 a speed improvement after the revision.
 
+In particular, \texttt{split\_items\_scanned} and
+\texttt{split\_items\_copied} each accumulate the input-list length once per
+successful Step~3(b) split. They are logical split-volume measures, not exact
+counts of Python element visits or copies. They omit boundary-insertion
+copies, membership scans, and repeated validation or materialization passes.
+Logical counters, directly observed element or node accesses, and wall-clock
+measurements must therefore be interpreted separately. The archived counter
+names and values are retained; they do not establish that splits dominate
+the complete runtime.
+
 \section{Implementation and Complexity Boundary}
 \label{sec:implementation-complexity}
 
 % Claims: I-05, I-09; limitations L-01, L-09
 The linked partial order supports adjacent access and insertion through local
-links. The sibling backend, however, uses ordinary Python lists: front
-insertion and list splitting may require work proportional to sibling-list
-length, and split materialization rebinds all items in the input list. Complete
-checked validation may also follow every finite pair's parent chain.
+links. The sibling backend, however, copies the entire current sibling list
+at either insertion boundary, and splitting materializes lists and rebinds
+their items. Membership scans and ancestor checks add costs even in
+\texttt{minimal}. Complete checked validation adds further state audits.
+
+A source-level lower bound is visible without any split. For the valid
+strictly increasing input $(1,2,\ldots,2m)$, $m\geq2$, initialization creates
+one finite pair in each family. Subsequent pairs extend the two sibling lists
+to lengths $m$ and $m-1$, while Step~3(b) skips splitting. The number of
+existing pair IDs copied by boundary insertion is therefore
+\begin{equation}
+  \sum_{j=1}^{m-1}j+\sum_{j=1}^{m-2}j=(m-1)^2.
+  \label{eq:implementation-boundary-copy-lower-bound}
+\end{equation}
+Thus this input family incurs $\Omega(n^2)$ copying work in the current
+implementation, including in \texttt{minimal}. This follows from the list
+construction and control flow, not from fitting runtime curves. It is a
+lower bound for this source of work, not a tight bound on the complete
+algorithm for all valid inputs.
 
 Consequently, this implementation does not instantiate the level-linked search
 trees of \textcite{hoffmann1986sorting}, the heterogeneous finger trees of
 \textcite{fung1990simplified}, or a theoretical linear-time split/update
 engine. Its purpose is to make the paper-facing control flow, ownership
 transitions, independent output recovery, and correctness checks executable.
-No overall linear-time or asymptotic-complexity claim is made for the
-ordinary-list backend.
+No linear-time guarantee or tight overall complexity bound is claimed for
+the ordinary-list backend.

@@ -43,8 +43,9 @@ complexity. The 1990 paper obtains its linear bound with heterogeneous finger
 trees. The thesis implementation realizes the same high-level list operations
 with
 ordinary Python lists. Consequently, the reconstruction supports an
-executable sorting algorithm but no linear-time or asymptotic-complexity claim
-for its concrete backend.
+executable sorting algorithm without a linear-time guarantee for its concrete
+backend. A source-level quadratic copying lower bound is given in
+\cref{sec:implementation-complexity}.
 
 \section{Pairs, Intervals, and the Two Families}
 \label{sec:algorithm-families}
@@ -437,7 +438,8 @@ claims.
 creation, boundary insertion, and splitting, then implement them with
 heterogeneous finger trees. The implementation preserves those abstract operations
 but realizes sibling lists as ordinary Python lists. A sibling split scans and
-materializes list contents, front insertion can shift elements, and ownership
-rebinding can depend on list size. The observed implementation is therefore
+materializes list contents, both insertion boundaries copy the current list,
+and ownership rebinding can depend on list size. Membership and ancestor
+checks can also scan lists in the minimal execution mode. The implementation is therefore
 an ordinary-list reconstruction of the paper-facing control flow, not an
 implementation of either theoretical linear-time data structure.

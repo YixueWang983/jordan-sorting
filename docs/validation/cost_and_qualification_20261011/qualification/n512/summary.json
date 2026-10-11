@@ -1,0 +1,59 @@
+{
+  "attempted": 4,
+  "by_n": {
+    "512": {
+      "PASS": 4
+    }
+  },
+  "completed": 4,
+  "count_semantics": "completed excludes TIMEOUT and NOT_RUN; duplicate certification is completed but not a new core execution; calls count top-level APIs, not internal deterministic replay",
+  "duplicates": 0,
+  "failed": 0,
+  "generated_unique_inputs": 4,
+  "limitation": "non-timing, structured finite inputs; replay is same core, not independent algorithm or proof",
+  "max_passed_n": 512,
+  "mode_calls_completed": {
+    "checked": 4,
+    "minimal": 4,
+    "prefix": 0
+  },
+  "mode_calls_started": {
+    "checked": 4,
+    "minimal": 4,
+    "prefix": 0
+  },
+  "mode_output_passes": {
+    "checked": 4,
+    "minimal": 4
+  },
+  "new_unique_inputs_executed": 4,
+  "not_run": 0,
+  "passed": 4,
+  "passed_by_family": {
+    "blocks_low": 1,
+    "blocks_medium": 1,
+    "flat_valid": 1,
+    "nested_valid": 1
+  },
+  "passed_by_kind": {
+    "base": 4
+  },
+  "planned": 4,
+  "prefix_snapshots_passed": 0,
+  "resource_errors": 0,
+  "resource_wall_seconds": 37.841558959000395,
+  "sampling_counts": {
+    "coverage-guided construction": 4
+  },
+  "source_unchanged": true,
+  "statuses": {
+    "PASS": 4
+  },
+  "structure_counts": {
+    "low_nesting_valid": 1,
+    "medium_nesting_valid": 1,
+    "nested_heavy_valid": 1,
+    "strict_flat": 1
+  },
+  "timed_out": 0
+}

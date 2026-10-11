@@ -1,0 +1,109 @@
+{
+  "date": "2026-10-11",
+  "base_commit": "b6a407461c2f94a4b491016376861142f4b14577",
+  "source_identity": "Base checkout plus recorded local changes. Sorting src files unchanged.",
+  "pdf": {
+    "output_name": "Jordan_Sorting_成本修订稿_2026-10-11.pdf",
+    "pages": 76,
+    "bytes": 513033,
+    "sha256": "3da775499adf7cb5580b68812a7df9cd5e2bc9d88790dc1d71aec9320c301896"
+  },
+  "targeted_tests": {
+    "count": 155,
+    "result": "PASS",
+    "log_sha256": "5d3778b134c56bbd463801e63d0fc5fa6e1cc96907986ac669325ba8bb579a3b"
+  },
+  "qualification": {
+    "candidates": 16,
+    "passed": 16,
+    "timeouts": 0,
+    "errors": 0,
+    "scope": "Four lengths, four fixed constructions, full checked/replay plus fresh minimal; not timing."
+  },
+  "boundary_cost_probes": {
+    "cases": 16,
+    "passed": 16,
+    "scope": "Original methods observed in minimal; sum pre-insertion list lengths, not wall clock."
+  },
+  "integrity": {
+    "protected_original_files_unchanged": 649,
+    "changed_tracked_files": [
+      "README.md",
+      "docs/plan/remaining_work_20261011.md",
+      "experiments/preflight_next_stage.py",
+      "thesis/README.md",
+      "thesis/appendix/claim_traceability.tex",
+      "thesis/chapters/algorithm.tex",
+      "thesis/chapters/implementation.tex",
+      "thesis/chapters/limitations.tex",
+      "thesis/chapters/results.tex",
+      "thesis/frontmatter/abstract.tex"
+    ],
+    "src_unchanged": true,
+    "historical_results_unchanged": true,
+    "results_numeric_cells_unchanged": true,
+    "unique_labels": 128,
+    "unresolved_references": 0,
+    "log_issues": []
+  },
+  "visual_review": {
+    "contact_sheet_pages": 76,
+    "detail_pages": [
+      3,
+      37,
+      42,
+      43,
+      56,
+      57,
+      61,
+      64,
+      72
+    ],
+    "final_abstract_fits_one_page": true
+  },
+  "build_input_sha256": {
+    "thesis/.gitignore": "b02907848ab49e4bc90cb963b9b13800603ba33474727c72177b2cb24fb08232",
+    "thesis/.latexmkrc": "45796ac96a2bcd2aa97a0c731f443ea357cd14128874aada78709e8ce6dfe3dd",
+    "thesis/Makefile": "23e9deaa72a978e40ea894eacfa98a32456e46d045e61ce96f07cd29cf86c253",
+    "thesis/README.md": "9a0d7b637d79de4d686724c17e4c6b1652cf77f848d7928924d6a51a3df35b3b",
+    "thesis/appendix/claim_traceability.tex": "08b754306159a1d9a1b970352e4004061a54fe073689953bd504252d5157f60f",
+    "thesis/bibliography.bib": "cb124ee77e3fe0f6f5c898431ab67af3ef64a843377e4220496e93542867b2aa",
+    "thesis/chapters/algorithm.tex": "9895dee62699b28b7889ba8d83a4f6a0980692e7c91c5d7d3fe18868acb15d87",
+    "thesis/chapters/background.tex": "bc01c0ccb4a40745e0b3df096e42630f429c4c72098b4b719e082bc5660cb12e",
+    "thesis/chapters/conclusion.tex": "20c7f4330845be7449f2136c0653b6a6274b8d40cda9e9e7d173432954d3156f",
+    "thesis/chapters/implementation.tex": "d804070323c6bf0758c0dbe5ae3bca43bd0e15e163f55fa9ab18466a54c7b5e4",
+    "thesis/chapters/introduction.tex": "794bea4613ef35117b24ffffe2c6208033100cac484efee90104d8f000adbfb7",
+    "thesis/chapters/limitations.tex": "97b7f8edabb20eebdbae4c4e4022c112ddffbfd3b65feede579e9d73a87b380b",
+    "thesis/chapters/methodology.tex": "5ee68b3c8cdaa49af074079cc1d1055dd502c103299c4dca867eeb584c4c5323",
+    "thesis/chapters/results.tex": "00b9be4c86ef11391a81aee570a5af064153901febd6a60861969cd8fe757fba",
+    "thesis/config/metadata.tex": "91134a779c5ffd6857285f4230360700f4d6a174d7d586b0bacd3b55bdd4579c",
+    "thesis/figures/README.md": "b61af7379d4a8a947320ca6ce34eeab7d077b44fef47fd279a526b9d29462658",
+    "thesis/figures/family_sibling_structure.pdf": "6160c56c3f51eb6ff2348427b06024e661543400b1be60a0529fc3ac79d1f752",
+    "thesis/figures/formal_experiment_pipeline.pdf": "159542a54791acc93be1f82c388b3056b9379575a688c2188d15f04add6f7ad8",
+    "thesis/figures/jordan_sorting_problem.pdf": "3cc1d95222f09940ef9516268a45f37276ed8c5e8e986c733c3ad8a1eba09f09",
+    "thesis/figures/running_example_reconstruction.pdf": "f36fccb79ad29f3414385e97b0b6ac238f527567ca1273d14b124a485d6bbe09",
+    "thesis/figures/source/family_sibling_structure.tex": "3acf769706606c13c4842819ac2cebcc85a5c971eee38e7cfcffb46240786d93",
+    "thesis/figures/source/figure_style.tex": "933b2af4110bc1898726b8b9016adc24dc635b77077853dcab016ff91fdee823",
+    "thesis/figures/source/formal_experiment_pipeline.tex": "012d8379a4daa96afc0e0750edf795a99fe34b3bbd578a7991ef074f40f89930",
+    "thesis/figures/source/jordan_sorting_problem.tex": "eb782ed3bec6ebf5388ab07c838088b10d3226771fbbef1ba0d4244858997153",
+    "thesis/figures/source/running_example_reconstruction.tex": "435e6f2914a81ccbc930091b8d7dc163b3d1941d801c6e45e93bfcf344a2ef97",
+    "thesis/figures/source/step3c_anchor_z1_anomaly.tex": "b00432a7f457046b1ad6b856004a120cfef012f1e100295dfea28e1a26d4873e",
+    "thesis/figures/step3c_anchor_z1_anomaly.pdf": "f5d8522b2d7a5e440eccde5adb31cf7d3009a499de59fe1452100f852bb6c268",
+    "thesis/figures/week12_runtime_by_size.pdf": "4b29bd6c391c4591564cd761b8a0a836609a93e6d9c87746432eeee78f5ce432",
+    "thesis/figures/week12_runtime_ratio_by_size.pdf": "31c0e63010b8c8b83cafbe8b1fde6ad9744954d7eb26580bba4f8b3b312beacd",
+    "thesis/frontmatter/abstract.tex": "c0d5beaaba16501f6d4cf6f15b07c2c15675172ea4def37cf5da836763a54286",
+    "thesis/frontmatter/titlepage.tex": "ed4966cc8d7d00dd4673d3474d1773be4eb0fa0fda4a84501cedf1a2d39f8f14",
+    "thesis/main.tex": "2912e0b4614193b004ed1c6555a16929745eee5866c46fc04dca9191829c9100"
+  },
+  "toolchain": {
+    "tex_live": "2026",
+    "lua_hb_tex": "1.24.0",
+    "biber": "2.22",
+    "latexmk": "4.88"
+  },
+  "log_sha256": {
+    "build_console": "dd9a3579e6d305b3dfe9be83a3a1de11536f7eb6d18e298f68928ff53766e6c5",
+    "tex_log": "1cf5bac989a7f28e4270133b75d0f712335964ee73a1d8abfb97568687862deb",
+    "biber_log": "d7cfe335c430b8dea09b0350f95a497d6f1047710d6dd4b17b674d0229e63bb2"
+  }
+}

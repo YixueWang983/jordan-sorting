@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "archive_entries_checked": 79,
+  "recorded_cases": 16,
+  "unique_rank_inputs": 16,
+  "status_counts": {
+    "PASS": 16
+  },
+  "resource_wall_seconds": 88.27697612500197,
+  "verification_scope": "File and source hashes, frozen configuration, recorded input/output identities and audit status. Does not rerun checked/replay or prove universal correctness."
+}

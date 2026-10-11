@@ -1,0 +1,25 @@
+diff --git a/experiments/preflight_next_stage.py b/experiments/preflight_next_stage.py
+index 95234a3..2f421ed 100644
+--- a/experiments/preflight_next_stage.py
++++ b/experiments/preflight_next_stage.py
+@@ -4,6 +4,7 @@ Reuse the extended validator's isolated workers, certification, full checked
+ replay, minimal call, external output checks and trace coverage. No benchmark.
+ """
+ import argparse
++from copy import deepcopy
+ from collections import Counter
+ from pathlib import Path
+ import random
+@@ -91,10 +92,10 @@ def source_hashes():
+             for p in sorted((ROOT/folder).glob('*.py'))}
+ 
+ 
+-def run(output):
++def run(output, run_config=None):
+     reserve(output)  # No overwrite, even for an incomplete previous run.
+     (output/'cases').mkdir()
+-    cfg=config()
++    cfg=config() if run_config is None else deepcopy(run_config)
+     write_json(output/'config.json',cfg)  # Freeze BEFORE constructing new inputs.
+     provenance=dict(head=git('rev-parse','HEAD'),branch=git('branch','--show-current'),
+                     origin_main=git('rev-parse','origin/main'),status=git('status','--short'),

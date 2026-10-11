@@ -20,7 +20,9 @@ rows, 180 case summaries, 45 group summaries, and 60 checked-state audits.
 
 All performance results in this chapter concern the earlier rollback-enabled
 ordinary-list implementation described in \cref{sec:method-paper-implementation}.
-They are retained as historical baseline evidence. The revised implementation
+They are retained as historical baseline evidence. All captions labelled
+``Historical baseline refer to this version and the timed scopes in
+\cref{sec:method-timing}; they do not describe the current no-rollback core. The revised implementation
 in \cref{chap:implementation} has not been measured by this archived protocol;
 none of the reported timings or ratios quantify the effect of removing rollback.
 
@@ -50,7 +52,7 @@ and \cref{fig:results-runtime-size}.
 
 \begin{table}[H]
   \centering
-  \caption{Median exact-case runtime by input size. Values are milliseconds;
+  \caption{Historical baseline. Median exact-case runtime by input size. Values are milliseconds;
   each size contains twelve exact cases.}
   \label{tab:results-runtime-size}
   \small
@@ -76,7 +78,7 @@ and \cref{fig:results-runtime-size}.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{week12_runtime_by_size.pdf}
-  \caption{Median runtime by input size in the formal experiment. The logarithmic vertical axis
+  \caption{Historical baseline. Median runtime by input size in the formal experiment. The logarithmic vertical axis
   displays equal-weighted exact-case medians under the distinct timed scopes
   defined in \cref{sec:method-implementations}.}
   \label{fig:results-runtime-size}
@@ -101,7 +103,7 @@ like-for-like end-to-end speedups.
 
 \begin{table}[H]
   \centering
-  \caption{Median exact-case paper/reference ratio by input size.}
+  \caption{Historical baseline. Median exact-case paper/reference ratio by input size.}
   \label{tab:results-ratio-size}
   \begin{tabular}{
     S[table-format=3.0]
@@ -123,7 +125,7 @@ like-for-like end-to-end speedups.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{week12_runtime_ratio_by_size.pdf}
-  \caption{Case-median runtime ratios by input size in the formal experiment. Ratios are formed
+  \caption{Historical baseline. Case-median runtime ratios by input size in the formal experiment. Ratios are formed
   within exact cases before equal-weight aggregation; the dashed line marks a
   ratio of one.}
   \label{fig:results-ratio-size}
@@ -140,7 +142,7 @@ Across all sixty exact cases, the overall median ratios are given in
 
 \begin{table}[H]
   \centering
-  \caption{Overall median exact-case runtime ratios across all sixty cases.}
+  \caption{Historical baseline. Overall median exact-case runtime ratios across all sixty cases.}
   \label{tab:results-ratio-overall}
   \begin{tabular}{l S[table-format=2.0] S[table-format=4.6]}
     \toprule
@@ -166,7 +168,7 @@ controlled families, as shown in \cref{tab:results-family-ratios}.
 
 \begin{table}[H]
   \centering
-  \caption{Median exact-case paper/reference ratio by family and input size.}
+  \caption{Historical baseline. Median exact-case paper/reference ratio by family and input size.}
   \label{tab:results-family-ratios}
   \scriptsize
   \begin{tabular}{@{}l S[table-format=2.0] *{5}{S[table-format=1.6]}@{}}
@@ -200,7 +202,7 @@ inspection without removing them.
 
 \begin{table}[H]
   \centering
-  \caption{Relative-IQR summary over exact case-algorithm cells.}
+  \caption{Historical baseline. Relative-IQR summary over exact case-algorithm cells.}
   \label{tab:results-iqr}
   \small
   \begin{tabular}{l S[table-format=1.4] S[table-format=1.4] S[table-format=1.0]}
@@ -230,7 +232,7 @@ The captured measured calls sum to the values in
 
 \begin{table}[H]
   \centering
-  \caption{Captured measured-call time by algorithm.}
+  \caption{Historical baseline. Captured measured-call time by algorithm.}
   \label{tab:results-measured-time}
   \begin{tabular}{l S[table-format=4.0] S[table-format=2.9]}
     \toprule
@@ -266,7 +268,7 @@ medians are shown in \cref{tab:results-replication}.
 
 \begin{table}[H]
   \centering
-  \caption{Paper/reference size medians in the pilot and formal experiments.}
+  \caption{Historical baseline. Paper/reference size medians in the pilot and formal experiments.}
   \label{tab:results-replication}
   \begin{tabular}{S[table-format=3.0] S[table-format=1.6] S[table-format=1.6]}
     \toprule
@@ -304,7 +306,7 @@ asymptotic interpretation.
 % Claims: E-01, E-02; limitations L-07, L-08
 \begin{table}[H]
   \centering
-  \caption{Within-size Spearman coefficients between runtime and two
+  \caption{Historical baseline. Within-size Spearman coefficients between runtime and two
   structural measures.}
   \label{tab:results-structure-correlations}
   \scriptsize
@@ -341,11 +343,16 @@ Checked diagnostic counters and paper runtime come from different policies:
 the counters are collected by an untimed \texttt{checked} diagnostic, while
 runtime uses the \texttt{minimal} paper call. Their within-size Spearman
 coefficients are shown in \cref{tab:results-counter-correlations}.
+The archived ``Scans'' and ``Copied'' fields measure logical split input
+volume; they do not count every element access or copy. Boundary-insertion
+copies and membership or ancestry scans are outside those fields. Their
+definitions and limits are explained in \cref{sec:implementation-policies}.
 
 \begin{table}[H]
   \centering
-  \caption{Within-size Spearman coefficients between checked paper counters
-  and minimal paper runtime.}
+  \caption{Historical within-size Spearman coefficients between logical
+  checked counters and rollback-enabled minimal paper runtime
+  (source \texttt{98868b1}).}
   \label{tab:results-counter-correlations}
   \scriptsize
   \begin{tabular}{
@@ -356,7 +363,7 @@ coefficients are shown in \cref{tab:results-counter-correlations}.
     S[table-format=1.3]
   }
     \toprule
-    {$n$} & {Scans} & {Splits} & {Copied} & {Transferred} \\
+    {$n$} & {Scan volume} & {Splits} & {Copy volume} & {Transferred} \\
     \midrule
      32 & 0.919 & 0.965 & 0.919 & 0.919 \\
      64 & 0.646 & 0.842 & 0.646 & 0.598 \\

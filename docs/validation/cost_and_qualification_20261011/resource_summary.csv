@@ -1,0 +1,17 @@
+case_id,n,category,max_depth,status,worker_resource_wall_seconds
+blocks_low_n256_probe,256,low_nesting_valid,1,PASS,1.468921457999386
+blocks_medium_n256_probe,256,medium_nesting_valid,1,PASS,2.440016915999877
+flat_valid_n256_probe,256,strict_flat,0,PASS,1.0235953330011398
+nested_valid_n256_probe,256,nested_heavy_valid,127,PASS,1.4122832499997457
+blocks_low_n257_probe,257,low_nesting_valid,1,PASS,1.496228208001412
+blocks_medium_n257_probe,257,medium_nesting_valid,1,PASS,2.4296196249997593
+flat_valid_n257_probe,257,strict_flat,0,PASS,1.0513321250000445
+nested_valid_n257_probe,257,nested_heavy_valid,127,PASS,1.4348372499989637
+blocks_low_n512_probe,512,low_nesting_valid,1,PASS,8.961767458000395
+blocks_medium_n512_probe,512,medium_nesting_valid,1,PASS,16.03114412499781
+flat_valid_n512_probe,512,strict_flat,0,PASS,5.013572749998275
+nested_valid_n512_probe,512,nested_heavy_valid,255,PASS,7.832824124998297
+blocks_low_n513_probe,513,low_nesting_valid,1,PASS,8.65667195900096
+blocks_medium_n513_probe,513,medium_nesting_valid,1,PASS,16.155435042001045
+flat_valid_n513_probe,513,strict_flat,0,PASS,5.040671499999007
+nested_valid_n513_probe,513,nested_heavy_valid,255,PASS,7.820051792001323

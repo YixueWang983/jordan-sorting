@@ -1,14 +1,18 @@
 # FU Berlin LaTeX Thesis Scaffold
 
-Current status (2026-10-11): **FIRST REVISION COMPLETE** under the
+Current status (2026-10-11): **COST CORRECTION AND RESOURCE PROBES** under the
 [development and thesis revision plan](../docs/plan/remaining_work_20261011.md).
 The sources now describe the current no-rollback failure contract and explicitly
 attribute existing runtime results to the earlier measured implementation.
 The [claim amendments](../docs/thesis/revision_claims_20261011.md) and
 [revision audit](../docs/thesis/revision_audit_20261011.md) record the evidence
 boundary, 133 passing targeted regressions, and a clean 74-page build with visual
-checks. Expanded-input experiments and the finger-tree backend remain pending;
-this is the first revision, not the completed two-week review package.
+checks. The subsequent [cost revision](../docs/thesis/cost_revision_audit_20261011.md)
+clarifies both-boundary copying, minimal-mode scans, and logical counter scope,
+and records a separate current build and 155-test regression run.
+Sixteen fixed large-input resource probes passed; these are qualification
+checks, not new timing results or the full expanded input set. Expanded timing
+experiments and the finger-tree backend remain pending.
 
 The supervisor-review target is **2026-10-25**. The plan targets a complete
 draft on **2026-10-22**, followed by two days for verification and corrections.

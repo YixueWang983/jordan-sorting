@@ -1,0 +1,17 @@
+n,direction,boundary_insertions,existing_ids_copied,split_calls,formula,output_ok
+4,increasing,1,1,0,1,True
+4,decreasing,1,1,0,1,True
+8,increasing,5,9,0,9,True
+8,decreasing,5,9,0,9,True
+16,increasing,13,49,0,49,True
+16,decreasing,13,49,0,49,True
+32,increasing,29,225,0,225,True
+32,decreasing,29,225,0,225,True
+64,increasing,61,961,0,961,True
+64,decreasing,61,961,0,961,True
+128,increasing,125,3969,0,3969,True
+128,decreasing,125,3969,0,3969,True
+256,increasing,253,16129,0,16129,True
+256,decreasing,253,16129,0,16129,True
+512,increasing,509,65025,0,65025,True
+512,decreasing,509,65025,0,65025,True

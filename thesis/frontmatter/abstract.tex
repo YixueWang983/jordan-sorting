@@ -33,11 +33,10 @@ certification and checked diagnostics outside timing. They are therefore not
 like-for-like end-to-end speedups.
 
 The contribution is an independently recovering ordinary-list reconstruction
-with explicit state, safety, audit, and evidence boundaries, together with a
-reproducible empirical characterization of its behavior on the controlled
-sample. The implementation does not include the specialized theoretical
-backend, and the experiment does not evaluate recognition. No linear-time or
-asymptotic-complexity claim is made for the Python implementation, and the
-reported runtimes remain specific to the tested cases, timing scopes, and
-recorded execution environment. They do not measure the revised core or the
-effect of removing rollback.
+with explicit safety, audit, and evidence boundaries, plus reproducible
+measurements on a controlled sample. The specialized backend is not implemented,
+and recognition is not measured. Source inspection establishes quadratic
+insertion-copying work on increasing inputs without splits; no linear-time
+guarantee or tight overall runtime bound is claimed. Reported timings describe
+the historical implementation, cases, scopes, and environment. They do not
+measure the revised core or the effect of removing rollback.

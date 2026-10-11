@@ -1,0 +1,59 @@
+{
+  "batch_seconds": 720,
+  "case_seconds": 180,
+  "duplicates": "rank-normalize all bases before certification; deduplicate rank sequences including reflections; never replace",
+  "larger_sizes": "Only the four frozen lengths; one candidate per construction.",
+  "plan": [
+    {
+      "base_case_id": null,
+      "case_id": "flat_valid_n512_probe",
+      "family": "flat_valid",
+      "kind": "base",
+      "n": 512,
+      "prefix_check": false,
+      "sampling": "coverage-guided construction",
+      "seed": 20312211,
+      "transform": null
+    },
+    {
+      "base_case_id": null,
+      "case_id": "blocks_low_n512_probe",
+      "family": "blocks_low",
+      "kind": "base",
+      "n": 512,
+      "prefix_check": false,
+      "sampling": "coverage-guided construction",
+      "seed": 20312211,
+      "transform": null
+    },
+    {
+      "base_case_id": null,
+      "case_id": "blocks_medium_n512_probe",
+      "family": "blocks_medium",
+      "kind": "base",
+      "n": 512,
+      "prefix_check": false,
+      "sampling": "coverage-guided construction",
+      "seed": 20312211,
+      "transform": null
+    },
+    {
+      "base_case_id": null,
+      "case_id": "nested_valid_n512_probe",
+      "family": "nested_valid",
+      "kind": "base",
+      "n": 512,
+      "prefix_check": false,
+      "sampling": "coverage-guided construction",
+      "seed": 20312211,
+      "transform": null
+    }
+  ],
+  "resource_scope": "worker wall budget only, includes generation/certification/audit; NOT sorting timing",
+  "rules": "block_sequence v1: even six/eight-point excursions, flat spacers, optional odd maximum tail; no rejection/resampling",
+  "sampling_boundary": "Coverage-guided representatives, not random samples or a formal timing set.",
+  "schema": "large_qualification_probe_v1",
+  "seed_base": 20261011,
+  "stop": "stop remaining cases after any execution/output/state error or timeout; generation/certification failures retained",
+  "validation": "full checked diagnostics/replay and independent fresh minimal call; external sorted(original) expected; no extra prefix run"
+}

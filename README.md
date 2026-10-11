@@ -17,6 +17,13 @@ experiments. Its [claim amendments](docs/thesis/revision_claims_20261011.md) and
 regression tests and a checked 74-page PDF. New input generation, timing and
 backend work remain separate stages of the plan.
 
+The subsequent [cost correction](docs/thesis/cost_revision_audit_20261011.md)
+adds the boundary-copying lower bound, explains always-on scans and counter
+scope, and records a 76-page revision with 155 passing targeted regressions.
+All 16 fixed large-input [qualification probes](docs/validation/cost_and_qualification_20261011/README.md)
+passed. Their resource observations are not new sorting-performance results
+or qualification of the complete expanded candidate pool.
+
 The next supervisor-review target is 2026-10-25, with a complete draft planned
 for 2026-10-22 and two days reserved for checking and corrections. Expanded
 ordinary-list evidence and matching thesis revisions take priority; backend
@@ -379,12 +386,13 @@ Run all tests from the repository root:
 python -m unittest discover -s tests
 ```
 
-Current status:
-
-```text
-Ran 537 tests
-OK
-```
+Test evidence is versioned. The [2026-08-07 historical audit](docs/thesis/final_claim_audit.md)
+records 537 passing tests at source baseline `752e2791f972c10604a532d5c98fbdb653471bb8`.
+This is not a fresh full-suite result for the current checkout.
+The [2026-10-11 first revision](docs/thesis/revision_audit_20261011.md)
+reran 133 targeted tests; that number is the selected regression scope, not
+the repository's total test count. The subsequent cost correction and resource
+probe have a separate [verification record](docs/thesis/cost_revision_audit_20261011.md).
 
 Note: a full Week 4 reference run is reproducible from the current scripts; all generated
 artifact outputs are committed only when explicitly tracked.
@@ -501,6 +509,11 @@ Important project documents:
   complete backend commit validation, but all modes still include
   ordinary-list split materialization, local safety checks, `stage_results`,
   and output recovery. The Week 9 pilot is not final performance evidence.
+- Both insertion boundaries reconstruct and copy the current sibling list.
+  Membership scans and ancestor-chain checks also remain in `minimal`.
+  On strictly increasing inputs of length `n=2m`, boundary insertions alone
+  copy `(m-1)^2` existing pair IDs, even with no splits. Logical split
+  counters omit that work and are not complete runtime cost measurements.
 - No level-linked or heterogeneous finger-tree backend is implemented.
 - Current figures summarize the Week 10 contamination study, Week 11 pilot,
   and Week 12 formal sorting experiment. FU LaTeX integration is a separate
@@ -508,15 +521,19 @@ Important project documents:
 
 ## Next Steps
 
-Immediate next task:
+The current schedule is the [October supervisor-review plan](docs/plan/remaining_work_20261011.md):
+freeze the qualified input scope and timing protocol on October 16, freeze
+review evidence on October 20, complete the draft on October 22, and deliver
+the review package on October 25 after October 23--24 checks.
 
-- migrate the audited Implementation chapter into the FU LaTeX scaffold;
-- preserve the SHA-bound Markdown drafts as the content baseline;
-- preserve Week 12 `run001` and Week 11 `run003` as immutable evidence;
-- trace every thesis result to a generated Week 12 artifact and archived file;
-- keep recognition separate from valid-input paper sorting;
-- do not pool Week 11 and Week 12 absolute timings;
-- do not treat ordinary-list pipeline ratios as linear-time evidence.
+- Complete expanded-input qualification and report missing structure/size cells.
+- Validate the new current-version timing runner on a preselected small sample
+  before launching formal measurements; keep historical archives immutable.
+- Implement the finger-search backend independently using literature as a
+  reference. Check progress on October 16; require complete integration
+  validation by October 18 before considering a matched performance comparison.
+- Keep current results, historical timings, source-derived cost bounds, and
+  future backend claims separately supported.
 
 Later cleanup:
 
