@@ -1,0 +1,28 @@
+test_audit_rejects_lost_item (__main__.ModelAuditSelfTests.test_audit_rejects_lost_item) ... ok
+test_audit_rejects_pending_adoption (__main__.ModelAuditSelfTests.test_audit_rejects_pending_adoption) ... ok
+test_audit_rejects_replaced_item_identity (__main__.ModelAuditSelfTests.test_audit_rejects_replaced_item_identity) ... ok
+test_audit_rejects_wrong_order (__main__.ModelAuditSelfTests.test_audit_rejects_wrong_order) ... ok
+test_adoption_cannot_overfill_owner (__main__.OperationContractTests.test_adoption_cannot_overfill_owner) ... skipped 'synthetic skipped adapter'
+test_duplicate_item_rejected (__main__.OperationContractTests.test_duplicate_item_rejected) ... skipped 'synthetic skipped adapter'
+test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) ... skipped 'synthetic skipped adapter'
+test_equal_key_rejected (__main__.OperationContractTests.test_equal_key_rejected) ... skipped 'synthetic skipped adapter'
+test_extreme_child_across_two_slots (__main__.OperationContractTests.test_extreme_child_across_two_slots) ... skipped 'synthetic skipped adapter'
+test_generated_operation_sequences (__main__.OperationContractTests.test_generated_operation_sequences) ... skipped 'synthetic skipped adapter'
+test_insert_both_ends (__main__.OperationContractTests.test_insert_both_ends) ... skipped 'synthetic skipped adapter'
+test_interior_anchor_rejected (__main__.OperationContractTests.test_interior_anchor_rejected) ... skipped 'synthetic skipped adapter'
+test_interior_owner_query_is_not_boundary_query (__main__.OperationContractTests.test_interior_owner_query_is_not_boundary_query) ... skipped 'synthetic skipped adapter'
+test_new_boundaries_after_insertion (__main__.OperationContractTests.test_new_boundaries_after_insertion) ... skipped 'synthetic skipped adapter'
+test_old_owner_mismatch_rejected (__main__.OperationContractTests.test_old_owner_mismatch_rejected) ... skipped 'synthetic skipped adapter'
+test_repeated_skewed_splits_and_stable_items (__main__.OperationContractTests.test_repeated_skewed_splits_and_stable_items) ... skipped 'synthetic skipped adapter'
+test_same_owner_adoption_rejected (__main__.OperationContractTests.test_same_owner_adoption_rejected) ... skipped 'synthetic skipped adapter'
+test_singleton_has_two_boundaries (__main__.OperationContractTests.test_singleton_has_two_boundaries) ... skipped 'synthetic skipped adapter'
+test_split_adopt_insert_and_resplit_both_outputs (__main__.OperationContractTests.test_split_adopt_insert_and_resplit_both_outputs) ... skipped 'synthetic skipped adapter'
+test_split_cuts_and_adoption_directions (__main__.OperationContractTests.test_split_cuts_and_adoption_directions) ... skipped 'synthetic skipped adapter'
+test_two_child_slots (__main__.OperationContractTests.test_two_child_slots) ... skipped 'synthetic skipped adapter'
+test_wrong_side_rejected (__main__.OperationContractTests.test_wrong_side_rejected) ... skipped 'synthetic skipped adapter'
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.000s
+
+OK (skipped=18)
+{"scope": "external_adapter_semantic_contract_only", "mode": "strict", "status": "REJECTED", "contract_acceptance_passed": false, "partial_check": true, "operation_contracts": {"subject": "external_adapter", "expected_methods": 18, "started_methods": 18, "passed_methods": 0, "skips": 18, "failures": 0, "errors": 0, "expected_failures": 0, "unexpected_successes": 0, "missing_passes": ["__main__.OperationContractTests.test_adoption_cannot_overfill_owner", "__main__.OperationContractTests.test_duplicate_item_rejected", "__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit", "__main__.OperationContractTests.test_equal_key_rejected", "__main__.OperationContractTests.test_extreme_child_across_two_slots", "__main__.OperationContractTests.test_generated_operation_sequences", "__main__.OperationContractTests.test_insert_both_ends", "__main__.OperationContractTests.test_interior_anchor_rejected", "__main__.OperationContractTests.test_interior_owner_query_is_not_boundary_query", "__main__.OperationContractTests.test_new_boundaries_after_insertion", "__main__.OperationContractTests.test_old_owner_mismatch_rejected", "__main__.OperationContractTests.test_repeated_skewed_splits_and_stable_items", "__main__.OperationContractTests.test_same_owner_adoption_rejected", "__main__.OperationContractTests.test_singleton_has_two_boundaries", "__main__.OperationContractTests.test_split_adopt_insert_and_resplit_both_outputs", "__main__.OperationContractTests.test_split_cuts_and_adoption_directions", "__main__.OperationContractTests.test_two_child_slots", "__main__.OperationContractTests.test_wrong_side_rejected"], "duplicate_methods": [], "complete": false}, "reference_model_self_tests": {"expected_methods": 4, "started_methods": 4, "passed_methods": 4, "skips": 0, "failures": 0, "errors": 0, "expected_failures": 0, "unexpected_successes": 0, "missing_passes": [], "duplicate_methods": [], "complete": true}, "tests_run": 22, "failures": 0, "errors": 0, "skipped": 18, "expected_failures": 0, "unexpected_successes": 0, "jordan_integration_validated": false, "efficiency_bound_proved": false, "backend_ready_for_timing": false}

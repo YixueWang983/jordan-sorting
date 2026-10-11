@@ -38,6 +38,9 @@ and a test-only operation model have now been merged into this repository. The
 [merge verification](docs/validation/backend_plan_merge_20261011/README.md)
 records 20 reference-model tests and a separate rerun of the existing 155
 targeted regressions. Real tree operations and Jordan integration remain pending.
+The subsequent [contract-test correction](docs/validation/backend_contract_fix_20261011/README.md)
+adds strict acceptance and interleaved updates: 22 model checks (18 operation
+contracts and four model auditor checks) plus 15 CLI regression checks pass.
 
 ### Historical Milestones
 
@@ -223,6 +226,7 @@ tests/
   test_paper_execution_policy.py
   test_sibling_list_backend.py
   test_finger_backend_contract_model.py
+  test_finger_backend_contract_runner.py
   test_paper_jordan.py
   test_paper_jordan_sort.py
   test_certified_paper_jordan.py
@@ -406,18 +410,28 @@ the repository's total test count. The subsequent cost correction and resource
 probe have a separate [verification record](docs/thesis/cost_revision_audit_20261011.md).
 
 The backend-plan merge separately reran the same 155 targeted regressions and
-added 20 test-only model checks (16 reusable operation contracts and four model
-auditor self-tests). This is not a fresh full-suite run or real tree-backend
-validation. Run the model checks with:
+initially added 20 test-only model checks. The follow-up correction increases
+that suite to 22 (18 operation contracts and four model auditor self-tests),
+and adds 15 CLI acceptance regressions using deliberate test doubles.
+These are not a full-suite run or real tree-backend validation. Run them with:
 
 ```bash
-python -m unittest discover -s tests -p 'test_finger_backend_contract_model.py' -v
+python -m unittest discover -s tests -p 'test_finger_backend_contract*.py' -v
+python tests/test_finger_backend_contract_model.py --strict -v
 ```
 
-The direct test runner accepts `--factory MODULE:FACTORY` for a future test
-adapter and returns exit code 2 if it is unavailable. Only the 16 operation
-contracts switch to that adapter; the four model auditor tests still exercise
-the reference model. No production adapter is supplied by this update.
+For a future adapter, use `--strict --factory MODULE:FACTORY`. Strict acceptance
+requires every expected operation contract to pass exactly once, with no skips,
+failures, errors or expected failures in the run. Missing adapters return 2;
+failed/incomplete strict acceptance returns 1. Only the 18 operation contracts
+switch to the adapter; the four model auditor checks are reported separately.
+They may be omitted by explicitly selecting `OperationContractTests`.
+
+Without `--strict`, development filtering retains unittest exit-code semantics,
+but `contract_acceptance_passed` is always false. A successful development exit
+code or discovery run is not contract acceptance. Even strict acceptance proves
+only the tested semantic contracts; Jordan integration, efficiency and timing
+readiness remain false. No production adapter is supplied by this update.
 
 Note: a full Week 4 reference run is reproducible from the current scripts; all generated
 artifact outputs are committed only when explicitly tracked.

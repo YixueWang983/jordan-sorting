@@ -1,0 +1,192 @@
+test_adoption_cannot_overfill_owner (__main__.OperationContractTests.test_adoption_cannot_overfill_owner) ... ok
+test_duplicate_item_rejected (__main__.OperationContractTests.test_duplicate_item_rejected) ... ok
+test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) ... 
+  test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=0, acquired_side='left', mirrored=False) ... ERROR
+  test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=0, acquired_side='left', mirrored=True) ... ERROR
+  test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=0, acquired_side='right', mirrored=False) ... ERROR
+  test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=0, acquired_side='right', mirrored=True) ... ERROR
+  test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=50, acquired_side='left', mirrored=False) ... ERROR
+  test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=50, acquired_side='left', mirrored=True) ... ERROR
+  test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=50, acquired_side='right', mirrored=False) ... ERROR
+  test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=50, acquired_side='right', mirrored=True) ... ERROR
+test_equal_key_rejected (__main__.OperationContractTests.test_equal_key_rejected) ... ok
+test_extreme_child_across_two_slots (__main__.OperationContractTests.test_extreme_child_across_two_slots) ... ok
+test_generated_operation_sequences (__main__.OperationContractTests.test_generated_operation_sequences) ... ok
+test_insert_both_ends (__main__.OperationContractTests.test_insert_both_ends) ... ok
+test_interior_anchor_rejected (__main__.OperationContractTests.test_interior_anchor_rejected) ... ok
+test_interior_owner_query_is_not_boundary_query (__main__.OperationContractTests.test_interior_owner_query_is_not_boundary_query) ... ok
+test_new_boundaries_after_insertion (__main__.OperationContractTests.test_new_boundaries_after_insertion) ... ok
+test_old_owner_mismatch_rejected (__main__.OperationContractTests.test_old_owner_mismatch_rejected) ... ok
+test_repeated_skewed_splits_and_stable_items (__main__.OperationContractTests.test_repeated_skewed_splits_and_stable_items) ... ok
+test_same_owner_adoption_rejected (__main__.OperationContractTests.test_same_owner_adoption_rejected) ... ok
+test_singleton_has_two_boundaries (__main__.OperationContractTests.test_singleton_has_two_boundaries) ... ok
+test_split_adopt_insert_and_resplit_both_outputs (__main__.OperationContractTests.test_split_adopt_insert_and_resplit_both_outputs) ... 
+  test_split_adopt_insert_and_resplit_both_outputs (__main__.OperationContractTests.test_split_adopt_insert_and_resplit_both_outputs) (acquired_side='left', mirrored=False) ... ERROR
+  test_split_adopt_insert_and_resplit_both_outputs (__main__.OperationContractTests.test_split_adopt_insert_and_resplit_both_outputs) (acquired_side='left', mirrored=True) ... ERROR
+  test_split_adopt_insert_and_resplit_both_outputs (__main__.OperationContractTests.test_split_adopt_insert_and_resplit_both_outputs) (acquired_side='right', mirrored=False) ... ERROR
+  test_split_adopt_insert_and_resplit_both_outputs (__main__.OperationContractTests.test_split_adopt_insert_and_resplit_both_outputs) (acquired_side='right', mirrored=True) ... ERROR
+test_split_cuts_and_adoption_directions (__main__.OperationContractTests.test_split_cuts_and_adoption_directions) ... ok
+test_two_child_slots (__main__.OperationContractTests.test_two_child_slots) ... ok
+test_wrong_side_rejected (__main__.OperationContractTests.test_wrong_side_rejected) ... ok
+
+======================================================================
+ERROR: test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=0, acquired_side='left', mirrored=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 447, in test_empty_side_split_then_insert_and_resplit
+    self.exercise_interleaved_updates(cut, acquired_side, mirrored)
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 391, in exercise_interleaved_updates
+    updated = self.backend.insert_boundary(item, anchor.item_id, side)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/backend_contract_fix_20261011/review_adapters.py", line 15, in insert_boundary
+    raise RuntimeError("synthetic defect: insertion disabled after split")
+RuntimeError: synthetic defect: insertion disabled after split
+
+======================================================================
+ERROR: test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=0, acquired_side='left', mirrored=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 447, in test_empty_side_split_then_insert_and_resplit
+    self.exercise_interleaved_updates(cut, acquired_side, mirrored)
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 391, in exercise_interleaved_updates
+    updated = self.backend.insert_boundary(item, anchor.item_id, side)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/backend_contract_fix_20261011/review_adapters.py", line 15, in insert_boundary
+    raise RuntimeError("synthetic defect: insertion disabled after split")
+RuntimeError: synthetic defect: insertion disabled after split
+
+======================================================================
+ERROR: test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=0, acquired_side='right', mirrored=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 447, in test_empty_side_split_then_insert_and_resplit
+    self.exercise_interleaved_updates(cut, acquired_side, mirrored)
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 391, in exercise_interleaved_updates
+    updated = self.backend.insert_boundary(item, anchor.item_id, side)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/backend_contract_fix_20261011/review_adapters.py", line 15, in insert_boundary
+    raise RuntimeError("synthetic defect: insertion disabled after split")
+RuntimeError: synthetic defect: insertion disabled after split
+
+======================================================================
+ERROR: test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=0, acquired_side='right', mirrored=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 447, in test_empty_side_split_then_insert_and_resplit
+    self.exercise_interleaved_updates(cut, acquired_side, mirrored)
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 391, in exercise_interleaved_updates
+    updated = self.backend.insert_boundary(item, anchor.item_id, side)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/backend_contract_fix_20261011/review_adapters.py", line 15, in insert_boundary
+    raise RuntimeError("synthetic defect: insertion disabled after split")
+RuntimeError: synthetic defect: insertion disabled after split
+
+======================================================================
+ERROR: test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=50, acquired_side='left', mirrored=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 447, in test_empty_side_split_then_insert_and_resplit
+    self.exercise_interleaved_updates(cut, acquired_side, mirrored)
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 391, in exercise_interleaved_updates
+    updated = self.backend.insert_boundary(item, anchor.item_id, side)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/backend_contract_fix_20261011/review_adapters.py", line 15, in insert_boundary
+    raise RuntimeError("synthetic defect: insertion disabled after split")
+RuntimeError: synthetic defect: insertion disabled after split
+
+======================================================================
+ERROR: test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=50, acquired_side='left', mirrored=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 447, in test_empty_side_split_then_insert_and_resplit
+    self.exercise_interleaved_updates(cut, acquired_side, mirrored)
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 391, in exercise_interleaved_updates
+    updated = self.backend.insert_boundary(item, anchor.item_id, side)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/backend_contract_fix_20261011/review_adapters.py", line 15, in insert_boundary
+    raise RuntimeError("synthetic defect: insertion disabled after split")
+RuntimeError: synthetic defect: insertion disabled after split
+
+======================================================================
+ERROR: test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=50, acquired_side='right', mirrored=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 447, in test_empty_side_split_then_insert_and_resplit
+    self.exercise_interleaved_updates(cut, acquired_side, mirrored)
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 391, in exercise_interleaved_updates
+    updated = self.backend.insert_boundary(item, anchor.item_id, side)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/backend_contract_fix_20261011/review_adapters.py", line 15, in insert_boundary
+    raise RuntimeError("synthetic defect: insertion disabled after split")
+RuntimeError: synthetic defect: insertion disabled after split
+
+======================================================================
+ERROR: test_empty_side_split_then_insert_and_resplit (__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit) (cut=50, acquired_side='right', mirrored=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 447, in test_empty_side_split_then_insert_and_resplit
+    self.exercise_interleaved_updates(cut, acquired_side, mirrored)
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 391, in exercise_interleaved_updates
+    updated = self.backend.insert_boundary(item, anchor.item_id, side)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/backend_contract_fix_20261011/review_adapters.py", line 15, in insert_boundary
+    raise RuntimeError("synthetic defect: insertion disabled after split")
+RuntimeError: synthetic defect: insertion disabled after split
+
+======================================================================
+ERROR: test_split_adopt_insert_and_resplit_both_outputs (__main__.OperationContractTests.test_split_adopt_insert_and_resplit_both_outputs) (acquired_side='left', mirrored=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 440, in test_split_adopt_insert_and_resplit_both_outputs
+    self.exercise_interleaved_updates(25, acquired_side, mirrored)
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 391, in exercise_interleaved_updates
+    updated = self.backend.insert_boundary(item, anchor.item_id, side)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/backend_contract_fix_20261011/review_adapters.py", line 15, in insert_boundary
+    raise RuntimeError("synthetic defect: insertion disabled after split")
+RuntimeError: synthetic defect: insertion disabled after split
+
+======================================================================
+ERROR: test_split_adopt_insert_and_resplit_both_outputs (__main__.OperationContractTests.test_split_adopt_insert_and_resplit_both_outputs) (acquired_side='left', mirrored=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 440, in test_split_adopt_insert_and_resplit_both_outputs
+    self.exercise_interleaved_updates(25, acquired_side, mirrored)
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 391, in exercise_interleaved_updates
+    updated = self.backend.insert_boundary(item, anchor.item_id, side)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/backend_contract_fix_20261011/review_adapters.py", line 15, in insert_boundary
+    raise RuntimeError("synthetic defect: insertion disabled after split")
+RuntimeError: synthetic defect: insertion disabled after split
+
+======================================================================
+ERROR: test_split_adopt_insert_and_resplit_both_outputs (__main__.OperationContractTests.test_split_adopt_insert_and_resplit_both_outputs) (acquired_side='right', mirrored=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 440, in test_split_adopt_insert_and_resplit_both_outputs
+    self.exercise_interleaved_updates(25, acquired_side, mirrored)
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 391, in exercise_interleaved_updates
+    updated = self.backend.insert_boundary(item, anchor.item_id, side)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/backend_contract_fix_20261011/review_adapters.py", line 15, in insert_boundary
+    raise RuntimeError("synthetic defect: insertion disabled after split")
+RuntimeError: synthetic defect: insertion disabled after split
+
+======================================================================
+ERROR: test_split_adopt_insert_and_resplit_both_outputs (__main__.OperationContractTests.test_split_adopt_insert_and_resplit_both_outputs) (acquired_side='right', mirrored=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 440, in test_split_adopt_insert_and_resplit_both_outputs
+    self.exercise_interleaved_updates(25, acquired_side, mirrored)
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/tests/test_finger_backend_contract_model.py", line 391, in exercise_interleaved_updates
+    updated = self.backend.insert_boundary(item, anchor.item_id, side)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/backend_contract_fix_20261011/review_adapters.py", line 15, in insert_boundary
+    raise RuntimeError("synthetic defect: insertion disabled after split")
+RuntimeError: synthetic defect: insertion disabled after split
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.003s
+
+FAILED (errors=12)
+{"scope": "external_adapter_semantic_contract_only", "mode": "strict", "status": "REJECTED", "contract_acceptance_passed": false, "partial_check": true, "operation_contracts": {"subject": "external_adapter", "expected_methods": 18, "started_methods": 18, "passed_methods": 16, "skips": 0, "failures": 0, "errors": 12, "expected_failures": 0, "unexpected_successes": 0, "missing_passes": ["__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit", "__main__.OperationContractTests.test_split_adopt_insert_and_resplit_both_outputs"], "duplicate_methods": [], "complete": false}, "reference_model_self_tests": {"expected_methods": 4, "started_methods": 0, "passed_methods": 0, "skips": 0, "failures": 0, "errors": 0, "expected_failures": 0, "unexpected_successes": 0, "missing_passes": ["__main__.ModelAuditSelfTests.test_audit_rejects_lost_item", "__main__.ModelAuditSelfTests.test_audit_rejects_pending_adoption", "__main__.ModelAuditSelfTests.test_audit_rejects_replaced_item_identity", "__main__.ModelAuditSelfTests.test_audit_rejects_wrong_order"], "duplicate_methods": [], "complete": false}, "tests_run": 18, "failures": 0, "errors": 12, "skipped": 0, "expected_failures": 0, "unexpected_successes": 0, "jordan_integration_validated": false, "efficiency_bound_proved": false, "backend_ready_for_timing": false}

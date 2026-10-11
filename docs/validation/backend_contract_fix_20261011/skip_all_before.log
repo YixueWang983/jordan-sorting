@@ -1,0 +1,26 @@
+test_audit_rejects_lost_item (__main__.ModelAuditSelfTests.test_audit_rejects_lost_item) ... ok
+test_audit_rejects_pending_adoption (__main__.ModelAuditSelfTests.test_audit_rejects_pending_adoption) ... ok
+test_audit_rejects_replaced_item_identity (__main__.ModelAuditSelfTests.test_audit_rejects_replaced_item_identity) ... ok
+test_audit_rejects_wrong_order (__main__.ModelAuditSelfTests.test_audit_rejects_wrong_order) ... ok
+test_adoption_cannot_overfill_owner (__main__.OperationContractTests.test_adoption_cannot_overfill_owner) ... skipped 'synthetic skipped adapter'
+test_duplicate_item_rejected (__main__.OperationContractTests.test_duplicate_item_rejected) ... skipped 'synthetic skipped adapter'
+test_equal_key_rejected (__main__.OperationContractTests.test_equal_key_rejected) ... skipped 'synthetic skipped adapter'
+test_extreme_child_across_two_slots (__main__.OperationContractTests.test_extreme_child_across_two_slots) ... skipped 'synthetic skipped adapter'
+test_generated_operation_sequences (__main__.OperationContractTests.test_generated_operation_sequences) ... skipped 'synthetic skipped adapter'
+test_insert_both_ends (__main__.OperationContractTests.test_insert_both_ends) ... skipped 'synthetic skipped adapter'
+test_interior_anchor_rejected (__main__.OperationContractTests.test_interior_anchor_rejected) ... skipped 'synthetic skipped adapter'
+test_interior_owner_query_is_not_boundary_query (__main__.OperationContractTests.test_interior_owner_query_is_not_boundary_query) ... skipped 'synthetic skipped adapter'
+test_new_boundaries_after_insertion (__main__.OperationContractTests.test_new_boundaries_after_insertion) ... skipped 'synthetic skipped adapter'
+test_old_owner_mismatch_rejected (__main__.OperationContractTests.test_old_owner_mismatch_rejected) ... skipped 'synthetic skipped adapter'
+test_repeated_skewed_splits_and_stable_items (__main__.OperationContractTests.test_repeated_skewed_splits_and_stable_items) ... skipped 'synthetic skipped adapter'
+test_same_owner_adoption_rejected (__main__.OperationContractTests.test_same_owner_adoption_rejected) ... skipped 'synthetic skipped adapter'
+test_singleton_has_two_boundaries (__main__.OperationContractTests.test_singleton_has_two_boundaries) ... skipped 'synthetic skipped adapter'
+test_split_cuts_and_adoption_directions (__main__.OperationContractTests.test_split_cuts_and_adoption_directions) ... skipped 'synthetic skipped adapter'
+test_two_child_slots (__main__.OperationContractTests.test_two_child_slots) ... skipped 'synthetic skipped adapter'
+test_wrong_side_rejected (__main__.OperationContractTests.test_wrong_side_rejected) ... skipped 'synthetic skipped adapter'
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.000s
+
+OK (skipped=16)
+{"scope": "external_adapter_semantic_contract_only", "tests_run": 20, "failures": 0, "errors": 0, "skipped": 16, "jordan_integration_validated": false, "efficiency_bound_proved": false, "backend_ready_for_timing": false}

@@ -1,0 +1,22 @@
+test_adoption_cannot_overfill_owner (__main__.OperationContractTests.test_adoption_cannot_overfill_owner) ... ok
+test_duplicate_item_rejected (__main__.OperationContractTests.test_duplicate_item_rejected) ... ok
+test_equal_key_rejected (__main__.OperationContractTests.test_equal_key_rejected) ... ok
+test_extreme_child_across_two_slots (__main__.OperationContractTests.test_extreme_child_across_two_slots) ... ok
+test_generated_operation_sequences (__main__.OperationContractTests.test_generated_operation_sequences) ... ok
+test_insert_both_ends (__main__.OperationContractTests.test_insert_both_ends) ... ok
+test_interior_anchor_rejected (__main__.OperationContractTests.test_interior_anchor_rejected) ... ok
+test_interior_owner_query_is_not_boundary_query (__main__.OperationContractTests.test_interior_owner_query_is_not_boundary_query) ... ok
+test_new_boundaries_after_insertion (__main__.OperationContractTests.test_new_boundaries_after_insertion) ... ok
+test_old_owner_mismatch_rejected (__main__.OperationContractTests.test_old_owner_mismatch_rejected) ... ok
+test_repeated_skewed_splits_and_stable_items (__main__.OperationContractTests.test_repeated_skewed_splits_and_stable_items) ... ok
+test_same_owner_adoption_rejected (__main__.OperationContractTests.test_same_owner_adoption_rejected) ... ok
+test_singleton_has_two_boundaries (__main__.OperationContractTests.test_singleton_has_two_boundaries) ... ok
+test_split_cuts_and_adoption_directions (__main__.OperationContractTests.test_split_cuts_and_adoption_directions) ... ok
+test_two_child_slots (__main__.OperationContractTests.test_two_child_slots) ... ok
+test_wrong_side_rejected (__main__.OperationContractTests.test_wrong_side_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.002s
+
+OK
+{"scope": "external_adapter_semantic_contract_only", "tests_run": 16, "failures": 0, "errors": 0, "skipped": 0, "jordan_integration_validated": false, "efficiency_bound_proved": false, "backend_ready_for_timing": false}

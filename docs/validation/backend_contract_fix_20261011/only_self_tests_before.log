@@ -1,0 +1,10 @@
+test_audit_rejects_lost_item (__main__.ModelAuditSelfTests.test_audit_rejects_lost_item) ... ok
+test_audit_rejects_pending_adoption (__main__.ModelAuditSelfTests.test_audit_rejects_pending_adoption) ... ok
+test_audit_rejects_replaced_item_identity (__main__.ModelAuditSelfTests.test_audit_rejects_replaced_item_identity) ... ok
+test_audit_rejects_wrong_order (__main__.ModelAuditSelfTests.test_audit_rejects_wrong_order) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.000s
+
+OK
+{"scope": "external_adapter_semantic_contract_only", "tests_run": 4, "failures": 0, "errors": 0, "skipped": 0, "jordan_integration_validated": false, "efficiency_bound_proved": false, "backend_ready_for_timing": false}

@@ -1,0 +1,37 @@
+[
+  {
+    "name": "skip_all",
+    "exit": 0,
+    "argv": [
+      "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/contract_acceptance_fix_20261011/before_test_finger_backend_contract_model.py",
+      "--factory",
+      "review_adapters:skip",
+      "-v"
+    ]
+  },
+  {
+    "name": "only_self_tests",
+    "exit": 0,
+    "argv": [
+      "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/contract_acceptance_fix_20261011/before_test_finger_backend_contract_model.py",
+      "--factory",
+      "review_adapters:skip",
+      "ModelAuditSelfTests",
+      "-v"
+    ]
+  },
+  {
+    "name": "broken_after_split",
+    "exit": 0,
+    "argv": [
+      "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/contract_acceptance_fix_20261011/before_test_finger_backend_contract_model.py",
+      "--factory",
+      "review_adapters:BrokenAfterSplit",
+      "OperationContractTests",
+      "-v"
+    ]
+  }
+]

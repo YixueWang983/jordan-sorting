@@ -50,11 +50,13 @@
 
 ## 4. 可执行模型测试的准确范围
 
-文件：`tests/test_finger_backend_contract_model.py`。标准库 `unittest`；20 个测试方法，部分含 subtests。默认对象是**显式命名的慢速有序列表参考模型**，不是新树，也不是现有 `OrdinarySiblingListBackend`。测试通过只能确认该参考与契约测试底座的行为。
+文件：`tests/test_finger_backend_contract_model.py`。标准库 `unittest`；当前 22 个测试方法，部分含 subtests（`afb9702` 首次导入时为 20 项，旧记录不改写）。默认对象是**显式命名的慢速有序列表参考模型**，不是新树，也不是现有 `OrdinarySiblingListBackend`。测试通过只能确认该参考与契约测试底座的行为。
 
-计数细分为 16 项 `OperationContractTests` 和 4 项 `ModelAuditSelfTests`。将来使用 `--factory` 时，只有前 16 项改用外部适配器，后 4 项始终检查参考模型审计器；总数 20 不能写成“20 项真实后端测试”。普通后端已有的 155 项定向回归另记，不是其对本模型接口的适配验证。
+计数细分为 18 项 `OperationContractTests` 和 4 项 `ModelAuditSelfTests`。将来使用 `--factory` 时，只有前 18 项改用外部适配器，后 4 项始终检查参考模型审计器；不能将两者总数写成真实后端测试数。普通后端已有的 155 项定向回归另记，不是其对本模型接口的适配验证。
 
 覆盖：make-list；两端插入与非法 anchor；<=/> split 含空侧/不均衡/重复分裂；旧 handle 退役；稳定 Item 引用；两端引用变化；两 owner slots、adopt 方向/来源；逻辑 membership/顺序/守恒审计；模型审计对人为破坏的拒绝。
+
+修订后另覆盖 `insert → split → adopt → 两端继续插入 → 再次 split/adopt → 再次插入`。同时检查 retained/acquired 两侧、左右镜像、空侧与 singleton 输出、旧 handle 退役和过时边界引用拒绝；每次有效更新与显式 item/owner 列表核对。两项交错测试含 12 个场景，不当作 12 个新的测试方法或 Jordan 输入。
 
 测试使用抽象 key 与 opaque owner 标签，**不模拟 Jordan 的几何区间和 parent-family 树**。key 等于 cut 按通用 split 契约进入左侧；实际 Jordan `split_pairs_at_value` 不允许端点跨越/等于新点，其更强前提必须由后续几何测试和生产适配验证，不能混同。
 
@@ -64,12 +66,20 @@
 
 ```bash
 python -m unittest discover -s tests -p 'test_finger_backend_contract_model.py' -v
-python tests/test_finger_backend_contract_model.py -v
+python tests/test_finger_backend_contract_model.py --strict -v
 # 后续真实适配器实现后：
-PYTHONPATH=src:tests python tests/test_finger_backend_contract_model.py --factory MODULE:FACTORY -v
+PYTHONPATH=src:tests python tests/test_finger_backend_contract_model.py --strict --factory MODULE:FACTORY -v
+# 验收入口的独立回归（使用假适配器，不是真实后端验证）：
+python -m unittest discover -s tests -p 'test_finger_backend_contract_runner.py' -v
 ```
 
-`MODULE:FACTORY` 是显式占位符，不是已存在模块；工厂不存在时 exit 2，不能 skip 后显示后端通过。默认打印 `reference_model_only`，并明确 `backend_ready_for_timing=false`。即使将来真实适配器通过本文件，也尚不代表 Jordan 接入与效率验证完成。
+`MODULE:FACTORY` 是显式占位符，不是已存在模块；工厂不存在时 exit 2。`--strict` 从真实执行记录核对每个预期操作契约必须恰好成功一次，且整次运行无 skip、failure、error、expected failure 或 unexpected success；不满足时 exit 1，`contract_acceptance_passed=false`。只跑模型自检、筛选到零项、缺项或重复执行都不能验收通过。
+
+JSON 的 `operation_contracts` 明确 subject、预期/开始/通过方法数、skip/failure/error、缺失与重复方法；`reference_model_self_tests` 分开报告模型自检。严格验收必需的是完整操作契约；可显式选 `OperationContractTests` 不跑模型自检，此时自检开始数为 0，不将其算作通过。参考模型也可执行 strict，其 scope 仍是 `reference_model_only`。
+
+未指定 `--strict` 时是开发检查，允许筛选，保留 unittest 退出码规则，但验收标志始终为 false；`partial_check` 标记操作契约是否不完整。不能仅凭开发入口或 discovery 的 exit 0 宣称契约验收。15 项 CLI 回归验证拒绝行为，包括方法/子测试 skip、只跑模型、零项/部分/重复选择、expected failure、错误和分裂后插入失效的反例。详见 [修订验证](../validation/backend_contract_fix_20261011/README.md)。
+
+所有模式仍明确 `backend_ready_for_timing=false`。即使将来真实适配器严格通过，也尚不代表 Jordan 接入与效率验证完成。
 
 ## 5. 明确未实现 / 未验证清单
 

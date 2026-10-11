@@ -4,10 +4,13 @@ Run directly, or use unittest discovery. An explicit --factory module:callable
 runs the same public semantic contracts against a TEST ADAPTER. A missing
 adapter is an error, never a skipped/passing tree-backend validation. The
 adapter interface below is test-only; it is not a new production interface.
+Use --strict for complete contract acceptance. Filtered development runs never
+set contract_acceptance_passed, even when unittest reports success.
 """
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 from dataclasses import dataclass
 import importlib
 import json
@@ -334,6 +337,115 @@ class OperationContractTests(unittest.TestCase):
                         wanted.append((200 if side == name else 100, values))
                 self.assertEqual(self.backend.materialize_audit(), tuple(sorted(wanted)))
 
+    def assert_live_lists(self, records):
+        """Compare each live list with explicit items/owners, not another backend."""
+        for handle, owner, items in records:
+            self.assertEqual(self.backend.items(handle), items)
+            self.assertEqual(self.backend.owner_of_list(handle), owner)
+            self.assertEqual(self.backend.boundary_list(items[0].item_id, LEFT), handle)
+            self.assertEqual(self.backend.boundary_list(items[-1].item_id, RIGHT), handle)
+            for item in items:
+                self.assertIs(self.backend.get_item(item.item_id), item)
+        expected = tuple(sorted((owner, tuple(i.item_id for i in items))
+                                for _, owner, items in records))
+        self.assertEqual(self.backend.materialize_audit(), expected)
+        for owner in {owner for _, owner, _ in records}:
+            children = [item for _, candidate, items in records if candidate == owner
+                        for item in items]
+            self.assertIs(self.backend.extreme_child(owner, LEFT),
+                          min(children, key=lambda item: item.key))
+            self.assertIs(self.backend.extreme_child(owner, RIGHT),
+                          max(children, key=lambda item: item.key))
+
+    def exercise_interleaved_updates(self, cut, acquired_side, mirrored):
+        self.backend = SUBJECT_FACTORY()
+        sign = -1 if mirrored else 1
+        insertion_side = LEFT if mirrored else RIGHT
+        items = tuple(Item(i + 1, sign * key) for i, key in enumerate((10, 20, 30, 40)))
+        handle = self.backend.make_list(items[0], 100)
+        for previous, item in zip(items, items[1:]):
+            handle = self.backend.insert_boundary(item, previous.item_id, insertion_side)
+        ordered = tuple(sorted(items, key=lambda item: item.key))
+        self.assert_live_lists([(handle, 100, ordered)])
+        left, right = self.backend.split_value(handle, sign * cut)
+        self.backend.adopt_split(100, 200, left, right, acquired_side)
+        retired = [handle]
+        records = []
+        for side, out, wanted in (
+            (LEFT, left, tuple(i for i in ordered if i.key <= sign * cut)),
+            (RIGHT, right, tuple(i for i in ordered if i.key > sign * cut)),
+        ):
+            if wanted:
+                records.append((out, 200 if side == acquired_side else 100, wanted))
+            else:
+                self.assertIsNone(out)
+        self.assert_live_lists(records)
+
+        next_id = 5
+        # Insert at BOTH ends of BOTH retained/acquired outputs before resplitting.
+        for index, (out, owner, wanted) in enumerate(records):
+            for side in (LEFT, RIGHT):
+                anchor = wanted[0] if side == LEFT else wanted[-1]
+                item = Item(next_id, anchor.key + (-1 if side == LEFT else 1))
+                next_id += 1
+                updated = self.backend.insert_boundary(item, anchor.item_id, side)
+                self.assertEqual(updated, out)
+                wanted = (item,) + wanted if side == LEFT else wanted + (item,)
+                records[index] = (out, owner, wanted)
+                self.assert_live_lists(records)
+
+        # Split every first-round output again, keeping the other lists live.
+        for index, (out, owner, wanted) in enumerate(list(records)):
+            cut_again = (wanted[0].key + wanted[-1].key) // 2
+            left, right = self.backend.split_value(out, cut_again)
+            new_owner = 300 + index
+            acquired_again = RIGHT if acquired_side == LEFT else LEFT
+            self.backend.adopt_split(owner, new_owner, left, right, acquired_again)
+            retired.append(out)
+            records = [record for record in records if record[0] != out]
+            for side, new_handle, values in (
+                (LEFT, left, tuple(i for i in wanted if i.key <= cut_again)),
+                (RIGHT, right, tuple(i for i in wanted if i.key > cut_again)),
+            ):
+                self.assertTrue(values)  # Both sides are deliberately nonempty here.
+                records.append((new_handle, new_owner if side == acquired_again else owner,
+                                values))
+            self.assert_live_lists(records)
+
+        stale_boundaries = []
+        # A second round of updates also exercises singleton split outputs.
+        for index, (out, owner, wanted) in enumerate(records):
+            for side in (LEFT, RIGHT):
+                anchor = wanted[0] if side == LEFT else wanted[-1]
+                stale_boundaries.append((anchor.item_id, side))
+                item = Item(next_id, anchor.key + (-1 if side == LEFT else 1))
+                next_id += 1
+                self.assertEqual(self.backend.insert_boundary(item, anchor.item_id, side), out)
+                wanted = (item,) + wanted if side == LEFT else wanted + (item,)
+                records[index] = (out, owner, wanted)
+                self.assert_live_lists(records)
+
+        # Negative queries come after all valid updates; no recovery is assumed.
+        for old_handle in retired:
+            with self.assertRaises(KeyError):
+                self.backend.items(old_handle)
+        for item_id, side in stale_boundaries:
+            with self.assertRaises(ValueError):
+                self.backend.boundary_list(item_id, side)
+
+    def test_split_adopt_insert_and_resplit_both_outputs(self):
+        for acquired_side in (LEFT, RIGHT):
+            for mirrored in (False, True):
+                with self.subTest(acquired_side=acquired_side, mirrored=mirrored):
+                    self.exercise_interleaved_updates(25, acquired_side, mirrored)
+
+    def test_empty_side_split_then_insert_and_resplit(self):
+        for cut in (0, 50):
+            for acquired_side in (LEFT, RIGHT):
+                for mirrored in (False, True):
+                    with self.subTest(cut=cut, acquired_side=acquired_side, mirrored=mirrored):
+                        self.exercise_interleaved_updates(cut, acquired_side, mirrored)
+
 
 class ModelAuditSelfTests(unittest.TestCase):
     """Mutation checks of the MODEL auditor, not the real backend auditor."""
@@ -368,11 +480,65 @@ class ModelAuditSelfTests(unittest.TestCase):
             m.materialize_audit()
 
 
-def main():
+class ContractTestResult(unittest.TextTestResult):
+    """Track actual method execution, including duplicates and subtest skips."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.started_ids = Counter()
+        self.passed_ids = Counter()
+
+    def startTest(self, test):
+        self.started_ids[test.id()] += 1
+        super().startTest(test)
+
+    def addSuccess(self, test):
+        self.passed_ids[test.id()] += 1
+        super().addSuccess(test)
+
+    def group_report(self, expected_ids):
+        expected = Counter(expected_ids)
+        started = Counter({key: self.started_ids[key] for key in expected if self.started_ids[key]})
+        passed = Counter({key: self.passed_ids[key] for key in expected if self.passed_ids[key]})
+
+        def belongs(test):
+            # unittest reports a skipped/failed subtest separately from its parent.
+            return getattr(test, "test_case", test).id() in expected
+
+        return {
+            "expected_methods": len(expected),
+            "started_methods": sum(started.values()),
+            "passed_methods": sum(passed.values()),
+            "skips": sum(belongs(test) for test, _ in self.skipped),
+            "failures": sum(belongs(test) for test, _ in self.failures),
+            "errors": sum(belongs(test) for test, _ in self.errors),
+            "expected_failures": sum(belongs(test) for test, _ in self.expectedFailures),
+            "unexpected_successes": sum(belongs(test) for test in self.unexpectedSuccesses),
+            "missing_passes": sorted(set(expected) - set(passed)),
+            "duplicate_methods": sorted(key for key, count in started.items() if count > 1),
+            "complete": started == expected and passed == expected,
+        }
+
+
+class ContractTestRunner(unittest.TextTestRunner):
+    resultclass = ContractTestResult
+
+
+def expected_test_ids(case):
+    return [f"{case.__module__}.{case.__qualname__}.{name}"
+            for name in unittest.TestLoader().getTestCaseNames(case)]
+
+
+def main(argv=None):
     global SUBJECT_FACTORY
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--factory", help="test adapter factory, module:callable")
-    args, unittest_args = parser.parse_known_args()
+    parser.add_argument("--strict", action="store_true",
+                        help="require every operation contract exactly once, with no skips")
+    args, unittest_args = parser.parse_known_args(argv)
+    expected_contracts = expected_test_ids(OperationContractTests)
+    expected_model_tests = expected_test_ids(ModelAuditSelfTests)
+    SUBJECT_FACTORY = OrderedListModel
     scope = "reference_model_only"
     if args.factory:
         try:
@@ -382,17 +548,36 @@ def main():
                 raise ValueError("factory must be a callable external adapter")
         except (ValueError, ImportError, AttributeError) as exc:
             print(json.dumps({"scope": "external_adapter", "status": "UNAVAILABLE",
+                              "mode": "strict" if args.strict else "development",
+                              "contract_acceptance_passed": False,
                               "factory": args.factory, "reason": str(exc)}))
             return 2
         scope = "external_adapter_semantic_contract_only"
-    result = unittest.main(argv=[sys.argv[0], *unittest_args], exit=False).result
-    print(json.dumps({"scope": scope, "tests_run": result.testsRun,
+    result = unittest.main(module=__name__, argv=[sys.argv[0], *unittest_args],
+                           testRunner=ContractTestRunner, exit=False).result
+    contracts = result.group_report(expected_contracts)
+    model_tests = result.group_report(expected_model_tests)
+    clean = (result.wasSuccessful() and not result.skipped and not result.expectedFailures)
+    accepted = args.strict and contracts["complete"] and clean
+    if args.strict:
+        status = "ACCEPTED" if accepted else "REJECTED"
+    else:
+        status = "DEVELOPMENT_CHECK_COMPLETED" if result.wasSuccessful() else "FAILED"
+    print(json.dumps({"scope": scope, "mode": "strict" if args.strict else "development",
+                      "status": status, "contract_acceptance_passed": accepted,
+                      "partial_check": not contracts["complete"],
+                      "operation_contracts": {"subject": "external_adapter" if args.factory
+                                              else "reference_model", **contracts},
+                      "reference_model_self_tests": model_tests,
+                      "tests_run": result.testsRun,
                       "failures": len(result.failures), "errors": len(result.errors),
                       "skipped": len(result.skipped),
+                      "expected_failures": len(result.expectedFailures),
+                      "unexpected_successes": len(result.unexpectedSuccesses),
                       "jordan_integration_validated": False,
                       "efficiency_bound_proved": False,
                       "backend_ready_for_timing": False}))
-    return 0 if result.wasSuccessful() else 1
+    return 0 if (accepted if args.strict else result.wasSuccessful()) else 1
 
 
 if __name__ == "__main__":

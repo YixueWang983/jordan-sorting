@@ -1,0 +1,336 @@
+{
+  "base_commit": "afb97023ddb843bc31fb37b7edb3bf6fca96005d",
+  "verified_at_utc": "2026-10-11T12:06:30.280760+00:00",
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+    "platform": "macOS-26.6-arm64-arm-64bit",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/backend_contract_fix_20261011"
+  },
+  "runs": [
+    {
+      "name": "strict_reference_model",
+      "argv": [
+        "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "tests/test_finger_backend_contract_model.py",
+        "--strict",
+        "-v"
+      ],
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "log": "strict_reference_model.log",
+      "report": {
+        "scope": "reference_model_only",
+        "mode": "strict",
+        "status": "ACCEPTED",
+        "contract_acceptance_passed": true,
+        "partial_check": false,
+        "operation_contracts": {
+          "subject": "reference_model",
+          "expected_methods": 18,
+          "started_methods": 18,
+          "passed_methods": 18,
+          "skips": 0,
+          "failures": 0,
+          "errors": 0,
+          "expected_failures": 0,
+          "unexpected_successes": 0,
+          "missing_passes": [],
+          "duplicate_methods": [],
+          "complete": true
+        },
+        "reference_model_self_tests": {
+          "expected_methods": 4,
+          "started_methods": 4,
+          "passed_methods": 4,
+          "skips": 0,
+          "failures": 0,
+          "errors": 0,
+          "expected_failures": 0,
+          "unexpected_successes": 0,
+          "missing_passes": [],
+          "duplicate_methods": [],
+          "complete": true
+        },
+        "tests_run": 22,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "jordan_integration_validated": false,
+        "efficiency_bound_proved": false,
+        "backend_ready_for_timing": false
+      }
+    },
+    {
+      "name": "model_and_runner_regressions",
+      "argv": [
+        "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_finger_backend_contract*.py",
+        "-v"
+      ],
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "log": "model_and_runner_regressions.log"
+    },
+    {
+      "name": "skip_all_after",
+      "argv": [
+        "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "tests/test_finger_backend_contract_model.py",
+        "--strict",
+        "--factory",
+        "review_adapters:skip",
+        "-v"
+      ],
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "log": "skip_all_after.log",
+      "report": {
+        "scope": "external_adapter_semantic_contract_only",
+        "mode": "strict",
+        "status": "REJECTED",
+        "contract_acceptance_passed": false,
+        "partial_check": true,
+        "operation_contracts": {
+          "subject": "external_adapter",
+          "expected_methods": 18,
+          "started_methods": 18,
+          "passed_methods": 0,
+          "skips": 18,
+          "failures": 0,
+          "errors": 0,
+          "expected_failures": 0,
+          "unexpected_successes": 0,
+          "missing_passes": [
+            "__main__.OperationContractTests.test_adoption_cannot_overfill_owner",
+            "__main__.OperationContractTests.test_duplicate_item_rejected",
+            "__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit",
+            "__main__.OperationContractTests.test_equal_key_rejected",
+            "__main__.OperationContractTests.test_extreme_child_across_two_slots",
+            "__main__.OperationContractTests.test_generated_operation_sequences",
+            "__main__.OperationContractTests.test_insert_both_ends",
+            "__main__.OperationContractTests.test_interior_anchor_rejected",
+            "__main__.OperationContractTests.test_interior_owner_query_is_not_boundary_query",
+            "__main__.OperationContractTests.test_new_boundaries_after_insertion",
+            "__main__.OperationContractTests.test_old_owner_mismatch_rejected",
+            "__main__.OperationContractTests.test_repeated_skewed_splits_and_stable_items",
+            "__main__.OperationContractTests.test_same_owner_adoption_rejected",
+            "__main__.OperationContractTests.test_singleton_has_two_boundaries",
+            "__main__.OperationContractTests.test_split_adopt_insert_and_resplit_both_outputs",
+            "__main__.OperationContractTests.test_split_cuts_and_adoption_directions",
+            "__main__.OperationContractTests.test_two_child_slots",
+            "__main__.OperationContractTests.test_wrong_side_rejected"
+          ],
+          "duplicate_methods": [],
+          "complete": false
+        },
+        "reference_model_self_tests": {
+          "expected_methods": 4,
+          "started_methods": 4,
+          "passed_methods": 4,
+          "skips": 0,
+          "failures": 0,
+          "errors": 0,
+          "expected_failures": 0,
+          "unexpected_successes": 0,
+          "missing_passes": [],
+          "duplicate_methods": [],
+          "complete": true
+        },
+        "tests_run": 22,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 18,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "jordan_integration_validated": false,
+        "efficiency_bound_proved": false,
+        "backend_ready_for_timing": false
+      }
+    },
+    {
+      "name": "only_self_tests_after",
+      "argv": [
+        "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "tests/test_finger_backend_contract_model.py",
+        "--strict",
+        "--factory",
+        "review_adapters:skip",
+        "ModelAuditSelfTests",
+        "-v"
+      ],
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "log": "only_self_tests_after.log",
+      "report": {
+        "scope": "external_adapter_semantic_contract_only",
+        "mode": "strict",
+        "status": "REJECTED",
+        "contract_acceptance_passed": false,
+        "partial_check": true,
+        "operation_contracts": {
+          "subject": "external_adapter",
+          "expected_methods": 18,
+          "started_methods": 0,
+          "passed_methods": 0,
+          "skips": 0,
+          "failures": 0,
+          "errors": 0,
+          "expected_failures": 0,
+          "unexpected_successes": 0,
+          "missing_passes": [
+            "__main__.OperationContractTests.test_adoption_cannot_overfill_owner",
+            "__main__.OperationContractTests.test_duplicate_item_rejected",
+            "__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit",
+            "__main__.OperationContractTests.test_equal_key_rejected",
+            "__main__.OperationContractTests.test_extreme_child_across_two_slots",
+            "__main__.OperationContractTests.test_generated_operation_sequences",
+            "__main__.OperationContractTests.test_insert_both_ends",
+            "__main__.OperationContractTests.test_interior_anchor_rejected",
+            "__main__.OperationContractTests.test_interior_owner_query_is_not_boundary_query",
+            "__main__.OperationContractTests.test_new_boundaries_after_insertion",
+            "__main__.OperationContractTests.test_old_owner_mismatch_rejected",
+            "__main__.OperationContractTests.test_repeated_skewed_splits_and_stable_items",
+            "__main__.OperationContractTests.test_same_owner_adoption_rejected",
+            "__main__.OperationContractTests.test_singleton_has_two_boundaries",
+            "__main__.OperationContractTests.test_split_adopt_insert_and_resplit_both_outputs",
+            "__main__.OperationContractTests.test_split_cuts_and_adoption_directions",
+            "__main__.OperationContractTests.test_two_child_slots",
+            "__main__.OperationContractTests.test_wrong_side_rejected"
+          ],
+          "duplicate_methods": [],
+          "complete": false
+        },
+        "reference_model_self_tests": {
+          "expected_methods": 4,
+          "started_methods": 4,
+          "passed_methods": 4,
+          "skips": 0,
+          "failures": 0,
+          "errors": 0,
+          "expected_failures": 0,
+          "unexpected_successes": 0,
+          "missing_passes": [],
+          "duplicate_methods": [],
+          "complete": true
+        },
+        "tests_run": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "jordan_integration_validated": false,
+        "efficiency_bound_proved": false,
+        "backend_ready_for_timing": false
+      }
+    },
+    {
+      "name": "broken_after_split_after",
+      "argv": [
+        "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "tests/test_finger_backend_contract_model.py",
+        "--strict",
+        "--factory",
+        "review_adapters:BrokenAfterSplit",
+        "OperationContractTests",
+        "-v"
+      ],
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "log": "broken_after_split_after.log",
+      "report": {
+        "scope": "external_adapter_semantic_contract_only",
+        "mode": "strict",
+        "status": "REJECTED",
+        "contract_acceptance_passed": false,
+        "partial_check": true,
+        "operation_contracts": {
+          "subject": "external_adapter",
+          "expected_methods": 18,
+          "started_methods": 18,
+          "passed_methods": 16,
+          "skips": 0,
+          "failures": 0,
+          "errors": 12,
+          "expected_failures": 0,
+          "unexpected_successes": 0,
+          "missing_passes": [
+            "__main__.OperationContractTests.test_empty_side_split_then_insert_and_resplit",
+            "__main__.OperationContractTests.test_split_adopt_insert_and_resplit_both_outputs"
+          ],
+          "duplicate_methods": [],
+          "complete": false
+        },
+        "reference_model_self_tests": {
+          "expected_methods": 4,
+          "started_methods": 0,
+          "passed_methods": 0,
+          "skips": 0,
+          "failures": 0,
+          "errors": 0,
+          "expected_failures": 0,
+          "unexpected_successes": 0,
+          "missing_passes": [
+            "__main__.ModelAuditSelfTests.test_audit_rejects_lost_item",
+            "__main__.ModelAuditSelfTests.test_audit_rejects_pending_adoption",
+            "__main__.ModelAuditSelfTests.test_audit_rejects_replaced_item_identity",
+            "__main__.ModelAuditSelfTests.test_audit_rejects_wrong_order"
+          ],
+          "duplicate_methods": [],
+          "complete": false
+        },
+        "tests_run": 18,
+        "failures": 0,
+        "errors": 12,
+        "skipped": 0,
+        "expected_failures": 0,
+        "unexpected_successes": 0,
+        "jordan_integration_validated": false,
+        "efficiency_bound_proved": false,
+        "backend_ready_for_timing": false
+      }
+    }
+  ],
+  "test_counts": {
+    "operation_contracts": 18,
+    "model_self_tests": 4,
+    "runner_regression_methods": 15,
+    "discovery_total": 37,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "before_source_sha256": "b6cfa2a8f51c6832b3bfbd5ac6ccaeef31f1065f9faeeaf8214e9eeccf4736a8",
+  "tested_files_sha256": {
+    "tests/test_finger_backend_contract_model.py": "0d8b3bff75981dc033a146284684f2f93de5dd22ae94a71864656ff1f8727c8b",
+    "tests/test_finger_backend_contract_runner.py": "e59e87d0e4387481965bd83c28d3e963470b08ed7c41d1821b1cbd719f6a2fd1"
+  },
+  "protected_directories_unchanged_from_base": [
+    "src",
+    "experiments",
+    "data",
+    "results",
+    "thesis",
+    "docs/validation/backend_plan_merge_20261011",
+    "docs/validation/cost_and_qualification_20261011"
+  ],
+  "scope": {
+    "real_backend_validated": false,
+    "production_regressions_155_rerun": false,
+    "full_repository_suite_run": false,
+    "large_qualification_rerun": false,
+    "formal_timing_run": false,
+    "paper_built": false,
+    "committed_or_pushed": false
+  },
+  "record_phase": "local_verification_before_commit_and_push"
+}
