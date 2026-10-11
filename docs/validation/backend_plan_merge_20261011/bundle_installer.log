@@ -1,0 +1,12 @@
+test_apply_archives_original_and_preserves_unrelated_probe (test_apply_changes.InstallerTests.test_apply_archives_original_and_preserves_unrelated_probe) ... ok
+test_change_after_validation_aborts_before_write (test_apply_changes.InstallerTests.test_change_after_validation_aborts_before_write) ... ok
+test_existing_new_file_not_overwritten (test_apply_changes.InstallerTests.test_existing_new_file_not_overwritten) ... ok
+test_modified_target_aborts_before_write (test_apply_changes.InstallerTests.test_modified_target_aborts_before_write) ... ok
+test_prepare_is_dry_run (test_apply_changes.InstallerTests.test_prepare_is_dry_run) ... ok
+test_second_apply_not_silent_overwrite (test_apply_changes.InstallerTests.test_second_apply_not_silent_overwrite) ... ok
+test_symlink_target_rejected (test_apply_changes.InstallerTests.test_symlink_target_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.012s
+
+OK

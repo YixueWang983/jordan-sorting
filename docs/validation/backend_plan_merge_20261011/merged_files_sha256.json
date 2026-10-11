@@ -1,0 +1,23 @@
+{
+  "README.md": "1eb9f9db4733ad89035cf94236f82e34f8c29aa2c9c494aaa190c0e9e0288048",
+  "docs/plan/README.md": "d8cef8db9d80da5045e31a4fec039d28fd458c54533a8b696d6ed85c41e3e3c8",
+  "docs/plan/remaining_work_20261011.md": "5eb41d483117a7d24d5f77cb26fc47907754822c5237e70f4af2bc5fe4a95363",
+  "thesis/README.md": "b8de3886c5010acf9747440dc3318d1fd67ab1c67b127ce28c7e6da7a1dfff20",
+  "docs/development/backend_integration_cost_map_20261011.md": "7f17276fd9b73081f326ff8d5980ce16983e7d7fcb6c07df698901406e3d13ce",
+  "docs/plan/archive/remaining_work_20261011_before_backend_required.md": "3676f384a56c3b35f376e392d44ad5ccc136a91788c154ed53d8c8bb3822e854",
+  "docs/validation/backend_plan_merge_20261011/README.md": "4f5bdafbdd7a4e437cc8f39ceada0a3ce2a927d7875f6759bb1556cba00f09eb",
+  "docs/validation/backend_plan_merge_20261011/actual_repo_dry_run.log": "5129e1c5f1aa0cf417a3629a4244375209127a0dcc9d63e74b2128a688207e44",
+  "docs/validation/backend_plan_merge_20261011/bundle_baseline_comparison.json": "f7e7b4ab1b328cd90c5b1bd5951620a48f3db85b0c869f44e2c16014d98a067e",
+  "docs/validation/backend_plan_merge_20261011/bundle_installer.log": "8cd6a42a826597c187639103f10981d453a16efd0adacc414ed0d7a4cfd635c9",
+  "docs/validation/backend_plan_merge_20261011/bundle_model.log": "28e61a5b515b66762d0df974110ff555295a23f67fe1faebd31348a403360aa4",
+  "docs/validation/backend_plan_merge_20261011/imported_bundle_manifest.json": "fc9bd4ca7c40b45b3b2b15cdf5d4042bda977cd63689e5903659bc9be8c7237a",
+  "docs/validation/backend_plan_merge_20261011/merge_verification.json": "dca0319981619727350e8df5f144894c465b043e9727a1e716b3355546ecd7d3",
+  "docs/validation/backend_plan_merge_20261011/missing_factory.log": "2139594f96a8432d6de5f3b069b50583e3abffdb78395ea545d4583436d16fc8",
+  "docs/validation/backend_plan_merge_20261011/probe_archive.log": "bd980816becfcebe7e89b0e25c360c70666c037460724cfb21b8482e948ca6a2",
+  "docs/validation/backend_plan_merge_20261011/repo_missing_factory.log": "2139594f96a8432d6de5f3b069b50583e3abffdb78395ea545d4583436d16fc8",
+  "docs/validation/backend_plan_merge_20261011/repo_model_discovery.log": "e9219b5e9290bb97452059f2bc397ccc77059542bf820bb5cc23185b08551dc3",
+  "docs/validation/backend_plan_merge_20261011/repo_runs.json": "84d78f52eaaa9c47d48368a46fea984b72827e255c5dd3ffbbc38c8e856729ff",
+  "docs/validation/backend_plan_merge_20261011/repo_targeted_regressions.log": "dde4c3a0fd2c8d2c38c2e32693c7c452a5cc3c193b7ae2a264ad5bdf94ee9dde",
+  "docs/validation/backend_plan_merge_20261011/runs.json": "6c0e58513464d5720a55a4135c9792dc28131310cb53608fceb46a53821e2c62",
+  "tests/test_finger_backend_contract_model.py": "b6cfa2a8f51c6832b3bfbd5ac6ccaeef31f1065f9faeeaf8214e9eeccf4736a8"
+}

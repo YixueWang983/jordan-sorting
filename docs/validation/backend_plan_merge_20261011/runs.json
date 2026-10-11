@@ -1,0 +1,69 @@
+[
+  {
+    "name": "bundle_model",
+    "cwd": "/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/backend_plan_merge_20261011/jordan_backend_plan_bundle",
+    "argv": [
+      "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "overlay/tests/test_finger_backend_contract_model.py",
+      "-v"
+    ],
+    "expected_exit": 0,
+    "actual_exit": 0,
+    "log": "bundle_model.log"
+  },
+  {
+    "name": "bundle_installer",
+    "cwd": "/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/backend_plan_merge_20261011/jordan_backend_plan_bundle",
+    "argv": [
+      "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-m",
+      "unittest",
+      "test_apply_changes",
+      "-v"
+    ],
+    "expected_exit": 0,
+    "actual_exit": 0,
+    "log": "bundle_installer.log"
+  },
+  {
+    "name": "missing_factory",
+    "cwd": "/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/backend_plan_merge_20261011/jordan_backend_plan_bundle",
+    "argv": [
+      "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "overlay/tests/test_finger_backend_contract_model.py",
+      "--factory",
+      "missing_jordan_backend_adapter:build",
+      "-v"
+    ],
+    "expected_exit": 2,
+    "actual_exit": 2,
+    "log": "missing_factory.log"
+  },
+  {
+    "name": "actual_repo_dry_run",
+    "cwd": "/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/backend_plan_merge_20261011/jordan_backend_plan_bundle",
+    "argv": [
+      "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "apply_changes.py",
+      "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting"
+    ],
+    "expected_exit": 2,
+    "actual_exit": 2,
+    "log": "actual_repo_dry_run.log"
+  },
+  {
+    "name": "probe_archive",
+    "cwd": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting",
+    "argv": [
+      "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "docs/validation/cost_and_qualification_20261011/verify_probe_archive.py",
+      "--repo",
+      ".",
+      "--archive",
+      "docs/validation/cost_and_qualification_20261011/qualification"
+    ],
+    "expected_exit": 0,
+    "actual_exit": 0,
+    "log": "probe_archive.log"
+  }
+]

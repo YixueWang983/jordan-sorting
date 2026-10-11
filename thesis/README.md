@@ -18,6 +18,11 @@ The supervisor-review target is **2026-10-25**. The plan targets a complete
 draft on **2026-10-22**, followed by two days for verification and corrections.
 This is a review milestone, not the university submission date. Unfinished
 backend work must retain its actual status in the review draft.
+The user's updated plan requires the efficient backend and matched experiments
+as minimum delivery; the October 15 and 18 gates govern progress and final
+validation. The plan/model-test merge does not change this PDF's completed
+scope: backend chapters and new results must follow actual implementation and
+evidence, and the LaTeX sources have not been rebuilt by that merge.
 
 Historical baseline: Thesis Content Gate **READY / FROZEN** at
 `e2f1af3ebafda7abd49b06f83914e8041e10c8d2`; Technical Assembly Gate **PASS**

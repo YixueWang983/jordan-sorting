@@ -25,9 +25,19 @@ passed. Their resource observations are not new sorting-performance results
 or qualification of the complete expanded candidate pool.
 
 The next supervisor-review target is 2026-10-25, with a complete draft planned
-for 2026-10-22 and two days reserved for checking and corrections. Expanded
-ordinary-list evidence and matching thesis revisions take priority; backend
-comparison enters that review only if implementation and evidence checks pass.
+for 2026-10-22 and two days reserved for checking and corrections. The user's
+updated scope makes an efficient heterogeneous finger-search backend part of
+the minimum delivery. Backend implementation, shared-core and diagnostic
+adaptation, correctness and cost validation, and matched experiments are now
+the critical path. The approximately 140/380 inputs are core/expanded coverage
+targets, not already qualified datasets. Missed backend gates require a
+schedule/delivery discussion; they do not make the backend optional.
+
+The [integration/cost map](docs/development/backend_integration_cost_map_20261011.md)
+and a test-only operation model have now been merged into this repository. The
+[merge verification](docs/validation/backend_plan_merge_20261011/README.md)
+records 20 reference-model tests and a separate rerun of the existing 155
+targeted regressions. Real tree operations and Jordan integration remain pending.
 
 ### Historical Milestones
 
@@ -212,6 +222,7 @@ tests/
   test_partial_sorted_list.py
   test_paper_execution_policy.py
   test_sibling_list_backend.py
+  test_finger_backend_contract_model.py
   test_paper_jordan.py
   test_paper_jordan_sort.py
   test_certified_paper_jordan.py
@@ -394,6 +405,20 @@ reran 133 targeted tests; that number is the selected regression scope, not
 the repository's total test count. The subsequent cost correction and resource
 probe have a separate [verification record](docs/thesis/cost_revision_audit_20261011.md).
 
+The backend-plan merge separately reran the same 155 targeted regressions and
+added 20 test-only model checks (16 reusable operation contracts and four model
+auditor self-tests). This is not a fresh full-suite run or real tree-backend
+validation. Run the model checks with:
+
+```bash
+python -m unittest discover -s tests -p 'test_finger_backend_contract_model.py' -v
+```
+
+The direct test runner accepts `--factory MODULE:FACTORY` for a future test
+adapter and returns exit code 2 if it is unavailable. Only the 16 operation
+contracts switch to that adapter; the four model auditor tests still exercise
+the reference model. No production adapter is supplied by this update.
+
 Note: a full Week 4 reference run is reproducible from the current scripts; all generated
 artifact outputs are committed only when explicitly tracked.
 
@@ -522,16 +547,20 @@ Important project documents:
 ## Next Steps
 
 The current schedule is the [October supervisor-review plan](docs/plan/remaining_work_20261011.md):
-freeze the qualified input scope and timing protocol on October 16, freeze
+demonstrate real splits within end-to-end sorting on October 15, finish final
+validation and freeze source/input/timing identities on October 18, freeze
 review evidence on October 20, complete the draft on October 22, and deliver
 the review package on October 25 after October 23--24 checks.
 
-- Complete expanded-input qualification and report missing structure/size cells.
-- Validate the new current-version timing runner on a preselected small sample
-  before launching formal measurements; keep historical archives immutable.
-- Implement the finger-search backend independently using literature as a
-  reference. Check progress on October 16; require complete integration
-  validation by October 18 before considering a matched performance comparison.
+- Close the ownership/locality and stage-state/audit contracts identified in
+  the integration/cost map; `stage_results` also enforces execution order.
+- Implement the finger-search backend using literature as a reference, without
+  copying or porting third-party backend source. Count all actual maintenance
+  work, including ownership and metadata updates.
+- Requalify both backends on their final measured version; aim first for the
+  approximately 140-input core coverage, then expand toward 380 if time permits.
+- Validate the runner, validator and pilot on preselected inputs, then perform
+  matched measurements. Keep historical archives immutable.
 - Keep current results, historical timings, source-derived cost bounds, and
   future backend claims separately supported.
 

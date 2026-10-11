@@ -1,0 +1,1 @@
+{"scope": "external_adapter", "status": "UNAVAILABLE", "factory": "missing_jordan_backend_adapter:build", "reason": "No module named 'missing_jordan_backend_adapter'"}

@@ -1,0 +1,4 @@
+STOP: Local content differs: README.md
+expected=a19a02fb16e84c9f55551c951845f05c905b3405
+actual=1c9fa695895a45c88dbc7d1a8359b7a9b88fa0e1
+Preserve local work; review/merge manually instead.

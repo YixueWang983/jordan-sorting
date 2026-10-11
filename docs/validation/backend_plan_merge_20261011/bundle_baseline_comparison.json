@@ -1,0 +1,37 @@
+{
+  "README.md": {
+    "expected_blob": "a19a02fb16e84c9f55551c951845f05c905b3405",
+    "actual_blob": "1c9fa695895a45c88dbc7d1a8359b7a9b88fa0e1",
+    "matches": false
+  },
+  "docs/plan/remaining_work_20261011.md": {
+    "expected_blob": "6333ed98521cef8834b8038741b5c1ab38a9af26",
+    "actual_blob": "ebf87e47351dd911ed3c585959da085d824d0f15",
+    "matches": false
+  },
+  "src/paper_jordan.py": {
+    "expected_blob": "97d9a4809c7aaafe7fbad1a7c120cc24521c8d17",
+    "actual_blob": "97d9a4809c7aaafe7fbad1a7c120cc24521c8d17",
+    "matches": true
+  },
+  "src/sibling_list_backend.py": {
+    "expected_blob": "75153800a67801cff15fd38e7825595f3a21d8f5",
+    "actual_blob": "75153800a67801cff15fd38e7825595f3a21d8f5",
+    "matches": true
+  },
+  "src/paper_jordan_sort.py": {
+    "expected_blob": "4d1ca073f95073da742a01163efb2fd8b80dfce1",
+    "actual_blob": "4d1ca073f95073da742a01163efb2fd8b80dfce1",
+    "matches": true
+  },
+  "src/paper_execution_policy.py": {
+    "expected_blob": "c97f4df426e4add3ef9972205b58beb71370edc2",
+    "actual_blob": "c97f4df426e4add3ef9972205b58beb71370edc2",
+    "matches": true
+  },
+  "docs/development/heterogeneous_finger_backend_spec.md": {
+    "expected_blob": "d98ca692a2a8d7db893e2f712ad5a2c93875452e",
+    "actual_blob": "d98ca692a2a8d7db893e2f712ad5a2c93875452e",
+    "matches": true
+  }
+}

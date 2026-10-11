@@ -1,0 +1,67 @@
+{
+  "created_at_utc": "2026-10-11T10:39:08.156000+00:00",
+  "repository": "YixueWang983/jordan-sorting",
+  "reviewed_commit": "b6a407461c2f94a4b491016376861142f4b14577",
+  "remote_write": {
+    "status": "DENIED",
+    "http_status": 403,
+    "branch_created": false,
+    "pr_created": false
+  },
+  "environment": {
+    "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41"
+  },
+  "verification": {
+    "reference_model_tests": {
+      "methods": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "log": "evidence/model_tests.log"
+    },
+    "discovery_mode": {
+      "same_20_tests_not_additional": true,
+      "log": "evidence/discovery_tests.log"
+    },
+    "installer_synthetic_fixture_tests": {
+      "methods": 7,
+      "failures": 0,
+      "errors": 0,
+      "log": "evidence/installer_tests.log"
+    },
+    "missing_external_factory": {
+      "expected_exit_code": 2,
+      "observed_exit_code": 2,
+      "log": "evidence/missing_factory.log"
+    },
+    "actual_repository_apply_tested": false,
+    "full_repository_tests_run": false,
+    "existing_ordinary_backend_tests_run": false,
+    "heterogeneous_backend_implemented": false,
+    "heterogeneous_backend_validated": false,
+    "jordan_integration_validated": false,
+    "cost_bound_proved": false,
+    "large_input_experiments_run": false,
+    "paper_built_or_page_checked": false
+  },
+  "user_reported_probe16": {
+    "source": "current user message",
+    "backend": "current ordinary list only",
+    "independently_verified_this_run": false,
+    "log_or_input_hash_obtained": false,
+    "transfers_to_new_backend_qualification": false
+  },
+  "files_sha256": {
+    "README.md": "f064e4582a711d8310c7e91723f3c14b0096d8667aef795a79d9a002a4a12299",
+    "apply_changes.py": "0168fd0d62f200d31ab51ec870f73571a6571a0bcd1b8b6773f27d36ebeec340",
+    "evidence/discovery_tests.log": "b982f597bd205dccc0706e7fdb535e94e6b87c11468c2a0ee94c4bda582a44d3",
+    "evidence/installer_tests.log": "cd864e40a71b248a89b02180b0ac3e02d31b7000a6090bce625a186eaa096a73",
+    "evidence/missing_factory.log": "bf60cfb65e1d03d65fb6b075c66b6b7b757434ac7a86bc84e07a1b20d00673e9",
+    "evidence/model_tests.log": "4e28cfffc5ea6774c4a807e0b9ad3d712af8e032712a9727602e27ad6c44d265",
+    "overlay/docs/development/backend_integration_cost_map_20261011.md": "7af2e08b3e5cd547f695aae0bd8c6b6f99d3441f9489108847a4efaec381ccfc",
+    "overlay/docs/plan/remaining_work_20261011.md": "d64671974103dc6547fc2de085708c4dc839a4c361fa88f97a96f6e897bc6951",
+    "overlay/tests/test_finger_backend_contract_model.py": "b6cfa2a8f51c6832b3bfbd5ac6ccaeef31f1065f9faeeaf8214e9eeccf4736a8",
+    "test_apply_changes.py": "5bfaf5136b95998b2f958caa67eec600d1f5a29a69acd7c7e648e98dcfa28566"
+  }
+}

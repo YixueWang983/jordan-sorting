@@ -1,0 +1,73 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "platform": "macOS-26.6-arm64-arm-64bit",
+  "runs": [
+    {
+      "name": "repo_model_discovery",
+      "cwd": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting",
+      "argv": [
+        "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_finger_backend_contract_model.py",
+        "-v"
+      ],
+      "env_overrides": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "src:experiments:tests"
+      },
+      "started_utc": "2026-10-11T10:58:58.984506+00:00",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "log": "repo_model_discovery.log"
+    },
+    {
+      "name": "repo_targeted_regressions",
+      "cwd": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting",
+      "argv": [
+        "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "test_paper_jordan",
+        "test_paper_jordan_sort",
+        "test_sibling_list_backend",
+        "test_paper_execution_policy",
+        "test_validate_ordinary_list_extended",
+        "test_preflight_next_stage",
+        "test_probe_large_qualification",
+        "-v"
+      ],
+      "env_overrides": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "src:experiments:tests"
+      },
+      "started_utc": "2026-10-11T10:58:58.984720+00:00",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "log": "repo_targeted_regressions.log"
+    },
+    {
+      "name": "repo_missing_factory",
+      "cwd": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting",
+      "argv": [
+        "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "tests/test_finger_backend_contract_model.py",
+        "--factory",
+        "missing_jordan_backend_adapter:build",
+        "-v"
+      ],
+      "env_overrides": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "src:experiments:tests"
+      },
+      "started_utc": "2026-10-11T10:58:58.984801+00:00",
+      "expected_exit": 2,
+      "actual_exit": 2,
+      "log": "repo_missing_factory.log"
+    }
+  ]
+}

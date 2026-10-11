@@ -1,0 +1,25 @@
+test_audit_rejects_lost_item (test_finger_backend_contract_model.ModelAuditSelfTests.test_audit_rejects_lost_item) ... ok
+test_audit_rejects_pending_adoption (test_finger_backend_contract_model.ModelAuditSelfTests.test_audit_rejects_pending_adoption) ... ok
+test_audit_rejects_replaced_item_identity (test_finger_backend_contract_model.ModelAuditSelfTests.test_audit_rejects_replaced_item_identity) ... ok
+test_audit_rejects_wrong_order (test_finger_backend_contract_model.ModelAuditSelfTests.test_audit_rejects_wrong_order) ... ok
+test_adoption_cannot_overfill_owner (test_finger_backend_contract_model.OperationContractTests.test_adoption_cannot_overfill_owner) ... ok
+test_duplicate_item_rejected (test_finger_backend_contract_model.OperationContractTests.test_duplicate_item_rejected) ... ok
+test_equal_key_rejected (test_finger_backend_contract_model.OperationContractTests.test_equal_key_rejected) ... ok
+test_extreme_child_across_two_slots (test_finger_backend_contract_model.OperationContractTests.test_extreme_child_across_two_slots) ... ok
+test_generated_operation_sequences (test_finger_backend_contract_model.OperationContractTests.test_generated_operation_sequences) ... ok
+test_insert_both_ends (test_finger_backend_contract_model.OperationContractTests.test_insert_both_ends) ... ok
+test_interior_anchor_rejected (test_finger_backend_contract_model.OperationContractTests.test_interior_anchor_rejected) ... ok
+test_interior_owner_query_is_not_boundary_query (test_finger_backend_contract_model.OperationContractTests.test_interior_owner_query_is_not_boundary_query) ... ok
+test_new_boundaries_after_insertion (test_finger_backend_contract_model.OperationContractTests.test_new_boundaries_after_insertion) ... ok
+test_old_owner_mismatch_rejected (test_finger_backend_contract_model.OperationContractTests.test_old_owner_mismatch_rejected) ... ok
+test_repeated_skewed_splits_and_stable_items (test_finger_backend_contract_model.OperationContractTests.test_repeated_skewed_splits_and_stable_items) ... ok
+test_same_owner_adoption_rejected (test_finger_backend_contract_model.OperationContractTests.test_same_owner_adoption_rejected) ... ok
+test_singleton_has_two_boundaries (test_finger_backend_contract_model.OperationContractTests.test_singleton_has_two_boundaries) ... ok
+test_split_cuts_and_adoption_directions (test_finger_backend_contract_model.OperationContractTests.test_split_cuts_and_adoption_directions) ... ok
+test_two_child_slots (test_finger_backend_contract_model.OperationContractTests.test_two_child_slots) ... ok
+test_wrong_side_rejected (test_finger_backend_contract_model.OperationContractTests.test_wrong_side_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.002s
+
+OK
