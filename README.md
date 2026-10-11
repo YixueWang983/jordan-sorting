@@ -6,6 +6,24 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
+As of 2026-10-11, the active work is the
+[remaining development and thesis revision plan](docs/plan/remaining_work_20261011.md).
+The September implementation removed rollback and archived expanded non-timing
+validation. Expanded timing and the heterogeneous finger-tree backend remain
+unfinished. The first thesis revision now distinguishes the current core's
+failure contract from the earlier implementation measured by the archived
+experiments. Its [claim amendments](docs/thesis/revision_claims_20261011.md) and
+[revision audit](docs/thesis/revision_audit_20261011.md) record 133 passing targeted
+regression tests and a checked 74-page PDF. New input generation, timing and
+backend work remain separate stages of the plan.
+
+The next supervisor-review target is 2026-10-25, with a complete draft planned
+for 2026-10-22 and two days reserved for checking and corrections. Expanded
+ordinary-list evidence and matching thesis revisions take priority; backend
+comparison enters that review only if implementation and evidence checks pass.
+
+### Historical Milestones
+
 Week 1, Week 2, Week 3, and Week 4 are complete.
 
 Week 5 verification, Week 6 experimental interpretation, Week 7 pilot

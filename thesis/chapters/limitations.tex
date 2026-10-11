@@ -1,7 +1,8 @@
 \chapter{Limitations}
 \label{chap:limitations}
 
-% Audited Markdown baseline:
+% Historical audited Markdown baseline; current version limitation is recorded
+% in docs/thesis/revision_claims_20261011.md.
 % docs/thesis/limitations_draft.md
 % SHA-256: be8dfc590b7da5df331da5340de04200a3486cfee11bfd59b4d9fdc6be1f4f2a
 
@@ -14,6 +15,23 @@ behavior on the pre-specified valid inputs. They do not establish every property
 the theoretical 1990 algorithm or every behavior of Jordan-sequence inputs.
 The following boundaries determine how the implementation and empirical
 results may be interpreted.
+
+\section{Implementation Version and Failure Contract}
+\label{sec:limitations-version}
+
+The archived performance results describe the earlier rollback-enabled
+implementation. The revised core removes recovery backups and propagates
+internal update errors without restoring state. The caller must discard failed
+state; successful-update invariants do not provide an exception-recovery
+guarantee. This contract applies to both \texttt{checked} and
+\texttt{minimal} execution.
+
+Removing recovery work leaves ordinary-list construction, copying, scanning,
+ownership rebinding, and local postcondition checks in place. The archived
+measurements cannot determine the revision's runtime or the size of any
+performance change. Those questions require a version-bound experiment; a
+causal claim about rollback removal additionally requires an appropriate
+matched comparison. Unchanged logical counters do not supply that evidence.
 
 \section{Paper Reconstruction and Backend Fidelity}
 \label{sec:limitations-backend}

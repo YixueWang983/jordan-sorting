@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-11",
+  "status": "first revision verified; later stages pending",
+  "base_commit": "6f7468324672e6f5abe9d95862cd5f296b792614",
+  "modified_tex_files": [
+    "thesis/appendix/claim_traceability.tex",
+    "thesis/chapters/algorithm.tex",
+    "thesis/chapters/conclusion.tex",
+    "thesis/chapters/implementation.tex",
+    "thesis/chapters/introduction.tex",
+    "thesis/chapters/limitations.tex",
+    "thesis/chapters/methodology.tex",
+    "thesis/chapters/results.tex",
+    "thesis/frontmatter/abstract.tex"
+  ],
+  "build_inputs_sha256": {
+    "thesis/.latexmkrc": "45796ac96a2bcd2aa97a0c731f443ea357cd14128874aada78709e8ce6dfe3dd",
+    "thesis/appendix/claim_traceability.tex": "bb2c7b1c9cc71afb71aaa5dab01c9f7f294f7d93f8f5a2707fd3c42754b8384b",
+    "thesis/bibliography.bib": "cb124ee77e3fe0f6f5c898431ab67af3ef64a843377e4220496e93542867b2aa",
+    "thesis/chapters/algorithm.tex": "df48824b97c077464fbd9a8d68344f295c2953cd7dc1896a2f838445c3d29830",
+    "thesis/chapters/background.tex": "bc01c0ccb4a40745e0b3df096e42630f429c4c72098b4b719e082bc5660cb12e",
+    "thesis/chapters/conclusion.tex": "20c7f4330845be7449f2136c0653b6a6274b8d40cda9e9e7d173432954d3156f",
+    "thesis/chapters/implementation.tex": "748a927a2bbfd92862d85bb8ccf2b8da013cb1fefe20163df72d837637adffbb",
+    "thesis/chapters/introduction.tex": "794bea4613ef35117b24ffffe2c6208033100cac484efee90104d8f000adbfb7",
+    "thesis/chapters/limitations.tex": "7bfe45486d075abee965c203c086d851ec951e8e671449e4f2271fac16b086a6",
+    "thesis/chapters/methodology.tex": "5ee68b3c8cdaa49af074079cc1d1055dd502c103299c4dca867eeb584c4c5323",
+    "thesis/chapters/results.tex": "76e76b8048fc2934b785efec98fcac615362f35d0c2f457d020ff3d16d9873b5",
+    "thesis/config/metadata.tex": "91134a779c5ffd6857285f4230360700f4d6a174d7d586b0bacd3b55bdd4579c",
+    "thesis/figures/family_sibling_structure.pdf": "6160c56c3f51eb6ff2348427b06024e661543400b1be60a0529fc3ac79d1f752",
+    "thesis/figures/formal_experiment_pipeline.pdf": "159542a54791acc93be1f82c388b3056b9379575a688c2188d15f04add6f7ad8",
+    "thesis/figures/jordan_sorting_problem.pdf": "3cc1d95222f09940ef9516268a45f37276ed8c5e8e986c733c3ad8a1eba09f09",
+    "thesis/figures/running_example_reconstruction.pdf": "f36fccb79ad29f3414385e97b0b6ac238f527567ca1273d14b124a485d6bbe09",
+    "thesis/figures/source/family_sibling_structure.tex": "3acf769706606c13c4842819ac2cebcc85a5c971eee38e7cfcffb46240786d93",
+    "thesis/figures/source/figure_style.tex": "933b2af4110bc1898726b8b9016adc24dc635b77077853dcab016ff91fdee823",
+    "thesis/figures/source/formal_experiment_pipeline.tex": "012d8379a4daa96afc0e0750edf795a99fe34b3bbd578a7991ef074f40f89930",
+    "thesis/figures/source/jordan_sorting_problem.tex": "eb782ed3bec6ebf5388ab07c838088b10d3226771fbbef1ba0d4244858997153",
+    "thesis/figures/source/running_example_reconstruction.tex": "435e6f2914a81ccbc930091b8d7dc163b3d1941d801c6e45e93bfcf344a2ef97",
+    "thesis/figures/source/step3c_anchor_z1_anomaly.tex": "b00432a7f457046b1ad6b856004a120cfef012f1e100295dfea28e1a26d4873e",
+    "thesis/figures/step3c_anchor_z1_anomaly.pdf": "f5d8522b2d7a5e440eccde5adb31cf7d3009a499de59fe1452100f852bb6c268",
+    "thesis/figures/week12_runtime_by_size.pdf": "4b29bd6c391c4591564cd761b8a0a836609a93e6d9c87746432eeee78f5ce432",
+    "thesis/figures/week12_runtime_ratio_by_size.pdf": "31c0e63010b8c8b83cafbe8b1fde6ad9744954d7eb26580bba4f8b3b312beacd",
+    "thesis/frontmatter/abstract.tex": "9046882b33c41a543fc6749ace637acb987c7e1a359d733641478c6dec718f9f",
+    "thesis/frontmatter/titlepage.tex": "ed4966cc8d7d00dd4673d3474d1773be4eb0fa0fda4a84501cedf1a2d39f8f14",
+    "thesis/main.tex": "2912e0b4614193b004ed1c6555a16929745eee5866c46fc04dca9191829c9100"
+  },
+  "pdf": {
+    "output_name": "Jordan_Sorting_论文修订稿_2026-10-11.pdf",
+    "sha256": "90c26ad0c471818fd98d2edccd7b69f57533a51fdbc1d34c17461ae42bfe9c64",
+    "bytes": 507114,
+    "pages": 74,
+    "page_size": "A4"
+  },
+  "bibliography_entries": 16,
+  "log_warnings_errors": 0,
+  "targeted_tests": {
+    "count": 133,
+    "result": "PASS",
+    "log_sha256": "045b6f5ad4abe55fcae3c1c9ff7b9cc9812800303eedfabef8a97c5149114aae"
+  },
+  "protected_files_unchanged": 520,
+  "manifest_entries_verified": 12,
+  "visual_review": {
+    "all_page_contact_sheets": true,
+    "detailed_physical_pages": [
+      3,
+      14,
+      15,
+      29,
+      35,
+      39,
+      40,
+      41,
+      45,
+      53,
+      61,
+      65,
+      70
+    ]
+  },
+  "integrity_checks": {
+    "protected_files_unchanged": 520,
+    "manifest_entries_verified": 12,
+    "labels_unique": 127,
+    "unresolved_source_references": 0,
+    "unchanged_environments": {
+      "table": 12,
+      "figure": 7,
+      "equation": 19
+    },
+    "formal_counts_unchanged": true,
+    "formal_source_binding_unchanged": true
+  },
+  "toolchain": {
+    "tex_live": "2026",
+    "lua_hb_tex": "1.24.0",
+    "biber": "2.22",
+    "latexmk": "4.88"
+  }
+}

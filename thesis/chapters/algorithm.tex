@@ -334,24 +334,29 @@ selection and output-anchor correction must be modeled as separate stages.
   \label{fig:step3c-z1-anchor}
 \end{figure}
 
-\section{Atomic Ownership Transfer}
+\section{Ownership Transfer and Failure Semantics}
 \label{sec:algorithm-ownership}
 
 A sibling split changes several linked facts at once: the old list ceases to
 exist, up to two nonempty output lists are created, the retained side stays
 with the old parent, the acquired side moves under $N$, and every moved pair
-must name its new list and parent. Publishing only part of this transition
-would make the family forest inconsistent.
+must name its new list and parent. Conservation and unique ownership are
+required after a successful transition.
 
-The reconstruction therefore treats Step~3(b) as a transaction. It first
-forms a split plan without changing live state. Commit validates that the plan
-is current, that the proposed parent is live and cannot introduce a cycle,
-and that no pair straddles the split. It then publishes the new lists and
-ownership links together. If a local postcondition fails, all touched lists,
-owners, pair links, and list identifiers are restored. These mechanics are
-implemented concretely in \cref{sec:implementation-sibling-lists}, but the
-algorithmic requirement is simply conservation of unique ownership across the
-split.
+The reconstruction first forms a split plan without changing live state.
+Commit checks that the plan is current, that the proposed parent is live and
+cannot introduce a cycle, and that the partition is legal. It then updates
+the lists and ownership links and checks the resulting state. In the revised
+implementation, an update or postcondition error terminates sorting. Updates
+already performed are not rolled back, and the failed state must be discarded.
+No partially updated state is accepted as a completed iteration or returned
+as a sorting result.
+
+The earlier implementation used rollback on these error paths. That recovery
+mechanism is distinct from the algorithmic requirement to preserve ownership
+on successful updates. The two versions and their experimental scope are
+distinguished in \cref{sec:implementation-versions}; the concrete update is
+described in \cref{sec:implementation-step3b}.
 
 \section{End-to-End Procedure}
 \label{sec:algorithm-procedure}

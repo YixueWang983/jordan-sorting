@@ -4,9 +4,10 @@
 This appendix records how the thesis-facing claim groups connect to the
 audited claim inventory and archived, manifest-bound experiment evidence. It is
 a traceability aid rather than an additional source of empirical results. The
-controlled inventory contains 46 claims: nine implementation claims, thirteen
+historical controlled inventory contains 46 claims: nine implementation claims, thirteen
 method claims, eleven quantitative result claims, four exploratory claims,
-and nine required limitations.
+and nine required limitations. The version-specific amendments below supplement
+that historical inventory for the revised implementation.
 
 \section{Claim Groups and Thesis Locations}
 
@@ -76,7 +77,36 @@ following SHA-256:
 
 The chapter-level audit is recorded in
 \nolinkurl{docs/thesis/final_claim_audit.md}; it verifies coverage of all 46
-controlled claims and the cross-chapter interpretation boundaries.
+controlled claims and the cross-chapter interpretation boundaries at its
+historical baseline. It does not certify the later amendments as part of that
+earlier audit.
+
+\section{Implementation Revision and Evidence Scope}
+\label{sec:appendix-revision-bindings}
+
+The revised implementation account is bound to repository commit
+\texttt{6f74683}. The rollback removal was
+introduced in commit
+\texttt{337903a}; the full identifiers and source-file hashes are
+recorded in \nolinkurl{docs/thesis/revision_claims_20261011.md}.
+The formal timing archive instead binds source commit
+\nolinkurl{98868b1b705f6d5f22404ee8ad7b88ad7a834f52}. Its results retain their
+original version and timing scope.
+
+The amendment to historical claim \texttt{I-05} replaces the current
+implementation's rollback contract with error propagation and mandatory
+discard of failed state. The clarification to \texttt{I-07} distinguishes the
+unchanged execution-policy switches from the changed recovery work.
+\texttt{I-09} and the ordinary-list complexity limitation remain applicable:
+the heterogeneous finger-tree backend is still a design rather than an
+implemented experimental comparator.
+
+The revision record links these statements to the current split and insertion
+code, public-call failure tests, and their thesis locations. The historical
+method, numerical-result, and exploratory claims keep their original evidence
+bindings. Their counts, tables, figures, and archive hashes are not updated to
+represent a new experiment. Future implementations and measurements require
+their own evidence records.
 
 \section{Archived Evidence Bindings}
 

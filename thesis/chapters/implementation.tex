@@ -1,7 +1,8 @@
 \chapter{Implementation}
 \label{chap:implementation}
 
-% Audited Markdown baseline:
+% Historical audited Markdown baseline; current amendments are recorded in
+% docs/thesis/revision_claims_20261011.md.
 % docs/thesis/implementation_draft.md
 % SHA-256: 2f849e67fa5a2938e2652692ffb911d0afb568c932246ec6d7a1628fe5ae6675
 
@@ -29,6 +30,23 @@ its core neither imports the oracle nor reads
 \texttt{oracle\_result["sorted"]}. It therefore recovers the sorted order from
 its own maintained state, subject to the explicit precondition that the input
 has already been certified as a valid Jordan sequence.
+
+\subsection{Implementation Versions}
+\label{sec:implementation-versions}
+
+The implementation described in this chapter is the revised ordinary-list
+version, which terminates on an internal update error without restoring the
+previous state. The archived pilot and formal experiments evaluated an earlier
+version that retained rollback. Both versions use the same paper-facing
+Step~1/2/3 structure and recover output from the maintained partial order, but
+their update costs and failure contracts differ. The source bindings are
+recorded in \cref{sec:appendix-revision-bindings}.
+
+The revision removes recovery-only backups and exception handlers. It retains
+split planning, output-list construction, ownership updates, and local safety
+checks. The runtime measurements in \cref{chap:results} therefore characterize
+the earlier implementation; they do not measure the revised version or the
+effect of removing rollback.
 
 \section{Input and Index Model}
 \label{sec:implementation-input-model}
@@ -171,8 +189,10 @@ in the boundary's existing sibling list and inherits its parent.
 The decreasing branch mirrors this rule with the successor-side boundary. A
 new singleton is created when that boundary encloses $z_{i-1}$; otherwise,
 $P_i$ is inserted immediately before the boundary pair and inherits its
-parent. Registration is rolled back if insertion fails, so an unowned partial
-pair is not left in the backend.
+parent. Necessary boundary checks precede registration. If a later insertion
+fails, the exception propagates and sorting terminates. Registration may
+already have occurred; it is not undone, and the caller must discard the
+failed state.
 
 \subsection{Step 3(b): Split and Transfer Children}
 \label{sec:implementation-step3b}
@@ -186,12 +206,22 @@ the operation: it uses the predecessor-side boundary and transfers the right
 split side to $P_i$.
 
 The backend first creates an immutable \texttt{SplitPlan} without modifying
-live state. Commit then retires the old list, creates only nonempty output
-lists, updates list owners and pair ownership, orders affected child-list IDs,
-and checks the touched state. A stale plan, straddling pair, ownership
-mismatch, cycle, unowned parent, or third child list is rejected. If
-publication or a postcondition fails, the old list registry, parent child
-lists, next list ID, and pair ownership are restored.
+live state. The plan records the original pair sequence and its ordered left
+and right partitions. It supports stale-plan rejection and checks that the
+partition preserves order and the input pair set; these responsibilities
+remain necessary without rollback.
+
+After checking the plan and ownership preconditions, commit prepares the
+nonempty output lists and affected child-list slots. It retires the old list,
+publishes the new lists, rebinds pair ownership, and checks the touched state.
+A stale plan, straddling pair, ownership mismatch, cycle, unowned parent, or
+third child list is rejected. An error during mutation or a postcondition
+check propagates without restoring lists, owners, pair links, or list IDs.
+The state may be partially updated and must not be reused.
+
+Preparing new output lists and copying their partitions are ordinary update
+work. They remain in the revised implementation; only the backups and recovery
+branches used to restore a failed update have been removed.
 
 \subsection{Step 3(c): Insert the New Point}
 \label{sec:implementation-step3c}
@@ -225,6 +255,11 @@ After the final iteration, \texttt{paper\_jordan\_sort\_valid} traverses the
 maintained partial order and returns its values. It does not delegate output
 recovery to the oracle or reference pipeline.
 
+If an internal update raises an exception, the public sorter and diagnostic
+entry point propagate it. They do not retry the update, return a partial
+result, or substitute the oracle or reference pipeline. Output recovery is
+reached only after the core runner returns successfully.
+
 The safe wrapper \texttt{certified\_paper\_jordan\_sort} establishes the public
 precondition boundary. It first invokes the oracle and rejects an invalid
 candidate. Only a valid candidate enters the paper core through
@@ -250,6 +285,13 @@ tests do not feed into production state. Full diagnostics are correctness
 evidence outside the timed minimal call, not part of the reported paper sorting
 runtime.
 
+Failure-injection regression tests check the revised contract separately from
+valid-input sorting. They verify error propagation from pair insertion and
+split postconditions, including the local checks retained in
+\texttt{minimal}. Public-call tests require a single split attempt and no
+output recovery after an injected failure. These tests do not require the
+failed state to be restored or reused.
+
 \section{Execution Policies and Timing Boundary}
 \label{sec:implementation-policies}
 
@@ -262,10 +304,17 @@ trace and counter costs for the timing-contamination study.
 
 Policy-controlled observations do not change the Step~1/2/3 sequence. Even in
 \texttt{minimal}, mandatory stage results, local ordering checks, split-plan
-validation, cycle prevention, touched-state postconditions, rollback, input
-materialization, and the final \texttt{to\_list()} traversal remain. The timed
-result is therefore the ordinary-list algorithm with optional diagnostics
-removed, not a bare or unchecked surrogate.
+validation, cycle prevention, touched-state postconditions, input
+materialization, and the final \texttt{to\_list()} traversal remain. The
+revised implementation performs no rollback in any execution policy.
+
+The archived timing and timing-contamination studies used the earlier
+implementation, in which recovery backups and handlers were also present in
+\texttt{minimal}. Their measurements retain that historical scope, as
+specified in \cref{sec:method-paper-implementation}. The policy switches and
+logical operation counters do not account for every Python-level copy or
+backup; unchanged counter values alone cannot establish unchanged runtime or
+a speed improvement after the revision.
 
 \section{Implementation and Complexity Boundary}
 \label{sec:implementation-complexity}

@@ -75,6 +75,13 @@ lists, so scans, slicing, copying, and ownership rebinding remain part of the
 implemented cost. Consequently, the historical linear-time theorem does not
 transfer to this implementation.
 
+The current revision documents an ordinary-list implementation that terminates
+on update errors without rollback. The performance evidence reported here
+belongs to its earlier rollback-enabled version. The two versions share the
+reconstructed sorting structure, but the archived measurements do not establish
+the revised implementation's runtime or the benefit of removing recovery work.
+\Cref{sec:implementation-versions} makes this distinction explicit.
+
 \section{Research Questions}
 \label{sec:introduction-questions}
 
@@ -118,8 +125,9 @@ contributions.
     the only possible reading of the paper.
 
   \item It implements separate partial-order and sibling-family structures
-    with explicit ownership, transactional splitting, rollback, local safety
-    checks, and full invariant auditing. The paper core recovers output from
+    with explicit ownership, checked split transitions, local safety checks,
+    and full invariant auditing. Internal update errors terminate the revised
+    sorter, and failed state must be discarded. The paper core recovers output from
     this maintained state rather than from the oracle-backed reference path.
 
   \item It separates optional observation and complete audit machinery from
@@ -144,7 +152,8 @@ a proof of linear running time for the Python implementation.
 \section{Headline Findings}
 \label{sec:introduction-findings}
 
-All 3600 measured rows in the formal experiment belong to 60 exact cases that
+All 3600 measured rows in the formal experiment on the earlier implementation
+belong to 60 exact cases that
 each passed one untimed checked-state audit before timing. Every row records an
 oracle-certified input, correct output, and no recorded error. All 180
 case-algorithm summaries are correct and error-free, and all 60 case audits

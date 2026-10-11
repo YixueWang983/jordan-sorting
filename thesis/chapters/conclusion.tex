@@ -20,14 +20,23 @@ the independently recovering paper core from an oracle-backed reference
 pipeline: the paper core obtains its output from its maintained partial order,
 whereas the reference path deliberately returns oracle-derived sorted output.
 Fixed execution policies, checked diagnostics, deterministic replay, and
-transactional sibling-list updates make this boundary observable and testable.
+explicit sibling-list ownership checks make this boundary observable and
+testable. The revised implementation propagates internal update errors and
+requires the caller to discard failed state; it no longer restores updates
+through rollback.
 
-The empirical study evaluated oracle-certified valid-input sorting under a
-pre-specified protocol. It compared Python sort, the complete oracle-backed
+The archived empirical study evaluated the earlier rollback-enabled
+implementation on oracle-certified valid inputs under a pre-specified
+protocol. It compared Python sort, the complete oracle-backed
 reference pipeline, and the pre-certified paper core in \texttt{minimal} mode.
 Archived, manifest-bound evidence and a separate evidence-contract validator
 preserved the cases, schedules, correctness fields, summaries, and audit records
 used for the analysis.
+
+These measurements remain evidence about the earlier version. They do not
+measure the revised core or establish a speed improvement from removing
+rollback. The implementation account and the runtime conclusions therefore
+refer to explicitly distinguished versions.
 
 \section{Answers to the Research Questions}
 \label{sec:conclusion-questions}
@@ -118,6 +127,9 @@ implementation or experimental demonstration of linear-time Jordan sorting.
 \label{sec:conclusion-future-work}
 
 Several extensions follow directly from the limitations of the present work.
+A new experiment must first establish the runtime of the revised ordinary-list
+core on qualified inputs. A later backend comparison must remeasure both
+implementations on matched inputs under the same recorded conditions.
 
 First, the ordinary sibling-list backend could be replaced by a data structure
 that realizes the historical locality bounds, such as a carefully specified

@@ -1,7 +1,8 @@
 \chapter{Experimental Method}
 \label{chap:methodology}
 
-% Audited Markdown baseline:
+% Historical audited Markdown baseline; version-scope clarification is recorded
+% in docs/thesis/revision_claims_20261011.md.
 % docs/thesis/experimental_methodology_draft.md
 % SHA-256: bd37eafdc477fbc5f18bc0a05e513ea224df09a631fe62be3673b53afc757e0a
 
@@ -36,6 +37,12 @@ quantitative evidence. Their archived repository identifiers are retained only
 for provenance. The pilot is used in this thesis solely for the directional
 replication analysis; all primary quantitative results come from the formal
 experiment.
+
+Both archived stages precede the removal of rollback. This chapter describes
+their original protocol and measured implementation, not a new execution of
+the revised core. The revised failure contract in
+\cref{sec:implementation-versions} does not change the scope of these
+historical measurements.
 
 \section{Study Scope}
 \label{sec:method-scope}
@@ -113,14 +120,19 @@ reference pipeline rather than only a sorting primitive.
 The fixed protocol registry names this entry
 \nolinkurl{simplified_jordan_paper_ordinary_list}.
 
-Its timed call invokes \texttt{paper\_jordan\_sort\_valid} with execution mode
+The archived timed call invoked \texttt{paper\_jordan\_sort\_valid} with execution mode
 \texttt{minimal} after the exact case has already passed oracle certification
-and a separate checked diagnostic. As described in
-\cref{sec:implementation-policies},
-\texttt{minimal} disables trace recording, selected operation counters, and
+and a separate checked diagnostic. In that measured version,
+\texttt{minimal} disabled trace recording, selected operation counters, and
 complete backend commit validation while retaining the ordinary-list
-Step~1/2/3 work, local safety checks, stage results, rollback, and final output
-recovery.
+Step~1/2/3 work, local safety checks, stage results, recovery backups and
+rollback handlers, and final output recovery. Retaining rollback does not mean
+that a failure and restoration occurred during successful measured calls;
+the preparation of recovery state was part of the implementation being timed.
+
+The current version removes that recovery work, while retaining the policy
+switches described in \cref{sec:implementation-policies}. It requires a
+separate experiment before runtime results can be attributed to it.
 
 These timed scopes are deliberately different. In particular, the reference
 call includes certification and structural/reference work, whereas the paper

@@ -1,6 +1,21 @@
 # FU Berlin LaTeX Thesis Scaffold
 
-Status: Thesis Content Gate **READY / FROZEN** at
+Current status (2026-10-11): **FIRST REVISION COMPLETE** under the
+[development and thesis revision plan](../docs/plan/remaining_work_20261011.md).
+The sources now describe the current no-rollback failure contract and explicitly
+attribute existing runtime results to the earlier measured implementation.
+The [claim amendments](../docs/thesis/revision_claims_20261011.md) and
+[revision audit](../docs/thesis/revision_audit_20261011.md) record the evidence
+boundary, 133 passing targeted regressions, and a clean 74-page build with visual
+checks. Expanded-input experiments and the finger-tree backend remain pending;
+this is the first revision, not the completed two-week review package.
+
+The supervisor-review target is **2026-10-25**. The plan targets a complete
+draft on **2026-10-22**, followed by two days for verification and corrections.
+This is a review milestone, not the university submission date. Unfinished
+backend work must retain its actual status in the review draft.
+
+Historical baseline: Thesis Content Gate **READY / FROZEN** at
 `e2f1af3ebafda7abd49b06f83914e8041e10c8d2`; Technical Assembly Gate **PASS**
 on local clean-checkout evidence; Submission Gate **NOT READY** pending
 personal/examination metadata and external submission requirements.
@@ -52,6 +67,11 @@ The generated PDF is `thesis/build/main.pdf`. Build artifacts are ignored by
 Git. Use `make clean` for auxiliary files or `make distclean` for all generated
 outputs.
 
+The 2026-10-11 revision was built from a clean source copy with LuaLaTeX
+(TeX Live 2026) and Biber 2.22. When `make` is unavailable, `latexmk -lualatex
+main.tex` uses the same checked-in Latexmk configuration. The revision audit
+records the isolated local toolchain and output hashes.
+
 ## Before Submission
 
 Replace every personal placeholder in `config/metadata.tex` and confirm the
@@ -73,6 +93,13 @@ the signed declaration original is submitted separately. Recheck the live
 instructions immediately before submission.
 
 ## Audited Content Boundary
+
+The following boundaries describe the historical audited baseline. The current
+revision is explicitly requested and tracked in the active plan; it must retain
+the identity of old experiments and record changed claims separately. Existing
+audit results do not certify the revised thesis. The first revision has its own
+audit linked above; later implementation and experiment changes require further
+version-specific review.
 
 The four reviewed Markdown chapters and the claim table are immutable content
 baselines identified by `docs/thesis/final_claim_audit.md`. Their older

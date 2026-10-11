@@ -2,6 +2,13 @@
 
 This folder stores the approved thesis scope and research-question documents.
 
+The active next-stage execution plan is
+[remaining_work_20261011.md](remaining_work_20261011.md). It covers expanded
+inputs, new ordinary-list timing, the finger-tree backend, matched comparisons,
+and corresponding thesis revisions. It is a working plan following the user's
+request, not a new claim of supervisor approval. Older schedules and completed
+experiment restrictions retain their historical scope.
+
 - `thesis_scope_and_research_questions.pdf`
   Approved draft thesis plan for the Jordan-sorting project, including goals, research questions, planned contributions, implementation scope, and experimental scope.
 

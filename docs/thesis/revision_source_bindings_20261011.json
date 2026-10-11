@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-11",
+  "source_commit": "6f7468324672e6f5abe9d95862cd5f296b792614",
+  "rollback_removal_commit": "337903ab725c72744fbe617feadbd1a6d4cbeaff",
+  "formal_source_commit": "98868b1b705f6d5f22404ee8ad7b88ad7a834f52",
+  "sha256": {
+    "src/paper_jordan.py": "f863fdd2203c09d1f340b50e680cb5c2dafe7362a7d26ab7644a7520e57dd9b5",
+    "src/paper_jordan_sort.py": "ada276f8d08eb52738940fb842edd5bc2d5692491d373773e650498586119cf3",
+    "src/sibling_list_backend.py": "df019260f659487cfb6b9acec52ab3be01e6f23bac2317b4a1f0c715e6367ae6",
+    "src/paper_execution_policy.py": "310bb7734da8184dc20a57844cbffd3a3377d60db06731b862306a7d41e7738c",
+    "tests/test_paper_jordan.py": "1635bcd230d3ac45e1be11a99175b8fa8c0286dc7fc8dca0e5f7a0d92edac35e",
+    "tests/test_paper_jordan_sort.py": "6d72a387011389d53a933d8636fe586e6a645820d0ab6449d6506c0d255df4cd",
+    "tests/test_sibling_list_backend.py": "3c9cef8d0d5627104cdec7c887eaebf24773d483f7bee3fb7e9da57bf38f68ad",
+    "tests/test_paper_execution_policy.py": "8e6b56dc064c59e65beddccad09274abe59db3eb79d7c9d9025427848b3225c2"
+  },
+  "targeted_regression": {
+    "modules": [
+      "test_paper_jordan",
+      "test_paper_jordan_sort",
+      "test_sibling_list_backend",
+      "test_paper_execution_policy"
+    ],
+    "tests": 133,
+    "result": "PASS",
+    "scope": "targeted regression only; no algorithm or test changes; no formal timing"
+  },
+  "archived_manifests": {
+    "results/runs/week11_pilot_v1__run003/manifest.json": "ef6a9d17df644eab8c3284d04dc356ce4b68b4efdfc0da7eecb5a9c7136c5141",
+    "results/runs/week12_formal_sorting_v1__run001/manifest.json": "f42ab0b77cb7ea91ed66c66bc6947a81cd8746b5d2b67d526472260d2b47f850"
+  }
+}

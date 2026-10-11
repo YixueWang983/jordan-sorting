@@ -1,7 +1,8 @@
 \chapter{Results}
 \label{chap:results}
 
-% Audited Markdown baseline:
+% Historical audited Markdown baseline; version-scope clarification is recorded
+% in docs/thesis/revision_claims_20261011.md. Numerical evidence is unchanged.
 % docs/thesis/results_draft.md
 % SHA-256: 969dec6a08461903a1c8dcdc71f5daaf2fc1f07530aa2de54bf9fd1cf28306a1
 
@@ -13,9 +14,15 @@ The primary results use the archived, manifest-bound formal evidence and
 analysis artifacts regenerated from that archive. The directional-replication
 comparison in \cref{sec:results-replication} additionally uses archived,
 manifest-bound pilot evidence. Exact evidence locators and version bindings are
-given in \cref{sec:method-evidence,tab:appendix-evidence-bindings}. Live
-validation accepted the formal archive without errors and confirmed 3600 raw
+given in \cref{sec:method-evidence,tab:appendix-evidence-bindings}. The recorded
+validation reports accepted the formal archive without errors and confirmed 3600 raw
 rows, 180 case summaries, 45 group summaries, and 60 checked-state audits.
+
+All performance results in this chapter concern the earlier rollback-enabled
+ordinary-list implementation described in \cref{sec:method-paper-implementation}.
+They are retained as historical baseline evidence. The revised implementation
+in \cref{chap:implementation} has not been measured by this archived protocol;
+none of the reported timings or ratios quantify the effect of removing rollback.
 
 Across the archived evidence, all 3600 measured rows belong to 60 exact cases
 that each passed one untimed checked-state audit before timing. Every row has an
@@ -381,4 +388,5 @@ replication of the three within-run ratio series. It also supports the labeled
 exploratory coefficients above. It does not establish linear-time Jordan
 sorting, asymptotic complexity from five sizes, recognition performance,
 causal structural effects, representative sampling of all Jordan sequences,
-or a like-for-like end-to-end paper/reference speedup.
+or a like-for-like end-to-end paper/reference speedup. It also does not establish
+the runtime of the revised core or any heterogeneous finger-tree backend.

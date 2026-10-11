@@ -13,15 +13,15 @@ The reconstruction maintains its own partial sorted order, upper and lower
 pair families, and sibling-list ownership while executing the paper-facing
 Step~1/2/3 procedure. For oracle-certified valid inputs, the paper core
 recovers its result from the maintained partial order and does not consume the
-oracle's sorted output. Transactional sibling-list updates, untimed
-checked-state audits, deterministic replay, and fixed execution policies separate
-correctness instrumentation from the pre-certified \texttt{minimal} call used
-for timing. Under a pre-specified protocol, the formal experiment evaluates 60
-controlled cases at five sizes from $n=32$ to $n=512$, comparing Python sort, a
-complete oracle-backed reference pipeline, and the ordinary-list paper
-reconstruction.
+oracle's sorted output. The revised core propagates update errors without
+rollback and requires failed state to be discarded. Untimed checked-state
+audits, deterministic replay, and fixed policies distinguish diagnostics from
+the pre-certified \texttt{minimal} call. The archived formal experiment
+evaluated the earlier rollback-enabled version on 60 controlled cases at five
+sizes from $n=32$ to $n=512$, alongside Python sort and the complete
+oracle-backed reference pipeline.
 
-All 3600 measured rows in the formal experiment have correct output and no
+All 3600 measured rows have correct output and no
 recorded error, and all 60 untimed checked-state audits pass. The median
 exact-case paper/reference runtime ratio decreases from $3.226$ at $n=32$ to $0.567$ at
 $n=512$; it is above one through $n=128$ and below one at $n=256$ and
@@ -39,4 +39,5 @@ sample. The implementation does not include the specialized theoretical
 backend, and the experiment does not evaluate recognition. No linear-time or
 asymptotic-complexity claim is made for the Python implementation, and the
 reported runtimes remain specific to the tested cases, timing scopes, and
-recorded execution environment.
+recorded execution environment. They do not measure the revised core or the
+effect of removing rollback.
