@@ -49,8 +49,17 @@ use sibling operations instead of ordinary storage fields; backend work
 observations are separate from mandatory stage state. The ordinary backend
 retains its existing safety checks and logical counter meanings. Only
 `ordinary_list` is registered; routing fixtures are not tree implementations.
-Real heterogeneous tree operations, locality proofs and final qualification
-remain pending. The source changes do not inherit the earlier 16-case qualification.
+At that shared-core milestone, real tree operations remained unimplemented.
+The source changes do not inherit the earlier 16-case qualification.
+
+The first [real heterogeneous tree increment](docs/validation/heterogeneous_insert_20261012/README.md)
+now implements external leaves, reversed end ribs, stable pair handles and
+headers, `make_list`, and locally rebalanced insertion at either finger.
+Operation tests and a reproducible work ledger cover these implemented operations.
+This is **partial operation validation**: split/adopt still raise explicitly,
+and the class cannot be selected as a complete sorting backend. Real split,
+ownership transfer, Jordan integration and final qualification remain required;
+no new sorting timings or full amortized-complexity claim are introduced.
 
 The [October 12 chapter compaction](docs/thesis/compaction_20261012/README.md)
 condenses Implementation and Experimental Method while preserving their 38

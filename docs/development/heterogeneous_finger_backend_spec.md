@@ -1,4 +1,6 @@
-# 原论文方向的 sibling-list 后端规格（2026-09-21，尚未实现）
+# 原论文方向的 sibling-list 后端规格（2026-09-21）
+
+2026-10-12 状态：真实树表示、`make_list` 和两端插入已形成[首个部分增量](../validation/heterogeneous_insert_20261012/README.md)。split/adopt 与完整排序接入仍未实现；下文的文献目标界不因此成为已证成的代码复杂度。
 
 ## 来源与核实边界
 

@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-12",
+  "source_base_commit": "d245adfc369744df73b5cc63d170cc429252c5e8",
+  "source_identity": "base commit plus recorded source hashes; generated before the first make/insert commit",
+  "scope": "partial_make_insert_only",
+  "contract_acceptance_passed": false,
+  "backend_ready_for_timing": false,
+  "sorting_ready": false,
+  "actual_tree_tests": {
+    "passed_methods": 31,
+    "skipped_methods": 0,
+    "bounded_history_subscenarios": 256,
+    "bounded_history_insert_count": 8,
+    "note": "The 256 histories are inside one test, not additional test methods or qualified Jordan inputs."
+  },
+  "ordinary_core_regression": {
+    "passed_methods": 173,
+    "skipped_methods": 0,
+    "note": "Existing ordinary backend and routing fixtures, not heterogeneous end-to-end sorting."
+  },
+  "unique_unittest_methods_passed": 204,
+  "cost_probe": {
+    "histories": 12,
+    "raw_rows": 10764,
+    "raw_bytes": 6427097,
+    "raw_sha256": "21c9bb6553e9392a0315d9c89571fab7718e7981848e4723c80e222cc093cedf",
+    "raw_totals_independently_recomputed": true,
+    "compressed_roundtrip_verified": true,
+    "wall_clock_sorting_measurement": false
+  },
+  "commands": {
+    "development_tests.log": "python3 -m unittest discover -s tests -p 'test_heterogeneous_finger_backend.py' -v",
+    "core_regression.log": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:experiments:tests python3 -m unittest test_paper_jordan test_paper_jordan_sort test_sibling_list_backend test_paper_execution_policy test_validate_ordinary_list_extended test_preflight_next_stage test_probe_large_qualification test_certified_paper_jordan test_paper_backend_integration -v",
+    "summary.json": "python3 experiments/probe_heterogeneous_insert.py --output-dir <new-directory>"
+  },
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "source_sha256": {
+    "src/heterogeneous_finger_backend.py": "8331291213c3db73d9057ac4c7263e1f6cda6ecc956ef43bc7aeef70e1ac0c82",
+    "src/sibling_backend_contract.py": "11af23db23720a0695c0d31f90eb0c840921ead9f50e61b096749a39f0042631",
+    "src/sibling_list_backend.py": "f1c600536d37f740e95cf7367755fdeee29cae4e6b8519f6319ad34987cbd6cd",
+    "src/paper_execution_policy.py": "310bb7734da8184dc20a57844cbffd3a3377d60db06731b862306a7d41e7738c",
+    "tests/test_heterogeneous_finger_backend.py": "e072fb2382f2100c7478018a335e68affb7614d88671014e8749864448ebb439",
+    "experiments/probe_heterogeneous_insert.py": "884829566f6652ecd43dda73ef1ee7a79e71387b2f741baa99feb516c7de444f"
+  },
+  "evidence_sha256": {
+    "README.md": "9b0ae256937e44fc21fc48ec6a111fa7e9e7d79cb69f96b459e4e944ce9ba5c8",
+    "core_regression.log": "8a2d4e6e8c79b20cc34f6384b247c40b29a0f4865eaa953c664c8baff4316c36",
+    "development_tests.log": "2b4e7c0e33e11abd10577a9030e6471f98b5c5a19f5ffc329f823ae9715590c7",
+    "operation_work.jsonl.gz": "0b2c15001da3a45c8b4339ea60ff5d743966f96d7d13bd819c5f5efd0b980817",
+    "summary.json": "2fddfe336c11da7da5d85d17ecefdf18a324792981652bc9909782fb288ab3c3"
+  },
+  "paper_source": {
+    "url": "https://www.ibr.cs.tu-bs.de/courses/ws2324/ag/papers/Ch5/Tarjan-vanWyk_1988.pdf",
+    "sha256": "399c5766d7b63d5bbef66e0f68fd08f506d06ac969663389af1adc54fec7f627",
+    "consulted_pages": [
+      171,
+      172,
+      173,
+      174,
+      176
+    ],
+    "erratum_url": "https://epubs.siam.org/doi/epdf/10.1137/0217067",
+    "erratum_scope": "Official text confirms swapped Figures 22/23; original p.176 drawing inspected. No third-party implementation code used."
+  },
+  "not_completed": [
+    "split/local repair",
+    "split header/ownership transfer",
+    "interleaved updates after real split",
+    "complete Jordan tree-backend sorting",
+    "general locality proof",
+    "complete amortized proof",
+    "final two-backend qualification",
+    "matched performance experiments"
+  ],
+  "not_rerun": [
+    "full repository test suite",
+    "abstract full split contracts",
+    "16-case qualification",
+    "thesis compilation"
+  ]
+}

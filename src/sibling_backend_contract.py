@@ -73,6 +73,8 @@ class SiblingBackendSpec:
     def __post_init__(self):
         if not isinstance(self.backend_type, type):
             raise TypeError("backend_type must be a class, not a mutable instance")
+        if getattr(self.backend_type, "sorting_ready", True) is not True:
+            raise TypeError("partial backend is not available for complete sorting")
         for name in REQUIRED_BACKEND_METHODS:
             if not callable(getattr(self.backend_type, name, None)):
                 raise TypeError(f"backend lacks required operation: {name}")
