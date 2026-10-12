@@ -1,7 +1,13 @@
 # FU Berlin LaTeX Thesis Scaffold
 
-Current status (2026-10-11): **COST CORRECTION AND RESOURCE PROBES** under the
+Current status (2026-10-12): **CHAPTER COMPACTION — 68 PHYSICAL PAGES** under the
 [development and thesis revision plan](../docs/plan/remaining_work_20261011.md).
+The [compaction record](../docs/thesis/compaction_20261012/README.md) documents
+the supplied two-chapter revision, reconciliation with shared-core commit
+`71e3e71`, preserved labels, clean compiler diagnostics and visual checks.
+Implementation and Experimental Method now occupy six pages each. This
+intermediate draft still awaits the real backend and new matched experiments.
+
 The sources now describe the current no-rollback failure contract and explicitly
 attribute existing runtime results to the earlier measured implementation.
 The [claim amendments](../docs/thesis/revision_claims_20261011.md) and

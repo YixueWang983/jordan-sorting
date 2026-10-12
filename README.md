@@ -52,6 +52,13 @@ retains its existing safety checks and logical counter meanings. Only
 Real heterogeneous tree operations, locality proofs and final qualification
 remain pending. The source changes do not inherit the earlier 16-case qualification.
 
+The [October 12 chapter compaction](docs/thesis/compaction_20261012/README.md)
+condenses Implementation and Experimental Method while preserving their 38
+existing labels and reconciling the prose with the shared-core interfaces.
+The rebuilt thesis has 68 physical pages, down from 76, with the template and
+historical results unchanged. This is an intermediate draft; the real backend
+and its matched experiments still need to be implemented and written up.
+
 ### Historical Milestones
 
 Week 1, Week 2, Week 3, and Week 4 are complete.

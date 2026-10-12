@@ -1,0 +1,18 @@
+{
+  "reviewed_base": "2be212a11ceee7453d2f8beebc04337d3690d117",
+  "input_repository_modified": false,
+  "affected_files": [
+    "thesis/chapters/implementation.tex",
+    "thesis/chapters/methodology.tex"
+  ],
+  "guards": {
+    "thesis/main.tex": "009b2226b3f3b9fdb33d6a7b1e952f22dab412c3",
+    "thesis/appendix/claim_traceability.tex": "2ba2a4c6569c5d57564c9a2a66baf961b6c62cc4"
+  },
+  "preserved_label_counts": {
+    "thesis/chapters/implementation.tex": 20,
+    "thesis/chapters/methodology.tex": 18
+  },
+  "source_build_or_pdf_check_performed": false,
+  "patch_sha256": "f4e985c4ac72248a9bac692c77b6634f7a1dd9401445b696e94a45c7534060f9"
+}

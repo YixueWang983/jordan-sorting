@@ -1,373 +1,239 @@
 \chapter{Implementation}
 \label{chap:implementation}
 
-% Historical audited Markdown baseline; current amendments are recorded in
-% docs/thesis/revision_claims_20261011.md.
-% docs/thesis/implementation_draft.md
-% SHA-256: 2f849e67fa5a2938e2652692ffb911d0afb568c932246ec6d7a1628fe5ae6675
+% Editorial revision against 2be212a11ceee7453d2f8beebc04337d3690d117.
+% Reconciled with the shared-core interfaces introduced in 71e3e71.
+% This text describes the existing ordinary-list implementation, not a completed
+% efficient backend. Historical claim audits retain their original identity.
 
-\section{Implementation Scope}
+\section{Implementation Scope and Versions}
 \label{sec:implementation-scope}
-
-% Claims: I-01, I-02, I-03
-The implementation contains two deliberately separate sorting paths. The first is an
-oracle-backed reference pipeline. The second is an ordinary-list
-reconstruction of the high-level control flow described for simplified Jordan
-sorting by \textcite{fung1990simplified}. The distinction matters because the
-two paths obtain their output differently and support different claims.
-
-The reference function \texttt{simplified\_jordan\_sort} copies the input, runs
-the certification oracle, constructs structural data for valid inputs, records
-reference trace and statistics fields, and returns the sorted list supplied by
-the oracle. It is a reproducible baseline and structural-observation pipeline;
-it does not recover sorted order by executing the paper-facing sibling-list
-algorithm.
-
-The paper-facing function \texttt{paper\_jordan\_sort\_valid}, by contrast,
-maintains a partial sorted order and returns
-\texttt{state.partial\_order.to\_list()}. For inputs of length at least three,
-its core neither imports the oracle nor reads
-\texttt{oracle\_result["sorted"]}. It therefore recovers the sorted order from
-its own maintained state, subject to the explicit precondition that the input
-has already been certified as a valid Jordan sequence.
-
-\subsection{Implementation Versions}
 \label{sec:implementation-versions}
 
-The implementation described in this chapter is the revised ordinary-list
-version, which terminates on an internal update error without restoring the
-previous state. The archived pilot and formal experiments evaluated an earlier
-version that retained rollback. Both versions use the same paper-facing
-Step~1/2/3 structure and recover output from the maintained partial order, but
-their update costs and failure contracts differ. The source bindings are
-recorded in \cref{sec:appendix-revision-bindings}.
+The code separates an oracle-backed reference pipeline from the ordinary-list
+reconstruction of \textcite{fung1990simplified}. The reference function
+\texttt{simplified\_jordan\_sort} certifies the input, constructs family trees,
+statistics and a trace, and returns the oracle's sorted output. In contrast,
+\texttt{paper\_jordan\_sort\_valid} executes the reconstructed algorithm and
+returns \texttt{state.partial\_order.to\_list()}. Its core does not use the
+oracle's output or a global rank map. It assumes a pre-certified valid Jordan
+sequence with distinct, mutually comparable values.
 
-The revision removes recovery-only backups and exception handlers. It retains
-split planning, output-list construction, ownership updates, and local safety
-checks. The runtime measurements in \cref{chap:results} therefore characterize
-the earlier implementation; they do not measure the revised version or the
-effect of removing rollback.
+This chapter describes the revised ordinary-list implementation without
+rollback. The pilot and formal timings in \cref{chap:results} belong to an
+earlier rollback-enabled version. Removing recovery backups and exception
+handlers did not remove split planning, list construction, ownership updates
+or local checks. Those historical timings therefore measure neither the
+current implementation nor a causal benefit of removing rollback. Source
+bindings are retained in \cref{sec:appendix-revision-bindings}.
 
-\section{Input and Index Model}
+\Cref{chap:algorithm} specifies initialization, both orientations of
+Step~1/2/3, and the executable anchor clarifications. This chapter describes
+how the code represents and maintains that state, rather than repeating the
+algorithm's rules. The efficient finger-search backend remains to be
+implemented and validated; it is not an achieved contribution of the version
+described here.
+
+\section{Data Representation}
 \label{sec:implementation-input-model}
-
-% Claims: I-02, I-03, I-04
-The input sequence is treated as curve order,
-\begin{equation}
-  z_1,z_2,\ldots,z_n.
-\end{equation}
-Paper indices are one-based even though Python storage is zero-based. Each
-input element is represented by an immutable
-\texttt{PointRef(paper\_index, value)} so that an algorithmic point identifier
-cannot be confused with the comparable value stored at that point. Input
-values must be distinct and mutually comparable. The caller owns these
-preconditions; the pure paper core does not classify arbitrary inputs as valid
-or invalid.
-
-For every $i \geq 2$, the finite pair $P_i$ stores the curve-order endpoints
-$z_{i-1}$ and $z_i$. Pairs with even end indices form the upper family, and
-pairs with odd end indices form the lower family. Pair records preserve the
-curve endpoint order separately from the geometric endpoint order. This
-distinction is necessary because the first or second curve endpoint need not be
-the smaller or larger value.
-
-\section{Maintained State}
 \label{sec:implementation-state}
 
-% Claims: I-04, I-05, I-06, I-07
-For inputs of length at least three, the central \texttt{PaperJordanState}
-contains:
-\begin{itemize}
-  \item immutable point records and the number of processed points;
-  \item the partial sorted-order list;
-  \item finite and dummy pair records and the end-index-to-pair mapping;
-  \item the ordinary sibling-list backend and the upper and lower dummy roots;
-  \item a fixed execution policy;
-  \item optional trace and operation counters; and
-  \item mandatory per-iteration stage results.
-\end{itemize}
-This state is shared by one Step~1/2/3 runner. The increasing and decreasing
-branches are explicit mirrored operations, but diagnostics, production
-sorting, and execution modes do not maintain separate algorithm loops.
+An immutable \texttt{PointRef(paper\_index, value)} separates one-based paper
+identity from a point's comparable value. A \texttt{PairRecord} retains curve
+endpoint IDs and family membership; geometric endpoints are obtained by
+comparing their values. The distinction and its consequences for output
+anchors are specified in \cref{sec:algorithm-geometric-anchor}.
+
+\texttt{PaperJordanState} holds these records, the processed-prefix length,
+the partial order, the end-index-to-pair mapping, the sibling backend and two
+family roots. It also holds a fixed execution policy, optional trace and
+counters, and mandatory stage results. Sorting and diagnostics use the same
+runner and mirrored orientation branches.
 
 \subsection{Partial Sorted Order}
 \label{sec:implementation-partial-order}
 
-\texttt{SortedOrderList} is a doubly linked structure bounded by
-identity-based negative- and positive-infinity sentinels. A point-ID mapping
-provides direct access to nodes. Predecessor, successor, insertion before an
-anchor, and insertion after an anchor therefore use local links rather than a
-global scan. Before mutation, an insertion checks that the new value lies
-strictly between its two adjacent values. The final output traversal excludes
-the sentinels and returns the original values in maintained order.
+\texttt{SortedOrderList} is doubly linked, with identity-based infinity
+sentinels and a point-ID-to-node mapping. Neighbor access and insertion use
+local links. Before mutation, insertion checks that the value lies strictly
+between its adjacent values. Final traversal excludes the sentinels and
+returns the original values. Mapping access uses Python dictionaries; its
+cost must not be silently treated as a deterministic worst-case constant.
 
-\subsection{Pair Families and Sibling Lists}
+\subsection{Sibling Lists and Ownership}
 \label{sec:implementation-sibling-lists}
 
-\texttt{PairRecord} stores pair identity, end index, curve-order endpoint IDs,
-family, parent ownership, sibling-list ownership, and ordered child-list IDs.
-Each family also has a dummy pair that acts as the root and never appears as a
-finite list item.
+Each \texttt{SiblingList} stores ordered finite pair IDs and one owner.
+A pair caches its parent and containing-list IDs, together with its ordered
+child-list IDs. Every owned finite pair occurs in exactly one live list,
+whose owner equals its parent. A parent has at most two ordered child lists;
+finite parent chains must reach the same-family dummy without cycles.
+The family dummies are roots, not finite list items.
 
-A \texttt{SiblingList} contains finite pair IDs in increasing order of each
-pair's geometric left endpoint. Every live list has exactly one owner. Every
-owned finite pair occurs in exactly one live sibling list, and its parent must
-equal that list's owner. A finite parent must already be connected to its
-same-family dummy root. Parent chains are acyclic, and one parent may own at
-most two ordered child sibling lists.
-
-The concrete backend uses ordinary Python lists. Boundary insertion constructs
-a new list at either end, copying all existing pair IDs before replacing the
-old list. Thus both front and rear insertion incur copying work proportional
-to the sibling-list length; rear insertion is not an in-place Python
-\texttt{list.append()} operation. Splitting scans the input
-list and materializes new Python lists. These choices make ownership behavior
-explicit and testable but do not reproduce the theoretical data structures or
-their complexity bounds.
+The ordinary backend retains this eager representation. Since commit
+\texttt{71e3e71}, the shared core
+uses boundary-list, owner and extreme-child access interfaces instead of
+reading those fields directly. General pair-liveness checks do not require
+the pair to be a list endpoint. A replacement must implement these accesses
+without reconstructing a full list on the timed path; the interfaces alone
+establish neither its implementation nor its operation costs.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{family_sibling_structure.pdf}
-  \caption[Pair families and sibling-list ownership.]{Pair-family containment
-  and sibling-list ownership in the running
-  example from \cref{fig:algorithm-running-example}. Upper family and lower
-  family pairs remain separate, while each live sibling list has one owner.
-  The local Step~3(b) transition shows $P_2$ moving from a list owned by the
-  upper dummy to a child sibling list owned by the new pair $P_4$.}
+  \caption[Pair families and sibling-list ownership.]{Pair families and
+  sibling-list ownership in the example of
+  \cref{fig:algorithm-running-example}. Step~3(b) transfers $P_2$ from a
+  list owned by the upper dummy to a child list of $P_4$.}
   \label{fig:implementation-family-sibling-structure}
 \end{figure}
 
-\section{Initialization}
-\label{sec:implementation-initialization}
-
-% Claim: I-04
-Lengths zero, one, and two are handled by fixed comparison logic. For
-$n \geq 3$, initialization creates all point records and sorts only the first
-three points into the partial-order list. It then creates
-\begin{align*}
-  P_2 &= \{z_1,z_2\} &&\text{in the upper family},\\
-  P_3 &= \{z_2,z_3\} &&\text{in the lower family}.
-\end{align*}
-One dummy root is created for each family, together with one singleton sibling
-list for $P_2$ under the upper dummy and one for $P_3$ under the lower dummy.
-After initialization, \texttt{processed\_count} is three. Each subsequent
-iteration adds exactly one finite pair and one output point.
-
-\section{Iterative Paper-Facing Control Flow}
+\section{Core--Backend Interface and Update Semantics}
 \label{sec:implementation-control-flow}
 
-% Claims: I-04, I-05
-For each $i$ from four through $n$, the shared runner executes Step~1, Step~2,
-and one orientation of Step~3. The orientation is increasing when
-$z_{i-1}<z_i$ and decreasing when $z_i<z_{i-1}$. Equal values violate the
-distinct-value precondition.
-
-\subsection{Step 1: Predecessor-Side Boundary}
+\subsection{Initialization, Boundaries and Stage State}
+\label{sec:implementation-initialization}
 \label{sec:implementation-step1}
-
-Step~1 finds the predecessor of $z_{i-1}$ in the maintained partial order. On
-an odd iteration, if that neighbor is $z_1$, the algorithm moves once more to
-the predecessor of $z_1$. An infinity sentinel selects the current family's
-dummy pair; otherwise, the boundary is the already processed same-family pair
-that contains the neighboring point.
-
-\subsection{Step 2: Successor-Side Boundary}
 \label{sec:implementation-step2}
 
-Step~2 is the reflected search on the successor side. The odd-index $z_1$
-adjustment moves from an immediate $z_1$ neighbor to the successor of $z_1$.
-Positive infinity selects the family dummy; a finite neighbor selects its
-processed same-family pair. Both boundary selections are stored as immutable
-stage results even when trace collection is disabled.
+The initialization in \cref{sec:algorithm-initialization} materializes all
+point records but orders only the first three values; shorter inputs use
+fixed-size comparisons. Subsequent iterations use the predecessor and
+successor boundaries defined in \cref{sec:algorithm-boundary-selection}.
+The backend handles singleton creation, boundary insertion, splitting and
+ownership transfer; the partial-order structure handles point insertion.
 
-\subsection{Step 3(a): Insert the New Pair}
+Boundary selections and Step~3 results are stored even with trace disabled.
+Later stages consult them to reject incorrect order, repeated stages and
+inconsistent parameters. They are execution state, not merely optional
+logging. Optional backend-work observations are stored separately from these
+mandatory results; complete logical snapshots belong to the audit path.
+
+\subsection{Pair Insertion and Failure Propagation}
 \label{sec:implementation-step3a}
 
-Step~3(a) creates $P_i$ and places it in the current family tree. In the
-increasing branch, the predecessor-side boundary controls insertion. If that
-boundary encloses $z_{i-1}$, $P_i$ becomes a singleton child list of the
-boundary pair. Otherwise, it is inserted immediately after the boundary pair
-in the boundary's existing sibling list and inherits its parent.
+For the insertion rules in \cref{sec:algorithm-step3a-increasing,sec:algorithm-step3-decreasing},
+the core checks the boundary, registers the new pair and calls singleton
+creation or boundary insertion. A later error may leave that registration
+in place. The exception propagates; the state is discarded rather than
+restored or reused. This contract applies to both orientations.
 
-The decreasing branch mirrors this rule with the successor-side boundary. A
-new singleton is created when that boundary encloses $z_{i-1}$; otherwise,
-$P_i$ is inserted immediately before the boundary pair and inherits its
-parent. Necessary boundary checks precede registration. If a later insertion
-fails, the exception propagates and sorting terminates. Registration may
-already have occurred; it is not undone, and the caller must discard the
-failed state.
-
-\subsection{Step 3(b): Split and Transfer Children}
+\subsection{Split Plans and Ownership Transfer}
 \label{sec:implementation-step3b}
 
-Step~3(b) may transfer a contiguous side of an existing sibling list to the
-new pair. In the increasing branch, no split is required if the successor-side
-boundary encloses $z_{i-1}$. Otherwise, its list is partitioned at
-$\operatorname{value}(z_i)$, and the left side becomes a child list of $P_i$;
-the right side remains with the previous owner. The decreasing branch mirrors
-the operation: it uses the predecessor-side boundary and transfers the right
-split side to $P_i$.
+The ordinary backend implements the partition specified in
+\cref{sec:algorithm-step3b-increasing,sec:algorithm-step3-decreasing}
+using an immutable \texttt{SplitPlan}. It records the original sequence and
+both ordered partitions before mutation. The plan supports stale-plan
+rejection, order checks and pair-set conservation; these functions remain
+necessary without rollback.
 
-The backend first creates an immutable \texttt{SplitPlan} without modifying
-live state. The plan records the original pair sequence and its ordered left
-and right partitions. It supports stale-plan rejection and checks that the
-partition preserves order and the input pair set; these responsibilities
-remain necessary without rollback.
+Commit checks the plan and ownership preconditions, prepares nonempty output
+lists and affected child slots, retires the input list, publishes the new
+lists, and rebinds the pairs. Touched-state postconditions are checked before
+success is returned. Rejection covers stale plans, straddling pairs, ownership
+mismatches, cycles, unowned parents and a third child list. Errors during
+mutation or postcondition checks propagate without restoring earlier state.
+Output-list preparation is ordinary update work, not a recovery backup.
 
-After checking the plan and ownership preconditions, commit prepares the
-nonempty output lists and affected child-list slots. It retires the old list,
-publishes the new lists, rebinds pair ownership, and checks the touched state.
-A stale plan, straddling pair, ownership mismatch, cycle, unowned parent, or
-third child list is rejected. An error during mutation or a postcondition
-check propagates without restoring lists, owners, pair links, or list IDs.
-The state may be partially updated and must not be reused.
-
-Preparing new output lists and copying their partitions are ordinary update
-work. They remain in the revised implementation; only the backups and recovery
-branches used to restore a failed update have been removed.
-
-\subsection{Step 3(c): Insert the New Point}
+\subsection{Point Insertion and Completion}
 \label{sec:implementation-step3c}
 
-Step~3(c) inserts $z_i$ into the partial sorted order. With no acquired child,
-the base anchor is $z_{i-1}$. In the increasing branch with children, the base
-anchor is the geometric right endpoint of the rightmost child pair, and
-insertion occurs after that anchor. In the decreasing branch, it is the
-geometric left endpoint of the leftmost child pair, and insertion occurs before
-that anchor.
+The backend exposes the relevant extreme child; the core selects its
+geometric endpoint and applies the separate odd-index $z_1$ anchor rule of
+\cref{sec:algorithm-z1-anchor}. These executable clarifications and their
+counterexamples remain in \cref{sec:algorithm-anchor-clarifications}; they
+are not attributed to fully explicit wording in the 1990 paper. The partial
+order performs the resulting adjacent insertion. Only after it succeeds does
+Step~3(c) advance \texttt{processed\_count}.
 
-An additional odd-index rule handles $z_1$. If $z_1$ lies strictly between the
-base anchor and $z_i$, $z_1$ replaces the base anchor before insertion. The
-boundary adjustment in Steps~1 and~2 and this output-anchor adjustment are
-separate operations. After successful insertion, Step~3(c) advances
-\texttt{processed\_count}; no earlier stage marks the point as processed.
-
-The geometric endpoint rule and the odd-index output-anchor adjustment are an
-executable interpretation of details that are not fully specified in the 1990
-text. They were fixed through minimal counterexamples, the related 1986
-algorithm of \textcite{hoffmann1986sorting}, mirrored cases, and bounded
-exhaustive validation over oracle-certified cases. The implementation is
-therefore described as a paper-facing reconstruction rather than a verbatim
-transcription of every omitted detail.
-
-\section{Output and Certification Boundary}
+\section{Certification, Diagnostics and Replay}
 \label{sec:implementation-certification}
-
-% Claims: I-02, I-03, I-08; limitation L-04
-After the final iteration, \texttt{paper\_jordan\_sort\_valid} traverses the
-maintained partial order and returns its values. It does not delegate output
-recovery to the oracle or reference pipeline.
-
-If an internal update raises an exception, the public sorter and diagnostic
-entry point propagate it. They do not retry the update, return a partial
-result, or substitute the oracle or reference pipeline. Output recovery is
-reached only after the core runner returns successfully.
-
-The safe wrapper \texttt{certified\_paper\_jordan\_sort} establishes the public
-precondition boundary. It first invokes the oracle and rejects an invalid
-candidate. Only a valid candidate enters the paper core through
-\texttt{paper\_jordan\_sort\_valid}. Certification makes the precondition
-explicit but does not convert the pure paper core into a recognition algorithm.
-The oracle call is outside the minimal paper timing boundary.
-
-\section{Validation and Deterministic Replay}
 \label{sec:implementation-validation}
 
-% Claim: I-06
-The production sorter and \texttt{paper\_jordan\_diagnostics\_valid} call the
-same core runner. Diagnostics select the fixed \texttt{checked} policy and
-invoke full state validation after initialization and each completed
-iteration. The audit checks point identity and values, partial-order links and
-order, exact pair membership, sibling ownership, parent chains, stage-result
-types and fields, trace payloads, metrics, and a canonical backend snapshot.
+The wrapper \texttt{certified\_paper\_jordan\_sort} runs the oracle and
+rejects invalid candidates before entering the pure sorter. Certification is
+outside the minimal core's timing scope. An internal exception is propagated
+by both sorting and diagnostic entry points: neither retries, returns a
+partial output, nor falls back to the oracle or reference pipeline. Output
+recovery is reached only after the runner succeeds.
 
-The state validator also performs deterministic replay from the input points
-and compares the replayed partial order, pair/list registry, stage results,
-trace, and metrics with the supplied state. Expected results used by external
-tests do not feed into production state. Full diagnostics are correctness
-evidence outside the timed minimal call, not part of the reported paper sorting
-runtime.
+\texttt{paper\_jordan\_diagnostics\_valid} selects \texttt{checked} and audits
+initialization and every completed prefix. It checks point identity and
+values, partial-order links and order, exact pair membership, ownership and
+parent chains, stage records, trace and metrics. Deterministic replay
+reconstructs a fresh state using the same core, backend type and immutable
+configuration. It compares backend identity, partial order, registries, stage
+results, trace, work observations, metrics, and logical and physical snapshots.
+Unavailable backends fail explicitly rather than reverting to ordinary lists.
+This is same-core state-consistency evidence, not a second independent
+algorithm or a replacement for the external sorted-output check.
 
-Failure-injection regression tests check the revised contract separately from
-valid-input sorting. They verify error propagation from pair insertion and
-split postconditions, including the local checks retained in
-\texttt{minimal}. Public-call tests require a single split attempt and no
-output recovery after an injected failure. These tests do not require the
-failed state to be restored or reused.
+Failure-injection tests separately check propagation from pair insertion and
+split postconditions, including checks retained in \texttt{minimal}.
+Public-call tests require one split attempt and no output recovery after
+failure. They impose no rollback or failed-state reuse requirement.
 
-\section{Execution Policies and Timing Boundary}
+\section{Execution Policies and Observation Costs}
 \label{sec:implementation-policies}
 
-% Claim: I-07
-Five immutable policies select whether the shared runner records trace, counts
-selected operations, and performs complete backend validation after split
-commits. The \texttt{checked} policy enables all three. The \texttt{minimal}
-policy used for paper timing disables all three. Intermediate policies isolate
-trace and counter costs for the timing-contamination study.
+Five immutable policies control trace recording, selected operation counters
+and complete backend validation after split commits. \texttt{checked}
+enables all three; \texttt{minimal} disables them. Intermediate policies
+isolate observation costs. All use the same Step~1/2/3 sequence and retain
+stage results, necessary local checks, input materialization and output
+recovery. The revised implementation has no rollback under any policy.
 
-Policy-controlled observations do not change the Step~1/2/3 sequence. Even in
-\texttt{minimal}, mandatory stage results, local ordering checks, split-plan
-validation, cycle prevention, touched-state postconditions, input
-materialization, and the final \texttt{to\_list()} traversal remain. The
-revised implementation performs no rollback in any execution policy.
+The archived studies instead timed the rollback-enabled implementation,
+including recovery-state preparation in \texttt{minimal}; a successful call
+need not actually roll back to incur that preparation. The historical scope
+is specified in \cref{sec:method-paper-implementation}.
 
-Here, ``local'' describes which objects a safety check concerns, not its
-running time. The shared core checks finite-pair membership with
-\texttt{pair\_ids.count(pair\_id)}, which scans the containing list.
-The backend also checks finite-parent ancestry, scanning the containing
-sibling list at each visited ancestor. These checks remain enabled in
-\texttt{minimal}; they are separate from the optional complete backend audit.
-For a visited ancestor chain $A$, this ancestry check costs
-$O(\sum_{a\in A}|L(a)|)$, where $L(a)$ is the sibling list containing $a$,
-rather than merely a constant amount of work per ancestor.
+The ordinary backend reports the counters \texttt{split\_items\_scanned} and
+\texttt{split\_items\_copied} each add the input-list length once per
+successful split. They are logical split-volume measures, not exact
+interpreter-level access counts. They omit boundary-insertion copies,
+membership scans and repeated validation/materialization passes. Retained
+historical counter names do not establish that splits dominate runtime.
+Logical volumes, directly observed work and wall-clock timings are therefore
+distinct forms of evidence. The shared core accumulates backend-reported
+work under an identified metric schema; it does not infer tree copying from
+the input-list length.
 
-The archived timing and timing-contamination studies used the earlier
-implementation, in which recovery backups and handlers were also present in
-\texttt{minimal}. Their measurements retain that historical scope, as
-specified in \cref{sec:method-paper-implementation}. The policy switches and
-logical operation counters do not account for every Python-level copy or
-backup; unchanged counter values alone cannot establish unchanged runtime or
-a speed improvement after the revision.
-
-In particular, \texttt{split\_items\_scanned} and
-\texttt{split\_items\_copied} each accumulate the input-list length once per
-successful Step~3(b) split. They are logical split-volume measures, not exact
-counts of Python element visits or copies. They omit boundary-insertion
-copies, membership scans, and repeated validation or materialization passes.
-Logical counters, directly observed element or node accesses, and wall-clock
-measurements must therefore be interpreted separately. The archived counter
-names and values are retained; they do not establish that splits dominate
-the complete runtime.
-
-\section{Implementation and Complexity Boundary}
+\section{Actual Costs and Complexity Boundary}
 \label{sec:implementation-complexity}
 
-% Claims: I-05, I-09; limitations L-01, L-09
-The linked partial order supports adjacent access and insertion through local
-links. The sibling backend, however, copies the entire current sibling list
-at either insertion boundary, and splitting materializes lists and rebinds
-their items. Membership scans and ancestor checks add costs even in
-\texttt{minimal}. Complete checked validation adds further state audits.
+At either boundary, insertion constructs a new Python list containing the
+existing IDs and the new pair. Rear insertion is not an in-place
+\texttt{list.append()}. Both orientations copy work proportional to the
+current sibling-list length. Split additionally scans and partitions the
+list, materializes its outputs and rebinds pair ownership.
 
-A source-level lower bound is visible without any split. For the valid
-strictly increasing input $(1,2,\ldots,2m)$, $m\geq2$, initialization creates
-one finite pair in each family. Subsequent pairs extend the two sibling lists
-to lengths $m$ and $m-1$, while Step~3(b) skips splitting. The number of
-existing pair IDs copied by boundary insertion is therefore
+``Local'' describes the objects a safety check concerns, not constant cost.
+The ordinary backend's liveness check uses
+\texttt{pair\_ids.count(pair\_id)} for membership,
+and backend parent checks scan the containing list at each visited ancestor.
+For an ancestor chain $A$, this contributes
+$O(\sum_{a\in A}|L(a)|)$, where $L(a)$ contains $a$, rather than a constant
+per ancestor. These costs remain in \texttt{minimal}; complete checked
+validation and prefix replay add separate untimed work.
+
+The valid increasing input $(1,2,\ldots,2m)$, $m\geq2$, exposes a quadratic
+copying lower bound even without split. Starting from one pair per family,
+boundary insertions grow the sibling lists to $m$ and $m-1$ while Step~3(b)
+skips splitting. The number of existing pair IDs copied is
 \begin{equation}
   \sum_{j=1}^{m-1}j+\sum_{j=1}^{m-2}j=(m-1)^2.
   \label{eq:implementation-boundary-copy-lower-bound}
 \end{equation}
-Thus this input family incurs $\Omega(n^2)$ copying work in the current
-implementation, including in \texttt{minimal}. This follows from the list
-construction and control flow, not from fitting runtime curves. It is a
-lower bound for this source of work, not a tight bound on the complete
-algorithm for all valid inputs.
+Thus this input family incurs $\Omega(n^2)$ copying, including in
+\texttt{minimal}. This is a source-derived bound on one component of work,
+not a curve fit or a tight total bound for all inputs.
 
-Consequently, this implementation does not instantiate the level-linked search
-trees of \textcite{hoffmann1986sorting}, the heterogeneous finger trees of
-\textcite{fung1990simplified}, or a theoretical linear-time split/update
-engine. Its purpose is to make the paper-facing control flow, ownership
-transitions, independent output recovery, and correctness checks executable.
-No linear-time guarantee or tight overall complexity bound is claimed for
-the ordinary-list backend.
+The ordinary backend instantiates neither the level-linked structure of
+\textcite{hoffmann1986sorting} nor the heterogeneous finger-search structure
+of \textcite{fung1990simplified}. An efficient replacement must account for
+its search, rebalancing, ownership, metadata and shared-core checks as well as
+initialization and output. A fast tree split alone does not establish an
+operation bound for the complete update, and none is claimed here for a
+backend that has not yet been implemented and validated.

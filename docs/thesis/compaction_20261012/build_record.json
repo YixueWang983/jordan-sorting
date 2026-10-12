@@ -1,0 +1,144 @@
+{
+  "date": "2026-10-12",
+  "integration_base_commit": "71e3e71b52b0bb057713ff7aeb1599ae24baede3",
+  "supplied_base_commit": "2be212a11ceee7453d2f8beebc04337d3690d117",
+  "source_identity": "integration base plus build_input_sha256; generated before this thesis commit",
+  "supplied_zip_sha256": "cf25c2992fbf3a845d2939918ab7a3363fc6040ba04183c6fe27c839a7f962e1",
+  "reconciliation": [
+    "implementation access interfaces and shared-core source identity 71e3e71",
+    "mandatory stage state versus optional backend observations",
+    "fresh same-backend replay and schema identity",
+    "ordinary membership scan remains inside backend",
+    "backend-reported logical counters, no inferred tree copying",
+    "one long clock identifier made breakable without changing its meaning"
+  ],
+  "pdf": {
+    "output_name": "Jordan_Sorting_精简稿_2026-10-12.pdf",
+    "physical_pages": 68,
+    "sha256": "29b2c951b9135d9e4baa7c992640e8b9e93fbe03f1dbd83a32ae709941c8a616",
+    "bytes": 496339
+  },
+  "previous_pdf": {
+    "output_name": "Jordan_Sorting_成本修订稿_2026-10-11.pdf",
+    "physical_pages": 76,
+    "sha256": "3da775499adf7cb5580b68812a7df9cd5e2bc9d88790dc1d71aec9320c301896"
+  },
+  "net_pages_removed": 8,
+  "physical_regions_including_blanks": {
+    "frontmatter": {
+      "start": 1,
+      "end": 12,
+      "pages": 12
+    },
+    "body_chapters_1_to_8": {
+      "start": 13,
+      "end": 62,
+      "pages": 50
+    },
+    "appendix": {
+      "start": 63,
+      "end": 66,
+      "pages": 4
+    },
+    "bibliography": {
+      "start": 67,
+      "end": 68,
+      "pages": 2
+    }
+  },
+  "revised_chapter_pages": {
+    "implementation": {
+      "start": 35,
+      "end": 40,
+      "pages": 6
+    },
+    "methodology": {
+      "start": 41,
+      "end": 46,
+      "pages": 6
+    }
+  },
+  "blank_pages": [
+    2,
+    4,
+    10,
+    12,
+    34,
+    66
+  ],
+  "preserved_original_labels": {
+    "thesis/chapters/implementation.tex": 20,
+    "thesis/chapters/methodology.tex": 18
+  },
+  "final_compiler_and_bibliography_issues": [],
+  "visual_review": {
+    "overview_physical_pages": 68,
+    "detailed_physical_pages": [
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46
+    ],
+    "blank_candidates_confirmed": true
+  },
+  "template_algorithm_appendix_historical_results_and_production_code_changed": false,
+  "runtime_regressions_rerun": false,
+  "supplied_helper_fixture_tests_rerun": false,
+  "build_command": "mkdir -p build/texmf-var build/texmf-cache; TEXMFVAR=build/texmf-var TEXMFCACHE=build/texmf-cache latexmk -lualatex main.tex",
+  "build_environment": {
+    "LuaHBTeX": "1.24.0 (TeX Live 2026)",
+    "Biber": "2.22 native arm64",
+    "Latexmk": "4.88",
+    "note": "Existing local toolchain; font cache paths relative to the clean thesis copy."
+  },
+  "build_input_sha256": {
+    "thesis/.gitignore": "b02907848ab49e4bc90cb963b9b13800603ba33474727c72177b2cb24fb08232",
+    "thesis/.latexmkrc": "45796ac96a2bcd2aa97a0c731f443ea357cd14128874aada78709e8ce6dfe3dd",
+    "thesis/Makefile": "23e9deaa72a978e40ea894eacfa98a32456e46d045e61ce96f07cd29cf86c253",
+    "thesis/appendix/claim_traceability.tex": "08b754306159a1d9a1b970352e4004061a54fe073689953bd504252d5157f60f",
+    "thesis/bibliography.bib": "cb124ee77e3fe0f6f5c898431ab67af3ef64a843377e4220496e93542867b2aa",
+    "thesis/chapters/algorithm.tex": "9895dee62699b28b7889ba8d83a4f6a0980692e7c91c5d7d3fe18868acb15d87",
+    "thesis/chapters/background.tex": "bc01c0ccb4a40745e0b3df096e42630f429c4c72098b4b719e082bc5660cb12e",
+    "thesis/chapters/conclusion.tex": "20c7f4330845be7449f2136c0653b6a6274b8d40cda9e9e7d173432954d3156f",
+    "thesis/chapters/implementation.tex": "7433630e9f2e9163812c88f4d6a526ce42c796f7a6ca422736429ce945037fc6",
+    "thesis/chapters/introduction.tex": "794bea4613ef35117b24ffffe2c6208033100cac484efee90104d8f000adbfb7",
+    "thesis/chapters/limitations.tex": "97b7f8edabb20eebdbae4c4e4022c112ddffbfd3b65feede579e9d73a87b380b",
+    "thesis/chapters/methodology.tex": "af03ab9bf0890a18c30a8f7437f945a73db218c63a1f291e0bc0cfd8ac1ebf5f",
+    "thesis/chapters/results.tex": "00b9be4c86ef11391a81aee570a5af064153901febd6a60861969cd8fe757fba",
+    "thesis/config/metadata.tex": "91134a779c5ffd6857285f4230360700f4d6a174d7d586b0bacd3b55bdd4579c",
+    "thesis/figures/family_sibling_structure.pdf": "6160c56c3f51eb6ff2348427b06024e661543400b1be60a0529fc3ac79d1f752",
+    "thesis/figures/formal_experiment_pipeline.pdf": "159542a54791acc93be1f82c388b3056b9379575a688c2188d15f04add6f7ad8",
+    "thesis/figures/jordan_sorting_problem.pdf": "3cc1d95222f09940ef9516268a45f37276ed8c5e8e986c733c3ad8a1eba09f09",
+    "thesis/figures/running_example_reconstruction.pdf": "f36fccb79ad29f3414385e97b0b6ac238f527567ca1273d14b124a485d6bbe09",
+    "thesis/figures/source/family_sibling_structure.tex": "3acf769706606c13c4842819ac2cebcc85a5c971eee38e7cfcffb46240786d93",
+    "thesis/figures/source/figure_style.tex": "933b2af4110bc1898726b8b9016adc24dc635b77077853dcab016ff91fdee823",
+    "thesis/figures/source/formal_experiment_pipeline.tex": "012d8379a4daa96afc0e0750edf795a99fe34b3bbd578a7991ef074f40f89930",
+    "thesis/figures/source/jordan_sorting_problem.tex": "eb782ed3bec6ebf5388ab07c838088b10d3226771fbbef1ba0d4244858997153",
+    "thesis/figures/source/running_example_reconstruction.tex": "435e6f2914a81ccbc930091b8d7dc163b3d1941d801c6e45e93bfcf344a2ef97",
+    "thesis/figures/source/step3c_anchor_z1_anomaly.tex": "b00432a7f457046b1ad6b856004a120cfef012f1e100295dfea28e1a26d4873e",
+    "thesis/figures/step3c_anchor_z1_anomaly.pdf": "f5d8522b2d7a5e440eccde5adb31cf7d3009a499de59fe1452100f852bb6c268",
+    "thesis/figures/week12_runtime_by_size.pdf": "4b29bd6c391c4591564cd761b8a0a836609a93e6d9c87746432eeee78f5ce432",
+    "thesis/figures/week12_runtime_ratio_by_size.pdf": "31c0e63010b8c8b83cafbe8b1fde6ad9744954d7eb26580bba4f8b3b312beacd",
+    "thesis/frontmatter/abstract.tex": "c0d5beaaba16501f6d4cf6f15b07c2c15675172ea4def37cf5da836763a54286",
+    "thesis/frontmatter/titlepage.tex": "ed4966cc8d7d00dd4673d3474d1773be4eb0fa0fda4a84501cedf1a2d39f8f14",
+    "thesis/main.tex": "2912e0b4614193b004ed1c6555a16929745eee5866c46fc04dca9191829c9100"
+  },
+  "evidence_sha256": {
+    "build_console.log": "6306f64f6f397a4669c3b077da1db16edb73d41dce09e57cb735b858975365c2",
+    "main.blg": "b3b5ca537cbc95561904ea65d1bae9c2746974fb08de9a5d96de227b30745d0a",
+    "main.log": "09227c25f31140b9093957e00125372e72c2642b9045cb33f77cb52e3d64b85c",
+    "page_inventory.json": "469971214f47bdd4e988e6726c2e8593fec68fcf2577ea3b5d572b24a95a2c52",
+    "preparation_report.json": "2b80bb4f80f101b83daec1759591e8b1265cc5d123232882053ea69be7289dea",
+    "supplied_bundle.zip": "cf25c2992fbf3a845d2939918ab7a3363fc6040ba04183c6fe27c839a7f962e1",
+    "supplied_page_budget.md": "cee7a098a417a304754001f66495a44b57b0c8b023805ab9fec8fb7c3c53fac5"
+  },
+  "completion_boundary": "Intermediate compaction only; real efficient backend, new qualification/timing, and final thesis integration remain unfinished."
+}

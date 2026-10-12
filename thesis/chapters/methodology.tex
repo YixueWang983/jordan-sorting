@@ -1,366 +1,221 @@
 \chapter{Experimental Method}
 \label{chap:methodology}
 
-% Historical audited Markdown baseline; version-scope clarification is recorded
-% in docs/thesis/revision_claims_20261011.md.
-% docs/thesis/experimental_methodology_draft.md
-% SHA-256: bd37eafdc477fbc5f18bc0a05e513ea224df09a631fe62be3673b53afc757e0a
+% Editorial revision against 2be212a11ceee7453d2f8beebc04337d3690d117.
+% This chapter still describes the archived experiments. New final-backend
+% qualification and matched timing must not be inferred from this text.
 
-\section{Methodological Positioning}
+\section{Study Scope and Version Boundary}
 \label{sec:method-positioning}
-
-Experimental algorithmics complements abstract analysis by studying concrete
-algorithms, implementations, inputs, and machines under an explicit design
-\parencite{mcgeoch2012guide}. In the related algorithm-engineering perspective,
-design, analysis, implementation, and experimental evaluation form a feedback
-cycle rather than interchangeable sources of evidence
-\parencite{sanders2009engineering}. This thesis uses that separation to keep
-the historical theorem, the ordinary-list implementation, and the measured
-execution scopes distinct.
-
-Performance measurements also require explicit treatment of uncertainty and
-experimental setup. \Textcite{kalibera2013benchmarking} motivate repetition
-and reporting of variation, while \textcite{mytkowicz2009wrong} demonstrate
-that apparently innocuous setup choices can bias performance conclusions. The
-pre-specified protocol therefore retains repeated raw measurements, rotates algorithm
-positions, records the runtime environment, and limits inference to the tested
-cases and machine. These references motivate the design; the study does not
-claim to implement every hierarchical statistical procedure proposed in that
-literature.
-
-\section{Pilot and Formal Experiments}
 \label{sec:method-experiment-stages}
-
-The evaluation was conducted in two stages: a pilot experiment used to verify
-the protocol and a subsequent formal experiment used as the thesis-facing
-quantitative evidence. Their archived repository identifiers are retained only
-for provenance. The pilot is used in this thesis solely for the directional
-replication analysis; all primary quantitative results come from the formal
-experiment.
-
-Both archived stages precede the removal of rollback. This chapter describes
-their original protocol and measured implementation, not a new execution of
-the revised core. The revised failure contract in
-\cref{sec:implementation-versions} does not change the scope of these
-historical measurements.
-
-\section{Study Scope}
 \label{sec:method-scope}
 
-% Claims: M-01, M-02, M-09; limitations L-02, L-05, L-07
-The formal experiment evaluates sorting on oracle-certified valid Jordan
-sequences. It does not evaluate recognition of arbitrary candidates or
-invalid-input classification. Recognition remains a separate experimental
-question, and no formal-experiment result is used as recognition evidence.
+Experimental algorithmics studies concrete implementations, inputs and
+machines under an explicit design \parencite{mcgeoch2012guide}. Algorithm
+engineering connects design, analysis, implementation and evaluation without
+treating their evidence as interchangeable \parencite{sanders2009engineering}.
+This study accordingly separates source theorems, implementation costs and
+measured runtime.
 
-Within this scope, the experiment asks three empirical questions:
-\begin{enumerate}
-  \item Do all three implementations return the expected sorted output on the
-        pre-specified valid cases?
-  \item How do their measured-call runtime distributions vary across the
-        tested sizes and controlled input families?
-  \item What descriptive relationships appear between structural
-        measurements, checked paper-operation counters, and runtime?
-\end{enumerate}
-The design answers these questions for one fixed collection of cases and one
-recorded execution environment. Five input sizes are not used to infer
-asymptotic complexity, and exploratory relationships are not interpreted as
-causal effects.
+This chapter describes the archived pilot and formal experiments, both
+conducted before rollback removal. The formal run supplies the quantitative
+results in \cref{chap:results}; the pilot is used only for directional
+replication. Neither measures the current no-rollback version or an efficient
+tree backend. A new matched comparison requires its own final-source input
+qualification and measurement evidence.
 
-\section{Pre-Specified Formal Protocol}
+The archived study concerns sorting pre-certified valid Jordan sequences,
+not recognition of arbitrary candidates. It asks whether outputs are correct
+on the selected cases, how measured-call distributions vary with size and
+input family, and what descriptive relationships appear between structure,
+logical counters and runtime. Repetition and dispersion reporting address
+measurement variation \parencite{kalibera2013benchmarking}; controlled
+ordering and recorded setup address possible benchmark bias
+\parencite{mytkowicz2009wrong}. The study does not implement all statistical
+procedures in those references or infer asymptotic complexity from five sizes.
+
+\section{Inputs and Qualification}
 \label{sec:method-protocol}
+\label{sec:method-case-audit}
 
-% Claims: M-02, M-03; limitation L-08
-The formal protocol was fixed before execution, and its complete configuration
-was written before case generation or timing. The experiment uses the five
-input sizes
-\begin{equation}
-  n \in \{32,64,128,256,512\}.
-\end{equation}
+The formal protocol and configuration were fixed before generation and timing.
+It uses $n\in\{32,64,128,256,512\}$, with one deterministic
+\nolinkurl{flat_valid}, one deterministic \nolinkurl{nested_valid}, and ten
+seeded \nolinkurl{incremental_valid} cases per size: 60 cases in total.
+The generation seed is \texttt{20261201}; incremental seeds are deterministic
+functions of size and case identity. Size summaries therefore give ten times
+as many cases to the incremental construction as to either deterministic
+family. Family-specific summaries preserve this imbalance. The generators
+are controlled constructions, not a probability sample of all valid inputs.
 
-At each size, the generator produces one \nolinkurl{flat_valid} case, one
-\nolinkurl{nested_valid} case, and ten seeded \nolinkurl{incremental_valid}
-cases. This gives twelve exact cases per size and sixty cases overall. The base
-generation seed is \texttt{20261201}; each incremental case receives a
-deterministic size- and case-specific seed. The flat and nested constructions
-are deterministic.
+The runner generates each sequence once, checks its length and hashes its
+serialization. Duplicate sequence hashes within a family--size group are
+rejected. This historical duplicate rule is not a claim of global rank-based
+uniqueness. The stored sequence is shared as the source for all three
+algorithms, preserving matched input identity.
 
-The family balance is intentionally unequal. A size-level summary contains ten
-incremental cases but only one flat and one nested case, so it mainly reflects
-the incremental construction. Family-specific summaries preserve that
-distinction. These controlled generators do not represent a probability sample
-from all valid Jordan sequences.
+Before any warm-up, every case must pass oracle validity and distinctness
+checks, structural profiling, and one untimed checked diagnostic of the paper
+implementation. Generation, certification or profiling failure stops the run
+rather than silently dropping the case. The diagnostic output is compared
+with the external oracle-sorted result, must process all $n$ points, and must
+pass state invariants. Its trace count and paper metrics are archived.
+All 60 audits finish before measurement. This external comparison does not
+supply sorted output to the paper core; its certification boundary is
+specified in \cref{sec:implementation-certification}.
 
-\section{Compared Implementations}
+\section{Compared Implementations and Call Scopes}
 \label{sec:method-implementations}
-
-% Claims: M-04, M-06, M-07; limitation L-03
-The pre-specified algorithm set contains three implementations.
 
 \subsection{Python Sort}
 \label{sec:method-python-sort}
 
-The \nolinkurl{python_sort} baseline is the ordinary optimized sorting
-implementation. Its timed call returns a sorted list and does not report
-Jordan validity or structure.
+\nolinkurl{python_sort} returns a sorted list using Python's optimized sorting
+implementation. Its call performs no Jordan validity or structure analysis.
 
-\subsection{Simplified Reference Pipeline}
+\subsection{Reference Pipeline}
 \label{sec:method-reference-pipeline}
 
-The \nolinkurl{simplified_jordan_reference} entry times the complete
-\texttt{simplified\_jordan\_sort} function. That call includes oracle
-validation, operation-state preparation, family-tree construction for valid
-inputs, structural statistics, reference trace construction, and serializable
-result assembly. The timed result is therefore a complete oracle-backed
-reference pipeline rather than only a sorting primitive.
+\nolinkurl{simplified_jordan_reference} times the complete
+\texttt{simplified\_jordan\_sort} pipeline: oracle validation, operation-state
+preparation, family-tree construction, structural statistics, reference trace
+and serializable result assembly. It is not a sorting-only primitive.
 
-\subsection{Paper Ordinary-List Implementation}
+\subsection{Historical Ordinary-List Core}
 \label{sec:method-paper-implementation}
 
-The fixed protocol registry names this entry
-\nolinkurl{simplified_jordan_paper_ordinary_list}.
+The protocol entry \nolinkurl{simplified_jordan_paper_ordinary_list} calls
+\texttt{paper\_jordan\_sort\_valid} in \texttt{minimal} mode after external
+qualification. In the measured rollback-enabled version, that mode suppresses
+trace, selected counters and complete backend commit audits, but retains
+Step~1/2/3, local checks, stage results, recovery backups and handlers, and
+output recovery. Recovery preparation is timed even when no exception causes
+an actual rollback. The current no-rollback core requires separate timing.
 
-The archived timed call invoked \texttt{paper\_jordan\_sort\_valid} with execution mode
-\texttt{minimal} after the exact case has already passed oracle certification
-and a separate checked diagnostic. In that measured version,
-\texttt{minimal} disabled trace recording, selected operation counters, and
-complete backend commit validation while retaining the ordinary-list
-Step~1/2/3 work, local safety checks, stage results, recovery backups and
-rollback handlers, and final output recovery. Retaining rollback does not mean
-that a failure and restoration occurred during successful measured calls;
-the preparation of recovery state was part of the implementation being timed.
+Consequently, a paper/reference ratio compares different call scopes. The
+reference includes recognition and structural processing; the paper core uses
+a pre-certified input. Their ratio is not a like-for-like end-to-end speedup.
+This qualification applies to all historical comparison tables and figures.
 
-The current version removes that recovery work, while retaining the policy
-switches described in \cref{sec:implementation-policies}. It requires a
-separate experiment before runtime results can be attributed to it.
-
-These timed scopes are deliberately different. In particular, the reference
-call includes certification and structural/reference work, whereas the paper
-call uses a pre-certified input and times only its minimal sorting core. A
-paper/reference ratio is therefore a pipeline-scope comparison, not a
-like-for-like end-to-end speedup.
-
-\section{Case Construction and Pre-Timing Audit}
-\label{sec:method-case-audit}
-
-% Claims: M-01, M-03, M-06, M-11
-For each family, size, and case number, the runner generates the sequence once,
-checks its length, and computes a SHA-256 digest of the serialized sequence.
-Duplicate sequence hashes within a family-size group are rejected. The exact
-sequence object is retained for all algorithms so that comparisons use matched
-inputs.
-
-Every sequence is passed to the oracle before any warm-up or measured call.
-The runner requires a valid result with distinct values. It then computes the
-structural profile, including interval counts, roots, nesting, depth, density,
-and category fields. Failure at generation, certification, or profiling stops
-the formal experiment rather than silently dropping the case.
-
-The paper implementation also receives one untimed checked-state audit per
-exact case through the checked diagnostic. The diagnostic output must match
-\texttt{oracle\_result["sorted"]}, process all $n$ points, and report valid
-state invariants. Its trace length and complete paper-operation metrics are
-saved in \nolinkurl{case_audit.csv}. All sixty cases finish certification and
-their checked-state audit before the first warm-up begins. This audit compares
-independently constructed outputs; it does not make the paper core consume
-oracle-sorted output, whose boundary is described in
-\cref{sec:implementation-certification}.
-
-\section{Timing Procedure}
+\section{Measurement Procedure and Environment}
 \label{sec:method-timing}
 
-% Claims: M-05, M-06, M-07, M-11, M-12
-Each exact case-algorithm cell receives five warm-up calls followed by twenty
-measured calls. The twenty calls estimate the timing distribution for one
-fixed case and algorithm; they are not treated as twenty independent generated
-inputs. Repeated calls and retained dispersion expose within-cell timing
-variation; they do not convert repeated measurements of one input into
-independent input samples
+Each case--algorithm cell receives five warm-ups and twenty measurements.
+Those twenty calls describe variation for one fixed input; they are not twenty
+independent generated cases. Raw measurements are retained alongside summaries
 \parencites{mcgeoch2012guide}{kalibera2013benchmarking}.
 
-For every warm-up and measured call, the runner creates a fresh Python list
-from the stored sequence before starting the clock. It records elapsed time
-with \texttt{time.perf\_counter\_ns()} around only the selected algorithm call.
-If garbage collection is enabled before the call, the runner disables it for
-the timed region and restores the caller's original GC state afterward. Each
-algorithm's own output construction or recovery remains inside that call:
-Python sort constructs its list, the reference pipeline constructs its result
-dictionary, and the paper core executes
-\texttt{state.partial\_order.to\_list()} before returning.
+For each call, the runner prepares a fresh list from the stored sequence
+before starting \nolinkurl{time.perf_counter_ns()}. Only the selected algorithm
+call is timed. If GC was enabled, it is disabled for that region and its prior
+state restored afterward. Internal initialization, input materialization and
+output construction remain in the call: Python constructs its list, the
+reference constructs its result dictionary, and the paper core traverses its
+maintained partial order. Preparing the runner's input copy outside timing
+does not remove copies performed inside an algorithm.
 
-After the timer stops, the runner normalizes the already constructed return
-value, for example by reading \texttt{result["sorted"]} from the reference
-result. It then compares the normalized list with the oracle-sorted reference
-and records correctness or error fields. These runner-level operations are
-outside timing; they do not move any algorithm's own output construction
-outside its timed call.
+After the timer stops, the runner extracts the already constructed output,
+compares it with the expected sorted sequence and records correctness or
+errors. Warm-up failure aborts execution. A measured-call exception produces
+an error row without a valid timing, rather than disappearing from the data.
+Acceptance requires positive times, correct outputs, successful qualification
+and no errors for every expected measured row.
 
-Warm-up failures abort the experiment. A measured-call exception is retained
-as an error row with no valid timing rather than omitted. The formal evidence
-contract and validator require every archived measured row to have a positive
-time, valid oracle certification, correct output, a passed case audit, and no
-error.
-
-\section{Scheduling and Noise Controls}
+\subsection{Scheduling and Noise}
 \label{sec:method-scheduling}
 
-% Claims: M-08, M-09
-Case execution order is a deterministic shuffle under seed \texttt{20261203}.
-Algorithm order is derived from seed \texttt{20261202} and the case index. Within
-the twenty measured rounds, the initially shuffled three-algorithm order is
-rotated cyclically, distributing algorithms across first, second, and third
-positions. The warm-up order is generated by the same deterministic rule.
+Case order is shuffled deterministically with seed \texttt{20261203}.
+Algorithm order derives from seed \texttt{20261202} and case identity; cyclic
+rotation over measured rounds distributes the three algorithms among the
+three positions. Warm-ups follow the same scheduling rule. This limits fixed
+position bias but does not eliminate operating-system, frequency, thermal or
+background-load effects \parencite{mytkowicz2009wrong}.
 
-This schedule improves reproducibility and limits a fixed position bias, but it
-does not remove all operating-system, thermal, frequency, or background-load
-noise. This precaution is especially relevant because setup and ordering
-choices can themselves introduce measurement bias
-\parencite{mytkowicz2009wrong}. Variability remains visible in the raw calls
-and case summaries.
+\subsection{Recorded Environment}
+\label{sec:method-environment}
+
+The accepted formal run records Apple M4/arm64, \SI{16}{\giga\byte} RAM,
+ten logical CPUs, macOS~26.6 and CPython~3.12.4. Preflight records a clean
+worktree matching remote \texttt{main}, AC power, full battery, low-power mode
+disabled, low stable load, sufficient storage and no readiness warnings.
+These are properties of that archived execution, not assertions about the
+present development machine. Environment details and source identity remain
+bound to the run. Pilot and formal absolute times are not pooled; replication
+uses within-run ratios and direction only.
 
 \section{Aggregation and Statistical Units}
 \label{sec:method-aggregation}
 
-% Claims: M-05, M-09, M-10, M-11; limitations L-02, L-07
-The raw evidence contains one row per exact case, algorithm, and measured
-round:
-\begin{equation}
-  60\ \text{cases} \times 3\ \text{algorithms} \times
-  20\ \text{measured calls} = 3600\ \text{raw rows}.
-\end{equation}
+The formal archive contains
+$60\times3\times20=3600$ measured rows and 180 case--algorithm summaries.
+For each cell, the primary statistic is the median of twenty calls; Q1, Q3,
+IQR, mean and sample standard deviation describe dispersion. Quartiles use
+the median-of-halves convention, and $\operatorname{IQR}=Q3-Q1$.
 
-The first aggregation level is the exact case-algorithm cell, giving 180 case
-summaries. Its primary statistic is the median of the twenty measured calls.
-Q1, Q3, IQR, mean, and sample standard deviation are retained to expose
-dispersion. Q1 and Q3 use the median-of-halves convention: after sorting the
-measured times, Q1 is the median of the lower half, Q3 is the median of the
-upper half, and
-\begin{equation}
-  \operatorname{IQR}=Q3-Q1.
-\end{equation}
+The 45 family--size--algorithm groups are computed from case medians, as are
+higher-level tables. Runtime ratios are calculated within each input from
+its algorithm medians and then aggregated with equal case weight. They are
+not ratios of independently pooled raw distributions. This keeps the exact
+input as the comparison unit while leaving family imbalance visible.
 
-The second stored level groups case medians by family, size, and algorithm,
-giving 45 group summaries. Higher-level size and family tables used in the
-analysis are also constructed from exact-case medians, not by pooling all raw
-calls. This keeps the exact generated case as the unit of comparison.
+Structural and counter relationships are exploratory associations over matched
+case records, not causal effects or a decomposition of total runtime. In
+particular, the logical split-volume counters omit other copying and checking
+work, as explained in \cref{sec:implementation-policies}.
 
-Runtime ratios are first calculated within each exact case from its algorithm
-medians. The case ratios are then aggregated with equal weight by size, family,
-or family-size. This avoids dividing two independently pooled runtime
-distributions and preserves the matched-case design.
-
-Structural and checked-counter correlations are descriptive analyses over
-matched case records. They are reported with explicit sample composition and
-are not used as causal estimates, formal cost decompositions, or complexity
-proofs.
-
-\section{Evidence and Version Binding}
+\section{Evidence Binding and Acceptance}
 \label{sec:method-evidence}
 
-% Claims: M-11, M-13
-The formal evidence directory is
-\nolinkurl{results/runs/week12_formal_sorting_v1__run001}. It records protocol
-version \nolinkurl{week12_formal_sorting_v1}, source commit
-\nolinkurl{98868b1b705f6d5f22404ee8ad7b88ad7a834f52}, and manifest SHA-256
-\nolinkurl{f42ab0b77cb7ea91ed66c66bc6947a81cd8746b5d2b67d526472260d2b47f850}.
-The pilot evidence used only for directional replication is archived at
-\nolinkurl{results/runs/week11_pilot_v1__run003}; it records protocol version
-\nolinkurl{week11_pilot_v1}, source commit
-\nolinkurl{01f6480fe179dcbe0f99486be86384b61dd4121f}, and manifest SHA-256
-\nolinkurl{ef6a9d17df644eab8c3284d04dc356ce4b68b4efdfc0da7eecb5a9c7136c5141}.
+The formal run is \nolinkurl{week12_formal_sorting_v1__run001}, bound to source
+commit \texttt{98868b1}; the pilot is
+\nolinkurl{week11_pilot_v1__run003}, bound to \texttt{01f6480}.
+Full commit IDs, manifests, configurations, hashes and reproduction details
+remain in the versioned repository archives under \nolinkurl{results/runs/}
+and in the evidence index of \cref{sec:appendix-revision-bindings}.
+They are not replaced by an unversioned reference to the latest source.
 
-Before generation, the formal execution procedure confirms the fixed protocol,
-recaptures the environment, reserves an unused output directory, and writes
-\nolinkurl{config.json} and \nolinkurl{environment.json} with exclusive-create
-semantics. Existing directories or files are not overwritten.
-
-The completed archive contains:
-\begin{itemize}
-  \item \nolinkurl{config.json} and \nolinkurl{environment.json};
-  \item \nolinkurl{raw.csv}, \nolinkurl{case_summary.csv},
-        \nolinkurl{group_summary.csv}, and \nolinkurl{case_audit.csv}; and
-  \item \nolinkurl{manifest.json} and \nolinkurl{validation_report.json}.
-\end{itemize}
-The manifest records protocol and execution identifiers, source commit, row
-counts, UTC and monotonic pipeline elapsed time, the sum of measured-call
-times, and SHA-256 values for the four CSV files plus configuration and
-environment. Its pipeline elapsed scope starts at formal directory reservation
-and ends after CSV writing; manifest writing and validation are excluded. This
-whole-pipeline duration is distinct from algorithm runtime.
+Each run reserves a new directory and records configuration and environment
+before generation. Existing evidence is not overwritten. Raw measurements,
+case/group summaries and checked audits are bound by the manifest to protocol,
+source, counts and file hashes. Pipeline elapsed time spans directory
+reservation through CSV writing, excluding manifest writing and validation.
+It is distinct from the sum of measured calls and from algorithm runtime.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=.94\textwidth]{formal_experiment_pipeline.pdf}
-  \caption[Formal experiment pipeline and timing scopes.]{Formal experiment
-  pipeline and timing scopes. Oracle certification
-  and one untimed checked-state audit per exact case occur before warm-up and
-  outside the measured calls. The paper measured-call scope contains only the
-  pre-certified \texttt{minimal} call. The broader pipeline wall-clock starts
-  at evidence-directory reservation and ends after the four CSV writes;
-  manifest writing and evidence-contract validation are excluded.}
+  \caption[Historical formal pipeline and timing scopes.]{Historical formal
+  experiment. Oracle certification and checked audits precede warm-up; only
+  the selected call is timed. The paper call uses the rollback-enabled
+  \texttt{minimal} implementation. Pipeline wall time has a separate scope.}
   \label{fig:method-formal-pipeline}
 \end{figure}
 
-\section{Evidence-Contract Validation}
+\subsection{Fail-Closed Validation}
 \label{sec:method-validation}
 
-% Claims: M-11, M-12
-The separate fail-closed evidence-contract validator does not trust row-to-row
-consistency alone. It reads the pre-specified and fixed protocol, independently
-regenerates all sixty cases, recomputes case seeds
-and sequence hashes, reruns oracle certification and structural profiling, and
-executes checked paper diagnostics again. It compares the reconstructed
-diagnostic output, processed count, trace count, and every paper metric with
-\nolinkurl{case_audit.csv}.
+The separate evidence validator reconstructs all 60 cases from the fixed
+protocol and recomputes seeds, hashes, oracle validity and structural profiles.
+It reruns checked diagnostics and compares outputs, processed counts, trace
+counts and every recorded paper metric. It verifies the complete
+case--algorithm--round product and positions, positive times, correctness,
+schemas, counts, source/environment provenance, wall-clock consistency and
+file hashes. Summaries are recomputed from the raw measurements.
 
-The validator also verifies the complete case/round/algorithm product,
-deterministic case and algorithm positions, positive timing values, correctness
-fields, schema, row counts, and the absence of recorded errors. Case and group
-summaries are recomputed from \nolinkurl{raw.csv}. Environment readiness, source
-provenance, wall-clock consistency, manifest paths, and file hashes are checked
-before a run is accepted. Malformed or inconsistent evidence produces
-\texttt{valid=false} rather than authorizing analysis.
+Malformed or inconsistent evidence is rejected rather than authorized for
+analysis. The archived report is retained, and analysis validates the evidence
+again before using it. This checks the experiment's evidence contract; it
+neither reruns the timed observations nor formally proves the algorithm.
+The full field-level validation procedure remains in the versioned
+reproduction materials.
 
-The archived validation report is retained with the run, and the analysis
-performs a new validation pass before reading the evidence. This establishes
-validation under the study's explicit evidence contract; it is not a
-proof-theoretic formal verification of the algorithm.
-
-\section{Execution Environment and Provenance}
-\label{sec:method-environment}
-
-% Claim: M-13; limitation L-06
-The accepted formal experiment, bound to its exact execution and source version
-in \cref{sec:method-evidence}, was recorded on Apple M4/arm64 with
-\SI{16}{\giga\byte} memory, ten logical CPUs, macOS~26.6, and CPython~3.12.4.
-
-Before timing, the runner recorded a clean Git worktree whose HEAD matched
-remote \texttt{main}, AC power, a full battery, low-power mode disabled, low and
-stable load, sufficient disk space, and no readiness warnings. These fields
-describe the performance environment class rather than a personally
-identifiable device.
-
-Absolute runtimes in \cref{chap:results} apply to this one recorded execution.
-They must not be generalized to other processors, operating systems, Python
-versions, or machine states. Absolute times from the pilot and formal
-experiments are not pooled; their comparison is restricted to within-run ratios
-and directional patterns.
-
-\section{Method Boundaries}
+\section{Interpretation Boundary}
 \label{sec:method-boundaries}
 
-% Limitations: L-02, L-03, L-05, L-06, L-07, L-08
-The method fixes the following interpretation limits:
-\begin{itemize}
-  \item recognition is separate from valid-input sorting;
-  \item five tested sizes support observed-trend descriptions, not asymptotic
-        inference;
-  \item family imbalance must remain visible in aggregate interpretation;
-  \item paper/reference ratios compare different pipeline scopes;
-  \item repeated timing calls are not independent generated cases;
-  \item one execution environment does not establish hardware-independent
-        absolute time;
-  \item cross-experiment comparison must not pool absolute runtimes; and
-  \item structural and counter relationships remain exploratory and
-        non-causal.
-\end{itemize}
+The conclusions concern the selected valid inputs, unequal family composition,
+recorded versions and one environment. Repetition does not enlarge the input
+sample; five sizes do not establish asymptotic complexity. Historical
+paper/reference ratios retain their different-call-scope interpretation, and
+counter associations remain descriptive. \Cref{chap:limitations} develops
+these limitations rather than treating the archived study as current-backend
+or hardware-independent evidence.

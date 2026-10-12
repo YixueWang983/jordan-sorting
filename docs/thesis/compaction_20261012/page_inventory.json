@@ -1,0 +1,881 @@
+{
+  "pdf_sha256": "29b2c951b9135d9e4baa7c992640e8b9e93fbe03f1dbd83a32ae709941c8a616",
+  "pages": 68,
+  "outline": [
+    {
+      "level": 0,
+      "title": "Abstract",
+      "physical_page": 3
+    },
+    {
+      "level": 0,
+      "title": "List of Figures",
+      "physical_page": 9
+    },
+    {
+      "level": 0,
+      "title": "List of Tables",
+      "physical_page": 11
+    },
+    {
+      "level": 0,
+      "title": "Introduction",
+      "physical_page": 13
+    },
+    {
+      "level": 1,
+      "title": "Motivation",
+      "physical_page": 13
+    },
+    {
+      "level": 1,
+      "title": "Problem and Scope",
+      "physical_page": 14
+    },
+    {
+      "level": 1,
+      "title": "Research Questions",
+      "physical_page": 14
+    },
+    {
+      "level": 1,
+      "title": "Contributions",
+      "physical_page": 15
+    },
+    {
+      "level": 1,
+      "title": "Headline Findings",
+      "physical_page": 16
+    },
+    {
+      "level": 1,
+      "title": "Thesis Structure",
+      "physical_page": 16
+    },
+    {
+      "level": 0,
+      "title": "Background",
+      "physical_page": 17
+    },
+    {
+      "level": 1,
+      "title": "Jordan Sequences and the Sorting Problem",
+      "physical_page": 17
+    },
+    {
+      "level": 1,
+      "title": "The Structural Restriction Behind Jordan Sorting",
+      "physical_page": 18
+    },
+    {
+      "level": 1,
+      "title": "The 1986 Linear-Time Algorithm",
+      "physical_page": 19
+    },
+    {
+      "level": 1,
+      "title": "The 1990 Simplification",
+      "physical_page": 20
+    },
+    {
+      "level": 1,
+      "title": "Related Work and Positioning",
+      "physical_page": 20
+    },
+    {
+      "level": 2,
+      "title": "Ordered Lists and Finger Search",
+      "physical_page": 20
+    },
+    {
+      "level": 2,
+      "title": "Jordan Sorting and Geometric Applications",
+      "physical_page": 21
+    },
+    {
+      "level": 1,
+      "title": "Position and Scope of This Thesis",
+      "physical_page": 21
+    },
+    {
+      "level": 0,
+      "title": "Algorithm Reconstruction",
+      "physical_page": 23
+    },
+    {
+      "level": 1,
+      "title": "Purpose and Reconstruction Boundary",
+      "physical_page": 23
+    },
+    {
+      "level": 1,
+      "title": "Pairs, Intervals, and the Two Families",
+      "physical_page": 24
+    },
+    {
+      "level": 2,
+      "title": "Families and Sibling Lists",
+      "physical_page": 24
+    },
+    {
+      "level": 1,
+      "title": "Maintained State and Prefix Invariant",
+      "physical_page": 25
+    },
+    {
+      "level": 1,
+      "title": "Initialization",
+      "physical_page": 25
+    },
+    {
+      "level": 1,
+      "title": "Boundary Selection",
+      "physical_page": 26
+    },
+    {
+      "level": 2,
+      "title": "Step 1: Predecessor-Side Boundary",
+      "physical_page": 26
+    },
+    {
+      "level": 2,
+      "title": "Step 2: Successor-Side Boundary",
+      "physical_page": 26
+    },
+    {
+      "level": 1,
+      "title": "Step 3: Increasing Orientation",
+      "physical_page": 26
+    },
+    {
+      "level": 2,
+      "title": "Step 3(a): Insert the New Pair",
+      "physical_page": 27
+    },
+    {
+      "level": 2,
+      "title": "Step 3(b): Split Off Newly Enclosed Children",
+      "physical_page": 27
+    },
+    {
+      "level": 2,
+      "title": "Step 3(c): Insert the New Point",
+      "physical_page": 27
+    },
+    {
+      "level": 1,
+      "title": "Step 3: Decreasing Orientation",
+      "physical_page": 27
+    },
+    {
+      "level": 1,
+      "title": "Executable Anchor Clarifications",
+      "physical_page": 28
+    },
+    {
+      "level": 2,
+      "title": "Curve Endpoint Versus Geometric Endpoint",
+      "physical_page": 28
+    },
+    {
+      "level": 2,
+      "title": "Odd-Index z1 Output Anchor",
+      "physical_page": 29
+    },
+    {
+      "level": 1,
+      "title": "Ownership Transfer and Failure Semantics",
+      "physical_page": 29
+    },
+    {
+      "level": 1,
+      "title": "End-to-End Procedure",
+      "physical_page": 31
+    },
+    {
+      "level": 1,
+      "title": "Correctness and Complexity Boundaries",
+      "physical_page": 33
+    },
+    {
+      "level": 0,
+      "title": "Implementation",
+      "physical_page": 35
+    },
+    {
+      "level": 1,
+      "title": "Implementation Scope and Versions",
+      "physical_page": 35
+    },
+    {
+      "level": 1,
+      "title": "Data Representation",
+      "physical_page": 35
+    },
+    {
+      "level": 2,
+      "title": "Partial Sorted Order",
+      "physical_page": 36
+    },
+    {
+      "level": 2,
+      "title": "Sibling Lists and Ownership",
+      "physical_page": 36
+    },
+    {
+      "level": 1,
+      "title": "Core\u2013Backend Interface and Update Semantics",
+      "physical_page": 36
+    },
+    {
+      "level": 2,
+      "title": "Initialization, Boundaries and Stage State",
+      "physical_page": 36
+    },
+    {
+      "level": 2,
+      "title": "Pair Insertion and Failure Propagation",
+      "physical_page": 37
+    },
+    {
+      "level": 2,
+      "title": "Split Plans and Ownership Transfer",
+      "physical_page": 37
+    },
+    {
+      "level": 2,
+      "title": "Point Insertion and Completion",
+      "physical_page": 38
+    },
+    {
+      "level": 1,
+      "title": "Certification, Diagnostics and Replay",
+      "physical_page": 38
+    },
+    {
+      "level": 1,
+      "title": "Execution Policies and Observation Costs",
+      "physical_page": 39
+    },
+    {
+      "level": 1,
+      "title": "Actual Costs and Complexity Boundary",
+      "physical_page": 39
+    },
+    {
+      "level": 0,
+      "title": "Experimental Method",
+      "physical_page": 41
+    },
+    {
+      "level": 1,
+      "title": "Study Scope and Version Boundary",
+      "physical_page": 41
+    },
+    {
+      "level": 1,
+      "title": "Inputs and Qualification",
+      "physical_page": 41
+    },
+    {
+      "level": 1,
+      "title": "Compared Implementations and Call Scopes",
+      "physical_page": 42
+    },
+    {
+      "level": 2,
+      "title": "Python Sort",
+      "physical_page": 42
+    },
+    {
+      "level": 2,
+      "title": "Reference Pipeline",
+      "physical_page": 42
+    },
+    {
+      "level": 2,
+      "title": "Historical Ordinary-List Core",
+      "physical_page": 42
+    },
+    {
+      "level": 1,
+      "title": "Measurement Procedure and Environment",
+      "physical_page": 43
+    },
+    {
+      "level": 2,
+      "title": "Scheduling and Noise",
+      "physical_page": 43
+    },
+    {
+      "level": 2,
+      "title": "Recorded Environment",
+      "physical_page": 43
+    },
+    {
+      "level": 1,
+      "title": "Aggregation and Statistical Units",
+      "physical_page": 44
+    },
+    {
+      "level": 1,
+      "title": "Evidence Binding and Acceptance",
+      "physical_page": 44
+    },
+    {
+      "level": 2,
+      "title": "Fail-Closed Validation",
+      "physical_page": 44
+    },
+    {
+      "level": 1,
+      "title": "Interpretation Boundary",
+      "physical_page": 46
+    },
+    {
+      "level": 0,
+      "title": "Results",
+      "physical_page": 47
+    },
+    {
+      "level": 1,
+      "title": "Evidence Status and Correctness",
+      "physical_page": 47
+    },
+    {
+      "level": 1,
+      "title": "Runtime by Input Size",
+      "physical_page": 47
+    },
+    {
+      "level": 1,
+      "title": "Matched-Case Runtime Ratios",
+      "physical_page": 49
+    },
+    {
+      "level": 1,
+      "title": "Family-Specific Ratios",
+      "physical_page": 50
+    },
+    {
+      "level": 1,
+      "title": "Runtime Variability",
+      "physical_page": 51
+    },
+    {
+      "level": 1,
+      "title": "Measured Calls and Pipeline Wall-Clock",
+      "physical_page": 51
+    },
+    {
+      "level": 1,
+      "title": "Pilot\u2013Formal Directional Replication",
+      "physical_page": 52
+    },
+    {
+      "level": 1,
+      "title": "Exploratory Relationships",
+      "physical_page": 52
+    },
+    {
+      "level": 2,
+      "title": "Structure and Runtime",
+      "physical_page": 53
+    },
+    {
+      "level": 2,
+      "title": "Checked Counters and Paper Runtime",
+      "physical_page": 53
+    },
+    {
+      "level": 1,
+      "title": "Results Boundary",
+      "physical_page": 54
+    },
+    {
+      "level": 0,
+      "title": "Limitations",
+      "physical_page": 55
+    },
+    {
+      "level": 1,
+      "title": "Scope of the Limitations",
+      "physical_page": 55
+    },
+    {
+      "level": 1,
+      "title": "Implementation Version and Failure Contract",
+      "physical_page": 55
+    },
+    {
+      "level": 1,
+      "title": "Paper Reconstruction and Backend Fidelity",
+      "physical_page": 55
+    },
+    {
+      "level": 1,
+      "title": "Tested Sizes and Asymptotic Interpretation",
+      "physical_page": 56
+    },
+    {
+      "level": 1,
+      "title": "Non-Equivalent Timing Scopes",
+      "physical_page": 56
+    },
+    {
+      "level": 1,
+      "title": "Output Provenance and Recognition",
+      "physical_page": 57
+    },
+    {
+      "level": 1,
+      "title": "Case Construction and Generality",
+      "physical_page": 57
+    },
+    {
+      "level": 1,
+      "title": "Execution Environment and Cross-Experiment Replication",
+      "physical_page": 57
+    },
+    {
+      "level": 1,
+      "title": "Exploratory Structure and Counter Relationships",
+      "physical_page": 58
+    },
+    {
+      "level": 1,
+      "title": "Runtime Variability and Statistical Reach",
+      "physical_page": 58
+    },
+    {
+      "level": 1,
+      "title": "Consequences for the Thesis Conclusions",
+      "physical_page": 58
+    },
+    {
+      "level": 0,
+      "title": "Conclusion",
+      "physical_page": 59
+    },
+    {
+      "level": 1,
+      "title": "Summary",
+      "physical_page": 59
+    },
+    {
+      "level": 1,
+      "title": "Answers to the Research Questions",
+      "physical_page": 60
+    },
+    {
+      "level": 2,
+      "title": "RQ1: Executable Reconstruction and Correctness",
+      "physical_page": 60
+    },
+    {
+      "level": 2,
+      "title": "RQ2: Observed Runtime Behavior",
+      "physical_page": 60
+    },
+    {
+      "level": 2,
+      "title": "RQ3: Structure and Implementation Cost",
+      "physical_page": 60
+    },
+    {
+      "level": 1,
+      "title": "Contributions in Context",
+      "physical_page": 61
+    },
+    {
+      "level": 1,
+      "title": "Future Work",
+      "physical_page": 61
+    },
+    {
+      "level": 1,
+      "title": "Closing Perspective",
+      "physical_page": 62
+    },
+    {
+      "level": 0,
+      "title": "Claim Traceability",
+      "physical_page": 63
+    },
+    {
+      "level": 1,
+      "title": "Claim Groups and Thesis Locations",
+      "physical_page": 63
+    },
+    {
+      "level": 1,
+      "title": "Implementation Revision and Evidence Scope",
+      "physical_page": 64
+    },
+    {
+      "level": 1,
+      "title": "Archived Evidence Bindings",
+      "physical_page": 65
+    },
+    {
+      "level": 1,
+      "title": "Interpretation Boundaries",
+      "physical_page": 65
+    },
+    {
+      "level": 0,
+      "title": "Bibliography",
+      "physical_page": 67
+    }
+  ],
+  "page_inventory": [
+    {
+      "physical_page": 1,
+      "label": "1",
+      "text_characters": 391
+    },
+    {
+      "physical_page": 2,
+      "label": "2",
+      "text_characters": 0
+    },
+    {
+      "physical_page": 3,
+      "label": "i",
+      "text_characters": 2560
+    },
+    {
+      "physical_page": 4,
+      "label": "ii",
+      "text_characters": 0
+    },
+    {
+      "physical_page": 5,
+      "label": "iii",
+      "text_characters": 2466
+    },
+    {
+      "physical_page": 6,
+      "label": "iv",
+      "text_characters": 3408
+    },
+    {
+      "physical_page": 7,
+      "label": "v",
+      "text_characters": 3382
+    },
+    {
+      "physical_page": 8,
+      "label": "vi",
+      "text_characters": 903
+    },
+    {
+      "physical_page": 9,
+      "label": "vii",
+      "text_characters": 1035
+    },
+    {
+      "physical_page": 10,
+      "label": "viii",
+      "text_characters": 0
+    },
+    {
+      "physical_page": 11,
+      "label": "ix",
+      "text_characters": 1412
+    },
+    {
+      "physical_page": 12,
+      "label": "x",
+      "text_characters": 0
+    },
+    {
+      "physical_page": 13,
+      "label": "1",
+      "text_characters": 2270
+    },
+    {
+      "physical_page": 14,
+      "label": "2",
+      "text_characters": 2366
+    },
+    {
+      "physical_page": 15,
+      "label": "3",
+      "text_characters": 2664
+    },
+    {
+      "physical_page": 16,
+      "label": "4",
+      "text_characters": 2352
+    },
+    {
+      "physical_page": 17,
+      "label": "5",
+      "text_characters": 1864
+    },
+    {
+      "physical_page": 18,
+      "label": "6",
+      "text_characters": 1513
+    },
+    {
+      "physical_page": 19,
+      "label": "7",
+      "text_characters": 2622
+    },
+    {
+      "physical_page": 20,
+      "label": "8",
+      "text_characters": 2519
+    },
+    {
+      "physical_page": 21,
+      "label": "9",
+      "text_characters": 2731
+    },
+    {
+      "physical_page": 22,
+      "label": "10",
+      "text_characters": 1190
+    },
+    {
+      "physical_page": 23,
+      "label": "11",
+      "text_characters": 2016
+    },
+    {
+      "physical_page": 24,
+      "label": "12",
+      "text_characters": 1601
+    },
+    {
+      "physical_page": 25,
+      "label": "13",
+      "text_characters": 1765
+    },
+    {
+      "physical_page": 26,
+      "label": "14",
+      "text_characters": 1672
+    },
+    {
+      "physical_page": 27,
+      "label": "15",
+      "text_characters": 2055
+    },
+    {
+      "physical_page": 28,
+      "label": "16",
+      "text_characters": 1881
+    },
+    {
+      "physical_page": 29,
+      "label": "17",
+      "text_characters": 2046
+    },
+    {
+      "physical_page": 30,
+      "label": "18",
+      "text_characters": 731
+    },
+    {
+      "physical_page": 31,
+      "label": "19",
+      "text_characters": 1906
+    },
+    {
+      "physical_page": 32,
+      "label": "20",
+      "text_characters": 857
+    },
+    {
+      "physical_page": 33,
+      "label": "21",
+      "text_characters": 1591
+    },
+    {
+      "physical_page": 34,
+      "label": "22",
+      "text_characters": 0
+    },
+    {
+      "physical_page": 35,
+      "label": "23",
+      "text_characters": 1993
+    },
+    {
+      "physical_page": 36,
+      "label": "24",
+      "text_characters": 2210
+    },
+    {
+      "physical_page": 37,
+      "label": "25",
+      "text_characters": 1647
+    },
+    {
+      "physical_page": 38,
+      "label": "26",
+      "text_characters": 2479
+    },
+    {
+      "physical_page": 39,
+      "label": "27",
+      "text_characters": 2576
+    },
+    {
+      "physical_page": 40,
+      "label": "28",
+      "text_characters": 686
+    },
+    {
+      "physical_page": 41,
+      "label": "29",
+      "text_characters": 1992
+    },
+    {
+      "physical_page": 42,
+      "label": "30",
+      "text_characters": 2145
+    },
+    {
+      "physical_page": 43,
+      "label": "31",
+      "text_characters": 2419
+    },
+    {
+      "physical_page": 44,
+      "label": "32",
+      "text_characters": 2364
+    },
+    {
+      "physical_page": 45,
+      "label": "33",
+      "text_characters": 770
+    },
+    {
+      "physical_page": 46,
+      "label": "34",
+      "text_characters": 1233
+    },
+    {
+      "physical_page": 47,
+      "label": "35",
+      "text_characters": 2187
+    },
+    {
+      "physical_page": 48,
+      "label": "36",
+      "text_characters": 1175
+    },
+    {
+      "physical_page": 49,
+      "label": "37",
+      "text_characters": 1144
+    },
+    {
+      "physical_page": 50,
+      "label": "38",
+      "text_characters": 1939
+    },
+    {
+      "physical_page": 51,
+      "label": "39",
+      "text_characters": 1636
+    },
+    {
+      "physical_page": 52,
+      "label": "40",
+      "text_characters": 1397
+    },
+    {
+      "physical_page": 53,
+      "label": "41",
+      "text_characters": 1899
+    },
+    {
+      "physical_page": 54,
+      "label": "42",
+      "text_characters": 953
+    },
+    {
+      "physical_page": 55,
+      "label": "43",
+      "text_characters": 1757
+    },
+    {
+      "physical_page": 56,
+      "label": "44",
+      "text_characters": 2439
+    },
+    {
+      "physical_page": 57,
+      "label": "45",
+      "text_characters": 2569
+    },
+    {
+      "physical_page": 58,
+      "label": "46",
+      "text_characters": 2550
+    },
+    {
+      "physical_page": 59,
+      "label": "47",
+      "text_characters": 2038
+    },
+    {
+      "physical_page": 60,
+      "label": "48",
+      "text_characters": 2414
+    },
+    {
+      "physical_page": 61,
+      "label": "49",
+      "text_characters": 2408
+    },
+    {
+      "physical_page": 62,
+      "label": "50",
+      "text_characters": 2224
+    },
+    {
+      "physical_page": 63,
+      "label": "51",
+      "text_characters": 1916
+    },
+    {
+      "physical_page": 64,
+      "label": "52",
+      "text_characters": 2308
+    },
+    {
+      "physical_page": 65,
+      "label": "53",
+      "text_characters": 1729
+    },
+    {
+      "physical_page": 66,
+      "label": "54",
+      "text_characters": 0
+    },
+    {
+      "physical_page": 67,
+      "label": "55",
+      "text_characters": 2336
+    },
+    {
+      "physical_page": 68,
+      "label": "56",
+      "text_characters": 1290
+    }
+  ],
+  "blank_text_candidates": [
+    2,
+    4,
+    10,
+    12,
+    34,
+    66
+  ]
+}
