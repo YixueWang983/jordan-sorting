@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from sibling_backend_contract import SplitWork
+
 from paper_execution_policy import (
     CHECKED_POLICY,
     require_fixed_paper_execution_policy,
@@ -98,6 +100,7 @@ class SplitCommitResult:
 
     left_list_id: int | None
     right_list_id: int | None
+    work: SplitWork | None = None
 
 
 def left_endpoint_id(pair, point_value):
@@ -121,6 +124,10 @@ class OrdinarySiblingListBackend:
 
     更新失败时异常向上传播；不恢复旧状态，调用方必须丢弃失败状态。
     """
+
+    backend_name = "ordinary_list"
+    audit_schema = "ordinary-physical-v1"
+    metrics_schema = "ordinary-logical-split-sizes-v1"
 
     def __init__(self, point_value, execution_policy=CHECKED_POLICY):
         if not callable(point_value):
@@ -167,6 +174,114 @@ class OrdinarySiblingListBackend:
     def point_value(self, point_id):
         """通过 backend 初始化时固定的只读数据源查询 point value。"""
         return self._point_value(point_id)
+
+    def validate_live_pair(self, pair_id):
+        """Preserve the ordinary representation's full membership check.
+
+        This is NOT a boundary query. A tree implementation needs its own
+        liveness check; it must not find every arbitrary pair's owner by scan.
+        The ordinary implementation retains its O(list length) count here.
+        """
+        pair = self.get_pair(pair_id)
+        if pair.is_dummy:
+            raise RuntimeError("expected a live finite pair, received a dummy")
+        if pair.parent_pair_id is None or pair.sibling_list_id is None:
+            raise RuntimeError("finite pair has no live sibling-list ownership")
+        sibling_list = self.get_list(pair.sibling_list_id)
+        if sibling_list.list_id != pair.sibling_list_id:
+            raise RuntimeError("finite pair and sibling-list IDs disagree")
+        if sibling_list.owner_parent_pair_id != pair.parent_pair_id:
+            raise RuntimeError("finite pair and sibling-list parent mappings disagree")
+        if sibling_list.pair_ids.count(pair_id) != 1:
+            raise RuntimeError("finite pair is absent from its sibling list")
+        return pair
+
+    def validate_dummy_ownership(self, pair_id):
+        dummy = self.get_pair(pair_id)
+        if (
+            not dummy.is_dummy
+            or dummy.parent_pair_id is not None
+            or dummy.sibling_list_id is not None
+        ):
+            raise RuntimeError("family dummy pair cannot have ordinary ownership")
+
+    def boundary_list(self, pair_id, side):
+        """Return a live list only for a specified endpoint, never scan for one."""
+        if side not in (LEFT, RIGHT):
+            raise ValueError("boundary side must be left or right")
+        pair = self.get_pair(pair_id)
+        if pair.is_dummy or pair.sibling_list_id is None:
+            raise RuntimeError("boundary must be a live finite pair")
+        sibling_list = self.get_list(pair.sibling_list_id)
+        if (
+            sibling_list.list_id != pair.sibling_list_id
+            or sibling_list.owner_parent_pair_id != pair.parent_pair_id
+            or not sibling_list.pair_ids
+        ):
+            raise RuntimeError("boundary sibling-list ownership is inconsistent")
+        if sibling_list.pair_ids[0 if side == LEFT else -1] != pair_id:
+            raise ValueError("pair is not the requested live sibling-list boundary")
+        return sibling_list.list_id
+
+    def list_owner(self, list_id):
+        return self.get_list(list_id).owner_parent_pair_id
+
+    def list_size(self, list_id):
+        return len(self.get_list(list_id).pair_ids)
+
+    def child_list_ids(self, parent_pair_id):
+        """Bounded, geometrically ordered child slots, not member materialization."""
+        slots = self.get_pair(parent_pair_id).child_sibling_list_ids
+        if len(slots) > 2:
+            raise RuntimeError("pair has more than two child sibling lists")
+        return tuple(slots)
+
+    def extreme_child(self, parent_pair_id, side):
+        if side not in (LEFT, RIGHT):
+            raise ValueError("child side must be left or right")
+        slots = self.child_list_ids(parent_pair_id)
+        if not slots:
+            return None
+        index = 0 if side == LEFT else -1
+        sibling_list = self.get_list(slots[index])
+        if sibling_list.owner_parent_pair_id != parent_pair_id:
+            raise RuntimeError("Step 3(c) child list has the wrong owner")
+        if not sibling_list.pair_ids:
+            raise RuntimeError("Step 3(c) child sibling list cannot be empty")
+        pair = self.validate_live_pair(sibling_list.pair_ids[index])
+        if pair.parent_pair_id != parent_pair_id:
+            raise RuntimeError("Step 3(c) extreme child has the wrong parent")
+        return pair
+
+    def insert_boundary(self, pair_id, anchor_pair_id, side):
+        if side not in (LEFT, RIGHT):
+            raise ValueError("insertion side must be left or right")
+        return self.insert_at_boundary(
+            pair_id, anchor_pair_id, BEFORE if side == LEFT else AFTER
+        )
+
+    def logical_snapshot(self):
+        """Audit-only Jordan topology, independent of physical list IDs.
+
+        Keep child-list grouping and order: flattening all children would lose
+        information required by Step 3. Full materialization is intentionally
+        restricted to validation; audit_snapshot also checks allocator state.
+        """
+        return (
+            "jordan-logical-v1",
+            tuple(
+                (
+                    pair_id, pair.end_index, pair.first_point_id,
+                    pair.second_point_id, pair.family, pair.is_dummy,
+                    pair.parent_pair_id,
+                    tuple(
+                        tuple(self.get_list(list_id).pair_ids)
+                        for list_id in pair.child_sibling_list_ids
+                    ),
+                )
+                for pair_id, pair in sorted(self._pairs.items())
+            ),
+        )
 
     def audit_snapshot(self):
         """返回可用于确定性重放比较的不可变 backend 状态。"""
@@ -437,7 +552,13 @@ class OrdinarySiblingListBackend:
         if self._execution_policy.validate_backend_commits:
             self.validate_invariants(require_all_owned=False)
 
-        return SplitCommitResult(left_list_id, right_list_id)
+        work = None
+        if self._execution_policy.count_operations:
+            # Preserve the old logical-size counters, not a claim that this
+            # counts every scan/copy/check in the ordinary implementation.
+            size = len(plan.original_pair_ids)
+            work = SplitWork(size, size, size, len(acquired_ids))
+        return SplitCommitResult(left_list_id, right_list_id, work)
 
     def _validate_split_commit_postconditions(
         self,

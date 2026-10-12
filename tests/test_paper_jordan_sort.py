@@ -360,6 +360,12 @@ class PaperJordanSortValidTests(unittest.TestCase):
         )
         event["input_size"] = 2
         event["left_size"] = 2
+        # Work is now backend-reported separately from execution stages.
+        # Forge it too so replay must reject a coordinated observation forgery.
+        work = state.backend_work[4]
+        state.backend_work[4] = replace(
+            work, **{name: value + 1 for name, value in work.items()}
+        )
         for metric_name in (
             "sibling_scan_checks",
             "split_items_scanned",

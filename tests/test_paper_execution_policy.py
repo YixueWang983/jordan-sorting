@@ -514,7 +514,7 @@ class PaperExecutionPolicyTests(unittest.TestCase):
         self.assertEqual(state.metrics, {})
         self.assertTrue(state.stage_results)
 
-    def test_observing_modes_still_collect_split_sizes(self):
+    def test_trace_collects_sizes_and_counters_use_backend_observations(self):
         values = [1, 2, 3, 4, 6, 7, 0, 5]
         original_size = paper_jordan._sibling_list_size
 
@@ -530,12 +530,15 @@ class PaperExecutionPolicyTests(unittest.TestCase):
                         execution_policy=PAPER_EXECUTION_POLICIES[mode],
                     )
 
-                self.assertGreater(size_mock.call_count, 0)
                 if mode == TRACE_ONLY_MODE:
+                    self.assertGreater(size_mock.call_count, 0)
                     self.assertTrue(state.trace)
                     self.assertEqual(state.metrics, {})
+                    self.assertEqual(state.backend_work, {})
                 else:
+                    self.assertEqual(size_mock.call_count, 0)
                     self.assertEqual(state.trace, [])
+                    self.assertTrue(state.backend_work)
                     self.assertGreater(
                         state.metrics["split_items_scanned"],
                         0,

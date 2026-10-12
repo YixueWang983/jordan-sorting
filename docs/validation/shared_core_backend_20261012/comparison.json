@@ -1,0 +1,22 @@
+{
+  "baseline_commit": "2be212a11ceee7453d2f8beebc04337d3690d117",
+  "baseline_records": 11,
+  "preserved_fields": [
+    "output",
+    "processed_count",
+    "metrics",
+    "trace",
+    "invariants_valid"
+  ],
+  "added_field": "backend_identity",
+  "baseline_comparison": "PASS",
+  "bounded_test_valid_input_counts_by_size": {
+    "3": 6,
+    "4": 16,
+    "5": 50,
+    "6": 144
+  },
+  "bounded_test_note": "Counts enumerate the valid permutations in test_bounded_valid_permutations_through_geometry_only_interface; this enumeration is not an additional correctness run or independent dataset.",
+  "real_tree_validated": false,
+  "ready_for_timing": false
+}

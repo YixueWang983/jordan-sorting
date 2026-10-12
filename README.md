@@ -6,7 +6,7 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
-As of 2026-10-11, the active work is the
+As of 2026-10-12, the active work is the
 [remaining development and thesis revision plan](docs/plan/remaining_work_20261011.md).
 The September implementation removed rollback and archived expanded non-timing
 validation. Expanded timing and the heterogeneous finger-tree backend remain
@@ -41,6 +41,16 @@ targeted regressions. Real tree operations and Jordan integration remain pending
 The subsequent [contract-test correction](docs/validation/backend_contract_fix_20261011/README.md)
 adds strict acceptance and interleaved updates: 22 model checks (18 operation
 contracts and four model auditor checks) plus 15 CLI regression checks pass.
+
+The [shared-core adaptation](docs/validation/shared_core_backend_20261012/README.md)
+now changes production execution: backend selection reaches public sorting,
+diagnostics, initialization and fresh same-configuration replay. Core accesses
+use sibling operations instead of ordinary storage fields; backend work
+observations are separate from mandatory stage state. The ordinary backend
+retains its existing safety checks and logical counter meanings. Only
+`ordinary_list` is registered; routing fixtures are not tree implementations.
+Real heterogeneous tree operations, locality proofs and final qualification
+remain pending. The source changes do not inherit the earlier 16-case qualification.
 
 ### Historical Milestones
 

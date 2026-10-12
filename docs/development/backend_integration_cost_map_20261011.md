@@ -1,6 +1,43 @@
 # 后端接入与成本验收表（2026-10-11）
 
-原始代码审阅基线：`b6a407461c2f94a4b491016376861142f4b14577`。本地合并基线：`fa67fc664d7515b2504d355e35fadcfd23f16534`；下面两项源码及后端规格的 blob 身份在两基线间未变。另核对 `paper_jordan_sort.py` 与 `paper_execution_policy.py` 身份未变。这是源码审阅与待实施契约，不是实现报告；本轮没有修改生产源码。
+原始代码审阅基线：`b6a407461c2f94a4b491016376861142f4b14577`。本地合并基线：`fa67fc664d7515b2504d355e35fadcfd23f16534`；下面两项源码及后端规格的 blob 身份在两基线间未变。另核对 `paper_jordan_sort.py` 与 `paper_execution_policy.py` 身份未变。原始表是 10-11 的源码审阅与待实施契约；**10-12 生产适配的增量状态见下节，旧表行号与“待实现”描述仅指原基线。**
+
+## 0. 10-12 生产适配增量（基线 `2be212a`）
+
+已修改实际运行路径，验证记录见 [共享核心适配](../validation/shared_core_backend_20261012/README.md)。当前唯一注册的生产后端仍是 `ordinary_list`。`SiblingBackendSpec` 指定类和不可变构造参数，供下一步真实实现接入；它不是后端验收标志。
+
+| 原条目 | 现在的实现 | 仍未关闭的部分 |
+| --- | --- | --- |
+| C01/C02/C13 | sort、diagnostics、certified wrapper、runner、初始化传递 `backend`；初始检查使用接口，不读 eager ownership；初始 list ID 由实际分配记录 | 实验 runner/validator 仍明确只运行普通列表；未来共同输入 manifest 尚未适配，未做最终资格 |
+| C03/C04/C05/C06 | 核心只读 PairRecord 几何/身份；`validate_live_pair` 不要求端点；`boundary_list`、`list_owner`、`child_list_ids`、`extreme_child` 处理实际访问。核心不再读取 `pair_ids`/eager owner 或 `get_list` | 普通实现仍保留 membership 扫描和祖先检查，成本没有因抽接口而消失；树的 header/handle/rib 维护待实现 |
+| C07/C08/C09 | `stage_results` 保持各模式相同的执行状态；可关闭的 `backend_work` 单独存储。split 工作由后端返回 `SplitWork`，核心只累计高层 split 次数和已报告工作；trace 才查询分裂尺寸 | 现有四项 backend 字段是普通列表旧口径的逻辑大小，未覆盖全部重复扫描、分配、写入；真实树需另加实际节点成本证据 |
+| C10/C11 | `logical_snapshot` 为审计物化 child groups/owner 关系，不含物理 list ID；同后端 replay 同时比较逻辑与物理快照。记录类、配置、audit/metrics/trace schema；replay 新建相同配置实例，拒绝复用当前对象或静默回退 | same-core replay 仍不是独立算法证明；树审计器和真实几何/family/红黑/rib 不变量尚不存在 |
+
+### 实际 boundary_list 调用的 locality 前提
+
+| 调用 | 只在什么情况下查询 | 需要的端点与现有检查 |
+| --- | --- | --- |
+| 初始化局部后置条件 | 刚创建 P2/P3 singleton | 同一 pair 同时是 LEFT/RIGHT；核对 size=1、header owner 和 dummy child slot |
+| Step 3(a) increasing | Step 1 已匹配、finite boundary 不包围前一点；选择 AFTER 端插 | 必须是 RIGHT；接口核对边界，端插仍检查 family、几何顺序和 owner。enclosing 分支仅 make_list |
+| Step 3(a) decreasing | Step 2 已匹配、finite boundary 不包围前一点；选择 BEFORE 端插 | 必须是 LEFT；其余同镜像情况 |
+| Step 3(b) increasing | Step 2 opposite boundary 不包围前一点，已执行 3(a) | 必须是 LEFT；取得 header 后按新点值 split/adopt |
+| Step 3(b) decreasing | Step 1 opposite boundary 不包围前一点，已执行 3(a) | 必须是 RIGHT；其余同镜像情况 |
+
+一般 finite pair 检查（包括可能处于 sibling 内部的 enclosing pair）不调用 `boundary_list`。Step 3(c) 从至多两个有序 child slots 取极端，`extreme_child` 负责 owner 和端点检查；核心复核稳定身份及几何端点。
+
+以上是算法分支需要的前提及代码中的拒错检查。**对所有合法输入，这些非包围边界为何必为指定端点的一般性几何论证仍需和原文逐条闭合**；有界穷举、镜像和接口轨迹不能替代该论证。初始化 singleton 的 locality 已由构造直接保证。
+
+### 新后端必须遵守的访问/审计契约
+
+- `get_pair` 与 `validate_live_pair` 返回原稳定对象；后者只承诺已注册、存活的 finite pair，不要求 O(1) 求任意内部 pair 的 owner。完整 membership/family/cycle 审计留给 `validate_invariants`。普通实现保留已有更强扫描检查。
+- `boundary_list(pair, side)` 验证指定端点和 live header，拒绝非端点；`list_owner/size` 针对已取得的 live header。不能靠内部扫描来伪装边界引用。
+- `make_list`/`insert_boundary` 返回 live 正整数 list ID；端插保持该 list ID。`split_pairs_at_value` 完成分割与 adopt、退役旧 ID，空侧返回 None；物理表示和具体 split/rebalance 留在后端。
+- `child_list_ids` 是至多两个、按几何顺序排列的 slots；`extreme_child(parent, side)` 返回相应组的极端稳定 pair，或在没有 child 时返回 None，并检查 owner。不得物化所有成员。
+- `logical_snapshot` schema 为 `jordan-logical-v1`：按 pair ID 排列 `(pair_id, end_index, first_point_id, second_point_id, family, is_dummy, parent_pair_id, ordered_child_groups)`，每个 group 为有序 pair ID 元组。保留分组，不只扁平化子项。只在完整审计/replay 使用。
+- `audit_snapshot` 是同后端物理快照，应含影响后续确定执行的 allocator/header/handle 状态，schema 属于后端身份；不同物理后端不可直接比较它。当前 trace schema 为 `jordan-trace-v1`，物理 ID 只用于同后端历史/replay。
+- `SplitWork` 在 counters 开启时必需，各字段须为非负整数；关闭时为 None。计数 schema 由后端声明，核心不再从输入长度合成 copied/scanned/transferred。它还不是通用节点维护成本账本。
+
+不新增研究范围；下一步直接实现树表示、fingers、make/insert，随后 split/rebalance 和 ownership。下文保留 10-11 原始读集、目标界与未闭合证明，不把接口进展改称高效后端完成。
 
 ## 1. 依据与来源层级
 

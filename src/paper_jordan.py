@@ -7,6 +7,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from sibling_backend_contract import (
+    SiblingBackendSpec,
+    SplitWork,
+    require_split_work,
+    resolve_sibling_backend,
+)
+
 from paper_execution_policy import (
     CHECKED_MODE,
     CHECKED_POLICY,
@@ -27,7 +34,6 @@ from sibling_list_backend import (
     LOWER,
     RIGHT,
     UPPER,
-    OrdinarySiblingListBackend,
     PairRecord,
     left_endpoint_id,
     right_endpoint_id,
@@ -112,19 +118,23 @@ class Step3CResult:
 
 @dataclass
 class PaperJordanState:
-    """保存论文算法当前已处理前缀所需的普通数据结构。"""
+    """保存共享算法状态；sibling 表示与 ownership 由选定后端管理。"""
 
     points: tuple[PointRef, ...]
     processed_count: int
     partial_order: SortedOrderList
     pairs: dict[int, PairRecord]
     pair_by_end_index: dict[int, int]
-    sibling_backend: OrdinarySiblingListBackend
+    sibling_backend: object
+    backend_spec: SiblingBackendSpec
+    backend_identity: tuple
+    initial_sibling_list_ids: tuple[int, int]
     upper_dummy_pair_id: int
     lower_dummy_pair_id: int
     execution_policy: PaperExecutionPolicy
     trace: list[dict]
     metrics: dict[str, int]
+    backend_work: dict[int, SplitWork]
     stage_results: dict[int, dict[str, object]]
 
     def point(self, paper_index):
@@ -146,21 +156,29 @@ def pair_family_for_end_index(end_index):
     return UPPER if end_index % 2 == 0 else LOWER
 
 
-def initialize_paper_jordan_state(seq, execution_mode=CHECKED_MODE):
+def initialize_paper_jordan_state(
+    seq, execution_mode=CHECKED_MODE, *, backend="ordinary_list"
+):
     """为 n >= 3 的输入建立前三点、P2/P3 和两棵 family 根结构。"""
     execution_policy = resolve_paper_execution_policy(execution_mode)
+    backend_spec = resolve_sibling_backend(backend)
     return _initialize_paper_jordan_state_values(
         list(seq),
         execution_policy=execution_policy,
+        backend=backend_spec,
     )
 
 
 def _initialize_paper_jordan_state_values(
     values,
     execution_policy=CHECKED_POLICY,
+    *,
+    backend="ordinary_list",
+    forbidden_backend=None,
 ):
     """从已物化 values 初始化 state；调用者负责输入所有权。"""
     execution_policy = require_fixed_paper_execution_policy(execution_policy)
+    backend_spec = resolve_sibling_backend(backend)
     if len(values) < 3:
         raise ValueError("PaperJordanState initialization requires n >= 3")
 
@@ -170,9 +188,10 @@ def _initialize_paper_jordan_state_values(
     )
     partial_order = _order_first_three(points[:3])
     point_value = lambda point_id: points[point_id - 1].value
-    sibling_backend = OrdinarySiblingListBackend(
+    sibling_backend = backend_spec.create(
         point_value,
         execution_policy=execution_policy,
+        forbidden_instance=forbidden_backend,
     )
 
     upper_dummy = PairRecord(
@@ -220,11 +239,15 @@ def _initialize_paper_jordan_state_values(
         pairs=pairs,
         pair_by_end_index={2: pair_2.pair_id, 3: pair_3.pair_id},
         sibling_backend=sibling_backend,
+        backend_spec=backend_spec,
+        backend_identity=backend_spec.identity,
+        initial_sibling_list_ids=(upper_list_id, lower_list_id),
         upper_dummy_pair_id=upper_dummy.pair_id,
         lower_dummy_pair_id=lower_dummy.pair_id,
         execution_policy=execution_policy,
         trace=[],
         metrics=metrics,
+        backend_work={},
         stage_results={},
     )
     if execution_policy.record_trace:
@@ -264,33 +287,38 @@ def _validate_initial_backend_postconditions(state, family_records):
     """常数规模核对初始 dummy/pair/list ownership，不扫描完整 registry。"""
     if state.sibling_backend.execution_policy is not state.execution_policy:
         raise RuntimeError("initial state and backend policies differ")
+    backend = state.sibling_backend
+    state.backend_spec.validate_instance(backend, state.backend_identity)
 
     for dummy, pair, list_id in family_records:
         if state.sibling_backend.get_pair(dummy.pair_id) is not dummy:
             raise RuntimeError("initial dummy is not registered by identity")
         if (
             not dummy.is_dummy
-            or dummy.parent_pair_id is not None
-            or dummy.sibling_list_id is not None
-            or dummy.child_sibling_list_ids != [list_id]
+            or backend.child_list_ids(dummy.pair_id) != (list_id,)
         ):
             raise RuntimeError("initial dummy ownership is inconsistent")
+        backend.validate_dummy_ownership(dummy.pair_id)
 
         if state.sibling_backend.get_pair(pair.pair_id) is not pair:
             raise RuntimeError("initial finite pair is not registered by identity")
         if (
             pair.is_dummy
-            or pair.parent_pair_id != dummy.pair_id
-            or pair.sibling_list_id != list_id
             or pair.family != dummy.family
         ):
             raise RuntimeError("initial finite-pair ownership is inconsistent")
 
-        sibling_list = state.sibling_backend.get_list(list_id)
+        try:
+            backend.validate_live_pair(pair.pair_id)
+        except (KeyError, RuntimeError, ValueError) as exc:
+            raise RuntimeError("initial finite-pair ownership is inconsistent") from exc
+        # Initialization just made a singleton: both boundary queries have
+        # an explicit locality premise, independent of the sorting argument.
         if (
-            sibling_list.list_id != list_id
-            or sibling_list.owner_parent_pair_id != dummy.pair_id
-            or sibling_list.pair_ids != [pair.pair_id]
+            backend.boundary_list(pair.pair_id, LEFT) != list_id
+            or backend.boundary_list(pair.pair_id, RIGHT) != list_id
+            or backend.list_owner(list_id) != dummy.pair_id
+            or backend.list_size(list_id) != 1
         ):
             raise RuntimeError("initial sibling-list ownership is inconsistent")
 
@@ -298,6 +326,9 @@ def _validate_initial_backend_postconditions(state, family_records):
 def validate_paper_jordan_state(state):
     """执行不依赖 oracle/全局排序的完整 correctness/debug invariant audit。"""
     _require_state(state)
+    if not isinstance(state.backend_spec, SiblingBackendSpec):
+        raise RuntimeError("state backend specification is invalid")
+    state.backend_spec.validate_instance(state.sibling_backend, state.backend_identity)
     try:
         execution_policy = require_fixed_paper_execution_policy(
             state.execution_policy
@@ -420,10 +451,9 @@ def _validate_configured_dummy(state, dummy_pair_id, expected_family):
         or dummy.end_index is not None
         or dummy.first_point_id is not None
         or dummy.second_point_id is not None
-        or dummy.parent_pair_id is not None
-        or dummy.sibling_list_id is not None
     ):
         raise RuntimeError("configured family dummy record is inconsistent")
+    state.sibling_backend.validate_dummy_ownership(dummy_pair_id)
 
 
 def _validate_stage_results_and_trace(state, final_point_order):
@@ -441,6 +471,17 @@ def _validate_stage_results_and_trace(state, final_point_order):
     for iteration in expected_iterations:
         if set(state.stage_results[iteration]) != expected_stage_names:
             raise RuntimeError("completed iteration has incomplete stage results")
+
+    expected_work_iterations = set()
+    for iteration in expected_iterations:
+        split = state.stage_results[iteration]["step3b_split_sibling_list"]
+        if not isinstance(split, Step3BResult):
+            raise RuntimeError("Step 3(b) stage result has the wrong type")
+        if state.execution_policy.count_operations and split.performed:
+            expected_work_iterations.add(iteration)
+            require_split_work(state.backend_work.get(iteration), True)
+    if set(state.backend_work) != expected_work_iterations:
+        raise RuntimeError("backend work observations do not match counted splits")
 
     if not state.execution_policy.record_trace:
         if state.trace:
@@ -468,8 +509,8 @@ def _validate_stage_results_and_trace(state, final_point_order):
             "step": "initialize_pair_families",
             "upper_pair_id": 2,
             "lower_pair_id": 3,
-            "upper_list_id": 1,
-            "lower_list_id": 2,
+            "upper_list_id": state.initial_sibling_list_ids[0],
+            "lower_list_id": state.initial_sibling_list_ids[1],
         },
     )
     if tuple(state.trace[:2]) != expected_initial_trace:
@@ -599,7 +640,7 @@ def _validate_iteration_records(
         opposite_boundary,
         step3b,
     )
-    split_sizes = _validate_step3b_trace(
+    _validate_step3b_trace(
         iteration,
         family,
         step3b,
@@ -649,16 +690,11 @@ def _validate_iteration_records(
     else:
         derived_metrics["sibling_list_insertions"] += 1
 
-    input_size, left_size, right_size = split_sizes
     if step3b.performed:
-        derived_metrics["sibling_scan_checks"] += input_size
         derived_metrics["sibling_list_splits"] += 1
-        derived_metrics["split_items_scanned"] += input_size
-        derived_metrics["split_items_copied"] += input_size
-        transferred_size = (
-            left_size if step3b.acquired_side == LEFT else right_size
-        )
-        derived_metrics["split_items_transferred"] += transferred_size
+        if state.execution_policy.count_operations:
+            for name, value in state.backend_work[iteration].items():
+                derived_metrics[name] += value
 
     derived_metrics["output_insertions"] += 1
     derived_metrics["z1_output_anchor_adjustments"] += int(
@@ -970,6 +1006,8 @@ def _validate_state_against_deterministic_replay(state):
         [point.value for point in state.points],
         stop_after=state.processed_count,
         execution_policy=state.execution_policy,
+        backend=state.backend_spec,
+        forbidden_backend=state.sibling_backend,
     )
     actual_metrics = {
         name: value
@@ -982,6 +1020,12 @@ def _validate_state_against_deterministic_replay(state):
         if name != "invariant_checks"
     }
     comparisons = (
+        (state.backend_identity, replayed.backend_identity, "backend identity"),
+        (
+            state.initial_sibling_list_ids,
+            replayed.initial_sibling_list_ids,
+            "initial sibling-list IDs",
+        ),
         (
             state.partial_order.to_point_ids(),
             replayed.partial_order.to_point_ids(),
@@ -993,8 +1037,14 @@ def _validate_state_against_deterministic_replay(state):
             "pair end-index mapping",
         ),
         (state.stage_results, replayed.stage_results, "stage results"),
+        (state.backend_work, replayed.backend_work, "backend work observations"),
         (state.trace, replayed.trace, "trace"),
         (actual_metrics, replayed_metrics, "operation metrics"),
+        (
+            state.sibling_backend.logical_snapshot(),
+            replayed.sibling_backend.logical_snapshot(),
+            "logical sibling topology",
+        ),
         (
             state.sibling_backend.audit_snapshot(),
             replayed.sibling_backend.audit_snapshot(),
@@ -1013,6 +1063,9 @@ def _run_paper_jordan_state_values(
     stop_after=None,
     invariant_callback=None,
     execution_policy=CHECKED_POLICY,
+    *,
+    backend="ordinary_list",
+    forbidden_backend=None,
 ):
     """使用唯一 Step 1/2/3 控制流运行已物化 valid-input values。"""
     execution_policy = require_fixed_paper_execution_policy(execution_policy)
@@ -1034,6 +1087,8 @@ def _run_paper_jordan_state_values(
     state = _initialize_paper_jordan_state_values(
         values,
         execution_policy=execution_policy,
+        backend=backend,
+        forbidden_backend=forbidden_backend,
     )
     if invariant_callback is not None:
         invariant_callback(state)
@@ -1332,23 +1387,33 @@ def _step3a(
         if state.execution_policy.count_operations:
             state.metrics["sibling_lists_created"] += 1
     else:
-        sibling_list_id = state.sibling_backend.insert_at_boundary(
+        # Non-enclosing predecessor (increasing) / successor (decreasing)
+        # is respectively the right / left end of its sibling list. The
+        # enclosing branch above makes a child list and needs no owner query.
+        side = RIGHT if insertion_side == AFTER else LEFT
+        expected_list_id = state.sibling_backend.boundary_list(
+            boundary_pair.pair_id, side
+        )
+        sibling_list_id = state.sibling_backend.insert_boundary(
             new_pair.pair_id,
             boundary_pair.pair_id,
-            insertion_side,
+            side,
         )
+        if sibling_list_id != expected_list_id:
+            raise RuntimeError("boundary insertion changed the live list handle")
         insertion_mode = BOUNDARY_INSERTION
         if state.execution_policy.count_operations:
             state.metrics["sibling_list_insertions"] += 1
 
     state.pairs[new_pair.pair_id] = new_pair
     state.pair_by_end_index[iteration] = new_pair.pair_id
+    parent_pair_id = state.sibling_backend.list_owner(sibling_list_id)
     result = Step3AResult(
         pair_id=new_pair.pair_id,
         orientation=orientation,
         insertion_mode=insertion_mode,
         boundary_pair_id=boundary_pair.pair_id,
-        parent_pair_id=new_pair.parent_pair_id,
+        parent_pair_id=parent_pair_id,
         sibling_list_id=sibling_list_id,
     )
     if state.execution_policy.record_trace:
@@ -1362,7 +1427,7 @@ def _step3a(
                 "pair_id": new_pair.pair_id,
                 "boundary_pair_id": boundary_pair.pair_id,
                 "insertion_mode": insertion_mode,
-                "parent_pair_id": new_pair.parent_pair_id,
+                "parent_pair_id": parent_pair_id,
                 "sibling_list_id": sibling_list_id,
             },
         )
@@ -1385,7 +1450,7 @@ def _step3b(
     _require_step3a_stage(state, iteration, new_pair_id)
     _require_stage_absent(state, "step3b_split_sibling_list", iteration)
     new_pair = _validated_new_iteration_pair(state, iteration, new_pair_id)
-    if new_pair.child_sibling_list_ids:
+    if state.sibling_backend.child_list_ids(new_pair_id):
         raise RuntimeError("new pair already owns child sibling lists before Step 3(b)")
 
     boundary_pair = _validated_boundary_pair(state, boundary, iteration)
@@ -1413,39 +1478,34 @@ def _step3b(
         _record_stage_result(state, "step3b_split_sibling_list", iteration, result)
         return result
 
-    if boundary_pair.is_dummy or boundary_pair.sibling_list_id is None:
+    if boundary_pair.is_dummy:
         raise RuntimeError("non-enclosing Step 3(b) boundary must be a live finite pair")
-    input_list = state.sibling_backend.get_list(boundary_pair.sibling_list_id)
-    if orientation == INCREASING:
-        if input_list.pair_ids[0] != boundary_pair.pair_id:
-            raise RuntimeError("increasing Step 3(b) boundary must be first")
-    elif input_list.pair_ids[-1] != boundary_pair.pair_id:
-        raise RuntimeError("decreasing Step 3(b) boundary must be last")
-
-    input_list_id = input_list.list_id
-    needs_split_observation = (
-        state.execution_policy.record_trace
-        or state.execution_policy.count_operations
+    # Opposite boundary of the new segment: non-enclosing successor is first
+    # for increasing input, predecessor is last for decreasing input. Check
+    # this premise locally; never promote arbitrary finite pairs to endpoints.
+    input_list_id = state.sibling_backend.boundary_list(
+        boundary_pair.pair_id, LEFT if orientation == INCREASING else RIGHT
     )
-    if needs_split_observation:
-        input_size = len(input_list.pair_ids)
+    if state.execution_policy.record_trace:
+        input_size = state.sibling_backend.list_size(input_list_id)
     split_result = state.sibling_backend.split_pairs_at_value(
         input_list_id,
         boundary_value=state.point_value(iteration),
         acquired_side=acquired_side,
         new_parent_pair_id=new_pair.pair_id,
     )
-    if needs_split_observation:
+    work = require_split_work(
+        split_result.work, state.execution_policy.count_operations
+    )
+    if state.execution_policy.record_trace:
         left_size = _sibling_list_size(state, split_result.left_list_id)
         right_size = _sibling_list_size(state, split_result.right_list_id)
 
     if state.execution_policy.count_operations:
-        transferred_size = left_size if acquired_side == LEFT else right_size
-        state.metrics["sibling_scan_checks"] += input_size
         state.metrics["sibling_list_splits"] += 1
-        state.metrics["split_items_scanned"] += input_size
-        state.metrics["split_items_copied"] += input_size
-        state.metrics["split_items_transferred"] += transferred_size
+        state.backend_work[iteration] = work
+        for name, value in work.items():
+            state.metrics[name] += value
     result = Step3BResult(
         performed=True,
         pair_id=new_pair.pair_id,
@@ -1658,16 +1718,10 @@ def _validated_live_finite_pair(state, pair_id):
     pair = _validated_state_backend_pair(state, pair_id)
     if pair.is_dummy:
         raise RuntimeError("expected a live finite pair, received a dummy")
-    if pair.parent_pair_id is None or pair.sibling_list_id is None:
-        raise RuntimeError("finite pair has no live sibling-list ownership")
-
-    sibling_list = state.sibling_backend.get_list(pair.sibling_list_id)
-    if sibling_list.list_id != pair.sibling_list_id:
-        raise RuntimeError("finite pair and sibling-list IDs disagree")
-    if sibling_list.owner_parent_pair_id != pair.parent_pair_id:
-        raise RuntimeError("finite pair and sibling-list parent mappings disagree")
-    if sibling_list.pair_ids.count(pair_id) != 1:
-        raise RuntimeError("finite pair is absent from its sibling list")
+    # Identity/geometry in the core, representation-specific liveness in the
+    # backend. This does not imply that pair_id is a sibling-list endpoint.
+    if state.sibling_backend.validate_live_pair(pair_id) is not pair:
+        raise RuntimeError("backend liveness check changed the stable pair identity")
     return pair
 
 
@@ -1702,8 +1756,7 @@ def _validated_dummy_pair_id(state, iteration, dummy_pair_id):
         raise RuntimeError("configured family boundary is not the expected dummy pair")
     if dummy.family != expected_family:
         raise RuntimeError("configured dummy pair belongs to the wrong family")
-    if dummy.parent_pair_id is not None or dummy.sibling_list_id is not None:
-        raise RuntimeError("family dummy pair cannot have ordinary ownership")
+    state.sibling_backend.validate_dummy_ownership(dummy_pair_id)
     return dummy.pair_id
 
 
@@ -1769,29 +1822,20 @@ def _require_step3b_stage(state, iteration, new_pair_id, orientation):
 
 
 def _step3c_base_anchor(state, new_pair, orientation):
-    child_list_ids = new_pair.child_sibling_list_ids
-    if not child_list_ids:
-        return None, new_pair.first_point_id
-
-    if orientation == INCREASING:
-        child_list_id = child_list_ids[-1]
-    else:
-        child_list_id = child_list_ids[0]
-
-    child_list = state.sibling_backend.get_list(child_list_id)
-    if child_list.owner_parent_pair_id != new_pair.pair_id:
-        raise RuntimeError("Step 3(c) child list has the wrong owner")
-    if not child_list.pair_ids:
-        raise RuntimeError("Step 3(c) child sibling list cannot be empty")
-
-    child_pair_id = (
-        child_list.pair_ids[-1]
-        if orientation == INCREASING
-        else child_list.pair_ids[0]
+    # Ordered child slots have at most two headers; their endpoint fingers
+    # suffice. The backend checks the child's owner without a whole-list view.
+    child_pair = state.sibling_backend.extreme_child(
+        new_pair.pair_id, RIGHT if orientation == INCREASING else LEFT
     )
-    child_pair = _validated_live_finite_pair(state, child_pair_id)
-    if child_pair.parent_pair_id != new_pair.pair_id:
-        raise RuntimeError("Step 3(c) extreme child has the wrong parent")
+    if child_pair is None:
+        return None, new_pair.first_point_id
+    # extreme_child already checked liveness/ownership. Recheck only registry
+    # identity here, avoiding a second ordinary-list membership scan.
+    if (
+        _validated_state_backend_pair(state, child_pair.pair_id) is not child_pair
+        or child_pair.is_dummy
+    ):
+        raise RuntimeError("extreme child does not preserve pair identity")
 
     if orientation == INCREASING:
         anchor_point_id = right_endpoint_id(child_pair, state.point_value)
@@ -1811,7 +1855,7 @@ def _record_stage_result(state, step, iteration, result):
 def _sibling_list_size(state, list_id):
     if list_id is None:
         return 0
-    return len(state.sibling_backend.get_list(list_id).pair_ids)
+    return state.sibling_backend.list_size(list_id)
 
 
 def _record_step3b_trace(state, result, input_size, left_size, right_size):

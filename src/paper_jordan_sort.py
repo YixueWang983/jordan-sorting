@@ -1,4 +1,6 @@
-"""1990 Jordan-sorting 论文算法的 valid-input ordinary-list 主循环。"""
+"""1990 Jordan-sorting 论文算法的 valid-input 共享主循环。"""
+
+from sibling_backend_contract import resolve_sibling_backend
 
 from paper_execution_policy import (
     CHECKED_MODE,
@@ -12,7 +14,7 @@ from paper_jordan import (
 )
 
 
-def paper_jordan_sort_valid(seq, execution_mode=CHECKED_MODE):
+def paper_jordan_sort_valid(seq, execution_mode=CHECKED_MODE, *, backend="ordinary_list"):
     """使用论文控制流排序一个预先认证的 valid Jordan sequence。
 
     调用者负责保证元素互异、可比较，并满足项目采用的 Jordan-sequence
@@ -22,6 +24,7 @@ def paper_jordan_sort_valid(seq, execution_mode=CHECKED_MODE):
     内部错误向调用方抛出，不返回部分输出、不重试或回滚；失败状态必须丢弃。
     """
     execution_policy = resolve_paper_execution_policy(execution_mode)
+    backend_spec = resolve_sibling_backend(backend)
     values = list(seq)
     n = len(values)
 
@@ -35,12 +38,14 @@ def paper_jordan_sort_valid(seq, execution_mode=CHECKED_MODE):
     state = _run_paper_jordan_valid(
         values,
         execution_policy=execution_policy,
+        backend=backend_spec,
     )
     return state.partial_order.to_list()
 
 
-def paper_jordan_diagnostics_valid(seq):
+def paper_jordan_diagnostics_valid(seq, *, backend="ordinary_list"):
     """在非计时路径运行同一核心；失败时抛出异常，不返回部分诊断结果。"""
+    backend_spec = resolve_sibling_backend(backend)
     values = list(seq)
     n = len(values)
     if n < 3:
@@ -50,12 +55,14 @@ def paper_jordan_diagnostics_valid(seq):
             "metrics": {name: 0 for name in METRIC_NAMES},
             "trace": [],
             "invariants_valid": True,
+            "backend_identity": backend_spec.identity,
         }
 
     state = _run_paper_jordan_valid(
         values,
         invariant_callback=validate_paper_jordan_state,
         execution_policy=CHECKED_POLICY,
+        backend=backend_spec,
     )
     return {
         "output": state.partial_order.to_list(),
@@ -63,6 +70,7 @@ def paper_jordan_diagnostics_valid(seq):
         "metrics": dict(state.metrics),
         "trace": [dict(event) for event in state.trace],
         "invariants_valid": True,
+        "backend_identity": state.backend_identity,
     }
 
 
@@ -70,12 +78,15 @@ def _run_paper_jordan_valid(
     values,
     invariant_callback=None,
     execution_policy=CHECKED_POLICY,
+    *,
+    backend="ordinary_list",
 ):
     """对已物化、长度至少为三的 values 执行唯一 paper 主循环。"""
     return _run_paper_jordan_state_values(
         values,
         invariant_callback=invariant_callback,
         execution_policy=execution_policy,
+        backend=backend,
     )
 
 
