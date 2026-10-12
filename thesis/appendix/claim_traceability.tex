@@ -93,7 +93,7 @@ unchanged source, not from the historical timing measurements. The new
 resource probes are qualification evidence and do not replace any performance
 results in this thesis.
 
-The revised implementation account is bound to repository commit
+The earlier revised implementation account is bound to repository commit
 \texttt{6f74683}. The rollback removal was
 introduced in commit
 \texttt{337903a}; the full identifiers and source-file hashes are
@@ -101,6 +101,14 @@ recorded in \nolinkurl{docs/thesis/revision_claims_20261011.md}.
 The formal timing archive instead binds source commit
 \nolinkurl{98868b1b705f6d5f22404ee8ad7b88ad7a834f52}. Its results retain their
 original version and timing scope.
+
+The current account of shared-core access interfaces, separate backend-work
+records and deterministic replay is bound to repository commit
+\texttt{71e3e71}, with evidence in
+\nolinkurl{docs/validation/shared_core_backend_20261012/}.
+Replay creates a fresh backend of the same type and configuration and compares
+logical and physical snapshots. This interface revision does not establish
+completion or performance of the heterogeneous finger-tree backend.
 
 The amendment to historical claim \texttt{I-05} replaces the current
 implementation's rollback contract with error propagation and mandatory

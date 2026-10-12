@@ -40,3 +40,5 @@ TEXMFVAR=build/texmf-var TEXMFCACHE=build/texmf-cache latexmk -lualatex main.tex
 ```
 
 本轮完成的是有界精简、共享核心措辞同步和排版核验。没有新增树后端、资格、性能结果或完整复杂度证明；后端开发仍沿原主线推进。
+
+后续两处版本索引与英文修订另见 [独立构建记录](version_index_fix/README.md)；修订后仍为 68 页。本页及同目录原始构建数据继续描述首次精简稿，未替换其 PDF 哈希或验证身份。

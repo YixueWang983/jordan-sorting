@@ -1,0 +1,15 @@
+[0] Config.pm:329> INFO - This is Biber 2.22
+[0] Config.pm:332> INFO - Logfile is 'build/main.blg'
+[24] biber-darwin:342> INFO - === Mon Oct 12, 2026, 12:19:15
+[30] Biber.pm:421> INFO - Reading 'build/main.bcf'
+[62] Biber.pm:1002> INFO - Found 16 citekeys in bib section 0
+[66] Biber.pm:4487> INFO - Processing section 0
+[70] Biber.pm:4680> INFO - Looking for bibtex file 'bibliography.bib' for section 0
+[70] bibtex.pm:1713> INFO - LaTeX decoding ...
+[76] bibtex.pm:1519> INFO - Found BibTeX data source 'bibliography.bib'
+[129] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[130] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[130] Biber.pm:4307> INFO - Sorting list 'nyt/global//global/global/global' of type 'entry' with template 'nyt' and locale 'en-US'
+[130] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
+[135] bbl.pm:676> INFO - Writing 'build/main.bbl' with encoding 'UTF-8'
+[138] bbl.pm:779> INFO - Output to build/main.bbl

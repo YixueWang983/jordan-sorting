@@ -189,9 +189,9 @@ including recovery-state preparation in \texttt{minimal}; a successful call
 need not actually roll back to incur that preparation. The historical scope
 is specified in \cref{sec:method-paper-implementation}.
 
-The ordinary backend reports the counters \texttt{split\_items\_scanned} and
-\texttt{split\_items\_copied} each add the input-list length once per
-successful split. They are logical split-volume measures, not exact
+For each successful split, the ordinary backend reports an increment equal
+to the input-list length for both \texttt{split\_items\_scanned} and
+\texttt{split\_items\_copied}. They are logical split-volume measures, not exact
 interpreter-level access counts. They omit boundary-insertion copies,
 membership scans and repeated validation/materialization passes. Retained
 historical counter names do not establish that splits dominate runtime.

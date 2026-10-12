@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-12",
+  "source_base_commit": "69fa3cdfdf3e62aea0de158a7d830d22e3b96d51",
+  "source_identity": "Base commit plus the two source-file hashes below; all other tracked thesis files were checked byte-for-byte against the base.",
+  "changed_source_sha256": {
+    "thesis/appendix/claim_traceability.tex": "6e5d90dfa63a3c4a7610d1d52075b3a8cc56129fc524b42315d8242b3638aefd",
+    "thesis/chapters/implementation.tex": "c4d3cc557429476e83aa2b26fb0d99802d47fbfc24e54dd3c7bdcd1155942423"
+  },
+  "compiled_copy_matches_working_thesis": true,
+  "historical_bindings_preserved": [
+    "337903a",
+    "6f74683",
+    "98868b1b705f6d5f22404ee8ad7b88ad7a834f52"
+  ],
+  "added_current_interface_binding": "71e3e71b52b0bb057713ff7aeb1599ae24baede3",
+  "interface_evidence_directory": "docs/validation/shared_core_backend_20261012/",
+  "pdf": {
+    "output_name": "Jordan_Sorting_精简稿_版本索引修订_2026-10-12.pdf",
+    "sha256": "0f78dd5d2f1395ad7888c7c70e2c308d12a80ed037d9b975741e714e0e147efc",
+    "bytes": 496786,
+    "physical_pages": 68
+  },
+  "previous_pdf_sha256": "29b2c951b9135d9e4baa7c992640e8b9e93fbe03f1dbd83a32ae709941c8a616",
+  "blank_pages": [
+    2,
+    4,
+    10,
+    12,
+    34,
+    66
+  ],
+  "text_changed_physical_pages": [
+    39,
+    64,
+    65
+  ],
+  "visual_review": {
+    "physical_pages": [
+      39,
+      64,
+      65
+    ],
+    "clipping_overlap_or_layout_defects_observed": false,
+    "scope": "Only the three text-changed pages rendered and visually checked in this follow-up."
+  },
+  "final_compiler_and_bibliography_issues": [],
+  "build_command": "mkdir -p build/texmf-var build/texmf-cache; TEXMFVAR=build/texmf-var TEXMFCACHE=build/texmf-cache latexmk -lualatex main.tex",
+  "build_environment": {
+    "LuaHBTeX": "1.24.0 (TeX Live 2026)",
+    "Biber": "2.22 native arm64",
+    "Latexmk": "4.88",
+    "note": "Existing local toolchain; biber-arm precedes TinyTeX in PATH. Clean tracked-source copy, relative writable font-cache paths."
+  },
+  "logs_sha256": {
+    "build_console.log": "a04c262c9de799163ead88904b28464c090119b3f5219c665094739e1286b77f",
+    "main.blg": "cc20c97094ded8adad48cebb70bea80cb5f87c7f394e317ccf318f1ad78b8dbc",
+    "main.log": "3789c4c33df4701c53f382c29675c96fb004e39917755f966b3e1c5249921f2a"
+  },
+  "runtime_regressions_rerun": false,
+  "completion_boundary": "Thesis version-index and wording corrections only; no production code, experiments or performance claims added."
+}
