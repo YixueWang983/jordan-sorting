@@ -5,7 +5,7 @@ child pointer; off-rib nodes point down. Insertion starts at an end finger and
 only ascends while repairing a red/red violation. There is no ordinary-tree
 copy, root search, member array, or per-item owner cache.
 
-This implements make/endpoint insertion, NOT split or Jordan sorting. See
+This implements tree operations; full Jordan integration is still gated. See
 Tarjan--Van Wyk (1988), Appendix, pp. 171--175, Fig. 20 and corrected Fig. 22
 (the drawing printed as Fig. 23 on p. 176). Code is independently written.
 """
@@ -16,7 +16,8 @@ from contextlib import contextmanager
 from functools import wraps
 
 from paper_execution_policy import CHECKED_POLICY, require_fixed_paper_execution_policy
-from sibling_list_backend import LEFT, RIGHT, PairRecord
+from sibling_list_backend import LEFT, RIGHT, PairRecord, SplitCommitResult
+from sibling_backend_contract import SplitWork
 
 
 ROOT = "root"
@@ -29,7 +30,8 @@ class WorkLedger:
 Each node field read/write is one node visit (revisits included). All stored
 record-field assignments count as metadata writes, including initialization.
 Comparisons count explicit geometry/key comparisons. Allocation counts cover
-nodes, handles, headers and replacement child-slot tuples, not interpreter
+nodes, handles, headers, fragments and replacement child-slot tuples; path
+stack entries are reported separately as path_frames. Counts exclude interpreter
 temporaries. Registry operations are counted separately (Python dicts).
 Auditing is a separate bucket and never pays for normal-path maintenance.
 """
@@ -41,6 +43,11 @@ Auditing is a separate bucket and never pays for normal-path maintenance.
         "root_blackenings", "allocations", "leaf_allocations",
         "internal_allocations", "handle_allocations", "header_allocations",
         "slot_tuple_allocations", "registry_reads", "registry_writes", "point_reads",
+        "fragment_reads", "fragment_allocations", "node_retirements", "size_writes",
+        "rank_writes", "split_calls", "join_calls", "search_steps", "leaf_checks",
+        "rib_steps", "rooted_join_steps", "deletion_fix_steps", "deletion_red_sibling",
+        "deletion_propagations", "deletion_near_rotations", "deletion_far_rotations", "join_inner_repairs",
+        "join_outer_repairs", "path_frames",
     )
 
     def __init__(self):
@@ -48,10 +55,24 @@ Auditing is a separate bucket and never pays for normal-path maintenance.
                         for name in ("operations", "queries", "audit")}
         self.active = None
         self.last_operation = None
+        self.phase_name = "other"
+        self.phases = {name: dict.fromkeys(self.FIELDS, 0) for name in
+                       ("other", "search", "detach", "join", "rebalance", "ownership")}
 
     def add(self, name, amount=1):
         if self.active is not None:
             self.active[name] += amount
+            if self.active is self.buckets["operations"]:
+                self.phases[self.phase_name][name] += amount
+
+    @contextmanager
+    def phase(self, name):
+        previous = self.phase_name
+        self.phase_name = name
+        try:
+            yield
+        finally:
+            self.phase_name = previous
 
     def read(self, kind):
         if kind in ("leaf", "internal"):
@@ -60,8 +81,12 @@ Auditing is a separate bucket and never pays for normal-path maintenance.
         else:
             self.add(kind + "_reads")
 
-    def write(self, kind, pointer):
+    def write(self, kind, pointer, field):
         self.add("metadata_writes")
+        if field in ("span", "size"):
+            self.add("size_writes")
+        if field == "rank":
+            self.add("rank_writes")
         if pointer:
             self.add("pointer_writes")
         if kind in ("leaf", "internal"):
@@ -80,6 +105,7 @@ Auditing is a separate bucket and never pays for normal-path maintenance.
             return
         self.active = self.buckets[bucket]
         before = self.active.copy()
+        phases_before = {k: v.copy() for k, v in self.phases.items()}
         status = "failed"
         try:
             yield
@@ -89,6 +115,9 @@ Auditing is a separate bucket and never pays for normal-path maintenance.
                 self.last_operation = {
                     "operation": operation, "status": status,
                     "work": {k: self.active[k] - before[k] for k in self.FIELDS},
+                    "phases": {phase: {k: values[k] - phases_before[phase][k]
+                                       for k in self.FIELDS}
+                               for phase, values in self.phases.items()},
                 }
             self.active = None
 
@@ -122,7 +151,7 @@ class _Tracked:
     def __setattr__(self, name, value):
         cls = type(self)
         if name in cls._fields:
-            object.__getattribute__(self, "_ledger").write(cls._kind, name in cls._pointers)
+            object.__getattribute__(self, "_ledger").write(cls._kind, name in cls._pointers, name)
         object.__setattr__(self, name, value)
 
 
@@ -206,10 +235,11 @@ class ListHeader(_Tracked):
 
 class HeterogeneousFingerBackend:
     backend_name = "heterogeneous_finger_partial"
-    audit_schema = "heterogeneous-make-insert-v1"
-    metrics_schema = "heterogeneous-record-access-v1"
+    audit_schema = "heterogeneous-split-adopt-v2"
+    metrics_schema = "heterogeneous-record-access-v2"
     sorting_ready = False
-    supported_operations = frozenset(("register_pair", "make_list", "insert_boundary"))
+    supported_operations = frozenset(("register_pair", "make_list", "insert_boundary",
+                                      "split_value", "adopt_split", "split_pairs_at_value"))
 
     def __init__(self, point_value, *, execution_policy=CHECKED_POLICY):
         if not callable(point_value):
@@ -222,6 +252,12 @@ class HeterogeneousFingerBackend:
         self._nodes = {}
         self._dummies = {}
         self._next_list_id = self._next_node_id = 1
+        self._pending_split = None
+        self._pending_transfer = None
+
+    def _require_adopted(self):
+        if self._pending_split is not None:
+            raise RuntimeError("pending split must be adopted before other operations")
 
     def _lookup(self, registry, key):
         self.work.add("registry_reads")
@@ -245,6 +281,10 @@ class HeterogeneousFingerBackend:
         return self._lookup(self._pairs, pair_id)
 
     def _header(self, list_id):
+        self._require_adopted()
+        return self._raw_header(list_id)
+
+    def _raw_header(self, list_id):
         header = self._lookup(self._lists, list_id)
         if not header.live or header.list_id != list_id:
             raise ValueError("retired or inconsistent list header")
@@ -272,6 +312,7 @@ class HeterogeneousFingerBackend:
 
     @observed("operations")
     def register_pair(self, pair):
+        self._require_adopted()
         if not isinstance(pair, PairRecord):
             raise TypeError("pair must be a PairRecord")
         # Recheck the value object, which can have been mutated since creation.
@@ -415,22 +456,48 @@ class HeterogeneousFingerBackend:
         if not self._less(first_high, second_low):
             raise ValueError("sibling intervals must be disjoint and strictly ordered")
 
+    def _transfer_source(self, owner, list_id):
+        """Explicit Step 3(a) frontier: defer only a named other group's overlap.
+
+        The new pair is fresh and will be outside this source. Normal make and
+        insert keep their stricter completed-forest checks. This opt-in is not
+        yet routed from Jordan; sorting remains disabled until that integration.
+        """
+        if list_id is None:
+            return None
+        if self._pending_transfer is not None:
+            raise ValueError("another transfer parent is already staged")
+        source = self._header(list_id)
+        if source.owner is not owner:
+            raise ValueError("staged transfer must name another child group of this owner")
+        self._owner_slots(owner, required=source)
+        return source
+
+    def _stage_transfer(self, handle, source):
+        if source is not None:
+            self._pending_transfer = (handle, source)
+            self.work.add("metadata_writes")
+
     @observed("operations")
-    def make_list(self, pair_id, owner_parent_pair_id):
+    def make_list(self, pair_id, owner_parent_pair_id, *, transfer_from=None):
+        """Create a singleton; optional transfer_from stages a named split source."""
+        self._require_adopted()
         handle = self._new_pair(pair_id)
         owner = self._handle(owner_parent_pair_id)
         self._owner(handle, owner)
         slots = self._owner_slots(owner)
         if len(slots) == 2:
             raise ValueError("owner already has two child lists")
+        transfer = self._transfer_source(owner, transfer_from)
         before = False
         if slots:
             other = slots[0]
             before = self._less(handle.low, other.left_finger.handle.low)
-            if before:
-                self._disjoint(handle.high, other.left_finger.handle.low)
-            else:
-                self._disjoint(other.right_finger.handle.high, handle.low)
+            if other is not transfer:
+                if before:
+                    self._disjoint(handle.high, other.left_finger.handle.low)
+                else:
+                    self._disjoint(other.right_finger.handle.high, handle.low)
         leaf = self._leaf(handle, ROOT)
         header = ListHeader(self.work, self._next_list_id, owner, leaf)
         self._next_list_id += 1
@@ -440,6 +507,7 @@ class HeterogeneousFingerBackend:
         handle.left_boundary = handle.right_boundary = header
         self.work.allocate("slot_tuple")
         owner.child_slots = (header, *slots) if before else (*slots, header)
+        self._stage_transfer(handle, transfer)
         return header.list_id
 
     @staticmethod
@@ -548,7 +616,9 @@ class HeterogeneousFingerBackend:
         self._blacken_root(header)
 
     @observed("operations")
-    def insert_boundary(self, pair_id, anchor_pair_id, side):
+    def insert_boundary(self, pair_id, anchor_pair_id, side, *, transfer_from=None):
+        """Insert at a finger, optionally staging transfer from another group."""
+        self._require_adopted()
         self._side(side)
         handle = self._new_pair(pair_id)
         header = self._header(self.boundary_list(anchor_pair_id, side))
@@ -559,10 +629,13 @@ class HeterogeneousFingerBackend:
         else:
             self._disjoint(anchor.high, handle.low)
         slots = self._owner_slots(header.owner, required=header)
+        transfer = self._transfer_source(header.owner, transfer_from)
+        if transfer is header:
+            raise ValueError("new parent cannot be inserted into the split source")
         if len(slots) == 2:
-            if side == LEFT and slots[1] is header:
+            if side == LEFT and slots[1] is header and slots[0] is not transfer:
                 self._disjoint(slots[0].right_finger.handle.high, handle.low)
-            if side == RIGHT and slots[0] is header:
+            if side == RIGHT and slots[0] is header and slots[1] is not transfer:
                 self._disjoint(handle.high, slots[1].left_finger.handle.low)
 
         old_leaf = anchor.leaf
@@ -599,16 +672,154 @@ class HeterogeneousFingerBackend:
             handle.right_boundary = header
         header.size += 1
         self._repair_insert(header, node, side)
+        self._stage_transfer(handle, transfer)
         return header.list_id
 
-    def split_value(self, *args, **kwargs):
-        raise NotImplementedError("heterogeneous split and local repair are not implemented")
+    @observed("operations")
+    def split_value(self, list_id, value):
+        """Split item keys <= value / > value; return IDs awaiting adopt_split.
 
-    def adopt_split(self, *args, **kwargs):
-        raise NotImplementedError("split ownership/header transfer is not implemented")
+        Only the combined Jordan wrapper additionally rejects a cut through or
+        on a geometric interval. No other mutation/full audit is legal between
+        splitting and adoption. Failure requires discarding this backend.
+        """
+        from heterogeneous_finger_split import TreeOperations
+        self._require_adopted()
+        old = self._header(list_id)
+        self._owner_slots(old.owner, required=old)
+        if self._pending_transfer is not None and self._pending_transfer[1] is not old:
+            raise ValueError("split must consume the staged transfer source")
+        size = old.size
+        left_end, right_end = old.left_finger.handle, old.right_finger.handle
+        pieces = TreeOperations(self).split(old, value)
+        with self.work.phase("ownership"):
+            left_end.left_boundary = right_end.right_boundary = None
+            old.live = False
+            del self._lists[list_id]
+            self.work.add("registry_writes")
+            headers = []
+            for piece in pieces:
+                if piece is None:
+                    headers.append(None)
+                    continue
+                header = ListHeader(self.work, self._next_list_id, old.owner, piece.left_finger)
+                self._next_list_id += 1
+                self.work.add("metadata_writes")
+                for field in ("root", "size", "left_finger", "right_finger", "left_top", "right_top"):
+                    setattr(header, field, getattr(piece, field))
+                header.left_finger.handle.left_boundary = header
+                header.right_finger.handle.right_boundary = header
+                self._store(self._lists, header.list_id, header)
+                headers.append(header)
+            if sum(h.size for h in headers if h is not None) != size:
+                raise RuntimeError("split path sizes do not conserve the input size")
+            self._pending_split = (old, tuple(headers))
+            self.work.add("metadata_writes")
+            return tuple(None if h is None else h.list_id for h in headers)
 
-    def split_pairs_at_value(self, *args, **kwargs):
-        raise NotImplementedError("partial make/insert backend cannot run Jordan split")
+    def _ordered_headers(self, headers):
+        if len(headers) > 2 or (len(headers) == 2 and headers[0] is headers[1]):
+            raise ValueError("owner cannot have more than two distinct child lists")
+        if len(headers) == 2:
+            a, b = headers
+            if self._less(b.left_finger.handle.low, a.left_finger.handle.low):
+                a, b = b, a
+            self._disjoint(a.right_finger.handle.high, b.left_finger.handle.low)
+            headers = (a, b)
+        self.work.allocate("slot_tuple")
+        return tuple(headers)
+
+    @observed("operations")
+    def adopt_split(self, old_owner_id, new_parent_id, left_id, right_id, acquired_side):
+        """Transfer existing subtrees by changing a bounded number of headers.
+
+        Strict interval containment of the acquired extremes excludes a cycle:
+        a descendant of any acquired item cannot strictly enclose that item.
+        This relies on strict containment along existing owner edges and
+        disjoint intervals within each input list. The explicit transfer frontier
+        may overlap another child group. Empty acquisition uses an outside-source
+        locality witness; it performs no ancestry search.
+        """
+        with self.work.phase("ownership"):
+            self._side(acquired_side)
+            if self._pending_split is None:
+                raise ValueError("no pending split to adopt")
+            old, headers = self._pending_split
+            if old.live or old.owner.pair.pair_id != old_owner_id:
+                raise ValueError("split source owner does not match")
+            if tuple(None if h is None else h.list_id for h in headers) != (left_id, right_id):
+                raise ValueError("stale or foreign split outputs")
+            owner = old.owner
+            new_parent = self._handle(new_parent_id)
+            if new_parent is owner or new_parent.pair.is_dummy:
+                raise ValueError("new owner must be a distinct finite pair")
+            self.validate_live_pair(new_parent_id)
+            if new_parent.pair.family != owner.pair.family:
+                raise ValueError("split cannot cross pair families")
+            if self._pending_transfer is not None:
+                if self._pending_transfer != (new_parent, old):
+                    raise ValueError("adoption does not match the staged transfer parent")
+            # A designated boundary in a distinct live header proves nonmembership
+            # even for empty acquisition, without walking this pair's ancestors.
+            outside_source = self._pending_transfer == (new_parent, old)
+            for h, side in ((new_parent.left_boundary, LEFT), (new_parent.right_boundary, RIGHT)):
+                if h is not None and h is not old and h not in headers:
+                    finger = h.left_finger if side == LEFT else h.right_finger
+                    if (self._raw_header(h.list_id) is not h or finger is not new_parent.leaf
+                            or finger.handle is not new_parent):
+                        raise ValueError("stale destination boundary reference")
+                    outside_source = True
+            if owner.child_slots.count(old) != 1:
+                raise RuntimeError("old owner lost the retired header")
+            acquired = headers[0 if acquired_side == LEFT else 1]
+            retained = headers[1 if acquired_side == LEFT else 0]
+            if acquired is not None:
+                if not (self._less(new_parent.low, acquired.left_finger.handle.low)
+                        and self._less(acquired.right_finger.handle.high, new_parent.high)):
+                    raise ValueError("new parent must strictly enclose all acquired intervals")
+            elif not outside_source:
+                raise ValueError("empty acquisition requires an external boundary parent")
+            for slot_owner in (owner, new_parent):
+                for header in slot_owner.child_slots:
+                    if header is old:
+                        continue
+                    if self._raw_header(header.list_id) is not header or header.owner is not slot_owner:
+                        raise RuntimeError("inconsistent existing child slot")
+            old_slots = self._ordered_headers(tuple(h for h in owner.child_slots if h is not old)
+                                              + (() if retained is None else (retained,)))
+            new_slots = self._ordered_headers(new_parent.child_slots
+                                              + (() if acquired is None else (acquired,)))
+            if acquired is not None:
+                acquired.owner = new_parent
+            owner.child_slots, new_parent.child_slots = old_slots, new_slots
+            self._pending_split = self._pending_transfer = None
+            self.work.add("metadata_writes", 2)
+            self._owner_slots(owner)
+            self._owner_slots(new_parent)
+            return left_id, right_id
+
+    @observed("operations")
+    def split_pairs_at_value(self, list_id, boundary_value, acquired_side, new_parent_pair_id):
+        self._side(acquired_side)
+        owner_id = self.list_owner(list_id)
+        start = self.work.snapshot()["operations"]
+        left, right = self.split_value(list_id, boundary_value)
+        with self.work.phase("ownership"):
+            # Ordered disjoint intervals make these two endpoint checks enough
+            # to reject ALL crossing/equal-endpoint intervals, without scanning.
+            if left is not None and not self._less(self._raw_header(left).right_finger.handle.high, boundary_value):
+                raise ValueError("pair straddles or touches the split boundary")
+            if right is not None and not self._less(boundary_value, self._raw_header(right).left_finger.handle.low):
+                raise ValueError("pair straddles or touches the split boundary")
+        self.adopt_split(owner_id, new_parent_pair_id, left, right, acquired_side)
+        observations = None
+        if self.execution_policy.count_operations:
+            end = self.work.snapshot()["operations"]
+            acquired = left if acquired_side == LEFT else right
+            observations = SplitWork(end["comparisons"]-start["comparisons"],
+                                     end["leaf_checks"]-start["leaf_checks"], 0,
+                                     0 if acquired is None else self.list_size(acquired))
+        return SplitCommitResult(left, right, observations)
 
     def _audit_tree(self, header, seen_nodes):
         """Reconstruct logical outward children ONLY in the audit bucket."""
@@ -704,6 +915,9 @@ class HeterogeneousFingerBackend:
         return leaves
 
     def _audit(self, require_all_owned):
+        self._require_adopted()
+        if self._pending_transfer is not None:
+            raise RuntimeError("staged transfer must finish before full forest audit")
         seen_nodes = set()
         membership = {}
         groups = {}
@@ -783,6 +997,9 @@ class HeterogeneousFingerBackend:
     @observed("audit")
     def audit_snapshot(self):
         """Partial-backend deterministic structure; not a sorting acceptance."""
+        self._require_adopted()
+        if self._pending_transfer is not None:
+            raise RuntimeError("staged transfer must finish before a complete snapshot")
         def nid(node):
             return None if node is None else node.node_id
         return (

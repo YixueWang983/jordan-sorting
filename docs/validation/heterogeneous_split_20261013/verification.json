@@ -1,0 +1,90 @@
+{
+  "base_commit": "f0c4e1d9befcb4561dd491a57636ffd828a93bf1",
+  "date": "2026-10-13",
+  "scope": "partial_split_adopt_interleaved_operations",
+  "sorting_ready": false,
+  "backend_ready_for_timing": false,
+  "contract_acceptance_passed": false,
+  "full_amortized_bound_proved": false,
+  "real_tree_end_to_end_sorting_validated": false,
+  "detailed_work_ledger_always_on": true,
+  "development_tests": {
+    "methods": 53,
+    "new_split_adopt_methods": 22,
+    "skips": 0,
+    "exit_code": 0
+  },
+  "core_regression": {
+    "methods": 173,
+    "skips": 0,
+    "exit_code": 0,
+    "backends": "ordinary production and existing routing fixtures"
+  },
+  "operation_probe": {
+    "histories": 15,
+    "records": 375,
+    "nonempty_two_sided_splits": 45,
+    "timing": false,
+    "independent_gzip_hash_phase_partition_case_sums_and_ledger_deltas_verified": true,
+    "source_hashes_match_summary": true,
+    "raw_sha256": "a2f806fd58c5f0a01a7fba46c107da7b0822bcda951399b77d5cc1ccb7e3683b"
+  },
+  "runtime": {
+    "test_python": "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "platform": "macOS-26.6-arm64-arm-64bit"
+  },
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:tests python3 -m unittest test_heterogeneous_finger_backend test_heterogeneous_finger_split -v",
+    "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:experiments:tests python3 -m unittest test_paper_jordan test_paper_jordan_sort test_sibling_list_backend test_paper_execution_policy test_validate_ordinary_list_extended test_preflight_next_stage test_probe_large_qualification test_certified_paper_jordan test_paper_backend_integration -v",
+    "PYTHONDONTWRITEBYTECODE=1 python3 experiments/probe_heterogeneous_split.py --output-dir docs/validation/heterogeneous_split_20261013"
+  ],
+  "unchanged_from_base": [
+    "thesis",
+    "data",
+    "results",
+    "docs/validation/heterogeneous_insert_20261012",
+    "src/paper_jordan.py",
+    "src/paper_jordan_sort.py",
+    "src/sibling_backend_contract.py"
+  ],
+  "source_sha256": {
+    "src/heterogeneous_finger_backend.py": "9b9a3674514fc104c02b2d013aeec39ee8f36077401efad93de26789131faf52",
+    "src/heterogeneous_finger_split.py": "a424974dffbdc54c68335157e9b332f675c7613d44eb963c1fd9cbae52824248",
+    "tests/test_heterogeneous_finger_backend.py": "1c6168788123edae2b144183f7043e36b4aaa12fda58a73c26a91246900fa128",
+    "tests/test_heterogeneous_finger_split.py": "187a1fa447da1a6ffc6dfba597fa252a36f0f89544cb20f2c43b5a017568401a",
+    "experiments/probe_heterogeneous_split.py": "a0662cfeb28fadfbc03e91dea7c49bce56c331441e1ac3ad8dc61ceaf816f0f6",
+    "src/sibling_backend_contract.py": "11af23db23720a0695c0d31f90eb0c840921ead9f50e61b096749a39f0042631",
+    "src/paper_jordan.py": "9d3b80690f675cf644d8f0dcaead35e9417702fbc9d7d7601e6bd7a89d700341",
+    "src/paper_jordan_sort.py": "c2aee3d1e62450913ce58dc050746bd4b401e26376e72f698c4680a8fd0dd90d",
+    "docs/development/heterogeneous_finger_backend_spec.md": "692813f31f4f6b8623cb4026bd05f0c5d820c2ed441e643e28ddb8c9046f2cb1",
+    "README.md": "f28b215f262ac1523ef50c91d943441225a44940428a85eb84d311b21ad079e4"
+  },
+  "evidence_sha256": {
+    "README.md": "f8a31d2ba09d85a901e3c38e6018623d8f330adf92fae9b5f019d99568c00ef3",
+    "core_regression.log": "da304e4c5dbe3c5e3e26b1a99bb7673ec504fe747e07f8df33a34d88aef7c056",
+    "development_tests.log": "b43ca81bc9ef6a20c39cf101d98091fb3bf94c7c0c51f95c7de0f8693fe2ee81",
+    "operation_work.jsonl.gz": "b98c645721756d6853c89629d5ba23ac9dddfc534a2d3a652ca5eba12e6c8553",
+    "summary.json": "3bdf03639fb0d32f899d38847930b78d3be9823ac15f0d5ed23581b30d678788"
+  },
+  "not_run": [
+    "full_repository_regression",
+    "abstract_adapter_strict_acceptance",
+    "real_tree_sorting",
+    "large_input_qualification",
+    "matched_timing",
+    "thesis_build"
+  ],
+  "integration_limits": [
+    "transfer_from frontier is not routed from shared core",
+    "staged source currently requires same owner",
+    "empty acquisition needs outside-source locality witness",
+    "full forest audit requires completed transfer"
+  ],
+  "open_cost_dependencies": [
+    "accounted opposite-rib child walk",
+    "component reorientation and joined-path amortization",
+    "dictionary expected costs",
+    "shared core actual costs",
+    "non-ledger timing path"
+  ]
+}

@@ -372,11 +372,8 @@ class HeterogeneousRejectionTests(unittest.TestCase):
             with self.subTest(side=side), self.assertRaises((ValueError, KeyError)):
                 f.backend.insert_boundary(p.pair_id, anchor, side)
 
-    def test_split_explicitly_unimplemented_and_backend_unavailable_for_sorting(self):
-        f, _, lid = self.initial(); b = f.backend
-        for method in (b.split_value, b.adopt_split, b.split_pairs_at_value):
-            with self.subTest(method=method.__name__), self.assertRaises(NotImplementedError):
-                method(lid, 0)
+    def test_partial_backend_still_unavailable_for_sorting(self):
+        f, _, _ = self.initial(); b = f.backend
         with self.assertRaisesRegex(TypeError, "partial backend"):
             SiblingBackendSpec(HeterogeneousFingerBackend)
         with self.assertRaises(ValueError):

@@ -1,6 +1,6 @@
 # 原论文方向的 sibling-list 后端规格（2026-09-21）
 
-2026-10-12 状态：真实树表示、`make_list` 和两端插入已形成[首个部分增量](../validation/heterogeneous_insert_20261012/README.md)。split/adopt 与完整排序接入仍未实现；下文的文献目标界不因此成为已证成的代码复杂度。
+2026-10-13 状态：首轮 make/insert 后，[真实 split/adopt 增量](../validation/heterogeneous_split_20261013/README.md)已实现双端搜索、局部拆解/拼接与删除修复、沿路径维护大小、header 转移和分裂后的交错更新。操作验证不等于完整排序验收；`sorting_ready=False`。新增显式 `transfer_from` 阶段前置：只允许新 pair 与指定待转移 child group 暂时重叠，adopt 完成后才接受完整森林审计；共享核心尚未传递这一前置。空 acquisition 的独立 adopt 需要输入外的端点或已记录的新 parent 见证，不提供任意内部 owner 搜索。下文文献目标界仍不是已证成的代码复杂度。
 
 ## 来源与核实边界
 

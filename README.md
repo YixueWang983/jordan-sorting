@@ -6,7 +6,7 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
-As of 2026-10-12, the active work is the
+As of 2026-10-13, the active work is the
 [remaining development and thesis revision plan](docs/plan/remaining_work_20261011.md).
 The September implementation removed rollback and archived expanded non-timing
 validation. Expanded timing and the heterogeneous finger-tree backend remain
@@ -37,7 +37,7 @@ The [integration/cost map](docs/development/backend_integration_cost_map_2026101
 and a test-only operation model have now been merged into this repository. The
 [merge verification](docs/validation/backend_plan_merge_20261011/README.md)
 records 20 reference-model tests and a separate rerun of the existing 155
-targeted regressions. Real tree operations and Jordan integration remain pending.
+targeted regressions. At that milestone, real tree operations and Jordan integration remained pending.
 The subsequent [contract-test correction](docs/validation/backend_contract_fix_20261011/README.md)
 adds strict acceptance and interleaved updates: 22 model checks (18 operation
 contracts and four model auditor checks) plus 15 CLI regression checks pass.
@@ -53,13 +53,16 @@ At that shared-core milestone, real tree operations remained unimplemented.
 The source changes do not inherit the earlier 16-case qualification.
 
 The first [real heterogeneous tree increment](docs/validation/heterogeneous_insert_20261012/README.md)
-now implements external leaves, reversed end ribs, stable pair handles and
-headers, `make_list`, and locally rebalanced insertion at either finger.
-Operation tests and a reproducible work ledger cover these implemented operations.
-This is **partial operation validation**: split/adopt still raise explicitly,
-and the class cannot be selected as a complete sorting backend. Real split,
-ownership transfer, Jordan integration and final qualification remain required;
-no new sorting timings or full amortized-complexity claim are introduced.
+implemented external leaves, reversed end ribs, stable handles, `make_list`,
+and insertion at either finger. The [split/adopt increment](docs/validation/heterogeneous_split_20261013/README.md)
+now adds two-finger split, local deletion/join repair, path-derived sizes, header
+transfer, and interleaved updates preserving existing descendants. Its 53 real
+tree tests and 173 existing core regressions pass; 15 small operation sequences
+have reproducible work records. These are **partial operation checks**, not
+complete sorting acceptance. Explicit `transfer_from` staging handles temporary
+cross-group overlap; routing that frontier through the shared core is still
+required. `sorting_ready=False` continues to block complete sorting selection.
+No new sorting timings or full amortized-complexity claim are introduced.
 
 The [October 12 chapter compaction](docs/thesis/compaction_20261012/README.md)
 condenses Implementation and Experimental Method while preserving their 38
@@ -173,7 +176,7 @@ ordinary-list reconstruction of the high-level 1990 paper algorithm:
 - the runner certifies every actual paper-sorter input with the oracle before
   diagnostics or timing, and the output validator independently requires
   `oracle_valid = true` for every paper-algorithm row;
-- heterogeneous finger trees and a linear-time claim remain out of scope.
+- heterogeneous finger trees and a linear-time claim were outside that historical milestone.
 
 Week 10 is complete. It added one immutable five-mode execution-policy
 registry without duplicating the Step 1/2/3 loop, separated complete backend
@@ -579,7 +582,9 @@ Important project documents:
   On strictly increasing inputs of length `n=2m`, boundary insertions alone
   copy `(m-1)^2` existing pair IDs, even with no splits. Logical split
   counters omit that work and are not complete runtime cost measurements.
-- No level-linked or heterogeneous finger-tree backend is implemented.
+- The heterogeneous backend now has real make/insert/split/adopt operations, but
+  full sorting integration and its cost qualification remain incomplete; no
+  level-linked backend is implemented.
 - Current figures summarize the Week 10 contamination study, Week 11 pilot,
   and Week 12 formal sorting experiment. FU LaTeX integration is a separate
   post-Week-13 migration phase and must preserve the audited claim boundaries.
