@@ -1,0 +1,14 @@
+[
+  {
+    "log": "tree_configuration_tests.log",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:experiments:tests /Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest test_heterogeneous_work_configuration test_heterogeneous_finger_backend test_heterogeneous_finger_split test_heterogeneous_sort_integration -v"
+  },
+  {
+    "log": "core_tests.log",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:experiments:tests /Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest test_paper_jordan test_paper_jordan_sort test_sibling_list_backend test_paper_execution_policy test_validate_ordinary_list_extended test_preflight_next_stage test_probe_large_qualification test_certified_paper_jordan test_paper_backend_integration -v"
+  },
+  {
+    "log": "consumer_tests.log",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:experiments:tests /Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest test_validate_paper_algorithm test_run_week7_pilot test_run_week11_pilot test_validate_week11_pilot_outputs test_week11_experiment_protocol test_validate_week12_formal_sorting_outputs -v"
+  }
+]

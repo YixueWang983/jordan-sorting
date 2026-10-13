@@ -71,9 +71,31 @@ before mutation, checks that its owner and live ID survive insertion, and Step
 Checked execution audits the restored forest; diagnostics replay a fresh tree
 of the same type and configuration. The bounded evidence separately checks both
 backends against external output and geometric ownership, including completed
-prefixes. It is not final experiment qualification. `timing_ready=False` remains:
-the detailed ledger is always enabled and the full amortized cost argument is
-still open. No new sorting timings or linear-complexity claim are introduced.
+prefixes. It is not final experiment qualification. At that milestone the
+detailed ledger was always enabled.
+
+The [work-configuration increment](docs/validation/heterogeneous_work_modes_20261013/README.md)
+adds `detailed_work=False`: no detailed field accumulation, ledger dictionaries,
+phase snapshots or per-operation reports are built. Counted execution policies
+retain the same high-level `SplitWork` observations independently of this switch;
+`minimal` with `detailed_work=False` collects neither kind of count. Fresh replay
+preserves the configuration.
+The default tree configuration still records detailed work for development.
+[Source-based cost bounds](docs/development/heterogeneous_cost_bounds_20261013.md)
+account for the actual loops, including repeated joins and opposite-rib walks,
+with a conservative conditional split bound; the target amortized argument is
+still open. `timing_ready=False` remains until cost and final experiment gates
+are resolved. No new sorting timings or linear-complexity claim are introduced.
+
+```python
+from heterogeneous_finger_backend import HeterogeneousFingerBackend
+from sibling_backend_contract import SiblingBackendSpec
+from paper_jordan_sort import paper_jordan_sort_valid
+
+backend = SiblingBackendSpec(
+    HeterogeneousFingerBackend, (("detailed_work", False),))
+output = paper_jordan_sort_valid(valid_input, "minimal", backend=backend)
+```
 
 The [October 12 chapter compaction](docs/thesis/compaction_20261012/README.md)
 condenses Implementation and Experimental Method while preserving their 38

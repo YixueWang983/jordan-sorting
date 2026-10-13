@@ -2,7 +2,13 @@
 
 原始代码审阅基线：`b6a407461c2f94a4b491016376861142f4b14577`。本地合并基线：`fa67fc664d7515b2504d355e35fadcfd23f16534`；下面两项源码及后端规格的 blob 身份在两基线间未变。另核对 `paper_jordan_sort.py` 与 `paper_execution_policy.py` 身份未变。原始表是 10-11 的源码审阅与待实施契约；**10-12 生产适配的增量状态见下节，旧表行号与“待实现”描述仅指原基线。**
 
-## 0a. 10-13 真实树完整排序接入（基线 `cc1aa2d`）
+## 0. 10-13 详细记账开关与源码成本（基线 `d6622ce`）
+
+完整接入检查点已有有界证据；本轮[无详细记账路径](../validation/heterogeneous_work_modes_20261013/README.md)保留必要阶段状态、几何检查、pending fence 和失败语义。详细字段累计、阶段账本快照及逐操作报告可关闭，高层计数按 execution policy 独立保留；replay 使用同类、同配置新实例并验证配置未变。
+
+[实际循环成本表](heterogeneous_cost_bounds_20261013.md)逐项覆盖树内搜索、拆解、join、另一 rib 行走、大小维护、ownership 和共享核心的重复查询。先以结构高度平方给出 split 的保守条件性上界，不声称已达到较小侧敏感摊还界或线性排序。C13 的最终双方资格、正式 runner/validator/pilot 和协议冻结仍未完成，`timing_ready=False`。本轮结构案例只做开发验证，不成为 140/380 正式比较集，也不继承旧资格。
+
+## 0a. 10-13 真实树完整排序接入（基线 `cc1aa2d`，历史状态）
 
 当前注册 `ordinary_list` 与 `heterogeneous_finger`，共享同一 Step 1/2/3 主循环；[接入验证与成本边界](../validation/heterogeneous_integration_20261013/README.md) 记录了实际树分裂、逐前缀外部检查和同树新实例 replay。以下 10-12 状态及后续原表属于对应历史基线，不再代表当前操作是否存在。
 

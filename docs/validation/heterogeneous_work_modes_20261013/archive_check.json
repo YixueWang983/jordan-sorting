@@ -1,0 +1,1133 @@
+{
+  "manifest_files_verified": 39,
+  "source_files_verified": 19,
+  "passed_inputs": 18,
+  "distinct_input_hashes": 18,
+  "original_executions": 108,
+  "per_checked_backend_configuration": {
+    "both_nonempty": 230,
+    "finite_owner_splits": 460,
+    "finite_owners_with_multiple_transfers": 18,
+    "insert_into_previous_split_output": 666,
+    "splits": 460,
+    "checked_prefixes": 5349,
+    "resplit_previous_output": 212
+  },
+  "cases": {
+    "balanced-128": {
+      "prefixes": 126,
+      "both_nonempty": 1,
+      "finite_owner_splits": 2,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 1,
+      "splits": 2,
+      "sizes": [
+        [
+          30,
+          31
+        ]
+      ]
+    },
+    "skew-128": {
+      "prefixes": 126,
+      "both_nonempty": 1,
+      "finite_owner_splits": 2,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 1,
+      "splits": 2,
+      "sizes": [
+        [
+          1,
+          60
+        ]
+      ]
+    },
+    "repeated-128": {
+      "prefixes": 126,
+      "both_nonempty": 15,
+      "finite_owner_splits": 30,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 45,
+      "resplit_previous_output": 14,
+      "splits": 30,
+      "sizes": [
+        [
+          1,
+          1
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          7,
+          1
+        ],
+        [
+          9,
+          1
+        ],
+        [
+          11,
+          1
+        ],
+        [
+          13,
+          1
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          17,
+          1
+        ],
+        [
+          19,
+          1
+        ],
+        [
+          21,
+          1
+        ],
+        [
+          23,
+          1
+        ],
+        [
+          25,
+          1
+        ],
+        [
+          27,
+          1
+        ],
+        [
+          29,
+          1
+        ]
+      ]
+    },
+    "balanced-129": {
+      "prefixes": 127,
+      "both_nonempty": 1,
+      "finite_owner_splits": 2,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 1,
+      "splits": 2,
+      "sizes": [
+        [
+          31,
+          30
+        ]
+      ]
+    },
+    "skew-129": {
+      "prefixes": 127,
+      "both_nonempty": 1,
+      "finite_owner_splits": 2,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 1,
+      "splits": 2,
+      "sizes": [
+        [
+          60,
+          1
+        ]
+      ]
+    },
+    "repeated-129": {
+      "prefixes": 127,
+      "both_nonempty": 15,
+      "finite_owner_splits": 30,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 45,
+      "resplit_previous_output": 14,
+      "splits": 30,
+      "sizes": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          1,
+          11
+        ],
+        [
+          1,
+          13
+        ],
+        [
+          1,
+          15
+        ],
+        [
+          1,
+          17
+        ],
+        [
+          1,
+          19
+        ],
+        [
+          1,
+          21
+        ],
+        [
+          1,
+          23
+        ],
+        [
+          1,
+          25
+        ],
+        [
+          1,
+          27
+        ],
+        [
+          1,
+          29
+        ]
+      ]
+    },
+    "balanced-256": {
+      "prefixes": 254,
+      "both_nonempty": 1,
+      "finite_owner_splits": 2,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 1,
+      "splits": 2,
+      "sizes": [
+        [
+          62,
+          63
+        ]
+      ]
+    },
+    "skew-256": {
+      "prefixes": 254,
+      "both_nonempty": 1,
+      "finite_owner_splits": 2,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 1,
+      "splits": 2,
+      "sizes": [
+        [
+          1,
+          124
+        ]
+      ]
+    },
+    "repeated-256": {
+      "prefixes": 254,
+      "both_nonempty": 31,
+      "finite_owner_splits": 62,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 93,
+      "resplit_previous_output": 30,
+      "splits": 62,
+      "sizes": [
+        [
+          1,
+          1
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          7,
+          1
+        ],
+        [
+          9,
+          1
+        ],
+        [
+          11,
+          1
+        ],
+        [
+          13,
+          1
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          17,
+          1
+        ],
+        [
+          19,
+          1
+        ],
+        [
+          21,
+          1
+        ],
+        [
+          23,
+          1
+        ],
+        [
+          25,
+          1
+        ],
+        [
+          27,
+          1
+        ],
+        [
+          29,
+          1
+        ],
+        [
+          31,
+          1
+        ],
+        [
+          33,
+          1
+        ],
+        [
+          35,
+          1
+        ],
+        [
+          37,
+          1
+        ],
+        [
+          39,
+          1
+        ],
+        [
+          41,
+          1
+        ],
+        [
+          43,
+          1
+        ],
+        [
+          45,
+          1
+        ],
+        [
+          47,
+          1
+        ],
+        [
+          49,
+          1
+        ],
+        [
+          51,
+          1
+        ],
+        [
+          53,
+          1
+        ],
+        [
+          55,
+          1
+        ],
+        [
+          57,
+          1
+        ],
+        [
+          59,
+          1
+        ],
+        [
+          61,
+          1
+        ]
+      ]
+    },
+    "balanced-257": {
+      "prefixes": 255,
+      "both_nonempty": 1,
+      "finite_owner_splits": 2,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 1,
+      "splits": 2,
+      "sizes": [
+        [
+          63,
+          62
+        ]
+      ]
+    },
+    "skew-257": {
+      "prefixes": 255,
+      "both_nonempty": 1,
+      "finite_owner_splits": 2,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 1,
+      "splits": 2,
+      "sizes": [
+        [
+          124,
+          1
+        ]
+      ]
+    },
+    "repeated-257": {
+      "prefixes": 255,
+      "both_nonempty": 31,
+      "finite_owner_splits": 62,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 93,
+      "resplit_previous_output": 30,
+      "splits": 62,
+      "sizes": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          1,
+          11
+        ],
+        [
+          1,
+          13
+        ],
+        [
+          1,
+          15
+        ],
+        [
+          1,
+          17
+        ],
+        [
+          1,
+          19
+        ],
+        [
+          1,
+          21
+        ],
+        [
+          1,
+          23
+        ],
+        [
+          1,
+          25
+        ],
+        [
+          1,
+          27
+        ],
+        [
+          1,
+          29
+        ],
+        [
+          1,
+          31
+        ],
+        [
+          1,
+          33
+        ],
+        [
+          1,
+          35
+        ],
+        [
+          1,
+          37
+        ],
+        [
+          1,
+          39
+        ],
+        [
+          1,
+          41
+        ],
+        [
+          1,
+          43
+        ],
+        [
+          1,
+          45
+        ],
+        [
+          1,
+          47
+        ],
+        [
+          1,
+          49
+        ],
+        [
+          1,
+          51
+        ],
+        [
+          1,
+          53
+        ],
+        [
+          1,
+          55
+        ],
+        [
+          1,
+          57
+        ],
+        [
+          1,
+          59
+        ],
+        [
+          1,
+          61
+        ]
+      ]
+    },
+    "balanced-512": {
+      "prefixes": 510,
+      "both_nonempty": 1,
+      "finite_owner_splits": 2,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 1,
+      "splits": 2,
+      "sizes": [
+        [
+          126,
+          127
+        ]
+      ]
+    },
+    "skew-512": {
+      "prefixes": 510,
+      "both_nonempty": 1,
+      "finite_owner_splits": 2,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 1,
+      "splits": 2,
+      "sizes": [
+        [
+          1,
+          252
+        ]
+      ]
+    },
+    "repeated-512": {
+      "prefixes": 510,
+      "both_nonempty": 63,
+      "finite_owner_splits": 126,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 189,
+      "resplit_previous_output": 62,
+      "splits": 126,
+      "sizes": [
+        [
+          1,
+          1
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          7,
+          1
+        ],
+        [
+          9,
+          1
+        ],
+        [
+          11,
+          1
+        ],
+        [
+          13,
+          1
+        ],
+        [
+          15,
+          1
+        ],
+        [
+          17,
+          1
+        ],
+        [
+          19,
+          1
+        ],
+        [
+          21,
+          1
+        ],
+        [
+          23,
+          1
+        ],
+        [
+          25,
+          1
+        ],
+        [
+          27,
+          1
+        ],
+        [
+          29,
+          1
+        ],
+        [
+          31,
+          1
+        ],
+        [
+          33,
+          1
+        ],
+        [
+          35,
+          1
+        ],
+        [
+          37,
+          1
+        ],
+        [
+          39,
+          1
+        ],
+        [
+          41,
+          1
+        ],
+        [
+          43,
+          1
+        ],
+        [
+          45,
+          1
+        ],
+        [
+          47,
+          1
+        ],
+        [
+          49,
+          1
+        ],
+        [
+          51,
+          1
+        ],
+        [
+          53,
+          1
+        ],
+        [
+          55,
+          1
+        ],
+        [
+          57,
+          1
+        ],
+        [
+          59,
+          1
+        ],
+        [
+          61,
+          1
+        ],
+        [
+          63,
+          1
+        ],
+        [
+          65,
+          1
+        ],
+        [
+          67,
+          1
+        ],
+        [
+          69,
+          1
+        ],
+        [
+          71,
+          1
+        ],
+        [
+          73,
+          1
+        ],
+        [
+          75,
+          1
+        ],
+        [
+          77,
+          1
+        ],
+        [
+          79,
+          1
+        ],
+        [
+          81,
+          1
+        ],
+        [
+          83,
+          1
+        ],
+        [
+          85,
+          1
+        ],
+        [
+          87,
+          1
+        ],
+        [
+          89,
+          1
+        ],
+        [
+          91,
+          1
+        ],
+        [
+          93,
+          1
+        ],
+        [
+          95,
+          1
+        ],
+        [
+          97,
+          1
+        ],
+        [
+          99,
+          1
+        ],
+        [
+          101,
+          1
+        ],
+        [
+          103,
+          1
+        ],
+        [
+          105,
+          1
+        ],
+        [
+          107,
+          1
+        ],
+        [
+          109,
+          1
+        ],
+        [
+          111,
+          1
+        ],
+        [
+          113,
+          1
+        ],
+        [
+          115,
+          1
+        ],
+        [
+          117,
+          1
+        ],
+        [
+          119,
+          1
+        ],
+        [
+          121,
+          1
+        ],
+        [
+          123,
+          1
+        ],
+        [
+          125,
+          1
+        ]
+      ]
+    },
+    "balanced-513": {
+      "prefixes": 511,
+      "both_nonempty": 1,
+      "finite_owner_splits": 2,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 1,
+      "splits": 2,
+      "sizes": [
+        [
+          127,
+          126
+        ]
+      ]
+    },
+    "skew-513": {
+      "prefixes": 511,
+      "both_nonempty": 1,
+      "finite_owner_splits": 2,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 1,
+      "splits": 2,
+      "sizes": [
+        [
+          252,
+          1
+        ]
+      ]
+    },
+    "repeated-513": {
+      "prefixes": 511,
+      "both_nonempty": 63,
+      "finite_owner_splits": 126,
+      "finite_owners_with_multiple_transfers": 1,
+      "insert_into_previous_split_output": 189,
+      "resplit_previous_output": 62,
+      "splits": 126,
+      "sizes": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          1,
+          11
+        ],
+        [
+          1,
+          13
+        ],
+        [
+          1,
+          15
+        ],
+        [
+          1,
+          17
+        ],
+        [
+          1,
+          19
+        ],
+        [
+          1,
+          21
+        ],
+        [
+          1,
+          23
+        ],
+        [
+          1,
+          25
+        ],
+        [
+          1,
+          27
+        ],
+        [
+          1,
+          29
+        ],
+        [
+          1,
+          31
+        ],
+        [
+          1,
+          33
+        ],
+        [
+          1,
+          35
+        ],
+        [
+          1,
+          37
+        ],
+        [
+          1,
+          39
+        ],
+        [
+          1,
+          41
+        ],
+        [
+          1,
+          43
+        ],
+        [
+          1,
+          45
+        ],
+        [
+          1,
+          47
+        ],
+        [
+          1,
+          49
+        ],
+        [
+          1,
+          51
+        ],
+        [
+          1,
+          53
+        ],
+        [
+          1,
+          55
+        ],
+        [
+          1,
+          57
+        ],
+        [
+          1,
+          59
+        ],
+        [
+          1,
+          61
+        ],
+        [
+          1,
+          63
+        ],
+        [
+          1,
+          65
+        ],
+        [
+          1,
+          67
+        ],
+        [
+          1,
+          69
+        ],
+        [
+          1,
+          71
+        ],
+        [
+          1,
+          73
+        ],
+        [
+          1,
+          75
+        ],
+        [
+          1,
+          77
+        ],
+        [
+          1,
+          79
+        ],
+        [
+          1,
+          81
+        ],
+        [
+          1,
+          83
+        ],
+        [
+          1,
+          85
+        ],
+        [
+          1,
+          87
+        ],
+        [
+          1,
+          89
+        ],
+        [
+          1,
+          91
+        ],
+        [
+          1,
+          93
+        ],
+        [
+          1,
+          95
+        ],
+        [
+          1,
+          97
+        ],
+        [
+          1,
+          99
+        ],
+        [
+          1,
+          101
+        ],
+        [
+          1,
+          103
+        ],
+        [
+          1,
+          105
+        ],
+        [
+          1,
+          107
+        ],
+        [
+          1,
+          109
+        ],
+        [
+          1,
+          111
+        ],
+        [
+          1,
+          113
+        ],
+        [
+          1,
+          115
+        ],
+        [
+          1,
+          117
+        ],
+        [
+          1,
+          119
+        ],
+        [
+          1,
+          121
+        ],
+        [
+          1,
+          123
+        ],
+        [
+          1,
+          125
+        ]
+      ]
+    }
+  },
+  "on_off_state_digests_and_prefixes_match": true,
+  "all_outputs_match_external_order": true,
+  "max_nonempty_output_sizes": [
+    126,
+    127
+  ],
+  "worker_resource_total_seconds": 221.21595808199345,
+  "worker_resource_max_seconds": 29.280687916994793,
+  "count_scope": "sums from archived original checked reports; minimal/replay not accumulated; trace events are not archived individually"
+}

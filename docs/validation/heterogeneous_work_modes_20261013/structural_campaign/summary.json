@@ -1,0 +1,1208 @@
+{
+  "accepted": true,
+  "source_unchanged": true,
+  "outcomes": [
+    {
+      "case": "balanced-128",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            30,
+            31
+          ]
+        ]
+      }
+    },
+    {
+      "case": "skew-128",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            60
+          ]
+        ]
+      }
+    },
+    {
+      "case": "repeated-128",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 30,
+          "finite_owner_splits": 30,
+          "both_nonempty": 15,
+          "insert_into_previous_split_output": 45,
+          "resplit_previous_output": 14,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            1
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            15,
+            1
+          ],
+          [
+            17,
+            1
+          ],
+          [
+            19,
+            1
+          ],
+          [
+            21,
+            1
+          ],
+          [
+            23,
+            1
+          ],
+          [
+            25,
+            1
+          ],
+          [
+            27,
+            1
+          ],
+          [
+            29,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "case": "balanced-129",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            31,
+            30
+          ]
+        ]
+      }
+    },
+    {
+      "case": "skew-129",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            60,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "case": "repeated-129",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 30,
+          "finite_owner_splits": 30,
+          "both_nonempty": 15,
+          "insert_into_previous_split_output": 45,
+          "resplit_previous_output": 14,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            1,
+            7
+          ],
+          [
+            1,
+            9
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            1,
+            13
+          ],
+          [
+            1,
+            15
+          ],
+          [
+            1,
+            17
+          ],
+          [
+            1,
+            19
+          ],
+          [
+            1,
+            21
+          ],
+          [
+            1,
+            23
+          ],
+          [
+            1,
+            25
+          ],
+          [
+            1,
+            27
+          ],
+          [
+            1,
+            29
+          ]
+        ]
+      }
+    },
+    {
+      "case": "balanced-256",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            62,
+            63
+          ]
+        ]
+      }
+    },
+    {
+      "case": "skew-256",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            124
+          ]
+        ]
+      }
+    },
+    {
+      "case": "repeated-256",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 62,
+          "finite_owner_splits": 62,
+          "both_nonempty": 31,
+          "insert_into_previous_split_output": 93,
+          "resplit_previous_output": 30,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            1
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            15,
+            1
+          ],
+          [
+            17,
+            1
+          ],
+          [
+            19,
+            1
+          ],
+          [
+            21,
+            1
+          ],
+          [
+            23,
+            1
+          ],
+          [
+            25,
+            1
+          ],
+          [
+            27,
+            1
+          ],
+          [
+            29,
+            1
+          ],
+          [
+            31,
+            1
+          ],
+          [
+            33,
+            1
+          ],
+          [
+            35,
+            1
+          ],
+          [
+            37,
+            1
+          ],
+          [
+            39,
+            1
+          ],
+          [
+            41,
+            1
+          ],
+          [
+            43,
+            1
+          ],
+          [
+            45,
+            1
+          ],
+          [
+            47,
+            1
+          ],
+          [
+            49,
+            1
+          ],
+          [
+            51,
+            1
+          ],
+          [
+            53,
+            1
+          ],
+          [
+            55,
+            1
+          ],
+          [
+            57,
+            1
+          ],
+          [
+            59,
+            1
+          ],
+          [
+            61,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "case": "balanced-257",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            63,
+            62
+          ]
+        ]
+      }
+    },
+    {
+      "case": "skew-257",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            124,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "case": "repeated-257",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 62,
+          "finite_owner_splits": 62,
+          "both_nonempty": 31,
+          "insert_into_previous_split_output": 93,
+          "resplit_previous_output": 30,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            1,
+            7
+          ],
+          [
+            1,
+            9
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            1,
+            13
+          ],
+          [
+            1,
+            15
+          ],
+          [
+            1,
+            17
+          ],
+          [
+            1,
+            19
+          ],
+          [
+            1,
+            21
+          ],
+          [
+            1,
+            23
+          ],
+          [
+            1,
+            25
+          ],
+          [
+            1,
+            27
+          ],
+          [
+            1,
+            29
+          ],
+          [
+            1,
+            31
+          ],
+          [
+            1,
+            33
+          ],
+          [
+            1,
+            35
+          ],
+          [
+            1,
+            37
+          ],
+          [
+            1,
+            39
+          ],
+          [
+            1,
+            41
+          ],
+          [
+            1,
+            43
+          ],
+          [
+            1,
+            45
+          ],
+          [
+            1,
+            47
+          ],
+          [
+            1,
+            49
+          ],
+          [
+            1,
+            51
+          ],
+          [
+            1,
+            53
+          ],
+          [
+            1,
+            55
+          ],
+          [
+            1,
+            57
+          ],
+          [
+            1,
+            59
+          ],
+          [
+            1,
+            61
+          ]
+        ]
+      }
+    },
+    {
+      "case": "balanced-512",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            126,
+            127
+          ]
+        ]
+      }
+    },
+    {
+      "case": "skew-512",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            252
+          ]
+        ]
+      }
+    },
+    {
+      "case": "repeated-512",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 126,
+          "finite_owner_splits": 126,
+          "both_nonempty": 63,
+          "insert_into_previous_split_output": 189,
+          "resplit_previous_output": 62,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            1
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            15,
+            1
+          ],
+          [
+            17,
+            1
+          ],
+          [
+            19,
+            1
+          ],
+          [
+            21,
+            1
+          ],
+          [
+            23,
+            1
+          ],
+          [
+            25,
+            1
+          ],
+          [
+            27,
+            1
+          ],
+          [
+            29,
+            1
+          ],
+          [
+            31,
+            1
+          ],
+          [
+            33,
+            1
+          ],
+          [
+            35,
+            1
+          ],
+          [
+            37,
+            1
+          ],
+          [
+            39,
+            1
+          ],
+          [
+            41,
+            1
+          ],
+          [
+            43,
+            1
+          ],
+          [
+            45,
+            1
+          ],
+          [
+            47,
+            1
+          ],
+          [
+            49,
+            1
+          ],
+          [
+            51,
+            1
+          ],
+          [
+            53,
+            1
+          ],
+          [
+            55,
+            1
+          ],
+          [
+            57,
+            1
+          ],
+          [
+            59,
+            1
+          ],
+          [
+            61,
+            1
+          ],
+          [
+            63,
+            1
+          ],
+          [
+            65,
+            1
+          ],
+          [
+            67,
+            1
+          ],
+          [
+            69,
+            1
+          ],
+          [
+            71,
+            1
+          ],
+          [
+            73,
+            1
+          ],
+          [
+            75,
+            1
+          ],
+          [
+            77,
+            1
+          ],
+          [
+            79,
+            1
+          ],
+          [
+            81,
+            1
+          ],
+          [
+            83,
+            1
+          ],
+          [
+            85,
+            1
+          ],
+          [
+            87,
+            1
+          ],
+          [
+            89,
+            1
+          ],
+          [
+            91,
+            1
+          ],
+          [
+            93,
+            1
+          ],
+          [
+            95,
+            1
+          ],
+          [
+            97,
+            1
+          ],
+          [
+            99,
+            1
+          ],
+          [
+            101,
+            1
+          ],
+          [
+            103,
+            1
+          ],
+          [
+            105,
+            1
+          ],
+          [
+            107,
+            1
+          ],
+          [
+            109,
+            1
+          ],
+          [
+            111,
+            1
+          ],
+          [
+            113,
+            1
+          ],
+          [
+            115,
+            1
+          ],
+          [
+            117,
+            1
+          ],
+          [
+            119,
+            1
+          ],
+          [
+            121,
+            1
+          ],
+          [
+            123,
+            1
+          ],
+          [
+            125,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "case": "balanced-513",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            127,
+            126
+          ]
+        ]
+      }
+    },
+    {
+      "case": "skew-513",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            252,
+            1
+          ]
+        ]
+      }
+    },
+    {
+      "case": "repeated-513",
+      "status": "PASS",
+      "coverage": {
+        "counts": {
+          "splits": 126,
+          "finite_owner_splits": 126,
+          "both_nonempty": 63,
+          "insert_into_previous_split_output": 189,
+          "resplit_previous_output": 62,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            1,
+            7
+          ],
+          [
+            1,
+            9
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            1,
+            13
+          ],
+          [
+            1,
+            15
+          ],
+          [
+            1,
+            17
+          ],
+          [
+            1,
+            19
+          ],
+          [
+            1,
+            21
+          ],
+          [
+            1,
+            23
+          ],
+          [
+            1,
+            25
+          ],
+          [
+            1,
+            27
+          ],
+          [
+            1,
+            29
+          ],
+          [
+            1,
+            31
+          ],
+          [
+            1,
+            33
+          ],
+          [
+            1,
+            35
+          ],
+          [
+            1,
+            37
+          ],
+          [
+            1,
+            39
+          ],
+          [
+            1,
+            41
+          ],
+          [
+            1,
+            43
+          ],
+          [
+            1,
+            45
+          ],
+          [
+            1,
+            47
+          ],
+          [
+            1,
+            49
+          ],
+          [
+            1,
+            51
+          ],
+          [
+            1,
+            53
+          ],
+          [
+            1,
+            55
+          ],
+          [
+            1,
+            57
+          ],
+          [
+            1,
+            59
+          ],
+          [
+            1,
+            61
+          ],
+          [
+            1,
+            63
+          ],
+          [
+            1,
+            65
+          ],
+          [
+            1,
+            67
+          ],
+          [
+            1,
+            69
+          ],
+          [
+            1,
+            71
+          ],
+          [
+            1,
+            73
+          ],
+          [
+            1,
+            75
+          ],
+          [
+            1,
+            77
+          ],
+          [
+            1,
+            79
+          ],
+          [
+            1,
+            81
+          ],
+          [
+            1,
+            83
+          ],
+          [
+            1,
+            85
+          ],
+          [
+            1,
+            87
+          ],
+          [
+            1,
+            89
+          ],
+          [
+            1,
+            91
+          ],
+          [
+            1,
+            93
+          ],
+          [
+            1,
+            95
+          ],
+          [
+            1,
+            97
+          ],
+          [
+            1,
+            99
+          ],
+          [
+            1,
+            101
+          ],
+          [
+            1,
+            103
+          ],
+          [
+            1,
+            105
+          ],
+          [
+            1,
+            107
+          ],
+          [
+            1,
+            109
+          ],
+          [
+            1,
+            111
+          ],
+          [
+            1,
+            113
+          ],
+          [
+            1,
+            115
+          ],
+          [
+            1,
+            117
+          ],
+          [
+            1,
+            119
+          ],
+          [
+            1,
+            121
+          ],
+          [
+            1,
+            123
+          ],
+          [
+            1,
+            125
+          ]
+        ]
+      }
+    }
+  ],
+  "status_counts": {
+    "PASS": 18
+  },
+  "backend_ready_for_timing": false,
+  "full_amortized_bound_proved": false,
+  "resource_scope": "whole worker includes generation, certification, six executions, audits and replay; not sorting performance"
+}

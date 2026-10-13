@@ -1,0 +1,127 @@
+{
+  "schema": "finger_work_modes_v1",
+  "case_seconds": 180,
+  "batch_seconds": 900,
+  "plan": [
+    {
+      "case": "balanced-128",
+      "n": 128,
+      "shape": "balanced",
+      "mirror": false
+    },
+    {
+      "case": "skew-128",
+      "n": 128,
+      "shape": "skew",
+      "mirror": false
+    },
+    {
+      "case": "repeated-128",
+      "n": 128,
+      "shape": "repeated",
+      "mirror": false
+    },
+    {
+      "case": "balanced-129",
+      "n": 129,
+      "shape": "balanced",
+      "mirror": true
+    },
+    {
+      "case": "skew-129",
+      "n": 129,
+      "shape": "skew",
+      "mirror": true
+    },
+    {
+      "case": "repeated-129",
+      "n": 129,
+      "shape": "repeated",
+      "mirror": true
+    },
+    {
+      "case": "balanced-256",
+      "n": 256,
+      "shape": "balanced",
+      "mirror": false
+    },
+    {
+      "case": "skew-256",
+      "n": 256,
+      "shape": "skew",
+      "mirror": false
+    },
+    {
+      "case": "repeated-256",
+      "n": 256,
+      "shape": "repeated",
+      "mirror": false
+    },
+    {
+      "case": "balanced-257",
+      "n": 257,
+      "shape": "balanced",
+      "mirror": true
+    },
+    {
+      "case": "skew-257",
+      "n": 257,
+      "shape": "skew",
+      "mirror": true
+    },
+    {
+      "case": "repeated-257",
+      "n": 257,
+      "shape": "repeated",
+      "mirror": true
+    },
+    {
+      "case": "balanced-512",
+      "n": 512,
+      "shape": "balanced",
+      "mirror": false
+    },
+    {
+      "case": "skew-512",
+      "n": 512,
+      "shape": "skew",
+      "mirror": false
+    },
+    {
+      "case": "repeated-512",
+      "n": 512,
+      "shape": "repeated",
+      "mirror": false
+    },
+    {
+      "case": "balanced-513",
+      "n": 513,
+      "shape": "balanced",
+      "mirror": true
+    },
+    {
+      "case": "skew-513",
+      "n": 513,
+      "shape": "skew",
+      "mirror": true
+    },
+    {
+      "case": "repeated-513",
+      "n": 513,
+      "shape": "repeated",
+      "mirror": true
+    }
+  ],
+  "selection": "fixed formulas; no retries, filtering or performance-based choice",
+  "stop": "any timeout, resource or correctness failure stops later cases",
+  "scope": "external prefix checks, geometry, final same-backend replay; NOT sorting timing",
+  "variants": [
+    "ordinary_list",
+    "tree_work_on",
+    "tree_work_off"
+  ],
+  "policies": [
+    "checked",
+    "minimal"
+  ]
+}

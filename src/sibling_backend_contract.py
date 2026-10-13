@@ -116,6 +116,7 @@ class SiblingBackendSpec:
             raise RuntimeError("replay requires a fresh backend instance")
         if backend.execution_policy is not execution_policy:
             raise RuntimeError("backend did not preserve the execution policy")
+        self._validate_configuration(backend)
         if backend.registered_pair_ids():
             raise RuntimeError("backend constructor must return an empty fresh instance")
         return backend
@@ -126,6 +127,12 @@ class SiblingBackendSpec:
         for name in ("backend_name", "audit_schema", "metrics_schema"):
             if getattr(backend, name) != getattr(self.backend_type, name):
                 raise RuntimeError(f"backend instance schema changed: {name}")
+        self._validate_configuration(backend)
+
+    def _validate_configuration(self, backend):
+        validator = getattr(backend, "validate_configuration", None)
+        if validator is not None:
+            validator(dict(self.options))
 
 
 def resolve_sibling_backend(backend="ordinary_list"):

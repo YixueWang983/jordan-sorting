@@ -12,7 +12,7 @@ Tarjan--Van Wyk (1988), Appendix, pp. 171--175, Fig. 20 and corrected Fig. 22
 
 from __future__ import annotations
 
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 from functools import wraps
 
 from paper_execution_policy import CHECKED_POLICY, require_fixed_paper_execution_policy
@@ -22,6 +22,7 @@ from sibling_backend_contract import SplitWork
 
 ROOT = "root"
 INTERIOR = "interior"
+_UNOBSERVED = nullcontext()  # Stateless/reentrant; no disabled phase allocation.
 
 
 class WorkLedger:
@@ -50,7 +51,15 @@ Auditing is a separate bucket and never pays for normal-path maintenance.
         "join_outer_repairs", "path_frames",
     )
 
-    def __init__(self):
+    def __init__(self, enabled=True):
+        if type(enabled) is not bool:
+            raise TypeError("detailed_work must be a bool")
+        self._enabled = enabled
+        self.active = self.last_operation = None
+        if not enabled:
+            self.buckets = self.phases = None
+            self.phase_name = None
+            return
         self.buckets = {name: dict.fromkeys(self.FIELDS, 0)
                         for name in ("operations", "queries", "audit")}
         self.active = None
@@ -59,14 +68,23 @@ Auditing is a separate bucket and never pays for normal-path maintenance.
         self.phases = {name: dict.fromkeys(self.FIELDS, 0) for name in
                        ("other", "search", "detach", "join", "rebalance", "ownership")}
 
+    @property
+    def enabled(self):
+        return self._enabled
+
     def add(self, name, amount=1):
+        if not self.enabled:
+            return
         if self.active is not None:
             self.active[name] += amount
             if self.active is self.buckets["operations"]:
                 self.phases[self.phase_name][name] += amount
 
-    @contextmanager
     def phase(self, name):
+        return self._phase(name) if self.enabled else _UNOBSERVED
+
+    @contextmanager
+    def _phase(self, name):
         previous = self.phase_name
         self.phase_name = name
         try:
@@ -75,6 +93,8 @@ Auditing is a separate bucket and never pays for normal-path maintenance.
             self.phase_name = previous
 
     def read(self, kind):
+        if not self.enabled:
+            return
         if kind in ("leaf", "internal"):
             self.add("node_visits")
             self.add("node_reads")
@@ -82,6 +102,8 @@ Auditing is a separate bucket and never pays for normal-path maintenance.
             self.add(kind + "_reads")
 
     def write(self, kind, pointer, field):
+        if not self.enabled:
+            return
         self.add("metadata_writes")
         if field in ("span", "size"):
             self.add("size_writes")
@@ -94,11 +116,16 @@ Auditing is a separate bucket and never pays for normal-path maintenance.
             self.add("node_writes")
 
     def allocate(self, kind):
+        if not self.enabled:
+            return
         self.add("allocations")
         self.add(kind + "_allocations")
 
-    @contextmanager
     def observe(self, bucket, operation):
+        return self._observe(bucket, operation) if self.enabled else _UNOBSERVED
+
+    @contextmanager
+    def _observe(self, bucket, operation):
         # Nested queries are part of the calling update, not free work.
         if self.active is not None:
             yield
@@ -122,6 +149,8 @@ Auditing is a separate bucket and never pays for normal-path maintenance.
             self.active = None
 
     def snapshot(self):
+        if not self.enabled:
+            raise RuntimeError("detailed work is disabled; no ledger snapshot exists")
         return {name: values.copy() for name, values in self.buckets.items()}
 
 
@@ -129,6 +158,8 @@ def observed(bucket):
     def decorate(function):
         @wraps(function)
         def call(self, *args, **kwargs):
+            if not self.work.enabled:
+                return function(self, *args, **kwargs)
             with self.work.observe(bucket, function.__name__):
                 return function(self, *args, **kwargs)
         return call
@@ -145,13 +176,17 @@ class _Tracked:
     def __getattribute__(self, name):
         cls = type(self)
         if name in cls._fields:
-            object.__getattribute__(self, "_ledger").read(cls._kind)
+            ledger = object.__getattribute__(self, "_ledger")
+            if ledger.enabled:
+                ledger.read(cls._kind)
         return object.__getattribute__(self, name)
 
     def __setattr__(self, name, value):
         cls = type(self)
         if name in cls._fields:
-            object.__getattribute__(self, "_ledger").write(cls._kind, name in cls._pointers, name)
+            ledger = object.__getattribute__(self, "_ledger")
+            if ledger.enabled:
+                ledger.write(cls._kind, name in cls._pointers, name)
         object.__setattr__(self, name, value)
 
 
@@ -238,16 +273,19 @@ class HeterogeneousFingerBackend:
     audit_schema = "heterogeneous-split-adopt-v2"
     metrics_schema = "heterogeneous-record-access-v2"
     sorting_ready = True  # Complete operation routing, not an efficiency claim.
-    timing_ready = False  # Detailed WorkLedger is still always enabled.
+    timing_ready = False  # Final input/protocol qualification and cost proof remain open.
     supported_operations = frozenset(("register_pair", "make_list", "insert_boundary",
                                       "split_value", "adopt_split", "split_pairs_at_value"))
 
-    def __init__(self, point_value, *, execution_policy=CHECKED_POLICY):
+    def __init__(self, point_value, *, execution_policy=CHECKED_POLICY, detailed_work=True):
         if not callable(point_value):
             raise TypeError("point_value must be callable")
         self.execution_policy = require_fixed_paper_execution_policy(execution_policy)
         self._point_value = point_value
-        self.work = WorkLedger()
+        self.work = WorkLedger(detailed_work)
+        # The four public SplitWork observations are separate from detailed
+        # recording. Only counted policies allocate these two split-local ints.
+        self._split_observations = None
         self._pairs = {}
         self._lists = {}
         self._nodes = {}
@@ -255,6 +293,14 @@ class HeterogeneousFingerBackend:
         self._next_list_id = self._next_node_id = 1
         self._pending_split = None
         self._pending_transfer = None
+
+    @property
+    def detailed_work(self):
+        return self.work.enabled
+
+    def validate_configuration(self, options):
+        if self.detailed_work is not options.get("detailed_work", True):
+            raise RuntimeError("backend detailed-work configuration changed")
 
     def _require_adopted(self):
         if self._pending_split is not None:
@@ -278,12 +324,21 @@ class HeterogeneousFingerBackend:
         registry[key] = value
 
     def _less(self, first, second):
+        if self._split_observations is not None:
+            self._split_observations[0] += 1
         self.work.add("comparisons")
         return first < second
 
     def _equal(self, first, second):
+        if self._split_observations is not None:
+            self._split_observations[0] += 1
         self.work.add("comparisons")
         return first == second
+
+    def _count_split_leaves(self, amount=1):
+        self.work.add("leaf_checks", amount)
+        if self._split_observations is not None:
+            self._split_observations[1] += amount
 
     def _handle(self, pair_id):
         return self._lookup(self._pairs, pair_id)
@@ -812,22 +867,24 @@ class HeterogeneousFingerBackend:
     def split_pairs_at_value(self, list_id, boundary_value, acquired_side, new_parent_pair_id):
         self._side(acquired_side)
         owner_id = self.list_owner(list_id)
-        start = self.work.snapshot()["operations"]
-        left, right = self.split_value(list_id, boundary_value)
-        with self.work.phase("ownership"):
-            # Ordered disjoint intervals make these two endpoint checks enough
-            # to reject ALL crossing/equal-endpoint intervals, without scanning.
-            if left is not None and not self._less(self._raw_header(left).right_finger.handle.high, boundary_value):
-                raise ValueError("pair straddles or touches the split boundary")
-            if right is not None and not self._less(boundary_value, self._raw_header(right).left_finger.handle.low):
-                raise ValueError("pair straddles or touches the split boundary")
-        self.adopt_split(owner_id, new_parent_pair_id, left, right, acquired_side)
+        observations = [0, 0] if self.execution_policy.count_operations else None
+        self._split_observations = observations
+        try:
+            left, right = self.split_value(list_id, boundary_value)
+            with self.work.phase("ownership"):
+                # Two endpoint checks reject all crossing/touching intervals.
+                if left is not None and not self._less(self._raw_header(left).right_finger.handle.high, boundary_value):
+                    raise ValueError("pair straddles or touches the split boundary")
+                if right is not None and not self._less(boundary_value, self._raw_header(right).left_finger.handle.low):
+                    raise ValueError("pair straddles or touches the split boundary")
+            self.adopt_split(owner_id, new_parent_pair_id, left, right, acquired_side)
+        finally:
+            self._split_observations = None
+        counts = observations
         observations = None
         if self.execution_policy.count_operations:
-            end = self.work.snapshot()["operations"]
             acquired = left if acquired_side == LEFT else right
-            observations = SplitWork(end["comparisons"]-start["comparisons"],
-                                     end["leaf_checks"]-start["leaf_checks"], 0,
+            observations = SplitWork(counts[0], counts[1], 0,
                                      0 if acquired is None else self.list_size(acquired))
         return SplitCommitResult(left, right, observations)
 

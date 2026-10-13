@@ -16,6 +16,8 @@ def phase(name):
     def decorate(method):
         @wraps(method)
         def call(self, *args, **kwargs):
+            if not self.b.work.enabled:
+                return method(self, *args, **kwargs)
             with self.b.work.phase(name):
                 return method(self, *args, **kwargs)
         return call
@@ -247,7 +249,7 @@ class TreeOperations:
                 frames.append((node, RIGHT, RootedPiece(self.b.work, node.left, node.left.span, node.key)))
                 node = node.right
         with self.b.work.phase("search"):
-            self.b.work.add("leaf_checks")
+            self.b._count_split_leaves()
             is_left = not self.b._less(value, node.key)
         leaf = RootedPiece(self.b.work, node, 1, node.key)
         left, right = (leaf, None) if is_left else (None, leaf)
@@ -456,7 +458,7 @@ class TreeOperations:
     def split(self, header, value):
         self.b.work.add("split_calls")
         with self.b.work.phase("search"):
-            self.b.work.add("leaf_checks", 2)
+            self.b._count_split_leaves(2)
             if self.b._less(value, header.left_finger.key):
                 return None, header
             if not self.b._less(value, header.right_finger.key):

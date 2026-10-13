@@ -1,6 +1,6 @@
 # 原论文方向的 sibling-list 后端规格（2026-09-21）
 
-2026-10-13 状态：首轮 make/insert 后，[真实 split/adopt 增量](../validation/heterogeneous_split_20261013/README.md)已实现双端搜索、局部拆解/拼接与删除修复、沿路径维护大小、header 转移和分裂后的交错更新。操作验证不等于完整排序验收；`sorting_ready=False`。新增显式 `transfer_from` 阶段前置：只允许新 pair 与指定待转移 child group 暂时重叠，adopt 完成后才接受完整森林审计；共享核心尚未传递这一前置。空 acquisition 的独立 adopt 需要输入外的端点或已记录的新 parent 见证，不提供任意内部 owner 搜索。下文文献目标界仍不是已证成的代码复杂度。
+2026-10-13 状态：[真实 split/adopt 增量](../validation/heterogeneous_split_20261013/README.md)之后，[完整排序接入](../validation/heterogeneous_integration_20261013/README.md)已通过同一主循环传递 `transfer_from` 并在输出恢复前清除 pending，`sorting_ready=True` 表示完整操作可被路由。最新[记账开关增量](../validation/heterogeneous_work_modes_20261013/README.md)允许 `detailed_work=False`，保持必要检查及同配置独立 replay。空 acquisition 的独立 adopt 仍需输入外端点或已记录的新 parent 见证，不提供任意内部 owner 搜索。`timing_ready=False`；定向验证不等于正式输入资格，[当前源码成本依据](heterogeneous_cost_bounds_20261013.md)与下文文献目标界分别记录，目标摊还界尚未证成。以下带“拟议/待实现”的段落保留最初规格身份，当前实现状态以上述增量为准。
 
 ## 来源与核实边界
 
