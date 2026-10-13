@@ -48,7 +48,7 @@ REQUIRED_BACKEND_METHODS = (
     "validate_dummy_ownership", "boundary_list", "list_owner", "list_size",
     "child_list_ids", "extreme_child", "make_list", "insert_boundary",
     "split_pairs_at_value", "registered_pair_ids", "validate_invariants",
-    "logical_snapshot", "audit_snapshot",
+    "logical_snapshot", "audit_snapshot", "validate_iteration_complete",
 )
 
 
@@ -133,6 +133,9 @@ def resolve_sibling_backend(backend="ordinary_list"):
         return backend
     if not isinstance(backend, str):
         raise TypeError("backend must be a registered name or SiblingBackendSpec")
+    if backend == "heterogeneous_finger":
+        from heterogeneous_finger_backend import HeterogeneousFingerBackend
+        return SiblingBackendSpec(HeterogeneousFingerBackend)
     if backend != "ordinary_list":
         raise ValueError(f"unknown or unavailable sibling backend: {backend}")
     from sibling_list_backend import OrdinarySiblingListBackend

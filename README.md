@@ -47,29 +47,40 @@ now changes production execution: backend selection reaches public sorting,
 diagnostics, initialization and fresh same-configuration replay. Core accesses
 use sibling operations instead of ordinary storage fields; backend work
 observations are separate from mandatory stage state. The ordinary backend
-retains its existing safety checks and logical counter meanings. Only
-`ordinary_list` is registered; routing fixtures are not tree implementations.
+retains its existing safety checks and logical counter meanings. At that
+milestone only `ordinary_list` was registered; routing fixtures are not trees.
 At that shared-core milestone, real tree operations remained unimplemented.
 The source changes do not inherit the earlier 16-case qualification.
 
 The first [real heterogeneous tree increment](docs/validation/heterogeneous_insert_20261012/README.md)
 implemented external leaves, reversed end ribs, stable handles, `make_list`,
 and insertion at either finger. The [split/adopt increment](docs/validation/heterogeneous_split_20261013/README.md)
-now adds two-finger split, local deletion/join repair, path-derived sizes, header
+added two-finger split, local deletion/join repair, path-derived sizes, header
 transfer, and interleaved updates preserving existing descendants. Its 53 real
 tree tests and 173 existing core regressions pass; 15 small operation sequences
 have reproducible work records. These are **partial operation checks**, not
-complete sorting acceptance. Explicit `transfer_from` staging handles temporary
-cross-group overlap; routing that frontier through the shared core is still
-required. `sorting_ready=False` continues to block complete sorting selection.
-No new sorting timings or full amortized-complexity claim are introduced.
+complete sorting acceptance. That milestone introduced explicit `transfer_from`
+staging for temporary cross-group overlap and kept sorting selection disabled.
+
+The [complete-loop integration](docs/validation/heterogeneous_integration_20261013/README.md)
+now routes those real operations through the same Jordan Step 1/2/3 loop.
+`backend="heterogeneous_finger"` is available for correctness development;
+the default remains `ordinary_list`. Step 3(a) records the future split source
+before mutation, checks that its owner and live ID survive insertion, and Step
+3(b) consumes that intent. Pending transfers must finish before output insertion.
+Checked execution audits the restored forest; diagnostics replay a fresh tree
+of the same type and configuration. The bounded evidence separately checks both
+backends against external output and geometric ownership, including completed
+prefixes. It is not final experiment qualification. `timing_ready=False` remains:
+the detailed ledger is always enabled and the full amortized cost argument is
+still open. No new sorting timings or linear-complexity claim are introduced.
 
 The [October 12 chapter compaction](docs/thesis/compaction_20261012/README.md)
 condenses Implementation and Experimental Method while preserving their 38
 existing labels and reconciling the prose with the shared-core interfaces.
 The rebuilt thesis has 68 physical pages, down from 76, with the template and
-historical results unchanged. This is an intermediate draft; the real backend
-and its matched experiments still need to be implemented and written up.
+historical results unchanged. This is an intermediate draft; backend qualification,
+matched experiments and their corresponding thesis integration remain unfinished.
 
 ### Historical Milestones
 
@@ -582,8 +593,9 @@ Important project documents:
   On strictly increasing inputs of length `n=2m`, boundary insertions alone
   copy `(m-1)^2` existing pair IDs, even with no splits. Logical split
   counters omit that work and are not complete runtime cost measurements.
-- The heterogeneous backend now has real make/insert/split/adopt operations, but
-  full sorting integration and its cost qualification remain incomplete; no
+- The heterogeneous backend now runs real make/insert/split/adopt operations
+  within the shared sorting loop. Broader qualification, cost analysis and
+  uninstrumented execution remain unfinished; no
   level-linked backend is implemented.
 - Current figures summarize the Week 10 contamination study, Week 11 pilot,
   and Week 12 formal sorting experiment. FU LaTeX integration is a separate
@@ -597,11 +609,13 @@ validation and freeze source/input/timing identities on October 18, freeze
 review evidence on October 20, complete the draft on October 22, and deliver
 the review package on October 25 after October 23--24 checks.
 
-- Close the ownership/locality and stage-state/audit contracts identified in
-  the integration/cost map; `stage_results` also enforces execution order.
-- Implement the finger-search backend using literature as a reference, without
-  copying or porting third-party backend source. Count all actual maintenance
-  work, including ownership and metadata updates.
+- Extend the real backend's correctness coverage and close the remaining
+  ownership/locality and amortized cost arguments identified in the integration
+  map. The bounded end-to-end gate now passes; this does not establish the
+  required efficient-backend delivery in full.
+- Separate detailed work collection from an uninstrumented path and check
+  behavioral agreement before any matched timing. Include ownership, metadata,
+  opposite-rib walks and shared-core work in the cost explanation.
 - Requalify both backends on their final measured version; aim first for the
   approximately 140-input core coverage, then expand toward 380 if time permits.
 - Validate the runner, validator and pilot on preselected inputs, then perform

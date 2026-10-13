@@ -1,4 +1,4 @@
-"""Small deterministic WORK probe for the partial heterogeneous backend.
+"""Small deterministic WORK probe for the backend's make/insert subset.
 
 No wall-clock measurement, Jordan input qualification or full-contract
 acceptance. Raw per-operation records and a separately checked model are saved
@@ -111,7 +111,9 @@ def main(argv=None):
                  for pattern in ("left", "right", "alternating", "seeded")]
     result = {
         "scope": "partial_make_insert_only", "contract_acceptance_passed": False,
-        "backend_ready_for_timing": False, "sorting_ready": False,
+        "backend_ready_for_timing": False,
+        "sorting_ready": HeterogeneousFingerBackend.sorting_ready,
+        "sorting_validated_by_this_probe": False,
         "metrics_schema": HeterogeneousFingerBackend.metrics_schema,
         "seed_for_seeded_histories": 20261012, "cases": cases,
         "raw_sha256": hashlib.sha256(raw.read_bytes()).hexdigest(),

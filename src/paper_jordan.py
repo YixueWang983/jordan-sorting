@@ -86,6 +86,8 @@ class Step3AResult:
     boundary_pair_id: int
     parent_pair_id: int
     sibling_list_id: int
+    # Execution state, independent of optional trace. None means a planned skip.
+    transfer_source_list_id: int | None = None
 
 
 @dataclass(frozen=True)
@@ -474,9 +476,20 @@ def _validate_stage_results_and_trace(state, final_point_order):
 
     expected_work_iterations = set()
     for iteration in expected_iterations:
+        insertion = state.stage_results[iteration]["step3a_insert_pair"]
         split = state.stage_results[iteration]["step3b_split_sibling_list"]
+        if not isinstance(insertion, Step3AResult):
+            raise RuntimeError("Step 3(a) stage result has the wrong type")
         if not isinstance(split, Step3BResult):
             raise RuntimeError("Step 3(b) stage result has the wrong type")
+        source = insertion.transfer_source_list_id
+        if (
+            (source is not None and not _is_positive_integer(source))
+            or split.performed != (source is not None)
+            or split.input_list_id != source
+            or source == insertion.sibling_list_id
+        ):
+            raise RuntimeError("Step 3 transfer intent and completed split disagree")
         if state.execution_policy.count_operations and split.performed:
             expected_work_iterations.add(iteration)
             require_split_work(state.backend_work.get(iteration), True)
@@ -1377,11 +1390,31 @@ def _step3a(
 
     if not creates_singleton and boundary_pair.is_dummy:
         raise RuntimeError("dummy boundary must enclose every finite point")
+    # Both boundary selections refer to the pre-update forest. Determine only
+    # the future source, never partition it here. The opposite non-enclosing
+    # boundary is the first/last item of another child group of the same owner.
+    side = RIGHT if insertion_side == AFTER else LEFT
+    if creates_singleton:
+        expected_list_id = None
+        expected_owner = boundary_pair.pair_id
+    else:
+        expected_list_id = state.sibling_backend.boundary_list(boundary_pair.pair_id, side)
+        expected_owner = state.sibling_backend.list_owner(expected_list_id)
+    transfer_source = _step3_transfer_source(state, iteration, orientation)
+    if transfer_source is not None:
+        if (
+            transfer_source == expected_list_id
+            or state.sibling_backend.list_owner(transfer_source) != expected_owner
+        ):
+            raise RuntimeError(
+                "Step 3 transfer source must be another group of the insertion owner"
+            )
     state.sibling_backend.register_pair(new_pair)
     if creates_singleton:
         sibling_list_id = state.sibling_backend.make_list(
             new_pair.pair_id,
             boundary_pair.pair_id,
+            transfer_from=transfer_source,
         )
         insertion_mode = SINGLETON_LIST
         if state.execution_policy.count_operations:
@@ -1390,14 +1423,11 @@ def _step3a(
         # Non-enclosing predecessor (increasing) / successor (decreasing)
         # is respectively the right / left end of its sibling list. The
         # enclosing branch above makes a child list and needs no owner query.
-        side = RIGHT if insertion_side == AFTER else LEFT
-        expected_list_id = state.sibling_backend.boundary_list(
-            boundary_pair.pair_id, side
-        )
         sibling_list_id = state.sibling_backend.insert_boundary(
             new_pair.pair_id,
             boundary_pair.pair_id,
             side,
+            transfer_from=transfer_source,
         )
         if sibling_list_id != expected_list_id:
             raise RuntimeError("boundary insertion changed the live list handle")
@@ -1408,6 +1438,13 @@ def _step3a(
     state.pairs[new_pair.pair_id] = new_pair
     state.pair_by_end_index[iteration] = new_pair.pair_id
     parent_pair_id = state.sibling_backend.list_owner(sibling_list_id)
+    if parent_pair_id != expected_owner:
+        raise RuntimeError("Step 3(a) changed the intended insertion owner")
+    if transfer_source is not None and (
+        _step3_transfer_source(state, iteration, orientation) != transfer_source
+        or state.sibling_backend.list_owner(transfer_source) != expected_owner
+    ):
+        raise RuntimeError("Step 3(a) changed the live transfer source or its owner")
     result = Step3AResult(
         pair_id=new_pair.pair_id,
         orientation=orientation,
@@ -1415,6 +1452,7 @@ def _step3a(
         boundary_pair_id=boundary_pair.pair_id,
         parent_pair_id=parent_pair_id,
         sibling_list_id=sibling_list_id,
+        transfer_source_list_id=transfer_source,
     )
     if state.execution_policy.record_trace:
         _record_trace(
@@ -1435,6 +1473,24 @@ def _step3a(
     return result
 
 
+def _step3_transfer_source(state, iteration, orientation):
+    """Read the selected opposite endpoint; no search, split or oracle ranks."""
+    stage = (
+        "step2_select_boundary_pair" if orientation == INCREASING
+        else "step1_select_boundary_pair"
+    )
+    boundary = state.stage_results.get(iteration, {}).get(stage)
+    if boundary is None:
+        raise RuntimeError("both Step 1/2 selections must complete before Step 3(a)")
+    _require_boundary_stage(state, stage, boundary, iteration)
+    pair = _validated_boundary_pair(state, boundary, iteration)
+    if pair_encloses_point(state, pair.pair_id, iteration - 1):
+        return None
+    return state.sibling_backend.boundary_list(
+        pair.pair_id, LEFT if orientation == INCREASING else RIGHT
+    )
+
+
 def _step3b(
     state,
     iteration,
@@ -1448,6 +1504,7 @@ def _step3b(
     _require_orientation(state, iteration, orientation)
     _require_boundary_stage(state, boundary_trace_step, boundary, iteration)
     _require_step3a_stage(state, iteration, new_pair_id)
+    insertion = state.stage_results[iteration]["step3a_insert_pair"]
     _require_stage_absent(state, "step3b_split_sibling_list", iteration)
     new_pair = _validated_new_iteration_pair(state, iteration, new_pair_id)
     if state.sibling_backend.child_list_ids(new_pair_id):
@@ -1456,6 +1513,8 @@ def _step3b(
     boundary_pair = _validated_boundary_pair(state, boundary, iteration)
     previous_point_id = iteration - 1
     if pair_encloses_point(state, boundary_pair.pair_id, previous_point_id):
+        if insertion.transfer_source_list_id is not None:
+            raise RuntimeError("Step 3(b) cannot skip a planned transfer")
         result = Step3BResult(
             performed=False,
             pair_id=new_pair.pair_id,
@@ -1486,6 +1545,15 @@ def _step3b(
     input_list_id = state.sibling_backend.boundary_list(
         boundary_pair.pair_id, LEFT if orientation == INCREASING else RIGHT
     )
+    if (
+        input_list_id != insertion.transfer_source_list_id
+        or input_list_id == insertion.sibling_list_id
+        or state.sibling_backend.list_owner(input_list_id) != insertion.parent_pair_id
+        or state.sibling_backend.list_owner(insertion.sibling_list_id) != insertion.parent_pair_id
+    ):
+        raise RuntimeError(
+            "Step 3(b) source/owner does not match the pre-insertion transfer intent"
+        )
     if state.execution_policy.record_trace:
         input_size = state.sibling_backend.list_size(input_list_id)
     split_result = state.sibling_backend.split_pairs_at_value(
@@ -1537,6 +1605,9 @@ def _step3c(state, iteration, new_pair_id, orientation, insertion_side):
     _require_orientation(state, iteration, orientation)
     _require_step3a_stage(state, iteration, new_pair_id)
     _require_step3b_stage(state, iteration, new_pair_id, orientation)
+    # O(1) pending-state fence in every mode; checked backends may additionally
+    # audit the restored forest here. Never audit it between insertion/adopt.
+    state.sibling_backend.validate_iteration_complete()
 
     new_pair = _validated_new_iteration_pair(state, iteration, new_pair_id)
     child_pair_id, base_anchor_point_id = _step3c_base_anchor(

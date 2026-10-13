@@ -98,11 +98,14 @@ class RoutedOrdinaryFixture:
         pair = self.inner.extreme_child(pair_id, side)
         return None if pair is None else self.get_pair(pair.pair_id)
 
-    def make_list(self, pair_id, owner):
-        return self.inner.make_list(pair_id, owner)
+    def make_list(self, pair_id, owner, *, transfer_from=None):
+        return self.inner.make_list(pair_id, owner, transfer_from=transfer_from)
 
-    def insert_boundary(self, pair_id, anchor, side):
-        return self.inner.insert_boundary(pair_id, anchor, side)
+    def insert_boundary(self, pair_id, anchor, side, *, transfer_from=None):
+        return self.inner.insert_boundary(pair_id, anchor, side, transfer_from=transfer_from)
+
+    def validate_iteration_complete(self):
+        return self.inner.validate_iteration_complete()
 
     def split_pairs_at_value(self, *args, **kwargs):
         self.split_calls += 1
@@ -188,7 +191,7 @@ class PaperBackendIntegrationTests(unittest.TestCase):
                          certified_paper_jordan_sort):
                 with self.subTest(values=values, call=call):
                     with self.assertRaisesRegex(ValueError, "unavailable"):
-                        call(values, backend="heterogeneous_finger")
+                        call(values, backend="nonexistent_finger_backend")
 
     def test_small_diagnostics_identify_selection_without_constructing_state(self):
         result = paper_jordan_diagnostics_valid([2, 1], backend=self.spec)

@@ -441,6 +441,7 @@ class PaperJordanStep3Tests(unittest.TestCase):
     def test_increasing_step3a_creates_singleton_list(self):
         state = initialize_paper_jordan_state([2, 3, 1, 4])
         left = step1_select_predecessor_boundary(state, 4)
+        step2_select_successor_boundary(state, 4)
 
         result = step3a_increasing(state, 4, left)
         pair = state.pairs[result.pair_id]
@@ -458,6 +459,7 @@ class PaperJordanStep3Tests(unittest.TestCase):
     def test_increasing_step3a_inserts_after_left_boundary(self):
         state = initialize_paper_jordan_state([1, 2, 3, 4])
         left = step1_select_predecessor_boundary(state, 4)
+        step2_select_successor_boundary(state, 4)
         pair_2_list_id = state.pairs[2].sibling_list_id
 
         result = step3a_increasing(state, 4, left)
@@ -473,6 +475,7 @@ class PaperJordanStep3Tests(unittest.TestCase):
 
     def test_decreasing_step3a_creates_singleton_list(self):
         state = initialize_paper_jordan_state([3, 2, 4, 1])
+        step1_select_predecessor_boundary(state, 4)
         right = step2_select_successor_boundary(state, 4)
 
         result = step3a_decreasing(state, 4, right)
@@ -488,6 +491,7 @@ class PaperJordanStep3Tests(unittest.TestCase):
 
     def test_decreasing_step3a_inserts_before_right_boundary(self):
         state = initialize_paper_jordan_state([4, 3, 2, 1])
+        step1_select_predecessor_boundary(state, 4)
         right = step2_select_successor_boundary(state, 4)
         pair_2_list_id = state.pairs[2].sibling_list_id
 
@@ -528,6 +532,7 @@ class PaperJordanStep3Tests(unittest.TestCase):
     def test_step3a_boundary_failure_propagates_and_state_must_be_discarded(self):
         state = initialize_paper_jordan_state([1, 2, 3, 4])
         left = step1_select_predecessor_boundary(state, 4)
+        step2_select_successor_boundary(state, 4)
         pair_2_list = state.sibling_backend.get_list(state.pairs[2].sibling_list_id)
         pair_2_list.pair_ids.append(999)
 
@@ -536,8 +541,10 @@ class PaperJordanStep3Tests(unittest.TestCase):
 
         self.assertNotIn(4, state.pairs)
         self.assertNotIn(4, state.pair_by_end_index)
-        self.assertEqual(state.sibling_backend.get_pair(4).pair_id, 4)
-        # Registration is not undone; this failed state is never resumed.
+        with self.assertRaises(KeyError):
+            state.sibling_backend.get_pair(4)
+        # Preflight now detects this corruption before registration. The
+        # already-corrupted state is still unusable; no rollback is promised.
 
     def test_increasing_step3b_skips_when_right_boundary_encloses(self):
         state = initialize_paper_jordan_state([1, 2, 3, 4])

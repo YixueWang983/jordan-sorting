@@ -2,9 +2,18 @@
 
 原始代码审阅基线：`b6a407461c2f94a4b491016376861142f4b14577`。本地合并基线：`fa67fc664d7515b2504d355e35fadcfd23f16534`；下面两项源码及后端规格的 blob 身份在两基线间未变。另核对 `paper_jordan_sort.py` 与 `paper_execution_policy.py` 身份未变。原始表是 10-11 的源码审阅与待实施契约；**10-12 生产适配的增量状态见下节，旧表行号与“待实现”描述仅指原基线。**
 
-## 0. 10-12 生产适配增量（基线 `2be212a`）
+## 0a. 10-13 真实树完整排序接入（基线 `cc1aa2d`）
 
-已修改实际运行路径，验证记录见 [共享核心适配](../validation/shared_core_backend_20261012/README.md)。当前唯一注册的生产后端仍是 `ordinary_list`。`SiblingBackendSpec` 指定类和不可变构造参数，供下一步真实实现接入；它不是后端验收标志。
+当前注册 `ordinary_list` 与 `heterogeneous_finger`，共享同一 Step 1/2/3 主循环；[接入验证与成本边界](../validation/heterogeneous_integration_20261013/README.md) 记录了实际树分裂、逐前缀外部检查和同树新实例 replay。以下 10-12 状态及后续原表属于对应历史基线，不再代表当前操作是否存在。
+
+- C04/C05/C07：Step 3(a) 要求两侧选择已完成，在修改前通过相反方向的端点记录 `transfer_source_list_id`；核对同 owner、不同列表，并在插入后及 Step 3(b) 再核对 live ID/owner。非 enclosing successor 的 LEFT / predecessor 的 RIGHT 是这些新查询的 locality 前提；任意内部 pair 仍只做身份/liveness 检查。阶段记录不依赖 trace，不提前 split。
+- C10/C11/C12：树后端保留 staged transfer 与 pending split 两种未完成态；完整审计拒绝它们。新增 `validate_iteration_complete` 在输出插入前检查 pending 已清；树的 checked 模式此时检查完整森林，minimal 仅检查 pending。replay 的逻辑和物理快照、后端类型/配置继续核对；没有普通列表兜底。
+- 接入查询在树表示下只读端点、header 和至多两个 child slots；普通后端已有 membership/ancestor 扫描保留，预检增加的重复查询也确实执行，旧计时不能沿用。大小维护与 adopt 不逐叶重绑；完整几何模型和快照仅在非计时验证路径使用。
+- 新证据包含有限 owner 和 dummy owner、两个方向和两种插入方式，但有限输入覆盖不等于一般性 locality/算法证明。`rib_child` 另一 rib 行走、组件转换、逐段 join 与势能的对应仍待闭合。WorkLedger 仍始终开启，`timing_ready=False`；C13 的正式匹配实验 runner/validator 和最终版本资格仍待完成。
+
+## 0b. 10-12 生产适配增量（基线 `2be212a`，历史状态）
+
+已修改实际运行路径，验证记录见 [共享核心适配](../validation/shared_core_backend_20261012/README.md)。当时唯一注册的生产后端是 `ordinary_list`。`SiblingBackendSpec` 指定类和不可变构造参数，供下一步真实实现接入；它不是后端验收标志。
 
 | 原条目 | 现在的实现 | 仍未关闭的部分 |
 | --- | --- | --- |

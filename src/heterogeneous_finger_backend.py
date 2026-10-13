@@ -1,11 +1,11 @@
-"""First, deliberately partial, heterogeneous red-black sibling backend.
+"""Heterogeneous red-black sibling backend with staged Jordan transfers.
 
 External leaves hold stable pair handles. Left/right ribs reverse the outward
 child pointer; off-rib nodes point down. Insertion starts at an end finger and
 only ascends while repairing a red/red violation. There is no ordinary-tree
 copy, root search, member array, or per-item owner cache.
 
-This implements tree operations; full Jordan integration is still gated. See
+Available for correctness development, not qualified for formal timing. See
 Tarjan--Van Wyk (1988), Appendix, pp. 171--175, Fig. 20 and corrected Fig. 22
 (the drawing printed as Fig. 23 on p. 176). Code is independently written.
 """
@@ -234,10 +234,11 @@ class ListHeader(_Tracked):
 
 
 class HeterogeneousFingerBackend:
-    backend_name = "heterogeneous_finger_partial"
+    backend_name = "heterogeneous_finger"
     audit_schema = "heterogeneous-split-adopt-v2"
     metrics_schema = "heterogeneous-record-access-v2"
-    sorting_ready = False
+    sorting_ready = True  # Complete operation routing, not an efficiency claim.
+    timing_ready = False  # Detailed WorkLedger is still always enabled.
     supported_operations = frozenset(("register_pair", "make_list", "insert_boundary",
                                       "split_value", "adopt_split", "split_pairs_at_value"))
 
@@ -258,6 +259,13 @@ class HeterogeneousFingerBackend:
     def _require_adopted(self):
         if self._pending_split is not None:
             raise RuntimeError("pending split must be adopted before other operations")
+
+    def validate_iteration_complete(self):
+        self._require_adopted()
+        if self._pending_transfer is not None:
+            raise RuntimeError("staged transfer must complete before output insertion")
+        if self.execution_policy.validate_backend_commits:
+            self.validate_invariants()
 
     def _lookup(self, registry, key):
         self.work.add("registry_reads")
@@ -460,10 +468,12 @@ class HeterogeneousFingerBackend:
         """Explicit Step 3(a) frontier: defer only a named other group's overlap.
 
         The new pair is fresh and will be outside this source. Normal make and
-        insert keep their stricter completed-forest checks. This opt-in is not
-        yet routed from Jordan; sorting remains disabled until that integration.
+        insert keep their stricter completed-forest checks. Jordan supplies this
+        source from both completed boundary selections before inserting a pair.
         """
         if list_id is None:
+            if self._pending_transfer is not None and owner is not self._pending_transfer[0]:
+                raise ValueError("staged transfer forbids unrelated list updates")
             return None
         if self._pending_transfer is not None:
             raise ValueError("another transfer parent is already staged")

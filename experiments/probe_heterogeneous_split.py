@@ -130,7 +130,9 @@ def main():
     sources=['src/heterogeneous_finger_backend.py','src/heterogeneous_finger_split.py',
              'tests/test_heterogeneous_finger_backend.py','tests/test_heterogeneous_finger_split.py',
              'experiments/probe_heterogeneous_split.py']
-    summary={'scope':'partial_split_adopt_interleaved_operations', 'sorting_ready':False,
+    summary={'scope':'partial_split_adopt_interleaved_operations',
+             'sorting_ready':HeterogeneousFingerBackend.sorting_ready,
+             'sorting_validated_by_this_probe':False,
              'backend_ready_for_timing':False, 'contract_acceptance_passed':False,
              'metrics_schema':HeterogeneousFingerBackend.metrics_schema,
              'initial_construction_excluded_from_raw':True, 'cases':cases,
@@ -138,7 +140,9 @@ def main():
              'source_sha256':{p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sources}}
     (args.output_dir/'summary.json').write_text(json.dumps(summary,indent=2)+'\n')
     print(json.dumps({'scope':summary['scope'],'cases_passed':len(cases),
-                      'records':sum(c['records'] for c in cases),'sorting_ready':False}))
+                      'records':sum(c['records'] for c in cases),
+                      'sorting_ready':summary['sorting_ready'],
+                      'sorting_validated_by_this_probe':False}))
 
 
 if __name__=='__main__': main()

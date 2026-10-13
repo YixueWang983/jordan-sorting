@@ -1,0 +1,74 @@
+{
+  "archive_sha256": {
+    "README.md": "a0782ca7b16ed037307944fc79e0f3d60316c55f7a8017cceaecc0c0cc6b4a1f",
+    "cases.jsonl.gz": "808a2e6918dcc04762fcb4a4bc0f79f26a110a2982d4c8312f365d029b8751de",
+    "consumer_tests.log": "f6b82a7e1d91268b9a83a2a6c542685f3995b31304206f43e4881e628c83b061",
+    "integration_core_tests.log": "772e4552e65e5d90415ed077f5f3d041aa348bd1201e28f664569d556ad19823",
+    "operation_tests.log": "cc44ac17569bfbdcf8aa8346a59906809e681875641e0047e87d2feffa63f2b0",
+    "summary.json": "9d59d9c9a96e194f383380cf5522cfd3405b86693cf2933d078a5652fc5d47d9",
+    "validation.log": "ef91c50574fbe5d7a4a67ad904878f994376611dcd896366744d9eb22b669eed"
+  },
+  "backend_ready_for_timing": false,
+  "base_commit": "cc1aa2d85deb88e8d3231dd7042dc0d51595e8b2",
+  "bounded_validation_command": "python3 experiments/validate_heterogeneous_integration.py --output-dir docs/validation/heterogeneous_integration_20261013",
+  "changed_python_sha256": {
+    "experiments/probe_heterogeneous_insert.py": "97bf7b9a1e8ac8292d3bd06ebfcfe0c50c9bd364ccdb9609dab784cf9a8690fd",
+    "experiments/probe_heterogeneous_split.py": "a1728f7e2490210baa161a6749bf22ece4bbd11d7f20fa7649f1f0e9db8d9525",
+    "experiments/validate_heterogeneous_integration.py": "d8295b51a3c75fd9532170d6dea1571e3bd5958212d51d16c6758c65ba647dcb",
+    "src/heterogeneous_finger_backend.py": "9b07b00e42b5ce29a564939d8e4394ec8884cfba51cb5dc36029de75c1dfa35b",
+    "src/paper_jordan.py": "870f788a274f25d9af7e2302f9f5f6259b6a3fc798dd7033462f2d337ee97082",
+    "src/sibling_backend_contract.py": "8754e7cdc5abbb48135bc29fe634edd91cf6373f85baf217144ab66c70aa017f",
+    "src/sibling_list_backend.py": "5485d55640f6bc15e62ffdb15f53e0fb513df528041dccc99a7c0c86fc2f9c5c",
+    "tests/test_heterogeneous_finger_backend.py": "ab101d3d7d01eb3d7b071837da124d67ed760e67f7d69c1c0802ff71e99fe481",
+    "tests/test_heterogeneous_sort_integration.py": "3e111ae9429a9973d6a2865ca8169823f41c3792d6a73e12c1e1eaa0d434d680",
+    "tests/test_paper_backend_integration.py": "03e14edc84466d19ae7b34dbcbff17d1e6ff9afe74d03c478f58ca54a69bb24a",
+    "tests/test_paper_jordan.py": "7aa4a0ae94ef06c3df969de68335bdb69b5ef1ba2f208c80393e47cb59501561",
+    "tests/test_paper_jordan_sort.py": "932d8e8e1aa1af89f8379a5189f158f86c41d6ae5fba309e35b1ca0ee74c744f"
+  },
+  "checked_at_utc": "2026-10-13T05:48:07.174168+00:00",
+  "complete_efficiency_proof": false,
+  "independent_archive_check": {
+    "aggregates_recomputed": true,
+    "case_runs": 704,
+    "distinct_input_hashes": 704,
+    "gzip_hash_verified": true,
+    "input_hashes_verified": true,
+    "raw_sha256": "760bfa2f7710cabd36056ae0ab9367eeabb0b4f49ade970c6f541d223737b342",
+    "source_hashes_match_current_files": true
+  },
+  "not_run": [
+    "full repository regression",
+    "140/380-input formal experiment",
+    "old 16-input qualification",
+    "thesis build"
+  ],
+  "python_executable": "/Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "scope": "complete_shared_loop_bounded_correctness_only",
+  "suites": [
+    {
+      "command": "PYTHONPATH=src:experiments:tests python3 -m unittest test_heterogeneous_sort_integration test_paper_jordan test_paper_jordan_sort test_sibling_list_backend test_paper_execution_policy test_validate_ordinary_list_extended test_preflight_next_stage test_probe_large_qualification test_certified_paper_jordan test_paper_backend_integration -v",
+      "exit_code": 0,
+      "log": "integration_core_tests.log",
+      "skipped": 0,
+      "test_methods": 188
+    },
+    {
+      "command": "PYTHONPATH=src:tests python3 -m unittest test_heterogeneous_finger_backend test_heterogeneous_finger_split -v",
+      "exit_code": 0,
+      "log": "operation_tests.log",
+      "skipped": 0,
+      "test_methods": 53
+    },
+    {
+      "command": "PYTHONPATH=src:experiments:tests python3 -m unittest test_validate_paper_algorithm test_run_week7_pilot test_run_week11_pilot test_validate_week11_pilot_outputs test_week11_experiment_protocol test_validate_week12_formal_sorting_outputs -v",
+      "exit_code": 0,
+      "log": "consumer_tests.log",
+      "skipped": 0,
+      "test_methods": 125
+    }
+  ],
+  "test_environment": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "total_distinct_test_methods": 366
+}

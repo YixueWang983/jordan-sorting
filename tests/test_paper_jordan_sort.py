@@ -332,6 +332,11 @@ class PaperJordanSortValidTests(unittest.TestCase):
         )
         event["input_list_id"] = 999
         event["left_list_id"] = 1000
+        # Coordinate the new mandatory pre-insertion intent as well; replay
+        # must still reject mutually consistent forged execution records.
+        state.stage_results[4]["step3a_insert_pair"] = replace(
+            state.stage_results[4]["step3a_insert_pair"], transfer_source_list_id=999
+        )
 
         with self.assertRaisesRegex(RuntimeError, "deterministic replay"):
             paper_jordan.validate_paper_jordan_state(state)

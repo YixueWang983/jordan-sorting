@@ -253,12 +253,26 @@ class OrdinarySiblingListBackend:
             raise RuntimeError("Step 3(c) extreme child has the wrong parent")
         return pair
 
-    def insert_boundary(self, pair_id, anchor_pair_id, side):
+    def insert_boundary(self, pair_id, anchor_pair_id, side, *, transfer_from=None):
         if side not in (LEFT, RIGHT):
             raise ValueError("insertion side must be left or right")
+        if transfer_from is not None:
+            target = self.boundary_list(anchor_pair_id, side)
+            self._validate_transfer_source(transfer_from, self.list_owner(target), target)
         return self.insert_at_boundary(
             pair_id, anchor_pair_id, BEFORE if side == LEFT else AFTER
         )
+
+    def _validate_transfer_source(self, source, owner, target=None):
+        if source is not None and (
+            source == target or self.list_owner(source) != owner
+            or source not in self.child_list_ids(owner)
+        ):
+            raise ValueError("transfer source must be another child group of this owner")
+
+    def validate_iteration_complete(self):
+        # Ordinary split/adopt commits in one operation; no pending tree state.
+        return True
 
     def logical_snapshot(self):
         """Audit-only Jordan topology, independent of physical list IDs.
@@ -322,12 +336,13 @@ class OrdinarySiblingListBackend:
         except (KeyError, TypeError) as exc:
             raise KeyError(f"unknown sibling-list id: {list_id}") from exc
 
-    def make_list(self, pair_id, owner_parent_pair_id):
+    def make_list(self, pair_id, owner_parent_pair_id, *, transfer_from=None):
         """创建 singleton list，并建立 pair/parent/list 三方 ownership。"""
         pair = self._require_unowned_finite_pair(pair_id)
         owner = self.get_pair(owner_parent_pair_id)
         self._require_same_family(pair, owner)
         self._require_live_parent(owner)
+        self._validate_transfer_source(transfer_from, owner_parent_pair_id)
 
         new_list_id = self._next_list_id
         new_list = SiblingList(new_list_id, owner.pair_id, [pair.pair_id])

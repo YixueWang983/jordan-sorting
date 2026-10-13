@@ -290,7 +290,7 @@ class HeterogeneousRejectionTests(unittest.TestCase):
                 pending = f.pair(-6, -5) if side == LEFT else f.pair(6, 7)
                 with self.assertRaises(ValueError):
                     b.insert_boundary(pending.pair_id, first.pair_id, side)
-                self.assertFalse(b.sorting_ready)
+                self.assertFalse(b.timing_ready)
                 self.assertEqual(b.work.last_operation["status"], "failed")
 
     def test_forged_stale_boundary_reference_is_not_trusted(self):
@@ -372,12 +372,17 @@ class HeterogeneousRejectionTests(unittest.TestCase):
             with self.subTest(side=side), self.assertRaises((ValueError, KeyError)):
                 f.backend.insert_boundary(p.pair_id, anchor, side)
 
-    def test_partial_backend_still_unavailable_for_sorting(self):
+    def test_sorting_routing_does_not_certify_timing_or_enable_partial_types(self):
         f, _, _ = self.initial(); b = f.backend
+        self.assertIs(resolve_sibling_backend(b.backend_name).backend_type,
+                      HeterogeneousFingerBackend)
+        self.assertFalse(b.timing_ready)
+        class PartialBackend(HeterogeneousFingerBackend):
+            sorting_ready = False
         with self.assertRaisesRegex(TypeError, "partial backend"):
-            SiblingBackendSpec(HeterogeneousFingerBackend)
+            SiblingBackendSpec(PartialBackend)
         with self.assertRaises(ValueError):
-            resolve_sibling_backend(b.backend_name)
+            resolve_sibling_backend("heterogeneous_finger_partial")
 
     def test_auditor_rejects_structural_and_metadata_corruption(self):
         def corrupt(b, lid, kind):
