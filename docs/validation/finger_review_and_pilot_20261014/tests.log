@@ -1,0 +1,32 @@
+test_fixed_schedule_and_independent_reconstruction (test_development_backend_pilot.DevelopmentPilotTests.test_fixed_schedule_and_independent_reconstruction) ... ok
+test_optimized_pilot_entrypoints_reject_before_outputs (test_development_backend_pilot.DevelopmentPilotTests.test_optimized_pilot_entrypoints_reject_before_outputs) ... ok
+test_preflight_boolean_count_stops_before_warmup (test_development_backend_pilot.DevelopmentPilotTests.test_preflight_boolean_count_stops_before_warmup) ... ok
+test_real_pilot_worker_timeout_recovers_committed_preflight (test_development_backend_pilot.DevelopmentPilotTests.test_real_pilot_worker_timeout_recovers_committed_preflight) ... ok
+test_real_public_calls_fresh_unobserved_trees_inside_timer_checks_outside (test_development_backend_pilot.DevelopmentPilotTests.test_real_public_calls_fresh_unobserved_trees_inside_timer_checks_outside) ... ok
+test_validator_rejects_resealed_protocol_environment_rows_and_summary (test_development_backend_pilot.DevelopmentPilotTests.test_validator_rejects_resealed_protocol_environment_rows_and_summary) ... ok
+test_warmup_failure_stops_and_retains_committed_preflight (test_development_backend_pilot.DevelopmentPilotTests.test_warmup_failure_stops_and_retains_committed_preflight) ... ok
+test_wrong_output_is_retained_after_clock_closes (test_development_backend_pilot.DevelopmentPilotTests.test_wrong_output_is_retained_after_clock_closes) ... ok
+test_located_component_can_be_strictly_on_one_side_without_equal_key (test_finger_review_hardening.ProofScopeRegressions.test_located_component_can_be_strictly_on_one_side_without_equal_key) ... ok
+test_new_endpoint_inside_finite_owner_but_outside_its_direct_children (test_finger_review_hardening.ProofScopeRegressions.test_new_endpoint_inside_finite_owner_but_outside_its_direct_children) ... ok
+test_interrupted_partial_record_is_not_counted_or_needed_for_recovery (test_finger_review_hardening.TimeoutPersistenceTests.test_interrupted_partial_record_is_not_counted_or_needed_for_recovery) ... ok
+test_normal_exit_closes_each_of_two_records (test_finger_review_hardening.TimeoutPersistenceTests.test_normal_exit_closes_each_of_two_records) ... {"accepted": true, "scope": "bounded_representation_locality_not_timing", "case_runs": 2, "distinct_input_hashes": 2, "original_runs": 4, "totals": {"ordinary": {"prefixes": 3, "iterations": 1}, "tree_off": {"prefixes": 3, "iterations": 1}}, "performance_eligible": false, "formal_proof_certified": false}
+ok
+test_python_exception_preserves_first_record_and_current_case (test_finger_review_hardening.TimeoutPersistenceTests.test_python_exception_preserves_first_record_and_current_case) ... ok
+test_real_process_timeout_preserves_first_complete_gzip (test_finger_review_hardening.TimeoutPersistenceTests.test_real_process_timeout_preserves_first_complete_gzip) ... ok
+test_timeout_overrides_summary_written_before_worker_exit (test_finger_review_hardening.TimeoutPersistenceTests.test_timeout_overrides_summary_written_before_worker_exit) ... ok
+test_every_legal_permutation_through_seven_both_backends (test_finger_refinement.LocalityRefinementTests.test_every_legal_permutation_through_seven_both_backends) ... ok
+test_exact_partition_rejects_merged_groups_even_with_same_members (test_finger_refinement.LocalityRefinementTests.test_exact_partition_rejects_merged_groups_even_with_same_members) ... ok
+test_fixed_z1_cases_both_directions_and_checked_policy (test_finger_refinement.LocalityRefinementTests.test_fixed_z1_cases_both_directions_and_checked_policy) ... ok
+test_middle_splits_parity_direction_and_finite_owners (test_finger_refinement.LocalityRefinementTests.test_middle_splits_parity_direction_and_finite_owners) ... ok
+test_actual_finger_split_all_black_root_shapes_and_cuts_through_nine_leaves (test_finger_refinement.RepresentationRefinementTests.test_actual_finger_split_all_black_root_shapes_and_cuts_through_nine_leaves) ... ok
+test_decoder_rejects_corrupted_reverse_pointer (test_finger_refinement.RepresentationRefinementTests.test_decoder_rejects_corrupted_reverse_pointer) ... ok
+test_decoder_rejects_rib_span_as_full_subtree_size (test_finger_refinement.RepresentationRefinementTests.test_decoder_rejects_rib_span_as_full_subtree_size) ... ok
+test_decoder_rejects_wrong_root_child_cache (test_finger_refinement.RepresentationRefinementTests.test_decoder_rejects_wrong_root_child_cache) ... ok
+test_orientation_round_trip_all_colored_shapes_through_ten_leaves (test_finger_refinement.RepresentationRefinementTests.test_orientation_round_trip_all_colored_shapes_through_ten_leaves) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 18.392s
+
+OK
+{"check": "real_finger_split", "shape_cut_cases": 1088, "max_leaves": 9, "repair_branch_counts": {"deletion_red_sibling": 37, "deletion_near_rotations": 25, "deletion_far_rotations": 63, "deletion_propagations": 68, "left_rotations": 88, "right_rotations": 138}}
+{"check": "orientation_round_trip", "colored_shapes": 271, "max_leaves": 10}
