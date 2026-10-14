@@ -1,0 +1,10 @@
+[
+  {
+    "log": "cost_fixture_tests.log",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:experiments:tests /Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest test_finger_cost_lemmas test_matched_backend_fixture test_finger_middle_splits -v"
+  },
+  {
+    "log": "tree_regressions.log",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:experiments:tests /Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest test_heterogeneous_work_configuration test_heterogeneous_finger_backend test_heterogeneous_finger_split test_heterogeneous_sort_integration -v"
+  }
+]

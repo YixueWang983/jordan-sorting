@@ -1,0 +1,23 @@
+{
+  "accepted": true,
+  "inputs": 12,
+  "original_runs": 72,
+  "performance_eligible": false,
+  "per_checked_configuration": {
+    "prefixes": 1518,
+    "nonempty_smaller_sides": [
+      3,
+      3,
+      7,
+      7,
+      19,
+      19,
+      3,
+      3,
+      7,
+      7,
+      19,
+      19
+    ]
+  }
+}

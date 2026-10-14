@@ -83,9 +83,15 @@ preserves the configuration.
 The default tree configuration still records detailed work for development.
 [Source-based cost bounds](docs/development/heterogeneous_cost_bounds_20261013.md)
 account for the actual loops, including repeated joins and opposite-rib walks,
-with a conservative conditional split bound; the target amortized argument is
-still open. `timing_ready=False` remains until cost and final experiment gates
-are resolved. No new sorting timings or linear-complexity claim are introduced.
+with a conservative conditional split bound. The
+[October 14 cost lemmas](docs/development/heterogeneous_cost_lemmas_20261014.md)
+correct the input-blackening baseline, telescope the split joins, bound root-rib
+walks, and give a common potential for mixed updates. These are conditional on
+the operation/repair contracts; the all-input Jordan locality argument remains
+open. [Bounded evidence and mechanical runner fixtures](docs/validation/finger_cost_and_fixture_20261014/README.md)
+include middle-sized splits and independent raw-summary reconstruction using
+synthetic ticks. `timing_ready=False` remains; no wall-clock comparison or
+unconditional linear-time sorting claim is introduced.
 
 ```python
 from heterogeneous_finger_backend import HeterogeneousFingerBackend
