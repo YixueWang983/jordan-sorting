@@ -1,10 +1,14 @@
 """Recompute archived counts/inequalities, not rerun algorithms or prove them."""
 from collections import Counter, defaultdict
+import argparse
 import gzip
 import hashlib
 import json
 from pathlib import Path
 import sys
+
+if sys.flags.optimize != 0:
+    raise RuntimeError('Evidence checks require optimization level 0; disable -O/-OO/PYTHONOPTIMIZE')
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
@@ -23,10 +27,15 @@ def sources(mapping):
         assert hashlib.sha256((ROOT/path).read_bytes()).hexdigest() == expected, path
 
 
-def main():
-    probe = read(HERE/'cost_probe/records.json.gz')
-    plan = read(HERE/'cost_probe/plan.json')
+def main(directory=HERE):
+    # Historical evidence remains bound to its original source version. This
+    # maintained checker can also inspect a new run with the same fixed cases.
+    here=Path(directory)
+    probe = read(here/'cost_probe/records.json.gz')
+    plan = read(here/'cost_probe/plan.json')
     assert probe['source_sha256'] == plan['source_sha256']
+    assert type(plan.get('python_optimize')) is int and plan['python_optimize']==0
+    assert type(probe.get('python_optimize')) is int and probe['python_optimize']==0
     sources(plan['source_sha256'])
     counts = Counter(); cases = defaultdict(set); split_events = []
     for event in probe['events']:
@@ -67,8 +76,9 @@ def main():
     assert all(e['cascades']+e['potential_change'] <= 8 for e in probe['inserts'])
     assert probe['raw_red_root_join'] == {'before':[0,0],'normalized':[1,1],'result':2}
 
-    plan = read(HERE/'middle_splits/plan.json'); sources(plan['source_sha256'])
-    files = sorted((HERE/'middle_splits').glob('case-*.json.gz'))
+    plan = read(here/'middle_splits/plan.json'); sources(plan['source_sha256'])
+    assert type(plan.get('python_optimize')) is int and plan['python_optimize']==0
+    files = sorted((here/'middle_splits').glob('case-*.json.gz'))
     assert len(files) == len(plan['plan']) == 12
     hashes = set(); prefixes = 0; smaller = []; total_splits = 0
     expected_runs = {f'{b}/{m}' for b in ('ordinary','tree_on','tree_off') for m in ('checked','minimal')}
@@ -106,12 +116,13 @@ def main():
             if name == 'tree_on/checked':
                 prefixes += len(run['prefixes']); smaller.extend(min(a,b) for a,b in sizes)
                 total_splits += count['splits']
-    assert read(HERE/'middle_splits/summary.json') == {
+    assert read(here/'middle_splits/summary.json') == {
         'accepted':True,'inputs':12,'original_runs':72,'performance_eligible':False,
         'per_checked_configuration':{'prefixes':prefixes,'nonempty_smaller_sides':smaller}}
-    success = validate(HERE/'matched_fixture'); failure = validate(HERE/'failed_fixture')
+    success = validate(here/'matched_fixture'); failure = validate(here/'failed_fixture')
     assert success['completed_successfully'] and not failure['completed_successfully']
     print(json.dumps({'archive_counts_and_sources_checked':True,
+        'python_optimize':sys.flags.optimize,
         'cost_events':dict(counts),'exhaustive_split_cases':exhaustive,
         'mixed_histories':12,'mixed_recorded_operations':sum(h['operations'] for h in probe['histories']),
         'mixed_split_calls':len(split_events),'insertion_observations_including_construction':len(probe['inserts']),
@@ -120,4 +131,7 @@ def main():
         'synthetic_fixture':success,'retained_failure_fixture':failure},indent=2))
 
 
-if __name__ == '__main__': main()
+if __name__ == '__main__':
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--directory',type=Path,default=HERE)
+    main(parser.parse_args().directory)

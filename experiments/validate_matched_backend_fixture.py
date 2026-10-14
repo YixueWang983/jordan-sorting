@@ -1,8 +1,14 @@
 """Rebuild fixture evidence from raw rows; never grant permission for timing."""
 import argparse
+from datetime import datetime, timedelta
 import hashlib
 import json
 from pathlib import Path
+import re
+import sys
+
+if sys.flags.optimize != 0:
+    raise RuntimeError('Evidence checks require optimization level 0; disable -O/-OO/PYTHONOPTIMIZE')
 
 from matched_backend_fixture import SCHEMA, PROTOCOL, BACKENDS, canonical, digest, identity, source_identity
 from oracle import oracle
@@ -12,24 +18,83 @@ def require(condition,message):
     if not condition: raise ValueError(message)
 
 
+def fields(value,names,label):
+    require(type(value) is dict and set(value)==set(names),label+' fields changed or missing')
+
+
+def environment_valid(environment):
+    fields(environment,('source_sha256','head','dirty','python','platform','captured_at',
+                        'measurement_kind','python_optimize'),'environment')
+    require(type(environment['head']) is str and
+            re.fullmatch(r'(?:[0-9a-f]{40}|[0-9a-f]{64})',environment['head']) is not None,'invalid Git head')
+    require(type(environment['dirty']) is bool,'dirty must be boolean')
+    for name in ('python','platform'):
+        require(type(environment[name]) is str and bool(environment[name].strip()),name+' must be nonempty text')
+    require(type(environment['captured_at']) is str,'captured_at must be UTC ISO text')
+    try:
+        captured=datetime.fromisoformat(environment['captured_at'])
+    except ValueError as exc:
+        raise ValueError('invalid captured_at timestamp') from exc
+    require('T' in environment['captured_at'] and captured.tzinfo is not None and
+            captured.utcoffset()==timedelta(0),'captured_at must specify UTC')
+    require(type(environment['python_optimize']) is int and environment['python_optimize']==0,
+            'evidence requires optimization level 0')
+    require(type(environment['source_sha256']) is dict and environment['source_sha256']==source_identity(),
+            'source content differs from this validator')
+    require(environment['measurement_kind']=='synthetic_ticks','fixture is not a timing run')
+
+
+def row_valid(row):
+    common={'case','kind','backend','round','input_sha256','backend_identity','status',
+            'output','output_diagnostic','error'}
+    require(type(row) is dict,'row must be an object')
+    if row.get('kind') in ('warmup','sample'):
+        common.add('synthetic_ticks')
+    if row.get('kind')=='qualification' and row.get('status')=='PASS':
+        common.update(('processed_count','same_backend_replay'))
+    fields(row,common,'row')
+    output=row['output']; diagnostic=row['output_diagnostic']
+    require(output is None or (type(output) is list and all(type(x) is int for x in output)),
+            'output must be an integer list or null')
+    if diagnostic is not None:
+        fields(diagnostic,('python_type','length','preview','truncated'),'output diagnostic')
+        require(output is None,'diagnostic output cannot also have a raw output')
+        require(type(diagnostic['python_type']) is str and 0<len(diagnostic['python_type'])<=80,
+                'invalid diagnostic type')
+        require(diagnostic['length'] is None or (type(diagnostic['length']) is int and diagnostic['length']>=0),
+                'invalid diagnostic length')
+        require(type(diagnostic['truncated']) is bool,'invalid diagnostic truncation flag')
+        require(type(diagnostic['preview']) is list and len(diagnostic['preview'])<=8 and
+                all(type(x) is str and len(x)<=160 for x in diagnostic['preview']),'diagnostic is not bounded text')
+    if row['status']=='ERROR':
+        fields(row['error'],('type','message'),'error')
+        require(type(row['error']['type']) is str and 0<len(row['error']['type'])<=80 and
+                type(row['error']['message']) is str and len(row['error']['message'])<=512,'invalid error details')
+    else:
+        require(row['error'] is None and diagnostic is None,'success with error or diagnostic detail')
+
+
 def validate(directory):
     directory=Path(directory)
     manifest=json.loads((directory/'manifest.json').read_text())
     expected_files={'config.json','environment.json','raw.jsonl','summary.json'}
-    require(set(manifest)==expected_files,'manifest file set changed')
+    require(type(manifest) is dict and set(manifest)==expected_files,'manifest file set changed')
+    require({p.name for p in directory.iterdir()}==expected_files|{'manifest.json'},'unexpected archive entry')
+    require(all(p.is_file() and not p.is_symlink() for p in directory.iterdir()),'archive entries must be regular files')
     for name,value in manifest.items():
         require(hashlib.sha256((directory/name).read_bytes()).hexdigest()==value,'file hash mismatch: '+name)
     config=json.loads((directory/'config.json').read_text())
     environment=json.loads((directory/'environment.json').read_text())
     summary=json.loads((directory/'summary.json').read_text())
+    fields(config,('schema','protocol','inputs','backends'),'config')
     require(config['schema']==SCHEMA and canonical(config['protocol'])==canonical(PROTOCOL),'protocol or stage changed')
     require(canonical(config['backends'])==canonical({name:identity(name) for name in BACKENDS}),'explicit backend configuration changed')
-    require(environment['source_sha256']==source_identity(),'source content differs from this validator')
-    require(environment['measurement_kind']=='synthetic_ticks','fixture is not a timing run')
-    cases=config['inputs']; require(1<=len(cases)<=8,'case count invalid')
+    environment_valid(environment)
+    cases=config['inputs']; require(type(cases) is list and 1<=len(cases)<=8,'case count invalid')
     lookup={}; hashes=set(); plan=[]
     # Deliberately reconstruct the schedule independently of runner.actions.
     for i,case in enumerate(cases):
+        fields(case,('case','values','sha256'),'case')
         values=case['values']; cid=f'case-{i:02d}'
         require(case['case']==cid and type(values) is list and 3<=len(values)<=64,'case identity or size changed')
         require(all(type(x) is int for x in values),'noninteger input')
@@ -46,6 +111,7 @@ def validate(directory):
     rebuilt={name:{'samples':0,'passed_samples':0,'sample_synthetic_ticks':0} for name in BACKENDS}
     failed=False
     for index,row in enumerate(rows):
+        row_valid(row)
         require(canonical((row['case'],row['kind'],row['backend'],row['round']))==canonical(plan[index]),'row order, duplicate or missing row')
         case=lookup[row['case']]; name=row['backend']; values=case['values']
         require(row['input_sha256']==case['sha256'],'row input changed')
@@ -58,12 +124,14 @@ def validate(directory):
         else:
             require(row['error'] is None,'success with error detail')
             if row['kind']=='input':
+                require(row['output'] is None,'input check must not contain a sort output')
                 require(len(set(values))==len(values) and oracle(values)['valid'],'illegal input accepted')
             else:
                 require(type(row['output']) is list and all(type(x) is int for x in row['output']) and
                         row['output']==sorted(values),'wrong output accepted')
                 if row['kind']=='qualification':
-                    require(row['processed_count']==len(values) and row['same_backend_replay'] is True,'qualification incomplete')
+                    require(type(row['processed_count']) is int and row['processed_count']==len(values) and
+                            row['same_backend_replay'] is True,'qualification incomplete')
         if row['kind'] in ('warmup','sample'):
             require(type(row.get('synthetic_ticks')) is int and row['synthetic_ticks']==1,'synthetic boundary ticks changed')
         else:

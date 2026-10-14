@@ -93,6 +93,11 @@ include middle-sized splits and independent raw-summary reconstruction using
 synthetic ticks. `timing_ready=False` remains; no wall-clock comparison or
 unconditional linear-time sorting claim is introduced.
 
+The [fixture review fixes](docs/validation/fixture_review_hardening_20261014/README.md)
+retain non-JSON outputs as bounded diagnostics, enforce environment and row
+schemas, and reject optimized Python for evidence generation and checking.
+The v2 fixture is still synthetic; it does not grant formal timing eligibility.
+
 ```python
 from heterogeneous_finger_backend import HeterogeneousFingerBackend
 from sibling_backend_contract import SiblingBackendSpec

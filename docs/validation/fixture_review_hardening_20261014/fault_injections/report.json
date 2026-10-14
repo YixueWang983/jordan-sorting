@@ -1,0 +1,56 @@
+{
+  "python_optimize": 0,
+  "scope": "injected_failures_not_true_backend_validation",
+  "cases": [
+    {
+      "injection": "nan",
+      "archive_valid": true,
+      "completed_successfully": false,
+      "performance_eligible": false,
+      "source_verified": true,
+      "rows": 4,
+      "inputs": 1,
+      "summary_rebuilt": true
+    },
+    {
+      "injection": "object",
+      "archive_valid": true,
+      "completed_successfully": false,
+      "performance_eligible": false,
+      "source_verified": true,
+      "rows": 4,
+      "inputs": 1,
+      "summary_rebuilt": true
+    },
+    {
+      "injection": "cycle",
+      "archive_valid": true,
+      "completed_successfully": false,
+      "performance_eligible": false,
+      "source_verified": true,
+      "rows": 4,
+      "inputs": 1,
+      "summary_rebuilt": true
+    },
+    {
+      "injection": "serialization",
+      "archive_valid": true,
+      "completed_successfully": false,
+      "performance_eligible": false,
+      "source_verified": true,
+      "rows": 4,
+      "inputs": 1,
+      "summary_rebuilt": true
+    },
+    {
+      "injection": "qualification_count",
+      "archive_valid": true,
+      "completed_successfully": false,
+      "performance_eligible": false,
+      "source_verified": true,
+      "rows": 2,
+      "inputs": 1,
+      "summary_rebuilt": true
+    }
+  ]
+}

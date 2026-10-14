@@ -1,0 +1,1 @@
+{"backend":null,"backend_identity":null,"case":"case-00","error":{"message":"illegal Jordan input; no replacement or deletion permitted","type":"ValueError"},"input_sha256":"b478c82900a216d741ae56917973ab7e435ca61a52b209649be1150d04f239ef","kind":"input","output":null,"output_diagnostic":null,"round":null,"status":"ERROR"}

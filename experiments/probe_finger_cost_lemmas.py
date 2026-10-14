@@ -9,6 +9,9 @@ from pathlib import Path
 import sys
 from unittest.mock import patch
 
+if sys.flags.optimize != 0:
+    raise RuntimeError('Evidence checks require optimization level 0; disable -O/-OO/PYTHONOPTIMIZE')
+
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT/'src'), str(ROOT/'tests'), str(ROOT/'experiments')]
 from heterogeneous_finger_backend import ExternalLeaf, InternalNode, INTERIOR, ROOT as TREE_ROOT
@@ -250,7 +253,7 @@ def run(output):
     before = source()
     (output/'plan.json').write_text(json.dumps({'max_exhaustive_leaves':10,
         'mixed_n_k_seed':[(32,3,0),(32,7,1),(32,11,2),(128,5,0),(128,17,1),(128,41,2)],
-        'sides':[LEFT,RIGHT], 'source_sha256':before},indent=2)+'\n')
+        'sides':[LEFT,RIGHT], 'source_sha256':before,'python_optimize':sys.flags.optimize},indent=2)+'\n')
     cases,events=exhaustive_splits()
     histories,inserts,mixed=mixed_updates()
     # Explicit counterexample to a pre-normalization '+1' statement.
@@ -263,7 +266,7 @@ def run(output):
     data={'scope':'bounded_cost_lemma_checks_not_a_general_proof', 'exhaustive_split_cases':cases,
           'max_exhaustive_leaves':10,'histories':histories,'inserts':inserts,
           'events':events+mixed,'raw_red_root_join':{'before':[0,0],'normalized':[1,1],'result':2},
-          'source_sha256':before}
+          'source_sha256':before,'python_optimize':sys.flags.optimize}
     assert source()==before
     with gzip.open(output/'records.json.gz','wt') as stream:
         json.dump(data,stream)

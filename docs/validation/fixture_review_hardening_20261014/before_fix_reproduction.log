@@ -1,0 +1,6 @@
+nan ValueError rows 3 summary False
+object TypeError rows 3 summary False
+missing environment accepted True
+bad processed count runner success True
+optimization [] exit 1 output
+optimization ['-O'] exit 0 output empty source mapping accepted

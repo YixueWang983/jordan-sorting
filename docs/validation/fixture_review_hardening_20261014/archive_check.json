@@ -1,0 +1,52 @@
+{
+  "archive_counts_and_sources_checked": true,
+  "python_optimize": 0,
+  "cost_events": {
+    "split_down": 2670,
+    "join": 6519,
+    "repair_short": 4
+  },
+  "exhaustive_split_cases": 2634,
+  "mixed_histories": 12,
+  "mixed_recorded_operations": 300,
+  "mixed_split_calls": 36,
+  "insertion_observations_including_construction": 1056,
+  "middle_inputs": 12,
+  "middle_original_runs": 72,
+  "per_checked_configuration": {
+    "prefixes": 1518,
+    "splits": 24,
+    "nonempty_smaller_sides": [
+      3,
+      3,
+      7,
+      7,
+      19,
+      19,
+      3,
+      3,
+      7,
+      7,
+      19,
+      19
+    ]
+  },
+  "synthetic_fixture": {
+    "archive_valid": true,
+    "completed_successfully": true,
+    "performance_eligible": false,
+    "source_verified": true,
+    "rows": 27,
+    "inputs": 3,
+    "summary_rebuilt": true
+  },
+  "retained_failure_fixture": {
+    "archive_valid": true,
+    "completed_successfully": false,
+    "performance_eligible": false,
+    "source_verified": true,
+    "rows": 1,
+    "inputs": 1,
+    "summary_rebuilt": true
+  }
+}

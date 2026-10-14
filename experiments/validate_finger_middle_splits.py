@@ -7,6 +7,9 @@ from pathlib import Path
 import subprocess
 import sys
 
+if sys.flags.optimize != 0:
+    raise RuntimeError('Evidence checks require optimization level 0; disable -O/-OO/PYTHONOPTIMIZE')
+
 ROOT=Path(__file__).resolve().parents[1]
 sys.path[:0]=[str(ROOT/'src'),str(ROOT/'experiments')]
 from heterogeneous_finger_backend import HeterogeneousFingerBackend as Tree
@@ -38,7 +41,8 @@ def run(output):
     source=lambda:{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
     before=source()
     (output/'plan.json').write_text(json.dumps({'scope':'targeted_correctness_only','plan':plan,'source_sha256':before,
-        'whole_batch_timeout_seconds':RESOURCE_SECONDS,'retry_or_replacement':False},indent=2)+'\n')
+        'whole_batch_timeout_seconds':RESOURCE_SECONDS,'retry_or_replacement':False,
+        'python_optimize':sys.flags.optimize},indent=2)+'\n')
     records=[]
     for spec in plan:
         values=values_for(**spec); assert oracle(values)['valid']

@@ -8,6 +8,9 @@ import platform
 import subprocess
 import sys
 
+if sys.flags.optimize != 0:
+    raise RuntimeError('Evidence checks require optimization level 0; disable -O/-OO/PYTHONOPTIMIZE')
+
 ROOT=Path(__file__).resolve().parents[1]
 sys.path[:0]=[str(ROOT/'src'),str(ROOT/'experiments')]
 from heterogeneous_finger_backend import HeterogeneousFingerBackend
@@ -15,7 +18,7 @@ from oracle import oracle
 from paper_jordan_sort import paper_jordan_sort_valid, paper_jordan_diagnostics_valid
 from sibling_backend_contract import SiblingBackendSpec, resolve_sibling_backend
 
-SCHEMA='matched_backend_fixture_v1'
+SCHEMA='matched_backend_fixture_v2'
 BACKENDS=('ordinary_list','heterogeneous_finger')
 SOURCE_FILES=tuple(sorted(str(p.relative_to(ROOT)) for p in (ROOT/'src').glob('*.py')))+(
     'experiments/matched_backend_fixture.py','experiments/validate_matched_backend_fixture.py')
@@ -50,6 +53,59 @@ def identity(name):
     return json.loads(canonical(backend_spec(name).identity))
 
 
+def describe_atom(value):
+    """Bounded built-in diagnostics without invoking arbitrary repr methods."""
+    kind=type(value)
+    if kind is int:
+        return str(value) if value.bit_length()<=512 else f'<int bit_length={value.bit_length()}>'
+    if kind in (float,bool,type(None)):
+        return repr(value)
+    if kind is str:
+        return repr(value[:96])[:128]
+    if kind in (list,tuple,dict,set,bytes):
+        return f'<{kind.__name__} length={len(value)}>'
+    return '<'+kind.__name__[:80]+'>'
+
+
+def output_diagnostic(value):
+    sequence=type(value) in (list,tuple)
+    return {'python_type':type(value).__name__[:80],
+            'length':len(value) if sequence else None,
+            'preview':[describe_atom(v) for v in value[:8]] if sequence else [describe_atom(value)],
+            'truncated':sequence and len(value)>8}
+
+
+def capture_output(value):
+    if type(value) is list and all(type(x) is int for x in value):
+        return {'output':value,'output_diagnostic':None}
+    return {'output':None,'output_diagnostic':output_diagnostic(value)}
+
+
+def error_details(exc,kind=None):
+    try:
+        message=str(exc)[:512]
+    except Exception:
+        message='<exception message unavailable>'
+    return {'type':kind or type(exc).__name__[:80],'message':message}
+
+
+def encode_row(base,row):
+    """Serialization failures become a final ERROR before any bytes are written.
+
+    Filesystem write/flush errors are deliberately not caught here: no complete
+    archive can be promised when the destination itself is no longer writable.
+    """
+    try:
+        return row,canonical(row)+b'\n'
+    except (TypeError,ValueError,OverflowError,RecursionError) as exc:
+        failed={**base,'status':'ERROR','output':None,
+                'output_diagnostic':output_diagnostic(row.get('output')),
+                'error':error_details(exc,'SerializationError')}
+        if base['kind'] in ('warmup','sample'):
+            failed['synthetic_ticks']=row['synthetic_ticks']
+        return failed,canonical(failed)+b'\n'
+
+
 class FixtureClock:
     """Deterministic boundary sentinel, deliberately not a wall clock."""
     def __init__(self): self.value=0
@@ -62,18 +118,20 @@ def trial(values,name,expected,clock):
     # Constructor and output recovery belong inside the public call, not here.
     spec=backend_spec(name)
     output=None; error=None
+    captured={'output':None,'output_diagnostic':None}
     start=clock()
     try:
         output=paper_jordan_sort_valid(values,'minimal',backend=spec)
     except Exception as exc:
-        error={'type':type(exc).__name__,'message':str(exc)}
+        error=error_details(exc)
     finally:
         finish=clock()
     # Output checking is outside the two sentinels, including on failure.
-    if error is None and (type(output) is not list or
-                          any(type(x) is not int for x in output) or output!=expected):
-        error={'type':'OutputMismatch','message':'external output check failed'}
-    return {'status':'ERROR' if error else 'PASS','output':output if type(output) is list else None,
+    if error is None:
+        captured=capture_output(output)
+        if captured['output'] is None or output!=expected:
+            error={'type':'OutputMismatch','message':'external output check failed'}
+    return {'status':'ERROR' if error else 'PASS',**captured,
             'synthetic_ticks':finish-start,'error':error}
 
 
@@ -115,13 +173,15 @@ def run(cases,output,stage='fixture'):
     environment={'source_sha256':source,'head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                  'dirty':bool(subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip()),
                  'python':sys.version,'platform':platform.platform(),
+                 'python_optimize':sys.flags.optimize,
                  'captured_at':datetime.now(timezone.utc).isoformat(),'measurement_kind':'synthetic_ticks'}
     (output/'environment.json').write_bytes(canonical(environment)+b'\n')
     rows=[]; clock=FixtureClock(); lookup={c['case']:c['values'] for c in inputs}
     with (output/'raw.jsonl').open('wb') as stream:
         for action in actions(inputs):
             values=lookup[action['case']]; expected=sorted(values)
-            row={**action,'input_sha256':digest(values),'backend_identity':None if action['backend'] is None else identity(action['backend'])}
+            base={**action,'input_sha256':digest(values),'backend_identity':None if action['backend'] is None else identity(action['backend'])}
+            row={**base,'output':None,'output_diagnostic':None,'error':None}
             try:
                 if action['kind']=='input':
                     if len(set(values))!=len(values) or not oracle(values)['valid']:
@@ -129,8 +189,13 @@ def run(cases,output,stage='fixture'):
                     row.update(status='PASS',output=None,error=None)
                 elif action['kind']=='qualification':
                     result=paper_jordan_diagnostics_valid(values,backend=backend_spec(action['backend']))
-                    if (type(result['output']) is not list or any(type(x) is not int for x in result['output']) or
-                        result['output']!=expected or result['invariants_valid'] is not True or
+                    if type(result) is not dict:
+                        row.update(capture_output(result))
+                        raise RuntimeError('qualification returned a non-dictionary result')
+                    row.update(capture_output(result.get('output')))
+                    if type(result.get('processed_count')) is not int or result['processed_count']!=len(values):
+                        raise RuntimeError('qualification processed_count must be an integer equal to input length')
+                    if (row['output']!=expected or result['invariants_valid'] is not True or
                         canonical(result['backend_identity'])!=canonical(identity(action['backend']))):
                         raise RuntimeError('qualification output, audit or backend identity mismatch')
                     row.update(status='PASS',output=result['output'],error=None,
@@ -138,8 +203,9 @@ def run(cases,output,stage='fixture'):
                 else:
                     row.update(trial(values,action['backend'],expected,clock))
             except Exception as exc:
-                row.update(status='ERROR',output=None,error={'type':type(exc).__name__,'message':str(exc)})
-            rows.append(row); stream.write(canonical(row)+b'\n'); stream.flush()
+                row.update(status='ERROR',error=error_details(exc))
+            row,encoded=encode_row(base,row)
+            stream.write(encoded); stream.flush(); rows.append(row)
             if row['status']!='PASS':
                 break
     unchanged=source==source_identity()
@@ -158,7 +224,11 @@ def main():
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--stage',default='fixture',choices=('fixture','pilot','formal'))
     args=p.parse_args()
-    return 0 if run(json.loads(args.inputs.read_text()),args.output,args.stage) else 2
+    try:
+        return 0 if run(json.loads(args.inputs.read_text()),args.output,args.stage) else 2
+    except OSError as exc:
+        print(f'Archive I/O failure; evidence may be incomplete: {exc}',file=sys.stderr)
+        return 2
 
 
 if __name__=='__main__': raise SystemExit(main())

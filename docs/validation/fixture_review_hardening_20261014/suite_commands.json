@@ -1,0 +1,6 @@
+[
+  {
+    "log": "targeted_tests.log",
+    "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src:experiments:tests /Users/schnee/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m unittest test_fixture_review_regressions test_matched_backend_fixture test_finger_cost_lemmas test_finger_middle_splits -v"
+  }
+]
