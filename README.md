@@ -87,8 +87,15 @@ with a conservative conditional split bound. The
 [October 14 cost lemmas](docs/development/heterogeneous_cost_lemmas_20261014.md)
 correct the input-blackening baseline, telescope the split joins, bound root-rib
 walks, and give a common potential for mixed updates. These are conditional on
-the operation/repair contracts; the all-input Jordan locality argument remains
-open. [Bounded evidence and mechanical runner fixtures](docs/validation/finger_cost_and_fixture_20261014/README.md)
+the operation/repair contracts. The subsequent
+[representation and locality argument](docs/development/heterogeneous_representation_locality_20261014.md)
+maps reversed pointers to logical trees, checks local repairs, and derives
+endpoint access and transfer preconditions from the paper's exact family-group
+invariant and locality lemma. It is a manual argument for review, not a
+machine-checked proof. Its [bounded refinement checks](docs/validation/finger_refinement_20261014/README.md)
+independently reconstruct the exact groups from input values and decode physical
+trees without calling production traversal helpers.
+[Bounded evidence and mechanical runner fixtures](docs/validation/finger_cost_and_fixture_20261014/README.md)
 include middle-sized splits and independent raw-summary reconstruction using
 synthetic ticks. `timing_ready=False` remains; no wall-clock comparison or
 unconditional linear-time sorting claim is introduced.

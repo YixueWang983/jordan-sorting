@@ -1,5 +1,9 @@
 # 指尖后端：join、rib 与混合操作的源码成本引理
 
+**后续进展（同日，`6c259a8` 基线）：**[表示保持与分组归纳](heterogeneous_representation_locality_20261014.md)
+现已展开下文第 6 节当时待补的两类论证，并提供独立物理解码与精确分组检查。
+这是待审阅的人工论证；本页的原始归档、成本模型条件及计时限制保持不变。
+
 分析对象为 `84f7e13` 的 `heterogeneous_finger_backend.py` 和
 `heterogeneous_finger_split.py`；本轮没有修改生产算法。精确源码、探测程序、
 反例及运行记录见[本轮归档](../validation/finger_cost_and_fixture_20261014/README.md)。

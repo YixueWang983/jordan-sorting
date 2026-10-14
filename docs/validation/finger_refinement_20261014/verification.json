@@ -1,0 +1,12 @@
+{
+  "accepted": true,
+  "scope": "raw_summary_and_source_recheck_not_rerun",
+  "rows": 694,
+  "source_hashes_match": true,
+  "row_input_hashes_match": true,
+  "coverage_totals_rebuilt": true,
+  "permutation_counts_match": true,
+  "production_source_unchanged_from": "6c259a8",
+  "regression_test_methods": 89,
+  "performance_eligible": false
+}

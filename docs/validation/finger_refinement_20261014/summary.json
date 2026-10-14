@@ -1,0 +1,39 @@
+{
+  "accepted": true,
+  "scope": "bounded_representation_locality_not_timing",
+  "case_runs": 694,
+  "distinct_input_hashes": 694,
+  "original_runs": 1388,
+  "totals": {
+    "ordinary": {
+      "prefixes": 4610,
+      "iterations": 3916,
+      "increasing": 1958,
+      "endpoint_insert": 2196,
+      "dummy_owner": 1648,
+      "z1_boundary": 398,
+      "z1_output": 152,
+      "decreasing": 1958,
+      "singleton": 1720,
+      "splits": 1236,
+      "both_nonempty": 68,
+      "finite_owner": 2268
+    },
+    "tree_off": {
+      "prefixes": 4610,
+      "iterations": 3916,
+      "increasing": 1958,
+      "endpoint_insert": 2196,
+      "dummy_owner": 1648,
+      "z1_boundary": 398,
+      "z1_output": 152,
+      "decreasing": 1958,
+      "singleton": 1720,
+      "splits": 1236,
+      "both_nonempty": 68,
+      "finite_owner": 2268
+    }
+  },
+  "performance_eligible": false,
+  "formal_proof_certified": false
+}
