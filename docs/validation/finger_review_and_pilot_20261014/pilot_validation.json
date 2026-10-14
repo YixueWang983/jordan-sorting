@@ -1,0 +1,11 @@
+{
+  "archive_complete": true,
+  "completed_successfully": true,
+  "performance_eligible": false,
+  "summary_rebuilt": true,
+  "inputs": 8,
+  "rows": 192,
+  "sample_batches": 144,
+  "sample_calls": 1008,
+  "measurement_kind": "perf_counter_ns"
+}

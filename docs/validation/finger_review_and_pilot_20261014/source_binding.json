@@ -1,0 +1,13 @@
+{
+  "producer_commit": "1ae75aae208fee6c4359db3a58fa5f8ffe6b5745",
+  "files": {
+    "experiments/committed_records.py": "853486a75aaf4ce5d7ffd9dc635993f9531033be65c8eef7770259656e2c9f63",
+    "experiments/validate_finger_refinement.py": "89bcf6d878167da92266163c84f0f859397904c0a10fddf90e39321fd003a6ef",
+    "experiments/development_backend_pilot.py": "f6d95cb5143680476012826b00a4703958dd8b5396fee988f620381ab7579726",
+    "experiments/validate_development_backend_pilot.py": "1908f004be63433e71a84af33d365f92aaad5bc5753a57905e9890e51acdb75d",
+    "tests/test_finger_review_hardening.py": "591ca63665f50e567c81d3e6ce5739e3a5e5bd63e01b954fef72eef609878158",
+    "tests/test_development_backend_pilot.py": "dd37289c19daf6e170e2a055532c97d698c8e60577179f972c0a51453170a02b",
+    "docs/development/heterogeneous_representation_locality_20261014.md": "409cf2f8d116d10f93979c675c66cfff300ec659502fe0fa17e7ee08d5d9490e"
+  },
+  "production_and_old_refinement_archive_unchanged": true
+}

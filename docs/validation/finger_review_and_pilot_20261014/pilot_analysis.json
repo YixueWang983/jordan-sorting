@@ -1,0 +1,56 @@
+{
+  "scope": "pilot_granularity_only_not_backend_speed_comparison",
+  "clock": {
+    "resolution_ns": 41.66666666666667,
+    "median_read_delta_ns": 42.0,
+    "min_positive_read_delta_ns": 41,
+    "max_read_delta_ns": 1500
+  },
+  "minimum_batch_duration_ns": {
+    "1": 706750,
+    "4": 2746750,
+    "16": 10977417
+  },
+  "duration_ranges_by_backend": {
+    "ordinary_list": {
+      "1": {
+        "min_batch_ns": 706750,
+        "max_batch_ns": 2854875
+      },
+      "4": {
+        "min_batch_ns": 2746750,
+        "max_batch_ns": 11257333
+      },
+      "16": {
+        "min_batch_ns": 10977417,
+        "max_batch_ns": 43103834
+      }
+    },
+    "heterogeneous_finger": {
+      "1": {
+        "min_batch_ns": 2177875,
+        "max_batch_ns": 8827625
+      },
+      "4": {
+        "min_batch_ns": 8626459,
+        "max_batch_ns": 35215250
+      },
+      "16": {
+        "min_batch_ns": 34955084,
+        "max_batch_ns": 136110000
+      }
+    }
+  },
+  "preselected_plan_matches": true,
+  "all_sample_calls_output_checked": true,
+  "timing_ready": false,
+  "descriptive_only": {
+    "matched_groups": 24,
+    "tree_median_above_ordinary_groups": 24,
+    "tree_over_ordinary_median_ratio_range": [
+      3.0187956339157593,
+      3.1881260960181974
+    ],
+    "use": "raw pilot observation, not general speed or efficiency conclusion"
+  }
+}

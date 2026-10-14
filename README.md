@@ -105,6 +105,16 @@ retain non-JSON outputs as bounded diagnostics, enforce environment and row
 schemas, and reject optimized Python for evidence generation and checking.
 The v2 fixture is still synthetic; it does not grant formal timing eligibility.
 
+The [subsequent review fixes and development pilot](docs/validation/finger_review_and_pilot_20261014/README.md)
+add independently committed gzip records that survive a worker timeout, correct
+two overbroad proof statements, and distinguish the cited locality lemma from
+the finite-parent extension. A separately identified real-clock pilot then ran
+8 preselected inputs: 144 measured batches containing 1,008 fresh public sort
+calls, with externally checked outputs and independently rebuilt summaries.
+It is development evidence only; the old synthetic archives are unchanged,
+the manual argument remains subject to review, and formal timing eligibility
+is still false.
+
 ```python
 from heterogeneous_finger_backend import HeterogeneousFingerBackend
 from sibling_backend_contract import SiblingBackendSpec

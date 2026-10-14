@@ -1,0 +1,7 @@
+{
+  "exit_code": 0,
+  "whole_process_wall_seconds": 28.733753208012786,
+  "scope": "resource_observation_includes_preflight_gc_persistence_not_sorting_performance",
+  "stdout": "",
+  "stderr": ""
+}
