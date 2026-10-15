@@ -6,6 +6,13 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
+The [qualification v2 refinement](docs/validation/qualification_refactor_20261015/README.md)
+now removes repeated validation calculations and uses two independent checked
+states with a fresh final replay. It explicitly changes the fresh-instance
+coverage schedule. All 246 targeted regressions and 20 fixed development cases
+through 513 points pass; 1,512 old/new prefix comparisons agree. The full
+140-input qualification has not been rerun, and formal timing remains closed.
+
 The 2026-10-15 [common-input and matched-measurement rules](docs/development/matched_protocol_20261015.md)
 freeze candidate selection, resource limits and batch statistics before new
 qualification. The [qualification archive](docs/validation/common_qualification_20261015/README.md)

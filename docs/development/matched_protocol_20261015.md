@@ -1,5 +1,10 @@
 # 共同输入资格与匹配计时规则 v1（2026-10-15）
 
+后续状态：v1资格尝试发生资源超时，归档原样保留。
+[v2验证安排](qualification_validation_v2_20261015.md)已完成20例有界开发复核，
+尚未重建完整共同资格。下文输入选择与计时规则不变；“每前缀fresh replay”
+仍描述v1，不将v2同步实例安排伪装成同一覆盖契约。
+
 本规则在本轮实际资格执行前提交。机器配置由
 `experiments/common_input_protocol.py` 的 `qualification_plan()` 与
 `measurement_protocol()` 给出，并保存于验证目录的 `preselected_rules.json`。
