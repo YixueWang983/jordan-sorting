@@ -1,0 +1,65 @@
+test_actual_termination_keeps_completed_checked_record (test_common_qualification.CommonQualificationTests.test_actual_termination_keeps_completed_checked_record) ... ok
+test_bad_checked_count_stops_before_minimal (test_common_qualification.CommonQualificationTests.test_bad_checked_count_stops_before_minimal) ... ok
+test_fixed_selection_reaches_all_cells_and_records_mirror_dependencies (test_common_qualification.CommonQualificationTests.test_fixed_selection_reaches_all_cells_and_records_mirror_dependencies) ... ok
+test_optimized_entries_rejected (test_common_qualification.CommonQualificationTests.test_optimized_entries_rejected) ... ok
+test_real_backends_checked_replay_and_fresh_minimal (test_common_qualification.CommonQualificationTests.test_real_backends_checked_replay_and_fresh_minimal) ... ok
+test_rebuild_qualification_without_performance_acceptance (test_common_qualification.CommonQualificationTests.test_rebuild_qualification_without_performance_acceptance) ... 1/14 n32-strict_flat-00: PASS
+2/14 n32-strict_flat-00-mirror: PASS
+3/14 n32-low_nesting_valid-00: PASS
+4/14 n32-low_nesting_valid-00-mirror: PASS
+5/14 n32-low_nesting_valid-01: PASS
+6/14 n32-low_nesting_valid-01-mirror: PASS
+7/14 n32-medium_nesting_valid-00: PASS
+8/14 n32-medium_nesting_valid-00-mirror: PASS
+9/14 n32-medium_nesting_valid-01: PASS
+10/14 n32-medium_nesting_valid-01-mirror: PASS
+11/14 n32-nested_heavy_valid-00: PASS
+12/14 n32-nested_heavy_valid-00-mirror: PASS
+13/14 n32-nested_heavy_valid-01: PASS
+14/14 n32-nested_heavy_valid-01-mirror: PASS
+ok
+test_resealed_corruption_rejected (test_common_qualification.CommonQualificationTests.test_resealed_corruption_rejected) ... 1/14 n32-strict_flat-00: PASS
+2/14 n32-strict_flat-00-mirror: PASS
+3/14 n32-low_nesting_valid-00: PASS
+4/14 n32-low_nesting_valid-00-mirror: PASS
+5/14 n32-low_nesting_valid-01: PASS
+6/14 n32-low_nesting_valid-01-mirror: PASS
+7/14 n32-medium_nesting_valid-00: PASS
+8/14 n32-medium_nesting_valid-00-mirror: PASS
+9/14 n32-medium_nesting_valid-01: PASS
+10/14 n32-medium_nesting_valid-01-mirror: PASS
+11/14 n32-nested_heavy_valid-00: PASS
+12/14 n32-nested_heavy_valid-00-mirror: PASS
+13/14 n32-nested_heavy_valid-01: PASS
+14/14 n32-nested_heavy_valid-01-mirror: PASS
+ok
+test_timeout_does_not_drop_selected_case_or_continue (test_common_qualification.CommonQualificationTests.test_timeout_does_not_drop_selected_case_or_continue) ... 1/14 n32-strict_flat-00: PASS
+2/14 n32-strict_flat-00-mirror: TIMEOUT
+3/14 n32-low_nesting_valid-00: NOT_RUN
+4/14 n32-low_nesting_valid-00-mirror: NOT_RUN
+5/14 n32-low_nesting_valid-01: NOT_RUN
+6/14 n32-low_nesting_valid-01-mirror: NOT_RUN
+7/14 n32-medium_nesting_valid-00: NOT_RUN
+8/14 n32-medium_nesting_valid-00-mirror: NOT_RUN
+9/14 n32-medium_nesting_valid-01: NOT_RUN
+10/14 n32-medium_nesting_valid-01-mirror: NOT_RUN
+11/14 n32-nested_heavy_valid-00: NOT_RUN
+12/14 n32-nested_heavy_valid-00-mirror: NOT_RUN
+13/14 n32-nested_heavy_valid-01: NOT_RUN
+14/14 n32-nested_heavy_valid-01-mirror: NOT_RUN
+ok
+test_wrong_minimal_output_retained (test_common_qualification.CommonQualificationTests.test_wrong_minimal_output_retained) ... ok
+test_frozen_candidates_are_valid_and_cover_intended_structures (test_probe_large_qualification.LargeQualificationTests.test_frozen_candidates_are_valid_and_cover_intended_structures) ... ok
+test_resource_failure_keeps_other_batches_but_correctness_failure_stops_them (test_probe_large_qualification.LargeQualificationTests.test_resource_failure_keeps_other_batches_but_correctness_failure_stops_them) ... BEGIN n=256
+BEGIN n=257
+BEGIN n=512
+BEGIN n=513
+BEGIN n=256
+ok
+test_supplied_configuration_is_frozen_and_worker_budget_is_forwarded (test_probe_large_qualification.LargeQualificationTests.test_supplied_configuration_is_frozen_and_worker_budget_is_forwarded) ... 1/1 flat_valid_n256_probe: PASS
+ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 6.530s
+
+OK

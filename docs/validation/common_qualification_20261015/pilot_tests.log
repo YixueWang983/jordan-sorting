@@ -1,0 +1,13 @@
+test_fixed_schedule_and_independent_reconstruction (test_development_backend_pilot.DevelopmentPilotTests.test_fixed_schedule_and_independent_reconstruction) ... ok
+test_optimized_pilot_entrypoints_reject_before_outputs (test_development_backend_pilot.DevelopmentPilotTests.test_optimized_pilot_entrypoints_reject_before_outputs) ... ok
+test_preflight_boolean_count_stops_before_warmup (test_development_backend_pilot.DevelopmentPilotTests.test_preflight_boolean_count_stops_before_warmup) ... ok
+test_real_pilot_worker_timeout_recovers_committed_preflight (test_development_backend_pilot.DevelopmentPilotTests.test_real_pilot_worker_timeout_recovers_committed_preflight) ... ok
+test_real_public_calls_fresh_unobserved_trees_inside_timer_checks_outside (test_development_backend_pilot.DevelopmentPilotTests.test_real_public_calls_fresh_unobserved_trees_inside_timer_checks_outside) ... ok
+test_validator_rejects_resealed_protocol_environment_rows_and_summary (test_development_backend_pilot.DevelopmentPilotTests.test_validator_rejects_resealed_protocol_environment_rows_and_summary) ... ok
+test_warmup_failure_stops_and_retains_committed_preflight (test_development_backend_pilot.DevelopmentPilotTests.test_warmup_failure_stops_and_retains_committed_preflight) ... ok
+test_wrong_output_is_retained_after_clock_closes (test_development_backend_pilot.DevelopmentPilotTests.test_wrong_output_is_retained_after_clock_closes) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 2.849s
+
+OK

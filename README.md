@@ -6,6 +6,13 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
+The 2026-10-15 [common-input and matched-measurement rules](docs/development/matched_protocol_20261015.md)
+freeze candidate selection, resource limits and batch statistics before new
+qualification. The [qualification archive](docs/validation/common_qualification_20261015/README.md)
+keeps its producing-source identity separate from its results commit. This
+stage does not certify the efficient-backend minimum or enable formal timing.
+The older milestones below retain their original evidence scope.
+
 As of 2026-10-13, the active work is the
 [remaining development and thesis revision plan](docs/plan/remaining_work_20261011.md).
 The September implementation removed rollback and archived expanded non-timing

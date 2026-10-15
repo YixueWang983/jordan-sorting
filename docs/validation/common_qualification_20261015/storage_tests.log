@@ -1,0 +1,13 @@
+test_located_component_can_be_strictly_on_one_side_without_equal_key (test_finger_review_hardening.ProofScopeRegressions.test_located_component_can_be_strictly_on_one_side_without_equal_key) ... ok
+test_new_endpoint_inside_finite_owner_but_outside_its_direct_children (test_finger_review_hardening.ProofScopeRegressions.test_new_endpoint_inside_finite_owner_but_outside_its_direct_children) ... ok
+test_interrupted_partial_record_is_not_counted_or_needed_for_recovery (test_finger_review_hardening.TimeoutPersistenceTests.test_interrupted_partial_record_is_not_counted_or_needed_for_recovery) ... ok
+test_normal_exit_closes_each_of_two_records (test_finger_review_hardening.TimeoutPersistenceTests.test_normal_exit_closes_each_of_two_records) ... {"accepted": true, "scope": "bounded_representation_locality_not_timing", "case_runs": 2, "distinct_input_hashes": 2, "original_runs": 4, "totals": {"ordinary": {"prefixes": 3, "iterations": 1}, "tree_off": {"prefixes": 3, "iterations": 1}}, "performance_eligible": false, "formal_proof_certified": false}
+ok
+test_python_exception_preserves_first_record_and_current_case (test_finger_review_hardening.TimeoutPersistenceTests.test_python_exception_preserves_first_record_and_current_case) ... ok
+test_real_process_timeout_preserves_first_complete_gzip (test_finger_review_hardening.TimeoutPersistenceTests.test_real_process_timeout_preserves_first_complete_gzip) ... ok
+test_timeout_overrides_summary_written_before_worker_exit (test_finger_review_hardening.TimeoutPersistenceTests.test_timeout_overrides_summary_written_before_worker_exit) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 6.308s
+
+OK
