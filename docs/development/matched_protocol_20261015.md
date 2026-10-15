@@ -8,6 +8,11 @@
 下文输入选择与计时规则不变；“每前缀fresh replay”
 仍描述v1，不将v2同步实例安排伪装成同一覆盖契约。
 
+补充状态：[独立12例分裂集](../validation/split_trace_followup_20261015/README.md)已完成双方资格，
+实际较小侧3/7/19各4次。其输入、来源、预算及测量协议独立版本化，不改原140输入或
+下文数值规则，不合并为152个独立随机样本。校准/正式工具已经过机械夹具和拒错测试，
+尚未运行实际校准或正式样本；历史pilot与这些新版本仍分别记载。
+
 本规则在本轮实际资格执行前提交。机器配置由
 `experiments/common_input_protocol.py` 的 `qualification_plan()` 与
 `measurement_protocol()` 给出，并保存于验证目录的 `preselected_rules.json`。

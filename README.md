@@ -6,6 +6,22 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
+The [trace-semantics follow-up and separate split set](docs/validation/split_trace_followup_20261015/README.md)
+now strengthen archive checks for event order, split/skip IDs and sizes,
+list ownership and reconstructible metrics. All original 140 records pass a
+read-only recheck without rerunning sorting or changing their producing version.
+A separately frozen 12-case set passes actual two-backend v2 plus fresh minimal:
+each backend has 12 two-sided splits with smaller sides 3/7/19, four of each.
+All have source size 61 and finite owner 2; subsequent direct inserts cover the
+retained side only. These related constructions are not pooled as independent
+random samples with the original 140.
+
+Calibration and paired-measurement tools have mechanical-flow and failure tests;
+67 distinct targeted test methods pass across the initial and focused runs.
+No actual calibration or formal sample has run. Manual cost/representation/locality
+review and thesis integration remain pending. The earlier milestone below keeps
+its original producing-source and test-count scope.
+
 The [full common qualification v2 archive](docs/validation/common_qualification_v2_20261015/README.md)
 now confirms **140/140 PASS**, independently rebuilt from 560 mode records at
 producing source `3cafb44`. The original selection hash, 180-second shared

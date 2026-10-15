@@ -94,3 +94,11 @@ trace consistency and the supplemental batch do not close it. Thesis results
 must not present historical pilot timings as the current implementation's formal
 comparison. Implementation/method integration remains a subsequent manuscript
 step, after the evidence boundaries above are preserved.
+
+## 执行后的版本补记
+
+12例实际执行源码为 `668371f`，全部通过。其后仅测量工具增加跨数据集校准拒错，
+提交 `ebb3dc1`；生产及资格路径不变。14项测量工具回归通过，含13项重复及1项新增，
+与先前66项合并为67个不同方法。最终检查器分别只读复核原140和补充12的旧生产记录，
+不将原执行改标为新源码，也不因检查工具身份变化重新跑排序。准确计数、实际覆盖边界
+与版本索引见[结果归档](../validation/split_trace_followup_20261015/README.md)。
