@@ -90,18 +90,25 @@ def qualify_case(request, output):
     return 0
 
 
-def run(output):
-    cfg = plan(); selection = frozen_selection(); env = environment()
+def run(output, *, dataset='common'):
+    if dataset == 'common':
+        cfg, selection, measurement = plan(), frozen_selection(), measurement_protocol()
+    elif dataset == 'targeted_split':
+        from split_qualification_protocol import split_plan, split_selection, split_measurement_protocol
+        cfg, selection, measurement = split_plan(), split_selection(), split_measurement_protocol()
+    else:
+        raise ValueError('unknown qualification dataset')
+    env = environment()
     if env['dirty']:
         raise RuntimeError('freeze source and rules before full qualification')
     output.mkdir(parents=True, exist_ok=False)
-    for filename, value in (('plan',cfg), ('selected',selection), ('environment',env), ('measurement_protocol',measurement_protocol())):
+    for filename, value in (('plan',cfg), ('selected',selection), ('environment',env), ('measurement_protocol',measurement)):
         atomic_json(output/f'{filename}.json', value)
     (output/'requests').mkdir(); (output/'jobs').mkdir()
     rows = []; stop = None; deadline = time.monotonic()+cfg['campaign_seconds']
     for index, case in enumerate(selection['cases']):
         cid = case['spec']['case']; order = list(BACKENDS if index%2 == 0 else BACKENDS[::-1])
-        request = dict(schema=SCHEMA, case=cid, values=case['values'], backends=order)
+        request = dict(schema=cfg['schema'], case=cid, values=case['values'], backends=order)
         path = output/'requests'/f'{cid}.json'; atomic_json(path, request)
         remaining = deadline-time.monotonic(); budget = max(0, min(cfg['case_seconds'], remaining))
         row = dict(case=cid, input_sha256=case['input_sha256'], backends=order, budget_seconds=budget,
@@ -116,7 +123,14 @@ def run(output):
                 # A successful process exit alone is not evidence of coverage.
                 try:
                     from validate_common_qualification_v2 import validate_job
-                    validate_job(job, request, case['input_sha256'], passing=True)
+                    evidence=validate_job(job, request, case['input_sha256'], passing=True)
+                    if dataset == 'targeted_split':
+                        from qualification_trace_semantics import check_trace
+                        for record in evidence:
+                            if record['mode']=='synchronous_v2':
+                                coverage=check_trace(case['values'],record['final']['trace'],record['final']['metrics'],record['backend'])
+                                if not any(s['smaller_side']==case['spec']['k'] for s in coverage['splits']):
+                                    raise ValueError('missing actual target two-sided split')
                 except (ValueError, KeyError, TypeError, OSError) as exc:
                     code = 2
                     atomic_json(job/'failure.json', dict(status='INCOMPLETE_WORKER_RECORDS', accepted=False,
@@ -130,7 +144,7 @@ def run(output):
         print(f"{index+1}/{len(selection['cases'])} {cid}: {row['status']}", flush=True)
     unchanged = source_identity() == env['source_sha256']
     passed = bool(rows) and all(r['status'] == 'PASS' for r in rows) and unchanged
-    atomic_json(output/'summary.json', dict(schema=SCHEMA, selected=len(rows), status_counts=dict(Counter(r['status'] for r in rows)),
+    atomic_json(output/'summary.json', dict(schema=cfg['schema'], selected=len(rows), status_counts=dict(Counter(r['status'] for r in rows)),
         all_selected_qualified=passed, selection_sha256=selection['selection_sha256'], source_unchanged=unchanged,
         performance_eligible=False, efficient_backend_accepted=False,
         worker_resource_wall_seconds=sum(r['worker_resource_wall_seconds'] for r in rows)))
@@ -142,10 +156,12 @@ def run(output):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True); parser.add_argument('--worker', type=Path, help=argparse.SUPPRESS)
+    parser.add_argument('--dataset',choices=('common','targeted_split'),default='common')
     args = parser.parse_args()
     if args.worker:
         request = read(args.worker)
-        if request.get('schema') != SCHEMA or sorted(request['backends']) != sorted(BACKENDS):
+        from split_qualification_protocol import SPLIT_SCHEMA
+        if request.get('schema') not in (SCHEMA,SPLIT_SCHEMA) or sorted(request['backends']) != sorted(BACKENDS):
             raise ValueError('wrong worker schema/backend set')
         raise SystemExit(qualify_case(request, args.output))
-    raise SystemExit(0 if run(args.output) else 2)
+    raise SystemExit(0 if run(args.output,dataset=args.dataset) else 2)

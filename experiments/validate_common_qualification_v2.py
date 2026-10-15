@@ -40,19 +40,28 @@ def validate_revision(env):
         if len(Path(path).parts) == 2 and path.endswith('.py'):
             require(kind == 'blob' and mode in ('100644','100755'), 'source object type')
             blobs[path] = sha
-    expected = {}
-    for path in env['source_sha256']:
-        data = (ROOT/path).read_bytes()
-        expected[path] = hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()
-    require(blobs == expected, 'producing commit/source identity mismatch')
+    require(type(env['source_sha256']) is dict and set(blobs)==set(env['source_sha256']), 'bound source inventory')
+    paths=sorted(blobs)
+    result=subprocess.run(['git','cat-file','--batch'],input=''.join(blobs[p]+'\n' for p in paths).encode(),
+                          cwd=ROOT,capture_output=True,check=True)
+    offset=0
+    for path in paths:
+        end=result.stdout.index(b'\n',offset)
+        header=result.stdout[offset:end].decode().split();offset=end+1
+        require(len(header)==3 and header[0]==blobs[path] and header[1]=='blob','source blob header')
+        size=int(header[2]);data=result.stdout[offset:offset+size];offset+=size+1
+        require(hashlib.sha256(data).hexdigest()==env['source_sha256'][path],'producing commit/source identity mismatch')
+    require(offset==len(result.stdout),'source blob framing')
 
 
-def validate_environment(env):
+def validate_environment(env, *, historical=False, purpose='qualification resource observations only'):
     fields = {'head','dirty','source_sha256','captured_at','python','executable','platform','machine',
               'hardware','python_optimize','gc_enabled','gc_thresholds','purpose'}
     require(type(env) is dict and set(env) == fields, 'environment fields')
     require(type(env['head']) is str and re.fullmatch('[0-9a-f]{40}', env['head']), 'source revision')
-    require(env['dirty'] is False and env['source_sha256'] == source_identity(), 'source changed; use producing revision')
+    require(env['dirty'] is False, 'producing worktree was dirty')
+    if not historical:
+        require(env['source_sha256'] == source_identity(), 'source changed; use producing revision or explicit historical read-only audit')
     require(type(env['python_optimize']) is int and env['python_optimize'] == 0, 'optimization flag')
     require(env['gc_enabled'] is True, 'GC disabled')
     require(type(env['gc_thresholds']) is list and len(env['gc_thresholds']) == 3
@@ -66,7 +75,7 @@ def validate_environment(env):
         require(set(env['hardware']) == {'machdep.cpu.brand_string','hw.physicalcpu','hw.logicalcpu','hw.memsize','power'}, 'hardware fields')
         require(all(env['hardware'][k].isdigit() and int(env['hardware'][k]) > 0
                     for k in ('hw.physicalcpu','hw.logicalcpu','hw.memsize')), 'hardware numeric values')
-    require(env['purpose'] == 'qualification resource observations only', 'evidence purpose')
+    require(env['purpose'] == purpose, 'evidence purpose')
     validate_revision(env)
 
 
@@ -117,22 +126,24 @@ def validate_job(job, request, input_sha256, *, passing):
         require(metrics.get('invariant_checks') == t and metrics.get('output_insertions') == n-3, 'validation/output counts')
         require(type(trace) is list and len(trace) == 2+7*(n-3) and all(type(e) is dict for e in trace)
                 and metrics.get('trace_event_count') == len(trace), 'trace coverage')
-        events = [e for e in trace if e.get('step') == 'step3b_split_sibling_list']
-        require([e.get('iteration') for e in events] == list(range(4,n+1))
-                and all(type(e.get('iteration')) is int and type(e.get('performed')) is bool for e in events), 'split trace schedule')
-        for event in events:
-            require(all(type(event.get(k)) is int and event[k] >= 0 for k in ('input_size','left_size','right_size')), 'split sizes')
-            require(event['left_size']+event['right_size'] == event['input_size'], 'split size conservation')
-        require(metrics.get('sibling_list_splits') == sum(e['performed'] for e in events), 'split count')
+        from qualification_trace_semantics import check_trace
+        check_trace(values, trace, metrics, name)
+
     return rows
 
 
-def validate(output):
-    output = Path(output); cfg = plan()
+def validate(output, *, historical=False, dataset='common'):
+    output = Path(output)
+    if dataset == 'common':
+        cfg, selection, measurement = plan(), frozen_selection(), measurement_protocol()
+    elif dataset == 'targeted_split':
+        from split_qualification_protocol import split_plan, split_selection, split_measurement_protocol
+        cfg, selection, measurement = split_plan(), split_selection(), split_measurement_protocol()
+    else:
+        raise ValueError('unknown qualification dataset')
     require(canonical(read(output/'plan.json')) == canonical(cfg), 'qualification rules')
-    require(canonical(read(output/'measurement_protocol.json')) == canonical(measurement_protocol()), 'measurement rules')
-    env = read(output/'environment.json'); validate_environment(env)
-    selection = frozen_selection()
+    require(canonical(read(output/'measurement_protocol.json')) == canonical(measurement), 'measurement rules')
+    env = read(output/'environment.json'); validate_environment(env, historical=historical)
     require(canonical(read(output/'selected.json')) == canonical(selection), 'frozen input set')
     require(selection['selection_sha256'] == cfg['selection_sha256'] == digest(selection['cases']) and not selection['deficits'], 'selection hash/deficits')
     counts = Counter(); hashes = set()
@@ -145,13 +156,15 @@ def validate(output):
         require(canonical(case['profile']) == canonical(profile)
                 and canonical(case['oracle']) == canonical({k:v for k,v in cert.items() if k != 'sorted'}), 'input evidence')
         counts[n,spec['requested_category']] += 1
-    require(counts == Counter({(n,c):TARGETS[c] for n in SIZES for c in CATEGORIES}), 'coverage quotas')
+    if dataset == 'common':
+        require(counts == Counter({(n,c):TARGETS[c] for n in SIZES for c in CATEGORIES}), 'coverage quotas')
     statuses = read_records(output); require(len(statuses) == len(selection['cases']), 'missing case statuses')
     files = {'plan.json','measurement_protocol.json','environment.json','selected.json','summary.json','progress.json'}
+    coverage_rows = []
     stopped = False; runs = Counter(); prefixes = Counter(); splits = Counter(); nonempty = Counter(); constructors = Counter(); replays = Counter()
     for i, (case, row) in enumerate(zip(selection['cases'],statuses)):
         cid = case['spec']['case']; order = list(BACKENDS if i%2 == 0 else BACKENDS[::-1])
-        request = dict(schema=SCHEMA, case=cid, values=case['values'], backends=order)
+        request = dict(schema=cfg['schema'], case=cid, values=case['values'], backends=order)
         require(canonical(read(output/'requests'/f'{cid}.json')) == canonical(request), 'request binding')
         files |= {f'requests/{cid}.json',f'records/{i:06d}.json.gz'}
         require(set(row) == {'case','input_sha256','backends','budget_seconds','worker_resource_wall_seconds','status','reason'}, 'case fields')
@@ -189,10 +202,16 @@ def validate(output):
             constructors[name] += len(record['initializations'])
             if record['mode'] == 'synchronous_v2':
                 prefixes[name] += record['report']['prefix_comparisons']; replays[name] += record['report']['fresh_final_replays']
+                if dataset == 'targeted_split':
+                    from qualification_trace_semantics import check_trace
+                    coverage = check_trace(case['values'],record['final']['trace'],record['final']['metrics'],name)
+                    if passing:
+                        require(any(s['smaller_side']==case['spec']['k'] for s in coverage['splits']), 'missing actual target two-sided split')
+                    coverage_rows.append(dict(case=cid,backend=name,**coverage))
                 events = [e for e in record['final']['trace'] if e.get('step') == 'step3b_split_sibling_list' and e['performed']]
                 splits[name] += len(events); nonempty[name] += sum(e['left_size'] > 0 and e['right_size'] > 0 for e in events)
     passed = bool(statuses) and all(r['status'] == 'PASS' for r in statuses)
-    summary = dict(schema=SCHEMA, selected=len(statuses), status_counts=dict(Counter(r['status'] for r in statuses)),
+    summary = dict(schema=cfg['schema'], selected=len(statuses), status_counts=dict(Counter(r['status'] for r in statuses)),
         all_selected_qualified=passed, selection_sha256=selection['selection_sha256'], source_unchanged=True,
         performance_eligible=False, efficient_backend_accepted=False,
         worker_resource_wall_seconds=sum(r['worker_resource_wall_seconds'] for r in statuses))
@@ -207,10 +226,15 @@ def validate(output):
     return dict(archive_valid=True, all_selected_qualified=passed, inputs=len(statuses), status_counts=summary['status_counts'],
         completed_modes=dict(runs), per_backend_synchronous_prefixes=dict(prefixes), per_backend_final_fresh_replays=dict(replays),
         per_backend_initializations=dict(constructors), per_backend_splits=dict(splits), per_backend_nonempty_splits=dict(nonempty),
-        source_head=env['head'], selection_sha256=selection['selection_sha256'], performance_eligible=False, efficient_backend_accepted=False)
+        source_head=env['head'], dataset=dataset, split_coverage=coverage_rows, read_only_historical_audit=historical,
+        checker_source_sha256=source_identity(),
+        checker_head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+        selection_sha256=selection['selection_sha256'], performance_eligible=False, efficient_backend_accepted=False)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__); parser.add_argument('directory', type=Path)
-    report = validate(parser.parse_args().directory); print(json.dumps(report, indent=2))
+    parser.add_argument('--historical',action='store_true',help='Read-only audit binding old producer and current checker separately; no source upgrade')
+    parser.add_argument('--dataset',choices=('common','targeted_split'),default='common')
+    args=parser.parse_args(); report = validate(args.directory,historical=args.historical,dataset=args.dataset); print(json.dumps(report, indent=2))
     raise SystemExit(0 if report['all_selected_qualified'] else 2)
