@@ -47,18 +47,20 @@ exhaustive validation. This supports a paper-facing reconstruction, but not a
 claim that the implementation is the unique verbatim interpretation of every
 omitted detail.
 
-More importantly, the backend uses ordinary Python lists. Sibling-list scans,
+More importantly, the historically measured backend uses ordinary Python lists. Sibling-list scans,
 copies at both insertion boundaries, slicing, list materialization, and
 ownership rebinding require work that can depend on the represented list
 length. Membership and ancestor-chain scans also remain in \texttt{minimal}.
 Indeed, \cref{eq:implementation-boundary-copy-lower-bound} establishes
 quadratic copying work on strictly increasing inputs with no splits. This
 source-level lower bound does not supply a tight overall runtime bound.
-The implementation does
+That measured implementation does
 not instantiate level-linked search trees, heterogeneous finger trees, or the
 theoretical dynamic split/update backend. Consequently, its observed runtime
 cannot be presented as an implementation of the paper's linear-time data
 structures or as evidence that the ordinary-list program runs in linear time.
+The later real tree has separate bounded qualification and calibration; its
+general proof review and formal matched performance evidence remain open.
 
 \section{Tested Sizes and Asymptotic Interpretation}
 \label{sec:limitations-sizes}

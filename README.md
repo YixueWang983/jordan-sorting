@@ -6,6 +6,19 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
+The [ID-lifecycle repair and actual calibration](docs/validation/id_lifecycle_calibration_20261015/README.md)
+are now complete at execution/checker source **`c5b5ac3`**. The checker rejects
+retired list-ID reuse; 37 targeted tests pass (four new lifecycle methods).
+Read-only rechecks accept the existing 140 and 12 qualification archives without
+rerunning sorting or changing old hashes. Actual separate calibration campaigns
+accept all inputs: common B=1/2/4/8/16/32 with counts 24/20/20/28/21/27;
+all twelve targeted inputs use B=8. Every candidate batch and output is saved and
+independently reconstructed. **No formal sample ran.** Production code and input
+selection are unchanged. [Manual proof-review progress](docs/development/proof_review_calibration_20261015.md)
+remains partial; the thesis implementation/method scope is updated without new
+formal performance claims. The earlier milestones below retain their dates.
+
+
 The [trace-semantics follow-up and separate split set](docs/validation/split_trace_followup_20261015/README.md)
 now strengthen archive checks for event order, split/skip IDs and sizes,
 list ownership and reconstructible metrics. All original 140 records pass a
@@ -18,8 +31,9 @@ random samples with the original 140.
 
 Calibration and paired-measurement tools have mechanical-flow and failure tests;
 67 distinct targeted test methods pass across the initial and focused runs.
-No actual calibration or formal sample has run. Manual cost/representation/locality
-review and thesis integration remain pending. The earlier milestone below keeps
+At that preceding milestone, actual calibration and thesis integration were still pending.
+They are advanced by the increment above; formal samples and complete proof review remain open.
+The earlier milestone below keeps
 its original producing-source and test-count scope.
 
 The [full common qualification v2 archive](docs/validation/common_qualification_v2_20261015/README.md)
@@ -36,8 +50,8 @@ of split ratios. This frozen set's qualification is complete; representative
 two-sided split performance is not established by it. Earlier targeted split
 validation remains separate. No input was replaced after observing this result.
 
-Formal timing, batch calibration and efficient-backend minimum acceptance remain
-closed/pending. Manual representation/locality/cost review remains a separate
+Formal timing and efficient-backend minimum acceptance remain
+closed/pending; batch calibration is now completed by the increment above. Manual representation/locality/cost review remains a separate
 gate. The [matched-measurement rules](docs/development/matched_protocol_20261015.md)
 are unchanged. The [earlier v2 development checks](docs/validation/qualification_refactor_20261015/README.md)
 retain their old/new equivalence evidence, and the [v1 qualification archive](docs/validation/common_qualification_20261015/README.md)

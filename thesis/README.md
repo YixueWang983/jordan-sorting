@@ -1,6 +1,13 @@
 # FU Berlin LaTeX Thesis Scaffold
 
-Current status (2026-10-12): **CHAPTER COMPACTION — 68 PHYSICAL PAGES** under the
+Current revision (2026-10-15): **68 physical pages, clean build and visual checks**.
+The implementation and method chapters now describe
+the real tree, synchronous v2 qualification, list-ID lifecycle checks and actual
+calibration at `c5b5ac3`. Historical performance results remain unchanged; no
+formal matched samples or complete general-proof approval are claimed. See the
+[new evidence and build record](../docs/validation/id_lifecycle_calibration_20261015/README.md).
+
+Previous status (2026-10-12): **CHAPTER COMPACTION — 68 PHYSICAL PAGES** under the
 [development and thesis revision plan](../docs/plan/remaining_work_20261011.md).
 The [compaction record](../docs/thesis/compaction_20261012/README.md) documents
 the supplied two-chapter revision, reconciliation with shared-core commit

@@ -1,16 +1,14 @@
 \chapter{Implementation}
 \label{chap:implementation}
 
-% Editorial revision against 2be212a11ceee7453d2f8beebc04337d3690d117.
-% Reconciled with the shared-core interfaces introduced in 71e3e71.
-% This text describes the existing ordinary-list implementation, not a completed
-% efficient backend. Historical claim audits retain their original identity.
+% Updated against c5b5ac3: real tree operations, v2 qualification and ledger mode.
+% Historical timing/claim audits retain their original identities.
 
 \section{Implementation Scope and Versions}
 \label{sec:implementation-scope}
 \label{sec:implementation-versions}
 
-The code separates an oracle-backed reference pipeline from the ordinary-list
+The code separates an oracle-backed reference pipeline from the shared-core
 reconstruction of \textcite{fung1990simplified}. The reference function
 \texttt{simplified\_jordan\_sort} certifies the input, constructs family trees,
 statistics and a trace, and returns the oracle's sorted output. In contrast,
@@ -19,20 +17,16 @@ returns \texttt{state.partial\_order.to\_list()}. Its core does not use the
 oracle's output or a global rank map. It assumes a pre-certified valid Jordan
 sequence with distinct, mutually comparable values.
 
-This chapter describes the revised ordinary-list implementation without
-rollback. The pilot and formal timings in \cref{chap:results} belong to an
-earlier rollback-enabled version. Removing recovery backups and exception
-handlers did not remove split planning, list construction, ownership updates
-or local checks. Those historical timings therefore measure neither the
-current implementation nor a causal benefit of removing rollback. Source
-bindings are retained in \cref{sec:appendix-revision-bindings}.
+Both current backends propagate errors without rollback. Timings in
+\cref{chap:results} belong to an earlier rollback-enabled version and measure
+neither the current programs nor a causal benefit of removing recovery work.
+Source bindings remain in \cref{sec:appendix-revision-bindings}.
 
 \Cref{chap:algorithm} specifies initialization, both orientations of
-Step~1/2/3, and the executable anchor clarifications. This chapter describes
-how the code represents and maintains that state, rather than repeating the
-algorithm's rules. The efficient finger-search backend remains to be
-implemented and validated; it is not an achieved contribution of the version
-described here.
+Step~1/2/3, and executable anchor clarifications. Here the focus is state
+representation and maintenance. The real tree shares the sorting loop and has
+bounded correctness evidence; cost and locality review remains open.
+Qualification does not establish a general linear-time theorem.
 
 \section{Data Representation}
 \label{sec:implementation-input-model}
@@ -74,9 +68,16 @@ The ordinary backend retains this eager representation. Since commit
 \texttt{71e3e71}, the shared core
 uses boundary-list, owner and extreme-child access interfaces instead of
 reading those fields directly. General pair-liveness checks do not require
-the pair to be a list endpoint. A replacement must implement these accesses
-without reconstructing a full list on the timed path; the interfaces alone
-establish neither its implementation nor its operation costs.
+the pair to be a list endpoint.
+
+The tree backend stores stable pair handles in external leaves, with internal
+separator nodes, two endpoint fingers and a list header. Outer rib pointers
+point toward the root; interior pointers point toward children. Separators
+store the maximum left key. Rank is black height; span counts all leaves only
+in interior subtrees, the inward branch on a rib, and zero at the root. The
+header separately stores total size. Ownership belongs to the header and at
+most two parent child slots, avoiding per-leaf rebinding. Boundary slots only
+identify designated endpoints; they are not arbitrary-owner lookup caches.
 
 \begin{figure}[htbp]
   \centering
@@ -136,6 +137,17 @@ mismatches, cycles, unowned parents and a third child list. Errors during
 mutation or postcondition checks propagate without restoring earlier state.
 Output-list preparation is ordinary update work, not a recovery backup.
 
+The tree starts boundary insertion at a finger and repairs locally. A split
+with both sides nonempty races from both ends, detaches a component, splits
+its downward representation and joins by black height. Path sizes and header
+totals supply output sizes without enumerating leaves. Every successful split,
+including a one-sided result, retires its source ID and allocates fresh IDs
+for nonempty outputs; boundary insertion preserves its live ID. Pair handles,
+leaves and existing descendant groups survive transfer. Before Step~3(a), the
+core identifies the other group's transfer source without splitting it.
+Step~3(b) consumes that exact source; pending split/transfer state must clear
+before Step~3(c) inserts the output point.
+
 \subsection{Point Insertion and Completion}
 \label{sec:implementation-step3c}
 
@@ -169,6 +181,14 @@ Unavailable backends fail explicitly rather than reverting to ordinary lists.
 This is same-core state-consistency evidence, not a second independent
 algorithm or a replacement for the external sorted-output check.
 
+Qualification v2 instead advances two independently initialized checked
+instances through the same pausable core, audits and compares every completed
+prefix, then performs one final fresh checked replay. A separate fresh minimal
+call checks the measured configuration. It avoids reconstructing every prefix
+from scratch; this changes replay coverage and is explicitly versioned.
+Snapshots reuse one audit within a validation call, never a cross-call
+``already checked'' cache. Old stage and trace records remain checked.
+
 Failure-injection tests separately check propagation from pair insertion and
 split postconditions, including checks retained in \texttt{minimal}.
 Public-call tests require one split attempt and no output recovery after
@@ -183,6 +203,12 @@ enables all three; \texttt{minimal} disables them. Intermediate policies
 isolate observation costs. All use the same Step~1/2/3 sequence and retain
 stage results, necessary local checks, input materialization and output
 recovery. The revised implementation has no rollback under any policy.
+
+The tree's detailed work ledger is a separate configuration switch: minimal
+alone does not disable it. Qualification and calibration explicitly select
+\texttt{detailed\_work=False}, suppressing field accumulation, ledger snapshots
+and per-operation reports. Local geometry and pending checks remain; access
+wrappers and switch checks still have runtime cost.
 
 The archived studies instead timed the rollback-enabled implementation,
 including recovery-state preparation in \texttt{minimal}; a successful call
@@ -203,7 +229,7 @@ the input-list length.
 \section{Actual Costs and Complexity Boundary}
 \label{sec:implementation-complexity}
 
-At either boundary, insertion constructs a new Python list containing the
+In the ordinary backend, either boundary insertion constructs a new Python list containing the
 existing IDs and the new pair. Rear insertion is not an in-place
 \texttt{list.append()}. Both orientations copy work proportional to the
 current sibling-list length. Split additionally scans and partitions the
@@ -232,8 +258,12 @@ not a curve fit or a tight total bound for all inputs.
 
 The ordinary backend instantiates neither the level-linked structure of
 \textcite{hoffmann1986sorting} nor the heterogeneous finger-search structure
-of \textcite{fung1990simplified}. An efficient replacement must account for
-its search, rebalancing, ownership, metadata and shared-core checks as well as
-initialization and output. A fast tree split alone does not establish an
-operation bound for the complete update, and none is claimed here for a
-backend that has not yet been implemented and validated.
+of \textcite{fung1990simplified}. For the implemented tree, the source-linked
+draft analyzes rank changes across successive joins, root-side rib walks and
+one potential for mixed insertion/split sequences. Its target is amortized
+$O(1)$ boundary insertion and $O(\log(s+2))$ split, with $s$ the smaller output
+size. A second list-size potential supplies a conditional linear total.
+These conclusions depend on representation preservation, legal local calls,
+unit-cost comparison and expected/amortized dictionary operations. The full
+review remains open; tests, calibration and the absence of leaf scans do not
+prove these bounds or unconditional Python running times.

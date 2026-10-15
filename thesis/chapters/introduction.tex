@@ -68,15 +68,16 @@ experiment may compare its return value with the oracle afterward; both
 operations are outside the timed paper call. This provenance boundary is
 formalized in \cref{sec:implementation-certification}.
 
-The empirical scope is valid-input sorting. Recognition of arbitrary or
+The historical empirical scope is valid-input sorting. Recognition of arbitrary or
 invalid sequences, error correction, polygon clipping, and the historical
 theoretical backends are not evaluated. Sibling lists use ordinary Python
 lists, so scans, slicing, copying, and ownership rebinding remain part of the
 implemented cost. Consequently, the historical linear-time theorem does not
 transfer to this implementation.
 
-The current revision documents an ordinary-list implementation that terminates
-on update errors without rollback. The performance evidence reported here
+The current revision documents ordinary-list and real finger-tree backends
+that terminate on update errors without rollback. The tree has bounded
+qualification and calibration, but no formal matched samples. Performance evidence reported here
 belongs to its earlier rollback-enabled version. The two versions share the
 reconstructed sorting structure, but the archived measurements do not establish
 the revised implementation's runtime or the benefit of removing recovery work.
@@ -145,9 +146,10 @@ contributions.
 \end{enumerate}
 
 These contributions concern reconstruction, correctness engineering, and
-empirical characterization. They do not include level-linked search trees,
-heterogeneous finger trees, a theoretical linear-time split/update backend, or
-a proof of linear running time for the Python implementation.
+empirical characterization. The later heterogeneous finger-tree implementation
+extends the executable scope, but does not establish a reviewed linear-time
+theorem or current formal performance results. Level-linked search trees remain
+outside the implemented scope.
 
 \section{Headline Findings}
 \label{sec:introduction-findings}

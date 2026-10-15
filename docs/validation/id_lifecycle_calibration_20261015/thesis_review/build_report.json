@@ -1,0 +1,52 @@
+{
+  "pdf": "output/pdf/jordan_thesis_20261015.pdf",
+  "pages": 68,
+  "bytes": 498989,
+  "sha256": "4a8f2a7ea3210b4ec3ed1b42f1750f8c8711799e2eb420b78ab63110adf586d9",
+  "blank_physical_pages": [
+    2,
+    4,
+    10,
+    12,
+    34
+  ],
+  "implementation_physical_pages": [
+    35,
+    40
+  ],
+  "methodology_physical_pages": [
+    41,
+    46
+  ],
+  "preserved_labels": {
+    "implementation": 20,
+    "methodology": 18
+  },
+  "source_sha256": {
+    "thesis/main.tex": "2912e0b4614193b004ed1c6555a16929745eee5866c46fc04dca9191829c9100",
+    "thesis/bibliography.bib": "cb124ee77e3fe0f6f5c898431ab67af3ef64a843377e4220496e93542867b2aa",
+    "thesis/appendix/claim_traceability.tex": "c8dee401836b56630d5700ed00572940aa84c1637ba7a951fcff1987179c7e4c",
+    "thesis/config/metadata.tex": "91134a779c5ffd6857285f4230360700f4d6a174d7d586b0bacd3b55bdd4579c",
+    "thesis/chapters/background.tex": "bc01c0ccb4a40745e0b3df096e42630f429c4c72098b4b719e082bc5660cb12e",
+    "thesis/chapters/algorithm.tex": "9895dee62699b28b7889ba8d83a4f6a0980692e7c91c5d7d3fe18868acb15d87",
+    "thesis/chapters/conclusion.tex": "9d200f5ef4fd136d5852be7ebba76bb9c846989420e9dae60b14708ec3c0bd8d",
+    "thesis/chapters/results.tex": "00b9be4c86ef11391a81aee570a5af064153901febd6a60861969cd8fe757fba",
+    "thesis/chapters/limitations.tex": "d1d60b56f3f3f3bf21b39d3131a416b0957860eff87669485a37eb18efd501bf",
+    "thesis/chapters/introduction.tex": "f7aef50b40b41db4a70976e99597e9ea2e8b6bb355462265ac3fa4a1a54ad496",
+    "thesis/chapters/methodology.tex": "412b4af3d6f8f4cda28bbf3b2ebc3bd7a70d2ab4f33ee01a3f1e42edfd9419af",
+    "thesis/chapters/implementation.tex": "6e79f99be2834e47b4cb911c9f6ccce8ac6715f48e88dcd90915f4b315d38b56",
+    "thesis/frontmatter/abstract.tex": "651de3cc6df4170e4977d0f9723d81340b171c402e11e22d93eff88b0326c40d",
+    "thesis/frontmatter/titlepage.tex": "ed4966cc8d7d00dd4673d3474d1773be4eb0fa0fda4a84501cedf1a2d39f8f14",
+    "thesis/figures/source/running_example_reconstruction.tex": "435e6f2914a81ccbc930091b8d7dc163b3d1941d801c6e45e93bfcf344a2ef97",
+    "thesis/figures/source/jordan_sorting_problem.tex": "eb782ed3bec6ebf5388ab07c838088b10d3226771fbbef1ba0d4244858997153",
+    "thesis/figures/source/family_sibling_structure.tex": "3acf769706606c13c4842819ac2cebcc85a5c971eee38e7cfcffb46240786d93",
+    "thesis/figures/source/step3c_anchor_z1_anomaly.tex": "b00432a7f457046b1ad6b856004a120cfef012f1e100295dfea28e1a26d4873e",
+    "thesis/figures/source/figure_style.tex": "933b2af4110bc1898726b8b9016adc24dc635b77077853dcab016ff91fdee823",
+    "thesis/figures/source/formal_experiment_pipeline.tex": "012d8379a4daa96afc0e0750edf795a99fe34b3bbd578a7991ef074f40f89930"
+  },
+  "compiler": "LuaLaTeX TeX Live 2026 and native arm64 Biber",
+  "final_warning_count": 0,
+  "visual_review": "all-page contact sheets; detailed pages 36,38,40,41,43,64,65; no clipping or overlap observed",
+  "formal_samples": 0,
+  "general_proof_accepted": false
+}

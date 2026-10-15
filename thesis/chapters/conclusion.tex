@@ -131,13 +131,11 @@ A new experiment must first establish the runtime of the revised ordinary-list
 core on qualified inputs. A later backend comparison must remeasure both
 implementations on matched inputs under the same recorded conditions.
 
-First, the ordinary sibling-list backend could be replaced by a data structure
-that realizes the historical locality bounds, such as a carefully specified
-heterogeneous finger-tree implementation. Keeping the existing paper-facing
-control flow and audit contracts would make it possible to isolate the effect
-of the backend while preserving output provenance. Such an extension would
-require its own correctness argument and complexity analysis; faster measured
-calls alone would not establish the theoretical bound.
+First, the now-implemented heterogeneous finger-tree backend needs completion
+of its representation, locality and cost review, followed by formal matched
+measurement. It already shares the core and has qualified inputs and batch
+calibration. Those advances do not establish the target theoretical bound or
+isolate storage costs from differing implementation checks and wrappers.
 
 Second, the executable anchor and orientation clarifications could be given a
 formal proof against an explicit Jordan-sequence model. The present bounded

@@ -1,0 +1,29 @@
+{
+  "common": {
+    "inputs": 140,
+    "complete": true,
+    "source_head": "c5b5ac3fd20cf89173916f49187f28aafc633434",
+    "batch_distribution": {
+      "1": 24,
+      "2": 20,
+      "4": 20,
+      "8": 28,
+      "16": 21,
+      "32": 27
+    },
+    "recorded_batches": 3018,
+    "sorting_calls": 17976,
+    "formal_samples": 0
+  },
+  "targeted_split": {
+    "inputs": 12,
+    "complete": true,
+    "source_head": "c5b5ac3fd20cf89173916f49187f28aafc633434",
+    "batch_distribution": {
+      "8": 12
+    },
+    "recorded_batches": 288,
+    "sorting_calls": 1080,
+    "formal_samples": 0
+  }
+}
