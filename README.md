@@ -11,6 +11,11 @@ freeze candidate selection, resource limits and batch statistics before new
 qualification. The [qualification archive](docs/validation/common_qualification_20261015/README.md)
 keeps its producing-source identity separate from its results commit. This
 stage does not certify the efficient-backend minimum or enable formal timing.
+Selection reached 140 unique rank inputs, but the first 513-point case reached
+the 180-second worker limit during tree checked/replay after both ordinary-list
+checks completed. The archive retains 1 TIMEOUT and 139 NOT_RUN cases; common
+qualification remains incomplete. A bounded diagnostic profile identifies
+repeated full audits inside prefix replay as a resource bottleneck to examine.
 The older milestones below retain their original evidence scope.
 
 As of 2026-10-13, the active work is the

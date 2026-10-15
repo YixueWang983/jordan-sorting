@@ -3,6 +3,8 @@
 **后续进展（同日，`6c259a8` 基线）：**[表示保持与分组归纳](heterogeneous_representation_locality_20261014.md)
 现已展开下文第 6 节当时待补的两类论证，并提供独立物理解码与精确分组检查。
 这是待审阅的人工论证；本页的原始归档、成本模型条件及计时限制保持不变。
+2026-10-15状态：[开发性pilot已完成，新的共同资格尝试发生资源超时](../validation/common_qualification_20261015/README.md)。
+计时规则已固定，资格和人工论证审阅仍未通过；下文“pilot尚待完成”属于原归档时点。
 
 分析对象为 `84f7e13` 的 `heterogeneous_finger_backend.py` 和
 `heterogeneous_finger_split.py`；本轮没有修改生产算法。精确源码、探测程序、

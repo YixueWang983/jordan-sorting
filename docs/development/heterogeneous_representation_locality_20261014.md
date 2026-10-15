@@ -1,5 +1,9 @@
 # 反向指针表示保持与 Jordan 分组归纳
 
+状态注（2026-10-15）：下文基线状态保留。8例开发性pilot已在 `1ae75aa` 执行并
+于 `b87e043` 归档；[最终共同资格尝试](../validation/common_qualification_20261015/README.md)
+因树checked/replay资源超时而未通过。本文仍为待审阅人工论证，`timing_ready=False`。
+
 分析基线：`6c259a8` 的 `src/paper_jordan.py`、
 `src/heterogeneous_finger_backend.py` 和 `src/heterogeneous_finger_split.py`。
 本轮未改生产算法；源码身份和有界反例搜索见

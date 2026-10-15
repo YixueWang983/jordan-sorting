@@ -1,0 +1,21 @@
+{
+  "archive_valid": true,
+  "all_selected_qualified": false,
+  "coverage_target_met": true,
+  "inputs": 140,
+  "public_executions": 2,
+  "per_backend_checked_prefixes": {
+    "ordinary_list": 511
+  },
+  "per_backend_splits": {
+    "ordinary_list": 0
+  },
+  "per_backend_nonempty_splits": {
+    "ordinary_list": 0
+  },
+  "performance_eligible": false,
+  "efficient_backend_accepted": false,
+  "source_head": "3fbe9b5b74d0a37c779ec60f9d7e47408827d2f6",
+  "selection_sha256": "c8d8f34f7dce619a87d54cffd8567255c80340742f00de072eb5ca771991b17b",
+  "deficits": []
+}
