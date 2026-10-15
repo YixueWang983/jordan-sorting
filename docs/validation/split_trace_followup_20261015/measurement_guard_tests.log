@@ -1,0 +1,19 @@
+test_actual_termination_preserves_earlier_batch (test_matched_measurement_tools.MatchedToolTests.test_actual_termination_preserves_earlier_batch) ... ok
+test_cross_dataset_calibration_rejected_before_any_output (test_matched_measurement_tools.MatchedToolTests.test_cross_dataset_calibration_rejected_before_any_output) ... ok
+test_failed_output_and_serialization_are_committed (test_matched_measurement_tools.MatchedToolTests.test_failed_output_and_serialization_are_committed) ... ok
+test_first_common_batch_and_all_output_checks (test_matched_measurement_tools.MatchedToolTests.test_first_common_batch_and_all_output_checks) ... ok
+test_full_controller_and_independent_archive_rebuild_fixture (test_matched_measurement_tools.MatchedToolTests.test_full_controller_and_independent_archive_rebuild_fixture) ... ok
+test_full_controller_failure_record_reconstruction (test_matched_measurement_tools.MatchedToolTests.test_full_controller_failure_record_reconstruction) ... ok
+test_full_controller_rejects_zero_exit_without_evidence (test_matched_measurement_tools.MatchedToolTests.test_full_controller_rejects_zero_exit_without_evidence) ... ok
+test_manual_receipt_does_not_accept_wrong_source_or_missing_review (test_matched_measurement_tools.MatchedToolTests.test_manual_receipt_does_not_accept_wrong_source_or_missing_review) ... ok
+test_no_batch_reaches_threshold_is_failure (test_matched_measurement_tools.MatchedToolTests.test_no_batch_reaches_threshold_is_failure) ... ok
+test_optimization_guards (test_matched_measurement_tools.MatchedToolTests.test_optimization_guards) ... ok
+test_paired_schedule_and_statistics (test_matched_measurement_tools.MatchedToolTests.test_paired_schedule_and_statistics) ... ok
+test_r7_nonconstant_samples_and_no_trimming (test_matched_measurement_tools.MatchedToolTests.test_r7_nonconstant_samples_and_no_trimming) ... ok
+test_resealed_environment_and_calibration_corruption_rejected (test_matched_measurement_tools.MatchedToolTests.test_resealed_environment_and_calibration_corruption_rejected) ... ok
+test_row_and_summary_tampering_rejected (test_matched_measurement_tools.MatchedToolTests.test_row_and_summary_tampering_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 3.035s
+
+OK

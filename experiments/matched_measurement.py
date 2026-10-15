@@ -131,6 +131,8 @@ def run(output,stage,dataset,qualification,*,calibration=None,review=None):
         if calibration is None or review is None:raise ValueError('formal needs calibration and explicit manual review receipt')
         report=validate(calibration,qualification=qualification)
         if not report['complete'] or report['stage']!='calibration':raise ValueError('incomplete calibration')
+        if report['dataset']!=dataset or set(report['batch_sizes'])!={c['case'] for c in cfg['cases']}:
+            raise ValueError('calibration belongs to a different dataset')
         calenv=read(Path(calibration)/'environment.json')
         if calenv['execution']['source_sha256']!=env['execution']['source_sha256']:raise ValueError('source changed after calibration')
         for key in ('python','executable','platform','machine','gc_thresholds'):

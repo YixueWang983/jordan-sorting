@@ -131,6 +131,7 @@ def validate(output,*,qualification,calibration=None):
         require(calibration is not None,'calibration archive required')
         cal=validate(calibration,qualification=qualification)
         require(cal['stage']=='calibration' and cal['complete'],'calibration is incomplete')
+        require(cal['dataset']==dataset and set(cal['batch_sizes'])=={c['case'] for c in cases},'calibration dataset mismatch')
         require(cfg['batch_sizes']==cal['batch_sizes'] and cfg['calibration_manifest_sha256']==digest(read(Path(calibration)/'manifest.json')),'calibration freeze')
         calenv=read(Path(calibration)/'environment.json')['execution']
         for key in ('source_sha256','python','executable','platform','machine','gc_thresholds'):

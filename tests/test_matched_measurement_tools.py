@@ -193,6 +193,13 @@ raise SystemExit(r.execute_case(json.loads(Path(sys.argv[2]).read_text()),Path(s
                 runner.seal(out)
                 with self.subTest(kind=kind),self.assertRaises(ValueError):checker.validate(out,qualification=q)
 
+    def test_cross_dataset_calibration_rejected_before_any_output(self):
+        root=self.directory();scope,q,env=self.fixture_scope(root)
+        with scope,patch.object(checker,'validate',return_value=dict(complete=True,stage='calibration',dataset='targeted_split',batch_sizes={'mechanical-eight':2})):
+            with self.assertRaisesRegex(ValueError,'different dataset'):
+                runner.run(root/'forbidden','formal','common',q,calibration=root/'unused',review={'test':'not reached'})
+            self.assertFalse((root/'forbidden').exists())
+
     def test_manual_receipt_does_not_accept_wrong_source_or_missing_review(self):
         for value in (None,{},dict(schema='representation_locality_cost_review_v1',approved=True,production_sha256={},review_references=['stub'])):
             with self.assertRaises(ValueError):checker.check_review(value,source_identity())
