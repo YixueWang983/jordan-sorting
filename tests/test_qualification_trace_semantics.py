@@ -48,6 +48,58 @@ class TraceSemanticsTests(unittest.TestCase):
             self.assertTrue(any(s['smaller_side']==3 for s in report['splits']))
             self.assertFalse(report['physical_tree_proof'])
 
+    @staticmethod
+    def replace_list_id(events, start, old, new):
+        # Rename all later references too: an unrelated stale-reference error
+        # must not be what rejects a reused ID.
+        fields=('sibling_list_id','input_list_id','left_list_id','right_list_id')
+        for event in events[start:]:
+            for key in fields:
+                if event.get(key)==old:event[key]=new
+
+    def reject_lifecycle_mutation(self, mutate, message):
+        for index in (0,2):
+            with self.subTest(backend=self.rows[index]['backend']):
+                rows=copy.deepcopy(self.rows);mutate(rows[index]['final']['trace'])
+                with patch.object(checker,'read_records',return_value=rows),self.assertRaisesRegex(ValueError,message):
+                    checker.validate_job(self.output,self.request,digest(self.request['values']),passing=True)
+
+    def test_split_outputs_cannot_reuse_source_id(self):
+        for side in ('left','right'):
+            def mutate(events):
+                at=next(j for j,e in enumerate(events) if e.get('performed') is True)
+                self.replace_list_id(events,at,events[at][side+'_list_id'],events[at]['input_list_id'])
+            with self.subTest(side=side):
+                self.reject_lifecycle_mutation(mutate,'split output reuses an allocated list ID')
+
+    def test_singleton_cannot_reuse_retired_id(self):
+        def mutate(events):
+            at=next(j for j,e in enumerate(events) if e.get('performed') is True)
+            retired=events[at]['input_list_id']
+            later=next(j for j in range(at+1,len(events)) if events[j].get('insertion_mode')=='singleton_list')
+            self.replace_list_id(events,later,events[later]['sibling_list_id'],retired)
+        self.reject_lifecycle_mutation(mutate,'singleton reuses an allocated list ID')
+
+    def test_later_split_cannot_reuse_previously_retired_id(self):
+        def mutate(events):
+            first,later=[j for j,e in enumerate(events) if e.get('performed') is True]
+            old=events[later]['left_list_id'] or events[later]['right_list_id']
+            self.replace_list_id(events,later,old,events[first]['input_list_id'])
+        self.reject_lifecycle_mutation(mutate,'split output reuses an allocated list ID')
+
+    def test_boundary_insertion_keeps_live_id_without_requiring_monotone_ids(self):
+        for row in self.rows[::2]:
+            trace=copy.deepcopy(row['final']['trace'])
+            fields=('upper_list_id','lower_list_id','sibling_list_id','input_list_id','left_list_id','right_list_id')
+            allocated={e[k] for e in trace for k in fields if e.get(k) is not None}
+            rename={old:1000-old for old in allocated}
+            for event in trace:
+                for key in fields:
+                    if event.get(key) is not None:event[key]=rename[event[key]]
+            insertions=[e['sibling_list_id'] for e in trace if e.get('insertion_mode')=='boundary_insertion']
+            self.assertGreater(len(insertions),len(set(insertions)))
+            check_trace(self.request['values'],trace,row['final']['metrics'],row['backend'])
+
     def test_all_review_counterexamples_rejected_by_validate_job(self):
         kinds=('zero-source','nonempty-no-ids','skip-nonzero','skip-id','empty-has-id','alias-output',
                'non-split-empty','swap-steps','missing-field','wrong-counter','bool-id','wrong-initialization','wrong-owner')

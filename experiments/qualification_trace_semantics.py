@@ -39,6 +39,9 @@ def check_trace(values, trace, metrics, backend):
     same(initial,dict(step='initialize_pair_families',upper_pair_id=2,lower_pair_id=3,
          upper_list_id=initial['upper_list_id'],lower_list_id=initial['lower_list_id']),'initial families')
     live={initial['upper_list_id']:(-1,1),initial['lower_list_id']:(-2,1)}
+    # Allocation identities last for the entire trace. Retirement removes a
+    # live header, not its history; end insertion alone preserves its ID.
+    seen_ids=set(live)
     calculated=Counter(dict.fromkeys(names,0));calculated['invariant_checks']=n-2;calculated['trace_event_count']=len(trace)
     splits=[]; observations=[]
     def pair_ok(pid,i,family):
@@ -71,7 +74,9 @@ def check_trace(values, trace, metrics, backend):
         require(pair_ok(owner,i,family) and positive(lid),'insertion owner/list IDs')
         same(a,dict(step='step3a_insert_pair',**base,boundary_pair_id=boundary,insertion_mode=mode,parent_pair_id=owner,sibling_list_id=lid),'insertion event')
         if mode=='singleton_list':
-            require(lid not in live and owner==boundary,'singleton owner/list');live[lid]=(owner,1);calculated['sibling_lists_created']+=1
+            require(lid not in seen_ids,'singleton reuses an allocated list ID')
+            require(owner==boundary,'singleton owner/list')
+            seen_ids.add(lid);live[lid]=(owner,1);calculated['sibling_lists_created']+=1
         else:
             require(lid in live and live[lid][0]==owner,'boundary insertion ownership')
             live[lid]=(owner,live[lid][1]+1);calculated['sibling_list_insertions']+=1
@@ -93,7 +98,8 @@ def check_trace(values, trace, metrics, backend):
             del live[source]
             for output,amount,output_side in ((left,ls,'left'),(right,rs,'right')):
                 if output is not None:
-                    require(output not in live,'split overwrites another live list')
+                    require(output not in seen_ids,'split output reuses an allocated list ID')
+                    seen_ids.add(output)
                     live[output]=(i if output_side==side else owner,amount)
             calculated['sibling_list_splits']+=1;calculated['split_items_transferred']+=ls if side=='left' else rs
             observations.append(dict(iteration=i,kind='split_source',list_id=source,owner=owner))

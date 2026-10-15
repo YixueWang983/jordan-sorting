@@ -1,0 +1,54 @@
+test_actual_trace_and_derived_coverage (test_qualification_trace_semantics.TraceSemanticsTests.test_actual_trace_and_derived_coverage) ... ok
+test_all_review_counterexamples_rejected_by_validate_job (test_qualification_trace_semantics.TraceSemanticsTests.test_all_review_counterexamples_rejected_by_validate_job) ... ok
+test_boundary_insertion_keeps_live_id_without_requiring_monotone_ids (test_qualification_trace_semantics.TraceSemanticsTests.test_boundary_insertion_keeps_live_id_without_requiring_monotone_ids) ... ok
+test_historical_revision_bound_to_git_not_current_checkout (test_qualification_trace_semantics.TraceSemanticsTests.test_historical_revision_bound_to_git_not_current_checkout) ... ok
+test_later_split_cannot_reuse_previously_retired_id (test_qualification_trace_semantics.TraceSemanticsTests.test_later_split_cannot_reuse_previously_retired_id) ... ok
+test_singleton_cannot_reuse_retired_id (test_qualification_trace_semantics.TraceSemanticsTests.test_singleton_cannot_reuse_retired_id) ... ok
+test_split_outputs_cannot_reuse_source_id (test_qualification_trace_semantics.TraceSemanticsTests.test_split_outputs_cannot_reuse_source_id) ... ok
+test_actual_single_case_routing_and_coverage_reconstruction (test_targeted_split_qualification.TargetedSplitTests.test_actual_single_case_routing_and_coverage_reconstruction) ... 1/1 split-n128-k3: PASS
+ok
+test_missing_actual_target_cannot_pass_even_if_all_outputs_pass (test_targeted_split_qualification.TargetedSplitTests.test_missing_actual_target_cannot_pass_even_if_all_outputs_pass) ... 1/1 split-n128-k3: ERROR
+ok
+test_preselection_unique_separate_and_fixed (test_targeted_split_qualification.TargetedSplitTests.test_preselection_unique_separate_and_fixed) ... ok
+test_actual_termination_preserves_earlier_batch (test_matched_measurement_tools.MatchedToolTests.test_actual_termination_preserves_earlier_batch) ... ok
+test_cross_dataset_calibration_rejected_before_any_output (test_matched_measurement_tools.MatchedToolTests.test_cross_dataset_calibration_rejected_before_any_output) ... ok
+test_failed_output_and_serialization_are_committed (test_matched_measurement_tools.MatchedToolTests.test_failed_output_and_serialization_are_committed) ... ok
+test_first_common_batch_and_all_output_checks (test_matched_measurement_tools.MatchedToolTests.test_first_common_batch_and_all_output_checks) ... ok
+test_full_controller_and_independent_archive_rebuild_fixture (test_matched_measurement_tools.MatchedToolTests.test_full_controller_and_independent_archive_rebuild_fixture) ... ok
+test_full_controller_failure_record_reconstruction (test_matched_measurement_tools.MatchedToolTests.test_full_controller_failure_record_reconstruction) ... ok
+test_full_controller_rejects_zero_exit_without_evidence (test_matched_measurement_tools.MatchedToolTests.test_full_controller_rejects_zero_exit_without_evidence) ... ok
+test_manual_receipt_does_not_accept_wrong_source_or_missing_review (test_matched_measurement_tools.MatchedToolTests.test_manual_receipt_does_not_accept_wrong_source_or_missing_review) ... ok
+test_no_batch_reaches_threshold_is_failure (test_matched_measurement_tools.MatchedToolTests.test_no_batch_reaches_threshold_is_failure) ... ok
+test_optimization_guards (test_matched_measurement_tools.MatchedToolTests.test_optimization_guards) ... ok
+test_paired_schedule_and_statistics (test_matched_measurement_tools.MatchedToolTests.test_paired_schedule_and_statistics) ... ok
+test_r7_nonconstant_samples_and_no_trimming (test_matched_measurement_tools.MatchedToolTests.test_r7_nonconstant_samples_and_no_trimming) ... ok
+test_resealed_environment_and_calibration_corruption_rejected (test_matched_measurement_tools.MatchedToolTests.test_resealed_environment_and_calibration_corruption_rejected) ... ok
+test_row_and_summary_tampering_rejected (test_matched_measurement_tools.MatchedToolTests.test_row_and_summary_tampering_rejected) ... ok
+test_actual_sync_route_and_fresh_minimal_no_legacy_diagnostics (test_common_qualification_v2.CommonV2Tests.test_actual_sync_route_and_fresh_minimal_no_legacy_diagnostics) ... ok
+test_frozen_selection_identity (test_common_qualification_v2.CommonV2Tests.test_frozen_selection_identity) ... ok
+test_full_timeout_archive_retains_completed_mode_and_stops (test_common_qualification_v2.CommonV2Tests.test_full_timeout_archive_retains_completed_mode_and_stops) ... 1/2 n32-strict_flat-00: TIMEOUT
+2/2 n32-strict_flat-00-mirror: NOT_RUN
+ok
+test_incomplete_report_rejected_before_minimal (test_common_qualification_v2.CommonV2Tests.test_incomplete_report_rejected_before_minimal) ... ok
+test_invented_source_revision_rejected (test_common_qualification_v2.CommonV2Tests.test_invented_source_revision_rejected) ... ok
+test_optimization_guard_before_worker_or_output (test_common_qualification_v2.CommonV2Tests.test_optimization_guard_before_worker_or_output) ... ok
+test_real_fixture_independent_reconstruction (test_common_qualification_v2.CommonV2Tests.test_real_fixture_independent_reconstruction) ... 1/2 n32-strict_flat-00: PASS
+2/2 n32-strict_flat-00-mirror: PASS
+ok
+test_real_process_timeout_recovers_completed_sync (test_common_qualification_v2.CommonV2Tests.test_real_process_timeout_recovers_completed_sync) ... ok
+test_resealed_tampering_rejected (test_common_qualification_v2.CommonV2Tests.test_resealed_tampering_rejected) ... 1/2 n32-strict_flat-00: PASS
+2/2 n32-strict_flat-00-mirror: PASS
+ok
+test_worker_exception_stops_and_archive_rebuilds (test_common_qualification_v2.CommonV2Tests.test_worker_exception_stops_and_archive_rebuilds) ... 1/2 n32-strict_flat-00: ERROR
+2/2 n32-strict_flat-00-mirror: NOT_RUN
+ok
+test_wrong_actual_backend_configuration_rejected (test_common_qualification_v2.CommonV2Tests.test_wrong_actual_backend_configuration_rejected) ... ok
+test_wrong_output_and_serialization_error_retained (test_common_qualification_v2.CommonV2Tests.test_wrong_output_and_serialization_error_retained) ... ok
+test_zero_exit_with_missing_records_is_not_pass (test_common_qualification_v2.CommonV2Tests.test_zero_exit_with_missing_records_is_not_pass) ... 1/2 n32-strict_flat-00: ERROR
+2/2 n32-strict_flat-00-mirror: NOT_RUN
+ok
+
+----------------------------------------------------------------------
+Ran 37 tests in 11.096s
+
+OK
