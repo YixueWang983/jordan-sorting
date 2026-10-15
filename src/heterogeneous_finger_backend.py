@@ -1056,10 +1056,24 @@ class HeterogeneousFingerBackend:
     @observed("audit")
     def logical_snapshot(self):
         groups, membership = self._audit(True)
+        return self._logical_from_audit(groups, membership)
+
+    def _logical_from_audit(self, groups, membership):
         return ("jordan-logical-v1", tuple(
             (*handle.identity, membership.get(pair_id),
              tuple(groups[h.list_id] for h in handle.child_slots))
             for pair_id, handle in sorted(self._pairs.items())))
+
+    @observed("audit")
+    def validated_snapshots(self):
+        """One fresh audit, two immutable views. Never cache across calls.
+
+        The local groups/membership live only until this call returns; direct
+        mutations after validation must be detected by the next validation.
+        audit_snapshot materializes fields but does not run another _audit.
+        """
+        groups, membership = self._audit(True)
+        return self._logical_from_audit(groups, membership), self.audit_snapshot()
 
     @observed("audit")
     def audit_snapshot(self):

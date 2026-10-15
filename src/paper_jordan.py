@@ -327,6 +327,41 @@ def _validate_initial_backend_postconditions(state, family_records):
 
 def validate_paper_jordan_state(state):
     """执行不依赖 oracle/全局排序的完整 correctness/debug invariant audit。"""
+    snapshots = _validate_state_local(state)
+    _validate_state_against_deterministic_replay(state, snapshots=snapshots)
+    _count_state_validation(state)
+    return True
+
+
+def validate_paper_jordan_state_reference(state, *, history_work=None, return_snapshots=False):
+    """Bounded reference: original repeated filtering and fresh-prefix replay.
+
+    Retains the pre-refactor check schedule, including redundant tree audits.
+    This is a development comparator, not the new scalable qualification path.
+    """
+    _validate_state_local(state, reference=True, history_work=history_work)
+    snapshots = _validate_state_against_deterministic_replay(state)
+    _count_state_validation(state)
+    return snapshots if return_snapshots else True
+
+
+def _count_state_validation(state):
+    if state.execution_policy.count_operations:
+        state.metrics["invariant_checks"] += 1
+
+
+def _validated_backend_snapshots(backend):
+    bundled = getattr(backend, "validated_snapshots", None)
+    if bundled is not None:
+        return bundled()
+    # Existing backends/fixtures need not implement the optional bundled audit.
+    # The fallback still audits and uses this exact backend, never another type.
+    backend.validate_invariants()
+    return backend.logical_snapshot(), backend.audit_snapshot()
+
+
+def _validate_state_local(state, *, reference=False, history_work=None):
+    """Full current-state/history checks, without scheduling any replay."""
     _require_state(state)
     if not isinstance(state.backend_spec, SiblingBackendSpec):
         raise RuntimeError("state backend specification is invalid")
@@ -400,19 +435,20 @@ def validate_paper_jordan_state(state):
         ):
             raise RuntimeError("processed pair record is inconsistent")
 
-    state.sibling_backend.validate_invariants()
-    derived_metrics = _validate_stage_results_and_trace(state, actual_point_ids)
+    if reference:
+        state.sibling_backend.validate_invariants()
+        snapshots = None
+    else:
+        snapshots = _validated_backend_snapshots(state.sibling_backend)
+    derived_metrics = _validate_stage_results_and_trace(
+        state, actual_point_ids, reference=reference, work=history_work)
     if execution_policy.count_operations and execution_policy.record_trace:
         for metric_name, expected_value in derived_metrics.items():
             if state.metrics[metric_name] != expected_value:
                 raise RuntimeError(
                     f"metric does not match validated trace: {metric_name}"
                 )
-    _validate_state_against_deterministic_replay(state)
-
-    if execution_policy.count_operations:
-        state.metrics["invariant_checks"] += 1
-    return True
+    return snapshots
 
 
 def _validate_point_records(state):
@@ -458,7 +494,7 @@ def _validate_configured_dummy(state, dummy_pair_id, expected_family):
     state.sibling_backend.validate_dummy_ownership(dummy_pair_id)
 
 
-def _validate_stage_results_and_trace(state, final_point_order):
+def _validate_stage_results_and_trace(state, final_point_order, *, reference=False, work=None):
     expected_iterations = tuple(range(4, state.processed_count + 1))
     if set(state.stage_results) != set(expected_iterations):
         raise RuntimeError("stage-result iterations do not match processed prefix")
@@ -536,6 +572,8 @@ def _validate_stage_results_and_trace(state, final_point_order):
     }
     derived_metrics["trace_event_count"] = expected_trace_length
 
+    history = None if reference else _historical_neighbors(final_point_order, work=work)
+
     for offset, iteration in enumerate(expected_iterations):
         stages = state.stage_results[iteration]
         events = state.trace[2 + offset * 7 : 2 + (offset + 1) * 7]
@@ -546,6 +584,8 @@ def _validate_stage_results_and_trace(state, final_point_order):
             events,
             final_point_order,
             derived_metrics,
+            history=history,
+            work=work,
         )
 
     return derived_metrics
@@ -558,6 +598,9 @@ def _validate_iteration_records(
     events,
     final_point_order,
     derived_metrics,
+    *,
+    history=None,
+    work=None,
 ):
     family = pair_family_for_end_index(iteration)
     orientation = _orientation_for_iteration(state, iteration)
@@ -568,12 +611,16 @@ def _validate_iteration_records(
         iteration,
         final_point_order,
         predecessor_side=True,
+        history=history,
+        work=work,
     )
     expected_right = _expected_boundary_selection(
         state,
         iteration,
         final_point_order,
         predecessor_side=False,
+        history=history,
+        work=work,
     )
     if (
         not isinstance(left_selection, BoundarySelection)
@@ -667,6 +714,8 @@ def _validate_iteration_records(
         orientation,
         step3c,
         final_point_order,
+        history=history,
+        work=work,
     )
     expected_step3c_event = {
         "step": "step3c_insert_output_point",
@@ -715,40 +764,78 @@ def _validate_iteration_records(
     )
 
 
+def _history_count(work, name, amount=1):
+    if work is not None:
+        work[name] = work.get(name, 0) + amount
+
+
+def _historical_neighbors(final_point_order, *, work=None):
+    """Undo output insertions by ID, independently of stage/trace claims.
+
+    Link the actual final order once, then remove n,n-1,...,4. Store only the
+    six neighbor facts needed by the existing predicates, not all prefixes.
+    The arrays and facts are local to this single validation invocation.
+    """
+    n = len(final_point_order)
+    left, right = [None]*(n+1), [None]*(n+1)
+    for pos, point_id in enumerate(final_point_order):
+        left[point_id] = final_point_order[pos-1] if pos else None
+        right[point_id] = final_point_order[pos+1] if pos+1 < n else None
+        _history_count(work, "linked_points")
+    facts = {}
+    for i in range(n, 3, -1):
+        before, after = left[i], right[i]
+        if before is not None:
+            right[before] = after
+        if after is not None:
+            left[after] = before
+        l, r = left[i-1], right[i-1]
+        la, ra = i % 2 == 1 and l == 1, i % 2 == 1 and r == 1
+        if la:
+            l = left[1]
+        if ra:
+            r = right[1]
+        facts[i] = ((l, la), (r, ra), before, after)
+        _history_count(work, "removed_points")
+    return facts
+
+
 def _expected_boundary_selection(
     state,
     iteration,
     final_point_order,
     predecessor_side,
+    *,
+    history=None,
+    work=None,
 ):
-    prefix_order = [
-        point_id for point_id in final_point_order if point_id < iteration
-    ]
-    previous_point_id = iteration - 1
-    previous_position = prefix_order.index(previous_point_id)
-    neighbor_position = (
-        previous_position - 1
-        if predecessor_side
-        else previous_position + 1
-    )
-    neighbor_point_id = (
-        prefix_order[neighbor_position]
-        if 0 <= neighbor_position < len(prefix_order)
-        else None
-    )
-    adjusted_for_z1 = iteration % 2 == 1 and neighbor_point_id == 1
-    if adjusted_for_z1:
-        first_position = prefix_order.index(1)
+    if history is not None:
+        neighbor_point_id, adjusted_for_z1 = history[iteration][0 if predecessor_side else 1]
+    else:
+        _history_count(work, "reference_filter_visits", len(final_point_order))
+        _history_count(work, "reference_index_calls")
+        prefix_order = [
+            point_id for point_id in final_point_order if point_id < iteration
+        ]
+        previous_position = prefix_order.index(iteration - 1)
         neighbor_position = (
-            first_position - 1
+            previous_position - 1
             if predecessor_side
-            else first_position + 1
+            else previous_position + 1
         )
         neighbor_point_id = (
             prefix_order[neighbor_position]
             if 0 <= neighbor_position < len(prefix_order)
             else None
         )
+        adjusted_for_z1 = iteration % 2 == 1 and neighbor_point_id == 1
+        if adjusted_for_z1:
+            _history_count(work, "reference_index_calls")
+            first_position = prefix_order.index(1)
+            neighbor_position = first_position - 1 if predecessor_side else first_position + 1
+            neighbor_point_id = (prefix_order[neighbor_position]
+                                 if 0 <= neighbor_position < len(prefix_order) else None)
+    _history_count(work, "boundary_predictions")
 
     if neighbor_point_id is None:
         pair_id = (
@@ -953,6 +1040,9 @@ def _validate_step3c_result(
     orientation,
     result,
     final_point_order,
+    *,
+    history=None,
+    work=None,
 ):
     if not isinstance(result, Step3CResult):
         raise RuntimeError("Step 3(c) stage result has the wrong type")
@@ -993,15 +1083,18 @@ def _validate_step3c_result(
     ):
         raise RuntimeError("Step 3(c) output anchor is inconsistent")
 
-    prefix_order = [
-        point_id for point_id in final_point_order if point_id <= iteration
-    ]
-    current_position = prefix_order.index(iteration)
-    anchor_position = prefix_order.index(result.output_anchor_point_id)
-    if orientation == INCREASING:
-        is_adjacent = current_position == anchor_position + 1
+    _history_count(work, "output_adjacency_predictions")
+    if history is not None:
+        expected_anchor = history[iteration][2 if orientation == INCREASING else 3]
+        is_adjacent = result.output_anchor_point_id == expected_anchor
     else:
-        is_adjacent = anchor_position == current_position + 1
+        _history_count(work, "reference_filter_visits", len(final_point_order))
+        _history_count(work, "reference_index_calls", 2)
+        prefix_order = [point_id for point_id in final_point_order if point_id <= iteration]
+        current_position = prefix_order.index(iteration)
+        anchor_position = prefix_order.index(result.output_anchor_point_id)
+        is_adjacent = (current_position == anchor_position + 1 if orientation == INCREASING
+                       else anchor_position == current_position + 1)
     if not is_adjacent:
         raise RuntimeError("Step 3(c) output insertion is not adjacent to its anchor")
 
@@ -1014,7 +1107,7 @@ def _is_positive_integer(value):
     return _is_integer_id(value) and value > 0
 
 
-def _validate_state_against_deterministic_replay(state):
+def _validate_state_against_deterministic_replay(state, *, snapshots=None):
     replayed = _run_paper_jordan_state_values(
         [point.value for point in state.points],
         stop_after=state.processed_count,
@@ -1022,6 +1115,15 @@ def _validate_state_against_deterministic_replay(state):
         backend=state.backend_spec,
         forbidden_backend=state.sibling_backend,
     )
+    replay_views = None if snapshots is None else _validated_backend_snapshots(replayed.sibling_backend)
+    return _compare_replay_states(state, replayed, snapshots=snapshots, replay_views=replay_views)
+
+
+def _compare_replay_states(state, replayed, *, snapshots=None, replay_views=None):
+    if snapshots is None:
+        snapshots = (state.sibling_backend.logical_snapshot(), state.sibling_backend.audit_snapshot())
+    if replay_views is None:
+        replay_views = (replayed.sibling_backend.logical_snapshot(), replayed.sibling_backend.audit_snapshot())
     actual_metrics = {
         name: value
         for name, value in state.metrics.items()
@@ -1054,13 +1156,13 @@ def _validate_state_against_deterministic_replay(state):
         (state.trace, replayed.trace, "trace"),
         (actual_metrics, replayed_metrics, "operation metrics"),
         (
-            state.sibling_backend.logical_snapshot(),
-            replayed.sibling_backend.logical_snapshot(),
+            snapshots[0],
+            replay_views[0],
             "logical sibling topology",
         ),
         (
-            state.sibling_backend.audit_snapshot(),
-            replayed.sibling_backend.audit_snapshot(),
+            snapshots[1],
+            replay_views[1],
             "sibling backend",
         ),
     )
@@ -1069,6 +1171,7 @@ def _validate_state_against_deterministic_replay(state):
             raise RuntimeError(
                 f"state does not match deterministic replay: {label}"
             )
+    return snapshots
 
 
 def _run_paper_jordan_state_values(
@@ -1079,6 +1182,22 @@ def _run_paper_jordan_state_values(
     *,
     backend="ordinary_list",
     forbidden_backend=None,
+):
+    """Consume the single resumable main loop; preserve the public callback API."""
+    if invariant_callback is not None and not callable(invariant_callback):
+        raise TypeError("invariant_callback must be callable")
+    for state in _iterate_paper_jordan_states(
+        values, stop_after=stop_after, execution_policy=execution_policy,
+        backend=backend, forbidden_backend=forbidden_backend,
+    ):
+        if invariant_callback is not None:
+            invariant_callback(state)
+    return state
+
+
+def _iterate_paper_jordan_states(
+    values, stop_after=None, execution_policy=CHECKED_POLICY, *,
+    backend="ordinary_list", forbidden_backend=None,
 ):
     """使用唯一 Step 1/2/3 控制流运行已物化 valid-input values。"""
     execution_policy = require_fixed_paper_execution_policy(execution_policy)
@@ -1094,17 +1213,13 @@ def _run_paper_jordan_state_values(
         or not 3 <= stop_after <= len(values)
     ):
         raise ValueError("stop_after must satisfy 3 <= stop_after <= len(values)")
-    if invariant_callback is not None and not callable(invariant_callback):
-        raise TypeError("invariant_callback must be callable")
-
     state = _initialize_paper_jordan_state_values(
         values,
         execution_policy=execution_policy,
         backend=backend,
         forbidden_backend=forbidden_backend,
     )
-    if invariant_callback is not None:
-        invariant_callback(state)
+    yield state
 
     for iteration in range(4, stop_after + 1):
         left_boundary = step1_select_predecessor_boundary(state, iteration)
@@ -1133,10 +1248,7 @@ def _run_paper_jordan_state_values(
         else:
             raise ValueError("point values must be distinct")
 
-        if invariant_callback is not None:
-            invariant_callback(state)
-
-    return state
+        yield state
 
 
 def select_processed_same_family_pair(state, point_id, iteration):
