@@ -115,8 +115,10 @@ implementation's rollback contract with error propagation and mandatory
 discard of failed state. The clarification to \texttt{I-07} distinguishes the
 unchanged execution-policy switches from the changed recovery work.
 The ordinary-list complexity limitation in \texttt{I-09} remains applicable
-to that backend. The current tree is implemented and qualified, but a reviewed
-general efficiency claim and formal matched measurements remain outstanding.
+to that backend. The current tree is implemented and qualified. Its
+representation, mixed-cost and locality arguments have passed the project's
+source-level manual review under the stated computational model; this is not
+machine verification or external independent certification.
 
 The current implementation and method amendments bind unchanged production
 sources at \texttt{c5b5ac3}. Tree integration, optional detailed work and v2
@@ -127,7 +129,12 @@ Read-only ID-lifecycle rechecks and actual calibration use \texttt{c5b5ac3};
 records, all batch attempts, decisions and independent rebuild reports are in
 \nolinkurl{docs/validation/id_lifecycle_calibration_20261015/}.
 The later archive commit stores those results without becoming the execution
-version. No formal samples or approved general-proof receipt are claimed.
+version. The subsequent concentrated review is
+\nolinkurl{docs/development/finger_final_review_20261015.md}; its exact source
+binding and provenance receipt are in
+\nolinkurl{docs/validation/final_review_formal_20261015/}.
+The receipt records that review and cannot itself prove the mathematics.
+Formal samples remain a separate execution requirement.
 
 The revision record links these statements to the current split and insertion
 code, public-call failure tests, and their thesis locations. The historical

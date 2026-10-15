@@ -6,6 +6,14 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
+The [concentrated representation/cost/locality review](docs/development/finger_final_review_20261015.md)
+closes the three manual-review items against the unchanged `b6e1116`/`c5b5ac3`
+Python sources. It gives explicit branch and induction arguments in the stated
+unit-cost/expected-dictionary model, not a machine proof or external certification.
+The thesis distinguishes internal ROOT span zero from singleton leaf span one.
+Formal measurement still requires the existing qualification, calibration and
+environment gates. The dated milestones below describe their original state.
+
 The [ID-lifecycle repair and actual calibration](docs/validation/id_lifecycle_calibration_20261015/README.md)
 are now complete at execution/checker source **`c5b5ac3`**. The checker rejects
 retired list-ID reuse; 37 targeted tests pass (four new lifecycle methods).

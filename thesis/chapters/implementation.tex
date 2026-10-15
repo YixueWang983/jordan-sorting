@@ -73,9 +73,11 @@ the pair to be a list endpoint.
 The tree backend stores stable pair handles in external leaves, with internal
 separator nodes, two endpoint fingers and a list header. Outer rib pointers
 point toward the root; interior pointers point toward children. Separators
-store the maximum left key. Rank is black height; span counts all leaves only
-in interior subtrees, the inward branch on a rib, and zero at the root. The
-header separately stores total size. Ownership belongs to the header and at
+store the maximum left key. Rank is black height excluding external black
+leaves. For internal nodes, span counts all leaves in the INTERIOR role, the
+inward branch on a rib, and zero in the ROOT role. External leaves always have
+span one, including a singleton root. The header separately stores total size.
+Ownership belongs to the header and at
 most two parent child slots, avoiding per-leaf rebinding. Boundary slots only
 identify designated endpoints; they are not arbitrary-owner lookup caches.
 
@@ -258,12 +260,56 @@ not a curve fit or a tight total bound for all inputs.
 
 The ordinary backend instantiates neither the level-linked structure of
 \textcite{hoffmann1986sorting} nor the heterogeneous finger-search structure
-of \textcite{fung1990simplified}. For the implemented tree, the source-linked
-draft analyzes rank changes across successive joins, root-side rib walks and
-one potential for mixed insertion/split sequences. Its target is amortized
-$O(1)$ boundary insertion and $O(\log(s+2))$ split, with $s$ the smaller output
-size. A second list-size potential supplies a conditional linear total.
-These conclusions depend on representation preservation, legal local calls,
-unit-cost comparison and expected/amortized dictionary operations. The full
-review remains open; tests, calibration and the absence of leaf scans do not
-prove these bounds or unconditional Python running times.
+of \textcite{fung1990simplified}. The implemented tree has now undergone a
+source-level manual review of representation preservation, mixed costs and
+locality, indexed in \cref{sec:appendix-revision-bindings}. This is a mathematical
+argument checked against the code, not machine verification or an independent
+external proof certification. Its main steps are as follows.
+
+Decoding the reversed ribs gives an ordinary external red--black tree. Each
+rotation preserves the ordered leaf blocks and their separators; role changes
+update the affected spans and top caches. During deletion, a virtual black
+layer at the deficient component explains the temporarily unequal actual
+ranks. Propagation moves that layer upward; absorption or a terminal rotation
+restores equal actual ranks. Header retirement changes list identity without
+replacing existing leaves or their child groups.
+
+Let $\nu$ be rank after root blackening. A downward join of heights $a,b$
+returns height $c$ with $\max(a,b)\leq c\leq\max(a,b)+1$ and uses at most
+$2|a-b|+3$ descent steps. In split backtracking, the accumulated height $a$
+exceeds the untouched sibling height $b$ by at most one. Thus each join costs
+at most $2(c-a)+5$ such steps; the two output chains telescope to $O(r+1)$
+for selected component rank $r$. The finger race bounds $r$ by
+$O(\log(s+1))$, where $s$ is the smaller output size. This uses the component
+\emph{before} an upward step as the wholly one-sided component; its parent may
+cross the cut. Empty-side splits take the endpoint fast path.
+
+For logical internal nodes take
+\[
+ \Phi=\#\{\text{black nodes with two black children}\}
+       +2\#\{\text{black nodes with two red children}\}.
+\]
+An insertion recoloring propagation decreases this potential by one; a
+continuing deletion propagation decreases it by two. Terminal repairs affect
+only constantly many weights. An opposite-rib walk occurs at most twice near
+the root and costs $O(r+D+1)$ for $D$ deletion propagations. Downward joins and
+component boundaries add only $O(r+1)$ weights. One sufficiently large multiple
+of the same potential therefore pays for mixed propagation, including after
+split: boundary insertion is amortized $O(1)$ and split is
+$O(\log(s+2))$. The potential is never reset between operations.
+
+For list sizes, $\Psi=c\sum_{L\ne\varnothing}(|L|-\log_2|L|)$ increases by
+at most a constant on creation/insertion. Splitting $m=a+b$, $a\leq b$, changes
+it by $c\log_2((a+b)/(ab))\leq c(1-\log_2 a)$, paying the smaller-side term.
+Locality supplies legal endpoint calls: the published latest-child re-entry
+lemma and a separate finite-parent crosscut argument imply the exact group
+boundary. A new pair takes a consecutive group portion; adoption restores the
+grouping, and the two odd-stage $z_1$ corrections restore the output neighbors.
+The full induction and root/nonroot mirror cases are in the review record.
+
+Starting from constant-size initialization, these two nonnegative potentials
+and the constant work per shared-core stage give $O(n)$ expected/amortized
+source-level work under unit-cost comparisons and machine-word operations,
+with expected lookup and amortized dictionary growth. This does not bound
+arbitrary Python comparison methods, checked validation, or unconditional wall
+time, and does not predict a practical speed advantage.

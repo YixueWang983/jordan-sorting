@@ -1,5 +1,7 @@
 # 反向指针表示保持与 Jordan 分组归纳
 
+后续集中审阅见 [2026-10-15逐项结案](finger_final_review_20261015.md)。以下保留原写作时点的状态；新结论和计算模型以该审阅为准。
+
 状态注（2026-10-15）：下文基线状态保留。8例开发性pilot已在 `1ae75aa` 执行并
 于 `b87e043` 归档；[最终共同资格尝试](../validation/common_qualification_20261015/README.md)
 因树checked/replay资源超时而未通过。本文仍为待审阅人工论证，`timing_ready=False`。
