@@ -1,0 +1,106 @@
+test_actual_sync_route_and_fresh_minimal_no_legacy_diagnostics (test_common_qualification_v2.CommonV2Tests.test_actual_sync_route_and_fresh_minimal_no_legacy_diagnostics) ... ok
+test_frozen_selection_identity (test_common_qualification_v2.CommonV2Tests.test_frozen_selection_identity) ... ok
+test_full_timeout_archive_retains_completed_mode_and_stops (test_common_qualification_v2.CommonV2Tests.test_full_timeout_archive_retains_completed_mode_and_stops) ... 1/2 n32-strict_flat-00: TIMEOUT
+2/2 n32-strict_flat-00-mirror: NOT_RUN
+ok
+test_incomplete_report_rejected_before_minimal (test_common_qualification_v2.CommonV2Tests.test_incomplete_report_rejected_before_minimal) ... ok
+test_invented_source_revision_rejected (test_common_qualification_v2.CommonV2Tests.test_invented_source_revision_rejected) ... ok
+test_optimization_guard_before_worker_or_output (test_common_qualification_v2.CommonV2Tests.test_optimization_guard_before_worker_or_output) ... ok
+test_real_fixture_independent_reconstruction (test_common_qualification_v2.CommonV2Tests.test_real_fixture_independent_reconstruction) ... 1/2 n32-strict_flat-00: PASS
+2/2 n32-strict_flat-00-mirror: PASS
+ok
+test_real_process_timeout_recovers_completed_sync (test_common_qualification_v2.CommonV2Tests.test_real_process_timeout_recovers_completed_sync) ... ok
+test_resealed_tampering_rejected (test_common_qualification_v2.CommonV2Tests.test_resealed_tampering_rejected) ... 1/2 n32-strict_flat-00: PASS
+2/2 n32-strict_flat-00-mirror: PASS
+ok
+test_worker_exception_stops_and_archive_rebuilds (test_common_qualification_v2.CommonV2Tests.test_worker_exception_stops_and_archive_rebuilds) ... 1/2 n32-strict_flat-00: ERROR
+2/2 n32-strict_flat-00-mirror: NOT_RUN
+ok
+test_wrong_actual_backend_configuration_rejected (test_common_qualification_v2.CommonV2Tests.test_wrong_actual_backend_configuration_rejected) ... ok
+test_wrong_output_and_serialization_error_retained (test_common_qualification_v2.CommonV2Tests.test_wrong_output_and_serialization_error_retained) ... ok
+test_zero_exit_with_missing_records_is_not_pass (test_common_qualification_v2.CommonV2Tests.test_zero_exit_with_missing_records_is_not_pass) ... 1/2 n32-strict_flat-00: ERROR
+2/2 n32-strict_flat-00-mirror: NOT_RUN
+ok
+test_each_call_audits_again_after_direct_physical_corruption (test_synchronous_qualification.SynchronousQualificationTests.test_each_call_audits_again_after_direct_physical_corruption) ... ok
+test_final_comparison_reaudits_callback_mutation (test_synchronous_qualification.SynchronousQualificationTests.test_final_comparison_reaudits_callback_mutation) ... ok
+test_final_fresh_replay_runs_and_is_checked (test_synchronous_qualification.SynchronousQualificationTests.test_final_fresh_replay_runs_and_is_checked) ... ok
+test_flat_audit_schedule_and_history_work_are_separately_counted (test_synchronous_qualification.SynchronousQualificationTests.test_flat_audit_schedule_and_history_work_are_separately_counted) ... ok
+test_isolation_and_no_ordinary_backend_fallback (test_synchronous_qualification.SynchronousQualificationTests.test_isolation_and_no_ordinary_backend_fallback) ... ok
+test_new_old_prefix_views_and_metrics_equal_for_legal_small_inputs (test_synchronous_qualification.SynchronousQualificationTests.test_new_old_prefix_views_and_metrics_equal_for_legal_small_inputs) ... ok
+test_old_stage_and_trace_mutations_are_not_hidden_by_a_cache (test_synchronous_qualification.SynchronousQualificationTests.test_old_stage_and_trace_mutations_are_not_hidden_by_a_cache) ... ok
+test_peer_corruption_rejected_before_success_callback (test_synchronous_qualification.SynchronousQualificationTests.test_peer_corruption_rejected_before_success_callback) ... ok
+test_pending_and_adopt_failure_cannot_reach_output (test_synchronous_qualification.SynchronousQualificationTests.test_pending_and_adopt_failure_cannot_reach_output) ... ok
+test_reverse_deletion_matches_legacy_predictions_all_orders_through_seven (test_synchronous_qualification.SynchronousQualificationTests.test_reverse_deletion_matches_legacy_predictions_all_orders_through_seven) ... ok
+test_single_call_bundle_runs_one_audit_and_does_not_store_results (test_synchronous_qualification.SynchronousQualificationTests.test_single_call_bundle_runs_one_audit_and_does_not_store_results) ... ok
+test_optimization_guards_including_worker (test_qualification_refactor_evidence.RefactorEvidenceTests.test_optimization_guards_including_worker) ... ok
+test_raw_comparison_and_summary_reconstruction (test_qualification_refactor_evidence.RefactorEvidenceTests.test_raw_comparison_and_summary_reconstruction) ... 1/1 test-flat: PASS
+ok
+test_resealed_environment_mode_work_and_fingerprint_corruption_rejected (test_qualification_refactor_evidence.RefactorEvidenceTests.test_resealed_environment_mode_work_and_fingerprint_corruption_rejected) ... 1/1 test-flat: PASS
+ok
+test_serialization_failure_commits_error (test_qualification_refactor_evidence.RefactorEvidenceTests.test_serialization_failure_commits_error) ... ok
+test_true_timeout_retains_prior_version_and_current_prefix (test_qualification_refactor_evidence.RefactorEvidenceTests.test_true_timeout_retains_prior_version_and_current_prefix) ... ok
+test_worker_error_retains_completed_reference (test_qualification_refactor_evidence.RefactorEvidenceTests.test_worker_error_retains_completed_reference) ... ok
+test_actual_termination_keeps_completed_checked_record (test_common_qualification.CommonQualificationTests.test_actual_termination_keeps_completed_checked_record) ... ok
+test_bad_checked_count_stops_before_minimal (test_common_qualification.CommonQualificationTests.test_bad_checked_count_stops_before_minimal) ... ok
+test_fixed_selection_reaches_all_cells_and_records_mirror_dependencies (test_common_qualification.CommonQualificationTests.test_fixed_selection_reaches_all_cells_and_records_mirror_dependencies) ... ok
+test_optimized_entries_rejected (test_common_qualification.CommonQualificationTests.test_optimized_entries_rejected) ... ok
+test_real_backends_checked_replay_and_fresh_minimal (test_common_qualification.CommonQualificationTests.test_real_backends_checked_replay_and_fresh_minimal) ... ok
+test_rebuild_qualification_without_performance_acceptance (test_common_qualification.CommonQualificationTests.test_rebuild_qualification_without_performance_acceptance) ... 1/14 n32-strict_flat-00: PASS
+2/14 n32-strict_flat-00-mirror: PASS
+3/14 n32-low_nesting_valid-00: PASS
+4/14 n32-low_nesting_valid-00-mirror: PASS
+5/14 n32-low_nesting_valid-01: PASS
+6/14 n32-low_nesting_valid-01-mirror: PASS
+7/14 n32-medium_nesting_valid-00: PASS
+8/14 n32-medium_nesting_valid-00-mirror: PASS
+9/14 n32-medium_nesting_valid-01: PASS
+10/14 n32-medium_nesting_valid-01-mirror: PASS
+11/14 n32-nested_heavy_valid-00: PASS
+12/14 n32-nested_heavy_valid-00-mirror: PASS
+13/14 n32-nested_heavy_valid-01: PASS
+14/14 n32-nested_heavy_valid-01-mirror: PASS
+ok
+test_resealed_corruption_rejected (test_common_qualification.CommonQualificationTests.test_resealed_corruption_rejected) ... 1/14 n32-strict_flat-00: PASS
+2/14 n32-strict_flat-00-mirror: PASS
+3/14 n32-low_nesting_valid-00: PASS
+4/14 n32-low_nesting_valid-00-mirror: PASS
+5/14 n32-low_nesting_valid-01: PASS
+6/14 n32-low_nesting_valid-01-mirror: PASS
+7/14 n32-medium_nesting_valid-00: PASS
+8/14 n32-medium_nesting_valid-00-mirror: PASS
+9/14 n32-medium_nesting_valid-01: PASS
+10/14 n32-medium_nesting_valid-01-mirror: PASS
+11/14 n32-nested_heavy_valid-00: PASS
+12/14 n32-nested_heavy_valid-00-mirror: PASS
+13/14 n32-nested_heavy_valid-01: PASS
+14/14 n32-nested_heavy_valid-01-mirror: PASS
+ok
+test_timeout_does_not_drop_selected_case_or_continue (test_common_qualification.CommonQualificationTests.test_timeout_does_not_drop_selected_case_or_continue) ... 1/14 n32-strict_flat-00: PASS
+2/14 n32-strict_flat-00-mirror: TIMEOUT
+3/14 n32-low_nesting_valid-00: NOT_RUN
+4/14 n32-low_nesting_valid-00-mirror: NOT_RUN
+5/14 n32-low_nesting_valid-01: NOT_RUN
+6/14 n32-low_nesting_valid-01-mirror: NOT_RUN
+7/14 n32-medium_nesting_valid-00: NOT_RUN
+8/14 n32-medium_nesting_valid-00-mirror: NOT_RUN
+9/14 n32-medium_nesting_valid-01: NOT_RUN
+10/14 n32-medium_nesting_valid-01-mirror: NOT_RUN
+11/14 n32-nested_heavy_valid-00: NOT_RUN
+12/14 n32-nested_heavy_valid-00-mirror: NOT_RUN
+13/14 n32-nested_heavy_valid-01: NOT_RUN
+14/14 n32-nested_heavy_valid-01-mirror: NOT_RUN
+ok
+test_wrong_minimal_output_retained (test_common_qualification.CommonQualificationTests.test_wrong_minimal_output_retained) ... ok
+test_fixed_schedule_and_independent_reconstruction (test_development_backend_pilot.DevelopmentPilotTests.test_fixed_schedule_and_independent_reconstruction) ... ok
+test_optimized_pilot_entrypoints_reject_before_outputs (test_development_backend_pilot.DevelopmentPilotTests.test_optimized_pilot_entrypoints_reject_before_outputs) ... ok
+test_preflight_boolean_count_stops_before_warmup (test_development_backend_pilot.DevelopmentPilotTests.test_preflight_boolean_count_stops_before_warmup) ... ok
+test_real_pilot_worker_timeout_recovers_committed_preflight (test_development_backend_pilot.DevelopmentPilotTests.test_real_pilot_worker_timeout_recovers_committed_preflight) ... ok
+test_real_public_calls_fresh_unobserved_trees_inside_timer_checks_outside (test_development_backend_pilot.DevelopmentPilotTests.test_real_public_calls_fresh_unobserved_trees_inside_timer_checks_outside) ... ok
+test_validator_rejects_resealed_protocol_environment_rows_and_summary (test_development_backend_pilot.DevelopmentPilotTests.test_validator_rejects_resealed_protocol_environment_rows_and_summary) ... ok
+test_warmup_failure_stops_and_retains_committed_preflight (test_development_backend_pilot.DevelopmentPilotTests.test_warmup_failure_stops_and_retains_committed_preflight) ... ok
+test_wrong_output_is_retained_after_clock_closes (test_development_backend_pilot.DevelopmentPilotTests.test_wrong_output_is_retained_after_clock_closes) ... ok
+
+----------------------------------------------------------------------
+Ran 47 tests in 15.184s
+
+OK
