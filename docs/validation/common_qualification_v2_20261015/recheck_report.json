@@ -1,0 +1,36 @@
+{
+  "archive_valid": true,
+  "all_selected_qualified": true,
+  "inputs": 140,
+  "status_counts": {
+    "PASS": 140
+  },
+  "completed_modes": {
+    "synchronous_v2": 280,
+    "fresh_minimal": 280
+  },
+  "per_backend_synchronous_prefixes": {
+    "ordinary_list": 27566,
+    "heterogeneous_finger": 27566
+  },
+  "per_backend_final_fresh_replays": {
+    "ordinary_list": 140,
+    "heterogeneous_finger": 140
+  },
+  "per_backend_initializations": {
+    "ordinary_list": 560,
+    "heterogeneous_finger": 560
+  },
+  "per_backend_splits": {
+    "ordinary_list": 3788,
+    "heterogeneous_finger": 3788
+  },
+  "per_backend_nonempty_splits": {
+    "ordinary_list": 0,
+    "heterogeneous_finger": 0
+  },
+  "source_head": "3cafb44ac1e127f7c9c208c7a23999a8e0c401ce",
+  "selection_sha256": "c8d8f34f7dce619a87d54cffd8567255c80340742f00de072eb5ca771991b17b",
+  "performance_eligible": false,
+  "efficient_backend_accepted": false
+}

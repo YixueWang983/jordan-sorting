@@ -1,0 +1,1 @@
+{"all_workers_below_case_limit":true,"attempts":1,"campaign_seconds":1800,"case_seconds":180,"maximum_case":"n513-nested_heavy_valid-01-mirror","maximum_worker_resource_wall_seconds":21.773207874997752,"performance_eligible":false,"purpose":"qualification resource observations only","retries":0,"sum_worker_resource_wall_seconds":713.5643872030341}

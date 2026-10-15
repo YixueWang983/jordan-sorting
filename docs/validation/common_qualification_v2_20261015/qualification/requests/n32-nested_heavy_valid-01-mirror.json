@@ -1,0 +1,1 @@
+{"backends":["heterogeneous_finger","ordinary_list"],"case":"n32-nested_heavy_valid-01-mirror","schema":"common_input_qualification_v2","values":[32,31,30,1,29,2,28,3,27,4,26,5,25,6,24,7,23,8,22,9,21,10,20,11,19,12,18,13,17,14,16,15]}

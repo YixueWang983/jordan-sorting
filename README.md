@@ -6,24 +6,27 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
-The [qualification v2 refinement](docs/validation/qualification_refactor_20261015/README.md)
-now removes repeated validation calculations and uses two independent checked
-states with a fresh final replay. It explicitly changes the fresh-instance
-coverage schedule. All 246 targeted regressions and 20 fixed development cases
-through 513 points pass; 1,512 old/new prefix comparisons agree. The full
-140-input qualification has not been rerun, and formal timing remains closed.
+The [full common qualification v2 archive](docs/validation/common_qualification_v2_20261015/README.md)
+now confirms **140/140 PASS**, independently rebuilt from 560 mode records at
+producing source `3cafb44`. The original selection hash, 180-second shared
+case budget and 1800-second campaign budget were retained. Both backends each
+completed 27,566 synchronous prefix comparisons, 140 final fresh checked
+replays and 140 separate fresh minimal calls. All 47 targeted regression
+methods passed (13 new); production sorting code was unchanged in this increment.
 
-The 2026-10-15 [common-input and matched-measurement rules](docs/development/matched_protocol_20261015.md)
-freeze candidate selection, resource limits and batch statistics before new
-qualification. The [qualification archive](docs/validation/common_qualification_20261015/README.md)
-keeps its producing-source identity separate from its results commit. This
-stage does not certify the efficient-backend minimum or enable formal timing.
-Selection reached 140 unique rank inputs, but the first 513-point case reached
-the 180-second worker limit during tree checked/replay after both ordinary-list
-checks completed. The archive retains 1 TIMEOUT and 139 NOT_RUN cases; common
-qualification remains incomplete. A bounded diagnostic profile identifies
-repeated full audits inside prefix replay as a resource bottleneck to examine.
-The older milestones below retain their original evidence scope.
+**Coverage limit:** each backend performed 3,788 primary checked splits, but
+none had two nonempty output sides. Nesting categories do not imply coverage
+of split ratios. This frozen set's qualification is complete; representative
+two-sided split performance is not established by it. Earlier targeted split
+validation remains separate. No input was replaced after observing this result.
+
+Formal timing, batch calibration and efficient-backend minimum acceptance remain
+closed/pending. Manual representation/locality/cost review remains a separate
+gate. The [matched-measurement rules](docs/development/matched_protocol_20261015.md)
+are unchanged. The [earlier v2 development checks](docs/validation/qualification_refactor_20261015/README.md)
+retain their old/new equivalence evidence, and the [v1 qualification archive](docs/validation/common_qualification_20261015/README.md)
+retains its original 1 TIMEOUT and 139 NOT_RUN without rewriting or inheriting
+those records as passes. The older milestones below retain their original scope.
 
 As of 2026-10-13, the active work is the
 [remaining development and thesis revision plan](docs/plan/remaining_work_20261011.md).
