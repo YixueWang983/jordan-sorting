@@ -133,8 +133,13 @@ version. The subsequent concentrated review is
 \nolinkurl{docs/development/finger_final_review_20261015.md}; its exact source
 binding and provenance receipt are in
 \nolinkurl{docs/validation/final_review_formal_20261015/}.
-The receipt records that review and cannot itself prove the mathematics.
-Formal execution at \texttt{4a83fa6} followed this review and passed the separate
+The receipt binds the pre-correction review text retained at \texttt{ce0148b}
+and cannot itself prove the mathematics. The October 16 correction makes the
+red-root recursive join transient explicit and updates its cost-lemma
+dependencies; its checks are in
+\nolinkurl{docs/validation/join_proof_correction_20261016/}.
+The old receipt and all measurements remain unchanged.
+Formal execution at \texttt{4a83fa6} followed the original review and passed the separate
 binding gates; the Python source trees remained identical to \texttt{c5b5ac3}.
 
 \subsection{Current Formal Evidence}
@@ -211,7 +216,7 @@ The traceability record preserves the following boundaries across chapters:
   \item pilot and formal absolute runtimes are not pooled;
   \item structure and counter relationships are exploratory and non-causal;
     and
-  \item the ordinary-list implementation does not implement the historical
-    theoretical backend and carries no linear-time or asymptotic-complexity
-    claim.
+  \item the ordinary-list implementation does not inherit the theoretical
+    backend's linear bound; its insertion-copying lower bound is a separate
+    source-derived claim.
 \end{itemize}

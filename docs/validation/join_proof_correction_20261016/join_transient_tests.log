@@ -1,0 +1,12 @@
+test_all_four_black_root_repairs (__main__.JoinTransientChecks.test_all_four_black_root_repairs) ... ok
+test_black_root_no_repair (__main__.JoinTransientChecks.test_black_root_no_repair) ... ok
+test_blackening_of_two_red_input_roots (__main__.JoinTransientChecks.test_blackening_of_two_red_input_roots) ... ok
+test_empty_sides_retire_connector_without_blackening (__main__.JoinTransientChecks.test_empty_sides_retire_connector_without_blackening) ... ok
+test_left_red_root_transmission (__main__.JoinTransientChecks.test_left_red_root_transmission) ... ok
+test_red_root_no_conflict (__main__.JoinTransientChecks.test_red_root_no_conflict) ... ok
+test_right_red_root_transmission (__main__.JoinTransientChecks.test_right_red_root_transmission) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.003s
+
+OK

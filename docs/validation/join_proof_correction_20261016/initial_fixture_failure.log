@@ -1,0 +1,232 @@
+test_all_four_black_root_repairs (__main__.JoinTransientChecks.test_all_four_black_root_repairs) ... 
+  test_all_four_black_root_repairs (__main__.JoinTransientChecks.test_all_four_black_root_repairs) (branch='LL') ... FAIL
+  test_all_four_black_root_repairs (__main__.JoinTransientChecks.test_all_four_black_root_repairs) (branch='LR') ... FAIL
+  test_all_four_black_root_repairs (__main__.JoinTransientChecks.test_all_four_black_root_repairs) (branch='RR') ... FAIL
+  test_all_four_black_root_repairs (__main__.JoinTransientChecks.test_all_four_black_root_repairs) (branch='RL') ... FAIL
+test_black_root_no_repair (__main__.JoinTransientChecks.test_black_root_no_repair) ... FAIL
+test_blackening_of_two_red_input_roots (__main__.JoinTransientChecks.test_blackening_of_two_red_input_roots) ... FAIL
+test_empty_sides_retire_connector_without_blackening (__main__.JoinTransientChecks.test_empty_sides_retire_connector_without_blackening) ... 
+  test_empty_sides_retire_connector_without_blackening (__main__.JoinTransientChecks.test_empty_sides_retire_connector_without_blackening) (empty_left=True) ... FAIL
+  test_empty_sides_retire_connector_without_blackening (__main__.JoinTransientChecks.test_empty_sides_retire_connector_without_blackening) (empty_left=False) ... FAIL
+test_left_red_root_transmission (__main__.JoinTransientChecks.test_left_red_root_transmission) ... FAIL
+test_red_root_no_conflict (__main__.JoinTransientChecks.test_red_root_no_conflict) ... FAIL
+test_right_red_root_transmission (__main__.JoinTransientChecks.test_right_red_root_transmission) ... FAIL
+
+======================================================================
+FAIL: test_all_four_black_root_repairs (__main__.JoinTransientChecks.test_all_four_black_root_repairs) (branch='LL')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 120, in test_all_four_black_root_repairs
+    before = inspect(piece.root)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 51, in inspect
+    values, rank = visit(root)
+                   ^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 43, in visit
+    lv, lr = visit(node.left); rv, rr = visit(node.right)
+             ^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 43, in visit
+    lv, lr = visit(node.left); rv, rr = visit(node.right)
+             ^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 43, in visit
+    lv, lr = visit(node.left); rv, rr = visit(node.right)
+             ^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 39, in visit
+    assert node.handle.leaf is node
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+======================================================================
+FAIL: test_all_four_black_root_repairs (__main__.JoinTransientChecks.test_all_four_black_root_repairs) (branch='LR')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 120, in test_all_four_black_root_repairs
+    before = inspect(piece.root)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 51, in inspect
+    values, rank = visit(root)
+                   ^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 43, in visit
+    lv, lr = visit(node.left); rv, rr = visit(node.right)
+             ^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 43, in visit
+    lv, lr = visit(node.left); rv, rr = visit(node.right)
+             ^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 39, in visit
+    assert node.handle.leaf is node
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+======================================================================
+FAIL: test_all_four_black_root_repairs (__main__.JoinTransientChecks.test_all_four_black_root_repairs) (branch='RR')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 120, in test_all_four_black_root_repairs
+    before = inspect(piece.root)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 51, in inspect
+    values, rank = visit(root)
+                   ^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 43, in visit
+    lv, lr = visit(node.left); rv, rr = visit(node.right)
+             ^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 39, in visit
+    assert node.handle.leaf is node
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+======================================================================
+FAIL: test_all_four_black_root_repairs (__main__.JoinTransientChecks.test_all_four_black_root_repairs) (branch='RL')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 120, in test_all_four_black_root_repairs
+    before = inspect(piece.root)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 51, in inspect
+    values, rank = visit(root)
+                   ^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 43, in visit
+    lv, lr = visit(node.left); rv, rr = visit(node.right)
+             ^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 39, in visit
+    assert node.handle.leaf is node
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+======================================================================
+FAIL: test_black_root_no_repair (__main__.JoinTransientChecks.test_black_root_no_repair)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 132, in test_black_root_no_repair
+    self.direct_no_repair(False)
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 139, in direct_no_repair
+    original = inspect(piece.root)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 51, in inspect
+    values, rank = visit(root)
+                   ^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 43, in visit
+    lv, lr = visit(node.left); rv, rr = visit(node.right)
+             ^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 39, in visit
+    assert node.handle.leaf is node
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+======================================================================
+FAIL: test_blackening_of_two_red_input_roots (__main__.JoinTransientChecks.test_blackening_of_two_red_input_roots)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 147, in test_blackening_of_two_red_input_roots
+    self.joined(shape(True, LEAF, LEAF), shape(True, LEAF, LEAF), 'red_inputs')
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 66, in joined
+    original = inspect(left.root)['leaves'] + inspect(right.root)['leaves']
+               ^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 51, in inspect
+    values, rank = visit(root)
+                   ^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 43, in visit
+    lv, lr = visit(node.left); rv, rr = visit(node.right)
+             ^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 39, in visit
+    assert node.handle.leaf is node
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+======================================================================
+FAIL: test_empty_sides_retire_connector_without_blackening (__main__.JoinTransientChecks.test_empty_sides_retire_connector_without_blackening) (empty_left=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 153, in test_empty_sides_retire_connector_without_blackening
+    before = inspect(piece.root); conn = self.connector(f)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 51, in inspect
+    values, rank = visit(root)
+                   ^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 43, in visit
+    lv, lr = visit(node.left); rv, rr = visit(node.right)
+             ^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 39, in visit
+    assert node.handle.leaf is node
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+======================================================================
+FAIL: test_empty_sides_retire_connector_without_blackening (__main__.JoinTransientChecks.test_empty_sides_retire_connector_without_blackening) (empty_left=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 153, in test_empty_sides_retire_connector_without_blackening
+    before = inspect(piece.root); conn = self.connector(f)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 51, in inspect
+    values, rank = visit(root)
+                   ^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 43, in visit
+    lv, lr = visit(node.left); rv, rr = visit(node.right)
+             ^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 39, in visit
+    assert node.handle.leaf is node
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+======================================================================
+FAIL: test_left_red_root_transmission (__main__.JoinTransientChecks.test_left_red_root_transmission)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 106, in test_left_red_root_transmission
+    self.joined(LEAF, shape(False, shape(True, LEAF, LEAF), LEAF),
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 66, in joined
+    original = inspect(left.root)['leaves'] + inspect(right.root)['leaves']
+               ^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 51, in inspect
+    values, rank = visit(root)
+                   ^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 39, in visit
+    assert node.handle.leaf is node
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+======================================================================
+FAIL: test_red_root_no_conflict (__main__.JoinTransientChecks.test_red_root_no_conflict)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 135, in test_red_root_no_conflict
+    self.direct_no_repair(True)
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 139, in direct_no_repair
+    original = inspect(piece.root)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 51, in inspect
+    values, rank = visit(root)
+                   ^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 43, in visit
+    lv, lr = visit(node.left); rv, rr = visit(node.right)
+             ^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 39, in visit
+    assert node.handle.leaf is node
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+======================================================================
+FAIL: test_right_red_root_transmission (__main__.JoinTransientChecks.test_right_red_root_transmission)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 102, in test_right_red_root_transmission
+    self.joined(shape(False, LEAF, shape(True, LEAF, LEAF)), LEAF,
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 66, in joined
+    original = inspect(left.root)['leaves'] + inspect(right.root)['leaves']
+               ^^^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 51, in inspect
+    values, rank = visit(root)
+                   ^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 43, in visit
+    lv, lr = visit(node.left); rv, rr = visit(node.right)
+             ^^^^^^^^^^^^^^^^
+  File "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/join_proof_correction_20261016/check_join_transients.py", line 39, in visit
+    assert node.handle.leaf is node
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.003s
+
+FAILED (failures=11)

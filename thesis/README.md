@@ -2,11 +2,18 @@
 
 ## Current review draft (2026-10-16)
 
-`output/pdf/jordan_thesis_formal_20261016.pdf` includes the source-level review and current matched results (execution `4a83fa6`). See `docs/validation/final_review_formal_20261015/` for original records, reconstruction and build provenance. Earlier PDF/evidence entries below retain their dated identities.
+`output/pdf/jordan_thesis_review_20261016.pdf` corrects the recursive join contract
+and nonempty-split potential condition, and retains current matched results
+(execution `4a83fa6`). The [correction and final checks](../docs/validation/join_proof_correction_20261016/README.md)
+record the new build and review. The preceding
+`output/pdf/jordan_thesis_formal_20261016.pdf` and its evidence in
+`docs/validation/final_review_formal_20261015/` remain unchanged.
 
 The review cover suppresses unknown personal template fields. Before actual submission, complete `config/metadata.tex` and set `\ReviewDraftfalse`; no author, matriculation number, supervisor or submission date has been guessed. Body typography and right-hand chapter starts are unchanged.
 
-Current revision (2026-10-15): **68 physical pages, clean build and visual checks**.
+## Historical revision notes (superseded by the current draft above)
+
+Earlier revision (2026-10-15): **68 physical pages, clean build and visual checks**.
 The implementation and method chapters now describe
 the real tree, synchronous v2 qualification, list-ID lifecycle checks and actual
 calibration at `c5b5ac3`. Historical performance results remain unchanged; no
@@ -66,10 +73,11 @@ KOMA-Script basis and general title-page structure, uses English as the main
 language, and adapts the affiliation to the Department of Mathematics and
 Computer Science.
 
-The old course example includes the FU Logo, but the current Informatik thesis
-FAQ explicitly prohibits using the Logo on Abschlussarbeiten. The current FU
-Corporate Design guidance likewise reserves Logo use for authorized contexts.
-This scaffold therefore contains no FU Logo file or Logo reference. See the
+The old course example includes the FU Logo. This review scaffold contains no
+FU Logo file or Logo reference and does not infer permission from that example.
+The October 16 check did not find a Logo prohibition in the currently retrieved
+FAQ, so the earlier attribution of that instruction to the FAQ is withdrawn.
+Consult the
 [Informatik thesis FAQ](https://www.mi.fu-berlin.de/stud/beratungszentrum/FAQ-Hilfe/FAQ-Abschlussarbeit/faq_abschlussarbeit_info/index.html)
 and the current
 [FU Logo guidance](https://www.fu-berlin.de/presse/service/logo/logo-leitfaden/index.html).
@@ -106,7 +114,7 @@ Replace every personal placeholder in `config/metadata.tex` and confirm the
 exact registered title, supervisor, second examiner, and submission date. The
 scaffold is configured as a Master's Thesis.
 
-The current joint Mathematics/Computer Science and Physics examination office
+Checked on 2026-10-16: the joint Mathematics/Computer Science and Physics examination office
 provides an official `Declaration of Authorship` form and states that its
 signed original must be submitted to the examination office. The declaration
 is therefore kept separate from this PDF instead of copying potentially stale
@@ -119,6 +127,13 @@ wording into the thesis. Current forms and submission instructions:
 As of the final audit, Computer Science theses are submitted electronically;
 the signed declaration original is submitted separately. Recheck the live
 instructions immediately before submission.
+
+The linked English declaration is an informational translation; it states that
+the German version is binding. No declaration has been filled or signed here.
+Registered title, personal/examiner information, individual submission date and
+the student's applicable examination rules still need confirmation. The user's
+50--70-page target governs this draft; the FAQ's general 50--80-page reference
+to the 2014 master's regulations is not substituted for that target.
 
 ## Audited Content Boundary
 

@@ -275,6 +275,14 @@ ranks. Propagation moves that layer upward; absorption or a terminal rotation
 restores equal actual ranks. Header retirement changes list identity without
 replacing existing leaves or their child groups.
 
+Downward join also has a recursive transient: a red root may return with one
+red child on the updated side. Equal black heights and metadata still hold;
+the original black parent repairs that edge on return. Black-root repair
+returns an internally valid subtree, possibly with a red root. Since the
+join inputs are first blackened, its top-level return is internally valid
+before final root blackening. That last step alone cannot repair an internal
+red--red edge.
+
 Let $\nu$ be rank after root blackening. A downward join of heights $a,b$
 returns height $c$ with $\max(a,b)\leq c\leq\max(a,b)+1$ and uses at most
 $2|a-b|+3$ descent steps. In split backtracking, the accumulated height $a$
@@ -300,8 +308,10 @@ split: boundary insertion is amortized $O(1)$ and split is
 $O(\log(s+2))$. The potential is never reset between operations.
 
 For list sizes, $\Psi=c\sum_{L\ne\varnothing}(|L|-\log_2|L|)$ increases by
-at most a constant on creation/insertion. Splitting $m=a+b$, $a\leq b$, changes
-it by $c\log_2((a+b)/(ab))\leq c(1-\log_2 a)$, paying the smaller-side term.
+at most a constant on creation/insertion. A two-sided nonempty split
+$m=a+b$, $1\leq a\leq b$, changes it by
+$c\log_2((a+b)/(ab))\leq c(1-\log_2 a)$, paying the smaller-side term.
+An empty-side split leaves this potential unchanged, $\Delta\Psi=0$.
 Locality supplies legal endpoint calls: the published latest-child re-entry
 lemma and a separate finite-parent crosscut argument imply the exact group
 boundary. A new pair takes a consecutive group portion; adoption restores the

@@ -1,0 +1,99 @@
+{
+  "scope": "focused_production_join_transients_not_sorting_qualification",
+  "tests_run": 7,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "cases": [
+    {
+      "case": "LL",
+      "internal_valid": true,
+      "rank": 1
+    },
+    {
+      "case": "LR",
+      "internal_valid": true,
+      "rank": 1
+    },
+    {
+      "case": "RR",
+      "internal_valid": true,
+      "rank": 1
+    },
+    {
+      "case": "RL",
+      "internal_valid": true,
+      "rank": 1
+    },
+    {
+      "case": "black_no_repair",
+      "internal_valid": true
+    },
+    {
+      "case": "red_inputs",
+      "transient_sides": [],
+      "values": [
+        0,
+        10,
+        20,
+        30
+      ],
+      "normalized_inputs": [
+        1,
+        1
+      ],
+      "result_rank": 2,
+      "stable_leaf_handle_pair": true
+    },
+    {
+      "case": "empty_left",
+      "red_root_preserved": true,
+      "connector_retired": true
+    },
+    {
+      "case": "empty_right",
+      "red_root_preserved": true,
+      "connector_retired": true
+    },
+    {
+      "case": "review_example_LL",
+      "transient_sides": [
+        "left"
+      ],
+      "values": [
+        0,
+        10,
+        20,
+        30
+      ],
+      "normalized_inputs": [
+        0,
+        1
+      ],
+      "result_rank": 2,
+      "stable_leaf_handle_pair": true
+    },
+    {
+      "case": "red_no_conflict",
+      "internal_valid": true
+    },
+    {
+      "case": "review_example_RR",
+      "transient_sides": [
+        "right"
+      ],
+      "values": [
+        0,
+        10,
+        20,
+        30
+      ],
+      "normalized_inputs": [
+        1,
+        0
+      ],
+      "result_rank": 2,
+      "stable_leaf_handle_pair": true
+    }
+  ]
+}

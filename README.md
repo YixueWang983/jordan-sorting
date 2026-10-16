@@ -6,6 +6,11 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
+The [October 16 proof correction and final draft checks](docs/validation/join_proof_correction_20261016/README.md)
+make the red-root join transient and the nonempty-split potential conditions
+explicit. Production code, formal measurements and calibration B tables remain
+frozen. The updated review PDF is `output/pdf/jordan_thesis_review_20261016.pdf`.
+
 The [current formal comparison and thesis review draft](docs/validation/final_review_formal_20261015/README.md) are complete at execution source **`4a83fa6`**: 140 common inputs and 12 targeted inputs pass, with **5600 + 480 formal sample batches**, independently rebuilt. The tree is slower on every measured input (case-median ratio ranges **1.114–3.535** and **3.147–3.213**). Qualification and calibration were reused without changing their records or B tables. The thesis now reports these results separately from the historical rollback study; source-level manual review retains its explicit computational model and does not claim external certification.
 
 The [concentrated representation/cost/locality review](docs/development/finger_final_review_20261015.md)
@@ -15,6 +20,8 @@ unit-cost/expected-dictionary model, not a machine proof or external certificati
 The thesis distinguishes internal ROOT span zero from singleton leaf span one.
 Formal measurement subsequently passed the existing qualification, calibration and
 environment gates. The dated milestones below describe their original state.
+
+### Earlier milestones (historical status, superseded above)
 
 The [ID-lifecycle repair and actual calibration](docs/validation/id_lifecycle_calibration_20261015/README.md)
 are now complete at execution/checker source **`c5b5ac3`**. The checker rejects

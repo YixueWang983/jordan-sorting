@@ -1,0 +1,710 @@
+[
+  {
+    "physical_page": 1,
+    "blank": false,
+    "text_characters": 322,
+    "first_lines": [
+      "Implementation and Evaluation of the 1990 Simplified",
+      "Jordan Sorting Algorithm",
+      "Master\u2019s Thesis"
+    ],
+    "render_sha256": "c85c83da34ddb4ed8765511e4f0d74d84a1149991a6674498a95a8ab1a766743"
+  },
+  {
+    "physical_page": 2,
+    "blank": true,
+    "text_characters": 0,
+    "first_lines": [],
+    "render_sha256": "229e281267ce67acb218365202dbbbb100dcc33aacd7c3ec8c84ee7208f05424"
+  },
+  {
+    "physical_page": 3,
+    "blank": false,
+    "text_characters": 2184,
+    "first_lines": [
+      "Abstract",
+      "Jordan sorting recovers the coordinate order of intersections along a line from their traversal order",
+      "on a simple curve. This thesis reconstructs the 1990 Simplified Jordan Sorting procedure as one"
+    ],
+    "render_sha256": "c66f282731a67fcaf702d8dec5d443350cfcc0d857380a01258e83534daf841e"
+  },
+  {
+    "physical_page": 4,
+    "blank": true,
+    "text_characters": 0,
+    "first_lines": [],
+    "render_sha256": "229e281267ce67acb218365202dbbbb100dcc33aacd7c3ec8c84ee7208f05424"
+  },
+  {
+    "physical_page": 5,
+    "blank": false,
+    "text_characters": 2466,
+    "first_lines": [
+      "Contents",
+      "Abstract . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . i",
+      "List of Figures . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . vii"
+    ],
+    "render_sha256": "a4ea6ea57b28527f3555175a911918a9634664a1c26178bee93664ac258ebb70"
+  },
+  {
+    "physical_page": 6,
+    "blank": false,
+    "text_characters": 3317,
+    "first_lines": [
+      "iv Contents",
+      "3.5. Boundary Selection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14",
+      "3.5.1. Step 1: Predecessor-Side Boundary . . . . . . . . . . . . . . . . . . . . . . . 14"
+    ],
+    "render_sha256": "49ad018d90edb711813300b50d9e437ab1f7d4ebaa7fe675d8f45434eb743107"
+  },
+  {
+    "physical_page": 7,
+    "blank": false,
+    "text_characters": 3380,
+    "first_lines": [
+      "Contents v",
+      "5.4. Timing, Calibration and Scheduling . . . . . . . . . . . . . . . . . . . . . . . . . . . 33",
+      "5.4.1. Scheduling and Noise . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33"
+    ],
+    "render_sha256": "49e5c1a4c33db653ff1335c778c1ddb748662b67f08f66d4c2ca87d5c7987ed1"
+  },
+  {
+    "physical_page": 8,
+    "blank": false,
+    "text_characters": 312,
+    "first_lines": [
+      "vi Contents",
+      "A.3. Archived Evidence Bindings . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 53",
+      "A.4. Interpretation Boundaries . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54"
+    ],
+    "render_sha256": "e6d92e71528dff91336ad29a962af9ca2157e3eb56b97733a98fa953849a8c8f"
+  },
+  {
+    "physical_page": 9,
+    "blank": false,
+    "text_characters": 1026,
+    "first_lines": [
+      "List of Figures",
+      "2.1. Jordan sorting from curve order to axis order. . . . . . . . . . . . . . . . . . . . . . 6",
+      "3.1. Step 3(c) output-anchor correction for \ud835\udc671. . . . . . . . . . . . . . . . . . . . . . . . . 18"
+    ],
+    "render_sha256": "e90dc77ef6df72fef393050aef80ab0e37eda52eaf93c8781c141965b2648d36"
+  },
+  {
+    "physical_page": 10,
+    "blank": true,
+    "text_characters": 0,
+    "first_lines": [],
+    "render_sha256": "229e281267ce67acb218365202dbbbb100dcc33aacd7c3ec8c84ee7208f05424"
+  },
+  {
+    "physical_page": 11,
+    "blank": false,
+    "text_characters": 1022,
+    "first_lines": [
+      "List of Tables",
+      "3.1. Increasing and decreasing Step 3 roles in the executable reconstruction. . . . . . . . 16",
+      "6.1. Current formal execution. Calls within a batch are not independent samples. . . . . 37"
+    ],
+    "render_sha256": "8c0f0b56c7cb32ac5e954324d4f42441ce5c6cc7fa1a272cb68b9200c69af29a"
+  },
+  {
+    "physical_page": 12,
+    "blank": true,
+    "text_characters": 0,
+    "first_lines": [],
+    "render_sha256": "229e281267ce67acb218365202dbbbb100dcc33aacd7c3ec8c84ee7208f05424"
+  },
+  {
+    "physical_page": 13,
+    "blank": false,
+    "text_characters": 2003,
+    "first_lines": [
+      "1. Introduction",
+      "1.1. Motivation",
+      "Jordan sorting starts with more information than arbitrary sorting: the input keys are line intersec-"
+    ],
+    "render_sha256": "f0afcc4792480250ef28182420b0d1a019844da37cdff5a4e6bc6a654c15316e"
+  },
+  {
+    "physical_page": 14,
+    "blank": false,
+    "text_characters": 2244,
+    "first_lines": [
+      "2 1. Introduction",
+      "The current backends propagate update errors without rollback and require failed state to be discarded.",
+      "The tree uses stable handles, endpoint fingers, local split/join and header ownership transfer. Its"
+    ],
+    "render_sha256": "8613733014c92e2e9ea53dd0384c62cd8b847e4d4f9512655521dfe2bb8aa3d9"
+  },
+  {
+    "physical_page": 15,
+    "blank": false,
+    "text_characters": 2278,
+    "first_lines": [
+      "1.5. Headline Findings 3",
+      "3. A source-level manual argument relating reversed pointers to logical trees, paying mixed-",
+      "operation costs with two potentials, and connecting the published locality lemma and a"
+    ],
+    "render_sha256": "61f81987ef2bdbf6d846c018d954f85a32d4584e92035ec1b3c25056d4349c7f"
+  },
+  {
+    "physical_page": 16,
+    "blank": true,
+    "text_characters": 0,
+    "first_lines": [],
+    "render_sha256": "229e281267ce67acb218365202dbbbb100dcc33aacd7c3ec8c84ee7208f05424"
+  },
+  {
+    "physical_page": 17,
+    "blank": false,
+    "text_characters": 1864,
+    "first_lines": [
+      "2. Background",
+      "2.1. Jordan Sequences and the Sorting Problem",
+      "Let \ud835\udc36 be a simple plane curve that crosses the \ud835\udc65-axis wherever it meets the axis. Listing the abscissas"
+    ],
+    "render_sha256": "00a955adcb03f5a68ca383b3747caddcacac1e221b56d6976714926f3afee5e9"
+  },
+  {
+    "physical_page": 18,
+    "blank": false,
+    "text_characters": 1513,
+    "first_lines": [
+      "6 2. Background",
+      "\ud835\udc65-axis",
+      "\ud835\udc5d1 \ud835\udc5d2 \ud835\udc5d3 \ud835\udc5d4 \ud835\udc5d5"
+    ],
+    "render_sha256": "0b29dbe6fdbf245a2e2b5174413375518640c18f00a1be4cb6653140ecc18461"
+  },
+  {
+    "physical_page": 19,
+    "blank": false,
+    "text_characters": 2622,
+    "first_lines": [
+      "2.3. The 1986 Linear-Time Algorithm 7",
+      "spanning (\u2212\u221e, +\u221e) turns each forest into a rooted ordered tree. These are the upper and lower",
+      "family trees used by both historical algorithms (Hoffmann et al. 1986, p. 173; Fung et al. 1990, p. 87)."
+    ],
+    "render_sha256": "389f04416b29e560605de6deefebd461e0480ea0e8ff68b9ff4ca328ed1426bc"
+  },
+  {
+    "physical_page": 20,
+    "blank": false,
+    "text_characters": 2519,
+    "first_lines": [
+      "8 2. Background",
+      "2.4. The 1990 Simplification",
+      "Fung et al. ( 1990) retained the linear theoretical bound while simplifying both the primary structure"
+    ],
+    "render_sha256": "655480aa635405b89552365cfd7a9068c7a06cce55407557475b39f87bc5ca13"
+  },
+  {
+    "physical_page": 21,
+    "blank": false,
+    "text_characters": 2769,
+    "first_lines": [
+      "2.6. Position and Scope of This Thesis 9",
+      "with movable fingers, and Brown and Tarjan (1980) analyze a 2\u20133-tree representation for sorted lists",
+      "whose costs reflect locality of reference. Huddleston and Mehlhorn (1982) develop level-linked weak"
+    ],
+    "render_sha256": "db0f9ef677a11eb2526d744b31dd127f7fca626e89442992a780045a52d22906"
+  },
+  {
+    "physical_page": 22,
+    "blank": false,
+    "text_characters": 1253,
+    "first_lines": [
+      "10 2. Background",
+      "Geometric validity. A candidate sequence is checked against the Jordan-validity model used for",
+      "certification before the paper core is timed."
+    ],
+    "render_sha256": "c1d3975254c0b71b1ff890ebd64cab901edbabfc797c69870c5fddb7044e002d"
+  },
+  {
+    "physical_page": 23,
+    "blank": false,
+    "text_characters": 2010,
+    "first_lines": [
+      "3. Algorithm Reconstruction",
+      "3.1. Purpose and Reconstruction Boundary",
+      "The Jordan sorting problem starts with the intersections of a simple curve and the \ud835\udc65-axis in curve"
+    ],
+    "render_sha256": "34218dff6f834083dbc4228197b55e3016b12aae08a428d0383256fcf4c97f57"
+  },
+  {
+    "physical_page": 24,
+    "blank": false,
+    "text_characters": 1553,
+    "first_lines": [
+      "12 3. Algorithm Reconstruction",
+      "the real finger-tree backend has a separate source-linked representation and amortized-cost argument",
+      "there."
+    ],
+    "render_sha256": "2d8090e25a661d982233f682974d0b897a5339b0cff6b0e189186c2c2882ebe6"
+  },
+  {
+    "physical_page": 25,
+    "blank": false,
+    "text_characters": 1765,
+    "first_lines": [
+      "3.3. Maintained State and Prefix Invariant 13",
+      "region into a left and a right part; children on either side remain contiguous in sibling order. This",
+      "locality is what reduces the update to three abstract list operations:"
+    ],
+    "render_sha256": "87b7b016520798d760a67d80881cbfbfd5bd637c52947ab631156174cb559b19"
+  },
+  {
+    "physical_page": 26,
+    "blank": false,
+    "text_characters": 1672,
+    "first_lines": [
+      "14 3. Algorithm Reconstruction",
+      "The upper dummy owns a singleton sibling list containing \ud835\udc432, and the lower dummy owns one",
+      "containing \ud835\udc433. Thus \ud835\udc463 satisfies equation (3.7), both parity families have a root, and every finite pair"
+    ],
+    "render_sha256": "894eae5905cc2756e15a815eb8b64187f51e9bc2554ad9359eef07e0086c247b"
+  },
+  {
+    "physical_page": 27,
+    "blank": false,
+    "text_characters": 2055,
+    "first_lines": [
+      "3.7. Step 3: Decreasing Orientation 15",
+      "3.6.1. Step 3(a): Insert the New Pair",
+      "If \ud835\udc34\ud835\udc56 encloses \ud835\udc67\ud835\udc56\u22121, then \ud835\udc41 becomes its child in a new singleton sibling list. Otherwise, \ud835\udc34\ud835\udc56 is the last"
+    ],
+    "render_sha256": "463fe5926a25312e9ef92dbaf719626d9f7bb456a2f34d3603ec65c9d72ea831"
+  },
+  {
+    "physical_page": 28,
+    "blank": false,
+    "text_characters": 1881,
+    "first_lines": [
+      "16 3. Algorithm Reconstruction",
+      "Table 3.1.: Increasing and decreasing Step 3 roles in the executable reconstruction.",
+      "Operation Increasing Decreasing"
+    ],
+    "render_sha256": "0122ab3e7d2b8cd3e4552d3e77ba45fd410266a6633cd060e218c6f729485a24"
+  },
+  {
+    "physical_page": 29,
+    "blank": false,
+    "text_characters": 2129,
+    "first_lines": [
+      "3.9. Ownership Transfer and Failure Semantics 17",
+      "3.8.2. Odd-Index \ud835\udc671 Output Anchor",
+      "Steps 1 and 2 compensate for the fact that \ud835\udc671 has no lower-family pair. That boundary-pair correction"
+    ],
+    "render_sha256": "e54431a359e1683f73f01730a21e373d93038d052948f9ffebc0a80fe1dff7c7"
+  },
+  {
+    "physical_page": 30,
+    "blank": false,
+    "text_characters": 731,
+    "first_lines": [
+      "18 3. Algorithm Reconstruction",
+      "(a) Ordinary geometric base anchor",
+      "decreasing iteration \ud835\udc56 = 7 : \ud835\udc677 = 0, base anchor \ud835\udc4e7 = \ud835\udc67 2 = 2"
+    ],
+    "render_sha256": "22a6db635fd8639f32a8cd94735cabeda7babd5e1cab7d96dd89d227572ed075"
+  },
+  {
+    "physical_page": 31,
+    "blank": false,
+    "text_characters": 1906,
+    "first_lines": [
+      "3.10. End-to-End Procedure 19",
+      "The earlier implementation used rollback on these error paths. That recovery mechanism is distinct",
+      "from the algorithmic requirement to preserve ownership on successful updates. The two versions"
+    ],
+    "render_sha256": "1cf5335381f0c6eeada2232b8285511aa355b3467e30ee926b13ebac0be98fc5"
+  },
+  {
+    "physical_page": 32,
+    "blank": false,
+    "text_characters": 857,
+    "first_lines": [
+      "20 3. Algorithm Reconstruction",
+      "(a) Input curve order (b) Initialization",
+      "(c) Representative iteration \ud835\udc56 = 4 (d) Recovered axis order"
+    ],
+    "render_sha256": "a96bba5d9e070d6236880de4921f0385f5b50e1c35e6a41f59c93e707c1b648c"
+  },
+  {
+    "physical_page": 33,
+    "blank": false,
+    "text_characters": 1539,
+    "first_lines": [
+      "3.11. Correctness and Complexity Boundaries 21",
+      "3.11. Correctness and Complexity Boundaries",
+      "The source-level correctness argument rests on the nesting property of same-family pairs and the"
+    ],
+    "render_sha256": "c7a75dbcfab14f83fc921f578d14942f9323eb15f5c36bf1a5b13d570f9b50b6"
+  },
+  {
+    "physical_page": 34,
+    "blank": true,
+    "text_characters": 0,
+    "first_lines": [],
+    "render_sha256": "229e281267ce67acb218365202dbbbb100dcc33aacd7c3ec8c84ee7208f05424"
+  },
+  {
+    "physical_page": 35,
+    "blank": false,
+    "text_characters": 1942,
+    "first_lines": [
+      "4. Implementation",
+      "4.1. Implementation Scope and Versions",
+      "The code separates an oracle-backed reference pipeline from the shared-core reconstruction of Fung"
+    ],
+    "render_sha256": "c036174231eced8a0402a7c3dfbdf90bc1d0f5c1d3c09052559da8fd13e5ee6a"
+  },
+  {
+    "physical_page": 36,
+    "blank": false,
+    "text_characters": 2422,
+    "first_lines": [
+      "24 4. Implementation",
+      "4.2.1. Partial Sorted Order",
+      "SortedOrderList is doubly linked, with identity-based infinity sentinels and a point-ID-to-node map-"
+    ],
+    "render_sha256": "26e4c7dd78565c9f9b7cc4da08b248aca98feffaf72e22adcb06f07213fe0c7b"
+  },
+  {
+    "physical_page": 37,
+    "blank": false,
+    "text_characters": 1728,
+    "first_lines": [
+      "4.3. Core\u2013Backend Interface and Update Semantics 25",
+      "(a) Pair-family containment",
+      "upper family"
+    ],
+    "render_sha256": "34c76c26275748e2c34a9d5ceaf8dbb022e4cf4cb4a36455b7c65723192f4650"
+  },
+  {
+    "physical_page": 38,
+    "blank": false,
+    "text_characters": 2531,
+    "first_lines": [
+      "26 4. Implementation",
+      "ports stale-plan rejection, order checks and pair-set conservation; these functions remain necessary",
+      "without rollback."
+    ],
+    "render_sha256": "5bccf5e533c7555ee972df3e9808c8684da08ae52ffd4c58f548ab449a8e7832"
+  },
+  {
+    "physical_page": 39,
+    "blank": false,
+    "text_characters": 2818,
+    "first_lines": [
+      "4.5. Execution Policies and Observation Costs 27",
+      "and parent chains, stage records, trace and metrics. Deterministic replay reconstructs a fresh state",
+      "using the same core, backend type and immutable configuration. It compares backend identity,"
+    ],
+    "render_sha256": "ebd118afa0dac8b9ce405ba1e19c575bb4537ed809d96485e40b58da1b80da0c"
+  },
+  {
+    "physical_page": 40,
+    "blank": false,
+    "text_characters": 2639,
+    "first_lines": [
+      "28 4. Implementation",
+      "that splits dominate runtime. Logical volumes, directly observed work and wall-clock timings are",
+      "therefore distinct forms of evidence. The shared core accumulates backend-reported work under an"
+    ],
+    "render_sha256": "b88f1cfe9a5f77eed981b89230155f8cdbbf2fd91c7a7ed3a7ec412ad2ba6cd2"
+  },
+  {
+    "physical_page": 41,
+    "blank": false,
+    "text_characters": 2941,
+    "first_lines": [
+      "4.6. Actual Costs and Complexity Boundary 29",
+      "Downward join also has a recursive transient: a red root may return with one red child on the",
+      "updated side. Equal black heights and metadata still hold; the original black parent repairs that edge"
+    ],
+    "render_sha256": "b6a4267d75be80f7028ff5568a02ff7619f5791096103a8c597094f73b28cb1c"
+  },
+  {
+    "physical_page": 42,
+    "blank": true,
+    "text_characters": 0,
+    "first_lines": [],
+    "render_sha256": "229e281267ce67acb218365202dbbbb100dcc33aacd7c3ec8c84ee7208f05424"
+  },
+  {
+    "physical_page": 43,
+    "blank": false,
+    "text_characters": 2218,
+    "first_lines": [
+      "5. Experimental Method",
+      "5.1. Study Scope and Version Boundary",
+      "Experimental algorithmics studies concrete programs, inputs and machines (McGeoch2012); algo-"
+    ],
+    "render_sha256": "cdcc626b8ef2452631606272e242c2835ecbc3a608ef0916e6c92fa802aef66b"
+  },
+  {
+    "physical_page": 44,
+    "blank": false,
+    "text_characters": 1561,
+    "first_lines": [
+      "32 5. Experimental Method",
+      "The old fresh-replay-at-every-prefix protocol remains a bounded reference and is not described as",
+      "identical coverage."
+    ],
+    "render_sha256": "aa8965fe55b628d8148cd7c8653d223d52ae584c3a2a33072ee00ae37a860ca7"
+  },
+  {
+    "physical_page": 45,
+    "blank": false,
+    "text_characters": 2581,
+    "first_lines": [
+      "5.4. Timing, Calibration and Scheduling 33",
+      "5.3.3. Historical Ordinary-List Core",
+      "simplified_jordan_paper_ordinary_list times the pre-certified rollback-enabled minimal core, includ-"
+    ],
+    "render_sha256": "6f7d6649832a52c7d117036e558e71cce3812840ac354d85b10d6593d328531b"
+  },
+  {
+    "physical_page": 46,
+    "blank": false,
+    "text_characters": 2273,
+    "first_lines": [
+      "34 5. Experimental Method",
+      "5.4.2. Recorded Environment",
+      "Each current archive binds source hashes, Python executable/version/flags, platform, CPU, RAM,"
+    ],
+    "render_sha256": "de1d6b6062fab26bfdf12e7bd992b1445d2d04cc01bfb22b35d3ab869250af09"
+  },
+  {
+    "physical_page": 47,
+    "blank": false,
+    "text_characters": 696,
+    "first_lines": [
+      "5.6. Evidence Binding and Acceptance 35",
+      "pipeline wall-clock scope",
+      "reserve evidence"
+    ],
+    "render_sha256": "cf587a7503398c9704c8c8797ec8acf13aeb82c68c6e2602cc02a522729166d5"
+  },
+  {
+    "physical_page": 48,
+    "blank": false,
+    "text_characters": 1283,
+    "first_lines": [
+      "36 5. Experimental Method",
+      "5.6.1. Fail-Closed Validation",
+      "The current archive checker verifies schemas, source blobs, input identities, outputs, event order,"
+    ],
+    "render_sha256": "5c23dbfd8606f4317e37c50d469339d7edabe055b3e90bc63c8ca4c142c2cffa"
+  },
+  {
+    "physical_page": 49,
+    "blank": false,
+    "text_characters": 1738,
+    "first_lines": [
+      "6. Results",
+      "6.1. Current Evidence and Correctness",
+      "The current matched experiments completed at source 4a83fa6 , whose Python sources are identical"
+    ],
+    "render_sha256": "76a4d61b63c457a9c57c29849e78eff0c7c1f1ef50215068f0a362f30fa3a4be"
+  },
+  {
+    "physical_page": 50,
+    "blank": false,
+    "text_characters": 1781,
+    "first_lines": [
+      "38 6. Results",
+      "Initialization, sorting, output recovery, the batch loop and output append are included; expected-",
+      "output comparisons and persistence are excluded."
+    ],
+    "render_sha256": "61a0807d5bf3d0080547a8897eb097c453ab379dafdf81836d5ea785b9bcfd7d"
+  },
+  {
+    "physical_page": 51,
+    "blank": false,
+    "text_characters": 1976,
+    "first_lines": [
+      "6.3. Independent Targeted Split Set 39",
+      "6.2.1. Structural Strata",
+      "Table 6.3.: Common-set ratios grouped by the frozen nesting classification. These aggregates mix"
+    ],
+    "render_sha256": "d86971d0fc4eb1b7672297ab9b43843724bbfd7ff3dbc14ee47bc7b439c382a6"
+  },
+  {
+    "physical_page": 52,
+    "blank": false,
+    "text_characters": 1945,
+    "first_lines": [
+      "40 6. Results",
+      "n128-k3n128-k3 Mn128-k7n128-k7 Mn128-k19n128-k19 M",
+      "n129-k3n129-k3 Mn129-k7n129-k7 Mn129-k19n129-k19 M"
+    ],
+    "render_sha256": "371eee9183b4a4d072f6bb1d3bf6097379ac52c94bd9bb7674ee3400140c367d"
+  },
+  {
+    "physical_page": 53,
+    "blank": false,
+    "text_characters": 2196,
+    "first_lines": [
+      "6.6. Interpretation Boundary 41",
+      "measured rows, 180 case summaries and 60 untimed checked-state audits, all successful. Its ordinary-",
+      "list implementation still performed rollback-related work. Its Python version was 3.12.4; scheduling,"
+    ],
+    "render_sha256": "fb9641ba8c54aa4fb76a895975adbbc060bde9d79cb7f2686934c20730029022"
+  },
+  {
+    "physical_page": 54,
+    "blank": true,
+    "text_characters": 0,
+    "first_lines": [],
+    "render_sha256": "229e281267ce67acb218365202dbbbb100dcc33aacd7c3ec8c84ee7208f05424"
+  },
+  {
+    "physical_page": 55,
+    "blank": false,
+    "text_characters": 1822,
+    "first_lines": [
+      "7. Limitations",
+      "7.1. Scope and Version",
+      "The current results describe the ordinary-list and finger-tree minimal cores at source 4a83fa6 , with"
+    ],
+    "render_sha256": "1bea3ccf74fec29a1835e5a9f8eb170cc8012bd430330710e526fa8033117ac4"
+  },
+  {
+    "physical_page": 56,
+    "blank": false,
+    "text_characters": 2498,
+    "first_lines": [
+      "44 7. Limitations",
+      "7.3. Input Coverage and Scale",
+      "The common set contains fourteen controlled inputs at each of ten lengths 32/33 through 512/513."
+    ],
+    "render_sha256": "71af5ca8445e6b5fc45135c2c42ec639b19b8c4e8f97d90b132f55f04aa008fc"
+  },
+  {
+    "physical_page": 57,
+    "blank": false,
+    "text_characters": 2425,
+    "first_lines": [
+      "7.5. Statistical and Exploratory Reach 45",
+      "7.5. Statistical and Exploratory Reach",
+      "Twenty batches characterize repeat variability for each fixed input/backend. Dividing by B gives a per-"
+    ],
+    "render_sha256": "412d2b33762208ae8ac559b837a010543576981ae251ea71f5fec77afd7cdfe7"
+  },
+  {
+    "physical_page": 58,
+    "blank": true,
+    "text_characters": 0,
+    "first_lines": [],
+    "render_sha256": "229e281267ce67acb218365202dbbbb100dcc33aacd7c3ec8c84ee7208f05424"
+  },
+  {
+    "physical_page": 59,
+    "blank": false,
+    "text_characters": 1964,
+    "first_lines": [
+      "8. Conclusion",
+      "8.1. Summary",
+      "This thesis turns the 1990 Simplified Jordan Sorting procedure into a shared executable core with"
+    ],
+    "render_sha256": "740a3122476eebb60918168c2899a3e346476c95cc5be417b30cea4e5e0ed41b"
+  },
+  {
+    "physical_page": 60,
+    "blank": false,
+    "text_characters": 2357,
+    "first_lines": [
+      "48 8. Conclusion",
+      "and source-specific, not a machine-checked proof or an external proof certification. Valid-input",
+      "sorting does not establish a recognition algorithm."
+    ],
+    "render_sha256": "b598f38495f7d9811f6d69e629ac62bea567e24e47813e0589edec2286348280"
+  },
+  {
+    "physical_page": 61,
+    "blank": false,
+    "text_characters": 1172,
+    "first_lines": [
+      "8.4. Closing Perspective 49",
+      "failures and summaries are inspectable. Separating certification, output recovery, physical storage",
+      "and untimed diagnostics makes both the algorithm and its evidence easier to audit."
+    ],
+    "render_sha256": "3f6571b9417bf1f8eeb61231b6bd780313fa2fda556fbd26272e6ef891a4e2ca"
+  },
+  {
+    "physical_page": 62,
+    "blank": true,
+    "text_characters": 0,
+    "first_lines": [],
+    "render_sha256": "229e281267ce67acb218365202dbbbb100dcc33aacd7c3ec8c84ee7208f05424"
+  },
+  {
+    "physical_page": 63,
+    "blank": false,
+    "text_characters": 2067,
+    "first_lines": [
+      "A. Claim Traceability",
+      "This appendix records how the thesis-facing claim groups connect to the audited claim inventory and",
+      "archived, manifest-bound experiment evidence. It is a traceability aid rather than an additional source"
+    ],
+    "render_sha256": "271150d3b68538708209c59dcafc89d8532b243b07654d6ca7839e99286b2e8f"
+  },
+  {
+    "physical_page": 64,
+    "blank": false,
+    "text_characters": 2696,
+    "first_lines": [
+      "52 A. Claim Traceability",
+      "The detailed wording, evidence locator, and required boundary for every ID are maintained in",
+      "docs/thesis/claim_to_evidence_table.md . The audited copy has the following SHA-256:"
+    ],
+    "render_sha256": "5bc0efd119569bfd0a4eb6150b293bf65db5653943b697ae69a07cc69b8f0d42"
+  },
+  {
+    "physical_page": 65,
+    "blank": false,
+    "text_characters": 2806,
+    "first_lines": [
+      "A.3. Archived Evidence Bindings 53",
+      "and f77df45 . Qualification executions retain producers 3cafb44 (140 common inputs) and 668371f",
+      "(twelve targeted split inputs). Read-only ID-lifecycle rechecks and actual calibration use c5b5ac3 ;"
+    ],
+    "render_sha256": "e7699459d4c7e09de0c479004b51e33bb3da1f8f4f6a0edb87352f3407dc69ff"
+  },
+  {
+    "physical_page": 66,
+    "blank": false,
+    "text_characters": 1506,
+    "first_lines": [
+      "54 A. Claim Traceability",
+      "Table A.2.: Archived run manifests used by the thesis analysis.",
+      "Evidence role Execution identifier Manifest SHA-256"
+    ],
+    "render_sha256": "9e360537d1fce6961d3bc64c91b6b888e0d698e4b5c9eb609b2e4de83417bbeb"
+  },
+  {
+    "physical_page": 67,
+    "blank": false,
+    "text_characters": 2336,
+    "first_lines": [
+      "Bibliography",
+      "Aurenhammer, F. (1987). \u201cJordan Sorting via Convex Hulls of Certain Non-Simple Polygons\u201d. In:",
+      "Proceedings of the Third Annual Symposium on Computational Geometry . SCG \u201987. New York, NY,"
+    ],
+    "render_sha256": "4f742aaf9fb47e2b0fbc78f4ea8a1686b1d556a41285ca0b1af04ac06f359e61"
+  },
+  {
+    "physical_page": 68,
+    "blank": false,
+    "text_characters": 1290,
+    "first_lines": [
+      "56 Bibliography",
+      "Mytkowicz, T., A. Diwan, M. Hauswirth, and P. F. Sweeney (2009). \u201cProducing Wrong Data Without",
+      "Doing Anything Obviously Wrong!\u201d In:Proceedings of the 14th International Conference on Archi-"
+    ],
+    "render_sha256": "d6bef714bd07ff93e0c87115d15a3b5048b32a7523593638662568274f118f3e"
+  }
+]

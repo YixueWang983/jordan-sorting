@@ -342,10 +342,11 @@ with the old parent, the acquired side moves under $N$, and every moved pair
 must name its new list and parent. Conservation and unique ownership are
 required after a successful transition.
 
-The reconstruction first forms a split plan without changing live state.
-Commit checks that the plan is current, that the proposed parent is live and
-cannot introduce a cycle, and that the partition is legal. It then updates
-the lists and ownership links and checks the resulting state. In the revised
+The ordinary backend first forms a split plan without changing live state;
+its commit checks the plan, parent and partition before updating ownership.
+The tree instead uses a planned transfer source, path-local splitting and
+header adoption, without materializing that list-based plan. Both must restore
+the logical ownership conditions before completing the iteration. In the revised
 implementation, an update or postcondition error terminates sorting. Updates
 already performed are not rolled back, and the failed state must be discarded.
 No partially updated state is accepted as a completed iteration or returned
