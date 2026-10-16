@@ -1,0 +1,9 @@
+{
+  "source_unchanged_after_formal": true,
+  "source_files": 131,
+  "manual_review_reference_hash_valid": true,
+  "thesis_source_matches_build": true,
+  "source_head": "4a83fa6b7a4213e9e5758fe3454e002ebc266459",
+  "new_sorting_regressions_run": 0,
+  "reason": "production and evidence tools unchanged; full actual formal batches and their independent validators executed instead"
+}

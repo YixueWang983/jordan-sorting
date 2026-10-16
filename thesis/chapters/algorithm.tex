@@ -40,12 +40,10 @@ topological proof of the source algorithm.
 
 The chapter also separates algorithmic control flow from data-structure
 complexity. The 1990 paper obtains its linear bound with heterogeneous finger
-trees. The thesis implementation realizes the same high-level list operations
-with
-ordinary Python lists. Consequently, the reconstruction supports an
-executable sorting algorithm without a linear-time guarantee for its concrete
-backend. A source-level quadratic copying lower bound is given in
-\cref{sec:implementation-complexity}.
+trees. Both thesis backends realize the same high-level operations. Ordinary
+Python lists incur the quadratic copying lower bound in
+\cref{sec:implementation-complexity}; the real finger-tree backend has a separate
+source-linked representation and amortized-cost argument there.
 
 \section{Pairs, Intervals, and the Two Families}
 \label{sec:algorithm-families}
@@ -436,10 +434,10 @@ claims.
 \textcite{hoffmann1986sorting} use level-linked search trees, while
 \textcite{fung1990simplified} reduce the required operations to singleton-list
 creation, boundary insertion, and splitting, then implement them with
-heterogeneous finger trees. The implementation preserves those abstract operations
-but realizes sibling lists as ordinary Python lists. A sibling split scans and
+heterogeneous finger trees. The ordinary backend preserves those abstract operations
+using Python lists. A sibling split scans and
 materializes list contents, both insertion boundaries copy the current list,
 and ownership rebinding can depend on list size. Membership and ancestor
-checks can also scan lists in the minimal execution mode. The implementation is therefore
-an ordinary-list reconstruction of the paper-facing control flow, not an
-implementation of either theoretical linear-time data structure.
+checks can also scan lists in its minimal mode. The tree backend instead uses
+the physical operations described in \cref{chap:implementation}; its source-level
+bound and the ordinary backend's costs must not be interchanged.

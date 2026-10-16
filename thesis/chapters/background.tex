@@ -189,10 +189,10 @@ sequences of sorted-list updates. The level-linked $(2,4)$ trees used by the
 1986 Jordan-sorting algorithm are part of this historical data-structure
 lineage, rather than a property of Jordan sequences alone.
 
-These works provide context for the historical linear-time theorem, but they
-do not describe the backend implemented in this thesis. The reconstruction
-uses ordinary Python lists and therefore retains explicit scan, copy, slice,
-and rebinding costs.
+These works provide context for the historical linear-time theorem. The
+ordinary-list backend retains explicit scan, copy, slice and rebinding costs;
+the heterogeneous backend instead follows the finger-tree approach and is
+analyzed against its actual source representation in \cref{chap:implementation}.
 
 \subsection{Jordan Sorting and Geometric Applications}
 
@@ -236,8 +236,8 @@ This thesis separates three layers that are easy to conflate:
     Jordan-validity model used for certification before the paper core is timed.
   \item[Valid-input sorting.] The reconstructed paper control flow maintains
     its own partial order and recovers the final output from that state.
-  \item[List representation.] Sibling lists are implemented with ordinary
-    Python lists rather than either historical theoretical backend.
+  \item[List representation.] Sibling lists use ordinary Python lists or the
+    implemented heterogeneous finger-tree backend, with separate cost analyses.
 \end{description}
 
 Accordingly, the empirical study concerns sorting of oracle-certified valid
@@ -249,8 +249,9 @@ the implementation boundary is detailed in
 
 The ordinary-list representation supports an executable and auditable
 reconstruction, but it may scan, slice, copy, and rebind list contents. This
-thesis therefore does not claim to implement the level-linked trees of 1986
-or the heterogeneous finger trees of 1990, and it does not transfer the
-papers' linear-time theorem to the concrete Python backend. The consequences
+thesis does not implement the level-linked trees of 1986. Its separate
+heterogeneous backend requires source-level representation, locality and
+amortized-cost arguments; merely implementing the interface would not transfer
+the papers' linear-time theorem. The consequences
 for empirical interpretation are stated in
 \cref{sec:limitations-backend,sec:limitations-timing-scopes}.

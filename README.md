@@ -6,12 +6,14 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
+The [current formal comparison and thesis review draft](docs/validation/final_review_formal_20261015/README.md) are complete at execution source **`4a83fa6`**: 140 common inputs and 12 targeted inputs pass, with **5600 + 480 formal sample batches**, independently rebuilt. The tree is slower on every measured input (case-median ratio ranges **1.114–3.535** and **3.147–3.213**). Qualification and calibration were reused without changing their records or B tables. The thesis now reports these results separately from the historical rollback study; source-level manual review retains its explicit computational model and does not claim external certification.
+
 The [concentrated representation/cost/locality review](docs/development/finger_final_review_20261015.md)
 closes the three manual-review items against the unchanged `b6e1116`/`c5b5ac3`
 Python sources. It gives explicit branch and induction arguments in the stated
 unit-cost/expected-dictionary model, not a machine proof or external certification.
 The thesis distinguishes internal ROOT span zero from singleton leaf span one.
-Formal measurement still requires the existing qualification, calibration and
+Formal measurement subsequently passed the existing qualification, calibration and
 environment gates. The dated milestones below describe their original state.
 
 The [ID-lifecycle repair and actual calibration](docs/validation/id_lifecycle_calibration_20261015/README.md)

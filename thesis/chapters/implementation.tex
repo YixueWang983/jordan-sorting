@@ -17,16 +17,17 @@ returns \texttt{state.partial\_order.to\_list()}. Its core does not use the
 oracle's output or a global rank map. It assumes a pre-certified valid Jordan
 sequence with distinct, mutually comparable values.
 
-Both current backends propagate errors without rollback. Timings in
-\cref{chap:results} belong to an earlier rollback-enabled version and measure
-neither the current programs nor a causal benefit of removing recovery work.
+Both current backends propagate errors without rollback. Current matched timings
+in \cref{chap:results} measure these programs; an explicitly separate section
+retains the earlier rollback-enabled study. Neither comparison establishes a
+causal benefit of removing recovery work.
 Source bindings remain in \cref{sec:appendix-revision-bindings}.
 
 \Cref{chap:algorithm} specifies initialization, both orientations of
 Step~1/2/3, and executable anchor clarifications. Here the focus is state
 representation and maintenance. The real tree shares the sorting loop and has
-bounded correctness evidence; cost and locality review remains open.
-Qualification does not establish a general linear-time theorem.
+bounded correctness evidence and a source-level manual cost/locality review.
+Qualification remains distinct from that mathematical argument.
 
 \section{Data Representation}
 \label{sec:implementation-input-model}

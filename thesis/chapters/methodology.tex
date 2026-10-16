@@ -10,11 +10,11 @@ Experimental algorithmics studies concrete programs, inputs and machines
 \parencite{mcgeoch2012guide}; algorithm engineering separates implementation,
 analysis and evaluation \parencite{sanders2009engineering}. Accordingly, the
 current matched protocol and the historical measurements are distinct studies.
-The current ordinary-list and tree implementations have input qualification
-and actual batch calibration, but no formal paired samples. Quantitative
-results in \cref{chap:results} still describe the earlier rollback-enabled
-ordinary-list implementation. Neither calibration nor a later checker changes
-an old execution's source identity.
+The current ordinary-list and tree implementations have completed qualification,
+separate batch calibration and formal paired measurement. Current results in
+\cref{chap:results} use source \texttt{4a83fa6}; the older rollback-enabled
+ordinary-list study remains a separate historical section. Neither calibration
+nor a later checker changes an old execution's source identity.
 
 \section{Current Inputs and Qualification}
 
@@ -111,7 +111,7 @@ not formal speed comparisons or statistical-precision guarantees.
 \label{sec:method-scheduling}
 
 Calibration alternates the first backend by case index, candidate index and
-repeat. The unexecuted formal protocol shuffles cases with seed
+repeat. The executed formal protocol shuffles cases with seed
 \texttt{20261015}, uses five warm-up calls per backend and twenty paired batches
 at each frozen B, alternating first position by case index and round. Each
 backend is first ten times. Failures stop subsequent cases; timeouts preserve
@@ -134,14 +134,16 @@ Each current archive binds source hashes, Python executable/version/flags,
 platform, CPU, RAM, power observations, GC thresholds and monotonic-clock
 metadata. Calibration and formal execution must match source and recorded
 machine/runtime settings. Tests, qualification and compilation were not run
-concurrently with calibration. The historical formal archive records Apple
+concurrently with calibration or formal sampling. The current formal archives
+record Apple M4/arm64, 16 GB RAM, ten logical CPUs, macOS 26.6 and CPython
+3.12.14; their captured power state is battery at 100\%. The historical formal archive records Apple
 M4/arm64, 16 GB RAM, ten logical CPUs, macOS 26.6 and CPython 3.12.4, with its
 own preflight; these are not claims about today's runtime.
 
 \section{Aggregation and Statistical Units}
 \label{sec:method-aggregation}
 
-The current formal protocol, once executed, reports twenty batch-derived
+The current formal protocol reports twenty batch-derived
 per-call durations per input/backend, their median and R7-interpolated quartiles
 and IQR, and the paired ratio of backend medians. Related constructions and
 mirrors remain dependent; cross-input summaries are descriptive.
@@ -158,7 +160,9 @@ exploratory, not causal decompositions of runtime.
 The historical formal/pilot sources are \texttt{98868b1}/\texttt{01f6480}.
 The current 140-case and twelve-case qualification producers are
 \texttt{3cafb44} and \texttt{668371f}; checker/calibration source is
-\texttt{c5b5ac3}. Full hashes and immutable archive locations are indexed in
+\texttt{c5b5ac3}. Formal executions use \texttt{4a83fa6}, with identical Python
+source hashes, frozen B tables and matching required environment fields. Full
+hashes and immutable archive locations are indexed in
 \cref{sec:appendix-revision-bindings}. New checking does not relabel old runs.
 
 Each current record is independently compressed, synchronized and atomically
@@ -172,8 +176,8 @@ new execution.
   \centering
   \includegraphics[width=.94\textwidth]{formal_experiment_pipeline.pdf}
   \caption[Historical formal pipeline and timing scopes.]{Historical
-  rollback-enabled formal pipeline. Current qualification and batch calibration
-  have separate identities and do not supply new formal results.}
+  rollback-enabled formal pipeline. Current qualification, batch calibration
+  and formal matched batches have separate identities and schedules.}
   \label{fig:method-formal-pipeline}
 \end{figure}
 
@@ -186,7 +190,9 @@ map checks current membership; a separate seen-ID set prevents a singleton or
 split output from reusing any retired ID. Boundary insertion keeps its live
 ID. Read-only rechecks accept both existing datasets without rerunning sorting.
 The measurement validator independently reconstructs candidate order, every
-attempt, the first qualifying common B and output correctness. A process exit
+attempt, the first qualifying common B and output correctness. For formal
+archives it reconstructs warm-ups, paired sample order, twenty-batch medians,
+R7 quartiles and within-input ratios. A process exit
 code alone is insufficient. Historical validation additionally reran the old
 checked diagnostics; that behavior is not attributed to the new read-only check.
 
@@ -194,7 +200,8 @@ checked diagnostics; that behavior is not attributed to the new read-only check.
 \label{sec:method-boundaries}
 
 Qualification, calibration, proof review and formal measurement are separate
-gates. Formal samples remain unexecuted, and the cost/representation/locality
-review remains open. No calibration ratio enters the results chapter, no
+gates. The recorded formal runs followed the source-level manual review and
+passed their own binding and reconstruction checks. No calibration ratio enters
+the formal results tables, no
 historical pilot is renamed as current evidence, and no speed outcome proves
 the target asymptotic bound.

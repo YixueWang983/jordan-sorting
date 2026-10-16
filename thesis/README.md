@@ -1,5 +1,11 @@
 # FU Berlin LaTeX Thesis Scaffold
 
+## Current review draft (2026-10-16)
+
+`output/pdf/jordan_thesis_formal_20261016.pdf` includes the source-level review and current matched results (execution `4a83fa6`). See `docs/validation/final_review_formal_20261015/` for original records, reconstruction and build provenance. Earlier PDF/evidence entries below retain their dated identities.
+
+The review cover suppresses unknown personal template fields. Before actual submission, complete `config/metadata.tex` and set `\ReviewDraftfalse`; no author, matriculation number, supervisor or submission date has been guessed. Body typography and right-hand chapter starts are unchanged.
+
 Current revision (2026-10-15): **68 physical pages, clean build and visual checks**.
 The implementation and method chapters now describe
 the real tree, synchronous v2 qualification, list-ID lifecycle checks and actual

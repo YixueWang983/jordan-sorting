@@ -9,11 +9,17 @@
     {\Large \ThesisType\par}
 
     \vspace{1.5cm}
+    \ifReviewDraft
+    {\Large Review draft\par}
+    \medskip
+    {\large \ReviewDraftDate\par}
+    \else
     {\large submitted by\par}
     \bigskip
     {\Large \ThesisAuthor\par}
     \medskip
     {\large Matriculation number: \MatriculationNumber\par}
+    \fi
   \end{center}
 
   \vfill
@@ -27,12 +33,18 @@
   \hfill
   \begin{minipage}[b]{0.42\textwidth}
     \raggedleft
+    \ifReviewDraft
+    For supervisor review\\[0.75em]
+    Current implementation and\\
+    matched experiments
+    \else
     Supervisor:\\
     \ThesisSupervisor\\[0.75em]
     Second examiner:\\
     \SecondExaminer\\[0.75em]
     Submission date:\\
     \SubmissionDate
+    \fi
   \end{minipage}
 \end{titlepage}
 \restoregeometry

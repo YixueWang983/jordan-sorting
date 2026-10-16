@@ -1,0 +1,6 @@
+{
+  "python": "3.12.14",
+  "matplotlib": "3.11.2",
+  "numpy": "2.5.4",
+  "scope": "post-measurement analysis only; separately installed plotting dependencies"
+}

@@ -1,0 +1,632 @@
+[
+  {
+    "physical_page": 1,
+    "characters": 333,
+    "first_lines": [
+      "Implementation and Evaluation of the 1990 Simplified",
+      "Jordan Sorting Algorithm",
+      "Master\u2019s Thesis",
+      "Review draft"
+    ]
+  },
+  {
+    "physical_page": 2,
+    "characters": 0,
+    "first_lines": []
+  },
+  {
+    "physical_page": 3,
+    "characters": 2205,
+    "first_lines": [
+      "Abstract",
+      "Jordan sorting recovers the coordinate order of intersections along a line from their traversal order",
+      "on a simple curve. This thesis reconstructs the 1990 Simplified Jordan Sorting procedure as one",
+      "executable Python core with ordinary-list and heterogeneous red\u2013black finger-tree backends. The"
+    ]
+  },
+  {
+    "physical_page": 4,
+    "characters": 0,
+    "first_lines": []
+  },
+  {
+    "physical_page": 5,
+    "characters": 2491,
+    "first_lines": [
+      "Contents",
+      "Abstract . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . i",
+      "List of Figures . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . vii",
+      "List of Tables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ix"
+    ]
+  },
+  {
+    "physical_page": 6,
+    "characters": 3352,
+    "first_lines": [
+      "iv Contents",
+      "3.5. Boundary Selection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14",
+      "3.5.1. Step 1: Predecessor-Side Boundary . . . . . . . . . . . . . . . . . . . . . . . 14",
+      "3.5.2. Step 2: Successor-Side Boundary . . . . . . . . . . . . . . . . . . . . . . . . 14"
+    ]
+  },
+  {
+    "physical_page": 7,
+    "characters": 3415,
+    "first_lines": [
+      "Contents v",
+      "5.4. Timing, Calibration and Scheduling . . . . . . . . . . . . . . . . . . . . . . . . . . . 33",
+      "5.4.1. Scheduling and Noise . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 33",
+      "5.4.2. Recorded Environment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 34"
+    ]
+  },
+  {
+    "physical_page": 8,
+    "characters": 315,
+    "first_lines": [
+      "vi Contents",
+      "A.3. Archived Evidence Bindings . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 53",
+      "A.4. Interpretation Boundaries . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 54",
+      "Bibliography . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 55"
+    ]
+  },
+  {
+    "physical_page": 9,
+    "characters": 1040,
+    "first_lines": [
+      "List of Figures",
+      "2.1. Jordan sorting from curve order to axis order. . . . . . . . . . . . . . . . . . . . . . 6",
+      "3.1. Step 3(c) output-anchor correction for \ud835\udc671",
+      ". . . . . . . . . . . . . . . . . . . . . . . . . 18"
+    ]
+  },
+  {
+    "physical_page": 10,
+    "characters": 0,
+    "first_lines": []
+  },
+  {
+    "physical_page": 11,
+    "characters": 1033,
+    "first_lines": [
+      "List of Tables",
+      "3.1. Increasing and decreasing Step 3 roles in the executable reconstruction. . . . . . . . 16",
+      "6.1. Current formal execution. Calls within a batch are not independent samples. . . . . 37",
+      "6.2. Common set: descriptive runtime and matched ratios. Times are milliseconds per"
+    ]
+  },
+  {
+    "physical_page": 12,
+    "characters": 0,
+    "first_lines": []
+  },
+  {
+    "physical_page": 13,
+    "characters": 2026,
+    "first_lines": [
+      "1. Introduction",
+      "1.1. Motivation",
+      "Jordan sorting starts with more information than arbitrary sorting: the input keys are line intersec\ufffetions encountered while traversing a simple plane curve. The absence of self-intersections restricts",
+      "how consecutive segments can nest, permitting specialized linear-time algorithms (Hoffmann et al."
+    ]
+  },
+  {
+    "physical_page": 14,
+    "characters": 2270,
+    "first_lines": [
+      "2 1. Introduction",
+      "The current backends propagate update errors without rollback and require failed state to be discarded.",
+      "The tree uses stable handles, endpoint fingers, local split/join and header ownership transfer. Its",
+      "source-level manual argument covers representation preservation, locality and amortized cost under"
+    ]
+  },
+  {
+    "physical_page": 15,
+    "characters": 2301,
+    "first_lines": [
+      "1.5. Headline Findings 3",
+      "3. A source-level manual argument relating reversed pointers to logical trees, paying mixed\ufffeoperation costs with two potentials, and connecting the published locality lemma and a",
+      "finite-parent supplement to actual calls.",
+      "4. A reproducible evidence workflow separating qualification, calibration, formal batches and"
+    ]
+  },
+  {
+    "physical_page": 16,
+    "characters": 0,
+    "first_lines": []
+  },
+  {
+    "physical_page": 17,
+    "characters": 1896,
+    "first_lines": [
+      "2. Background",
+      "2.1. Jordan Sequences and the Sorting Problem",
+      "Let \ud835\udc36 be a simple plane curve that crosses the \ud835\udc65-axis wherever it meets the axis. Listing the abscissas",
+      "of the intersection points in the order in which they occur along \ud835\udc36 gives a sequence"
+    ]
+  },
+  {
+    "physical_page": 18,
+    "characters": 1564,
+    "first_lines": [
+      "6 2. Background",
+      "\ud835\udc65-axis",
+      "\ud835\udc5d1 \ud835\udc5d2 \ud835\udc5d3 \ud835\udc5d4 \ud835\udc5d5",
+      "simple curve \ud835\udc36"
+    ]
+  },
+  {
+    "physical_page": 19,
+    "characters": 2652,
+    "first_lines": [
+      "2.3. The 1986 Linear-Time Algorithm 7",
+      "spanning (\u2212\u221e, +\u221e) turns each forest into a rooted ordered tree. These are the upper and lower",
+      "family trees used by both historical algorithms (Hoffmann et al. 1986, p. 173; Fung et al. 1990, p. 87).",
+      "The full notation and executable pair model used in this thesis are developed in section 3.2; here the"
+    ]
+  },
+  {
+    "physical_page": 20,
+    "characters": 2546,
+    "first_lines": [
+      "8 2. Background",
+      "2.4. The 1990 Simplification",
+      "Fung et al. (1990) retained the linear theoretical bound while simplifying both the primary structure",
+      "and the operations required of it. A locality lemma shows that, after a pair has been added, the"
+    ]
+  },
+  {
+    "physical_page": 21,
+    "characters": 2798,
+    "first_lines": [
+      "2.6. Position and Scope of This Thesis 9",
+      "with movable fingers, and Brown and Tarjan (1980) analyze a 2\u20133-tree representation for sorted lists",
+      "whose costs reflect locality of reference. Huddleston and Mehlhorn (1982) develop level-linked weak",
+      "B-trees for arbitrary sequences of sorted-list updates. The level-linked (2, 4) trees used by the 1986"
+    ]
+  },
+  {
+    "physical_page": 22,
+    "characters": 1269,
+    "first_lines": [
+      "10 2. Background",
+      "Geometric validity. A candidate sequence is checked against the Jordan-validity model used for",
+      "certification before the paper core is timed.",
+      "Valid-input sorting. The reconstructed paper control flow maintains its own partial order and"
+    ]
+  },
+  {
+    "physical_page": 23,
+    "characters": 2042,
+    "first_lines": [
+      "3. Algorithm Reconstruction",
+      "3.1. Purpose and Reconstruction Boundary",
+      "The Jordan sorting problem starts with the intersections of a simple curve and the \ud835\udc65-axis in curve",
+      "order,"
+    ]
+  },
+  {
+    "physical_page": 24,
+    "characters": 1596,
+    "first_lines": [
+      "12 3. Algorithm Reconstruction",
+      "the real finger-tree backend has a separate source-linked representation and amortized-cost argument",
+      "there.",
+      "3.2. Pairs, Intervals, and the Two Families"
+    ]
+  },
+  {
+    "physical_page": 25,
+    "characters": 1815,
+    "first_lines": [
+      "3.3. Maintained State and Prefix Invariant 13",
+      "region into a left and a right part; children on either side remain contiguous in sibling order. This",
+      "locality is what reduces the update to three abstract list operations:",
+      "1. create a singleton sibling list;"
+    ]
+  },
+  {
+    "physical_page": 26,
+    "characters": 1709,
+    "first_lines": [
+      "14 3. Algorithm Reconstruction",
+      "The upper dummy owns a singleton sibling list containing \ud835\udc432",
+      ", and the lower dummy owns one",
+      "containing \ud835\udc433"
+    ]
+  },
+  {
+    "physical_page": 27,
+    "characters": 2088,
+    "first_lines": [
+      "3.7. Step 3: Decreasing Orientation 15",
+      "3.6.1. Step 3(a): Insert the New Pair",
+      "If \ud835\udc34\ud835\udc56 encloses \ud835\udc67\ud835\udc56\u22121, then \ud835\udc41 becomes its child in a new singleton sibling list. Otherwise, \ud835\udc34\ud835\udc56",
+      "is the last"
+    ]
+  },
+  {
+    "physical_page": 28,
+    "characters": 1914,
+    "first_lines": [
+      "16 3. Algorithm Reconstruction",
+      "Table 3.1.: Increasing and decreasing Step 3 roles in the executable reconstruction.",
+      "Operation Increasing Decreasing",
+      "Step 3(a) boundary predecessor-side \ud835\udc34\ud835\udc56"
+    ]
+  },
+  {
+    "physical_page": 29,
+    "characters": 2085,
+    "first_lines": [
+      "3.9. Ownership Transfer and Failure Semantics 17",
+      "3.8.2. Odd-Index \ud835\udc671 Output Anchor",
+      "Steps 1 and 2 compensate for the fact that \ud835\udc671 has no lower-family pair. That boundary-pair correction",
+      "does not cover every final output insertion. The 1986 description records a separate anomaly: on an"
+    ]
+  },
+  {
+    "physical_page": 30,
+    "characters": 769,
+    "first_lines": [
+      "18 3. Algorithm Reconstruction",
+      "(a) Ordinary geometric base anchor",
+      "decreasing iteration \ud835\udc56 = 7: \ud835\udc677 = 0, base anchor \ud835\udc4e7 = \ud835\udc672 = 2",
+      "\ud835\udc671"
+    ]
+  },
+  {
+    "physical_page": 31,
+    "characters": 1951,
+    "first_lines": [
+      "3.10. End-to-End Procedure 19",
+      "The earlier implementation used rollback on these error paths. That recovery mechanism is distinct",
+      "from the algorithmic requirement to preserve ownership on successful updates. The two versions",
+      "and their experimental scope are distinguished in section 4.1; the concrete update is described in"
+    ]
+  },
+  {
+    "physical_page": 32,
+    "characters": 939,
+    "first_lines": [
+      "20 3. Algorithm Reconstruction",
+      "(a) Input curve order (b) Initialization",
+      "(c) Representative iteration \ud835\udc56 = 4 (d) Recovered axis order",
+      "\ud835\udc671"
+    ]
+  },
+  {
+    "physical_page": 33,
+    "characters": 1554,
+    "first_lines": [
+      "3.11. Correctness and Complexity Boundaries 21",
+      "3.11. Correctness and Complexity Boundaries",
+      "The source-level correctness argument rests on the nesting property of same-family pairs and the",
+      "locality lemma: the boundary pairs found beside \ud835\udc67\ud835\udc56\u22121 identify where \ud835\udc43\ud835\udc56 belongs, and newly enclosed"
+    ]
+  },
+  {
+    "physical_page": 34,
+    "characters": 0,
+    "first_lines": []
+  },
+  {
+    "physical_page": 35,
+    "characters": 1961,
+    "first_lines": [
+      "4. Implementation",
+      "4.1. Implementation Scope and Versions",
+      "The code separates an oracle-backed reference pipeline from the shared-core reconstruction of Fung",
+      "et al. (1990). The reference function simplified_jordan_sort certifies the input, constructs family trees,"
+    ]
+  },
+  {
+    "physical_page": 36,
+    "characters": 2447,
+    "first_lines": [
+      "24 4. Implementation",
+      "4.2.1. Partial Sorted Order",
+      "SortedOrderList is doubly linked, with identity-based infinity sentinels and a point-ID-to-node map\ufffeping. Neighbor access and insertion use local links. Before mutation, insertion checks that the",
+      "value lies strictly between its adjacent values. Final traversal excludes the sentinels and returns the"
+    ]
+  },
+  {
+    "physical_page": 37,
+    "characters": 1840,
+    "first_lines": [
+      "4.3. Core\u2013Backend Interface and Update Semantics 25",
+      "(a) Pair-family containment",
+      "upper family",
+      "dummy"
+    ]
+  },
+  {
+    "physical_page": 38,
+    "characters": 2558,
+    "first_lines": [
+      "26 4. Implementation",
+      "ports stale-plan rejection, order checks and pair-set conservation; these functions remain necessary",
+      "without rollback.",
+      "Commit checks the plan and ownership preconditions, prepares nonempty output lists and affected"
+    ]
+  },
+  {
+    "physical_page": 39,
+    "characters": 2847,
+    "first_lines": [
+      "4.5. Execution Policies and Observation Costs 27",
+      "and parent chains, stage records, trace and metrics. Deterministic replay reconstructs a fresh state",
+      "using the same core, backend type and immutable configuration. It compares backend identity,",
+      "partial order, registries, stage results, trace, work observations, metrics, and logical and physical"
+    ]
+  },
+  {
+    "physical_page": 40,
+    "characters": 2675,
+    "first_lines": [
+      "28 4. Implementation",
+      "that splits dominate runtime. Logical volumes, directly observed work and wall-clock timings are",
+      "therefore distinct forms of evidence. The shared core accumulates backend-reported work under an",
+      "identified metric schema; it does not infer tree copying from the input-list length."
+    ]
+  },
+  {
+    "physical_page": 41,
+    "characters": 2424,
+    "first_lines": [
+      "4.6. Actual Costs and Complexity Boundary 29",
+      "Let \ud835\udf08 be rank after root blackening. A downward join of heights \ud835\udc4e, \ud835\udc4f returns height \ud835\udc50 with max(\ud835\udc4e, \ud835\udc4f) \u2264",
+      "\ud835\udc50 \u2264 max(\ud835\udc4e, \ud835\udc4f) + 1 and uses at most 2|\ud835\udc4e \u2212 \ud835\udc4f| + 3 descent steps. In split backtracking, the accumulated",
+      "height \ud835\udc4e exceeds the untouched sibling height \ud835\udc4f by at most one. Thus each join costs at most 2(\ud835\udc50\u2212\ud835\udc4e)+5"
+    ]
+  },
+  {
+    "physical_page": 42,
+    "characters": 0,
+    "first_lines": []
+  },
+  {
+    "physical_page": 43,
+    "characters": 2238,
+    "first_lines": [
+      "5. Experimental Method",
+      "5.1. Study Scope and Version Boundary",
+      "Experimental algorithmics studies concrete programs, inputs and machines (McGeoch 2012); algo\uffferithm engineering separates implementation, analysis and evaluation (Sanders 2009). Accordingly,",
+      "the current matched protocol and the historical measurements are distinct studies. The current"
+    ]
+  },
+  {
+    "physical_page": 44,
+    "characters": 1578,
+    "first_lines": [
+      "32 5. Experimental Method",
+      "The old fresh-replay-at-every-prefix protocol remains a bounded reference and is not described as",
+      "identical coverage.",
+      "5.2.1. Historical Input Protocol"
+    ]
+  },
+  {
+    "physical_page": 45,
+    "characters": 2603,
+    "first_lines": [
+      "5.4. Timing, Calibration and Scheduling 33",
+      "5.3.3. Historical Ordinary-List Core",
+      "simplified_jordan_paper_ordinary_list times the pre-certified rollback-enabled minimal core, includ\ufffeing local checks, mandatory stage state, recovery preparation and output recovery. Successful calls",
+      "still pay recovery preparation costs. Its ratios to the reference retain this difference in scope; they do"
+    ]
+  },
+  {
+    "physical_page": 46,
+    "characters": 2294,
+    "first_lines": [
+      "34 5. Experimental Method",
+      "5.4.2. Recorded Environment",
+      "Each current archive binds source hashes, Python executable/version/flags, platform, CPU, RAM,",
+      "power observations, GC thresholds and monotonic-clock metadata. Calibration and formal execution"
+    ]
+  },
+  {
+    "physical_page": 47,
+    "characters": 728,
+    "first_lines": [
+      "5.6. Evidence Binding and Acceptance 35",
+      "pipeline wall-clock scope",
+      "reserve evidence",
+      "directory"
+    ]
+  },
+  {
+    "physical_page": 48,
+    "characters": 1298,
+    "first_lines": [
+      "36 5. Experimental Method",
+      "5.6.1. Fail-Closed Validation",
+      "The current archive checker verifies schemas, source blobs, input identities, outputs, event order,",
+      "sizes, owners, counters and list-ID lifetimes. A live-ID map checks current membership; a separate"
+    ]
+  },
+  {
+    "physical_page": 49,
+    "characters": 1758,
+    "first_lines": [
+      "6. Results",
+      "6.1. Current Evidence and Correctness",
+      "The current matched experiments completed at source 4a83fa6, whose Python sources are identical",
+      "to calibration source c5b5ac3. The common and targeted datasets remain separate. Both archives"
+    ]
+  },
+  {
+    "physical_page": 50,
+    "characters": 1845,
+    "first_lines": [
+      "38 6. Results",
+      "Initialization, sorting, output recovery, the batch loop and output append are included; expected\ufffeoutput comparisons and persistence are excluded.",
+      "Table 6.2 gives medians across input-specific medians. The last column is instead the median of ratios",
+      "formed within each input; it is not obtained by dividing the two aggregate time columns. Ratios"
+    ]
+  },
+  {
+    "physical_page": 51,
+    "characters": 2005,
+    "first_lines": [
+      "6.3. Independent Targeted Split Set 39",
+      "6.2.1. Structural Strata",
+      "Table 6.3.: Common-set ratios grouped by the frozen nesting classification. These aggregates mix",
+      "lengths and related constructions."
+    ]
+  },
+  {
+    "physical_page": 52,
+    "characters": 1992,
+    "first_lines": [
+      "40 6. Results",
+      "n128-k3",
+      "n128-k3 M",
+      "n128-k7"
+    ]
+  },
+  {
+    "physical_page": 53,
+    "characters": 2217,
+    "first_lines": [
+      "6.6. Interpretation Boundary 41",
+      "measured rows, 180 case summaries and 60 untimed checked-state audits, all successful. Its ordinary\ufffelist implementation still performed rollback-related work. Its Python version was 3.12.4; scheduling,",
+      "GC and quantile conventions differ from the current experiment. No historical observation is included",
+      "in the tables above."
+    ]
+  },
+  {
+    "physical_page": 54,
+    "characters": 0,
+    "first_lines": []
+  },
+  {
+    "physical_page": 55,
+    "characters": 1842,
+    "first_lines": [
+      "7. Limitations",
+      "7.1. Scope and Version",
+      "The current results describe the ordinary-list and finger-tree minimal cores at source 4a83fa6, with",
+      "Python sources unchanged from calibration. The earlier rollback-enabled experiment remains"
+    ]
+  },
+  {
+    "physical_page": 56,
+    "characters": 2527,
+    "first_lines": [
+      "44 7. Limitations",
+      "7.3. Input Coverage and Scale",
+      "The common set contains fourteen controlled inputs at each of ten lengths 32/33 through 512/513.",
+      "Its nesting strata have fixed quotas, and the inputs are constructed rather than sampled from a"
+    ]
+  },
+  {
+    "physical_page": 57,
+    "characters": 2449,
+    "first_lines": [
+      "7.5. Statistical and Exploratory Reach 45",
+      "7.5. Statistical and Exploratory Reach",
+      "Twenty batches characterize repeat variability for each fixed input/backend. Dividing by B gives a per\ufffecall duration, not B independent samples. The median and R7 IQR describe those observations; they",
+      "do not remove persistent bias or provide an independence justification for confidence intervals over"
+    ]
+  },
+  {
+    "physical_page": 58,
+    "characters": 0,
+    "first_lines": []
+  },
+  {
+    "physical_page": 59,
+    "characters": 1985,
+    "first_lines": [
+      "8. Conclusion",
+      "8.1. Summary",
+      "This thesis turns the 1990 Simplified Jordan Sorting procedure into a shared executable core with",
+      "two concrete backends. Both maintain their own sorted output and family state; neither receives"
+    ]
+  },
+  {
+    "physical_page": 60,
+    "characters": 2383,
+    "first_lines": [
+      "48 8. Conclusion",
+      "and source-specific, not a machine-checked proof or an external proof certification. Valid-input",
+      "sorting does not establish a recognition algorithm.",
+      "8.2.2. RQ2: Observed Runtime Behavior"
+    ]
+  },
+  {
+    "physical_page": 61,
+    "characters": 1186,
+    "first_lines": [
+      "8.4. Closing Perspective 49",
+      "failures and summaries are inspectable. Separating certification, output recovery, physical storage",
+      "and untimed diagnostics makes both the algorithm and its evidence easier to audit.",
+      "Further work should broaden split shapes and lengths under predeclared rules, check another"
+    ]
+  },
+  {
+    "physical_page": 62,
+    "characters": 0,
+    "first_lines": []
+  },
+  {
+    "physical_page": 63,
+    "characters": 2105,
+    "first_lines": [
+      "A. Claim Traceability",
+      "This appendix records how the thesis-facing claim groups connect to the audited claim inventory and",
+      "archived, manifest-bound experiment evidence. It is a traceability aid rather than an additional source",
+      "of empirical results. The historical controlled inventory contains 46 claims: nine implementation"
+    ]
+  },
+  {
+    "physical_page": 64,
+    "characters": 2723,
+    "first_lines": [
+      "52 A. Claim Traceability",
+      "The detailed wording, evidence locator, and required boundary for every ID are maintained in",
+      "docs/thesis/claim_to_evidence_table.md. The audited copy has the following SHA-256:",
+      "cc88363a5aa25d55a56b614b02826aa1"
+    ]
+  },
+  {
+    "physical_page": 65,
+    "characters": 2584,
+    "first_lines": [
+      "A.3. Archived Evidence Bindings 53",
+      "and f77df45. Qualification executions retain producers 3cafb44 (140 common inputs) and 668371f",
+      "(twelve targeted split inputs). Read-only ID-lifecycle rechecks and actual calibration use c5b5ac3;",
+      "records, all batch attempts, decisions and independent rebuild reports are in docs/validation/id_"
+    ]
+  },
+  {
+    "physical_page": 66,
+    "characters": 1462,
+    "first_lines": [
+      "54 A. Claim Traceability",
+      "Each manifest binds six archive files: raw measurements, case summaries, group summaries, case",
+      "audits, the fixed configuration, and the recorded runtime environment. The separate formal evidence\ufffecontract validator regenerates cases and checked diagnostics, recomputes scheduling and summaries,",
+      "and verifies these hashes before analysis. The old result figures, retained in the repository, are"
+    ]
+  },
+  {
+    "physical_page": 67,
+    "characters": 2353,
+    "first_lines": [
+      "Bibliography",
+      "Aurenhammer, F. (1987). \u201cJordan Sorting via Convex Hulls of Certain Non-Simple Polygons\u201d. In:",
+      "Proceedings of the Third Annual Symposium on Computational Geometry. SCG \u201987. New York, NY,",
+      "USA: Association for Computing Machinery, pp. 21\u201329. doi: 10.1145/41958.41961."
+    ]
+  },
+  {
+    "physical_page": 68,
+    "characters": 1298,
+    "first_lines": [
+      "56 Bibliography",
+      "Mytkowicz, T., A. Diwan, M. Hauswirth, and P. F. Sweeney (2009). \u201cProducing Wrong Data Without",
+      "Doing Anything Obviously Wrong!\u201d In: Proceedings of the 14th International Conference on Archi\ufffetectural Support for Programming Languages and Operating Systems. ASPLOS XIV. New York, NY,",
+      "USA: Association for Computing Machinery, pp. 265\u2013276. doi: 10.1145/1508244.1508275."
+    ]
+  }
+]

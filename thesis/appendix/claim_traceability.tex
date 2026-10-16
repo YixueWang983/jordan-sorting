@@ -49,11 +49,11 @@ that historical inventory for the revised implementation.
       & Archived manifest-bound summaries, manifest, evidence-contract
         validator, and recorded execution environment. \\
     \texttt{R-01--R-11}
-      & \cref{sec:results-correctness,sec:results-runtime-size,sec:results-ratios,sec:results-family,sec:results-variability,sec:results-elapsed,sec:results-replication}
+      & Historical summary in \cref{sec:results-historical}; full original tables in the bound analysis archive.
       & Formal-experiment validated evidence and generated analysis tables; the
         pilot experiment is used only for the directional replication claim. \\
     \texttt{E-01--E-04}
-      & \cref{sec:results-exploratory}
+      & Historical discussion in \cref{sec:results-historical}; full coefficient tables retained in the archive.
       & Generated structure/runtime and checked-counter relationship tables,
         interpreted descriptively and non-causally. \\
     \texttt{L-01--L-09}
@@ -134,7 +134,24 @@ version. The subsequent concentrated review is
 binding and provenance receipt are in
 \nolinkurl{docs/validation/final_review_formal_20261015/}.
 The receipt records that review and cannot itself prove the mathematics.
-Formal samples remain a separate execution requirement.
+Formal execution at \texttt{4a83fa6} followed this review and passed the separate
+binding gates; the Python source trees remained identical to \texttt{c5b5ac3}.
+
+\subsection{Current Formal Evidence}
+\label{sec:appendix-current-formal}
+
+The current common and targeted archives, independent validator reports,
+per-input CSV, full-precision summary and figure-generation program are in
+\nolinkurl{docs/validation/final_review_formal_20261015/}.
+The raw formal producers are \texttt{4a83fa6}; a later commit saving results is
+not substituted for that identity. The common archive has 5,600 sample batches
+and the targeted archive 480; both use twenty batches per input/backend and
+their original calibration B tables. Current numerical claims in the abstract,
+introduction, results and conclusion derive from those records. Source-level
+cost claims instead derive from the manual review and its stated model.
+The directory's dated protocol name is not an execution timestamp: archived
+UTC timestamps identify the actual campaigns, which span October 15--16 in
+Europe/Berlin. Old qualification, calibration and historical files are unchanged.
 
 The revision record links these statements to the current split and insertion
 code, public-call failure tests, and their thesis locations. The historical
@@ -173,12 +190,12 @@ Each manifest binds six archive files: raw measurements, case summaries,
 group summaries, case audits, the fixed configuration, and the recorded
 runtime environment. The separate formal evidence-contract validator
 regenerates cases and checked diagnostics, recomputes scheduling and summaries,
-and verifies these hashes before analysis. The two thesis-facing formal
-experiment result figures are conversions of the validated SVG analysis
-outputs. The five explanatory
-figures are generated from committed TikZ sources. Source and generated hashes
-for all seven figures are recorded in
-\nolinkurl{thesis/figures/README.md}.
+and verifies these hashes before analysis. The old result figures, retained in
+the repository, are conversions of historical validated SVG analysis outputs.
+The five explanatory figures come from committed TikZ sources. Current result
+plots are generated from the new raw records by the bound analysis program;
+their sources and generated hashes are indexed in
+\nolinkurl{thesis/figures/README.md} and the current formal archive.
 
 \section{Interpretation Boundaries}
 

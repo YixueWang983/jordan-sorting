@@ -2,40 +2,35 @@
 \label{chap:abstract}
 
 Jordan sorting recovers the coordinate order of intersections along a line
-from the order in which a simple curve encounters them. Historical
-linear-time algorithms solve this problem through an incremental sorting
-procedure combined with specialized dynamic-list structures. This thesis
-studies whether the control flow of the 1990 Simplified Jordan Sorting
-algorithm can be reconstructed as an executable, auditable implementation
-when those theoretical structures are replaced by ordinary Python lists.
+from their traversal order on a simple curve. This thesis reconstructs the
+1990 Simplified Jordan Sorting procedure as one executable Python core with
+ordinary-list and heterogeneous red--black finger-tree backends. The core
+maintains its own partial sorted order, upper/lower pair families and sibling
+ownership; external input certification supplies the validity precondition,
+not the sorted output. Update errors propagate without rollback.
 
-The reconstruction maintains its own partial sorted order, upper and lower
-pair families, and sibling-list ownership while executing the paper-facing
-Step~1/2/3 procedure. For oracle-certified valid inputs, the paper core
-recovers its result from the maintained partial order and does not consume the
-oracle's sorted output. The revised core propagates update errors without
-rollback and requires failed state to be discarded. Untimed checked-state
-audits, deterministic replay, and fixed policies distinguish diagnostics from
-the pre-certified \texttt{minimal} call. The archived formal experiment
-evaluated the earlier rollback-enabled version on 60 controlled cases at five
-sizes from $n=32$ to $n=512$, alongside Python sort and the complete
-oracle-backed reference pipeline.
+The tree implements stable pair handles, endpoint fingers, local insertion,
+split and header-based ownership transfer. A source-level manual argument
+checks its physical representation, locality and mixed-operation potentials.
+Under unit-cost comparison and machine-word assumptions, with expected lookup
+and amortized dictionary growth, it gives linear total work for the valid-input
+minimal core. This is not machine verification or an unconditional Python
+wall-clock guarantee. Independent model checks, bounded validation and
+same-backend replay provide separate execution evidence.
 
-All 3600 measured rows have correct output and no
-recorded error, and all 60 untimed checked-state audits pass. The median
-exact-case paper/reference runtime ratio decreases from $3.226$ at $n=32$ to $0.567$ at
-$n=512$; it is above one through $n=128$ and below one at $n=256$ and
-$n=512$. Python sort has the lowest median call time at every tested size.
-These ratios are pipeline-scope comparisons: the reference measurement
-includes its complete oracle-backed pipeline, whereas the paper measurement
-contains only the pre-certified \texttt{minimal} sorting call, with oracle
-certification and checked diagnostics outside timing. They are therefore not
-like-for-like end-to-end speedups.
+The current matched study qualifies 140 controlled inputs at lengths 32--513
+and a separate twelve-input set with two-sided splits. Frozen per-input batch
+sizes and twenty paired batches per backend yield 6,080 formal sample batches.
+All 66,560 sample calls return correct outputs. Tree/list ratios of input
+medians range from 1.114 to 3.535 in the common set (median 2.898), and from
+3.147 to 3.213 in the targeted set (median 3.180). The tree is slower on every
+measured input; no future crossover is inferred. Related constructions and
+mirrors are not independent random samples.
 
-The contribution combines an independently recovering reconstruction with
-reproducible historical measurements. A later real finger-tree backend has
-bounded qualification and calibration, but no formal performance results or
-completed general proof review. Recognition is not measured. The ordinary
-backend incurs quadratic insertion-copying work on increasing inputs without
-splits; no tight overall bound is claimed. Historical timings measure neither
-the revised core nor the benefit of removing rollback.
+The contribution combines an independently recovering implementation,
+source-linked representation and cost analysis, and reproducible matched
+measurements with explicit timing and evidence boundaries. The earlier
+rollback-enabled 60-input study remains separately identified historical
+evidence. Recognition and the causal effect of rollback removal are not
+measured. The results distinguish theoretical operation costs from the
+practical constants of the implemented Python backends.

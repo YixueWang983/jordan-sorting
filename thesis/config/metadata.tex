@@ -1,4 +1,8 @@
 % Replace every placeholder before producing a submission PDF.
+% The current artifact is a review draft; do not print unknown personal data.
+\newif\ifReviewDraft
+\ReviewDrafttrue
+\newcommand{\ReviewDraftDate}{16 October 2026}
 \newcommand{\ThesisTitle}{Implementation and Evaluation of the 1990 Simplified Jordan Sorting Algorithm}
 \newcommand{\ThesisAuthor}{Author Name}
 \newcommand{\MatriculationNumber}{Matriculation Number}
