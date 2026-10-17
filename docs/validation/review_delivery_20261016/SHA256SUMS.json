@@ -1,0 +1,17 @@
+{
+  "FOR_SUPERVISOR.md": "a38668dfcda802d0c256654ef9037391e2947fc4fb56ee8cd723288608a44f34",
+  "README.md": "97b4e3a83a2353df244bf48eea3eb431aba88b3d8cc5fba8d9db0c9ebdec7781",
+  "audit_crosscheck_report.json": "0b5c6297a9e32fe71fe8616cd0d214da138abd575e80aa38d31c555acf54d962",
+  "bibliography.log": "1172bef460e2f979d64f0f5177cacf49dcb87c7b090d9da47a48280c96cd9ff7",
+  "build.log": "94dc6c338bd07bfd057021ec2684d1c3fb7c280eff52c26c74855f3ebd1bf745",
+  "build_report.json": "956061c5aba5d032c1b66455733c104b0943255914f1794f1a01de473abaf2ba",
+  "changed_page_contact_sheets.zip": "73bf20ed399c5fddd6609ca50ce07c850bf2ca43b0de093e520ea4c3180b5690",
+  "check_audit_entrypoint.py": "d4859404dc215dd7cd7e2fc2d44e4d3c516aabc030ee59e99089c53ea93d9c59",
+  "check_coverage.py": "b53bd53ceb16aa487e841bc9e69942421c6b59a50527346f13826c246335d024",
+  "coverage_inventory.json": "fa268aee1b0dcee99336c44751fa83d8bfe731c789083570ccaf21f009bd16a8",
+  "delivery_bindings.json": "0ca7b5c117ac25ab8aed7b1620bf1470fc30b9f4f5d4a269c7d39ee6d88ec992",
+  "entrypoint_checks.json": "ff837d1d105abbf0d000499e3aab96af1344515b735c15d7f75014fa70d56740",
+  "main.log": "e85aad686a8b1531dd6623101e80d4e94c3799720da7948838b4b28857702847",
+  "page_comparison.json": "48612edc66fcff0b2aa993ef057e1f002a0c4a4af7c7bce5714a21d1a96aa877",
+  "visual_review.json": "2a0e8c59cc85bbd1efa3fc40d7d905c0bc2bb4c30713a50b2632430580f8d69a"
+}

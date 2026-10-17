@@ -1,0 +1,1380 @@
+{
+  "scope": "read_only_existing_archive_inventory; no sorter or tests executed",
+  "base_commit": "1d3106d9738ab0072dbf86de3e9124dd7a1add70",
+  "operation_evidence": {
+    "saved_commit": "cc1aa2d85deb88e8d3231dd7042dc0d51595e8b2",
+    "matched_source_hashes": 10,
+    "source_sha256": {
+      "src/heterogeneous_finger_backend.py": "9b9a3674514fc104c02b2d013aeec39ee8f36077401efad93de26789131faf52",
+      "src/heterogeneous_finger_split.py": "a424974dffbdc54c68335157e9b332f675c7613d44eb963c1fd9cbae52824248",
+      "tests/test_heterogeneous_finger_backend.py": "1c6168788123edae2b144183f7043e36b4aaa12fda58a73c26a91246900fa128",
+      "tests/test_heterogeneous_finger_split.py": "187a1fa447da1a6ffc6dfba597fa252a36f0f89544cb20f2c43b5a017568401a",
+      "experiments/probe_heterogeneous_split.py": "a0662cfeb28fadfbc03e91dea7c49bce56c331441e1ac3ad8dc61ceaf816f0f6",
+      "src/sibling_backend_contract.py": "11af23db23720a0695c0d31f90eb0c840921ead9f50e61b096749a39f0042631",
+      "src/paper_jordan.py": "9d3b80690f675cf644d8f0dcaead35e9417702fbc9d7d7601e6bd7a89d700341",
+      "src/paper_jordan_sort.py": "c2aee3d1e62450913ce58dc050746bd4b401e26376e72f698c4680a8fd0dd90d",
+      "docs/development/heterogeneous_finger_backend_spec.md": "692813f31f4f6b8623cb4026bd05f0c5d820c2ed441e643e28ddb8c9046f2cb1",
+      "README.md": "f28b215f262ac1523ef50c91d943441225a44940428a85eb84d311b21ad079e4"
+    },
+    "verified_evidence_files": 5,
+    "recorded_base_commit": "f0c4e1d9befcb4561dd491a57636ffd828a93bf1",
+    "test_methods": {
+      "methods": 53,
+      "new_split_adopt_methods": 22,
+      "skips": 0,
+      "exit_code": 0
+    }
+  },
+  "structural_evidence": {
+    "saved_commit": "84f7e13394db66de1314aa6c8c11281081d0adae",
+    "matched_source_hashes": 19,
+    "source_sha256": {
+      "src/baselines.py": "d24b0cc37ae6e6fd7ae05fca74552d39bb3435fcca7e03d5f48dab768b9b56ec",
+      "src/certified_paper_jordan.py": "460cf251796b4e5f4108bddbfb2fc109e7aec94d6dc6d20c2c795d27e840f010",
+      "src/family_tree.py": "7ea1d0903f577f2088046d380bed08dacb149b1e8a91f02d9adf5ab7becef729",
+      "src/generators.py": "199ea83ce95e7817f244b899fd416c74848ca3e430068b11cd9e055da886a605",
+      "src/heterogeneous_finger_backend.py": "5fe687f20d74a145a0af1f6ca03aaf342acde74074d9f5c8ea40ca1c26c8d8d5",
+      "src/heterogeneous_finger_split.py": "bf733d089be5de272ddf897c4022f0d74e423cccb5eb938e61550dd8beb1593f",
+      "src/instrumentation.py": "c32ab3815abd7815b06a2e15d386526f2ebe8f61cafb75bf53ed20fb7f750cc3",
+      "src/jordan_operations.py": "bc72bf7b6fad92c79b851d3d35d4ee00ce638303c89db312f9459380a5182507",
+      "src/oracle.py": "be8d8ae0848775ef4a36ea37cb0dd7f166246e30a3cc9d5ba44e0de0f7c7d001",
+      "src/paper_execution_policy.py": "310bb7734da8184dc20a57844cbffd3a3377d60db06731b862306a7d41e7738c",
+      "src/paper_jordan.py": "870f788a274f25d9af7e2302f9f5f6259b6a3fc798dd7033462f2d337ee97082",
+      "src/paper_jordan_sort.py": "c2aee3d1e62450913ce58dc050746bd4b401e26376e72f698c4680a8fd0dd90d",
+      "src/partial_sorted_list.py": "29273f2afdb3352ea6393dfc444a82b1834532a234e1df5077c73fb0743cd05d",
+      "src/sibling_backend_contract.py": "404a8c4c26550428429c1f01cbc669457d7db40c305b13c271dbb4ef86a13a14",
+      "src/sibling_list_backend.py": "5485d55640f6bc15e62ffdb15f53e0fb513df528041dccc99a7c0c86fc2f9c5c",
+      "src/simplified_jordan.py": "a2aef7aa5431c3e3ef0d0d9724ac962c32bdb2d57fbcbac29df40207f14a272e",
+      "src/stats.py": "486a2895b22464db2cff7e0e16fd05c4b793193e45502802e4c40e78699b4208",
+      "experiments/validate_finger_work_modes.py": "b13a99afb3fa34f7405f4e816e4dece3fdd9cb812542233c8f15c37356d11ade",
+      "experiments/validate_heterogeneous_integration.py": "d8295b51a3c75fd9532170d6dea1571e3bd5958212d51d16c6758c65ba647dcb"
+    },
+    "recorded_parent_head": "d6622ce976b8b71d3dbe23618606d6d471e32069",
+    "verified_manifest_files": 39,
+    "inputs": 18,
+    "original_executions": 108,
+    "per_checked_configuration": {
+      "ordinary_list": {
+        "counts": {
+          "both_nonempty": 230,
+          "finite_owner_splits": 460,
+          "finite_owners_with_multiple_transfers": 18,
+          "insert_into_previous_split_output": 666,
+          "splits": 460,
+          "resplit_previous_output": 212
+        },
+        "prefixes": 5349,
+        "smaller_side_distribution": {
+          "30": 2,
+          "1": 224,
+          "62": 2,
+          "126": 2
+        }
+      },
+      "tree_work_on": {
+        "counts": {
+          "both_nonempty": 230,
+          "finite_owner_splits": 460,
+          "finite_owners_with_multiple_transfers": 18,
+          "insert_into_previous_split_output": 666,
+          "splits": 460,
+          "resplit_previous_output": 212
+        },
+        "prefixes": 5349,
+        "smaller_side_distribution": {
+          "30": 2,
+          "1": 224,
+          "62": 2,
+          "126": 2
+        }
+      },
+      "tree_work_off": {
+        "counts": {
+          "both_nonempty": 230,
+          "finite_owner_splits": 460,
+          "finite_owners_with_multiple_transfers": 18,
+          "insert_into_previous_split_output": 666,
+          "splits": 460,
+          "resplit_previous_output": 212
+        },
+        "prefixes": 5349,
+        "smaller_side_distribution": {
+          "30": 2,
+          "1": 224,
+          "62": 2,
+          "126": 2
+        }
+      }
+    },
+    "cases": [
+      {
+        "case": "balanced-128",
+        "input_sha256": "02f049bd09c42f9645c20e70fedd9d85e2c776cc45539b108dcda253a8a89b69",
+        "report_sha256": "09fe6d609a9eb17d2b6c942a4417a7e3a2a1b79895a614f1c5ecf2c49f38ed53",
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            30,
+            31
+          ]
+        ]
+      },
+      {
+        "case": "skew-128",
+        "input_sha256": "f5f15cc4e49a72478d1821f84cea47cc9a564079bdf9ef56efc10aa3271cd3f0",
+        "report_sha256": "3a6fb1cd7ca3bf517aa8b1e5fe4a8ae9684b75111d807b85e5aa75cdfcdc4337",
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            60
+          ]
+        ]
+      },
+      {
+        "case": "repeated-128",
+        "input_sha256": "fb4b3ba6cc14dd5c2309f8e838a8e415aeb25a951719cb6d3986a33f2a522506",
+        "report_sha256": "94af5e095bb020483ad6060b8f013d5ab49e79a26323d95b3d82367b26518e39",
+        "counts": {
+          "splits": 30,
+          "finite_owner_splits": 30,
+          "both_nonempty": 15,
+          "insert_into_previous_split_output": 45,
+          "resplit_previous_output": 14,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            1
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            15,
+            1
+          ],
+          [
+            17,
+            1
+          ],
+          [
+            19,
+            1
+          ],
+          [
+            21,
+            1
+          ],
+          [
+            23,
+            1
+          ],
+          [
+            25,
+            1
+          ],
+          [
+            27,
+            1
+          ],
+          [
+            29,
+            1
+          ]
+        ]
+      },
+      {
+        "case": "balanced-129",
+        "input_sha256": "93dd43779716ea2254199966abe72a81b82190c5a4d2948d4d40bd57ac5c4ef3",
+        "report_sha256": "b9e0f356fc636b5b1cbbed4c0383f6214de0180fc7ef8733e9fe2bad7f178843",
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            31,
+            30
+          ]
+        ]
+      },
+      {
+        "case": "skew-129",
+        "input_sha256": "4676e9053ac4b2215c86fc00ddc57d551c11316e3f9887dcb421d869b7da5070",
+        "report_sha256": "682549f84cdaefb1a2986093cd6fb1dc4bc70e5c587a2d62349273aca579d6b4",
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            60,
+            1
+          ]
+        ]
+      },
+      {
+        "case": "repeated-129",
+        "input_sha256": "e6a373b47b84fae200cc73f78e4c3c4babf4f6eacd0d2014829b8094124ecfda",
+        "report_sha256": "62f3eb5775bae379d932609c2cd19e4027071f963762f61aefc0547b55b99d51",
+        "counts": {
+          "splits": 30,
+          "finite_owner_splits": 30,
+          "both_nonempty": 15,
+          "insert_into_previous_split_output": 45,
+          "resplit_previous_output": 14,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            1,
+            7
+          ],
+          [
+            1,
+            9
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            1,
+            13
+          ],
+          [
+            1,
+            15
+          ],
+          [
+            1,
+            17
+          ],
+          [
+            1,
+            19
+          ],
+          [
+            1,
+            21
+          ],
+          [
+            1,
+            23
+          ],
+          [
+            1,
+            25
+          ],
+          [
+            1,
+            27
+          ],
+          [
+            1,
+            29
+          ]
+        ]
+      },
+      {
+        "case": "balanced-256",
+        "input_sha256": "8308b2942f3869c88f53f95d5d5ca897c2bdb25425b1d0fb317104cf4856a4a6",
+        "report_sha256": "b36ea2d92a3ee5f0271c3862d968e5879e112eaeb82610fdd720cfce624085d8",
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            62,
+            63
+          ]
+        ]
+      },
+      {
+        "case": "skew-256",
+        "input_sha256": "6870e091a20f67e63d0a35495f9934e3f6dba22a76ffb07087a9e43ddaef08d7",
+        "report_sha256": "d9f61c35ca33fb79b8322a4ab04692a09236fd0e7c2187323e9e9654782b1566",
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            124
+          ]
+        ]
+      },
+      {
+        "case": "repeated-256",
+        "input_sha256": "6cf2db3c9d668cc1a75940e18a03aa556df8249417865c5934f9a87e4fddb662",
+        "report_sha256": "17aaecb422f2e5688c82129c610efa78e2d688dabb9cef5089ea990355733c1d",
+        "counts": {
+          "splits": 62,
+          "finite_owner_splits": 62,
+          "both_nonempty": 31,
+          "insert_into_previous_split_output": 93,
+          "resplit_previous_output": 30,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            1
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            15,
+            1
+          ],
+          [
+            17,
+            1
+          ],
+          [
+            19,
+            1
+          ],
+          [
+            21,
+            1
+          ],
+          [
+            23,
+            1
+          ],
+          [
+            25,
+            1
+          ],
+          [
+            27,
+            1
+          ],
+          [
+            29,
+            1
+          ],
+          [
+            31,
+            1
+          ],
+          [
+            33,
+            1
+          ],
+          [
+            35,
+            1
+          ],
+          [
+            37,
+            1
+          ],
+          [
+            39,
+            1
+          ],
+          [
+            41,
+            1
+          ],
+          [
+            43,
+            1
+          ],
+          [
+            45,
+            1
+          ],
+          [
+            47,
+            1
+          ],
+          [
+            49,
+            1
+          ],
+          [
+            51,
+            1
+          ],
+          [
+            53,
+            1
+          ],
+          [
+            55,
+            1
+          ],
+          [
+            57,
+            1
+          ],
+          [
+            59,
+            1
+          ],
+          [
+            61,
+            1
+          ]
+        ]
+      },
+      {
+        "case": "balanced-257",
+        "input_sha256": "ba344796cf3140cbf1377356b72abe35751c63c6e8c67c60c8003bc2331a649e",
+        "report_sha256": "0d0783e5d890077441b47b0e792ee609e227fabb8b3a7d472e2656f245681665",
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            63,
+            62
+          ]
+        ]
+      },
+      {
+        "case": "skew-257",
+        "input_sha256": "263c585976e19aecc23d4b434983bfa78f551f627a816351595bbbc081669382",
+        "report_sha256": "9bf5c9b24834ed50f8f12253e51eb78075017f45df663115fdbe973be515cd4a",
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            124,
+            1
+          ]
+        ]
+      },
+      {
+        "case": "repeated-257",
+        "input_sha256": "88d22207c5e607693ffc81e70c6b89d931d6aee861e5684dbaaa4f0e6cc8ff38",
+        "report_sha256": "4f09075e1cbe257c656f669de59657f5e34cddb3ad7b821ff3335d9e773775c1",
+        "counts": {
+          "splits": 62,
+          "finite_owner_splits": 62,
+          "both_nonempty": 31,
+          "insert_into_previous_split_output": 93,
+          "resplit_previous_output": 30,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            1,
+            7
+          ],
+          [
+            1,
+            9
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            1,
+            13
+          ],
+          [
+            1,
+            15
+          ],
+          [
+            1,
+            17
+          ],
+          [
+            1,
+            19
+          ],
+          [
+            1,
+            21
+          ],
+          [
+            1,
+            23
+          ],
+          [
+            1,
+            25
+          ],
+          [
+            1,
+            27
+          ],
+          [
+            1,
+            29
+          ],
+          [
+            1,
+            31
+          ],
+          [
+            1,
+            33
+          ],
+          [
+            1,
+            35
+          ],
+          [
+            1,
+            37
+          ],
+          [
+            1,
+            39
+          ],
+          [
+            1,
+            41
+          ],
+          [
+            1,
+            43
+          ],
+          [
+            1,
+            45
+          ],
+          [
+            1,
+            47
+          ],
+          [
+            1,
+            49
+          ],
+          [
+            1,
+            51
+          ],
+          [
+            1,
+            53
+          ],
+          [
+            1,
+            55
+          ],
+          [
+            1,
+            57
+          ],
+          [
+            1,
+            59
+          ],
+          [
+            1,
+            61
+          ]
+        ]
+      },
+      {
+        "case": "balanced-512",
+        "input_sha256": "50fb49466131870ba9d1f395707cc9eebe97c9102c58dec5a4f5ccfac098c8df",
+        "report_sha256": "1871d33bbb1eef93b4f0ab45f998cce7eaa53cca119fb24f915678adf3e39689",
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            126,
+            127
+          ]
+        ]
+      },
+      {
+        "case": "skew-512",
+        "input_sha256": "703a991664816336b76c2f5451ff308e2907ab1d1ff4a2c00bdcf862d17e7fa4",
+        "report_sha256": "b3d43a65bb2720b0a7de95b3100e522c3c990f3a6e1f3bae3df7e296686671c3",
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            252
+          ]
+        ]
+      },
+      {
+        "case": "repeated-512",
+        "input_sha256": "ad7b17f3dae9b8f82b201416d35e30f8573a38a2e03965f079bba7ebcc931c0e",
+        "report_sha256": "70d55bad29b0bfa3b0deea4925ac1feaee699428d9fa760af71ea6135715bdd7",
+        "counts": {
+          "splits": 126,
+          "finite_owner_splits": 126,
+          "both_nonempty": 63,
+          "insert_into_previous_split_output": 189,
+          "resplit_previous_output": 62,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            1
+          ],
+          [
+            3,
+            1
+          ],
+          [
+            5,
+            1
+          ],
+          [
+            7,
+            1
+          ],
+          [
+            9,
+            1
+          ],
+          [
+            11,
+            1
+          ],
+          [
+            13,
+            1
+          ],
+          [
+            15,
+            1
+          ],
+          [
+            17,
+            1
+          ],
+          [
+            19,
+            1
+          ],
+          [
+            21,
+            1
+          ],
+          [
+            23,
+            1
+          ],
+          [
+            25,
+            1
+          ],
+          [
+            27,
+            1
+          ],
+          [
+            29,
+            1
+          ],
+          [
+            31,
+            1
+          ],
+          [
+            33,
+            1
+          ],
+          [
+            35,
+            1
+          ],
+          [
+            37,
+            1
+          ],
+          [
+            39,
+            1
+          ],
+          [
+            41,
+            1
+          ],
+          [
+            43,
+            1
+          ],
+          [
+            45,
+            1
+          ],
+          [
+            47,
+            1
+          ],
+          [
+            49,
+            1
+          ],
+          [
+            51,
+            1
+          ],
+          [
+            53,
+            1
+          ],
+          [
+            55,
+            1
+          ],
+          [
+            57,
+            1
+          ],
+          [
+            59,
+            1
+          ],
+          [
+            61,
+            1
+          ],
+          [
+            63,
+            1
+          ],
+          [
+            65,
+            1
+          ],
+          [
+            67,
+            1
+          ],
+          [
+            69,
+            1
+          ],
+          [
+            71,
+            1
+          ],
+          [
+            73,
+            1
+          ],
+          [
+            75,
+            1
+          ],
+          [
+            77,
+            1
+          ],
+          [
+            79,
+            1
+          ],
+          [
+            81,
+            1
+          ],
+          [
+            83,
+            1
+          ],
+          [
+            85,
+            1
+          ],
+          [
+            87,
+            1
+          ],
+          [
+            89,
+            1
+          ],
+          [
+            91,
+            1
+          ],
+          [
+            93,
+            1
+          ],
+          [
+            95,
+            1
+          ],
+          [
+            97,
+            1
+          ],
+          [
+            99,
+            1
+          ],
+          [
+            101,
+            1
+          ],
+          [
+            103,
+            1
+          ],
+          [
+            105,
+            1
+          ],
+          [
+            107,
+            1
+          ],
+          [
+            109,
+            1
+          ],
+          [
+            111,
+            1
+          ],
+          [
+            113,
+            1
+          ],
+          [
+            115,
+            1
+          ],
+          [
+            117,
+            1
+          ],
+          [
+            119,
+            1
+          ],
+          [
+            121,
+            1
+          ],
+          [
+            123,
+            1
+          ],
+          [
+            125,
+            1
+          ]
+        ]
+      },
+      {
+        "case": "balanced-513",
+        "input_sha256": "9478cff2da3af5a9127e7afefd316ff0ceb486839c6ab6246597d2e2c3e529e7",
+        "report_sha256": "eed3c146052655bafa5225fa6e2aba01d23b51940e926ca661c1332dac7b8051",
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            127,
+            126
+          ]
+        ]
+      },
+      {
+        "case": "skew-513",
+        "input_sha256": "da05486c6053b613074dcd3e992ff5786e14a649ff4da23dcd499e7707b09955",
+        "report_sha256": "72d1c4756816d595032bdbe18b1029109711513030638c21774b4dfebad0b86a",
+        "counts": {
+          "splits": 2,
+          "finite_owner_splits": 2,
+          "both_nonempty": 1,
+          "insert_into_previous_split_output": 1,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            252,
+            1
+          ]
+        ]
+      },
+      {
+        "case": "repeated-513",
+        "input_sha256": "b4b2dc91e3e4acb54a63d33e6e30019ec46aba64db486311e59e1e5d5e4af050",
+        "report_sha256": "4d1d07dff10d71d513d5949f54329f8244a554be0f1cd633cf938a835cf7be27",
+        "counts": {
+          "splits": 126,
+          "finite_owner_splits": 126,
+          "both_nonempty": 63,
+          "insert_into_previous_split_output": 189,
+          "resplit_previous_output": 62,
+          "finite_owners_with_multiple_transfers": 1
+        },
+        "nonempty_split_sizes": [
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            1,
+            5
+          ],
+          [
+            1,
+            7
+          ],
+          [
+            1,
+            9
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            1,
+            13
+          ],
+          [
+            1,
+            15
+          ],
+          [
+            1,
+            17
+          ],
+          [
+            1,
+            19
+          ],
+          [
+            1,
+            21
+          ],
+          [
+            1,
+            23
+          ],
+          [
+            1,
+            25
+          ],
+          [
+            1,
+            27
+          ],
+          [
+            1,
+            29
+          ],
+          [
+            1,
+            31
+          ],
+          [
+            1,
+            33
+          ],
+          [
+            1,
+            35
+          ],
+          [
+            1,
+            37
+          ],
+          [
+            1,
+            39
+          ],
+          [
+            1,
+            41
+          ],
+          [
+            1,
+            43
+          ],
+          [
+            1,
+            45
+          ],
+          [
+            1,
+            47
+          ],
+          [
+            1,
+            49
+          ],
+          [
+            1,
+            51
+          ],
+          [
+            1,
+            53
+          ],
+          [
+            1,
+            55
+          ],
+          [
+            1,
+            57
+          ],
+          [
+            1,
+            59
+          ],
+          [
+            1,
+            61
+          ],
+          [
+            1,
+            63
+          ],
+          [
+            1,
+            65
+          ],
+          [
+            1,
+            67
+          ],
+          [
+            1,
+            69
+          ],
+          [
+            1,
+            71
+          ],
+          [
+            1,
+            73
+          ],
+          [
+            1,
+            75
+          ],
+          [
+            1,
+            77
+          ],
+          [
+            1,
+            79
+          ],
+          [
+            1,
+            81
+          ],
+          [
+            1,
+            83
+          ],
+          [
+            1,
+            85
+          ],
+          [
+            1,
+            87
+          ],
+          [
+            1,
+            89
+          ],
+          [
+            1,
+            91
+          ],
+          [
+            1,
+            93
+          ],
+          [
+            1,
+            95
+          ],
+          [
+            1,
+            97
+          ],
+          [
+            1,
+            99
+          ],
+          [
+            1,
+            101
+          ],
+          [
+            1,
+            103
+          ],
+          [
+            1,
+            105
+          ],
+          [
+            1,
+            107
+          ],
+          [
+            1,
+            109
+          ],
+          [
+            1,
+            111
+          ],
+          [
+            1,
+            113
+          ],
+          [
+            1,
+            115
+          ],
+          [
+            1,
+            117
+          ],
+          [
+            1,
+            119
+          ],
+          [
+            1,
+            121
+          ],
+          [
+            1,
+            123
+          ],
+          [
+            1,
+            125
+          ]
+        ]
+      }
+    ]
+  },
+  "qualification_coverage": {
+    "common_qualification_v2_20261015": {
+      "sha256": "14f9757307ab8a027b7d34bb9073bd69a708951865779a1ef71dc304435e36b5",
+      "saved_summary": {
+        "input_selection_changed": false,
+        "per_backend_split_partitions": {
+          "heterogeneous_finger": {
+            "both_nonempty": 0,
+            "left_empty": 1894,
+            "right_empty": 1894
+          },
+          "ordinary_list": {
+            "both_nonempty": 0,
+            "left_empty": 1894,
+            "right_empty": 1894
+          }
+        },
+        "per_backend_splits_by_stratum": {
+          "heterogeneous_finger": {
+            "low_nesting_valid": 844,
+            "medium_nesting_valid": 2924,
+            "nested_heavy_valid": 20,
+            "strict_flat": 0
+          },
+          "ordinary_list": {
+            "low_nesting_valid": 844,
+            "medium_nesting_valid": 2924,
+            "nested_heavy_valid": 20,
+            "strict_flat": 0
+          }
+        },
+        "performance_eligible": false,
+        "scope": "post-run reconstruction of all primary checked traces; peer/fresh replay/minimal excluded"
+      }
+    },
+    "split_trace_followup_20261015": {
+      "sha256": "2dcc996fe6683031292271755532f3ec88e293fbe1e671618f59336bdc43c613",
+      "saved_summary": {
+        "independent_random_samples": false,
+        "per_backend": {
+          "heterogeneous_finger": {
+            "acquired_side_followup_inserts": 0,
+            "finite_owner_two_sided": 12,
+            "output_group_followup_splits": 0,
+            "performed_splits": 24,
+            "retained_side_followup_inserts": 12,
+            "smaller_sides": {
+              "3": 4,
+              "7": 4,
+              "19": 4
+            },
+            "source_owners": {
+              "2": 12
+            },
+            "source_sizes": {
+              "61": 12
+            },
+            "two_sided_nonempty": 12
+          },
+          "ordinary_list": {
+            "acquired_side_followup_inserts": 0,
+            "finite_owner_two_sided": 12,
+            "output_group_followup_splits": 0,
+            "performed_splits": 24,
+            "retained_side_followup_inserts": 12,
+            "smaller_sides": {
+              "3": 4,
+              "7": 4,
+              "19": 4
+            },
+            "source_owners": {
+              "2": 12
+            },
+            "source_sizes": {
+              "61": 12
+            },
+            "two_sided_nonempty": 12
+          }
+        },
+        "performance_eligible": false,
+        "scope": "primary checked trace only; neither peer/final replay nor minimal counted again"
+      }
+    }
+  },
+  "limitations": [
+    "No complete event traces in the structural archive: insert/re-split counts are saved observations, not independently recomputed events.",
+    "Qualification coverage summaries were hash-checked and read, not reconstructed from all raw traces.",
+    "Saved source commits are not clean execution commits; recorded base HEADs precede the dirty executed changes.",
+    "No latest-version six-case regression, qualification or timing was run."
+  ]
+}

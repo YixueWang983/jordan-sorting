@@ -1,11 +1,14 @@
 # FU Berlin LaTeX Thesis Scaffold
 
-## Current review draft (2026-10-16)
+## Current supervisor review draft (completed 2026-10-17)
 
-`output/pdf/jordan_thesis_review_20261016.pdf` corrects the recursive join contract
-and nonempty-split potential condition, and retains current matched results
-(execution `4a83fa6`). The [correction and final checks](../docs/validation/join_proof_correction_20261016/README.md)
-record the new build and review. The preceding
+`output/pdf/jordan_thesis_supervisor_review_20261016.pdf` adds a version-bound
+correctness coverage table to the corrected join/potential account, while
+retaining current matched results (execution `4a83fa6`). The filename retains
+the work package's start date. The [delivery checks and reading note](../docs/validation/review_delivery_20261016/README.md)
+record the build, archived coverage inventory and auxiliary checker protection.
+The preceding `output/pdf/jordan_thesis_review_20261016.pdf`, its
+[correction checks](../docs/validation/join_proof_correction_20261016/README.md), and
 `output/pdf/jordan_thesis_formal_20261016.pdf` and its evidence in
 `docs/validation/final_review_formal_20261015/` remain unchanged.
 

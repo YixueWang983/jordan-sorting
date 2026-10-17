@@ -1,0 +1,26 @@
+{
+  "completed_date": "2026-10-17",
+  "pdf_sha256": "ba77bbec5e8393097347447831dce24bef5456ff447976d52794b898c03ade12",
+  "physical_pages": 68,
+  "scale": 1.5,
+  "visually_checked_changed_pages": [
+    6,
+    7,
+    8,
+    11,
+    39,
+    40,
+    41,
+    42,
+    49,
+    56,
+    65,
+    66
+  ],
+  "unchanged_pixel_pages": 56,
+  "baseline_pdf": "output/pdf/jordan_thesis_review_20261016.pdf",
+  "baseline_sha256": "754b3d8e1629248e7b0a057e8c67199b9d5c4b59faa876ddd7ea07e1f59516c0",
+  "method": "Every final page rendered and pixel-compared with the previous reviewed PDF; all 12 changed pages inspected in four-page sheets or individual view. Final page 56 inspected individually after shortening the limitations cross-reference; other final changed pages are pixel-identical to the inspected interim render.",
+  "findings": "No clipping, overlaps, missing glyphs, broken table or unresolved cross-references observed. Table 4.1 fits on physical page 39; substantive text was not reduced in font size or margin.",
+  "scope": "Layout/content inspection only; not independent mathematical certification or school submission approval."
+}

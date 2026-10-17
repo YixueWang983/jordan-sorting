@@ -1,0 +1,73 @@
+{
+  "scope": "read_only_saved_evidence_and_thesis_numeric_crosscheck",
+  "archives": {
+    "common_qualification_v2_20261015": {
+      "verified_files": 995,
+      "manifest_sha256": "944156dbb23a82dfd5ac51daa5994af05d65815b20078457d945f659cab40d7f"
+    },
+    "split_trace_followup_20261015": {
+      "verified_files": 103,
+      "manifest_sha256": "e03ba65013036c7cfce90f20d82b898fbdfee942e40ef5c830a0bc64c8602f61"
+    },
+    "id_lifecycle_calibration_20261015": {
+      "verified_files": 3948,
+      "manifest_sha256": "5213bf3e9315f8a7391ba0d42c981e212d1fee3fa5a26c469840db0b1653236b"
+    },
+    "final_review_formal_20261015": {
+      "verified_files": 8238,
+      "manifest_sha256": "95f4f0b2b8f12572f58dc755f2940720d5accd37bebeec9423916984f1b96b0a"
+    }
+  },
+  "datasets": {
+    "common": {
+      "counts": {
+        "sample_batches": 5600,
+        "sample_calls": 62720,
+        "warmup_batches": 1400,
+        "warmup_calls": 1400,
+        "sample_batches_below_10ms": 1,
+        "measured_sample_ns": 183511291318
+      },
+      "inputs": 140,
+      "ratios": {
+        "min": 1.1139555677132946,
+        "q25": 2.117053620244037,
+        "median": 2.8975050055249456,
+        "q75": 3.2103645421937443,
+        "max": 3.5345601459014873
+      },
+      "rounded_table_rows": 10,
+      "readonly_report_exactly_matches_archived": true
+    },
+    "targeted_split": {
+      "counts": {
+        "sample_batches": 480,
+        "sample_calls": 3840,
+        "warmup_batches": 120,
+        "warmup_calls": 120,
+        "sample_batches_below_10ms": 0,
+        "measured_sample_ns": 21289948917
+      },
+      "inputs": 12,
+      "ratios": {
+        "min": 3.147082902101595,
+        "q25": 3.1648268956619217,
+        "median": 3.1802645782562653,
+        "q75": 3.1893641386690454,
+        "max": 3.213334282799373
+      },
+      "rounded_table_rows": 3,
+      "readonly_report_exactly_matches_archived": true
+    }
+  },
+  "stratum_rows_checked": 4,
+  "historical_ratio_cells_checked": 5,
+  "frozen_tracked_files_unchanged": 525,
+  "proof_binding": {
+    "old_commit": "ce0148bf70f10eb1683e13abe573406413762331",
+    "old_sha256": "b7b73beeb454580524261776e9be2de945da0a907b2b6167a9e7bb8bf9e0e6ca",
+    "corrected_sha256": "a125e3108fdbf0f14c13208e832539bf022b036847a5d8a1a60653e8e91406fb",
+    "old_receipt_unchanged": true
+  },
+  "current_thesis_table_rows_checked": 17
+}

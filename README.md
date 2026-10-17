@@ -6,10 +6,20 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
+The [supervisor review package](docs/validation/review_delivery_20261016/README.md)
+adds the version-bound correctness coverage table and guards the auxiliary
+archive checker against optimized Python. Completed on October 17, it preserves
+the measured source and all original data. The current 68-page PDF is
+`output/pdf/jordan_thesis_supervisor_review_20261016.pdf`; the filename retains
+the work package's October 16 start date. The package includes a short reading
+note and remains a supervisor review draft, not completed university submission
+paperwork.
+
 The [October 16 proof correction and final draft checks](docs/validation/join_proof_correction_20261016/README.md)
 make the red-root join transient and the nonempty-split potential conditions
 explicit. Production code, formal measurements and calibration B tables remain
-frozen. The updated review PDF is `output/pdf/jordan_thesis_review_20261016.pdf`.
+frozen. Its preceding review PDF, `output/pdf/jordan_thesis_review_20261016.pdf`,
+is retained unchanged.
 
 The [current formal comparison and thesis review draft](docs/validation/final_review_formal_20261015/README.md) are complete at execution source **`4a83fa6`**: 140 common inputs and 12 targeted inputs pass, with **5600 + 480 formal sample batches**, independently rebuilt. The tree is slower on every measured input (case-median ratio ranges **1.114–3.535** and **3.147–3.213**). Qualification and calibration were reused without changing their records or B tables. The thesis now reports these results separately from the historical rollback study; source-level manual review retains its explicit computational model and does not claim external certification.
 

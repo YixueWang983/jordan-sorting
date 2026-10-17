@@ -197,6 +197,54 @@ split postconditions, including checks retained in \texttt{minimal}.
 Public-call tests require one split attempt and no output recovery after
 failure. They impose no rollback or failed-state reuse requirement.
 
+\subsection{Correctness Coverage and Its Limits}
+\label{sec:implementation-coverage}
+
+\Cref{tab:implementation-coverage} separates operation tests, complete sorting
+runs and measured workloads. Development evidence is bound to its recorded
+source snapshot; it is not a rerun on the final measured version.
+
+\begin{table}[htbp]
+  \centering
+  \small
+  \caption{Selected correctness coverage and its version boundaries. Development
+  commits identify saved source snapshots; qualification commits identify executions.}
+  \label{tab:implementation-coverage}
+  \begin{tabular}{@{}p{0.20\textwidth}p{0.53\textwidth}p{0.20\textwidth}@{}}
+    \toprule
+    Level & Covered behaviour and limit & Source binding \\
+    \midrule
+    Tree operations & 53 test methods: insertion, split/adopt, both outputs
+    updated and split again, existing descendants and stable identities.
+    Includes local balance repairs; no complete sorting run. & \texttt{cc1aa2d} \\
+    Complete sorting & 18 fixed balanced, skew and repeated constructions,
+    $n=128/129,256/257,512/513$; checked/minimal and three backend configurations.
+    Correctness and resource evidence only. & \texttt{84f7e13} \\
+    Common group & 140 inputs qualified with v2 and fresh minimal; 3,788 splits
+    per backend, all with an empty side. Formal timing therefore does not
+    exercise interior splitting. & Qualification \texttt{3cafb44} \\
+    Targeted group & 12 inputs qualified separately; 12 two-sided splits per
+    backend, source size 61, smaller side 3/7/19. Later direct insertions reach
+    only the retained side. & Qualification \texttt{668371f} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The 18-input campaign records 460 splits, 230 two-sided splits, 666 later
+insertions into earlier split outputs and 212 re-splits, per checked
+configuration's original runs. Replays and repeated configurations are not
+additional inputs. Within it, \texttt{repeated-512} contributes respectively
+126, 63, 189 and 62 operations; its two-sided splits always have smaller side
+one. The 512-point balanced and skew cases split 253 siblings into $126+127$
+and $1+252$; the 513-point cases mirror these constructions.
+
+These are bounded, related examples, not broad stress testing of long mixed
+histories. In particular, repeated small-side splits do not establish repeated
+large balanced-split coverage. Only the common and targeted groups enter the
+formal timings at \texttt{4a83fa6}; development validation times are excluded.
+Archive locators and the source-hash distinction are in
+\cref{sec:appendix-development-coverage}.
+
 \section{Execution Policies and Observation Costs}
 \label{sec:implementation-policies}
 

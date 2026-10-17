@@ -1,5 +1,14 @@
+import sys
+
+if sys.flags.optimize != 0:
+    raise RuntimeError("Run evidence checks without Python optimization")
+
 from pathlib import Path
-import csv,gzip,hashlib,json,re,statistics,subprocess
+import argparse,csv,gzip,hashlib,json,re,statistics,subprocess
+
+parser = argparse.ArgumentParser(description="Read-only archived evidence crosscheck")
+parser.add_argument('--output', type=Path, help='Save a new report; existing files are refused')
+args = parser.parse_args()
 R=Path(__file__).resolve().parents[3]
 D=R/'docs/validation/join_proof_correction_20261016'
 A=R/'docs/validation/final_review_formal_20261015'
@@ -67,5 +76,7 @@ proof='docs/development/finger_final_review_20261015.md'
 old=subprocess.check_output(['git','show','ce0148b:'+proof],cwd=R)
 report['proof_binding']={'old_commit':subprocess.check_output(['git','rev-parse','ce0148b'],cwd=R,text=True).strip(),'old_sha256':hashlib.sha256(old).hexdigest(),'corrected_sha256':sha(R/proof),'old_receipt_unchanged':True}
 report['current_thesis_table_rows_checked']=17
-(D/'crosscheck_report.json').write_text(json.dumps(report,indent=2)+'\n')
+if args.output is not None:
+ with args.output.open('x') as stream:
+  stream.write(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))

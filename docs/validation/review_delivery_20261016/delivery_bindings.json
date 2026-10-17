@@ -1,0 +1,61 @@
+{
+  "completed_date": "2026-10-17",
+  "timezone": "Europe/Berlin",
+  "execution_worktree_parent": "1d3106d9738ab0072dbf86de3e9124dd7a1add70",
+  "execution_scope": "Auxiliary tools ran with the listed uncommitted working-tree hashes; the parent is not presented as containing these changes. No production sorting executed.",
+  "tool_sha256": {
+    "docs/validation/join_proof_correction_20261016/audit_crosscheck.py": "3c28cf8a9128aeb5a931af8af5ef96d2ca71c382d64173e61b4473c6debea134",
+    "docs/validation/review_delivery_20261016/check_audit_entrypoint.py": "d4859404dc215dd7cd7e2fc2d44e4d3c516aabc030ee59e99089c53ea93d9c59",
+    "docs/validation/review_delivery_20261016/check_coverage.py": "b53bd53ceb16aa487e841bc9e69942421c6b59a50527346f13826c246335d024"
+  },
+  "unchanged_proof_sha256": {
+    "docs/development/finger_final_review_20261015.md": "a125e3108fdbf0f14c13208e832539bf022b036847a5d8a1a60653e8e91406fb",
+    "docs/development/heterogeneous_cost_lemmas_20261014.md": "bd7d2d89b9a4be1eab9b91bf9de8caad32c11f5aedf85c0ff34fbb45c78bd47f",
+    "docs/development/heterogeneous_representation_locality_20261014.md": "1ff5f2beac8f48578b865ecca59467886a8617fb0a6659a5dadb13196711f5f8"
+  },
+  "old_archive_maintenance_exception": [
+    {
+      "file": "docs/validation/join_proof_correction_20261016/audit_crosscheck.py",
+      "old_sha256": "9cb9fa5ae3409ae1913d3d5c32a831016f2e9ed11d4abdcb4b9af08d22e340fd",
+      "new_sha256": "3c28cf8a9128aeb5a931af8af5ef96d2ca71c382d64173e61b4473c6debea134",
+      "reason": "Optimization guard and explicit non-overwriting report output; old manifest retained at original identity."
+    }
+  ],
+  "old_archive_other_manifest_entries_preserved": [
+    "README.md",
+    "bibliography.log",
+    "build.log",
+    "build_report.json",
+    "check_join_transients.py",
+    "crosscheck.log",
+    "crosscheck_report.json",
+    "formal_common_readonly.json",
+    "formal_targeted_readonly.json",
+    "initial_fixture_failure.log",
+    "join_transient_results.json",
+    "join_transient_tests.log",
+    "main.log",
+    "page_contact_sheets.zip",
+    "page_inventory.json",
+    "source_binding.json",
+    "visual_review.json"
+  ],
+  "old_archive_manifest_preserved": true,
+  "prior_pdf_and_package_preserved": {
+    "output/pdf/jordan_thesis_review_20261016.pdf": "754b3d8e1629248e7b0a057e8c67199b9d5c4b59faa876ddd7ea07e1f59516c0",
+    "output/pdf/jordan_thesis_formal_20261016.pdf": "957f38b36ebd8383a914f89459660e24bfc8b12143f66a69e06bbbc422807043",
+    "output/packages/jordan_review_20261016.zip": "a4b057c8f427ef829feabbec1f08489208c7fef260689378e52b881b2e9d69e7",
+    "output/packages/jordan_review_20261016.zip.sha256": "6a79da797e03785ec05feb9333a72c48a91e79a4a1c0330befc52d0753113150"
+  },
+  "frozen_directories_unchanged": [
+    "src",
+    "tests",
+    "experiments",
+    "data",
+    "results"
+  ],
+  "formal_execution_commit": "4a83fa6b7a4213e9e5758fe3454e002ebc266459",
+  "pdf_sha256": "ba77bbec5e8393097347447831dce24bef5456ff447976d52794b898c03ade12",
+  "latex_sources": "build_report.json:source_sha256",
+  "qualification_calibration_formal_manifests": "audit_crosscheck_report.json:archives"
+}

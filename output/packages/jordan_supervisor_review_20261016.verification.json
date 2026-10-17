@@ -1,0 +1,13 @@
+{
+  "completed_date": "2026-10-17",
+  "archive": "output/packages/jordan_supervisor_review_20261016.zip",
+  "archive_sha256": "98566c7af89c50d143a290438574c4f49c01dd2ff2f0fb2213dd1285a507f8f2",
+  "bytes": 2866160,
+  "members": 66,
+  "manifest_verified_members": 65,
+  "new_evidence_manifest_verified_members": 15,
+  "duplicate_members": false,
+  "zip_crc_valid": true,
+  "complete_raw_experiment_archive_included": false,
+  "pdf_sha256": "ba77bbec5e8393097347447831dce24bef5456ff447976d52794b898c03ade12"
+}
