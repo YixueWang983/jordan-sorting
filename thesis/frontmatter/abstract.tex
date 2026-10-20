@@ -27,13 +27,11 @@ medians range from 1.114 to 3.535 in the common set (median 2.898), and from
 collection, has a higher median on every input; this does not characterize
 a hook-free implementation or imply a future crossover. A separate local
 diagnostic finds a 37.7--52.1\% median-time reduction on fifteen inputs after
-removing field-access hooks. Related constructions and mirrors are not
+removing field-access hooks: four of fifteen cases favor the hook-free tree,
+while eleven still take 1.09--1.68 times the list time. Related constructions and mirrors are not
 independent random samples.
 
-The contribution combines an independently recovering implementation,
-source-linked representation and cost analysis, and reproducible matched
-measurements with explicit timing and evidence boundaries. The earlier
-rollback-enabled 60-input study remains separately identified historical
-evidence. Recognition and the causal effect of rollback removal are not
-measured. The results distinguish theoretical operation costs from the
-practical constants of the implemented Python backends.
+The contribution is a source-linked reconstruction and cost argument with
+reproducible matched measurements and explicit evidence boundaries.
+The rollback-enabled 60-input study remains separate historical evidence;
+recognition and the causal effect of rollback removal are not measured.

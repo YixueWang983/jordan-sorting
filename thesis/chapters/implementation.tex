@@ -242,10 +242,18 @@ additional inputs. Within it, \texttt{repeated-512} contributes respectively
 one. The 512-point balanced and skew cases split 253 siblings into $126+127$
 and $1+252$; the 513-point cases mirror these constructions.
 
-The seeded supplement uses the supplied gap-based generator with fixed seeds
-and saved inputs; the oracle checks each input's validity. Thirty-eight cases
-contain a two-sided split, with maximum smaller side 13. Its 32 larger cases
-use sizes 128/512/513/1500; eight checked cases use 32/33/64/70.
+The seeded generator extends from $z_{i-1}$ into an axis gap such that no
+same-parity arc has exactly one endpoint between $z_{i-1}$ and the new
+point; final axis-order ranks become the input values. With probability
+$b$ it chooses uniformly among legal gaps; otherwise it follows a direction
+(reversed with probability $0.08$), choosing its nearest or farthest legal
+gap with equal probability, or all legal gaps if that side is empty.
+Seeds 11--14 each generate sizes 128/512/513/1500 in that order, at
+$b=0.05,0.25$ for each size; seeds 21--22 each generate 32/33/64/70 at
+$b=0.1$. Each seed uses one sequential Python \texttt{random.Random}
+stream; all forty inputs are saved and independently certified by the oracle.
+Thirty-eight contain a two-sided split, with maximum smaller side 13.
+The eight smaller inputs also receive checked validation.
 These related, bounded examples do not establish all mixed-history patterns
 or large balanced-split coverage. Only the common and targeted groups enter
 formal timing; correctness-run times are excluded.

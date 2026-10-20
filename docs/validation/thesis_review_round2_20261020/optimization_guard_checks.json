@@ -1,0 +1,61 @@
+{
+  "cases": [
+    {
+      "configuration": "-O",
+      "rejected_before_archive_reads": true,
+      "returncode": 1,
+      "script": "check_round2.py",
+      "stdout_empty": true
+    },
+    {
+      "configuration": "-OO",
+      "rejected_before_archive_reads": true,
+      "returncode": 1,
+      "script": "check_round2.py",
+      "stdout_empty": true
+    },
+    {
+      "configuration": "PYTHONOPTIMIZE=1",
+      "rejected_before_archive_reads": true,
+      "returncode": 1,
+      "script": "check_round2.py",
+      "stdout_empty": true
+    },
+    {
+      "configuration": "PYTHONOPTIMIZE=2",
+      "rejected_before_archive_reads": true,
+      "returncode": 1,
+      "script": "check_round2.py",
+      "stdout_empty": true
+    },
+    {
+      "configuration": "-O",
+      "rejected_before_archive_reads": true,
+      "returncode": 1,
+      "script": "check_local_supplement.py",
+      "stdout_empty": true
+    },
+    {
+      "configuration": "-OO",
+      "rejected_before_archive_reads": true,
+      "returncode": 1,
+      "script": "check_local_supplement.py",
+      "stdout_empty": true
+    },
+    {
+      "configuration": "PYTHONOPTIMIZE=1",
+      "rejected_before_archive_reads": true,
+      "returncode": 1,
+      "script": "check_local_supplement.py",
+      "stdout_empty": true
+    },
+    {
+      "configuration": "PYTHONOPTIMIZE=2",
+      "rejected_before_archive_reads": true,
+      "returncode": 1,
+      "script": "check_local_supplement.py",
+      "stdout_empty": true
+    }
+  ],
+  "total": 8
+}

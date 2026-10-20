@@ -26,17 +26,11 @@ Formal 140 + 12 & \texttt{4a83fa6} & \nolinkurl{final_review_formal_20261015/}\\
 \end{tabular}
 \end{table}
 
-The formal archive holds 5,600 common and 480 targeted sample batches,
-outputs, statistics and independent reports. Its Python code matches
-calibration source \texttt{c5b5ac3}; result storage at \texttt{ce0148b} does not
-change execution identity. UTC timestamps identify runs, dated directories
-identify work packages. Inputs, B tables and data remain frozen.
-
-Frozen \texttt{timing\_ready=False} comments predate final qualification;
-the measurement tool's \nolinkurl{performance_eligible=false} does not certify
-total research delivery. Actual \texttt{stage=formal} archives, completion and
-binding checks establish the reported campaigns. Sources are not edited
-retrospectively to relabel them.
+The formal archive contains 5,600 common and 480 targeted sample batches.
+Its Python code matches calibration source \texttt{c5b5ac3}; result storage
+at \texttt{ce0148b} does not change execution identity. UTC timestamps identify
+runs, dated directories identify work packages. Inputs, B tables and data
+remain frozen.
 
 \section{Proof-to-Source Correspondence}
 
@@ -51,14 +45,12 @@ conversion, \texttt{balance\_down} and \texttt{join\_down},
 The Step~1/2/3 core in \texttt{src/paper\_jordan.py} corresponds to
 \cref{lem:proof-locality,thm:proof-total}.
 
-The detailed branch audit is
-\nolinkurl{development/finger_final_review_20261015.md} (R1--R6, C1--C5,
-L1--L4). The October 16 correction in
-\nolinkurl{validation/join_proof_correction_20261016/} explicitly distinguishes
-red-root return transients and nonempty split potentials. Its predecessor's
-review receipt binds the older text; it is not reissued as certification of
-this appendix. The present revision and build record are in
-\nolinkurl{validation/thesis_revision_20261020/}.
+The branch audit is \nolinkurl{development/finger_final_review_20261015.md}.
+Red-root and split-potential corrections are recorded in
+\nolinkurl{validation/join_proof_correction_20261016/};
+older review receipts do not certify this appendix. Current revision and
+build records are in
+\nolinkurl{validation/thesis_review_round2_20261020/}.
 
 \section{Development and Historical Evidence}
 \label{sec:appendix-development-coverage}
@@ -68,34 +60,37 @@ The operation tests and 18-input structural campaign in
 \cref{tab:implementation-coverage} are respectively archived under
 \nolinkurl{validation/heterogeneous_split_20261013/} and
 \nolinkurl{validation/heterogeneous_work_modes_20261013/}.
-They ran with uncommitted changes whose recorded source hashes match the
-later saved snapshots \texttt{cc1aa2d} and \texttt{84f7e13}, not simply the
-recorded parent HEAD. The read-only inventory under
-\nolinkurl{validation/review_delivery_20261016/} checks the saved reports;
-it does not reconstruct unsaved event traces or rerun old inputs.
+Their recorded source hashes match \texttt{cc1aa2d} and \texttt{84f7e13},
+not the parent HEADs recorded with uncommitted changes. The inventory under
+\nolinkurl{validation/review_delivery_20261016/} checks saved reports,
+without reconstructing unsaved traces or rerunning inputs.
 
 Historical formal/pilot producers are \texttt{98868b1}/\texttt{01f6480}.
-\nolinkurl{thesis/claim_to_evidence_table.md} and
-\nolinkurl{thesis/final_claim_audit.md} retain method, results and archive
-locators. Earlier implementation revisions are indexed in
-\nolinkurl{thesis/revision_claims_20261011.md} and
-\nolinkurl{validation/shared_core_backend_20261012/}. Old timings are not pooled.
+\nolinkurl{thesis/claim_to_evidence_table.md} retains their method, results
+and archive locators. Old timings are not pooled.
 
-\section{Supplementary Reviewer Material}
+\section{Supplementary Evidence}
 \label{sec:appendix-external-review}
 
-Four files received on October 20 are preserved verbatim in
-\nolinkurl{validation/thesis_revision_20261020/external_review/}.
-They report 1,900 stress inputs and fifteen-input wrapper medians, but lack
-bound command lines, source/environment identities and individual records.
-The original scripts have no optimization guard; the timing script checks only
-the last output per batch. These external aggregates are excluded from verified
-coverage and formal estimates; their arithmetic and limitations are archived.
+The local diagnostic, seeded inputs and external-material provenance are
+indexed in \nolinkurl{validation/thesis_review_round2_20261020/README.md};
+the original records remain unchanged.
 
-The separate \nolinkurl{local_supplement/} fixes protocol, source hashes and
-inputs before execution. Its adapted runner guards optimization, checks every
-timed output, saves all 900 diagnostic batches and preserves traces for forty
-bounded correctness inputs. This is not a reproduction of all external runs
-or a formal campaign. Shared Python files match \texttt{19a553fb}; each
-diagnostic process records its runtime monkeypatches. Seeded generation is
-not uniform population sampling.
+\section{AI Assistance in This Review Draft}
+\label{sec:appendix-ai-use}
+
+The author directs the research; OpenAI Codex is used as an assistant.
+During the recorded October 11--20 revision work, assistance included code
+and test changes, execution and inspection of checks, proof exposition,
+and English/LaTeX drafting and revision. AI-assisted reviews also informed
+corrections. This identifies activities, not a percentage of authorship.
+Responsibility for the submitted analysis and conclusions remains with the author.
+
+For example, review feedback led to restoring all fifteen diagnostic rows
+and qualifying the hook-free comparison; a separate correction restored
+the dummy bracketing premise from Fung's lemma. The requests, resulting
+changes and source checks are indexed in the accompanying AI-use record.
+Following the \href{https://www.mi.fu-berlin.de/bioinf/stud/bachelor/bachelorarbeit/Handreichung_KI_Nutzung_Bachelor_Master_Informatik.pdf}{FU Informatik guidance of November 5, 2025},
+the complete tool/version inventory and the author's personal reflection
+remain to be finalized with any supervisor-specific requirements.
+This review-draft note does not replace the signed declaration.

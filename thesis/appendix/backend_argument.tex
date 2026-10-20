@@ -36,10 +36,10 @@ of which there are at most two.
 \begin{figure}[!htbp]
  \centering
  \includegraphics[width=.72\textwidth]{heterogeneous_representation.pdf}
- \caption{Decoding the heterogeneous representation. Solid arrows show
- physical links; dashed arrows show header references. The outer chains
- point up, while inward branches point down. Root slots themselves are empty.
- Colours and subtree sizes are omitted.}
+ \caption{Physical decoding: solid arrows are node links; dashed arrows are
+ header references. Outer chains point up and inward branches down; root
+ slots are empty. Header fingers reference leaves $a,d$ (arrows omitted).
+ Colours and sizes are omitted.}
  \label{fig:proof-representation}
 \end{figure}
 
@@ -194,13 +194,16 @@ behind child boundaries, not inside $R$.
 \label{lem:proof-reentry}
 Suppose the region has not changed since its latest member $P_j$ was added.
 If $P_j$ is a child, first re-entry from $z_j$ uses its adjacent region gap,
-with the alternative outside gap possible for the dummy. If $P_j$ is the
-finite parent, first re-entry uses the gap immediately inward from $z_j$.
+or, for the dummy, the opposite unbounded gap. In the latter case, $z_j$
+and the re-entry point $z_k$ bracket all other finite endpoints of the
+region. If $P_j$ is the finite parent, first re-entry uses the gap
+immediately inward from $z_j$.
 \end{lemma}
 \begin{proof}
 The child case is the locality lemma of
-\textcite[p.~88, Figs.~3--4]{fung1990simplified}, under its latest-child and
-unchanged-region hypotheses. It is not applied to a latest finite parent.
+\textcite[p.~88, locality lemma (a)--(b), Figs.~3--4]{fung1990simplified},
+under its latest-child and unchanged-region hypotheses; part (b) supplies
+the dummy bracketing condition. It is not applied to a latest finite parent.
 For that additional case let $q$ be the first child endpoint inward from
 $z_j$, or the other parent endpoint if there is no child.
 
@@ -247,8 +250,10 @@ and different live IDs.
 
 For $x<y$, simplicity implies that $y$ remains inside finite $p$ and is
 neither inside a direct child's interval nor equal to its endpoints.
-If the left boundary is $p$, Step~3(a) creates a singleton in a free slot;
-otherwise it appends to the left group. If the right boundary is $p$,
+If the left boundary is $p$, Step~3(a) creates a singleton in a free slot.
+In the dummy outer-gap case, the bracketing condition leaves the group
+beyond $z_j$ empty, so the owner has at most one group. When the left
+boundary is a child, Step~3(a) instead appends to the left group. If the right boundary is $p$,
 there are no children to transfer. Otherwise its right group is the source.
 Reading that source before insertion is safe: Step~3(a) changes only the
 other group or a new slot, preserving source identity and owner.

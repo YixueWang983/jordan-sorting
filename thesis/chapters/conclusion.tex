@@ -30,8 +30,9 @@ These summarize ratios of twenty-batch input medians, not confidence intervals
 or every individual call. No crossover is established. The comparison
 includes different wrapping, checking and allocation costs. A separate
 fifteen-input local diagnostic reduces tree medians by 37.7--52.1\% when access
-hooks are removed, reversing the large heavy-case ratios. That configuration
-effect does not replace the frozen experiment or establish general speedups.
+hooks are removed. Four of fifteen cases, the large heavy constructions,
+favor the hook-free tree; the remaining eleven take 1.09--1.68 times the
+list time. This does not replace the frozen experiment or establish general speedups.
 
 \label{sec:conclusion-rq3}
 \textbf{RQ3: structure and cost.}
@@ -54,8 +55,9 @@ bound. Historical rollback results remain separate and non-causal.
 \label{sec:conclusion-closing}
 
 The contribution is an inspectable implementation and argument with explicit
-source, input, timing and statistical boundaries. The immediate review targets
-are the finite-parent locality extension and mixed-operation proof. Future
+source, input, timing and statistical boundaries. Independent review of the
+finite-parent locality extension and mixed-operation proof would strengthen
+confidence in the argument. Future
 work should qualify a production hook-free configuration and broaden split
 histories and environments under predeclared rules. The post-review diagnostic
 and 40-input seeded correctness supplement are bounded first steps.

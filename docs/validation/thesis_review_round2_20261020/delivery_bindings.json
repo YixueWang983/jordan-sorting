@@ -1,0 +1,12 @@
+{
+  "baseline": "2da8b662bf3c50c1bd51ee85ed2215a72a34f7c7",
+  "current_checker_sha256": "0a403cc4e105955f8ba2d95c724b574597c3990123e2d05b39e8db2fb4ce8a7d",
+  "diagnostic_protocol_sha256": "60d9ba5429a33b01ef5b5747965e2564df5f78c8debeea2c4ac8407844f9fc9a",
+  "formal_producer": "4a83fa6b7a4213e9e5758fe3454e002ebc266459",
+  "local_supplement_producer": "19a553fb9a089fae726c4ba49c5412a9e4bd12d3",
+  "old_manifest_unchanged": true,
+  "pdf_sha256": "bbdd4d49bed6acccb2a7c51960cb2cc8382093164ed63760ba5d682e8a57edc6",
+  "proof_sha256": "35614c382f71bc05c069b0c6a2ee7f51f96c4b528bbd70c001a26aa2848c8710",
+  "source_preservation_report_sha256": "30762aa299c5bffe3b4a27c8a0038f89225d022f76c54d03b98e7e3fb203b04d",
+  "university_submission_complete": false
+}

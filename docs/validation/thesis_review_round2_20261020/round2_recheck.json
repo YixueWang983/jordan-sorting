@@ -1,0 +1,25 @@
+{
+  "ai_declaration_finalized": false,
+  "baseline": "2da8b662bf3c50c1bd51ee85ed2215a72a34f7c7",
+  "checker_sha256": "d46934593b9605a6b65d2583fcfd38784fcd100c7e92c619032d67dd655c86fd",
+  "formal_archives_valid": true,
+  "frozen_files_checked": {
+    "data": 23,
+    "docs/validation/thesis_revision_20261020": 1347,
+    "experiments": 53,
+    "results": 371,
+    "src": 18,
+    "tests": 60
+  },
+  "generator_inputs_recreated": 40,
+  "generator_sha256": "1d759081df02a3f9d763cc1bd40e38a474766193a19ccbc9fb28746073db929e",
+  "mathematical_certification": false,
+  "old_manifest_verified_files": 1346,
+  "old_outputs": {
+    "output/packages/jordan_supervisor_review_20261020.zip": "ef28e60fb14e578e43ee9b263ce55b67b34972e17ebcbf97affd6639158338d1",
+    "output/pdf/jordan_thesis_supervisor_review_20261020.pdf": "a86aa4be9bec3f36d74bfb78403a29250b538384967e9b965528e6a942eeb740"
+  },
+  "scope": "frozen_files_generator_and_round2_text",
+  "sorter_executed": false,
+  "unittest_methods": 805
+}

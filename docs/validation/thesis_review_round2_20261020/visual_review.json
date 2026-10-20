@@ -1,0 +1,46 @@
+{
+  "blank_pages": [
+    2,
+    4,
+    8,
+    10,
+    12,
+    32,
+    66
+  ],
+  "changed_pages_reviewed": [
+    3,
+    7,
+    9,
+    11,
+    37,
+    38,
+    39,
+    40,
+    49,
+    50,
+    55,
+    56,
+    58,
+    61,
+    62,
+    67,
+    68
+  ],
+  "checks": [
+    "Complete 15-row table readable without clipping",
+    "Abstract fits one page; dummy conditions and captions readable",
+    "Diagnostic page header names section 6.5",
+    "No text/figure overlap observed on changed pages",
+    "Appendix B preserves review-draft AI disclosure and outstanding author items"
+  ],
+  "comparison_pdf_sha256": "a86aa4be9bec3f36d74bfb78403a29250b538384967e9b965528e6a942eeb740",
+  "contact_sheets_sha256": "6486d9ad8f251195f3a0b97a89ab99c70c1d0fd2cdfcc8c6efe487c40030c853",
+  "mathematical_certification": false,
+  "method": "Render all 70 pages; compare every page with the frozen prior PDF. Visually inspect all changed pages, then inspect the pages affected by final abstract, caption and section-break adjustments.",
+  "pdf_sha256": "bbdd4d49bed6acccb2a7c51960cb2cc8382093164ed63760ba5d682e8a57edc6",
+  "physical_pages": 70,
+  "pixel_identical_to_baseline_pages": 53,
+  "render_scale": 1.2,
+  "school_submission_approved": false
+}

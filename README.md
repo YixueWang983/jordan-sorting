@@ -6,23 +6,25 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
-The [October 20 thesis revision](docs/validation/thesis_revision_20261020/README.md)
-puts the English representation, locality and mixed-cost argument inside the
-thesis, makes the exact sibling-group invariant explicit, and adds three
-explanatory diagrams. The review draft is **70 physical pages**, with unchanged
-body typography. Formal results describe the measured tree configuration that
-retains access hooks even with detailed collection disabled. The four supplied
-reviewer diagnostic/stress files are preserved. A separate local diagnostic
-checks all outputs on fifteen cases, and forty fixed seeded correctness cases
-pass up to 1,500 points. These supplements are not new qualification or formal
-samples; their records and limits are included in the revision.
+The [October 20 second review correction](docs/validation/thesis_review_round2_20261020/README.md)
+shows all fifteen diagnostic cases: four favor the hook-free tree, while eleven
+remain 1.09–1.68 times the list time. It restores the dummy locality bracketing
+premise, explains the seeded generator and adds a factual AI-assistance note.
+The review draft is **70 physical pages**, with unchanged body typography.
+All 805 unit tests and both read-only formal archive validators pass.
+The author's complete AI-use inventory and personal reflection remain to be
+finalized under the FU Informatik guidance.
 
-- [Current review PDF](output/pdf/jordan_thesis_supervisor_review_20261020.pdf)
-- [Supervisor reading note](docs/validation/thesis_revision_20261020/FOR_SUPERVISOR.md)
-- [Review package](output/packages/jordan_supervisor_review_20261020.zip)
+- [Current review PDF](output/pdf/jordan_thesis_supervisor_review_20261020_r2.pdf)
+- [Supervisor reading note](docs/validation/thesis_review_round2_20261020/FOR_SUPERVISOR.md)
+- [Review package](output/packages/jordan_supervisor_review_20261020_r2.zip)
 
 Production code, frozen inputs, calibration B tables and formal data are unchanged.
 The previous artifacts below remain available with their original identities.
+
+The [first October 20 revision](docs/validation/thesis_revision_20261020/README.md)
+introduced the English proof appendix, diagrams and separately bounded local
+supplements. Its original PDF, package and raw records remain unchanged.
 
 The [October 17 supervisor review package](docs/validation/review_delivery_20261016/README.md)
 adds the version-bound correctness coverage table and guards the auxiliary

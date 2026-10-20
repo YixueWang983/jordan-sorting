@@ -1,0 +1,11 @@
+{
+  "all_member_hashes_match": true,
+  "all_repository_members_match_files": true,
+  "full_historical_raw_data_included": false,
+  "new_validation_manifest_files": 20,
+  "pdf_pages": 70,
+  "pdf_sha256": "bbdd4d49bed6acccb2a7c51960cb2cc8382093164ed63760ba5d682e8a57edc6",
+  "verified_members": 1414,
+  "zip_bytes": 11866607,
+  "zip_sha256": "58dbadce35524aa0b7ae4a9cc3c7462760861a215ca43cbddf9f616074799aaf"
+}
