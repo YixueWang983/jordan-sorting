@@ -1,0 +1,53 @@
+list {"n128-low_nesting_valid-00": 5.45816996, "n128-medium_nesting_valid-00": 6.9654822, "n128-nested_heavy_valid-00": 6.54387472, "n128-nested_heavy_valid-01-mirror": 6.18879188, "n128-strict_flat-00": 4.96546032, "n512-low_nesting_valid-00": 29.042439, "n512-medium_nesting_valid-00": 41.976179, "n512-nested_heavy_valid-00": 44.522037857142855, "n512-nested_heavy_valid-01-mirror": 44.098589, "n512-strict_flat-00": 21.136759285714287, "n513-low_nesting_valid-00": 29.170025714285714, "n513-medium_nesting_valid-00": 41.766003285714284, "n513-nested_heavy_valid-00": 42.619850285714286, "n513-nested_heavy_valid-01-mirror": 42.88453585714286, "n513-strict_flat-00": 26.524831}
+tree {"n128-low_nesting_valid-00": 16.810492359999998, "n128-medium_nesting_valid-00": 17.603840079999998, "n128-nested_heavy_valid-00": 11.184296, "n128-nested_heavy_valid-01-mirror": 11.62287188, "n128-strict_flat-00": 15.56302036, "n512-low_nesting_valid-00": 74.15928771428571, "n512-medium_nesting_valid-00": 82.91653942857144, "n512-nested_heavy_valid-00": 50.84248985714286, "n512-nested_heavy_valid-01-mirror": 52.221836571428575, "n512-strict_flat-00": 67.13998542857144, "n513-low_nesting_valid-00": 69.59000685714285, "n513-medium_nesting_valid-00": 77.93893242857143, "n513-nested_heavy_valid-00": 48.15035628571428, "n513-nested_heavy_valid-01-mirror": 48.348919, "n513-strict_flat-00": 67.07691471428572}
+tree_nofa {"n128-low_nesting_valid-00": 8.898103599999999, "n128-medium_nesting_valid-00": 10.50216552, "n128-nested_heavy_valid-00": 7.43976296, "n128-nested_heavy_valid-01-mirror": 7.381647559999999, "n128-strict_flat-00": 8.528434240000001, "n512-low_nesting_valid-00": 37.20890242857143, "n512-medium_nesting_valid-00": 42.913555714285714, "n512-nested_heavy_valid-00": 28.887981857142858, "n512-nested_heavy_valid-01-mirror": 32.31780185714286, "n512-strict_flat-00": 35.18925285714286, "n513-low_nesting_valid-00": 39.224152714285715, "n513-medium_nesting_valid-00": 47.40998642857142, "n513-nested_heavy_valid-00": 34.415267, "n513-nested_heavy_valid-01-mirror": 33.157996142857144, "n513-strict_flat-00": 34.91124128571428}
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/b47f7128-2dd1-56c2-bd8c-6fba08bf3709/scratchpad/wrapper_overhead.py", line 44, in <module>
+    assert paper_jordan_sort_valid(values, "minimal", backend=backend) == expected
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/jordan-sorting/src/paper_jordan_sort.py", line 38, in paper_jordan_sort_valid
+    state = _run_paper_jordan_valid(
+        values,
+        execution_policy=execution_policy,
+        backend=backend_spec,
+    )
+  File "/root/jordan-sorting/src/paper_jordan_sort.py", line 85, in _run_paper_jordan_valid
+    return _run_paper_jordan_state_values(
+        values,
+    ...<2 lines>...
+        backend=backend,
+    )
+  File "/root/jordan-sorting/src/paper_jordan.py", line 1189, in _run_paper_jordan_state_values
+    for state in _iterate_paper_jordan_states(
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        values, stop_after=stop_after, execution_policy=execution_policy,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        backend=backend, forbidden_backend=forbidden_backend,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ):
+    ^
+  File "/root/jordan-sorting/src/paper_jordan.py", line 1216, in _iterate_paper_jordan_states
+    state = _initialize_paper_jordan_state_values(
+        values,
+    ...<2 lines>...
+        forbidden_backend=forbidden_backend,
+    )
+  File "/root/jordan-sorting/src/paper_jordan.py", line 276, in _initialize_paper_jordan_state_values
+    _validate_initial_backend_postconditions(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        state,
+        ^^^^^^
+    ...<3 lines>...
+        ),
+        ^^
+    )
+    ^
+  File "/root/jordan-sorting/src/paper_jordan.py", line 320, in _validate_initial_backend_postconditions
+    backend.boundary_list(pair.pair_id, LEFT) != list_id
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/root/jordan-sorting/src/heterogeneous_finger_backend.py", line 450, in boundary_list
+    self._side(side)
+    ~~~~~~~~~~^^^^^^
+TypeError: HeterogeneousFingerBackend._side() takes 1 positional argument but 2 were given
+tree_nowr 
+tree_nowr {"n128-low_nesting_valid-00": 8.09958424, "n128-medium_nesting_valid-00": 8.7904804, "n128-nested_heavy_valid-00": 6.86832076, "n128-nested_heavy_valid-01-mirror": 6.33904008, "n128-strict_flat-00": 8.313022440000001, "n512-low_nesting_valid-00": 33.763414142857144, "n512-medium_nesting_valid-00": 37.26576914285714, "n512-nested_heavy_valid-00": 26.626564, "n512-nested_heavy_valid-01-mirror": 29.33062657142857, "n512-strict_flat-00": 30.97631942857143, "n513-low_nesting_valid-00": 34.106652, "n513-medium_nesting_valid-00": 41.746707, "n513-nested_heavy_valid-00": 29.09441857142857, "n513-nested_heavy_valid-01-mirror": 28.861855714285714, "n513-strict_flat-00": 30.154481285714287}

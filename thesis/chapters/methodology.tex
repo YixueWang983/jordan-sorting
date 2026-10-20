@@ -6,10 +6,6 @@
 \label{sec:method-experiment-stages}
 \label{sec:method-scope}
 
-Experimental algorithmics studies concrete programs, inputs and machines
-\parencite{mcgeoch2012guide}; algorithm engineering separates implementation,
-analysis and evaluation \parencite{sanders2009engineering}. Accordingly, the
-current matched protocol and the historical measurements are distinct studies.
 The current ordinary-list and tree implementations have completed qualification,
 separate batch calibration and formal paired measurement. Current results in
 \cref{chap:results} use source \texttt{4a83fa6}; the older rollback-enabled
@@ -24,8 +20,8 @@ low, medium and heavy nesting per length. Fixed constructors, seeds, candidate
 budgets, rank deduplication and first-eligible retention preceded timing.
 These are structural constructions, not random independent observations.
 All 140 cases pass both backends' v2 checks. Their 3,788 recorded splits per
-backend all have an empty output side: they exercise ownership transfer but
-not the tree's interior two-sided split path.
+backend all have an empty output side: they form an endpoint-insertion and whole-group-transfer workload,
+not a benchmark of the tree's interior two-sided split path.
 
 A separate targeted set uses the existing construction at $n=128,129$,
 $k=3,7,19$, with each direction and its mirror: twelve cases, all qualified.
@@ -39,22 +35,8 @@ For each input/backend, v2 advances two independent checked instances,
 compares every completed prefix, and executes a third fresh checked replay
 at the end. Another fresh minimal call uses the intended timing configuration.
 Each output is compared to external sorting, without feeding that expectation
-into the core. These checks establish finite execution evidence, not a general
-proof. The old fresh-replay-at-every-prefix protocol remains a bounded
-reference and is not described as identical coverage.
-
-\subsection{Historical Input Protocol}
-\label{sec:method-protocol}
-\label{sec:method-case-audit}
-
-The archived formal study instead used 60 cases: at each
-$n\in\{32,64,128,256,512\}$, one flat, one nested and ten seeded incremental
-cases. Generation seed \texttt{20261201} and case identities determine the
-inputs. Duplicate hashes were rejected within family--size groups, not by a
-global rank rule. All 60 passed oracle validity, distinctness, structural
-profiling and checked ordinary-list diagnostics before warm-up. Failures
-stopped the run; checked outputs were compared externally. The ten-to-one
-family imbalance remains visible in historical aggregate results.
+into the core. This is finite execution evidence. Compared with the old per-prefix fresh
+replay, v2 retains prefix comparisons but reduces repeated initialization.
 
 \section{Compared Implementations and Call Scopes}
 \label{sec:method-implementations}
@@ -62,31 +44,13 @@ family imbalance remains visible in historical aggregate results.
 The current comparison uses the same public Jordan core with ordinary-list or
 heterogeneous-finger storage, both minimal; the tree explicitly sets
 \texttt{detailed\_work=False}. Every call initializes fresh state and recovers
-its output. Production source hashes match the qualified versions. Source or
-configuration changes require checking which qualification and measurements
-must be renewed. A tool-only archive check is recorded separately.
+its output. Production hashes match the qualified versions; changes require renewed
+validation of the affected evidence.
 
-\subsection{Python Sort}
-\label{sec:method-python-sort}
-
-In the historical three-way comparison, \nolinkurl{python_sort} sorts directly,
-without Jordan recognition or structural analysis.
-
-\subsection{Reference Pipeline}
-\label{sec:method-reference-pipeline}
-
-\nolinkurl{simplified_jordan_reference} includes oracle validation, state and
-family construction, statistics, trace and result assembly. It is a pipeline,
-not a sorting-only primitive.
-
-\subsection{Historical Ordinary-List Core}
-\label{sec:method-paper-implementation}
-
-\nolinkurl{simplified_jordan_paper_ordinary_list} times the pre-certified
-rollback-enabled minimal core, including local checks, mandatory stage state,
-recovery preparation and output recovery. Successful calls still pay recovery
-preparation costs. Its ratios to the reference retain this difference in scope;
-they do not isolate the benefit of rollback removal or of tree storage.
+The retained access hooks described in \cref{sec:implementation-policies}
+are inside the measured interval. The experiment compares these two concrete
+programs, including their different checks and object-access machinery; it
+is not an ablation that isolates the abstract tree structure.
 
 \section{Timing, Calibration and Scheduling}
 \label{sec:method-timing}
@@ -118,14 +82,9 @@ backend is first ten times. Failures stop subsequent cases; timeouts preserve
 committed batches and leave explicit unrun statuses. No outlier removal or
 speed-based input replacement is allowed.
 
-Historically, each of three algorithms instead received five warm-ups and
-twenty individually timed calls per input. Case/order seeds were
-\texttt{20261203}/\texttt{20261202}, with cyclic position rotation. The old
-wrapper disabled GC only around the measured call and restored its prior state;
-that policy is not inherited by the current comparison. Controlled scheduling
-reduces fixed-position bias, not all thermal or operating-system noise
-\parencite{mytkowicz2009wrong}. Repetition alone does not establish adequate
-statistical power \parencite{kalibera2013benchmarking}.
+Controlled scheduling reduces fixed-position bias, not all thermal or
+operating-system noise \parencite{mytkowicz2009wrong}. Repetition alone does
+not establish adequate statistical power \parencite{kalibera2013benchmarking}.
 
 \subsection{Recorded Environment}
 \label{sec:method-environment}
@@ -136,9 +95,8 @@ metadata. Calibration and formal execution must match source and recorded
 machine/runtime settings. Tests, qualification and compilation were not run
 concurrently with calibration or formal sampling. The current formal archives
 record Apple M4/arm64, 16 GB RAM, ten logical CPUs, macOS 26.6 and CPython
-3.12.14; their captured power state is battery at 100\%. The historical formal archive records Apple
-M4/arm64, 16 GB RAM, ten logical CPUs, macOS 26.6 and CPython 3.12.4, with its
-own preflight; these are not claims about today's runtime.
+3.12.14; their captured power state is battery at 100\%. These are archived
+observations, not claims about today's runtime.
 
 \section{Aggregation and Statistical Units}
 \label{sec:method-aggregation}
@@ -148,36 +106,24 @@ per-call durations per input/backend, their median and R7-interpolated quartiles
 and IQR, and the paired ratio of backend medians. Related constructions and
 mirrors remain dependent; cross-input summaries are descriptive.
 
-The historical archive contains $60\times3\times20=3600$ measured calls and
-180 case--algorithm summaries. Its quartiles use median-of-halves, not R7.
-The 45 family--size--algorithm groups aggregate case medians; ratios are formed
-within inputs before equal-case aggregation. Counter associations are
-exploratory, not causal decompositions of runtime.
-
 \section{Evidence Binding and Acceptance}
 \label{sec:method-evidence}
 
-The historical formal/pilot sources are \texttt{98868b1}/\texttt{01f6480}.
-The current 140-case and twelve-case qualification producers are
-\texttt{3cafb44} and \texttt{668371f}; checker/calibration source is
-\texttt{c5b5ac3}. Formal executions use \texttt{4a83fa6}, with identical Python
-source hashes, frozen B tables and matching required environment fields. Full
-hashes and immutable archive locations are indexed in
-\cref{sec:appendix-revision-bindings}. New checking does not relabel old runs.
+Execution identities, source bindings and archive locations are collected in
+\cref{sec:appendix-revision-bindings}. Formal execution uses the qualified
+production code, frozen B tables and required matching environment fields.
+A later checker or archive commit does not relabel the execution.
 
-Each current record is independently compressed, synchronized and atomically
-committed. A terminated worker cannot erase earlier completed records. A new
-archive stores its configuration before execution and binds records, decisions
-and environment by manifest. Resource wall time includes checking and storage
-and is separate from a measured call. Old archives are never resealed to imply
-new execution.
+Records are individually compressed and atomically committed, so termination
+preserves earlier completed batches. A manifest binds configuration, records
+and environment. Campaign wall time includes untimed checking and storage.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=.94\textwidth]{formal_experiment_pipeline.pdf}
-  \caption[Historical formal pipeline and timing scopes.]{Historical
-  rollback-enabled formal pipeline. Current qualification, batch calibration
-  and formal matched batches have separate identities and schedules.}
+  \includegraphics[width=.94\textwidth]{current_experiment_pipeline.pdf}
+  \caption{Current evidence flow. Qualification, calibration and formal
+  sampling have separate identities. The same frozen inputs and per-input B
+  reach the samples; independent reconstruction checks each archive.}
   \label{fig:method-formal-pipeline}
 \end{figure}
 
@@ -193,15 +139,29 @@ The measurement validator independently reconstructs candidate order, every
 attempt, the first qualifying common B and output correctness. For formal
 archives it reconstructs warm-ups, paired sample order, twenty-batch medians,
 R7 quartiles and within-input ratios. A process exit
-code alone is insufficient. Historical validation additionally reran the old
-checked diagnostics; that behavior is not attributed to the new read-only check.
+code alone is insufficient.
 
 \section{Interpretation Boundary}
 \label{sec:method-boundaries}
 
 Qualification, calibration, proof review and formal measurement are separate
-gates. The recorded formal runs followed the source-level manual review and
-passed their own binding and reconstruction checks. No calibration ratio enters
-the formal results tables, no
-historical pilot is renamed as current evidence, and no speed outcome proves
-the target asymptotic bound.
+gates. Formal runs followed the manual review and passed their own archive
+checks. Only formal samples enter the current performance tables.
+
+\section{Historical Study: Separate Scope}
+\label{sec:method-protocol}
+\label{sec:method-case-audit}
+\label{sec:method-python-sort}
+\label{sec:method-reference-pipeline}
+\label{sec:method-paper-implementation}
+
+The earlier study used 60 inputs: flat, nested and ten seeded incremental
+cases at each of five even lengths 32--512. It compared Python sort, the
+oracle-backed reference pipeline and the rollback-enabled ordinary-list core,
+with five warm-ups and twenty individual calls per case/algorithm. The latter
+core paid recovery preparation even on successful calls; the reference also
+included recognition and structural analysis. Its GC-disabled timed calls,
+CPython 3.12.4, median-of-halves quartiles and separate scheduling differ from
+the current protocol. The 3,600 historical rows and full method remain bound
+to their original archive (\cref{sec:appendix-history}); they are not pooled
+with the current comparison or used to infer a rollback-removal benefit.

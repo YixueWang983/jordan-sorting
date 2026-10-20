@@ -1,0 +1,21 @@
+{
+  "scope": "read_only_all_local_records_and_thesis_diagnostic_table",
+  "formal": false,
+  "sorter_executed": false,
+  "source_binding": "19a553fb9a089fae726c4ba49c5412a9e4bd12d3",
+  "batches": 900,
+  "timed_outputs": 11700,
+  "warmup_outputs": 180,
+  "stress_inputs": 40,
+  "stress_two_sided": 678,
+  "checked_inputs": 8,
+  "protocol_sha256": "60d9ba5429a33b01ef5b5747965e2564df5f78c8debeea2c4ac8407844f9fc9a",
+  "summary_sha256": "b5371e7a348a51de4a599dd3778821ddfad46903a22a16ffc47a55666c916722",
+  "diagnostic_table_rows": [
+    "512 & Medium & 1 & 2.109 & 1.107 & 0.964 & 47.5",
+    "512 & Heavy & 2 & 1.115 & 0.691 & 0.617 & 38.0",
+    "513 & Medium & 1 & 2.102 & 1.088 & 0.977 & 48.3",
+    "513 & Heavy & 2 & 1.109 & 0.688 & 0.616 & 37.9"
+  ],
+  "limits": "Output/record reconstruction; no independent decoding of large-case physical trees or general proof."
+}

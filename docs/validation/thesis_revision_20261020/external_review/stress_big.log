@@ -1,0 +1,6 @@
+{"seed": 11, "totals": {"inputs": 400, "splits": 86548, "two_sided": 7906, "inputs_with_two_sided": 398, "max_min_side": 22}, "failures": 0, "first_failures": []}
+{"seed": 12, "totals": {"inputs": 400, "splits": 91231, "two_sided": 8469, "inputs_with_two_sided": 397, "max_min_side": 21}, "failures": 0, "first_failures": []}
+{"seed": 13, "totals": {"inputs": 400, "splits": 90567, "two_sided": 8556, "inputs_with_two_sided": 396, "max_min_side": 21}, "failures": 0, "first_failures": []}
+{"seed": 14, "totals": {"inputs": 400, "splits": 83753, "two_sided": 7473, "inputs_with_two_sided": 396, "max_min_side": 21}, "failures": 0, "first_failures": []}
+{"seed": 21, "totals": {"checked_runs": 150, "inputs": 150, "splits": 1223, "two_sided": 127, "inputs_with_two_sided": 84, "max_min_side": 5}, "failures": 0, "first_failures": []}
+{"seed": 22, "totals": {"checked_runs": 150, "inputs": 150, "splits": 1353, "two_sided": 145, "inputs_with_two_sided": 84, "max_min_side": 7}, "failures": 0, "first_failures": []}

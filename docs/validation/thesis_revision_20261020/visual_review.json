@@ -1,0 +1,43 @@
+{
+  "blank_pages": [
+    2,
+    4,
+    8,
+    10,
+    12,
+    32,
+    40,
+    66
+  ],
+  "checks": [
+    "No clipped content or text/figure overlap observed",
+    "New diagrams, proof displays and tables inspected",
+    "Title date 20 October 2026",
+    "70 physical pages within requested 50\u201370 range"
+  ],
+  "contact_sheets_sha256": "0f82079eb7848679472bf6b69c9fd19d344f744f89c7929b3829b51f275a9775",
+  "final_changed_pages_reviewed": [
+    3,
+    7,
+    11,
+    37,
+    38,
+    39,
+    48,
+    49,
+    50,
+    52,
+    53,
+    54,
+    55,
+    56,
+    68
+  ],
+  "mathematical_certification": false,
+  "method": "All 70 preliminary pages viewed in 18 contact sheets; corrected cover viewed separately. Final 15 changed pages viewed again in 8 contact sheets; other pages pixel-identical.",
+  "pdf_sha256": "a86aa4be9bec3f36d74bfb78403a29250b538384967e9b965528e6a942eeb740",
+  "physical_pages": 70,
+  "prior_unchanged_pages": 55,
+  "render_scale": 1.2,
+  "school_submission_approved": false
+}

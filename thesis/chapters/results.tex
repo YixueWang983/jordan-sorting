@@ -43,7 +43,8 @@ The runs use Apple M4/arm64, 16 GB RAM, ten logical CPUs, macOS 26.6 and
 CPython 3.12.14, with GC enabled at thresholds 700/10/10. The captured power
 state is battery power at 100\%; the records do not establish constant clock
 frequency or thermal state throughout execution. Both backends use the same
-public minimal sorting scope, and the tree disables detailed work collection.
+public minimal sorting scope, and the tree disables detailed work collection while retaining access hooks
+(\cref{sec:implementation-policies}).
 Initialization, sorting, output recovery, the batch loop and output append are
 included; expected-output comparisons and persistence are excluded.
 
@@ -92,16 +93,16 @@ narrowing gap does not establish a future crossover; no crossover was observed.
 
 \begin{table}[htbp]
 \centering
-\caption{Common-set ratios grouped by the frozen nesting classification. These aggregates mix lengths and related constructions.}
+\caption{Common-set ratios grouped by the frozen nesting classification. These aggregates mix lengths and related constructions. Split counts are per backend in qualification traces.}
 \label{tab:results-family-ratios}
-\begin{tabular}{lrrr}
+\begin{tabular}{lrrrr}
 \toprule
-Stratum & Inputs & Median ratio & Range\\
+Stratum & Inputs & Median ratio & Range & Two-sided splits\\
 \midrule
-Strict-flat & 20 & 3.439 & 3.035--3.535\\
-Low nesting & 40 & 3.198 & 2.505--3.484\\
-Medium nesting & 40 & 2.886 & 2.058--3.157\\
-Heavy nesting & 40 & 1.868 & 1.114--2.348\\
+Strict-flat & 20 & 3.439 & 3.035--3.535 & 0\\
+Low nesting & 40 & 3.198 & 2.505--3.484 & 0\\
+Medium nesting & 40 & 2.886 & 2.058--3.157 & 0\\
+Heavy nesting & 40 & 1.868 & 1.114--2.348 & 0\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -162,8 +163,8 @@ its own twenty-batch median. Across the common set its median is 1.37\% for
 the list and 1.08\% for the tree; maxima are 50.26\% and 61.81\%, respectively.
 The targeted-set medians are 1.18\% and 1.55\%, with maxima 9.08\% and 7.52\%.
 Thus typical cells have narrow central spreads, but some common-set cells do
-not. Every batch is retained, including the high-variability cells. No hotspot
-or thermal experiment was performed, so these variations have no assigned cause.
+not. Every batch is retained, including the high-variability cells. The later
+wrapper diagnostic does not identify the cause of those formal-run variations.
 
 One common-set sample batch is below 10 ms; none in the targeted set is.
 The frozen calibration criterion was the median of three calibration batches,
@@ -178,56 +179,67 @@ synchronization and other orchestration occur outside them. The recorded
 campaigns remain separate, and their absolute times are not pooled with the
 older pilot or historical experiments.
 
+\section{Post-Review Access-Hook Diagnostic}
+\label{sec:results-hooks}
+
+A separate October 20 diagnostic uses the reviewer's fixed fifteen common-set
+inputs at $n=128,512,513$, on the same M4 and CPython 3.12.14 in a later session.
+Each input has four isolated processes: list, measured tree, tree without
+field-access hooks, and additionally unwrapped operation/phase methods.
+Only process-local class attributes change; production files remain frozen.
+Three warm-ups precede fifteen batches of 25 calls at 128 or 7 calls at
+512/513. All 11,700 timed outputs and 180 warm-up outputs are saved and checked;
+the timer includes output append but excludes comparisons and pre-batch GC.
+This diagnostic uses its own protocol, not the formal B table or sample count.
+
+\begin{table}[htbp]
+\centering
+\caption{Local diagnostic, all medium/heavy cases at 512/513. T, H and U are the
+measured, hook-free and additionally unwrapped trees; L is the list.
+Entries aggregate per-input median ratios. Drop is $100(1-H/T)$, not an
+additive cost attribution. All fifteen cases remain in the separate archive.}
+\label{tab:results-hooks}
+\begin{tabular}{rlrrrrr}
+\toprule
+$n$ & Workload & Cases & T/L & H/L & U/L & Drop (\%)\\
+\midrule
+512 & Medium & 1 & 2.109 & 1.107 & 0.964 & 47.5\\
+512 & Heavy & 2 & 1.115 & 0.691 & 0.617 & 38.0\\
+513 & Medium & 1 & 2.102 & 1.088 & 0.977 & 48.3\\
+513 & Heavy & 2 & 1.109 & 0.688 & 0.616 & 37.9\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Removing hooks lowers the tree median by 37.7--52.1\% across the fifteen cases.
+The four large heavy cases then favor the tree. Hence the formal slowdown
+cannot be generalized to a hook-free implementation. The diagnostic does not
+qualify these modified variants as production backends or isolate an exact
+additive overhead share; order and environment limits remain in
+\cref{sec:limitations-timing-scopes}.
+
 \section{Historical Rollback-Enabled Evidence}
 \label{sec:results-historical}
 \label{sec:results-replication}
 \label{sec:results-exploratory}
 
-The previous study is retained as historical evidence, with its full tables
-and correlations in the version-bound analysis archive. At source
-\texttt{98868b1}, 60 inputs and three algorithms produced 3,600 measured rows,
-180 case summaries and 60 untimed checked-state audits, all successful. Its
-ordinary-list implementation still performed rollback-related work. Its Python
-version was 3.12.4; scheduling, GC and quantile conventions differ from the
-current experiment. No historical observation is included in the tables above.
-
-\begin{table}[htbp]
-\centering
-\caption{Historical rollback-enabled study only: median within-input paper/reference ratios. The two pipelines have different timed scopes.}
-\label{tab:results-historical-ratio}
-\begin{tabular}{rrrrrr}
-\toprule
-$n$ & 32 & 64 & 128 & 256 & 512\\
-\midrule
-Ratio & 3.226 & 2.202 & 1.351 & 0.851 & 0.567\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Python sort had the smallest median call time at each historical size.
-The reference included certification and its complete oracle-backed pipeline,
-whereas the paper call was pre-certified minimal sorting. The decreasing
-paper/reference ratio therefore describes those scopes, not an equivalent
-end-to-end speedup. A separate old pilot reproduced its directional size trend;
-absolute pilot/formal runtimes were not pooled.
-
-The old exploratory analysis reported positive within-size associations
-between reference runtime and depth/containment density, with more variable
-paper-runtime associations. Checked scans, splits and copied/transferred items
-had positive descriptive associations with minimal runtime. These are neither
-causal decompositions nor current tree results. The invariant-check counter
-was constant within size, so its correlation was undefined, not zero. Detailed
-coefficients remain in the unchanged historical analysis rather than being
-repeated as evidence about the current implementation.
+The earlier rollback-enabled study contains 3,600 measured calls on 60
+inputs at its own source and environment. Python sort had the smallest
+median call time at every historical size. Its paper/reference ratios and
+counter correlations compare different pipeline scopes, not the two current
+backends. Full tables remain in the unchanged archive indexed in
+\cref{sec:appendix-history}; none enters the current numerical tables.
 
 \section{Interpretation Boundary}
 \label{sec:results-boundary}
 
 The current comparison supports a clear practical conclusion for the frozen
-inputs and this environment: the tree implementation is slower despite its
+inputs and this environment: the measured tree configuration with retained access hooks has higher
+per-input medians despite its
 reviewed source-level amortized bound. Differing object access, wrappers,
 local checks, allocation and tree maintenance all contribute to the concrete
-programs; the experiment does not isolate their individual costs. The data
+programs; the formal experiment does not isolate their individual costs or evaluate
+a version with the hooks removed. The data
 neither refute that structural bound nor demonstrate a practical linear-time
-speed advantage. Broader scales, other split patterns and another environment
-remain unmeasured. No causal rollback-removal claim is made.
+speed advantage. Broader performance scales and split patterns remain outside
+the formal comparison. No causal rollback-removal claim is made.

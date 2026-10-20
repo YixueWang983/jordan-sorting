@@ -105,3 +105,15 @@ as vector PDFs. The shared style SHA-256 is:
 - Example provenance: for the oracle-valid prefix $(1,2,3,4,6,7,0)$, the
   checked implementation records base anchor $z_2$, output anchor $z_1$, and
   `adjusted_for_z1=true` at decreasing iteration $i=7$.
+
+## New explanatory diagrams (2026-10-20)
+
+Original TikZ diagrams, not new experimental measurements. Built with LuaLaTeX
+and the existing shared figure style. The former pipeline PDF remains historical.
+
+- `heterogeneous_representation.pdf` SHA-256: `1d17d90a3ffa699ce4494685e872c4b8005435ff8b69abf6a44a5eb7aa776d7a`
+  Source `source/heterogeneous_representation.tex` SHA-256: `229f456e9cb09839f87398c861c3bd8aa72fb87d6b69a6df335f46ab592c37a4`
+- `heterogeneous_split_flow.pdf` SHA-256: `9e320e69a497961caa524b11478c92499b5f19c9d9b9f09361fb297a4681262a`
+  Source `source/heterogeneous_split_flow.tex` SHA-256: `fab95fedb14d452591ed2ed027e51acfb64d386e18ccf5d2a69aa89bcad6b9d4`
+- `current_experiment_pipeline.pdf` SHA-256: `617887740e6f9237a03061909605645b5addeed2c1d26b013b6af33800472c53`
+  Source `source/current_experiment_pipeline.tex` SHA-256: `d175b3dc706d956cd9da61ee1036d1556046c5b9684ba5a33bda07fe4b667ef0`

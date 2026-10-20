@@ -1,238 +1,101 @@
-\chapter{Claim Traceability}
+\chapter{Evidence and Source Index}
 \label{app:claim-traceability}
-
-This appendix records how the thesis-facing claim groups connect to the
-audited claim inventory and archived, manifest-bound experiment evidence. It is
-a traceability aid rather than an additional source of empirical results. The
-historical controlled inventory contains 46 claims: nine implementation claims, thirteen
-method claims, eleven quantitative result claims, four exploratory claims,
-and nine required limitations. The version-specific amendments below supplement
-that historical inventory for the revised implementation.
-
-\section{Claim Groups and Thesis Locations}
-
-\begin{table}[htbp]
-  \centering
-  \footnotesize
-  \caption{Controlled claim groups and their principal locations in the
-  thesis.}
-  \label{tab:appendix-claim-groups}
-  \begin{tabular}{@{}
-    >{\raggedright\arraybackslash}p{0.15\textwidth}
-    >{\raggedright\arraybackslash}p{0.34\textwidth}
-    >{\raggedright\arraybackslash}p{0.43\textwidth}@{}}
-    \toprule
-    Claim IDs & Principal thesis location & Primary authority class \\
-    \midrule
-    \texttt{I-01--I-03}
-      & \cref{sec:implementation-scope,sec:implementation-certification}
-      & Reference and paper-core output provenance in the implementation
-        source and certified-wrapper boundary. \\
-    \texttt{I-04--I-05}
-      & \cref{sec:implementation-state,sec:implementation-control-flow}
-      & Shared Step~1/2/3 runner, partial-order state, and ordinary-list
-        sibling backend. \\
-    \texttt{I-06--I-08}
-      & \cref{sec:implementation-validation,sec:implementation-policies,sec:implementation-certification}
-      & Diagnostics, deterministic replay, fixed execution policies, and
-        pre-call certification. \\
-    \texttt{I-09}
-      & \cref{sec:implementation-complexity}
-      & Dated ordinary-list scope amendment and missing-theoretical-backend
-        boundary. \\
-    \texttt{M-01--M-08}
-      & \cref{sec:method-scope,sec:method-protocol,sec:method-implementations,sec:method-timing,sec:method-scheduling}
-      & Pre-specified formal configuration and the reused timing and scheduling
-        control flow. \\
-    \texttt{M-09--M-13}
-      & \cref{sec:method-aggregation,sec:method-evidence,sec:method-validation,sec:method-environment}
-      & Archived manifest-bound summaries, manifest, evidence-contract
-        validator, and recorded execution environment. \\
-    \texttt{R-01--R-11}
-      & Historical summary in \cref{sec:results-historical}; full original tables in the bound analysis archive.
-      & Formal-experiment validated evidence and generated analysis tables; the
-        pilot experiment is used only for the directional replication claim. \\
-    \texttt{E-01--E-04}
-      & Historical discussion in \cref{sec:results-historical}; full coefficient tables retained in the archive.
-      & Generated structure/runtime and checked-counter relationship tables,
-        interpreted descriptively and non-causally. \\
-    \texttt{L-01--L-09}
-      & \cref{chap:limitations}
-      & Scope amendment, fixed protocol, timing boundaries, sampling design,
-        and the formal analysis limitations. \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-The detailed wording, evidence locator, and required boundary for every ID are
-maintained in
-\nolinkurl{docs/thesis/claim_to_evidence_table.md}. The audited copy has the
-following SHA-256:
-
-\begin{center}
-  \footnotesize\ttfamily
-  cc88363a5aa25d55a56b614b02826aa1\allowbreak\newline
-  862d7c48c8a1a54bd2c66da17715e2ea
-\end{center}
-
-The chapter-level audit is recorded in
-\nolinkurl{docs/thesis/final_claim_audit.md}; it verifies coverage of all 46
-controlled claims and the cross-chapter interpretation boundaries at its
-historical baseline. It does not certify the later amendments as part of that
-earlier audit.
-
-\section{Implementation Revision and Evidence Scope}
 \label{sec:appendix-revision-bindings}
 
-The subsequent cost correction is recorded separately in
-\nolinkurl{docs/thesis/cost_revision_audit_20261011.md}. It clarifies copying
-at both insertion boundaries, always-on membership and ancestor scans, and
-the limited scope of logical split counters. The lower bound in
-\cref{eq:implementation-boundary-copy-lower-bound} is derived from the
-unchanged source, not from the historical timing measurements. The new
-resource probes are qualification evidence and do not replace any performance
-results in this thesis.
+The \href{https://github.com/YixueWang983/jordan-sorting}{project repository}
+retains the immutable archives. Revisions below identify executions, not later
+result-storage commits. Full hashes and manifests remain at the listed paths,
+relative to \texttt{docs/}.
 
-The earlier revised implementation account is bound to repository commit
-\texttt{6f74683}. The rollback removal was
-introduced in commit
-\texttt{337903a}; the full identifiers and source-file hashes are
-recorded in \nolinkurl{docs/thesis/revision_claims_20261011.md}.
-The formal timing archive instead binds source commit
-\nolinkurl{98868b1b705f6d5f22404ee8ad7b88ad7a834f52}. Its results retain their
-original version and timing scope.
-
-The earlier account of shared-core access interfaces, separate backend-work
-records and deterministic replay is bound to repository commit
-\texttt{71e3e71}, with evidence in
-\nolinkurl{docs/validation/shared_core_backend_20261012/}.
-Replay creates a fresh backend of the same type and configuration and compares
-logical and physical snapshots. This interface revision does not establish
-completion or performance of the heterogeneous finger-tree backend.
-
-The amendment to historical claim \texttt{I-05} replaces the current
-implementation's rollback contract with error propagation and mandatory
-discard of failed state. The clarification to \texttt{I-07} distinguishes the
-unchanged execution-policy switches from the changed recovery work.
-The ordinary-list complexity limitation in \texttt{I-09} remains applicable
-to that backend. The current tree is implemented and qualified. Its
-representation, mixed-cost and locality arguments have passed the project's
-source-level manual review under the stated computational model; this is not
-machine verification or external independent certification.
-
-The current implementation and method amendments bind unchanged production
-sources at \texttt{c5b5ac3}. Tree integration, optional detailed work and v2
-validation were introduced in \texttt{d6622ce}, \texttt{84f7e13} and
-\texttt{f77df45}. Qualification executions retain producers \texttt{3cafb44}
-(140 common inputs) and \texttt{668371f} (twelve targeted split inputs).
-Read-only ID-lifecycle rechecks and actual calibration use \texttt{c5b5ac3};
-records, all batch attempts, decisions and independent rebuild reports are in
-\nolinkurl{docs/validation/id_lifecycle_calibration_20261015/}.
-The later archive commit stores those results without becoming the execution
-version. The subsequent concentrated review is
-\nolinkurl{docs/development/finger_final_review_20261015.md}; its exact source
-binding and provenance receipt are in
-\nolinkurl{docs/validation/final_review_formal_20261015/}.
-The receipt binds the pre-correction review text retained at \texttt{ce0148b}
-and cannot itself prove the mathematics. The October 16 correction makes the
-red-root recursive join transient explicit and updates its cost-lemma
-dependencies; its checks are in
-\nolinkurl{docs/validation/join_proof_correction_20261016/}.
-The old receipt and all measurements remain unchanged.
-Formal execution at \texttt{4a83fa6} followed the original review and passed the separate
-binding gates; the Python source trees remained identical to \texttt{c5b5ac3}.
-
-\subsection{Development Coverage Bindings}
-\label{sec:appendix-development-coverage}
-
-The operation evidence in \cref{tab:implementation-coverage} is archived in
-\nolinkurl{docs/validation/heterogeneous_split_20261013/}; the 18-input campaign
-is in \nolinkurl{docs/validation/heterogeneous_work_modes_20261013/}.
-Both ran with uncommitted changes. Recorded source hashes match the snapshots
-subsequently saved at \texttt{cc1aa2d} and \texttt{84f7e13}, respectively;
-the recorded parent HEAD alone does not identify the executed source.
-The later read-only coverage inventory is
-\nolinkurl{docs/validation/review_delivery_20261016/}. It checks archived records
-and source bindings, without rerunning sorting or converting development
-resource observations into performance results. Full event traces were not
-saved in the 18-input archive: its insertion/re-split totals are checked across
-saved reports, not independently reconstructed from every event.
-
-\subsection{Current Formal Evidence}
+\section{Current Evidence}
 \label{sec:appendix-current-formal}
 
-The current common and targeted archives, independent validator reports,
-per-input CSV, full-precision summary and figure-generation program are in
-\nolinkurl{docs/validation/final_review_formal_20261015/}.
-The raw formal producers are \texttt{4a83fa6}; a later commit saving results is
-not substituted for that identity. The common archive has 5,600 sample batches
-and the targeted archive 480; both use twenty batches per input/backend and
-their original calibration B tables. Current numerical claims in the abstract,
-introduction, results and conclusion derive from those records. Source-level
-cost claims instead derive from the manual review and its stated model.
-The directory's dated protocol name is not an execution timestamp: archived
-UTC timestamps identify the actual campaigns, which span October 15--16 in
-Europe/Berlin. Old qualification, calibration and historical files are unchanged.
-
-The revision record links these statements to the current split and insertion
-code, public-call failure tests, and their thesis locations. The historical
-method, numerical-result, and exploratory claims keep their original evidence
-bindings. Their counts, tables, figures, and archive hashes are not updated to
-represent a new experiment. Future implementations and measurements require
-their own evidence records.
-
-\section{Archived Evidence Bindings}
-
 \begin{table}[htbp]
-  \centering
-  \footnotesize
-  \caption{Archived run manifests used by the thesis analysis.}
-  \label{tab:appendix-evidence-bindings}
-  \begin{tabular}{@{}
-    >{\raggedright\arraybackslash}p{0.20\textwidth}
-    >{\raggedright\arraybackslash}p{0.31\textwidth}
-    >{\raggedright\arraybackslash}p{0.41\textwidth}@{}}
-    \toprule
-    Evidence role & Execution identifier & Manifest SHA-256 \\
-    \midrule
-    Pilot experiment
-      & \texttt{week11\_pilot\_v1\_\_run003}
-      & \texttt{ef6a9d17df644eab8c3284d04dc356ce}\newline
-        \texttt{4b68b4efdfc0da7eecb5a9c7136c5141} \\
-    Formal experiment
-      & \texttt{week12\_formal\_sorting\_v1\_\_run001}
-      & \texttt{f42ab0b77cb7ea91ed66c66bc6947a81}\newline
-        \texttt{cd8746b5d2b67d526472260d2b47f850} \\
-    \bottomrule
-  \end{tabular}
+\centering\small
+\caption{Current execution and source bindings.}
+\label{tab:appendix-evidence-bindings}
+\begin{tabular}{@{}p{.26\textwidth}p{.13\textwidth}p{.54\textwidth}@{}}
+\toprule
+Role & Producer & Directory under \texttt{docs/validation/}\\
+\midrule
+140-input qualification & \texttt{3cafb44} & \nolinkurl{common_qualification_v2_20261015/}\\
+12-input qualification & \texttt{668371f} & \nolinkurl{split_trace_followup_20261015/}\\
+ID recheck; calibration & \texttt{c5b5ac3} & \nolinkurl{id_lifecycle_calibration_20261015/}\\
+Formal 140 + 12 & \texttt{4a83fa6} & \nolinkurl{final_review_formal_20261015/}\\
+\bottomrule
+\end{tabular}
 \end{table}
 
-Each manifest binds six archive files: raw measurements, case summaries,
-group summaries, case audits, the fixed configuration, and the recorded
-runtime environment. The separate formal evidence-contract validator
-regenerates cases and checked diagnostics, recomputes scheduling and summaries,
-and verifies these hashes before analysis. The old result figures, retained in
-the repository, are conversions of historical validated SVG analysis outputs.
-The five explanatory figures come from committed TikZ sources. Current result
-plots are generated from the new raw records by the bound analysis program;
-their sources and generated hashes are indexed in
-\nolinkurl{thesis/figures/README.md} and the current formal archive.
+The formal archive holds 5,600 common and 480 targeted sample batches,
+outputs, statistics and independent reports. Its Python code matches
+calibration source \texttt{c5b5ac3}; result storage at \texttt{ce0148b} does not
+change execution identity. UTC timestamps identify runs, dated directories
+identify work packages. Inputs, B tables and data remain frozen.
 
-\section{Interpretation Boundaries}
+Frozen \texttt{timing\_ready=False} comments predate final qualification;
+the measurement tool's \nolinkurl{performance_eligible=false} does not certify
+total research delivery. Actual \texttt{stage=formal} archives, completion and
+binding checks establish the reported campaigns. Sources are not edited
+retrospectively to relabel them.
 
-The traceability record preserves the following boundaries across chapters:
+\section{Proof-to-Source Correspondence}
 
-\begin{itemize}
-  \item the paper core recovers output from maintained state, while
-    oracle-derived sorted output belongs to the reference pipeline;
-  \item the formal experiment evaluates oracle-certified valid-input sorting, not
-    recognition;
-  \item paper/reference ratios compare different timed pipeline scopes and
-    are not like-for-like end-to-end speedups;
-  \item pilot and formal absolute runtimes are not pooled;
-  \item structure and counter relationships are exploratory and non-causal;
-    and
-  \item the ordinary-list implementation does not inherit the theoretical
-    backend's linear bound; its insertion-copying lower bound is a separate
-    source-derived claim.
-\end{itemize}
+\Cref{app:backend-argument} develops the reviewed argument in English.
+In \nolinkurl{src/heterogeneous_finger_backend.py}, the node/header classes,
+\texttt{\_repair\_insert} and \texttt{\_rotate\_outward} correspond to $D$ and
+\cref{lem:proof-insert}; \texttt{split\_value} and \texttt{adopt\_split} implement
+the public header transition. In \nolinkurl{src/heterogeneous_finger_split.py},
+conversion, \texttt{balance\_down} and \texttt{join\_down},
+\texttt{repair\_short} and \texttt{split\_down} correspond to
+\cref{lem:proof-join,lem:proof-split,lem:proof-telescoping,lem:proof-finger,lem:proof-mixed}.
+The Step~1/2/3 core in \texttt{src/paper\_jordan.py} corresponds to
+\cref{lem:proof-locality,thm:proof-total}.
+
+The detailed branch audit is
+\nolinkurl{development/finger_final_review_20261015.md} (R1--R6, C1--C5,
+L1--L4). The October 16 correction in
+\nolinkurl{validation/join_proof_correction_20261016/} explicitly distinguishes
+red-root return transients and nonempty split potentials. Its predecessor's
+review receipt binds the older text; it is not reissued as certification of
+this appendix. The present revision and build record are in
+\nolinkurl{validation/thesis_revision_20261020/}.
+
+\section{Development and Historical Evidence}
+\label{sec:appendix-development-coverage}
+\label{sec:appendix-history}
+
+The operation tests and 18-input structural campaign in
+\cref{tab:implementation-coverage} are respectively archived under
+\nolinkurl{validation/heterogeneous_split_20261013/} and
+\nolinkurl{validation/heterogeneous_work_modes_20261013/}.
+They ran with uncommitted changes whose recorded source hashes match the
+later saved snapshots \texttt{cc1aa2d} and \texttt{84f7e13}, not simply the
+recorded parent HEAD. The read-only inventory under
+\nolinkurl{validation/review_delivery_20261016/} checks the saved reports;
+it does not reconstruct unsaved event traces or rerun old inputs.
+
+Historical formal/pilot producers are \texttt{98868b1}/\texttt{01f6480}.
+\nolinkurl{thesis/claim_to_evidence_table.md} and
+\nolinkurl{thesis/final_claim_audit.md} retain method, results and archive
+locators. Earlier implementation revisions are indexed in
+\nolinkurl{thesis/revision_claims_20261011.md} and
+\nolinkurl{validation/shared_core_backend_20261012/}. Old timings are not pooled.
+
+\section{Supplementary Reviewer Material}
+\label{sec:appendix-external-review}
+
+Four files received on October 20 are preserved verbatim in
+\nolinkurl{validation/thesis_revision_20261020/external_review/}.
+They report 1,900 stress inputs and fifteen-input wrapper medians, but lack
+bound command lines, source/environment identities and individual records.
+The original scripts have no optimization guard; the timing script checks only
+the last output per batch. These external aggregates are excluded from verified
+coverage and formal estimates; their arithmetic and limitations are archived.
+
+The separate \nolinkurl{local_supplement/} fixes protocol, source hashes and
+inputs before execution. Its adapted runner guards optimization, checks every
+timed output, saves all 900 diagnostic batches and preserves traces for forty
+bounded correctness inputs. This is not a reproduction of all external runs
+or a formal campaign. Shared Python files match \texttt{19a553fb}; each
+diagnostic process records its runtime monkeypatches. Seeded generation is
+not uniform population sampling.

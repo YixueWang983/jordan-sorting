@@ -1,0 +1,1 @@
+{"case":"n128-nested_heavy_valid-01-mirror","input_sha256":"d6aff99c777f3fe1a0857bf7050bb66fea51333f99acd7e1f6c7acf02caad718","kind":"wrapper","modifications":["_Tracked.__getattribute__","_Tracked.__setattr__"],"protocol_sha256":"60d9ba5429a33b01ef5b5747965e2564df5f78c8debeea2c4ac8407844f9fc9a","variant":"tree_nofa"}

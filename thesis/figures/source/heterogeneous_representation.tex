@@ -1,0 +1,23 @@
+\documentclass[tikz,border=7pt]{standalone}
+\input{figure_style}
+\begin{document}
+\begin{tikzpicture}[font=\small]
+\node[accent box] (h) at (0,2.4) {header: root, top caches, fingers, size, owner};
+\node[point,label=right:ROOT] (r) at (0,1) {$R$};
+\node[point,label=above left:LEFT] (l) at (-2,0) {$L$};
+\node[point,label=above right:RIGHT] (q) at (2,0) {$Q$};
+\node[box] (a) at (-3,-1.2) {$a$};
+\node[box] (b) at (-1,-1.2) {$b$};
+\node[box] (c) at (1,-1.2) {$c$};
+\node[box] (d) at (3,-1.2) {$d$};
+\draw[flow] (a)--(l); \draw[flow] (l)--(r);
+\draw[flow] (d)--(q); \draw[flow] (q)--(r);
+\draw[flow] (l)--(b); \draw[flow] (q)--(c);
+\draw[accent flow,dashed] (h)--(r);
+\draw[accent flow,dashed] (h.west)--++(-.5,0)|-(l.west);
+\draw[accent flow,dashed] (h.east)--++(.5,0)|-(q.east);
+\node[smalllabel,below=2mm of a] {left finger};
+\node[smalllabel,below=2mm of d] {right finger};
+\node[smalllabel] at (0,-2.3) {decoded tree: $R(L(a,b),Q(c,d))$};
+\end{tikzpicture}
+\end{document}

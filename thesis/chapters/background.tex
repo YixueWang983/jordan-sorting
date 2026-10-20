@@ -136,8 +136,10 @@ The second component is essential to the published linear-time bound.
 
 \textcite{fung1990simplified} retained the linear theoretical bound while
 simplifying both the primary structure and the operations required of it. A
-locality lemma shows that, after a pair has been added, the relevant children
-of a family remain in one or two contiguous sibling lists. As a result, the
+locality lemma constrains re-entry into the region of one parent and its
+direct children, called a local family in that paper. Its exact grouping rule
+stores those children in one or two contiguous sibling lists. This is not a
+partition of the entire upper or lower forest. As a result, the
 sorting algorithm needs only three abstract list operations:
 \begin{enumerate}
   \item create a singleton list;
@@ -150,7 +152,7 @@ extracts a middle section and concatenates the two remaining ends
 
 The algorithm again processes intersections incrementally. It maintains a
 sorted list, upper and lower family trees, and sibling lists encoding the
-local family order. Neighboring processed coordinates locate the relevant
+direct-child order. Neighboring processed coordinates locate the relevant
 same-family boundaries; insertion of the new pair and any necessary sibling
 split then determine where the new point enters the sorted list. The exact
 Step~1/2/3 reconstruction used in this thesis, including the symmetric

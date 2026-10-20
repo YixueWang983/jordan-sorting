@@ -1,0 +1,16 @@
+\documentclass[tikz,border=7pt]{standalone}
+\input{figure_style}
+\begin{document}
+\begin{tikzpicture}[font=\small,node distance=7mm and 7mm]
+\node[box,text width=3.8cm] (inputs) {Frozen inputs\\common 140 / targeted 12};
+\node[box,text width=3.8cm,right=of inputs] (qual) {Qualification v2\\synchronous checked + fresh replay\\separate fresh minimal};
+\node[box,text width=3.8cm,right=of qual] (cal) {Separate calibration\\first common batch size $B$\\both medians $\geq10$ ms};
+\node[box,text width=3.8cm,below=of cal] (gate) {Bind source, environment, $B$\\five warm-ups per backend};
+\node[accent box,text width=3.8cm,left=of gate] (sample) {Formal samples\\20 paired batches per input\\fresh sort calls, retained hooks};
+\node[box,text width=3.8cm,left=of sample] (check) {External output checks\\commit every batch\\independent archive reconstruction};
+\draw[flow] (inputs)--(qual); \draw[flow] (qual)--(cal);
+\draw[flow] (cal)--(gate); \draw[accent flow] (gate)--(sample);
+\draw[flow] (sample)--(check);
+\node[smalllabel,below=5mm of sample] {Only complete sorting calls and batch overhead are timed in formal samples.};
+\end{tikzpicture}
+\end{document}

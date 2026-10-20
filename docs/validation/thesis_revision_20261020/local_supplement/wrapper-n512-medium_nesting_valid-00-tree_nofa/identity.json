@@ -1,0 +1,1 @@
+{"case":"n512-medium_nesting_valid-00","input_sha256":"2eb4c7518c195c5c15ad2a1ae15bb7ff6993f1548e6caf3ce060cb4d9da01a27","kind":"wrapper","modifications":["_Tracked.__getattribute__","_Tracked.__setattr__"],"protocol_sha256":"60d9ba5429a33b01ef5b5747965e2564df5f78c8debeea2c4ac8407844f9fc9a","variant":"tree_nofa"}

@@ -23,9 +23,12 @@ and a separate twelve-input set with two-sided splits. Frozen per-input batch
 sizes and twenty paired batches per backend yield 6,080 formal sample batches.
 All 66,560 sample calls return correct outputs. Tree/list ratios of input
 medians range from 1.114 to 3.535 in the common set (median 2.898), and from
-3.147 to 3.213 in the targeted set (median 3.180). The tree is slower on every
-measured input; no future crossover is inferred. Related constructions and
-mirrors are not independent random samples.
+3.147 to 3.213 in the targeted set (median 3.180). The measured tree, with access hooks retained despite disabled detailed
+collection, has a higher median on every input; this does not characterize
+a hook-free implementation or imply a future crossover. A separate local
+diagnostic finds a 37.7--52.1\% median-time reduction on fifteen inputs after
+removing field-access hooks. Related constructions and mirrors are not
+independent random samples.
 
 The contribution combines an independently recovering implementation,
 source-linked representation and cost analysis, and reproducible matched

@@ -1,129 +1,74 @@
 \chapter{Introduction}
 \label{chap:introduction}
 
-\section{Motivation}
+\section{Motivation and Scope}
 \label{sec:introduction-motivation}
-
-Jordan sorting starts with more information than arbitrary sorting: the input
-keys are line intersections encountered while traversing a simple plane curve.
-The absence of self-intersections restricts how consecutive segments can nest,
-permitting specialized linear-time algorithms
-\parencites{hoffmann1986sorting}{fung1990simplified}. It is a computational
-geometry example of turning geometric restrictions into algorithmic structure
-\parencite{deberg2008computational}.
-
-The published bound combines an incremental sorting procedure with specialized
-dynamic lists. The 1986 algorithm uses level-linked search trees; the 1990
-simplification uses heterogeneous finger trees. Ordinary Python lists can
-preserve the high-level operations while imposing different costs. Moreover,
-the concise paper leaves operational choices about orientation, ownership,
-geometric endpoints and the exceptional first point to be made explicit.
-
-This thesis reconstructs the 1990 Step~1/2/3 procedure in a shared Python core,
-then implements both ordinary-list and real heterogeneous red--black
-finger-tree storage. It connects physical representation and mixed-operation
-analysis to measured behavior. This follows the algorithm-engineering view
-that implementation, analysis and experimentation support different claims
-\parencite{sanders2009engineering}. Measurements characterize concrete programs
-and cases rather than replacing proof \parencite{mcgeoch2012guide}.
-
-\section{Problem and Scope}
 \label{sec:introduction-scope}
 
-For a valid Jordan sequence $z_1,\ldots,z_n$, the task is to recover increasing
-coordinate order from curve-traversal order. The model is introduced in
-\cref{chap:background}, and the executable reconstruction in
-\cref{chap:algorithm}. Both backends maintain their own partial sorted order,
-upper/lower pair families and sibling ownership. The paper core accepts a
-pre-certified valid input and never consumes the oracle's sorted answer.
-The separate reference pipeline deliberately returns oracle-derived output;
-its role in the historical study has a different provenance and timed scope.
+Jordan sorting recovers coordinate order from the traversal order of a simple
+curve's intersections with a line. Geometric restrictions permit linear-time
+algorithms \parencites{hoffmann1986sorting}{fung1990simplified}, provided their
+specialized dynamic-list operations have the required costs. Replacing those
+structures by ordinary Python lists can preserve semantics while changing
+complexity. Conversely, a better structural bound need not give faster
+execution at practical sizes. This motivates an algorithm-engineering study
+combining reconstruction, analysis and measurement
+\parencites{sanders2009engineering}{mcgeoch2012guide}.
 
-The current backends propagate update errors without rollback and require
-failed state to be discarded. The tree uses stable handles, endpoint fingers,
-local split/join and header ownership transfer. Its source-level manual
-argument covers representation preservation, locality and amortized cost under
-an explicit computational model. That argument is not machine formalization
-or an independent external proof certification.
-
-The current empirical scope is valid-input sorting: 140 controlled common
-inputs and an independent twelve-input targeted split set, with matched timing
-of both minimal calls. The old 60-input rollback-enabled study is retained as
-historical evidence. Recognition, invalid inputs, error correction, polygon
-clipping and a causal experiment on rollback removal are outside scope.
+This thesis implements the 1990 procedure in one Python core with ordinary-list
+and heterogeneous red--black finger-tree backends. Both maintain their own
+sorted output, pair forests and sibling ownership. Inputs are pre-certified
+valid Jordan sequences with distinct comparable values; the core never consumes
+the oracle's sorted answer. Recognition, invalid-input behavior and geometric
+applications lie outside the study. Update failures propagate and require the
+state to be discarded.
 
 \section{Research Questions}
 \label{sec:introduction-questions}
 
 \begin{enumerate}[label=\textbf{RQ\arabic*:},leftmargin=*]
-\item \textbf{Executable reconstruction and correctness.} Can one shared
-incremental procedure recover its own sorted output with both representations,
-while maintaining physical, ownership and family invariants?
-\item \textbf{Observed runtime behavior.} How do the two complete minimal
-sorting calls compare on frozen qualified inputs, with identical timing
-boundaries, per-input batches and a recorded environment?
-\item \textbf{Structure and implementation cost.} How do the actual operations
-support their source-level bounds, and what can finite timing and structural
-coverage reveal about their concrete costs?
+\item \textbf{Reconstruction and correctness:} can the shared incremental
+procedure recover its output while preserving physical, ownership and exact
+sibling-group invariants in both representations?
+\item \textbf{Observed runtime:} how do the complete minimal sorting calls
+compare on frozen qualified inputs with matched timing and batching?
+\item \textbf{Structure and cost:} how do actual operations support their
+source-level bounds, and what does finite coverage reveal about concrete costs?
 \end{enumerate}
 
-The first question uses source-linked reasoning and finite validation,
-including independent models, checked audits and same-backend replay. The
-second uses predeclared matched measurement and independent archive validation.
-The third distinguishes amortized analysis from descriptive observations;
-neither timing trends nor historical counter associations supply a causal
-or asymptotic proof.
+The first uses source-linked reasoning and bounded execution checks; the
+second uses paired measurement and independent archive validation. The third
+requires both, without treating timing curves as complexity proofs.
 
-\section{Contributions}
+\section{Contributions and Findings}
 \label{sec:introduction-contributions}
-
-\begin{enumerate}
-\item An executable Step~1/2/3 reconstruction with explicit orientation,
-endpoint and first-point decisions, independently maintained output, and a
-shared loop across both backends.
-\item A heterogeneous red--black finger-tree representation with stable
-pair/leaf identities, endpoint insertion, two-sided split, local repair and
-bounded header ownership updates, alongside the ordinary-list baseline.
-\item A source-level manual argument relating reversed pointers to logical
-trees, paying mixed-operation costs with two potentials, and connecting the
-published locality lemma and a finite-parent supplement to actual calls.
-\item A reproducible evidence workflow separating qualification, calibration,
-formal batches and historical results, retaining original outputs and failures,
-and reconstructing schedule and statistics with a separate validator.
-\end{enumerate}
-
-Level-linked search trees are not implemented. The reviewed tree cost bound
-uses unit-cost comparisons and machine-word operations, expected dictionary
-lookup and amortized growth. It does not promise unconditional Python wall
-time or a practical speedup at the measured sizes.
-
-\section{Headline Findings}
 \label{sec:introduction-findings}
 
-Both input sets passed v2 qualification, and all 66,560 formal sample calls
-returned correct output in 6,080 batches. The tree is slower on every measured
-input. In the common set, the median of within-input tree/list median ratios
-is 2.898, with range 1.114--3.535; in the targeted split set it is 3.180, with
-range 3.147--3.213. Related cases and mirrors are not independent random samples.
-No future crossover is inferred from the narrowing common-set gap.
+The reconstruction makes orientation, geometric endpoint and first-point
+choices explicit. Its tree provides stable identities, endpoint insertion,
+local split/join and bounded header ownership updates. The manual argument
+connects reversed-pointer representation, locality and two potentials to
+linear total source-level work under unit-cost comparisons, machine-word
+operations, expected dictionary lookup and amortized growth. It is not machine
+verification or an unconditional Python wall-time guarantee.
 
-The common inputs exercise no two-sided splits, despite their nesting strata.
-The targeted group supplies that path for smaller sides 3, 7 and 19, but does
-not represent all split scales or update histories. These observations explain
-why qualification, path coverage and practical performance must be reported
-separately. The ordinary backend's quadratic copying lower bound and the
-tree's reviewed linear total in the stated model are source arguments, not
-curve fits. Full results and limits appear in
-\cref{chap:results,chap:limitations}.
+The current study qualifies 140 controlled inputs and a separate twelve-input
+split set. All 66,560 formal sample calls return correct output in 6,080 batches.
+For the measured tree, retaining access hooks with detailed collection disabled,
+every input has a higher median than the list. Within-input tree/list ratios
+have medians 2.898 and 3.180, and ranges 1.114--3.535 and 3.147--3.213,
+respectively. These do not predict a hook-free variant or future crossover.
 
-\section{Thesis Structure}
+The common workload has no two-sided splits. The targeted set exercises that
+path at smaller sides 3/7/19, without covering general split histories.
+Related constructions are not independent random samples. The earlier
+rollback-enabled study remains historical and is not pooled with these results.
+
+\section{Reading Guide}
 \label{sec:introduction-structure}
 
-\Cref{chap:background} introduces the geometry and prior algorithms.
-\Cref{chap:algorithm} develops the executable incremental procedure, and
-\cref{chap:implementation} its representations, checks and cost argument.
-\Cref{chap:methodology} specifies input qualification, calibration and matched
-measurement. \Cref{chap:results} presents current results with a separate
-historical summary; \cref{chap:limitations} states their boundaries.
-\Cref{chap:conclusion} answers the research questions and identifies remaining
-work. The appendix binds claims and artifacts to their producing revisions.
+\Cref{chap:background,chap:algorithm,chap:implementation} develop context,
+reconstruction and implementation. \Cref{chap:methodology,chap:results,chap:limitations}
+give method, measurements and limits; \cref{chap:conclusion} answers the research
+questions. \Cref{app:backend-argument} develops the proof and
+\cref{app:claim-traceability} provides its source and evidence index.

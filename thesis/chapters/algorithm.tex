@@ -90,10 +90,23 @@ separate.
 \subsection{Families and Sibling Lists}
 \label{sec:algorithm-sibling-lists}
 
-Following the locality argument of \textcite{fung1990simplified}, the children
-associated with a family can be represented by one or two ordered sibling
-lists. The most recently added pair divides the family region into a left and
-a right part; children on either side remain contiguous in sibling order.
+Here \emph{parity family} means the entire upper or lower forest
+$\mathcal F^+$ or $\mathcal F^-$. For a particular owner $p$, its
+\emph{owner region} lies between its arc and its direct children's arcs;
+a \emph{sibling group} is one stored list of those direct children.
+The local ``family'' in the locality argument of
+\textcite[pp.~87--88]{fung1990simplified} consists of a parent and its direct
+children, not the whole parity forest.
+
+The exact grouping invariant $G$ is as follows. Let $P_j$ have the largest
+end index among the finite members of $\{p\}\cup\operatorname{children}(p)$.
+If $P_j=p$, all children form one group. Otherwise, the nonempty groups are
+the children with $r_h\leq z_j$ and those with $\ell_h\geq z_j$, respectively.
+Empty groups are omitted; an owner with no children has no group.
+The dummy is excluded when selecting $j$. Thus ``at most two lists'' is
+necessary but insufficient: the cut must be the endpoint of this particular
+latest child. The locality and preservation proof is given in
+\cref{sec:proof-locality}.
 This locality is what reduces the update to three abstract list operations:
 \begin{enumerate}
   \item create a singleton sibling list;
@@ -125,7 +138,8 @@ operation invoked by the paper core. The maintained list is bounded by
 identity-based negative- and positive-infinity sentinels so that predecessor
 and successor queries are defined at both ends.
 
-The family-tree invariant and \cref{eq:algorithm-prefix-invariant} are updated
+The exact grouping invariant $G$, the family-tree invariant and
+\cref{eq:algorithm-prefix-invariant} are updated
 together. Pair insertion locates the interval in which $z_i$ belongs, sibling
 splitting transfers any newly enclosed children, and the resulting family
 boundary determines the local insertion anchor in $S_{i-1}$.

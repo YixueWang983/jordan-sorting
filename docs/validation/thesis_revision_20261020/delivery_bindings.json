@@ -1,0 +1,19 @@
+{
+  "baseline": "19a553fb9a089fae726c4ba49c5412a9e4bd12d3",
+  "corrected_prior_proof_sha256": "a125e3108fdbf0f14c13208e832539bf022b036847a5d8a1a60653e8e91406fb",
+  "english_argument_sha256": "dd7a2d3454609870870885dd6c533825684a11778678a4381bbaa7b989115d2a",
+  "formal_execution": "4a83fa6b7a4213e9e5758fe3454e002ebc266459",
+  "local_supplement_protocol_sha256": "60d9ba5429a33b01ef5b5747965e2564df5f78c8debeea2c4ac8407844f9fc9a",
+  "new_scripts_sha256": {
+    "check_external_material.py": "a470f2274f4b6bd88be87c86beb4c822229fac07b9b4a5a7d3659d56b96501b9",
+    "check_local_supplement.py": "c49a784b0234f3a26d1a9daf8ac2ec172e5d52ffc0fe16e6ac55cd8c3804233e",
+    "check_revision.py": "62edf632e459bdd73b836c149b6b7b9d496259cd09856488f309df051923b665",
+    "run_supplement.py": "f752b5dc8525852bc58d2012a162daa682b57e456adfcebcbadfbab7b14edf5f"
+  },
+  "pdf_sha256": "a86aa4be9bec3f36d74bfb78403a29250b538384967e9b965528e6a942eeb740",
+  "prior_outputs": {
+    "output/packages/jordan_supervisor_review_20261016.zip": "98566c7af89c50d143a290438574c4f49c01dd2ff2f0fb2213dd1285a507f8f2",
+    "output/pdf/jordan_thesis_supervisor_review_20261016.pdf": "ba77bbec5e8393097347447831dce24bef5456ff447976d52794b898c03ade12"
+  },
+  "source_and_old_archives_unchanged": true
+}

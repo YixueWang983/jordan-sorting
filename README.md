@@ -6,10 +6,28 @@ This repository is part of a master's thesis preparation project. The long-term 
 
 ## Current Status
 
-The [supervisor review package](docs/validation/review_delivery_20261016/README.md)
+The [October 20 thesis revision](docs/validation/thesis_revision_20261020/README.md)
+puts the English representation, locality and mixed-cost argument inside the
+thesis, makes the exact sibling-group invariant explicit, and adds three
+explanatory diagrams. The review draft is **70 physical pages**, with unchanged
+body typography. Formal results describe the measured tree configuration that
+retains access hooks even with detailed collection disabled. The four supplied
+reviewer diagnostic/stress files are preserved. A separate local diagnostic
+checks all outputs on fifteen cases, and forty fixed seeded correctness cases
+pass up to 1,500 points. These supplements are not new qualification or formal
+samples; their records and limits are included in the revision.
+
+- [Current review PDF](output/pdf/jordan_thesis_supervisor_review_20261020.pdf)
+- [Supervisor reading note](docs/validation/thesis_revision_20261020/FOR_SUPERVISOR.md)
+- [Review package](output/packages/jordan_supervisor_review_20261020.zip)
+
+Production code, frozen inputs, calibration B tables and formal data are unchanged.
+The previous artifacts below remain available with their original identities.
+
+The [October 17 supervisor review package](docs/validation/review_delivery_20261016/README.md)
 adds the version-bound correctness coverage table and guards the auxiliary
 archive checker against optimized Python. Completed on October 17, it preserves
-the measured source and all original data. The current 68-page PDF is
+the measured source and all original data. Its 68-page PDF is
 `output/pdf/jordan_thesis_supervisor_review_20261016.pdf`; the filename retains
 the work package's October 16 start date. The package includes a short reading
 note and remains a supervisor review draft, not completed university submission

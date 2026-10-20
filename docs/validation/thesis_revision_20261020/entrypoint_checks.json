@@ -1,0 +1,117 @@
+{
+  "scenarios": [
+    {
+      "PYTHONOPTIMIZE": null,
+      "flag": "-O",
+      "returncode": 1,
+      "script": "check_external_material.py",
+      "stdout_empty": true
+    },
+    {
+      "PYTHONOPTIMIZE": null,
+      "flag": "-OO",
+      "returncode": 1,
+      "script": "check_external_material.py",
+      "stdout_empty": true
+    },
+    {
+      "PYTHONOPTIMIZE": "1",
+      "flag": null,
+      "returncode": 1,
+      "script": "check_external_material.py",
+      "stdout_empty": true
+    },
+    {
+      "PYTHONOPTIMIZE": "2",
+      "flag": null,
+      "returncode": 1,
+      "script": "check_external_material.py",
+      "stdout_empty": true
+    },
+    {
+      "PYTHONOPTIMIZE": null,
+      "flag": "-O",
+      "returncode": 1,
+      "script": "check_revision.py",
+      "stdout_empty": true
+    },
+    {
+      "PYTHONOPTIMIZE": null,
+      "flag": "-OO",
+      "returncode": 1,
+      "script": "check_revision.py",
+      "stdout_empty": true
+    },
+    {
+      "PYTHONOPTIMIZE": "1",
+      "flag": null,
+      "returncode": 1,
+      "script": "check_revision.py",
+      "stdout_empty": true
+    },
+    {
+      "PYTHONOPTIMIZE": "2",
+      "flag": null,
+      "returncode": 1,
+      "script": "check_revision.py",
+      "stdout_empty": true
+    },
+    {
+      "PYTHONOPTIMIZE": null,
+      "flag": "-O",
+      "returncode": 1,
+      "script": "run_supplement.py",
+      "stdout_empty": true
+    },
+    {
+      "PYTHONOPTIMIZE": null,
+      "flag": "-OO",
+      "returncode": 1,
+      "script": "run_supplement.py",
+      "stdout_empty": true
+    },
+    {
+      "PYTHONOPTIMIZE": "1",
+      "flag": null,
+      "returncode": 1,
+      "script": "run_supplement.py",
+      "stdout_empty": true
+    },
+    {
+      "PYTHONOPTIMIZE": "2",
+      "flag": null,
+      "returncode": 1,
+      "script": "run_supplement.py",
+      "stdout_empty": true
+    },
+    {
+      "PYTHONOPTIMIZE": null,
+      "flag": "-O",
+      "returncode": 1,
+      "script": "check_local_supplement.py",
+      "stdout_empty": true
+    },
+    {
+      "PYTHONOPTIMIZE": null,
+      "flag": "-OO",
+      "returncode": 1,
+      "script": "check_local_supplement.py",
+      "stdout_empty": true
+    },
+    {
+      "PYTHONOPTIMIZE": "1",
+      "flag": null,
+      "returncode": 1,
+      "script": "check_local_supplement.py",
+      "stdout_empty": true
+    },
+    {
+      "PYTHONOPTIMIZE": "2",
+      "flag": null,
+      "returncode": 1,
+      "script": "check_local_supplement.py",
+      "stdout_empty": true
+    }
+  ],
+  "scope": "16 actual optimization-mode rejection subprocesses; not algorithm tests"
+}

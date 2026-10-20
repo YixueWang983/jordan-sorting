@@ -1,0 +1,14 @@
+\documentclass[tikz,border=7pt]{standalone}
+\input{figure_style}
+\begin{document}
+\begin{tikzpicture}[font=\small,node distance=7mm and 7mm]
+\node[box,text width=3.8cm] (search) {Race from two fingers\\select component $C$};
+\node[box,text width=3.8cm,right=of search] (detach) {Detach $C$; repair deficit\\retain one-sided remainder};
+\node[box,text width=3.8cm,right=of detach] (split) {Convert and split $C$\\join saved path siblings};
+\node[box,text width=3.8cm,below=of split] (join) {Rejoin remainder\\restore fingers and sizes};
+\node[accent box,text width=3.8cm,left=of join] (heads) {Retire source header\\fresh IDs for nonempty outputs};
+\node[accent box,text width=3.8cm,left=of heads] (adopt) {Adopt acquired output\\update owner slots; clear pending};
+\draw[flow] (search)--(detach); \draw[flow] (detach)--(split);
+\draw[flow] (split)--(join); \draw[flow] (join)--(heads); \draw[flow] (heads)--(adopt);
+\end{tikzpicture}
+\end{document}

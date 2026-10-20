@@ -1,106 +1,66 @@
 \chapter{Conclusion}
 \label{chap:conclusion}
-
-\section{Summary}
 \label{sec:conclusion-summary}
 
-This thesis turns the 1990 Simplified Jordan Sorting procedure into a shared
-executable core with two concrete backends. Both maintain their own sorted
-output and family state; neither receives the oracle's sorted answer. The
-ordinary-list version makes representation costs visible, including a
-quadratic insertion-copying lower bound. The real finger-tree version supplies
-endpoint insertion, path-local split and header ownership transfer while
-preserving existing pair identities and child groups. Failed updates terminate
-the call and require the state to be discarded.
-
-The theoretical and empirical contributions have separate support. The
-source-linked argument reviews reversed-pointer representation, deletion
-shortness, join ranks, mixed potentials and locality. The matched experiment
-checks concrete implementations on qualified cases, with frozen batching,
-recorded environment and independently reconstructed evidence. Neither the
-proof receipt nor the timing curves substitute for the underlying argument.
+This thesis reconstructs Simplified Jordan Sorting as one executable core with
+ordinary-list and heterogeneous finger-tree backends. Both recover their own
+sorted output; external certification supplies validity, not the answer.
+The resulting artifact connects algorithm reconstruction, a specialized
+representation, a source-level argument and a reproducible comparison.
 
 \section{Answers to the Research Questions}
 \label{sec:conclusion-questions}
-
-\subsection{RQ1: Executable Reconstruction and Correctness}
 \label{sec:conclusion-rq1}
 
-Both backends execute the same Step~1/2/3 loop and independently recover sorted
-output. The manual induction explains how neighbor selection, the two odd-stage
-$z_1$ corrections, temporary transfer and adoption restore the output and exact
-family grouping after each completed prefix. The physical argument relates
-reversed ribs to a logical red--black tree and covers root/nonroot repairs,
-metadata, endpoints and stable identities.
+\textbf{RQ1: reconstruction and correctness.}
+The shared Step~1/2/3 loop maintains geometric ownership, exact sibling groups
+and sorted prefixes. The argument in \cref{app:backend-argument} explains the
+two odd-stage $z_1$ corrections, temporary transfer, reversed ribs and recursive
+repair transients. Stable pair identities and child groups survive splitting.
+The two frozen input sets passed v2 qualification; all 66,560 formal sample
+calls and 1,520 warm-ups returned correct outputs. Finite execution evidence
+and the manual proof have different roles; neither is machine verification.
 
-The two frozen input sets separately passed v2 qualification, which compares
-independent synchronous checked states, adds a final fresh checked replay and
-checks a fresh minimal execution. In formal measurement all 66,560 sample
-calls and 1,520 warm-up calls returned correct outputs, with no failed cases.
-These finite observations support the implementation; the general argument is
-manual and source-specific, not a machine-checked proof or an external proof
-certification. Valid-input sorting does not establish a recognition algorithm.
-
-\subsection{RQ2: Observed Runtime Behavior}
 \label{sec:conclusion-rq2}
+\textbf{RQ2: observed runtime.}
+For the measured configuration retaining access hooks, every input has a
+higher tree median. Common-set tree/list ratios have median 2.898 and range
+1.114--3.535; the targeted set has median 3.180 and range 3.147--3.213.
+These summarize ratios of twenty-batch input medians, not confidence intervals
+or every individual call. No crossover is established. The comparison
+includes different wrapping, checking and allocation costs. A separate
+fifteen-input local diagnostic reduces tree medians by 37.7--52.1\% when access
+hooks are removed, reversing the large heavy-case ratios. That configuration
+effect does not replace the frozen experiment or establish general speedups.
 
-Under the matched minimal-call scope, the tree is slower on all 140 common
-inputs and all twelve targeted split inputs. The common-set median of
-within-input tree/list ratios is 2.898, with range 1.114--3.535; the targeted
-median is 3.180, with range 3.147--3.213. Size-stratum ratios generally narrow
-at the larger common lengths, but no measured crossover or guaranteed future
-crossover follows. Some timing cells have substantial spread and remain in
-the results without exclusions.
-
-The older rollback-enabled study compared Python sort and two different
-pipeline scopes. Its numerical results remain historical, as summarized in
-\cref{sec:results-historical}. They are not pooled with this experiment and
-cannot estimate a causal benefit from removing rollback. The current study
-answers the backend comparison directly but does not isolate each backend's
-wrapping, allocation or checking costs.
-
-\subsection{RQ3: Structure and Implementation Cost}
 \label{sec:conclusion-rq3}
+\textbf{RQ3: structure and cost.}
+One potential pays propagation across mixed updates, giving amortized constant
+endpoint insertion and smaller-side logarithmic split. A list-size potential
+then pays the split terms over the full run, including bounded ownership and
+shared-core work. The linear total uses unit-cost comparisons and machine-word
+operations, expected dictionary lookup and amortized growth. Ordinary-list
+insertion copying alone has a quadratic lower bound.
 
-The source analysis supplies amortized constant endpoint insertion and
-smaller-side logarithmic split using one potential across the mixed sequence.
-A list-size potential then pays the split terms over the full sorting run.
-Together with constant stage and ownership access, this gives linear total
-source-level work under the stated unit-cost and expected/amortized dictionary
-model. The ordinary-list backend retains its different copying and scan costs.
+The common workload has no two-sided splits; the targeted group contains one
+per input with source size 61 and smaller sides 3/7/19. Neither identifies an
+isolated split-cost function or broad mixed-workload performance. The practical
+slowdown of the measured Python configuration is compatible with the structural
+bound. Historical rollback results remain separate and non-causal.
 
-Measured wall times answer a different question. The common constructions
-have no two-sided splits; the targeted group supplies that path at smaller
-sides 3, 7 and 19, but still measures full sorting calls. Neither group identifies
-an isolated split-cost function. The observed tree slowdown shows that the
-reviewed operation bound does not ensure a practical advantage at these sizes
-in this Python implementation. The historical counter correlations remain
-exploratory associations, not a causal explanation for the current timings.
-
-\section{Contributions and Remaining Work}
+\section{Contributions and Further Work}
 \label{sec:conclusion-contributions}
 \label{sec:conclusion-future-work}
-
-The resulting artifact combines an executable reconstruction, a real
-heterogeneous backend, source-linked mathematical arguments, and a reproducible
-comparison whose source, inputs, batch choices, failures and summaries are
-inspectable. Separating certification, output recovery, physical storage and
-untimed diagnostics makes both the algorithm and its evidence easier to audit.
-
-Further work should broaden split shapes and lengths under predeclared rules,
-check another recorded environment, and investigate constant overhead with a
-separate profiling protocol. Such work should preserve the current negative
-speed result rather than optimize until a preferred comparison appears.
-Formalization or independent mathematical review could strengthen the manual
-argument. Recognition, invalid-input behavior, error correction and polygon
-clipping require separate specifications and experiments.
-
-\section{Closing Perspective}
 \label{sec:conclusion-closing}
 
-The reconstruction now connects the incremental algorithm to the specialized
-operations it needs, while exposing the limits of a concrete implementation.
-The structural bound, finite correctness evidence and practical runtime are
-three different conclusions. Keeping their assumptions and versions explicit
-allows the thesis to report both the completed backend and its measured
-slowdown without overstating either result.
+The contribution is an inspectable implementation and argument with explicit
+source, input, timing and statistical boundaries. The immediate review targets
+are the finite-parent locality extension and mixed-operation proof. Future
+work should qualify a production hook-free configuration and broaden split
+histories and environments under predeclared rules. The post-review diagnostic
+and 40-input seeded correctness supplement are bounded first steps.
+Such work should preserve the present data regardless of
+its speed outcome. Recognition, invalid-input behavior, error correction and
+geometric applications require separate specifications. The thesis therefore
+reports a structural bound, finite correctness evidence and measured runtime
+as distinct conclusions.

@@ -52,11 +52,11 @@ contains twelve constructions at 128/129, with nonempty smaller sides 3, 7 and
 19. Its source size is always 61, its owner is finite, and its later direct
 updates occur only on the retained side. It does not establish broad coverage
 of all split ratios, black-height differences or both-output update histories.
-Earlier operation tests and the 18-input complete-sorting campaign cover other
-transitions (\cref{sec:implementation-coverage}), not additional performance
-samples or large-scale mixed-update coverage on the measured version.
+Earlier operation tests, the 18-input structural campaign and the bounded
+seeded supplement cover other transitions (\cref{sec:implementation-coverage}).
+They provide correctness evidence, not additional formal performance samples.
 
-No measured input favors the tree. The narrowing common-set gap at larger
+No formal input has a lower median for the measured tree configuration. The narrowing common-set gap at larger
 sizes does not guarantee a crossover beyond 513, or the same behavior for
 another generator. Theoretical order bounds permit constants that dominate
 throughout a finite measurement range.
@@ -68,7 +68,18 @@ throughout a finite measurement range.
 The current interval includes fresh initialization, the shared algorithm,
 output recovery and batching overhead. Both backends receive the same scope,
 but their local checks, field-access wrappers and allocations differ. Their
-individual contributions were not profiled or experimentally isolated.
+individual contributions were not isolated by the formal protocol. Disabling
+ledger collection retains the field-access interception and wrapper dispatch.
+Thus the formal negative speed result applies to this instrumented
+configuration, not every implementation of the data structure.
+The separate local diagnostic in \cref{sec:results-hooks} removes access hooks
+only in isolated worker processes and checks every saved output. It quantifies
+a configuration effect on fifteen selected inputs, not an exact additive
+fraction of abstract tree cost. The input choice is post-review, variant
+batches are not interleaved, and process order and thermal effects are not
+fully controlled. Hook-free variants have not passed the full qualification
+protocol and are not registered production backends. The original supplied
+logs have weaker execution bindings (\cref{sec:appendix-external-review}).
 Expected-output comparison, pre-batch GC collection and evidence persistence
 are outside timing, while GC remains enabled during sorting.
 
@@ -76,8 +87,9 @@ The formal campaigns record one Apple M4 environment with CPython 3.12.14 and
 battery power. Warm-ups and alternating first positions reduce selected startup
 and order effects, but do not establish stable frequency, temperature or
 absence of all unrelated operating-system activity. The campaigns' separate
-identities and timestamps are retained. There is no multi-machine replication
-of the current comparison.
+identities and timestamps are retained. The local diagnostic uses the same
+machine and interpreter version in a later session; it does not replicate
+the formal protocol.
 
 Historical paper/reference ratios have a further scope mismatch: the reference
 includes certification and its oracle-backed pipeline, while the old paper
@@ -127,7 +139,7 @@ correction and geometric applications remain outside this evaluation.
 The thesis can report a source-reviewed structural bound in an explicit model,
 finite qualification and output success, and the measured tree slowdown for
 two frozen sets. It cannot infer an unconditional Python time bound, a practical
-speed advantage, independent random sampling, a future crossover, a causal
-cost decomposition or hardware-independent absolute runtime. These boundaries
+general speed advantage, independent random sampling, a future crossover, an
+exact additive cost decomposition or hardware-independent absolute runtime. These boundaries
 preserve the distinction between the implemented algorithm, its mathematical
 account and its measured behavior.

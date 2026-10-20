@@ -1,0 +1,84 @@
+{
+  "baseline": "19a553fb9a089fae726c4ba49c5412a9e4bd12d3",
+  "corrected_review_sha256": "a125e3108fdbf0f14c13208e832539bf022b036847a5d8a1a60653e8e91406fb",
+  "current_numeric_rows_checked": 19,
+  "datasets": {
+    "common": {
+      "archived_counts": {
+        "measured_sample_ns": 183511291318,
+        "sample_batches": 5600,
+        "sample_batches_below_10ms": 1,
+        "sample_calls": 62720,
+        "warmup_batches": 1400,
+        "warmup_calls": 1400
+      },
+      "csv_rows": 140,
+      "ratio_rebuilt_from_case_csv": {
+        "max": 3.5345601459014873,
+        "median": 2.8975050055249456,
+        "min": 1.1139555677132946,
+        "q25": 2.117053620244037,
+        "q75": 3.2103645421937443
+      },
+      "rounded_runtime_rows": 10
+    },
+    "targeted_split": {
+      "archived_counts": {
+        "measured_sample_ns": 21289948917,
+        "sample_batches": 480,
+        "sample_batches_below_10ms": 0,
+        "sample_calls": 3840,
+        "warmup_batches": 120,
+        "warmup_calls": 120
+      },
+      "csv_rows": 12,
+      "ratio_rebuilt_from_case_csv": {
+        "max": 3.213334282799373,
+        "median": 3.1802645782562653,
+        "min": 3.147082902101595,
+        "q25": 3.1648268956619217,
+        "q75": 3.1893641386690454
+      },
+      "rounded_runtime_rows": 3
+    }
+  },
+  "english_argument_sha256": "dd7a2d3454609870870885dd6c533825684a11778678a4381bbaa7b989115d2a",
+  "existing_test_suite_or_qualification_calibration_formal_rerun": false,
+  "formal_execution": "4a83fa6b7a4213e9e5758fe3454e002ebc266459",
+  "frozen_directories": {
+    "data": {
+      "baseline_tree": "ca49df5afb1834a455d412a8bdc8b094e1d9039b",
+      "formal_tree": "ca49df5afb1834a455d412a8bdc8b094e1d9039b",
+      "working_tree_unchanged": true
+    },
+    "experiments": {
+      "baseline_tree": "d2ae8c1d309037bc4fc0bb2ef0379aae15f49de3",
+      "formal_tree": "d2ae8c1d309037bc4fc0bb2ef0379aae15f49de3",
+      "working_tree_unchanged": true
+    },
+    "results": {
+      "baseline_tree": "6e0d2f3f9f9b266fd272a911faf2cbe597e619bb",
+      "formal_tree": "6e0d2f3f9f9b266fd272a911faf2cbe597e619bb",
+      "working_tree_unchanged": true
+    },
+    "src": {
+      "baseline_tree": "7e9ae9b8e5d4e774b0bf19c5e51c689245ea655b",
+      "formal_tree": "7e9ae9b8e5d4e774b0bf19c5e51c689245ea655b",
+      "working_tree_unchanged": true
+    },
+    "tests": {
+      "baseline_tree": "e1eadace330d327e6ae5f6be3d5443625af43dec",
+      "formal_tree": "e1eadace330d327e6ae5f6be3d5443625af43dec",
+      "working_tree_unchanged": true
+    }
+  },
+  "general_mathematical_proof_independently_certified": false,
+  "historical_table_removed_from_current_text_old_archive_unchanged": true,
+  "new_local_exploratory_supplement": "local_supplement_check.json",
+  "prior_tracked_archives_and_outputs_unchanged": true,
+  "raw_archive_revalidated_this_run": false,
+  "scope": "current_thesis_numeric_tables_and_frozen_source_diff",
+  "source_case_csv_sha256": "760f2ac03045191f76cf00d93f0d8141485cc0b8f7a4a33f0ad4ab5fb897b5fd",
+  "source_summary_sha256": "8ca5fc6d93ec38678ae2e6fdc14e130e2084da97dc603fd3dcc91039cab2835d",
+  "stratum_rows_with_explicit_zero_two_sided": 4
+}

@@ -226,6 +226,10 @@ source snapshot; it is not a rerun on the final measured version.
     Targeted group & 12 inputs qualified separately; 12 two-sided splits per
     backend, source size 61, smaller side 3/7/19. Later direct insertions reach
     only the retained side. & Qualification \texttt{668371f} \\
+    Seeded supplement & 40 fixed inputs up to $n=1500$: list/tree minimal and
+    tree trace checked against sorted output; eight small cases also checked
+    with fresh-prefix replay. 678 two-sided splits; no timing evidence. &
+    \texttt{19a553fb} source; October 20 protocol \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -238,10 +242,13 @@ additional inputs. Within it, \texttt{repeated-512} contributes respectively
 one. The 512-point balanced and skew cases split 253 siblings into $126+127$
 and $1+252$; the 513-point cases mirror these constructions.
 
-These are bounded, related examples, not broad stress testing of long mixed
-histories. In particular, repeated small-side splits do not establish repeated
-large balanced-split coverage. Only the common and targeted groups enter the
-formal timings at \texttt{4a83fa6}; development validation times are excluded.
+The seeded supplement uses the supplied gap-based generator with fixed seeds
+and saved inputs; the oracle checks each input's validity. Thirty-eight cases
+contain a two-sided split, with maximum smaller side 13. Its 32 larger cases
+use sizes 128/512/513/1500; eight checked cases use 32/33/64/70.
+These related, bounded examples do not establish all mixed-history patterns
+or large balanced-split coverage. Only the common and targeted groups enter
+formal timing; correctness-run times are excluded.
 Archive locators and the source-hash distinction are in
 \cref{sec:appendix-development-coverage}.
 
@@ -256,10 +263,16 @@ stage results, necessary local checks, input materialization and output
 recovery. The revised implementation has no rollback under any policy.
 
 The tree's detailed work ledger is a separate configuration switch: minimal
-alone does not disable it. Qualification and calibration explicitly select
+alone does not disable it. Qualification, calibration and formal measurement explicitly select
 \texttt{detailed\_work=False}, suppressing field accumulation, ledger snapshots
 and per-operation reports. Local geometry and pending checks remain; access
-wrappers and switch checks still have runtime cost.
+wrappers and switch checks still have runtime cost. In particular,
+\texttt{\_Tracked.\_\_getattribute\_\_} and
+\texttt{\_\_setattr\_\_} still intercept accesses before testing the ledger
+switch; operation and phase wrappers also remain. Throughout the empirical
+chapters, ``measured tree'' means this configuration with retained access
+hooks, not an uninstrumented tree. Disabling collection does not remove
+instrumentation plumbing.
 
 The archived studies instead timed the rollback-enabled implementation,
 including recovery-state preparation in \texttt{minimal}; a successful call
@@ -307,68 +320,12 @@ Thus this input family incurs $\Omega(n^2)$ copying, including in
 \texttt{minimal}. This is a source-derived bound on one component of work,
 not a curve fit or a tight total bound for all inputs.
 
-The ordinary backend instantiates neither the level-linked structure of
-\textcite{hoffmann1986sorting} nor the heterogeneous finger-search structure
-of \textcite{fung1990simplified}. The implemented tree has now undergone a
-source-level manual review of representation preservation, mixed costs and
-locality, indexed in \cref{sec:appendix-revision-bindings}. This is a mathematical
-argument checked against the code, not machine verification or an independent
-external proof certification. Its main steps are as follows.
-
-Decoding the reversed ribs gives an ordinary external red--black tree. Each
-rotation preserves the ordered leaf blocks and their separators; role changes
-update the affected spans and top caches. During deletion, a virtual black
-layer at the deficient component explains the temporarily unequal actual
-ranks. Propagation moves that layer upward; absorption or a terminal rotation
-restores equal actual ranks. Header retirement changes list identity without
-replacing existing leaves or their child groups.
-
-Downward join also has a recursive transient: a red root may return with one
-red child on the updated side. Equal black heights and metadata still hold;
-the original black parent repairs that edge on return. Black-root repair
-returns an internally valid subtree, possibly with a red root. Since the
-join inputs are first blackened, its top-level return is internally valid
-before final root blackening. That last step alone cannot repair an internal
-red--red edge.
-
-Let $\nu$ be rank after root blackening. A downward join of heights $a,b$
-returns height $c$ with $\max(a,b)\leq c\leq\max(a,b)+1$ and uses at most
-$2|a-b|+3$ descent steps. In split backtracking, the accumulated height $a$
-exceeds the untouched sibling height $b$ by at most one. Thus each join costs
-at most $2(c-a)+5$ such steps; the two output chains telescope to $O(r+1)$
-for selected component rank $r$. The finger race bounds $r$ by
-$O(\log(s+1))$, where $s$ is the smaller output size. This uses the component
-\emph{before} an upward step as the wholly one-sided component; its parent may
-cross the cut. Empty-side splits take the endpoint fast path.
-
-For logical internal nodes take
-\[
- \Phi=\#\{\text{black nodes with two black children}\}
-       +2\#\{\text{black nodes with two red children}\}.
-\]
-An insertion recoloring propagation decreases this potential by one; a
-continuing deletion propagation decreases it by two. Terminal repairs affect
-only constantly many weights. An opposite-rib walk occurs at most twice near
-the root and costs $O(r+D+1)$ for $D$ deletion propagations. Downward joins and
-component boundaries add only $O(r+1)$ weights. One sufficiently large multiple
-of the same potential therefore pays for mixed propagation, including after
-split: boundary insertion is amortized $O(1)$ and split is
-$O(\log(s+2))$. The potential is never reset between operations.
-
-For list sizes, $\Psi=c\sum_{L\ne\varnothing}(|L|-\log_2|L|)$ increases by
-at most a constant on creation/insertion. A two-sided nonempty split
-$m=a+b$, $1\leq a\leq b$, changes it by
-$c\log_2((a+b)/(ab))\leq c(1-\log_2 a)$, paying the smaller-side term.
-An empty-side split leaves this potential unchanged, $\Delta\Psi=0$.
-Locality supplies legal endpoint calls: the published latest-child re-entry
-lemma and a separate finite-parent crosscut argument imply the exact group
-boundary. A new pair takes a consecutive group portion; adoption restores the
-grouping, and the two odd-stage $z_1$ corrections restore the output neighbors.
-The full induction and root/nonroot mirror cases are in the review record.
-
-Starting from constant-size initialization, these two nonnegative potentials
-and the constant work per shared-core stage give $O(n)$ expected/amortized
-source-level work under unit-cost comparisons and machine-word operations,
-with expected lookup and amortized dictionary growth. This does not bound
-arbitrary Python comparison methods, checked validation, or unconditional wall
-time, and does not predict a practical speed advantage.
+The ordinary backend does not inherit the heterogeneous tree's bound.
+The source-level proof is developed in \cref{app:backend-argument}:
+decoding and local repair preserve the representation, exact grouping supplies
+legal endpoint calls, and one potential pays propagation across mixed
+insertion/split histories. A second, list-size potential pays the smaller-side
+split terms over the sorting run. \Cref{thm:proof-total} includes the shared
+core, ownership and output work under its stated computation model.
+The argument is manual and source-specific; finite qualification is separate
+evidence, and a structural bound does not predict a Python speed advantage.
