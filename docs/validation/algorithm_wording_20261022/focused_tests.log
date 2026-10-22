@@ -1,0 +1,15 @@
+test_all_four_black_root_repairs (review_join_checks.JoinTransientChecks.test_all_four_black_root_repairs) ... ok
+test_black_root_no_repair (review_join_checks.JoinTransientChecks.test_black_root_no_repair) ... ok
+test_blackening_of_two_red_input_roots (review_join_checks.JoinTransientChecks.test_blackening_of_two_red_input_roots) ... ok
+test_empty_sides_retire_connector_without_blackening (review_join_checks.JoinTransientChecks.test_empty_sides_retire_connector_without_blackening) ... ok
+test_left_red_root_transmission (review_join_checks.JoinTransientChecks.test_left_red_root_transmission) ... ok
+test_red_root_no_conflict (review_join_checks.JoinTransientChecks.test_red_root_no_conflict) ... ok
+test_right_red_root_transmission (review_join_checks.JoinTransientChecks.test_right_red_root_transmission) ... ok
+test_deletion_shortness_cases_and_mirrored_near_rotation (test_heterogeneous_finger_split.SplitAdoptTests.test_deletion_shortness_cases_and_mirrored_near_rotation) ... ok
+test_actual_finger_split_all_black_root_shapes_and_cuts_through_nine_leaves (test_finger_refinement.RepresentationRefinementTests.test_actual_finger_split_all_black_root_shapes_and_cuts_through_nine_leaves) ... {"check": "real_finger_split", "shape_cut_cases": 1088, "max_leaves": 9, "repair_branch_counts": {"deletion_red_sibling": 37, "deletion_near_rotations": 25, "deletion_far_rotations": 63, "deletion_propagations": 68, "left_rotations": 88, "right_rotations": 138}}
+ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.641s
+
+OK

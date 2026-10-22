@@ -1,0 +1,813 @@
+Rc files read (in order):
+  ./.latexmkrc
+Latexmk: This is Latexmk, John Collins, 9 March 2026. Version 4.88.
+Latexmk: making output directory 'build'
+No existing .aux file, so I'll make a simple one, and require run of *latex.
+Latexmk: applying rule 'lualatex'...
+Rule 'lualatex':  Reasons for rerun
+Category 'other':
+  Rerun of 'lualatex' forced or previously required:
+    Reason or flag: 'Initial setup'
+
+------------
+Run number 1 of rule 'lualatex'
+------------
+------------
+Running 'lualatex -interaction=nonstopmode -halt-on-error -file-line-error  -recorder -output-directory="build"  "main.tex"'
+------------
+This is LuaHBTeX, Version 1.24.0 (TeX Live 2026) 
+ restricted system commands enabled.
+(./main.tex
+LaTeX2e <2026-06-01>
+L3 programming layer <2026-09-09>
+ (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrreprt.cls
+Document Class: scrreprt 2026/02/02 v3.49.2 KOMA-Script document class (report)
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrkbase.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrbase.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlfile.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlfile-hook.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlogo.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/keyval.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/tocbasic.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrsize11pt.clo
+luaotfload | db : Font names database not found, generating new one.
+luaotfload | db : This can take several minutes; please be patient.) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/typearea.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/libertinus/libertinus.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/libertinus-otf/libertinus-otf.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/unicode-math/unicode-math.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3kernel/l3backend-luatex.def)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/unicode-math/unicode-math-luatex.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3packages/xparse/xparse.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/fontspec/fontspec.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/fontspec/fontspec.cfg))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/fix-cm.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/ts1enc.def)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/lualatex/lualatex-math/lualatex-math.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/unicode-math/unicode-math-table.tex)))
+*************************************
+* Using libertinus math *
+*************************************
+)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/microtype/microtype.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/microtype/microtype-luatex.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/microtype/microtype.cfg)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/babel.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/luababel.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/luababel.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/locale/invalid/babel-ngerman.tex) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/locale/en/babel-english.tex) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel-german/ngerman.ldf (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel-german/babel-german.def (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/hyph-utf8/loadhyph/loadhyph-de-1996.tex UTF-8 German hyphenation patterns (reformed orthography) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/hyph-utf8/patterns/tex/hyph-de-1996.tex German Hyphenation Patterns (Reformed Orthography, 2006) `dehyphn-x' 2024-02-28 (WL))))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel-english/english.ldf)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlayer-scrpage.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlayer.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/scrhack/scrhack.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/setspace/setspace.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/enumitem/enumitem.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/trig.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cfg) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics-def/luatex.def))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/float/float.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/floatbytocbasic/floatbytocbasic.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/xpatch/xpatch.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/siunitx/siunitx.sty
+Include code introduced on 2026-09-12
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/tools/array.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amscls/amsthm.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.cfg)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/logreq/logreq.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/logreq/logreq.def)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/ifthen.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/url/url.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-dm.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-unicode.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-compat.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/numeric-comp.bbx (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/standard.bbx))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/cbx/numeric-comp.cbx) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.cfg) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/hluatex.def (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/cleveref/cleveref.sty)
+==> First Aid for cleveref.sty applied!
+(./config/metadata.tex) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/bookmark/bookmark.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/bookmark/bkm-luatex.def)) (./build/main.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: luatex
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/english.lbx) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/ngerman.lbx (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/german.lbx) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/german.lbx))
+No file main.bbl.
+(./frontmatter/titlepage.tex [1{/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]) [2] (./frontmatter/abstract.tex
+chapter without number
+) [1] [2]
+No file main.toc.
+[3] [4]
+No file main.lof.
+[5] [6]
+No file main.lot.
+[7] [8] (./chapters/introduction.tex
+chapter 1.
+
+LaTeX Warning: Citation 'hoffmann1986sorting' on page 1 undefined on input line 10.
+
+
+LaTeX Warning: Citation 'fung1990simplified' on page 1 undefined on input line 10.
+
+
+LaTeX Warning: Citation 'sanders2009engineering' on page 1 undefined on input line 16.
+
+
+LaTeX Warning: Citation 'mcgeoch2012guide' on page 1 undefined on input line 16.
+
+[1]
+
+LaTeX Warning: Reference `chap:implementation' on page 1 undefined on input line 70.
+
+
+LaTeX Warning: Reference `chap:algorithm' on page 1 undefined on input line 70.
+
+
+LaTeX Warning: Reference `chap:background' on page 1 undefined on input line 70.
+
+
+LaTeX Warning: Reference `chap:limitations' on page 1 undefined on input line 71.
+
+
+LaTeX Warning: Reference `chap:results' on page 1 undefined on input line 71.
+
+
+LaTeX Warning: Reference `chap:methodology' on page 1 undefined on input line 71.
+
+
+LaTeX Warning: Reference `chap:conclusion' on page 1 undefined on input line 72.
+
+
+LaTeX Warning: Reference `app:backend-argument' on page 1 undefined on input line 73.
+
+
+LaTeX Warning: Reference `app:claim-traceability' on page 1 undefined on input line 74.
+
+) (./chapters/background.tex [2]
+chapter 2.
+
+LaTeX Warning: Citation 'hoffmann1986sorting' on page 3 undefined on input line 16.
+
+
+LaTeX Warning: Citation 'fung1990simplified' on page 3 undefined on input line 19.
+
+
+LaTeX Warning: Reference `sec:implementation-input-model' on page 1 undefined on input line 44.
+
+
+LaTeX Warning: Citation 'hoffmann1986sorting' on page 3 undefined on input line 52.
+
+
+LaTeX Warning: Citation 'fung1990simplified' on page 3 undefined on input line 52.
+
+[3]
+
+LaTeX Warning: Citation 'hoffmann1986sorting' on page 4 undefined on input line 79.
+
+
+LaTeX Warning: Citation 'hoffmann1986sorting' on page 4 undefined on input line 86.
+
+
+LaTeX Warning: Citation 'fung1990simplified' on page 4 undefined on input line 86.
+
+
+LaTeX Warning: Reference `sec:algorithm-families' on page 1 undefined on input line 88.
+
+[4<./figures/jordan_sorting_problem.pdf>]
+
+LaTeX Warning: Citation 'hoffmann1986sorting' on page 5 undefined on input line 96.
+
+
+LaTeX Warning: Citation 'hoffmann1986sorting' on page 5 undefined on input line 103.
+
+
+LaTeX Warning: Citation 'hoffmann1986sorting' on page 5 undefined on input line 108.
+
+
+LaTeX Warning: Citation 'hoffmann1986sorting' on page 5 undefined on input line 114.
+
+
+LaTeX Warning: Citation 'hoffmann1986sorting' on page 5 undefined on input line 124.
+
+
+LaTeX Warning: Citation 'fung1990simplified' on page 5 undefined on input line 137.
+
+[5]
+
+LaTeX Warning: Citation 'fung1990simplified' on page 6 undefined on input line 151.
+
+
+LaTeX Warning: Reference `chap:algorithm' on page 1 undefined on input line 160.
+
+
+LaTeX Warning: Citation 'fung1990simplified' on page 6 undefined on input line 168.
+
+
+LaTeX Warning: Citation 'tarjan1988triangulating' on page 6 undefined on input line 174.
+
+
+LaTeX Warning: Citation 'fung1990simplified' on page 6 undefined on input line 175.
+
+
+LaTeX Warning: Citation 'brown1978movable' on page 6 undefined on input line 186.
+
+
+LaTeX Warning: Citation 'brown1980sorted' on page 6 undefined on input line 187.
+
+
+LaTeX Warning: Citation 'huddleston1982sorted' on page 6 undefined on input line 189.
+
+[6]
+
+LaTeX Warning: Reference `chap:implementation' on page 1 undefined on input line 197.
+
+
+LaTeX Warning: Citation 'hoffmann1985sorting' on page 7 undefined on input line 202.
+
+
+LaTeX Warning: Citation 'fung1990simplified' on page 7 undefined on input line 205.
+
+
+LaTeX Warning: Citation 'tarjan1988triangulating' on page 7 undefined on input line 206.
+
+
+LaTeX Warning: Citation 'baryehuda1994triangulating' on page 7 undefined on input line 207.
+
+
+Overfull \hbox (60.01028pt too wide) in paragraph at lines 201--210
+\TU/LibertinusSerif(0)/m/n/10.95 The first sym-po-sium pub-li-ca-tion of the linear-time Jordan-sorting re-sult ap-peared in 1985 [[]];
+
+Overfull \hbox (27.79762pt too wide) in paragraph at lines 201--210
+\TU/LibertinusSerif(0)/m/n/10.95 while the error-correcting task ap-pears in the polygon-triangulation al-go-rithm of [].
+
+LaTeX Warning: Citation 'aurenhammer1987convex' on page 7 undefined on input line 212.
+
+
+LaTeX Warning: Citation 'sojka1997simple' on page 7 undefined on input line 213.
+
+
+LaTeX Warning: Citation 'sojka1999average' on page 7 undefined on input line 219.
+
+
+Overfull \hbox (26.59406pt too wide) in paragraph at lines 211--224
+[]\TU/LibertinusSerif(0)/m/n/10.95 Other work pur-sued al-ter-na-tives to the 1986 and 1990 dynamic-list al-go-rithms. []
+
+Overfull \hbox (2.43225pt too wide) in paragraph at lines 211--224
+\TU/LibertinusSerif(0)/m/n/10.95 re-lated Jor-dan sort-ing to convex-hull com-pu-ta-tion for cer-tain non-simple poly-gons. []
+[7]
+
+LaTeX Warning: Reference `sec:method-scope' on page 1 undefined on input line 247.
+
+
+LaTeX Warning: Reference `sec:implementation-certification' on page 1 undefined on input line 250.
+
+
+LaTeX Warning: Reference `sec:limitations-timing-scopes' on page 1 undefined on input line 259.
+
+
+LaTeX Warning: Reference `sec:limitations-backend' on page 1 undefined on input line 259.
+
+) (./chapters/algorithm.tex [8]
+chapter 3.
+
+LaTeX Warning: Citation 'fung1990simplified' on page 9 undefined on input line 13.
+
+
+Overfull \hbox (17.38763pt too wide) in paragraph at lines 11--19
+\TU/LibertinusSerif(0)/m/n/10.95 and asks for the same points in in-creas-ing $\TU/LibertinusMath-Regular.otf(1)/m/n/10.95 𝑥$\TU/LibertinusSerif(0)/m/n/10.95 -coordinate or-der. The 1990 al-go-rithm of []
+
+LaTeX Warning: Citation 'hoffmann1986sorting' on page 9 undefined on input line 35.
+
+
+Overfull \hbox (9.35274pt too wide) in paragraph at lines 33--40
+\TU/LibertinusSerif(0)/m/n/10.95 implementation-level in-ter-pre-ta-tion sup-ported by the re-lated 1986 al-go-rithm of [],
+
+LaTeX Warning: Reference `sec:implementation-complexity' on page 1 undefined on input line 45.
+
+[9]
+
+LaTeX Warning: Citation 'fung1990simplified' on page 10 undefined on input line 98.
+
+[10]
+
+LaTeX Warning: Reference `sec:proof-locality' on page 1 undefined on input line 109.
+
+
+LaTeX Warning: Reference `eq:algorithm-prefix-invariant' on page 1 undefined on input line 142.
+
+[11]
+
+LaTeX Warning: Reference `eq:algorithm-prefix-invariant' on page 1 undefined on input line 159.
+
+
+LaTeX Warning: Reference `sec:algorithm-z1-anchor' on page 1 undefined on input line 190.
+
+[12]
+
+LaTeX Warning: Reference `sec:algorithm-z1-anchor' on page 1 undefined on input line 224.
+
+[13]
+
+LaTeX Warning: Reference `tab:algorithm-reflection' on page 1 undefined on input line 248.
+
+
+LaTeX Warning: Citation 'hoffmann1986sorting' on page 14 undefined on input line 300.
+
+[14]
+
+LaTeX Warning: Citation 'hoffmann1986sorting' on page 15 undefined on input line 313.
+
+
+LaTeX Warning: Reference `eq:algorithm-z1-increasing' on page 1 undefined on input line 336.
+
+[15] [16<./figures/step3c_anchor_z1_anomaly.pdf>]
+
+LaTeX Warning: Reference `sec:implementation-versions' on page 1 undefined on input line 372.
+
+
+LaTeX Warning: Reference `sec:implementation-step3b' on page 1 undefined on input line 373.
+
+
+LaTeX Warning: Reference `sec:implementation-certification' on page 1 undefined on input line 419.
+
+[17] [18<./figures/running_example_reconstruction.pdf>]
+
+LaTeX Warning: Citation 'hoffmann1986sorting' on page 19 undefined on input line 449.
+
+
+LaTeX Warning: Citation 'fung1990simplified' on page 19 undefined on input line 450.
+
+
+LaTeX Warning: Reference `chap:implementation' on page 1 undefined on input line 457.
+
+) (./chapters/implementation.tex
+Overfull \hbox (29.92955pt too wide) in paragraph at lines 447--1
+[]\TU/LibertinusSerif(0)/m/n/10.95 The the-o-ret-i-cal pa-pers and the the-sis im-ple-men-ta-tion have dif-fer-ent back-end claims. []
+[19] [20]
+chapter 4.
+
+LaTeX Warning: Citation 'fung1990simplified' on page 21 undefined on input line 12.
+
+
+Overfull \hbox (29.21414pt too wide) in paragraph at lines 11--19
+\TU/LibertinusSerif(0)/m/n/10.95 fam-ily trees, statis-tics and a trace, and re-turns the or-a-cle’s sorted out-put. In con-trast, \TU/DejaVuSansMono(0)/m/n/10.95 paper_jordan_sort_valid
+
+LaTeX Warning: Reference `chap:results' on page 1 undefined on input line 21.
+
+
+LaTeX Warning: Reference `sec:appendix-revision-bindings' on page 1 undefined on input line 24.
+
+
+LaTeX Warning: Reference `chap:algorithm' on page 1 undefined on input line 26.
+
+
+LaTeX Warning: Reference `sec:algorithm-geometric-anchor' on page 1 undefined on input line 40.
+
+[21]
+
+LaTeX Warning: Reference `fig:algorithm-running-example' on page 1 undefined on input line 91.
+
+
+LaTeX Warning: Reference `fig:algorithm-running-example' on page 1 undefined on input line 91.
+
+
+LaTeX Warning: Reference `sec:algorithm-initialization' on page 1 undefined on input line 103.
+
+
+LaTeX Warning: Reference `sec:algorithm-boundary-selection' on page 1 undefined on input line 106.
+
+[22]
+
+LaTeX Warning: Reference `sec:algorithm-step3-decreasing' on page 1 undefined on input line 119.
+
+
+LaTeX Warning: Reference `sec:algorithm-step3a-increasing' on page 1 undefined on input line 119.
+
+
+LaTeX Warning: Reference `sec:algorithm-step3-decreasing' on page 1 undefined on input line 129.
+
+
+LaTeX Warning: Reference `sec:algorithm-step3b-increasing' on page 1 undefined on input line 129.
+
+[23<./figures/family_sibling_structure.pdf>]
+
+LaTeX Warning: Reference `sec:algorithm-z1-anchor' on page 1 undefined on input line 159.
+
+
+LaTeX Warning: Reference `sec:algorithm-anchor-clarifications' on page 1 undefined on input line 160.
+
+[24]
+
+LaTeX Warning: Reference `tab:implementation-coverage' on page 1 undefined on input line 203.
+
+
+LaTeX Warning: Reference `sec:appendix-development-coverage' on page 1 undefined on input line 262.
+
+[25]
+
+LaTeX Warning: Reference `sec:method-paper-implementation' on page 1 undefined on input line 289.
+
+[26]
+
+LaTeX Warning: Reference `app:backend-argument' on page 1 undefined on input line 333.
+
+
+LaTeX Warning: Reference `thm:proof-total' on page 1 undefined on input line 337.
+
+) (./chapters/methodology.tex [27] [28]
+chapter 5.
+
+LaTeX Warning: Reference `chap:results' on page 1 undefined on input line 11.
+
+[29]
+
+LaTeX Warning: Reference `sec:implementation-policies' on page 1 undefined on input line 50.
+
+
+LaTeX Warning: Citation 'mytkowicz2009wrong' on page 30 undefined on input line 86.
+
+
+LaTeX Warning: Citation 'kalibera2013benchmarking' on page 30 undefined on input line 87.
+
+
+Overfull \hbox (72.83702pt too wide) in paragraph at lines 85--88
+[]\TU/LibertinusSerif(0)/m/n/10.95 Con-trolled schedul-ing re-duces fixed-position bias, not all ther-mal or operating-system noise [[]].
+[30]
+
+LaTeX Warning: Reference `sec:appendix-revision-bindings' on page 1 undefined on input line 113.
+
+[31]
+
+LaTeX Warning: Reference `sec:appendix-history' on page 1 undefined on input line 166.
+
+) (./chapters/results.tex [32<./figures/current_experiment_pipeline.pdf>]
+chapter 6.
+
+LaTeX Warning: Reference `sec:appendix-current-formal' on page 1 undefined on input line 14.
+
+
+LaTeX Warning: Reference `sec:implementation-policies' on page 1 undefined on input line 47.
+
+[33]
+
+LaTeX Warning: Reference `tab:results-runtime-size' on page 1 undefined on input line 51.
+
+[34<./figures/current_formal_common.pdf>] [35] [36<./figures/current_formal_targeted.pdf>]
+
+LaTeX Warning: Reference `sec:limitations-timing-scopes' on page 1 undefined on input line 232.
+
+[37]
+
+LaTeX Warning: Reference `sec:appendix-history' on page 1 undefined on input line 245.
+
+) (./chapters/limitations.tex [38]
+chapter 7.
+[39]
+
+LaTeX Warning: Reference `sec:implementation-coverage' on page 1 undefined on input line 56.
+
+
+LaTeX Warning: Reference `sec:results-hooks' on page 1 undefined on input line 75.
+
+
+LaTeX Warning: Reference `sec:appendix-external-review' on page 1 undefined on input line 82.
+
+[40]) (./chapters/conclusion.tex [41] [42]
+chapter 8.
+
+LaTeX Warning: Reference `app:backend-argument' on page 1 undefined on input line 17.
+
+[43]) (./appendix/backend_argument.tex [44]
+chapter A.
+
+LaTeX Warning: Reference `app:claim-traceability' on page 1 undefined on input line 7.
+
+[45] [46<./figures/heterogeneous_representation.pdf>] [47]
+
+LaTeX Warning: Reference `lem:proof-join' on page 1 undefined on input line 160.
+
+
+LaTeX Warning: Reference `lem:proof-insert' on page 1 undefined on input line 162.
+
+
+LaTeX Warning: Reference `sec:algorithm-sibling-lists' on page 1 undefined on input line 191.
+
+[48]
+
+LaTeX Warning: Citation 'fung1990simplified' on page 49 undefined on input line 208.
+
+
+LaTeX Warning: Reference `lem:proof-reentry' on page 1 undefined on input line 244.
+
+[49<./figures/heterogeneous_split_flow.pdf>] [50]
+
+LaTeX Warning: Reference `lem:proof-join' on page 1 undefined on input line 300.
+
+[51]
+
+LaTeX Warning: Reference `lem:proof-finger' on page 1 undefined on input line 386.
+
+
+LaTeX Warning: Reference `lem:proof-telescoping' on page 1 undefined on input line 386.
+
+
+LaTeX Warning: Reference `lem:proof-locality' on page 1 undefined on input line 398.
+
+[52]
+
+LaTeX Warning: Reference `lem:proof-mixed' on page 1 undefined on input line 412.
+
+) (./appendix/claim_traceability.tex [53] [54]
+chapter B.
+
+LaTeX Warning: Reference `lem:proof-reentry' on page 1 undefined on input line 32.
+
+(./appendix/ai_reflection.tex [55]))
+
+LaTeX Warning: Citation 'fung1990simplified' undefined on input line 109.
+
+
+LaTeX Warning: Empty bibliography on input line 110.
+
+[56] (./build/main.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package biblatex Warning: Please (re)run Biber on the file:
+(biblatex)                main
+(biblatex)                and rerun LaTeX afterwards.
+
+)
+(see the transcript file for additional information)
+ 887 words of node memory still in use:
+   8 hlist, 2 vlist, 2 rule, 1 local_par, 4 glue, 4 kern, 1 penalty, 1 margin_kern, 4 glyph, 88 attribute, 71 glue_spec, 45 attribute_list, 1 write nodes
+   avail lists: 1:1,2:1326,3:277,4:150,5:635,6:102,7:8872,8:48,9:646,10:17,11:686,12:1
+</Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/truetype/public/dejavu/DejaVuSansMono.ttf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Italic.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusMath-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusMath-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Bold.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSans-Bold.otf>
+Output written on main.pdf (66 pages, 361747 bytes).
+Transcript written on main.log.
+Latexmk: Getting log file 'build/main.log'
+Latexmk: Examining 'build/main.fls'
+Latexmk: Examining 'build/main.log'
+Latexmk: Missing bbl file 'build/main.bbl' in following:
+ No file main.bbl.
+Latexmk: Missing input file 'main.toc' message in .log file:
+  No file main.toc.
+Latexmk: Missing input file 'main.lof' message in .log file:
+  No file main.lof.
+Latexmk: Missing input file 'main.lot' message in .log file:
+  No file main.lot.
+Latexmk: References changed.
+Latexmk: References changed.
+Latexmk: Log file says output to 'main.pdf'
+Latexmk: Using biber to make bibliography file(s).
+Latexmk: Bibliography file(s) from .bcf file:
+  bibliography.bib
+Sources for biber
+  bibliography.bib
+  build/main.bcf
+Latexmk: applying rule 'biber build/main'...
+Rule 'biber build/main':  Reasons for rerun
+Category 'other':
+  Rerun of 'biber build/main' forced or previously required:
+    Reason or flag: 'Initial set up of rule'
+
+------------
+Run number 1 of rule 'biber build/main'
+------------
+------------
+Running 'biber  "build/main.bcf"'
+------------
+INFO - This is Biber 2.22
+INFO - Logfile is 'build/main.blg'
+INFO - Reading 'build/main.bcf'
+INFO - Found 15 citekeys in bib section 0
+INFO - Processing section 0
+INFO - Looking for bibtex file 'bibliography.bib' for section 0
+INFO - LaTeX decoding ...
+INFO - Found BibTeX data source 'bibliography.bib'
+INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+INFO - Sorting list 'none/global//global/global/global' of type 'entry' with template 'none' and locale 'en-US'
+INFO - No sort tailoring available for locale 'en-US'
+INFO - Writing 'build/main.bbl' with encoding 'UTF-8'
+INFO - Output to build/main.bbl
+Latexmk: Found biber source file(s) [bibliography.bib, build/main.bcf]
+Latexmk: applying rule 'lualatex'...
+Rule 'lualatex':  Reasons for rerun
+Changed files or newly in use/created:
+  build/main.aux
+  build/main.bbl
+  build/main.lof
+  build/main.lot
+  build/main.toc
+
+------------
+Run number 2 of rule 'lualatex'
+------------
+------------
+Running 'lualatex -interaction=nonstopmode -halt-on-error -file-line-error  -recorder -output-directory="build"  "main.tex"'
+------------
+This is LuaHBTeX, Version 1.24.0 (TeX Live 2026) 
+ restricted system commands enabled.
+(./main.tex
+LaTeX2e <2026-06-01>
+L3 programming layer <2026-09-09>
+ (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrreprt.cls
+Document Class: scrreprt 2026/02/02 v3.49.2 KOMA-Script document class (report)
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrkbase.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrbase.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlfile.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlfile-hook.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlogo.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/keyval.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/tocbasic.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrsize11pt.clo) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/typearea.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/libertinus/libertinus.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/libertinus-otf/libertinus-otf.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/unicode-math/unicode-math.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3kernel/l3backend-luatex.def)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/unicode-math/unicode-math-luatex.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3packages/xparse/xparse.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/fontspec/fontspec.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/fontspec/fontspec.cfg))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/fix-cm.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/ts1enc.def)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/lualatex/lualatex-math/lualatex-math.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/unicode-math/unicode-math-table.tex)))
+*************************************
+* Using libertinus math *
+*************************************
+)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/microtype/microtype.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/microtype/microtype-luatex.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/microtype/microtype.cfg)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/babel.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/luababel.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/luababel.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/locale/invalid/babel-ngerman.tex) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/locale/en/babel-english.tex) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel-german/ngerman.ldf (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel-german/babel-german.def (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/hyph-utf8/loadhyph/loadhyph-de-1996.tex UTF-8 German hyphenation patterns (reformed orthography) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/hyph-utf8/patterns/tex/hyph-de-1996.tex German Hyphenation Patterns (Reformed Orthography, 2006) `dehyphn-x' 2024-02-28 (WL))))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel-english/english.ldf)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlayer-scrpage.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlayer.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/scrhack/scrhack.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/setspace/setspace.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/enumitem/enumitem.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/trig.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cfg) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics-def/luatex.def))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/float/float.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/floatbytocbasic/floatbytocbasic.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/xpatch/xpatch.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/siunitx/siunitx.sty
+Include code introduced on 2026-09-12
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/tools/array.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amscls/amsthm.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.cfg)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/logreq/logreq.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/logreq/logreq.def)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/ifthen.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/url/url.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-dm.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-unicode.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-compat.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/numeric-comp.bbx (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/standard.bbx))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/cbx/numeric-comp.cbx) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.cfg) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/hluatex.def (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/cleveref/cleveref.sty)
+==> First Aid for cleveref.sty applied!
+(./config/metadata.tex) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/bookmark/bookmark.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/bookmark/bkm-luatex.def)) (./build/main.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: luatex
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/english.lbx) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/ngerman.lbx (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/german.lbx) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/german.lbx)) (./build/main.bbl) (./frontmatter/titlepage.tex [1{/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]) [2] (./frontmatter/abstract.tex
+chapter without number
+) [1] [2] (./build/main.toc [3] [4]) [5] [6] (./build/main.lof) [7] [8] (./build/main.lot) [9] [10] (./chapters/introduction.tex
+chapter 1.
+[1]) (./chapters/background.tex [2]
+chapter 2.
+[3] [4<./figures/jordan_sorting_problem.pdf>] [5] [6] [7]) (./chapters/algorithm.tex [8]
+chapter 3.
+[9] [10] [11] [12] [13] [14] [15] [16<./figures/step3c_anchor_z1_anomaly.pdf>] [17] [18<./figures/running_example_reconstruction.pdf>]) (./chapters/implementation.tex [19] [20]
+chapter 4.
+[21] [22] [23<./figures/family_sibling_structure.pdf>] [24] [25] [26]) (./chapters/methodology.tex [27] [28]
+chapter 5.
+[29] [30] [31]) (./chapters/results.tex [32<./figures/current_experiment_pipeline.pdf>]
+chapter 6.
+[33] [34<./figures/current_formal_common.pdf>] [35] [36<./figures/current_formal_targeted.pdf>] [37]) (./chapters/limitations.tex [38]
+chapter 7.
+[39] [40]) (./chapters/conclusion.tex [41] [42]
+chapter 8.
+[43]) (./appendix/backend_argument.tex [44]
+chapter A.
+[45] [46<./figures/heterogeneous_representation.pdf>] [47] [48] [49<./figures/heterogeneous_split_flow.pdf>] [50] [51] [52]) (./appendix/claim_traceability.tex [53] [54]
+chapter B.
+(./appendix/ai_reflection.tex [55])) [56]
+chapter without number
+[57] [58] (./build/main.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package biblatex Warning: Please rerun LaTeX.
+
+)
+ 1059 words of node memory still in use:
+   8 hlist, 2 vlist, 2 rule, 1 local_par, 4 glue, 4 kern, 1 penalty, 1 margin_kern, 4 glyph, 110 attribute, 79 glue_spec, 56 attribute_list, 1 write, 11 pdf_action nodes
+   avail lists: 1:2,2:2449,3:641,4:518,5:649,6:257,7:9117,8:48,9:946,10:17,11:699,12:3
+</Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/truetype/public/dejavu/DejaVuSansMono.ttf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Italic.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Bold.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusMath-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusMath-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSans-Bold.otf>
+Output written on main.pdf (70 pages, 392716 bytes).
+Transcript written on main.log.
+Latexmk: Getting log file 'build/main.log'
+Latexmk: Examining 'build/main.fls'
+Latexmk: Examining 'build/main.log'
+Latexmk: Found input bbl file 'build/main.bbl'
+Latexmk: References changed.
+Latexmk: References changed.
+Latexmk: Log file says output to 'main.pdf'
+Latexmk: Using biber to make bibliography file(s).
+Latexmk: Bibliography file(s) from .bcf file:
+  bibliography.bib
+Sources for biber
+  bibliography.bib
+  build/main.bcf
+Latexmk: applying rule 'biber build/main'...
+Rule 'biber build/main':  Reasons for rerun
+Changed files or newly in use/created:
+  build/main.bcf
+
+------------
+Run number 2 of rule 'biber build/main'
+------------
+------------
+Running 'biber  "build/main.bcf"'
+------------
+INFO - This is Biber 2.22
+INFO - Logfile is 'build/main.blg'
+INFO - Reading 'build/main.bcf'
+INFO - Found 15 citekeys in bib section 0
+INFO - Processing section 0
+INFO - Looking for bibtex file 'bibliography.bib' for section 0
+INFO - LaTeX decoding ...
+INFO - Found BibTeX data source 'bibliography.bib'
+INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+INFO - Sorting list 'none/global//global/global/global' of type 'entry' with template 'none' and locale 'en-US'
+INFO - No sort tailoring available for locale 'en-US'
+INFO - Writing 'build/main.bbl' with encoding 'UTF-8'
+INFO - Output to build/main.bbl
+Latexmk: Found biber source file(s) [bibliography.bib, build/main.bcf]
+Latexmk: applying rule 'lualatex'...
+Rule 'lualatex':  Reasons for rerun
+Changed files or newly in use/created:
+  build/main.aux
+  build/main.bbl
+  build/main.lof
+  build/main.lot
+  build/main.run.xml
+  build/main.toc
+
+------------
+Run number 3 of rule 'lualatex'
+------------
+------------
+Running 'lualatex -interaction=nonstopmode -halt-on-error -file-line-error  -recorder -output-directory="build"  "main.tex"'
+------------
+This is LuaHBTeX, Version 1.24.0 (TeX Live 2026) 
+ restricted system commands enabled.
+(./main.tex
+LaTeX2e <2026-06-01>
+L3 programming layer <2026-09-09>
+ (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrreprt.cls
+Document Class: scrreprt 2026/02/02 v3.49.2 KOMA-Script document class (report)
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrkbase.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrbase.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlfile.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlfile-hook.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlogo.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/keyval.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/tocbasic.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrsize11pt.clo) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/typearea.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/libertinus/libertinus.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/libertinus-otf/libertinus-otf.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/unicode-math/unicode-math.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3kernel/l3backend-luatex.def)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/unicode-math/unicode-math-luatex.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3packages/xparse/xparse.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/fontspec/fontspec.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/fontspec/fontspec.cfg))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/fix-cm.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/ts1enc.def)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/lualatex/lualatex-math/lualatex-math.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/unicode-math/unicode-math-table.tex)))
+*************************************
+* Using libertinus math *
+*************************************
+)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/microtype/microtype.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/microtype/microtype-luatex.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/microtype/microtype.cfg)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/babel.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/luababel.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/luababel.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/locale/invalid/babel-ngerman.tex) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/locale/en/babel-english.tex) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel-german/ngerman.ldf (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel-german/babel-german.def (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/hyph-utf8/loadhyph/loadhyph-de-1996.tex UTF-8 German hyphenation patterns (reformed orthography) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/hyph-utf8/patterns/tex/hyph-de-1996.tex German Hyphenation Patterns (Reformed Orthography, 2006) `dehyphn-x' 2024-02-28 (WL))))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel-english/english.ldf)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlayer-scrpage.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlayer.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/scrhack/scrhack.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/setspace/setspace.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/enumitem/enumitem.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/trig.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cfg) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics-def/luatex.def))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/float/float.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/floatbytocbasic/floatbytocbasic.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/xpatch/xpatch.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/siunitx/siunitx.sty
+Include code introduced on 2026-09-12
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/tools/array.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amscls/amsthm.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.cfg)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/logreq/logreq.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/logreq/logreq.def)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/ifthen.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/url/url.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-dm.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-unicode.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-compat.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/numeric-comp.bbx (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/standard.bbx))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/cbx/numeric-comp.cbx) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.cfg) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/hluatex.def (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/cleveref/cleveref.sty)
+==> First Aid for cleveref.sty applied!
+(./config/metadata.tex) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/bookmark/bookmark.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/bookmark/bkm-luatex.def)) (./build/main.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: luatex
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/english.lbx) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/ngerman.lbx (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/german.lbx) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/german.lbx)) (./build/main.bbl) (./frontmatter/titlepage.tex [1{/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]) [2] (./frontmatter/abstract.tex
+chapter without number
+) [1] [2] (./build/main.toc [3] [4]) [5] [6] (./build/main.lof) [7] [8] (./build/main.lot) [9] [10] (./chapters/introduction.tex
+chapter 1.
+[1]) (./chapters/background.tex [2]
+chapter 2.
+[3] [4<./figures/jordan_sorting_problem.pdf>] [5] [6] [7]) (./chapters/algorithm.tex [8]
+chapter 3.
+[9] [10] [11] [12] [13] [14] [15] [16<./figures/step3c_anchor_z1_anomaly.pdf>] [17] [18<./figures/running_example_reconstruction.pdf>]) (./chapters/implementation.tex [19] [20]
+chapter 4.
+[21] [22] [23<./figures/family_sibling_structure.pdf>] [24] [25] [26]) (./chapters/methodology.tex [27] [28]
+chapter 5.
+[29] [30] [31]) (./chapters/results.tex [32<./figures/current_experiment_pipeline.pdf>]
+chapter 6.
+[33] [34<./figures/current_formal_common.pdf>] [35] [36<./figures/current_formal_targeted.pdf>] [37]) (./chapters/limitations.tex [38]
+chapter 7.
+[39] [40]) (./chapters/conclusion.tex [41] [42]
+chapter 8.
+[43]) (./appendix/backend_argument.tex [44]
+chapter A.
+[45] [46<./figures/heterogeneous_representation.pdf>] [47] [48] [49<./figures/heterogeneous_split_flow.pdf>] [50] [51] [52]) (./appendix/claim_traceability.tex [53] [54]
+chapter B.
+(./appendix/ai_reflection.tex [55])) [56]
+chapter without number
+[57] [58] (./build/main.aux))
+ 1059 words of node memory still in use:
+   8 hlist, 2 vlist, 2 rule, 1 local_par, 4 glue, 4 kern, 1 penalty, 1 margin_kern, 4 glyph, 110 attribute, 79 glue_spec, 56 attribute_list, 1 write, 11 pdf_action nodes
+   avail lists: 1:2,2:2449,3:641,4:518,5:649,6:257,7:9117,8:48,9:946,10:17,11:699,12:3
+</Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/truetype/public/dejavu/DejaVuSansMono.ttf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Italic.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Bold.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusMath-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusMath-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSans-Bold.otf>
+Output written on main.pdf (70 pages, 392868 bytes).
+Transcript written on main.log.
+Latexmk: Getting log file 'build/main.log'
+Latexmk: Examining 'build/main.fls'
+Latexmk: Examining 'build/main.log'
+Latexmk: Found input bbl file 'build/main.bbl'
+Latexmk: Log file says output to 'main.pdf'
+Latexmk: Using biber to make bibliography file(s).
+Latexmk: Bibliography file(s) from .bcf file:
+  bibliography.bib
+Sources for biber
+  bibliography.bib
+  build/main.bcf
+Latexmk: applying rule 'lualatex'...
+Rule 'lualatex':  Reasons for rerun
+Changed files or newly in use/created:
+  build/main.aux
+  build/main.run.xml
+
+------------
+Run number 4 of rule 'lualatex'
+------------
+------------
+Running 'lualatex -interaction=nonstopmode -halt-on-error -file-line-error  -recorder -output-directory="build"  "main.tex"'
+------------
+This is LuaHBTeX, Version 1.24.0 (TeX Live 2026) 
+ restricted system commands enabled.
+(./main.tex
+LaTeX2e <2026-06-01>
+L3 programming layer <2026-09-09>
+ (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrreprt.cls
+Document Class: scrreprt 2026/02/02 v3.49.2 KOMA-Script document class (report)
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrkbase.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrbase.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlfile.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlfile-hook.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlogo.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/keyval.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/tocbasic.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrsize11pt.clo) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/typearea.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/libertinus/libertinus.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/libertinus-otf/libertinus-otf.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/unicode-math/unicode-math.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3kernel/l3backend-luatex.def)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/unicode-math/unicode-math-luatex.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3packages/xparse/xparse.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/fontspec/fontspec.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/fontspec/fontspec.cfg))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/fix-cm.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/ts1enc.def)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/lualatex/lualatex-math/lualatex-math.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/unicode-math/unicode-math-table.tex)))
+*************************************
+* Using libertinus math *
+*************************************
+)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/microtype/microtype.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/microtype/microtype-luatex.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/microtype/microtype.cfg)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/babel.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/luababel.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/luababel.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/locale/invalid/babel-ngerman.tex) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel/locale/en/babel-english.tex) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel-german/ngerman.ldf (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel-german/babel-german.def (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/hyph-utf8/loadhyph/loadhyph-de-1996.tex UTF-8 German hyphenation patterns (reformed orthography) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/hyph-utf8/patterns/tex/hyph-de-1996.tex German Hyphenation Patterns (Reformed Orthography, 2006) `dehyphn-x' 2024-02-28 (WL))))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/babel-english/english.ldf)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/geometry/geometry.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/iftex/ifvtex.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlayer-scrpage.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/koma-script/scrlayer.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/scrhack/scrhack.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/setspace/setspace.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/enumitem/enumitem.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/graphicx.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/graphics.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/trig.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics-cfg/graphics.cfg) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics-def/luatex.def))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/float/float.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/floatbytocbasic/floatbytocbasic.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/xpatch/xpatch.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/booktabs/booktabs.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/siunitx/siunitx.sty
+Include code introduced on 2026-09-12
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/tools/array.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/amscls/amsthm.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.cfg)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/logreq/logreq.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/logreq/logreq.def)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/base/ifthen.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/url/url.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-dm.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-unicode.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-compat.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/numeric-comp.bbx (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/standard.bbx))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/cbx/numeric-comp.cbx) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.cfg) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/hyperref/hluatex.def (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty))) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/cleveref/cleveref.sty)
+==> First Aid for cleveref.sty applied!
+(./config/metadata.tex) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/bookmark/bookmark.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/bookmark/bkm-luatex.def)) (./build/main.aux)
+*geometry* driver: auto-detecting
+*geometry* detected driver: luatex
+(/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg)) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/english.lbx) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/ngerman.lbx (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/german.lbx) (/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/tex/latex/biblatex/lbx/german.lbx)) (./build/main.bbl) (./frontmatter/titlepage.tex [1{/Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]) [2] (./frontmatter/abstract.tex
+chapter without number
+) [1] [2] (./build/main.toc [3] [4]) [5] [6] (./build/main.lof) [7] [8] (./build/main.lot) [9] [10] (./chapters/introduction.tex
+chapter 1.
+[1]) (./chapters/background.tex [2]
+chapter 2.
+[3] [4<./figures/jordan_sorting_problem.pdf>] [5] [6] [7]) (./chapters/algorithm.tex [8]
+chapter 3.
+[9] [10] [11] [12] [13] [14] [15] [16<./figures/step3c_anchor_z1_anomaly.pdf>] [17] [18<./figures/running_example_reconstruction.pdf>]) (./chapters/implementation.tex [19] [20]
+chapter 4.
+[21] [22] [23<./figures/family_sibling_structure.pdf>] [24] [25] [26]) (./chapters/methodology.tex [27] [28]
+chapter 5.
+[29] [30] [31]) (./chapters/results.tex [32<./figures/current_experiment_pipeline.pdf>]
+chapter 6.
+[33] [34<./figures/current_formal_common.pdf>] [35] [36<./figures/current_formal_targeted.pdf>] [37]) (./chapters/limitations.tex [38]
+chapter 7.
+[39] [40]) (./chapters/conclusion.tex [41] [42]
+chapter 8.
+[43]) (./appendix/backend_argument.tex [44]
+chapter A.
+[45] [46<./figures/heterogeneous_representation.pdf>] [47] [48] [49<./figures/heterogeneous_split_flow.pdf>] [50] [51] [52]) (./appendix/claim_traceability.tex [53] [54]
+chapter B.
+(./appendix/ai_reflection.tex [55])) [56]
+chapter without number
+[57] [58] (./build/main.aux))
+ 1059 words of node memory still in use:
+   8 hlist, 2 vlist, 2 rule, 1 local_par, 4 glue, 4 kern, 1 penalty, 1 margin_kern, 4 glyph, 110 attribute, 79 glue_spec, 56 attribute_list, 1 write, 11 pdf_action nodes
+   avail lists: 1:2,2:2449,3:641,4:518,5:649,6:257,7:9117,8:48,9:946,10:17,11:699,12:3
+</Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/truetype/public/dejavu/DejaVuSansMono.ttf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Italic.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Bold.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusMath-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusMath-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSerif-Regular.otf></Users/schnee/Documents/Codex/2026-10-11/mu-q/work/thesis_revision_20261011/toolchain/TinyTeX/texmf-dist/fonts/opentype/public/libertinus-fonts/LibertinusSans-Bold.otf>
+Output written on main.pdf (70 pages, 392868 bytes).
+Transcript written on main.log.
+Latexmk: Getting log file 'build/main.log'
+Latexmk: Examining 'build/main.fls'
+Latexmk: Examining 'build/main.log'
+Latexmk: Found input bbl file 'build/main.bbl'
+Latexmk: Log file says output to 'main.pdf'
+Latexmk: Using biber to make bibliography file(s).
+Latexmk: Bibliography file(s) from .bcf file:
+  bibliography.bib
+Sources for biber
+  bibliography.bib
+  build/main.bcf
+Latexmk: All targets (build/main.pdf) are up-to-date
+

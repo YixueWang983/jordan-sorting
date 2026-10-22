@@ -1,0 +1,106 @@
+{
+  "tests_run": 9,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "scope": "Existing helper and operation-level tests; no complete sorting or measurement campaign",
+  "join_cases": [
+    {
+      "case": "LL",
+      "internal_valid": true,
+      "rank": 1
+    },
+    {
+      "case": "LR",
+      "internal_valid": true,
+      "rank": 1
+    },
+    {
+      "case": "RR",
+      "internal_valid": true,
+      "rank": 1
+    },
+    {
+      "case": "RL",
+      "internal_valid": true,
+      "rank": 1
+    },
+    {
+      "case": "black_no_repair",
+      "internal_valid": true
+    },
+    {
+      "case": "red_inputs",
+      "transient_sides": [],
+      "values": [
+        0,
+        10,
+        20,
+        30
+      ],
+      "normalized_inputs": [
+        1,
+        1
+      ],
+      "result_rank": 2,
+      "stable_leaf_handle_pair": true
+    },
+    {
+      "case": "empty_left",
+      "red_root_preserved": true,
+      "connector_retired": true
+    },
+    {
+      "case": "empty_right",
+      "red_root_preserved": true,
+      "connector_retired": true
+    },
+    {
+      "case": "review_example_LL",
+      "transient_sides": [
+        "left"
+      ],
+      "values": [
+        0,
+        10,
+        20,
+        30
+      ],
+      "normalized_inputs": [
+        0,
+        1
+      ],
+      "result_rank": 2,
+      "stable_leaf_handle_pair": true
+    },
+    {
+      "case": "red_no_conflict",
+      "internal_valid": true
+    },
+    {
+      "case": "review_example_RR",
+      "transient_sides": [
+        "right"
+      ],
+      "values": [
+        0,
+        10,
+        20,
+        30
+      ],
+      "normalized_inputs": [
+        1,
+        0
+      ],
+      "result_rank": 2,
+      "stable_leaf_handle_pair": true
+    }
+  ],
+  "checked_files_sha256": {
+    "src/heterogeneous_finger_split.py": "bf733d089be5de272ddf897c4022f0d74e423cccb5eb938e61550dd8beb1593f",
+    "docs/validation/join_proof_correction_20261016/check_join_transients.py": "a0a9d47c680ff7a3503e6474dc2429494c85d13f1b822b5359d5e8af7d35143d",
+    "tests/test_heterogeneous_finger_split.py": "187a1fa447da1a6ffc6dfba597fa252a36f0f89544cb20f2c43b5a017568401a",
+    "tests/test_finger_refinement.py": "e608dc22c0afe998911a1c3806ad1a71317aa5a30eca40049e62c9f0ff48d8a6"
+  },
+  "production_commit": "46ac95db7d771b503e3eca5afe28b7661fd697d5"
+}

@@ -87,19 +87,23 @@ may contain one root--child red edge when its root is red. A complete
 nonempty join restores the red--black invariants.
 \end{lemma}
 \begin{proof}
-Both input roots are blackened before descending the taller component's
-inner path. At equal-rank black roots, a red connector forms an internally
-valid base case with the same rank. On return, the replaced component keeps
-that rank. A black parent with no conflict is refreshed. For LL, LR, RR or RL
-conflicts, one or two rotations create a red middle root with two black
-children and unchanged black height. Thus the returned subtree is internally
-valid, although its root can conflict with the caller.
+Both input roots are blackened. Descent follows the right path of a taller
+left component, or the left path of a taller right component; the other
+argument remains the original blackened root. A black step lowers rank by
+one and a red step preserves it, so descent reaches equal-rank black roots
+without crossing their rank or changing sides. There a red connector forms
+an internally valid base case with the same rank. On return, the replaced
+component keeps that rank. A black parent without conflict is refreshed;
+only an outer RR conflict on right descent, or LL on left descent, can arise.
+One rotation produces a red middle root with two black children and unchanged
+black height. The LR/RL helper branches are defensive: direct helper fixtures
+exercise them, but valid recursive joins do not reach them.
 
 A red parent takes the direct-return branch. Its originally black updated
 child can return an internally valid red root; the other child stays black.
 Consequently only the updated root--child edge may be red--red. This is a
 recursive transient, not $D$. The original parent of that red node is black
-and repairs precisely this LL/LR/RR/RL conflict on the next return. The
+and repairs this LL or RR conflict on the next return. The
 induction excludes a deeper or second simultaneous red conflict. Descent
 never searches through a return transient.
 
