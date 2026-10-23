@@ -352,9 +352,12 @@ selection and output-anchor correction must be modeled as separate stages.
 
 A sibling split changes several linked facts at once: the old list ceases to
 exist, up to two nonempty output lists are created, the retained side stays
-with the old parent, the acquired side moves under $N$, and every moved pair
-must name its new list and parent. Conservation and unique ownership are
-required after a successful transition.
+with the old parent, and the acquired side moves under $N$. Each moved pair
+must belong logically to exactly one output sibling group and have that
+group's owner as its parent. The ordinary backend updates per-pair ownership
+fields, whereas the tree backend updates headers without rebinding every
+leaf. Conservation and unique ownership are required after a successful
+transition.
 
 The ordinary backend first forms a split plan without changing live state;
 its commit checks the plan, parent and partition before updating ownership.

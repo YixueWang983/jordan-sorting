@@ -225,9 +225,11 @@ $n$ & Workload & Direction & T/L & H/L & U/L & Drop (\%)\\
 Removing hooks lowers the tree median by 37.7--52.1\% across the fifteen cases.
 Four of fifteen cases, the large heavy constructions, favor the hook-free
 tree; the remaining eleven take 1.09--1.68 times the list time.
-The diagnostic therefore shows a configuration effect without establishing
-a general tree advantage. The diagnostic does not
-qualify these modified variants as production backends or isolate an exact
+Additionally removing operation and phase wrappers (U) yields lower medians
+than the list in six of fifteen cases, including the two large medium-nesting
+cases. These remain results of the separate diagnostic protocol, not a
+qualified production-backend comparison. The diagnostic shows a configuration
+effect without establishing a general tree advantage or isolating an exact
 additive overhead share; order and environment limits remain in
 \cref{sec:limitations-timing-scopes}.
 
