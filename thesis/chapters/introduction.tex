@@ -26,8 +26,8 @@ Since the September progress report, which presented the ordinary-list
 implementation and its runtime baseline, the scope has expanded to include
 a finger-tree backend, its amortized analysis and a direct comparison of the
 two backends.
-The implementation uses a shared Python core for the 1990 procedure, with
-ordinary-list and heterogeneous red--black finger-tree backends. With either
+
+Both backends share one Python core for the 1990 procedure. With either
 backend, the core maintains its own sorted output, pair forests and sibling
 ownership. Inputs are pre-certified valid Jordan sequences with distinct
 comparable values. Recognition, invalid-input behavior and geometric
