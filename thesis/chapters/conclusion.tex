@@ -3,10 +3,9 @@
 \label{sec:conclusion-summary}
 
 This thesis reconstructs Simplified Jordan Sorting as one executable core with
-ordinary-list and heterogeneous finger-tree backends. Both recover their own
-sorted output; external certification supplies validity, not the answer.
-The resulting artifact connects algorithm reconstruction, a specialized
-representation, a source-level argument and a reproducible comparison.
+ordinary-list and heterogeneous finger-tree backends. Both recover the sorted
+output from their maintained state. The implementation connects the paper's
+operations to a source-level cost argument and a reproducible runtime comparison.
 
 \section{Answers to the Research Questions}
 \label{sec:conclusion-questions}
@@ -18,21 +17,19 @@ and sorted prefixes. The argument in \cref{app:backend-argument} explains the
 two odd-stage $z_1$ corrections, temporary transfer, reversed ribs and recursive
 repair transients. Stable pair identities and child groups survive splitting.
 The two frozen input sets passed v2 qualification; all 66,560 formal sample
-calls and 1,520 warm-ups returned correct outputs. Finite execution evidence
-and the manual proof have different roles; neither is machine verification.
+calls and 1,520 warm-ups returned correct outputs.
 
 \label{sec:conclusion-rq2}
 \textbf{RQ2: observed runtime.}
 For the measured configuration retaining access hooks, every input has a
-higher tree median. Common-set tree/list ratios have median 2.898 and range
+higher tree median runtime. Common-set tree/list ratios have median 2.898 and range
 1.114--3.535; the targeted set has median 3.180 and range 3.147--3.213.
-These summarize ratios of twenty-batch input medians, not confidence intervals
-or every individual call. No crossover is established. The comparison
-includes different wrapping, checking and allocation costs. A separate
+These are ratios of twenty-batch input medians for the measured implementations,
+including their wrapping, checking and allocation costs. A separate
 fifteen-input local diagnostic reduces tree medians by 37.7--52.1\% when access
 hooks are removed. Four of fifteen cases, the large heavy constructions,
 favor the hook-free tree; the remaining eleven take 1.09--1.68 times the
-list time. This does not replace the frozen experiment or establish general speedups.
+list time.
 
 \label{sec:conclusion-rq3}
 \textbf{RQ3: structure and cost.}
@@ -44,25 +41,23 @@ operations, expected dictionary lookup and amortized growth. Ordinary-list
 insertion copying alone has a quadratic lower bound.
 
 The common workload has no two-sided splits; the targeted group contains one
-per input with source size 61 and smaller sides 3/7/19. Neither identifies an
-isolated split-cost function or broad mixed-workload performance. The practical
+per input with source size 61 and smaller sides 3/7/19. The measurements thus
+cover different operation mixes within complete sorting calls. The practical
 slowdown of the measured Python configuration is compatible with the structural
-bound. Historical rollback results remain separate and non-causal.
+bound.
 
 \section{Contributions and Further Work}
 \label{sec:conclusion-contributions}
 \label{sec:conclusion-future-work}
 \label{sec:conclusion-closing}
 
-The contribution is an inspectable implementation and argument with explicit
-source, input, timing and statistical boundaries. Independent review of the
-finite-parent locality extension and mixed-operation proof would strengthen
-confidence in the argument. Future
-work should qualify a production hook-free configuration and broaden split
+The thesis provides an implementation whose operations can be traced to the
+reconstruction and cost argument, together with reproducible measurements.
+Independent review of the finite-parent locality extension and mixed-operation
+proof would strengthen confidence in the argument. The next empirical step is
+to qualify a production hook-free configuration and test broader split
 histories and environments under predeclared rules. The post-review diagnostic
-and 40-input seeded correctness supplement are bounded first steps.
-Such work should preserve the present data regardless of
-its speed outcome. Recognition, invalid-input behavior, error correction and
-geometric applications require separate specifications. The thesis therefore
-reports a structural bound, finite correctness evidence and measured runtime
-as distinct conclusions.
+and 40-input seeded correctness supplement provide starting points, while the
+existing data remain available for comparison. Recognition, invalid-input
+behavior, error correction and geometric applications would each require
+their own specification and evaluation.

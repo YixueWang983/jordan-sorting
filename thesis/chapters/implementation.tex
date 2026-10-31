@@ -4,7 +4,7 @@
 % Updated against c5b5ac3: real tree operations, v2 qualification and ledger mode.
 % Historical timing/claim audits retain their original identities.
 
-\section{Implementation Scope and Versions}
+\section{Architecture and Versions}
 \label{sec:implementation-scope}
 \label{sec:implementation-versions}
 
@@ -17,17 +17,15 @@ returns \texttt{state.partial\_order.to\_list()}. Its core does not use the
 oracle's output or a global rank map. It assumes a pre-certified valid Jordan
 sequence with distinct, mutually comparable values.
 
-Both current backends propagate errors without rollback. Current matched timings
-in \cref{chap:results} measure these programs; an explicitly separate section
-retains the earlier rollback-enabled study. Neither comparison establishes a
-causal benefit of removing recovery work.
-Source bindings remain in \cref{sec:appendix-revision-bindings}.
+Both current backends propagate errors without rollback. The matched timings
+in \cref{chap:results} measure these programs; the earlier rollback-enabled
+study is documented in its historical section. Source bindings are listed in
+\cref{sec:appendix-revision-bindings}.
 
 \Cref{chap:algorithm} specifies initialization, both orientations of
 Step~1/2/3, and executable anchor clarifications. Here the focus is state
-representation and maintenance. The real tree shares the sorting loop and has
-bounded correctness evidence and a source-level manual cost/locality review.
-Qualification remains distinct from that mathematical argument.
+representation and maintenance. Both backends share the sorting loop, while
+their representations determine how they perform each list operation.
 
 \section{Data Representation}
 \label{sec:implementation-input-model}
@@ -52,8 +50,8 @@ runner and mirrored orientation branches.
 sentinels and a point-ID-to-node mapping. Neighbor access and insertion use
 local links. Before mutation, insertion checks that the value lies strictly
 between its adjacent values. Final traversal excludes the sentinels and
-returns the original values. Mapping access uses Python dictionaries; its
-cost must not be silently treated as a deterministic worst-case constant.
+returns the original values. Mapping access uses Python dictionaries and is
+charged at its expected cost.
 
 \subsection{Sibling Lists and Ownership}
 \label{sec:implementation-sibling-lists}
@@ -138,7 +136,6 @@ lists, and rebinds the pairs. Touched-state postconditions are checked before
 success is returned. Rejection covers stale plans, straddling pairs, ownership
 mismatches, cycles, unowned parents and a third child list. Errors during
 mutation or postcondition checks propagate without restoring earlier state.
-Output-list preparation is ordinary update work, not a recovery backup.
 
 The tree starts boundary insertion at a finger and repairs locally. A split
 with both sides nonempty races from both ends, detaches a component, splits
@@ -156,9 +153,8 @@ before Step~3(c) inserts the output point.
 
 The backend exposes the relevant extreme child; the core selects its
 geometric endpoint and applies the separate odd-index $z_1$ anchor rule of
-\cref{sec:algorithm-z1-anchor}. These executable clarifications and their
-counterexamples remain in \cref{sec:algorithm-anchor-clarifications}; they
-are not attributed to fully explicit wording in the 1990 paper. The partial
+\cref{sec:algorithm-z1-anchor}. The clarifications and counterexamples are
+given in \cref{sec:algorithm-anchor-clarifications}. The partial
 order performs the resulting adjacent insertion. Only after it succeeds does
 Step~3(c) advance \texttt{processed\_count}.
 
@@ -181,8 +177,8 @@ reconstructs a fresh state using the same core, backend type and immutable
 configuration. It compares backend identity, partial order, registries, stage
 results, trace, work observations, metrics, and logical and physical snapshots.
 Unavailable backends fail explicitly rather than reverting to ordinary lists.
-This is same-core state-consistency evidence, not a second independent
-algorithm or a replacement for the external sorted-output check.
+Replay checks same-core state consistency; external sorting checks the final
+output.
 
 Qualification v2 instead advances two independently initialized checked
 instances through the same pausable core, audits and compares every completed
@@ -195,14 +191,14 @@ Snapshots reuse one audit within a validation call, never a cross-call
 Failure-injection tests separately check propagation from pair insertion and
 split postconditions, including checks retained in \texttt{minimal}.
 Public-call tests require one split attempt and no output recovery after
-failure. They impose no rollback or failed-state reuse requirement.
+failure.
 
-\subsection{Correctness Coverage and Its Limits}
+\subsection{Correctness Coverage}
 \label{sec:implementation-coverage}
 
 \Cref{tab:implementation-coverage} separates operation tests, complete sorting
-runs and measured workloads. Development evidence is bound to its recorded
-source snapshot; it is not a rerun on the final measured version.
+runs and measured workloads. Each development result refers to its recorded
+source snapshot; the qualification rows identify the measured versions.
 
 \begin{table}[htbp]
   \centering
@@ -237,8 +233,7 @@ source snapshot; it is not a rerun on the final measured version.
 
 The 18-input campaign records 460 splits, 230 two-sided splits, 666 later
 insertions into earlier split outputs and 212 re-splits, per checked
-configuration's original runs. Replays and repeated configurations are not
-additional inputs. Within it, \texttt{repeated-512} contributes respectively
+configuration's original runs. Within it, \texttt{repeated-512} contributes respectively
 126, 63, 189 and 62 operations; its two-sided splits always have smaller side
 one. The 512-point balanced and skew cases split 253 siblings into $126+127$
 and $1+252$; the 513-point cases mirror these constructions.
@@ -255,9 +250,8 @@ $b=0.1$. Each seed uses one sequential Python \texttt{random.Random}
 stream; all forty inputs are saved and independently certified by the oracle.
 Thirty-eight contain a two-sided split, with maximum smaller side 13.
 The eight smaller inputs also receive checked validation.
-These related, bounded examples do not establish all mixed-history patterns
-or large balanced-split coverage. Only the common and targeted groups enter
-formal timing; correctness-run times are excluded.
+This supplement extends the tested operation histories; the common and
+targeted groups supply the formal timing data.
 Archive locators and the source-hash distinction are in
 \cref{sec:appendix-development-coverage}.
 
@@ -280,8 +274,7 @@ wrappers and switch checks still have runtime cost. In particular,
 \texttt{\_\_setattr\_\_} still intercept accesses before testing the ledger
 switch; operation and phase wrappers also remain. Throughout the empirical
 chapters, ``measured tree'' means this configuration with retained access
-hooks, not an uninstrumented tree. Disabling collection does not remove
-instrumentation plumbing.
+hooks.
 
 The archived studies instead timed the rollback-enabled implementation,
 including recovery-state preparation in \texttt{minimal}; a successful call
@@ -290,16 +283,13 @@ is specified in \cref{sec:method-paper-implementation}.
 
 For each successful split, the ordinary backend reports an increment equal
 to the input-list length for both \texttt{split\_items\_scanned} and
-\texttt{split\_items\_copied}. They are logical split-volume measures, not exact
-interpreter-level access counts. They omit boundary-insertion copies,
-membership scans and repeated validation/materialization passes. Retained
-historical counter names do not establish that splits dominate runtime.
-Logical volumes, directly observed work and wall-clock timings are therefore
-distinct forms of evidence. The shared core accumulates backend-reported
-work under an identified metric schema; it does not infer tree copying from
-the input-list length.
+\texttt{split\_items\_copied}. These logical split-volume measures omit
+boundary-insertion copies, membership scans and repeated validation/materialization
+passes. The shared core accumulates each backend's reported work under an
+identified metric schema. This keeps logical volumes separate from observed
+field accesses and elapsed time.
 
-\section{Actual Costs and Complexity Boundary}
+\section{Operation Costs and Complexity}
 \label{sec:implementation-complexity}
 
 In the ordinary backend, either boundary insertion constructs a new Python list containing the
@@ -326,15 +316,12 @@ skips splitting. The number of existing pair IDs copied is
   \label{eq:implementation-boundary-copy-lower-bound}
 \end{equation}
 Thus this input family incurs $\Omega(n^2)$ copying, including in
-\texttt{minimal}. This is a source-derived bound on one component of work,
-not a curve fit or a tight total bound for all inputs.
+\texttt{minimal}. This lower bound accounts for insertion copying alone.
 
-The ordinary backend does not inherit the heterogeneous tree's bound.
-The source-level proof is developed in \cref{app:backend-argument}:
+For the tree backend, the source-level proof in \cref{app:backend-argument}
+accounts for a different set of operations:
 decoding and local repair preserve the representation, exact grouping supplies
 legal endpoint calls, and one potential pays propagation across mixed
 insertion/split histories. A second, list-size potential pays the smaller-side
 split terms over the sorting run. \Cref{thm:proof-total} includes the shared
 core, ownership and output work under its stated computation model.
-The argument is manual and source-specific; finite qualification is separate
-evidence, and a structural bound does not predict a Python speed advantage.

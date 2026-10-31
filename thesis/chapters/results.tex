@@ -1,7 +1,7 @@
 \chapter{Results}
 \label{chap:results}
 
-\section{Current Evidence and Correctness}
+\section{Execution Summary and Output Checks}
 \label{sec:results-correctness}
 
 The current matched experiments completed at source \texttt{4a83fa6}, whose
@@ -15,7 +15,7 @@ The manifest-bound records and reproducible analysis are indexed in
 
 \begin{table}[htbp]
 \centering
-\caption{Current formal execution. Calls within a batch are not independent samples.}
+\caption{Current formal execution. Sample calls are grouped into batches.}
 \label{tab:results-current-counts}
 \begin{tabular}{lrrrr}
 \toprule
@@ -29,11 +29,9 @@ Targeted split & 12 & 480 & 3840 & 120\\
 
 Each input/backend contributes twenty sample batches after five warm-up calls.
 All 66,560 sample calls and 1,520 warm-up calls returned the expected output;
-no case was erroneous, timed out, skipped or replaced. This output observation
-is separate from the previously established v2 qualification: formal timing
-does not repeat checked audits inside the timer. Neither repeated calls nor
-related constructions create additional independent inputs, and the observed
-success is finite evidence rather than the general correctness argument.
+no case was erroneous, timed out, skipped or replaced. These output checks
+followed the earlier v2 qualification and were performed outside the timed
+intervals.
 
 \section{Common-Set Runtime and Paired Ratios}
 \label{sec:results-runtime-size}
@@ -41,16 +39,15 @@ success is finite evidence rather than the general correctness argument.
 
 The runs use Apple M4/arm64, 16 GB RAM, ten logical CPUs, macOS 26.6 and
 CPython 3.12.14, with GC enabled at thresholds 700/10/10. The captured power
-state is battery power at 100\%; the records do not establish constant clock
-frequency or thermal state throughout execution. Both backends use the same
-public minimal sorting scope, and the tree disables detailed work collection while retaining access hooks
+state is battery power at 100\%. Both backends use the same public minimal
+sorting scope, and the tree disables detailed work collection while retaining access hooks
 (\cref{sec:implementation-policies}).
 Initialization, sorting, output recovery, the batch loop and output append are
 included; expected-output comparisons and persistence are excluded.
 
 \Cref{tab:results-runtime-size} gives medians across input-specific medians.
-The last column is instead the median of ratios formed within each input;
-it is not obtained by dividing the two aggregate time columns. Ratios above
+The last column is the median of ratios formed within each input, rather than
+the ratio of the aggregate time columns. Ratios above
 one mean a slower tree implementation under this protocol.
 
 \begin{table}[htbp]
@@ -78,15 +75,14 @@ $n$ & Inputs & List (ms) & Tree (ms) & Median ratio\\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{current_formal_common.pdf}
-\caption{Current common set. Left: medians of input medians, with a logarithmic time axis. Right: all fourteen input ratios per length; horizontal marks are their medians. Horizontal offsets only separate points. The dashed line denotes equal runtime, not a confidence bound.}
+\caption{Current common set. Left: medians of input medians, with a logarithmic time axis. Right: all fourteen input ratios per length; horizontal marks are their medians. Horizontal offsets separate points. The dashed line denotes equal runtime.}
 \label{fig:results-runtime-size}
 \end{figure}
 
 Across the 140 inputs, tree/list ratios range from 1.114 to 3.535, with
 median 2.898 and cross-input quartiles 2.117 and 3.210. Every input has a tree
 median above its matched list median. The size-stratum median decreases from
-3.153 at $n=32$ to 2.123 at $n=513$, with local nonmonotonic changes. This
-narrowing gap does not establish a future crossover; no crossover was observed.
+3.153 at $n=32$ to 2.123 at $n=513$, with local nonmonotonic changes.
 
 \subsection{Structural Strata}
 \label{sec:results-family}
@@ -107,23 +103,21 @@ Heavy nesting & 40 & 1.868 & 1.114--2.348 & 0\\
 \end{tabular}
 \end{table}
 
-The heavy group has the smallest descriptive ratios, but this is not a causal
-estimate of nesting cost. Constructors change more than one feature and mirror
-pairs are dependent. In particular, the qualification traces contain 3,788
-split calls per backend but no two-sided splits: all take an empty-side
-outcome. Those executions cover insertion, whole-group movement and ownership
-updates, not the interior search/dismantle/join path. A nesting label must not
-be interpreted as a split-work label.
+The heavy group has the smallest descriptive ratios. Its constructors differ
+from the other groups in several features, so the ratios cannot be attributed
+to nesting alone. The qualification traces contain 3,788 split calls per
+backend, all with an empty-side outcome. The nesting classes thus compare
+workloads involving insertion, whole-group movement and ownership updates;
+interior splitting is examined in the targeted set below.
 
-\section{Independent Targeted Split Set}
+\section{Targeted Split Set}
 \label{sec:results-targeted}
 
 The twelve targeted inputs at $n=128,129$ contain the intended nonempty
 splits: the smaller side is 3, 7 or 19, each represented by four inputs.
 Source size is 61 under a finite owner. The traces also cover subsequent
 retained-side insertion, but not updates to both outputs in every case.
-Those facts come from qualification traces; formal minimal runs do not collect
-an intrusive detailed operation ledger.
+These operation histories come from the qualification traces.
 
 \begin{table}[htbp]
 \centering
@@ -143,16 +137,15 @@ $k$ & Inputs & List (ms) & Tree (ms) & Median ratio\\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.86\textwidth]{current_formal_targeted.pdf}
-\caption{All targeted-set input ratios. M denotes the mirrored construction. Points are ratios of twenty-batch medians, not individual samples or independent random draws.}
+\caption{All targeted-set input ratios. M denotes the mirrored construction. Each point is a ratio of twenty-batch medians for one input.}
 \label{fig:results-targeted}
 \end{figure}
 
 Ratios range from 3.147 to 3.213; the median is 3.180, with cross-input
-quartiles 3.165 and 3.189. The tree is slower on all twelve cases. The absence
-of a monotonic relation with $k$ does not disprove a smaller-side bound: these
-are complete sorting calls with many other operations, not isolated split
-latencies. The small targeted set establishes execution of the intended path
-and a bounded whole-call comparison, not its general performance distribution.
+quartiles 3.165 and 3.189. The tree is slower on all twelve cases, and the ratios
+show no monotonic relation with $k$. These measurements cover complete sorting
+calls, including insertion, ownership updates and output recovery alongside
+the targeted split.
 
 \section{Variability and Measurement Accounting}
 \label{sec:results-variability}
@@ -163,21 +156,17 @@ its own twenty-batch median. Across the common set its median is 1.37\% for
 the list and 1.08\% for the tree; maxima are 50.26\% and 61.81\%, respectively.
 The targeted-set medians are 1.18\% and 1.55\%, with maxima 9.08\% and 7.52\%.
 Thus typical cells have narrow central spreads, but some common-set cells do
-not. Every batch is retained, including the high-variability cells. The later
-wrapper diagnostic does not identify the cause of those formal-run variations.
+not. Every batch is retained, including the high-variability cells.
 
 One common-set sample batch is below 10 ms; none in the targeted set is.
 The frozen calibration criterion was the median of three calibration batches,
-not a lower bound on every later batch. B was therefore neither increased nor
-reselected, and the observation was not excluded. A fixed batch improves clock
-granularity without guaranteeing stability or statistical precision.
+not a lower bound on every later batch. The protocol therefore retained both
+the observation and the frozen B value.
 
 Summed sample intervals are 183.511 seconds for the common set and 21.290
 seconds for the targeted set. These are accumulated timed intervals, not
 campaign wall times: worker startup, GC preparation, validation, compression,
-synchronization and other orchestration occur outside them. The recorded
-campaigns remain separate, and their absolute times are not pooled with the
-older pilot or historical experiments.
+synchronization and other orchestration occur outside them.
 
 \section{Post-Review Access-Hook Diagnostic}
 \label{sec:results-hooks}
@@ -190,7 +179,7 @@ Only process-local class attributes change; production files remain frozen.
 Three warm-ups precede fifteen batches of 25 calls at 128 or 7 calls at
 512/513. All 11,700 timed outputs and 180 warm-up outputs are saved and checked;
 the timer includes output append but excludes comparisons and pre-batch GC.
-This diagnostic uses its own protocol, not the formal B table or sample count.
+This protocol was specific to the diagnostic.
 
 \begin{table}[htbp]
 \centering
@@ -227,10 +216,9 @@ Four of fifteen cases, the large heavy constructions, favor the hook-free
 tree; the remaining eleven take 1.09--1.68 times the list time.
 Additionally removing operation and phase wrappers (U) yields lower medians
 than the list in six of fifteen cases, including the two large medium-nesting
-cases. These remain results of the separate diagnostic protocol, not a
-qualified production-backend comparison. The diagnostic shows a configuration
-effect without establishing a general tree advantage or isolating an exact
-additive overhead share; order and environment limits remain in
+cases. The diagnostic identifies a runtime effect of the configuration changes
+on these inputs. The qualification status, process order and environment
+limits are discussed in
 \cref{sec:limitations-timing-scopes}.
 
 \clearpage
@@ -246,16 +234,14 @@ counter correlations compare different pipeline scopes, not the two current
 backends. Full tables remain in the unchanged archive indexed in
 \cref{sec:appendix-history}; none enters the current numerical tables.
 
-\section{Interpretation Boundary}
+\section{What the Comparison Shows}
 \label{sec:results-boundary}
 
-The current comparison supports a clear practical conclusion for the frozen
-inputs and this environment: the measured tree configuration with retained access hooks has higher
-per-input medians despite its
-reviewed source-level amortized bound. Differing object access, wrappers,
-local checks, allocation and tree maintenance all contribute to the concrete
-programs; the formal experiment does not isolate their individual costs or evaluate
-a version with the hooks removed. The data
-neither refute that structural bound nor demonstrate a practical linear-time
-speed advantage. Broader performance scales and split patterns remain outside
-the formal comparison. No causal rollback-removal claim is made.
+On the frozen inputs, the measured tree configuration has higher per-input
+median runtimes despite its stronger source-level amortized bound. Removing
+access hooks substantially lowers runtime in the local diagnostic, although
+most diagnostic inputs still favor the list. These observations make the cost
+of the concrete Python implementation central to the comparison: field access,
+wrappers, local checks, allocation and tree maintenance all contribute to the
+measured calls. Their effects on broader workloads remain a question for
+further experiments.

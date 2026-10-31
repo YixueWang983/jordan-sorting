@@ -1,7 +1,7 @@
 \chapter{Algorithm Reconstruction}
 \label{chap:algorithm}
 
-\section{Purpose and Reconstruction Boundary}
+\section{From the Paper to the Implementation}
 \label{sec:algorithm-boundary}
 
 The Jordan sorting problem starts with the intersections of a simple curve
@@ -17,7 +17,7 @@ the decreasing case is called symmetric, and some endpoint details are left
 implicit. This chapter states the executable reconstruction used in the
 thesis.
 
-Three kinds of statements must therefore remain distinct:
+The reconstruction distinguishes three sources for its rules:
 \begin{description}
   \item[Explicit source rule.] A definition or step is stated directly in the
     1990 paper, such as the upper/lower family trees, predecessor and successor
@@ -30,19 +30,16 @@ Three kinds of statements must therefore remain distinct:
     the odd-index $z_1$ output-anchor rule fall into this category.
 \end{description}
 
-The last category is not presented as the unique intended wording of an
-unstated paper detail. It is an implementation-level interpretation supported
-by the related 1986 algorithm of \textcite{hoffmann1986sorting}, by reflected
-counterexamples, and by bounded exhaustive validation over oracle-certified
-inputs.
-The validation evidence checks this reconstruction; it does not replace a
-topological proof of the source algorithm.
+The executable clarifications are implementation-level interpretations
+supported by the related 1986 algorithm of \textcite{hoffmann1986sorting},
+reflected counterexamples and bounded exhaustive validation over
+oracle-certified inputs.
 
 The chapter also separates algorithmic control flow from data-structure
 complexity. The 1990 paper obtains its linear bound with heterogeneous finger
 trees. Both thesis backends realize the same high-level operations. Ordinary
 Python lists incur the quadratic copying lower bound in
-\cref{sec:implementation-complexity}; the real finger-tree backend has a separate
+\cref{sec:implementation-complexity}; the finger-tree backend has a separate
 source-linked representation and amortized-cost argument there.
 
 \section{Pairs, Intervals, and the Two Families}
@@ -299,8 +296,8 @@ The reconstruction therefore uses $r(C)$ for the increasing branch and
 $\ell(C)$ for the decreasing branch. This choice agrees with the earlier
 family-list account of \textcite{hoffmann1986sorting}, in which both endpoints
 occur in sorted family lists and the new point is inserted next to the located
-boundary item. It is nevertheless labeled an executable clarification rather
-than attributed to a fully explicit sentence in the 1990 presentation.
+boundary item. This is the geometric-endpoint clarification used in the
+implementation.
 
 \subsection{Odd-Index \texorpdfstring{$z_1$}{z1} Output Anchor}
 \label{sec:algorithm-z1-anchor}
@@ -369,11 +366,9 @@ already performed are not rolled back, and the failed state must be discarded.
 No partially updated state is accepted as a completed iteration or returned
 as a sorting result.
 
-The earlier implementation used rollback on these error paths. That recovery
-mechanism is distinct from the algorithmic requirement to preserve ownership
-on successful updates. The two versions and their experimental scope are
-distinguished in \cref{sec:implementation-versions}; the concrete update is
-described in \cref{sec:implementation-step3b}.
+The earlier implementation used rollback on these error paths. The version
+history is described in \cref{sec:implementation-versions}, and the concrete
+update operations in \cref{sec:implementation-step3b}.
 
 \section{End-to-End Procedure}
 \label{sec:algorithm-procedure}
@@ -415,10 +410,8 @@ At the end of each successful iteration, the required online conditions are:
 \medskip
 
 \noindent
-The final return value is thus recovered from the maintained order $S_n$.
-Oracle certification may establish the valid-input precondition before this
-procedure is called, but oracle-sorted output is not an input to these steps.
-The implementation-level certification boundary is detailed in
+The final return value is recovered from the maintained order $S_n$.
+The certification wrapper that establishes the input precondition is described in
 \cref{sec:implementation-certification}.
 
 \begin{figure}[htbp]
@@ -433,7 +426,7 @@ The implementation-level certification boundary is detailed in
 \end{figure}
 
 \clearpage
-\section{Correctness and Complexity Boundaries}
+\section{Correctness and Operation Costs}
 \label{sec:algorithm-correctness-boundary}
 
 The source-level correctness argument rests on the nesting property of
@@ -443,12 +436,9 @@ contiguous split side. The executable reconstruction turns those facts into
 the prefix and ownership invariants above. Focused counterexamples fix the
 ambiguous anchors; mirrored tests check the decreasing reconstruction; and
 full state diagnostics compare the maintained order and family forest with a
-deterministic replay. These are implementation correctness controls, not an
-independent proof that every unspecified detail has only one possible
-interpretation.
+deterministic replay.
 
-The theoretical papers and the thesis implementation have different backend
-claims.
+The cost of these steps depends on the backend.
 \textcite{hoffmann1986sorting} use level-linked search trees, while
 \textcite{fung1990simplified} reduce the required operations to singleton-list
 creation, boundary insertion, and splitting, then implement them with
@@ -457,5 +447,5 @@ using Python lists. A sibling split scans and
 materializes list contents, both insertion boundaries copy the current list,
 and ownership rebinding can depend on list size. Membership and ancestor
 checks can also scan lists in its minimal mode. The tree backend instead uses
-the physical operations described in \cref{chap:implementation}; its source-level
-bound and the ordinary backend's costs must not be interchanged.
+the physical operations described in \cref{chap:implementation}, where the
+costs of both representations are analyzed.

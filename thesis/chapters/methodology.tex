@@ -1,7 +1,7 @@
 \chapter{Experimental Method}
 \label{chap:methodology}
 
-\section{Study Scope and Version Boundary}
+\section{Study Design and Versions}
 \label{sec:method-positioning}
 \label{sec:method-experiment-stages}
 \label{sec:method-scope}
@@ -9,8 +9,7 @@
 The current ordinary-list and tree implementations have completed qualification,
 separate batch calibration and formal paired measurement. Current results in
 \cref{chap:results} use source \texttt{4a83fa6}; the older rollback-enabled
-ordinary-list study remains a separate historical section. Neither calibration
-nor a later checker changes an old execution's source identity.
+ordinary-list study is described in the historical section of this chapter.
 
 \section{Current Inputs and Qualification}
 
@@ -18,24 +17,22 @@ The frozen common set contains 140 unique rank inputs at ten lengths:
 $32,33$, $64,65$, $128,129$, $256,257$ and $512,513$, with two strict-flat and four each of
 low, medium and heavy nesting per length. Fixed constructors, seeds, candidate
 budgets, rank deduplication and first-eligible retention preceded timing.
-These are structural constructions, not random independent observations.
 All 140 cases pass both backends' v2 checks. Their 3,788 recorded splits per
-backend all have an empty output side: they form an endpoint-insertion and whole-group-transfer workload,
-not a benchmark of the tree's interior two-sided split path.
+backend all have an empty output side. The common set therefore exercises
+endpoint insertion and whole-group transfer.
 
 A separate targeted set uses the existing construction at $n=128,129$,
 $k=3,7,19$, with each direction and its mirror: twelve cases, all qualified.
 Actual traces contain twelve two-sided splits per backend, with smaller sides
 3, 7 and 19 occurring four times each. Each source has size 61 and a finite
-owner; later direct updates affect only the retained side. This bounded
-coverage does not represent all scales, ratios or follow-up operations.
-The two sets remain separate, not 152 independent random samples.
+owner; later direct updates affect only the retained side.
+The 152 inputs are reported as two datasets.
 
 For each input/backend, v2 advances two independent checked instances,
 compares every completed prefix, and executes a third fresh checked replay
 at the end. Another fresh minimal call uses the intended timing configuration.
 Each output is compared to external sorting, without feeding that expectation
-into the core. This is finite execution evidence. Compared with the old per-prefix fresh
+into the core. Compared with the old per-prefix fresh
 replay, v2 retains prefix comparisons but reduces repeated initialization.
 
 \section{Compared Implementations and Call Scopes}
@@ -49,8 +46,7 @@ validation of the affected evidence.
 
 The retained access hooks described in \cref{sec:implementation-policies}
 are inside the measured interval. The experiment compares these two concrete
-programs, including their different checks and object-access machinery; it
-is not an ablation that isolates the abstract tree structure.
+programs, including their different checks and object-access machinery.
 
 \section{Timing, Calibration and Scheduling}
 \label{sec:method-timing}
@@ -59,8 +55,7 @@ Current timing uses \nolinkurl{time.perf_counter_ns()}. The interval includes
 fresh initialization, the main loop, output recovery, the batch loop and output
 append. External comparisons, pre-batch garbage collection, compression and
 persistence are outside it. GC remains enabled, with thresholds recorded;
-necessary local checks are not removed. A batch is the statistical unit:
-dividing its duration by B does not create B independent observations.
+necessary local checks remain enabled.
 
 Calibration tries $B=1,2,4,8,16,32,64,128$ in order, three batches per backend
 at each attempted value. It chooses the first common B for which both median
@@ -68,8 +63,7 @@ batch durations reach 10 ms, irrespective of their ratio. All attempts and
 outputs are retained. At source \texttt{c5b5ac3}, the common set selected
 B=1,2,4,8,16,32 for respectively 24,20,20,28,21,27 inputs; all twelve targeted
 inputs selected B=8. Independent reconstruction accepted both campaigns,
-within their separate 600-second budgets. These are granularity decisions,
-not formal speed comparisons or statistical-precision guarantees.
+within their separate 600-second budgets.
 
 \subsection{Scheduling and Noise}
 \label{sec:method-scheduling}
@@ -82,9 +76,10 @@ backend is first ten times. Failures stop subsequent cases; timeouts preserve
 committed batches and leave explicit unrun statuses. No outlier removal or
 speed-based input replacement is allowed.
 
-Controlled scheduling reduces fixed-position bias, not all thermal or
-operating-system noise \parencite{mytkowicz2009wrong}. Repetition alone does
-not establish adequate statistical power \parencite{kalibera2013benchmarking}.
+Alternating the first backend reduces fixed-position bias, while thermal and
+operating-system effects remain possible sources of noise
+\parencite{mytkowicz2009wrong}. Repetition alone does not establish adequate
+statistical power \parencite{kalibera2013benchmarking}.
 
 \subsection{Recorded Environment}
 \label{sec:method-environment}
@@ -95,24 +90,25 @@ metadata. Calibration and formal execution must match source and recorded
 machine/runtime settings. Tests, qualification and compilation were not run
 concurrently with calibration or formal sampling. The current formal archives
 record Apple M4/arm64, 16 GB RAM, ten logical CPUs, macOS 26.6 and CPython
-3.12.14; their captured power state is battery at 100\%. These are archived
-observations, not claims about today's runtime.
+3.12.14; their captured power state is battery at 100\%.
 
 \section{Aggregation and Statistical Units}
 \label{sec:method-aggregation}
 
-The current formal protocol reports twenty batch-derived
-per-call durations per input/backend, their median and R7-interpolated quartiles
-and IQR, and the paired ratio of backend medians. Related constructions and
-mirrors remain dependent; cross-input summaries are descriptive.
+The batch is the statistical unit. Dividing its duration by B gives a per-call
+duration for that batch. The protocol reports twenty such observations per
+input/backend, their median, R7-interpolated quartiles and IQR, and the paired
+ratio of backend medians. The inputs are controlled structural constructions;
+mirror pairs and related constructions are dependent. Cross-input summaries
+therefore describe these fixed datasets.
 
-\section{Evidence Binding and Acceptance}
+\section{Experimental Records and Validation}
 \label{sec:method-evidence}
 
 Execution identities, source bindings and archive locations are collected in
 \cref{sec:appendix-revision-bindings}. Formal execution uses the qualified
 production code, frozen B tables and required matching environment fields.
-A later checker or archive commit does not relabel the execution.
+Each archive retains the identity of the execution that produced it.
 
 Records are individually compressed and atomically committed, so termination
 preserves earlier completed batches. A manifest binds configuration, records
@@ -138,15 +134,16 @@ ID. Read-only rechecks accept both existing datasets without rerunning sorting.
 The measurement validator independently reconstructs candidate order, every
 attempt, the first qualifying common B and output correctness. For formal
 archives it reconstructs warm-ups, paired sample order, twenty-batch medians,
-R7 quartiles and within-input ratios. A process exit
-code alone is insufficient.
+R7 quartiles and within-input ratios. Acceptance requires all of these checks
+to pass.
 
-\section{Interpretation Boundary}
+\section{Study Stages}
 \label{sec:method-boundaries}
 
-Qualification, calibration, proof review and formal measurement are separate
-gates. Formal runs followed the manual review and passed their own archive
-checks. Only formal samples enter the current performance tables.
+Qualification checks the candidate implementations, calibration fixes the
+batch sizes, and formal measurement collects the runtime samples. The formal
+runs followed the manual proof review and passed archive validation. Their
+samples supply the current performance tables.
 
 \section{Historical Study: Separate Scope}
 \label{sec:method-protocol}

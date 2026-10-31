@@ -6,69 +6,72 @@
 \label{sec:introduction-scope}
 
 Jordan sorting recovers coordinate order from the traversal order of a simple
-curve's intersections with a line. Geometric restrictions permit linear-time
-algorithms \parencites{hoffmann1986sorting}{fung1990simplified}, provided their
-specialized dynamic-list operations have the required costs. Replacing those
-structures by ordinary Python lists can preserve semantics while changing
-complexity. Conversely, a better structural bound need not give faster
-execution at practical sizes. This motivates an algorithm-engineering study
-combining reconstruction, analysis and measurement
+curve's intersections with a line. The geometric restrictions permit
+linear-time algorithms \parencites{hoffmann1986sorting}{fung1990simplified}
+when their specialized dynamic-list operations meet the required cost bounds.
+Replacing these structures with ordinary Python lists can preserve semantics
+while changing complexity. A structure with a better asymptotic bound may
+still run more slowly at practical input sizes. This thesis examines the
+relationship between cost bounds and observed runtime by combining algorithm
+reconstruction, cost analysis and measurement in an algorithm-engineering study
 \parencites{sanders2009engineering}{mcgeoch2012guide}.
 
-This thesis implements the 1990 procedure in one Python core with ordinary-list
-and heterogeneous red--black finger-tree backends. Both maintain their own
-sorted output, pair forests and sibling ownership. Inputs are pre-certified
-valid Jordan sequences with distinct comparable values; the core never consumes
-the oracle's sorted answer. Recognition, invalid-input behavior and geometric
-applications lie outside the study. Update failures propagate and require the
-state to be discarded.
+The implementation uses a shared Python core for the 1990 procedure, with
+ordinary-list and heterogeneous red--black finger-tree backends. With either
+backend, the core maintains its own sorted output, pair forests and sibling
+ownership. Inputs are pre-certified valid Jordan sequences with distinct
+comparable values. Recognition, invalid-input behavior and geometric
+applications lie outside the study.
 
 \section{Research Questions}
 \label{sec:introduction-questions}
 
 \begin{enumerate}[label=\textbf{RQ\arabic*:},leftmargin=*]
-\item \textbf{Reconstruction and correctness:} can the shared incremental
+\item \textbf{Reconstruction and correctness:} Can the shared incremental
 procedure recover its output while preserving physical, ownership and exact
 sibling-group invariants in both representations?
-\item \textbf{Observed runtime:} how do the complete minimal sorting calls
-compare on frozen qualified inputs with matched timing and batching?
-\item \textbf{Structure and cost:} how do actual operations support their
-source-level bounds, and what does finite coverage reveal about concrete costs?
+\item \textbf{Observed runtime:} How do the complete minimal sorting calls
+compare on frozen qualified inputs under matched timing and batching conditions?
+\item \textbf{Structure and cost:} How do the implemented operations support
+their source-level cost bounds, and what does finite test coverage reveal about
+concrete costs?
 \end{enumerate}
 
-The first uses source-linked reasoning and bounded execution checks; the
-second uses paired measurement and independent archive validation. The third
-requires both, without treating timing curves as complexity proofs.
+The correctness question is addressed through source-linked reasoning and
+bounded execution checks. The runtime comparison uses paired measurement and
+independent archive validation. The final question brings these analyses
+together to relate the implemented operations to the measured runtime.
 
 \section{Contributions and Findings}
 \label{sec:introduction-contributions}
 \label{sec:introduction-findings}
 
-The reconstruction makes orientation, geometric endpoint and first-point
-choices explicit. Its tree provides stable identities, endpoint insertion,
-local split/join and bounded header ownership updates. The manual argument
-connects reversed-pointer representation, locality and two potentials to
-linear total source-level work under unit-cost comparisons, machine-word
-operations, expected dictionary lookup and amortized growth. It is not machine
-verification or an unconditional Python wall-time guarantee.
+The reconstruction specifies the choices of orientation, geometric endpoint
+and first point. Its tree provides stable identities, endpoint insertion,
+local split/join and bounded header ownership updates. A manual argument links
+reversed-pointer representation, locality and two potentials to linear total
+source-level work. This bound assumes unit-cost comparisons and machine-word
+operations, expected dictionary lookup and amortized growth.
 
-The current study qualifies 140 controlled inputs and a separate twelve-input
-split set. All 66,560 formal sample calls return correct output in 6,080 batches.
-For the measured tree, retaining access hooks with detailed collection disabled,
-every input has a higher median than the list. Within-input tree/list ratios
-have medians 2.898 and 3.180, and ranges 1.114--3.535 and 3.147--3.213,
-respectively. These do not predict a hook-free variant or future crossover.
+The current study compares the backends on 140 controlled inputs and a separate
+twelve-input split set, all of which passed qualification. All 66,560 formal
+sample calls return correct output in 6,080 batches. The measured tree retains
+access hooks with detailed collection disabled. Its median runtime exceeds
+the list's on every input. Across the common and targeted sets, the within-input
+tree/list ratios have medians 2.898 and 3.180, and ranges 1.114--3.535 and
+3.147--3.213, respectively.
 
 The common workload has no two-sided splits. The targeted set exercises that
-path at smaller sides 3/7/19, without covering general split histories.
-Related constructions are not independent random samples. The earlier
-rollback-enabled study remains historical and is not pooled with these results.
+path with smaller-side sizes of 3/7/19. These workloads provide complementary
+views of the implementations: the common set covers endpoint insertion and
+whole-group transfer, while the targeted set also exercises interior splitting.
 
 \section{Reading Guide}
 \label{sec:introduction-structure}
 
-\Cref{chap:background,chap:algorithm,chap:implementation} develop context,
-reconstruction and implementation. \Cref{chap:methodology,chap:results,chap:limitations}
-give method, measurements and limits; \cref{chap:conclusion} answers the research
-questions. \Cref{app:backend-argument} develops the proof and
-\cref{app:claim-traceability} provides its source and evidence index.
+\Cref{chap:background,chap:algorithm,chap:implementation} present the background,
+algorithm reconstruction and implementation. \Cref{chap:methodology,chap:results,chap:limitations}
+describe the experimental method, report the measurements and discuss their
+limits. \Cref{chap:conclusion} answers the research questions.
+\Cref{app:backend-argument} develops the proof, and
+\cref{app:claim-traceability} indexes its sources and supporting evidence.

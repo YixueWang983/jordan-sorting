@@ -37,14 +37,12 @@ This formulation gives two distinct orders on one set of points:
   \label{fig:jordan-sorting-problem}
 \end{figure}
 
-The values are therefore not arbitrary keys presented in an arbitrary
-permutation. They carry a geometric realizability constraint inherited from
-the simplicity of $C$. The implementation studied in this thesis specializes
+The simplicity of $C$ constrains which permutations of the coordinates are
+geometrically realizable. The implementation studied in this thesis specializes
 this model to distinct, mutually comparable coordinate values, as stated in
 \cref{sec:implementation-input-model}.
 
-The problem arose from geometric applications rather than from a desire to
-replace general-purpose sorting. The 1986 paper relates it to ordering the
+The problem arose from geometric applications. The 1986 paper relates it to ordering the
 intersections of a simple polygon with a line and to ordering intersections
 of two Jordan curves. The 1990 paper develops polygon clipping as its main
 application and also notes the role of Jordan sorting in simple-polygon
@@ -85,17 +83,15 @@ $(-\infty,+\infty)$ turns each forest into a rooted ordered tree. These are
 the upper and lower family trees used by both historical algorithms
 \parencites[p.~173]{hoffmann1986sorting}[p.~87]{fung1990simplified}. The full
 notation and executable pair model used in this thesis are developed in
-\cref{sec:algorithm-families}; here the important point is that simplicity
-turns a geometric constraint into nested ordered structure.
+\cref{sec:algorithm-families}.
 
 This structure is what makes specialized algorithms possible for valid
 inputs. While processing points in curve order, the algorithms maintain both
 a sorted list of the processed coordinates and the two family trees.
 Inserting the next pair into its family identifies a local position for the
 new coordinate in the sorted list
-\parencite[pp.~173--175]{hoffmann1986sorting}. The remaining difficulty is not
-an unrestricted search through all processed values, but the efficient
-maintenance and splitting of ordered family lists.
+\parencite[pp.~173--175]{hoffmann1986sorting}. Efficient sorting therefore
+depends on maintaining and splitting these ordered family lists.
 
 \section{The 1986 Linear-Time Algorithm}
 \label{sec:background-1986}
@@ -138,8 +134,8 @@ The second component is essential to the published linear-time bound.
 simplifying both the primary structure and the operations required of it. A
 locality lemma constrains re-entry into the region of one parent and its
 direct children, called a local family in that paper. Its exact grouping rule
-stores those children in one or two contiguous sibling lists. This is not a
-partition of the entire upper or lower forest. As a result, the
+stores those children in one or two contiguous sibling lists for that parent.
+As a result, the
 sorting algorithm needs only three abstract list operations:
 \begin{enumerate}
   \item create a singleton list;
@@ -157,7 +153,7 @@ same-family boundaries; insertion of the new pair and any necessary sibling
 split then determine where the new point enters the sorted list. The exact
 Step~1/2/3 reconstruction used in this thesis, including the symmetric
 orientation and endpoint clarifications, is the subject of
-\cref{chap:algorithm} and is not repeated here.
+\cref{chap:algorithm}.
 
 For the theoretical implementation, the 1990 paper proposes heterogeneous
 finger trees. It states constant amortized time for singleton-list creation
@@ -165,16 +161,13 @@ and boundary insertion, and a logarithmic-in-the-smaller-side amortized bound
 for splitting. A potential argument charges the split cost across the
 operation sequence, giving $O(m)$ total time for $m$ list operations and
 hence an $O(n)$ Jordan-sorting bound
-\parencite[pp.~90--91]{fung1990simplified}. This is a theorem about the
-algorithm together with that efficient list representation, not about every
-concrete implementation of the three-operation interface.
+\parencite[pp.~90--91]{fung1990simplified}. The list representation and its
+operation costs are essential to this bound.
 
 The 1990 paper also states that the sorting method extends to recognition and
 to the error-correcting Jordan-sorting task used in the polygon-triangulation
 algorithm of \textcite{tarjan1988triangulating}, and that neither extension
-changes its $O(n)$ bound \parencite[p.~91]{fung1990simplified}. The
-error-correction task belongs to that separate triangulation work; neither it
-nor recognition is evaluated in this thesis.
+changes its $O(n)$ bound \parencite[p.~91]{fung1990simplified}.
 
 \section{Related Work and Positioning}
 \label{sec:background-related-work}
@@ -188,8 +181,7 @@ movable fingers, and \textcite{brown1980sorted} analyze a 2--3-tree
 representation for sorted lists whose costs reflect locality of reference.
 \Textcite{huddleston1982sorted} develop level-linked weak B-trees for arbitrary
 sequences of sorted-list updates. The level-linked $(2,4)$ trees used by the
-1986 Jordan-sorting algorithm are part of this historical data-structure
-lineage, rather than a property of Jordan sequences alone.
+1986 Jordan-sorting algorithm draw on this line of data-structure research.
 
 These works provide context for the historical linear-time theorem. The
 ordinary-list backend retains explicit scan, copy, slice and rebinding costs;
@@ -216,23 +208,18 @@ input sizes, including an $O(n\log n)$ worst-case method and an
 $O(n\log\log n)$ worst-case method. A later average-case study analyzed a new
 simple algorithm under an explicit random-Jordan-sequence model, identified
 conditions for linear expected time, and supplemented the analysis with
-simulation \parencite{sojka1999average}. These are distinct algorithmic and
-analytical directions. This thesis selects the 1990 procedure as an object of
-executable reconstruction; it neither claims that procedure is the only
-post-1986 approach nor implements or compares the alternatives in this
-paragraph.
+simulation \parencite{sojka1999average}. These alternatives address different
+trade-offs between structural complexity, worst-case bounds and practical
+performance. The present study focuses on reconstructing the 1990 procedure.
 
-This literature shows that Jordan sorting participates in a wider
-computational-geometry research line, rather than being only an isolated
-sorting problem. The present thesis nevertheless has a narrower target: it
-reconstructs and evaluates valid-input sorting. It does not implement a new
-theoretical list structure, polygon clipping, triangulation, error correction,
-or recognition.
+The geometric applications explain why curve order is a useful input format.
+The present thesis studies the valid-input sorting step using the existing
+heterogeneous finger-tree approach.
 
 \section{Position and Scope of This Thesis}
 \label{sec:background-thesis-scope}
 
-This thesis separates three layers that are easy to conflate:
+The implementation and evaluation distinguish three tasks:
 \begin{description}
   \item[Geometric validity.] A candidate sequence is checked against the
     Jordan-validity model used for certification before the paper core is timed.
@@ -242,18 +229,14 @@ This thesis separates three layers that are easy to conflate:
     implemented heterogeneous finger-tree backend, with separate cost analyses.
 \end{description}
 
-Accordingly, the empirical study concerns sorting of oracle-certified valid
-inputs. Recognition remains separate, as specified in
-\cref{sec:method-scope}. The paper core does not consume oracle-sorted output,
-whereas the simplified reference pipeline deliberately remains oracle-backed;
-the implementation boundary is detailed in
+The empirical study uses oracle-certified valid inputs under the protocol in
+\cref{sec:method-scope}. Certification, sorting and output checking are
+connected through the interfaces described in
 \cref{sec:implementation-certification}.
 
-The ordinary-list representation supports an executable and auditable
-reconstruction, but it may scan, slice, copy, and rebind list contents. This
-thesis does not implement the level-linked trees of 1986. Its separate
-heterogeneous backend requires source-level representation, locality and
-amortized-cost arguments; merely implementing the interface would not transfer
-the papers' linear-time theorem. The consequences
-for empirical interpretation are stated in
+The ordinary-list backend provides a direct representation of the sibling
+lists, with costs for scanning, slicing, copying and rebinding their contents.
+The heterogeneous backend requires a source-level account of its physical
+representation, locality and amortized costs. These two implementations form
+the comparison developed in the following chapters, with its limits discussed in
 \cref{sec:limitations-backend,sec:limitations-timing-scopes}.

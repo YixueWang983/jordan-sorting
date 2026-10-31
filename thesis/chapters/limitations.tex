@@ -7,34 +7,32 @@
 
 The current results describe the ordinary-list and finger-tree minimal cores
 at source \texttt{4a83fa6}, with Python sources unchanged from calibration.
-The earlier rollback-enabled experiment remains separate. The current matched
-comparison measures those two complete sorting calls; it does not isolate
-the causal effect of removing rollback. Update failure may leave a partial
-state, which must be discarded. Successful-state invariants are not an
-exception-recovery guarantee.
+The earlier rollback-enabled experiment used different code and timing scopes,
+so comparison with it cannot isolate the effect of removing rollback.
+In the current implementation, an update failure may leave a partial state
+that must be discarded; the invariants apply to completed updates.
 
 \section{Mathematical Model and Backend Fidelity}
 \label{sec:limitations-backend}
 
 The physical and locality arguments have passed this project's source-level
 manual review. They have not been machine formalized or independently certified
-by a separate external reviewer. The account makes endpoint and first-point
-clarifications explicit, without claiming a unique verbatim interpretation
-of every omitted paper detail. The finite-parent locality case is a separate
-project argument; it is not mislabeled as the published latest-child lemma.
+by a separate external reviewer. The endpoint and first-point rules are
+executable interpretations of details left implicit in the paper. The
+finite-parent locality case is an argument developed for this implementation;
+the published lemma covers the latest-child case.
 
 The tree's linear total bound uses unit-cost comparisons and machine-word
 operations with expected dictionary lookup and amortized growth. Arbitrary
 Python comparison methods, large-number bit costs, interpreter scheduling and
 wall-clock behavior are outside it. Complete state audits and replay are also
-outside the minimal complexity claim. A source change can invalidate the
-review and its binding even if a few tests still pass.
+outside the minimal complexity claim. Changes to the implementation require
+reassessing the source-level argument as well as rerunning affected tests.
 
 Ordinary lists do not inherit that bound: insertion copying alone is quadratic
 on increasing inputs, and their membership, ancestry and ownership work differs.
-The current comparison therefore evaluates whole implementations. It cannot
-attribute every difference solely to the abstract storage structure, nor use a
-runtime curve as the proof of either complexity statement.
+The runtime comparison includes these differences in implementation. Timing
+curves alone establish neither complexity statement.
 
 \section{Input Coverage and Scale}
 \label{sec:limitations-sizes}
@@ -47,7 +45,7 @@ pairs and related constructors are dependent. Consequently, the overall ratio
 is a descriptive median for this fixed set, not a population performance estimate.
 
 All 3,788 recorded common-set splits per backend have an empty side, so that
-set does not cover the interior split path. The independent targeted set
+set does not cover the interior split path. The separate targeted set
 contains twelve constructions at 128/129, with nonempty smaller sides 3, 7 and
 19. Its source size is always 61, its owner is finite, and its later direct
 updates occur only on the retained side. It does not establish broad coverage
@@ -56,10 +54,9 @@ Earlier operation tests, the 18-input structural campaign and the bounded
 seeded supplement cover other transitions (\cref{sec:implementation-coverage}).
 They provide correctness evidence, not additional formal performance samples.
 
-No formal input has a lower median for the measured tree configuration. The narrowing common-set gap at larger
-sizes does not guarantee a crossover beyond 513, or the same behavior for
-another generator. Theoretical order bounds permit constants that dominate
-throughout a finite measurement range.
+The narrowing common-set gap at larger sizes does not establish a crossover
+beyond 513 or the same trend for another generator. Constants in the
+implementation can dominate throughout the measured range.
 
 \section{Timing Scopes and Environment}
 \label{sec:limitations-timing-scopes}
@@ -69,9 +66,11 @@ The current interval includes fresh initialization, the shared algorithm,
 output recovery and batching overhead. Both backends receive the same scope,
 but their local checks, field-access wrappers and allocations differ. Their
 individual contributions were not isolated by the formal protocol. Disabling
-ledger collection retains the field-access interception and wrapper dispatch.
-Thus the formal negative speed result applies to this instrumented
-configuration, not every implementation of the data structure.
+ledger collection retains field-access interception and wrapper dispatch.
+The observed slowdown therefore applies to the measured configuration.
+Expected-output comparison, pre-batch GC collection and evidence persistence
+are outside timing, while GC remains enabled during sorting.
+
 The separate local diagnostic in \cref{sec:results-hooks} removes access hooks
 only in isolated worker processes and checks every saved output. It quantifies
 a configuration effect on fifteen selected inputs, not an exact additive
@@ -80,14 +79,11 @@ batches are not interleaved, and process order and thermal effects are not
 fully controlled. Hook-free variants have not passed the full qualification
 protocol and are not registered production backends. The original supplied
 logs have weaker execution bindings (\cref{sec:appendix-external-review}).
-Expected-output comparison, pre-batch GC collection and evidence persistence
-are outside timing, while GC remains enabled during sorting.
 
 The formal campaigns record one Apple M4 environment with CPython 3.12.14 and
 battery power. Warm-ups and alternating first positions reduce selected startup
 and order effects, but do not establish stable frequency, temperature or
-absence of all unrelated operating-system activity. The campaigns' separate
-identities and timestamps are retained. The local diagnostic uses the same
+absence of all unrelated operating-system activity. The local diagnostic uses the same
 machine and interpreter version in a later session; it does not replicate
 the formal protocol.
 
@@ -123,10 +119,9 @@ counter produces an undefined correlation rather than a zero effect.
 \section{Output Provenance and Recognition}
 \label{sec:limitations-provenance}
 
-The current paper cores traverse their own maintained output list. External
-certification and expected sorting are used only for qualification and output
-checking. The distinct reference pipeline deliberately returns oracle-derived
-output; that provenance must not be attributed to the paper core.
+External certification and expected sorting support qualification and output
+checking for the paper cores. The reference pipeline instead returns
+oracle-derived output, as described in \cref{sec:implementation-scope}.
 
 All formal inputs are pre-certified valid. The evidence does not establish
 recognition accuracy, invalid-input failure reasons or recognition runtime.
@@ -136,10 +131,8 @@ correction and geometric applications remain outside this evaluation.
 \section{Consequences for the Conclusions}
 \label{sec:limitations-conclusions}
 
-The thesis can report a source-reviewed structural bound in an explicit model,
-finite qualification and output success, and the measured tree slowdown for
-two frozen sets. It cannot infer an unconditional Python time bound, a practical
-general speed advantage, independent random sampling, a future crossover, an
-exact additive cost decomposition or hardware-independent absolute runtime. These boundaries
-preserve the distinction between the implemented algorithm, its mathematical
-account and its measured behavior.
+The cost argument and the experiments answer different questions. The former
+accounts for source-level operations under the stated model; the latter
+compares runtime on two frozen input sets in one environment. Extending the
+performance conclusions requires broader input histories, qualified hook-free
+variants and measurements in additional environments.

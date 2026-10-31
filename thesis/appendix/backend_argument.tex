@@ -1,11 +1,9 @@
 \chapter{Representation, Locality and Cost Argument}
 \label{app:backend-argument}
 
-This appendix gives the source-level argument used for the measured backend.
-It makes the proof obligations readable independently of the repository's
-review notes; the source correspondence is indexed in
-\cref{app:claim-traceability}. It is a manual argument about the specified
-operations, not a formal verification of Python execution. The geometric
+This appendix develops the manual source-level argument for the measured
+backend. The correspondence between proof steps and source code is indexed in
+\cref{app:claim-traceability}. The geometric
 precondition is a simple curve with distinct, totally ordered intersections.
 The final cost statement uses unit-cost comparisons, machine-word operations
 and constant-size allocation, with expected dictionary access and amortized
@@ -421,6 +419,6 @@ registries give the space bound, including retired-header bookkeeping.
 Nonnegative final potentials complete the aggregate bound.
 \end{proof}
 
-This theorem concerns source-level work in the specified model. It neither
-charges complete audits and replay to the sorter nor predicts Python wall
-time, an uninstrumented implementation, or a practical crossover.
+The theorem accounts for the shared minimal core and its tree operations in
+the model stated at the start of this appendix. The measured runtimes are
+reported in \cref{chap:results}.
