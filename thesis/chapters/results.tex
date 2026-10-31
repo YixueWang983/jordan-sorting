@@ -4,12 +4,12 @@
 \section{Execution Summary and Output Checks}
 \label{sec:results-correctness}
 
-The current matched experiments completed at source \texttt{4a83fa6}, whose
-Python sources are identical to calibration source \texttt{c5b5ac3}. The
+The current paired experiments used the measured version, whose Python
+sources are identical to those of the calibration version. The
 common and targeted datasets remain separate. Both archives passed independent
-reconstruction of inputs, configuration, schedule, outputs, frozen batch sizes
+reconstruction of inputs, configuration, schedule, outputs, predetermined batch sizes
 and statistics. An additional analysis rebuilt the per-input medians and
-quartiles from every original sample record and matched the validator's values.
+quartiles from every original sample record and agreed with the validator's values.
 The manifest-bound records and reproducible analysis are indexed in
 \cref{sec:appendix-current-formal}.
 
@@ -30,7 +30,7 @@ Targeted split & 12 & 480 & 3840 & 120\\
 Each input/backend contributes twenty sample batches after five warm-up calls.
 All 66,560 sample calls and 1,520 warm-up calls returned the expected output;
 no case was erroneous, timed out, skipped or replaced. These output checks
-followed the earlier v2 qualification and were performed outside the timed
+followed qualification and were performed outside the timed
 intervals.
 
 \section{Common-Set Runtime and Paired Ratios}
@@ -40,7 +40,7 @@ intervals.
 The runs use Apple M4/arm64, 16 GB RAM, ten logical CPUs, macOS 26.6 and
 CPython 3.12.14, with GC enabled at thresholds 700/10/10. The captured power
 state is battery power at 100\%. Both backends use the same public minimal
-sorting scope, and the tree disables detailed work collection while retaining access hooks
+sorting scope, and the tree disables work counting while retaining instrumentation hooks
 (\cref{sec:implementation-policies}).
 Initialization, sorting, output recovery, the batch loop and output append are
 included; expected-output comparisons and persistence are excluded.
@@ -52,7 +52,7 @@ one mean a slower tree implementation under this protocol.
 
 \begin{table}[htbp]
 \centering
-\caption{Common set: descriptive runtime and matched ratios. Times are milliseconds per call; each input first contributes a median of twenty batch-derived observations.}
+\caption{Common set: descriptive runtime and paired ratios. Times are milliseconds per call; each input first contributes a median of twenty batch-derived observations.}
 \label{tab:results-runtime-size}
 \begin{tabular}{rrrrr}
 \toprule
@@ -81,7 +81,7 @@ $n$ & Inputs & List (ms) & Tree (ms) & Median ratio\\
 
 Across the 140 inputs, tree/list ratios range from 1.114 to 3.535, with
 median 2.898 and cross-input quartiles 2.117 and 3.210. Every input has a tree
-median above its matched list median. The size-stratum median decreases from
+median above its paired list median. The size-stratum median decreases from
 3.153 at $n=32$ to 2.123 at $n=513$, with local nonmonotonic changes.
 
 \subsection{Structural Strata}
@@ -89,7 +89,7 @@ median above its matched list median. The size-stratum median decreases from
 
 \begin{table}[htbp]
 \centering
-\caption{Common-set ratios grouped by the frozen nesting classification. These aggregates mix lengths and related constructions. Split counts are per backend in qualification traces.}
+\caption{Common-set ratios grouped by the predetermined nesting classification. These aggregates mix lengths and related constructions. Split counts are per backend in qualification traces.}
 \label{tab:results-family-ratios}
 \begin{tabular}{lrrrr}
 \toprule
@@ -159,23 +159,23 @@ Thus typical cells have narrow central spreads, but some common-set cells do
 not. Every batch is retained, including the high-variability cells.
 
 One common-set sample batch is below 10 ms; none in the targeted set is.
-The frozen calibration criterion was the median of three calibration batches,
+The predetermined calibration criterion was the median of three calibration batches,
 not a lower bound on every later batch. The protocol therefore retained both
-the observation and the frozen B value.
+the observation and the fixed batch size B.
 
 Summed sample intervals are 183.511 seconds for the common set and 21.290
 seconds for the targeted set. These are accumulated timed intervals, not
 campaign wall times: worker startup, GC preparation, validation, compression,
 synchronization and other orchestration occur outside them.
 
-\section{Post-Review Access-Hook Diagnostic}
+\section{Supplementary Instrumentation-Hook Diagnostic}
 \label{sec:results-hooks}
 
-A separate October 20 diagnostic uses the reviewer's fixed fifteen common-set
+A supplementary diagnostic on October 20 uses the reviewer's fixed fifteen common-set
 inputs at $n=128,512,513$, on the same M4 and CPython 3.12.14 in a later session.
 Each input has four isolated processes: list, measured tree, tree without
-field-access hooks, and additionally unwrapped operation/phase methods.
-Only process-local class attributes change; production files remain frozen.
+instrumentation hooks, and additionally unwrapped operation/phase methods.
+Only process-local class attributes change; production files remain unchanged.
 Three warm-ups precede fifteen batches of 25 calls at 128 or 7 calls at
 512/513. All 11,700 timed outputs and 180 warm-up outputs are saved and checked;
 the timer includes output append but excludes comparisons and pre-batch GC.
@@ -211,7 +211,7 @@ $n$ & Workload & Direction & T/L & H/L & U/L & Drop (\%)\\
 \end{tabular}
 \end{table}
 
-Removing hooks lowers the tree median by 37.7--52.1\% across the fifteen cases.
+Removing instrumentation hooks lowers the tree median by 37.7--52.1\% across the fifteen cases.
 Four of fifteen cases, the large heavy constructions, favor the hook-free
 tree; the remaining eleven take 1.09--1.68 times the list time.
 Additionally removing operation and phase wrappers (U) yields lower medians
@@ -237,9 +237,9 @@ backends. Full tables remain in the unchanged archive indexed in
 \section{What the Comparison Shows}
 \label{sec:results-boundary}
 
-On the frozen inputs, the measured tree configuration has higher per-input
+On the predetermined inputs, the measured tree configuration has higher per-input
 median runtimes despite its stronger source-level amortized bound. Removing
-access hooks substantially lowers runtime in the local diagnostic, although
+instrumentation hooks substantially lowers runtime in the supplementary diagnostic, although
 most diagnostic inputs still favor the list. These observations make the cost
 of the concrete Python implementation central to the comparison: field access,
 wrappers, local checks, allocation and tree maintenance all contribute to the

@@ -1,7 +1,7 @@
 \chapter{Implementation}
 \label{chap:implementation}
 
-% Updated against c5b5ac3: real tree operations, v2 qualification and ledger mode.
+% Describes the measured implementation, qualification and ledger mode.
 % Historical timing/claim audits retain their original identities.
 
 \section{Architecture and Versions}
@@ -17,7 +17,7 @@ returns \texttt{state.partial\_order.to\_list()}. Its core does not use the
 oracle's output or a global rank map. It assumes a pre-certified valid Jordan
 sequence with distinct, mutually comparable values.
 
-Both current backends propagate errors without rollback. The matched timings
+Both current backends propagate errors without rollback. The paired timings
 in \cref{chap:results} measure these programs; the earlier rollback-enabled
 study is documented in its historical section. Source bindings are listed in
 \cref{sec:appendix-revision-bindings}.
@@ -63,8 +63,7 @@ whose owner equals its parent. A parent has at most two ordered child lists;
 finite parent chains must reach the same-family dummy without cycles.
 The family dummies are roots, not finite list items.
 
-The ordinary backend retains this eager representation. Since commit
-\texttt{71e3e71}, the shared core
+The ordinary backend retains this eager representation. The shared core
 uses boundary-list, owner and extreme-child access interfaces instead of
 reading those fields directly. General pair-liveness checks do not require
 the pair to be a list endpoint.
@@ -163,8 +162,10 @@ Step~3(c) advance \texttt{processed\_count}.
 \label{sec:implementation-validation}
 
 The wrapper \texttt{certified\_paper\_jordan\_sort} runs the oracle and
-rejects invalid candidates before entering the pure sorter. Certification is
-outside the minimal core's timing scope. An internal exception is propagated
+rejects invalid candidates before entering the pure sorter. The \emph{minimal
+core} is the sorting call with optional full-state checks, operation counters
+and tracing disabled; necessary local checks remain active. Certification is
+outside this call's timing scope. An internal exception is propagated
 by both sorting and diagnostic entry points: neither retries, returns a
 partial output, nor falls back to the oracle or reference pipeline. Output
 recovery is reached only after the runner succeeds.
@@ -172,7 +173,7 @@ recovery is reached only after the runner succeeds.
 \texttt{paper\_jordan\_diagnostics\_valid} selects \texttt{checked} and audits
 initialization and every completed prefix. It checks point identity and
 values, partial-order links and order, exact pair membership, ownership and
-parent chains, stage records, trace and metrics. Deterministic replay
+parent chains, stage records, trace and metrics. \emph{Same-backend replay}
 reconstructs a fresh state using the same core, backend type and immutable
 configuration. It compares backend identity, partial order, registries, stage
 results, trace, work observations, metrics, and logical and physical snapshots.
@@ -180,11 +181,11 @@ Unavailable backends fail explicitly rather than reverting to ordinary lists.
 Replay checks same-core state consistency; external sorting checks the final
 output.
 
-Qualification v2 instead advances two independently initialized checked
+Qualification, the pre-timing validation described in
+\cref{sec:method-qualification}, advances two independently initialized checked
 instances through the same pausable core, audits and compares every completed
 prefix, then performs one final fresh checked replay. A separate fresh minimal
-call checks the measured configuration. It avoids reconstructing every prefix
-from scratch; this changes replay coverage and is explicitly versioned.
+call checks the measured configuration.
 Snapshots reuse one audit within a validation call, never a cross-call
 ``already checked'' cache. Old stage and trace records remain checked.
 
@@ -203,30 +204,30 @@ source snapshot; the qualification rows identify the measured versions.
 \begin{table}[htbp]
   \centering
   \small
-  \caption{Selected correctness coverage and its version boundaries. Development
-  commits identify saved source snapshots; qualification commits identify executions.}
+  \caption{Selected correctness coverage and its version boundaries. Source
+  identities for the evidence records are listed in \cref{sec:appendix-revision-bindings}.}
   \label{tab:implementation-coverage}
-  \begin{tabular}{@{}p{0.20\textwidth}p{0.53\textwidth}p{0.20\textwidth}@{}}
+  \begin{tabular}{@{}p{0.20\textwidth}p{0.53\textwidth}>{\raggedright\arraybackslash}p{0.20\textwidth}@{}}
     \toprule
-    Level & Covered behaviour and limit & Source binding \\
+    Level & Covered behaviour and limit & Evidence record \\
     \midrule
     Tree operations & 53 test methods: insertion, split/adopt, both outputs
     updated and split again, existing descendants and stable identities.
     Near-nephew deletion repair has operation-level coverage; complete-sort
-    coverage is not established. & \texttt{cc1aa2d} \\
+    coverage is not established. & Operation tests \\
     Complete sorting & 18 fixed balanced, skew and repeated constructions,
     $n=128/129,256/257,512/513$; checked/minimal and three backend configurations.
-    Correctness and resource evidence only. & \texttt{84f7e13} \\
-    Common group & 140 inputs qualified with v2 and fresh minimal; 3,788 splits
+    Correctness and resource evidence only. & Structural campaign \\
+    Common group & 140 inputs qualified, including fresh minimal calls; 3,788 splits
     per backend, all with an empty side. Formal timing therefore does not
-    exercise interior splitting. & Qualification \texttt{3cafb44} \\
+    exercise interior splitting. & Common-set qualification \\
     Targeted group & 12 inputs qualified separately; 12 two-sided splits per
     backend, source size 61, smaller side 3/7/19. Later direct insertions reach
-    only the retained side. & Qualification \texttt{668371f} \\
+    only the retained side. & Split-set qualification \\
     Seeded supplement & 40 fixed inputs up to $n=1500$: list/tree minimal and
     tree trace checked against sorted output; eight small cases also checked
     with fresh-prefix replay. 678 two-sided splits; no timing evidence. &
-    \texttt{19a553fb} source; October 20 protocol \\
+    Seeded supplement; October 20 protocol \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -265,16 +266,20 @@ isolate observation costs. All use the same Step~1/2/3 sequence and retain
 stage results, necessary local checks, input materialization and output
 recovery. The revised implementation has no rollback under any policy.
 
-The tree's detailed work ledger is a separate configuration switch: minimal
-alone does not disable it. Qualification, calibration and formal measurement explicitly select
-\texttt{detailed\_work=False}, suppressing field accumulation, ledger snapshots
-and per-operation reports. Local geometry and pending checks remain; access
-wrappers and switch checks still have runtime cost. In particular,
+The tree accesses node, handle and header fields through \emph{instrumentation
+hooks}: methods that intercept field reads and writes and record work when
+the detailed work ledger is enabled. This ledger has a separate configuration
+switch; minimal mode alone does not disable it. Qualification, calibration
+and formal measurement explicitly select \texttt{detailed\_work=False},
+suppressing work-count accumulation, ledger snapshots and per-operation
+reports. The hooks remain in place, so field access still incurs Python
+method dispatch and field-membership and ledger-switch checks. In particular,
 \texttt{\_Tracked.\_\_getattribute\_\_} and
 \texttt{\_\_setattr\_\_} still intercept accesses before testing the ledger
-switch; operation and phase wrappers also remain. Throughout the empirical
-chapters, ``measured tree'' means this configuration with retained access
-hooks.
+switch; local geometry checks, pending-state checks, and operation and phase
+wrappers also remain. Throughout the empirical
+chapters, ``measured tree'' means this configuration with retained
+instrumentation hooks.
 
 The archived studies instead timed the rollback-enabled implementation,
 including recovery-state preparation in \texttt{minimal}; a successful call

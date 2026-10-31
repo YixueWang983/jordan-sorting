@@ -16,17 +16,17 @@ The shared Step~1/2/3 loop maintains geometric ownership, exact sibling groups
 and sorted prefixes. The argument in \cref{app:backend-argument} explains the
 two odd-stage $z_1$ corrections, temporary transfer, reversed ribs and recursive
 repair transients. Stable pair identities and child groups survive splitting.
-The two frozen input sets passed v2 qualification; all 66,560 formal sample
+The two predetermined input sets passed qualification; all 66,560 formal sample
 calls and 1,520 warm-ups returned correct outputs.
 
 \label{sec:conclusion-rq2}
 \textbf{RQ2: observed runtime.}
-For the measured configuration retaining access hooks, every input has a
+For the measured configuration retaining instrumentation hooks, every input has a
 higher tree median runtime. Common-set tree/list ratios have median 2.898 and range
 1.114--3.535; the targeted set has median 3.180 and range 3.147--3.213.
 These are ratios of twenty-batch input medians for the measured implementations,
 including their wrapping, checking and allocation costs. A separate
-fifteen-input local diagnostic reduces tree medians by 37.7--52.1\% when access
+fifteen-input supplementary diagnostic reduces tree medians by 37.7--52.1\% when instrumentation
 hooks are removed. Four of fifteen cases, the large heavy constructions,
 favor the hook-free tree; the remaining eleven take 1.09--1.68 times the
 list time.
@@ -56,7 +56,7 @@ reconstruction and cost argument, together with reproducible measurements.
 Independent review of the finite-parent locality extension and mixed-operation
 proof would strengthen confidence in the argument. The next empirical step is
 to qualify a production hook-free configuration and test broader split
-histories and environments under predeclared rules. The post-review diagnostic
+histories and environments under predeclared rules. The supplementary diagnostic
 and 40-input seeded correctness supplement provide starting points, while the
 existing data remain available for comparison. Recognition, invalid-input
 behavior, error correction and geometric applications would each require

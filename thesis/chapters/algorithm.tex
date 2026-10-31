@@ -446,6 +446,6 @@ heterogeneous finger trees. The ordinary backend preserves those abstract operat
 using Python lists. A sibling split scans and
 materializes list contents, both insertion boundaries copy the current list,
 and ownership rebinding can depend on list size. Membership and ancestor
-checks can also scan lists in its minimal mode. The tree backend instead uses
+checks can also scan lists during sorting. The tree backend instead uses
 the physical operations described in \cref{chap:implementation}, where the
 costs of both representations are analyzed.

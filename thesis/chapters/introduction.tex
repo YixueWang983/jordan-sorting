@@ -9,6 +9,12 @@ Jordan sorting recovers coordinate order from the traversal order of a simple
 curve's intersections with a line. The geometric restrictions permit
 linear-time algorithms \parencites{hoffmann1986sorting}{fung1990simplified}
 when their specialized dynamic-list operations meet the required cost bounds.
+The problem arises in clipping a simple
+polygon against a rectangular window: intersections encountered along the
+polygon boundary must also be ordered along the window's edges. Fung et al.\
+use Jordan sorting as a step in their polygon-clipping algorithm
+\parencite{fung1990simplified}.
+
 Replacing these structures with ordinary Python lists can preserve semantics
 while changing complexity. A structure with a better asymptotic bound may
 still run more slowly at practical input sizes. This thesis examines the
@@ -16,6 +22,10 @@ relationship between cost bounds and observed runtime by combining algorithm
 reconstruction, cost analysis and measurement in an algorithm-engineering study
 \parencites{sanders2009engineering}{mcgeoch2012guide}.
 
+Since the September progress report, which presented the ordinary-list
+implementation and its runtime baseline, the scope has expanded to include
+a finger-tree backend, its amortized analysis and a direct comparison of the
+two backends.
 The implementation uses a shared Python core for the 1990 procedure, with
 ordinary-list and heterogeneous red--black finger-tree backends. With either
 backend, the core maintains its own sorted output, pair forests and sibling
@@ -27,14 +37,15 @@ applications lie outside the study.
 \label{sec:introduction-questions}
 
 \begin{enumerate}[label=\textbf{RQ\arabic*:},leftmargin=*]
-\item \textbf{Reconstruction and correctness:} Can the shared incremental
-procedure recover its output while preserving physical, ownership and exact
-sibling-group invariants in both representations?
-\item \textbf{Observed runtime:} How do the complete minimal sorting calls
-compare on frozen qualified inputs under matched timing and batching conditions?
-\item \textbf{Structure and cost:} How do the implemented operations support
-their source-level cost bounds, and what does finite test coverage reveal about
-concrete costs?
+\item \textbf{Reconstruction and correctness:} Can the 1990 procedure be
+implemented so that it computes the sorted order from its own maintained
+state, using either ordinary lists or a finger tree, while preserving the
+invariants of the pair hierarchy?
+\item \textbf{Observed runtime:} How do the two backends compare in running
+time on a fixed set of validated inputs under a paired measurement protocol?
+\item \textbf{Structure and cost:} Which properties of the implemented
+operations yield the linear total-work bound, and how do the concrete
+operation costs relate to the measured runtime?
 \end{enumerate}
 
 The correctness question is addressed through source-linked reasoning and
@@ -54,9 +65,10 @@ source-level work. This bound assumes unit-cost comparisons and machine-word
 operations, expected dictionary lookup and amortized growth.
 
 The current study compares the backends on 140 controlled inputs and a separate
-twelve-input split set, all of which passed qualification. All 66,560 formal
-sample calls return correct output in 6,080 batches. The measured tree retains
-access hooks with detailed collection disabled. Its median runtime exceeds
+twelve-input split set, all of which passed validation on both backends.
+All 66,560 formal sample calls return correct output in 6,080 batches.
+The measured tree retains instrumentation hooks, which intercept field
+reads and writes, with work counting disabled. Its median runtime exceeds
 the list's on every input. Across the common and targeted sets, the within-input
 tree/list ratios have medians 2.898 and 3.180, and ranges 1.114--3.535 and
 3.147--3.213, respectively.

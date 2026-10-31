@@ -8,16 +8,22 @@
 
 The current ordinary-list and tree implementations have completed qualification,
 separate batch calibration and formal paired measurement. Current results in
-\cref{chap:results} use source \texttt{4a83fa6}; the older rollback-enabled
+\cref{chap:results} use the measured version indexed in
+\cref{sec:appendix-revision-bindings}; the older rollback-enabled
 ordinary-list study is described in the historical section of this chapter.
 
 \section{Current Inputs and Qualification}
+\label{sec:method-qualification}
 
-The frozen common set contains 140 unique rank inputs at ten lengths:
+Before any timing, every input was run on both backends with all state
+audits enabled; we call this step \emph{qualification}. Only inputs that
+passed qualification on both backends were measured.
+
+The common set was fixed in advance and contains 140 unique rank inputs at ten lengths:
 $32,33$, $64,65$, $128,129$, $256,257$ and $512,513$, with two strict-flat and four each of
 low, medium and heavy nesting per length. Fixed constructors, seeds, candidate
 budgets, rank deduplication and first-eligible retention preceded timing.
-All 140 cases pass both backends' v2 checks. Their 3,788 recorded splits per
+All 140 cases pass both backends' qualification checks. Their 3,788 recorded splits per
 backend all have an empty output side. The common set therefore exercises
 endpoint insertion and whole-group transfer.
 
@@ -28,12 +34,14 @@ Actual traces contain twelve two-sided splits per backend, with smaller sides
 owner; later direct updates affect only the retained side.
 The 152 inputs are reported as two datasets.
 
-For each input/backend, v2 advances two independent checked instances,
+For each input/backend, qualification advances two independent checked instances,
 compares every completed prefix, and executes a third fresh checked replay
 at the end. Another fresh minimal call uses the intended timing configuration.
 Each output is compared to external sorting, without feeding that expectation
-into the core. Compared with the old per-prefix fresh
-replay, v2 retains prefix comparisons but reduces repeated initialization.
+into the core. This protocol is recorded as version 2 in the experiment
+archives. Compared with the earlier protocol, which reconstructed a fresh
+state at every prefix, it retains prefix comparisons but reduces repeated
+initialization.
 
 \section{Compared Implementations and Call Scopes}
 \label{sec:method-implementations}
@@ -44,7 +52,7 @@ heterogeneous-finger storage, both minimal; the tree explicitly sets
 its output. Production hashes match the qualified versions; changes require renewed
 validation of the affected evidence.
 
-The retained access hooks described in \cref{sec:implementation-policies}
+The retained instrumentation hooks described in \cref{sec:implementation-policies}
 are inside the measured interval. The experiment compares these two concrete
 programs, including their different checks and object-access machinery.
 
@@ -60,7 +68,7 @@ necessary local checks remain enabled.
 Calibration tries $B=1,2,4,8,16,32,64,128$ in order, three batches per backend
 at each attempted value. It chooses the first common B for which both median
 batch durations reach 10 ms, irrespective of their ratio. All attempts and
-outputs are retained. At source \texttt{c5b5ac3}, the common set selected
+outputs are retained. With the calibration version, the common set selected
 B=1,2,4,8,16,32 for respectively 24,20,20,28,21,27 inputs; all twelve targeted
 inputs selected B=8. Independent reconstruction accepted both campaigns,
 within their separate 600-second budgets.
@@ -71,7 +79,7 @@ within their separate 600-second budgets.
 Calibration alternates the first backend by case index, candidate index and
 repeat. The executed formal protocol shuffles cases with seed
 \texttt{20261015}, uses five warm-up calls per backend and twenty paired batches
-at each frozen B, alternating first position by case index and round. Each
+at each predetermined B, alternating first position by case index and round. Each
 backend is first ten times. Failures stop subsequent cases; timeouts preserve
 committed batches and leave explicit unrun statuses. No outlier removal or
 speed-based input replacement is allowed.
@@ -107,7 +115,7 @@ therefore describe these fixed datasets.
 
 Execution identities, source bindings and archive locations are collected in
 \cref{sec:appendix-revision-bindings}. Formal execution uses the qualified
-production code, frozen B tables and required matching environment fields.
+production code, fixed batch-size tables and required matching environment fields.
 Each archive retains the identity of the execution that produced it.
 
 Records are individually compressed and atomically committed, so termination
@@ -118,7 +126,7 @@ and environment. Campaign wall time includes untimed checking and storage.
   \centering
   \includegraphics[width=.94\textwidth]{current_experiment_pipeline.pdf}
   \caption{Current evidence flow. Qualification, calibration and formal
-  sampling have separate identities. The same frozen inputs and per-input B
+  sampling have separate identities. The same predetermined inputs and per-input B
   reach the samples; independent reconstruction checks each archive.}
   \label{fig:method-formal-pipeline}
 \end{figure}

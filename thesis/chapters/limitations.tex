@@ -6,7 +6,8 @@
 \label{sec:limitations-version}
 
 The current results describe the ordinary-list and finger-tree minimal cores
-at source \texttt{4a83fa6}, with Python sources unchanged from calibration.
+in the measured version, with Python sources unchanged from calibration
+(\cref{sec:appendix-revision-bindings}).
 The earlier rollback-enabled experiment used different code and timing scopes,
 so comparison with it cannot isolate the effect of removing rollback.
 In the current implementation, an update failure may leave a partial state
@@ -71,10 +72,11 @@ The observed slowdown therefore applies to the measured configuration.
 Expected-output comparison, pre-batch GC collection and evidence persistence
 are outside timing, while GC remains enabled during sorting.
 
-The separate local diagnostic in \cref{sec:results-hooks} removes access hooks
+The supplementary diagnostic in \cref{sec:results-hooks} removes instrumentation hooks
 only in isolated worker processes and checks every saved output. It quantifies
 a configuration effect on fifteen selected inputs, not an exact additive
-fraction of abstract tree cost. The input choice is post-review, variant
+fraction of abstract tree cost. Its inputs were selected after review of the
+formal results rather than fixed by the formal protocol. Variant
 batches are not interleaved, and process order and thermal effects are not
 fully controlled. Hook-free variants have not passed the full qualification
 protocol and are not registered production backends. The original supplied
@@ -108,7 +110,7 @@ Some common-set cells have relative IQR above 50\%. They remain included,
 without a post hoc noise filter, retry or parameter change. One sample batch
 falls below the calibration target, which applied to three-batch calibration
 medians rather than every future sample. The exact cause of either observation
-was not measured. The frozen B table was used throughout.
+was not measured. The fixed batch-size table was used throughout.
 
 Old within-size counter correlations are descriptive, based on an unbalanced
 mix of twelve cases per size. Checked counters and minimal times also come
@@ -133,6 +135,6 @@ correction and geometric applications remain outside this evaluation.
 
 The cost argument and the experiments answer different questions. The former
 accounts for source-level operations under the stated model; the latter
-compares runtime on two frozen input sets in one environment. Extending the
+compares runtime on two input sets fixed in advance in one environment. Extending the
 performance conclusions requires broader input histories, qualified hook-free
 variants and measurements in additional environments.

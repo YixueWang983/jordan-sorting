@@ -1,35 +1,26 @@
 \addchap{Abstract}
 \label{chap:abstract}
 
-Jordan sorting recovers the coordinate order of intersections along a line
-from their traversal order on a simple curve. This thesis reconstructs the
-1990 Simplified Jordan Sorting procedure in a shared Python core with
-ordinary-list and heterogeneous red--black finger-tree backends. The core
-maintains its own partial sorted order, upper/lower pair families and sibling
-ownership. Input validity is certified externally; the core computes the
-sorted output itself.
+Jordan sorting asks for the order of the intersection points of a simple
+curve and a line along the line, given their order along the curve.
+Hoffmann et al.\ (1986) and Fung et al.\ (1990) showed that this can be done
+in linear time when the underlying dynamic lists support the required
+finger-search operations and cost bounds. This thesis presents an executable
+Python reconstruction of the 1990 simplified algorithm. A single sorting
+procedure runs on two interchangeable backends: ordinary Python lists and a
+heterogeneous red--black finger tree. For the tree backend, a manual amortized
+analysis gives linear total work on valid inputs under unit-cost comparison
+and machine-word assumptions, with expected dictionary lookup and amortized
+growth.
 
-The tree implements stable pair handles, endpoint fingers, local insertion,
-split and header-based ownership transfer. A manual source-level argument
-checks the physical representation, locality and mixed-operation potentials.
-For the valid-input minimal core, it gives linear total work under unit-cost
-comparison and machine-word assumptions, with expected dictionary lookup and
-amortized dictionary growth. Independent model checks, bounded validation and
-same-backend replay test the implementation.
-
-The current matched study qualifies 140 controlled inputs at lengths 32--513
-and a separate twelve-input set with two-sided splits. The protocol fixes
-per-input batch sizes and collects twenty paired batches per backend, yielding
-6,080 formal sample batches. All 66,560 sample calls return correct outputs.
-Tree/list ratios of input median runtimes range from 1.114 to 3.535 in the common
-set (median 2.898), and from 3.147 to 3.213 in the targeted set (median 3.180).
-The measured tree retains access hooks with detailed collection disabled and
-has a higher median runtime on every input. A separate local diagnostic finds
-a 37.7--52.1\% reduction in median runtime on fifteen
-inputs after removing field-access hooks. Four of fifteen cases favor the
-hook-free tree, while eleven still take 1.09--1.68 times the list time.
-
-The thesis connects the reconstructed algorithm to its implementation and cost
-argument, and provides reproducible matched measurements of both backends.
+In a paired experiment on 140 controlled inputs of length 32--513 and twelve
+additional inputs exercising two-sided splits, both backends produced correct
+output in all 66,560 measured calls. Nevertheless, the tree backend had a
+higher median runtime on every input. The median tree/list ratio was about
+2.9 on the common set (range 1.1--3.5) and 3.2 on the split set.
+A supplementary diagnostic examined instrumentation hooks, the code that
+intercepts field accesses for work counting. Although counting was disabled
+in the measured configuration, removing these hooks reduced median tree
+runtimes by about 38--52\% and made the tree faster on four of fifteen inputs.
 For the measured Python configuration, the tree's stronger structural bound
-coexists with higher runtime over the tested inputs.
+thus coexists with higher runtime over the tested inputs.

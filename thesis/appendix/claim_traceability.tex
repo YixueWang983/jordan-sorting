@@ -8,9 +8,18 @@
 \label{sec:appendix-history}
 \label{sec:appendix-external-review}
 
-Execution sources are \texttt{3cafb44} (140-input qualification),
-\texttt{668371f} (12-input qualification), \texttt{c5b5ac3} (calibration),
-and \texttt{4a83fa6} (formal measurement: 5,600 common and 480 targeted batches).
+\textbf{Current experiments.} The measured version is \texttt{4a83fa6}
+(5,600 common-set and 480 targeted-set batches). Its Python sources are
+identical to those of the calibration version, \texttt{c5b5ac3}.
+Qualification sources are \texttt{3cafb44} for the 140-input common set
+and \texttt{668371f} for the 12-input split set.
+
+\textbf{Development evidence.} Source identities for
+\cref{tab:implementation-coverage} are \texttt{cc1aa2d} (operation tests),
+\texttt{84f7e13} (structural campaign) and \texttt{19a553fb} (seeded
+supplement, October 20 protocol). The core access interfaces were introduced
+at \texttt{71e3e71}.
+
 The archive index and proof-to-source map cover development, historical and
 supplementary evidence:
 \nolinkurl{docs/thesis/evidence_source_index_20261022.md}.
@@ -41,6 +50,10 @@ On October 31, 2026, Codex used the Academic Humanizer skill to revise the
 language of the abstract, Chapters~1--8 and Appendices~A--B. This pass reduced
 repeated scope qualifications and improved transitions. Its change record is
 \nolinkurl{docs/thesis/language_revision_20261031.md}.
+A further revision on the same day restructured the abstract, clarified the
+research questions and terminology, and prepared the review copy dated
+November 2. The changes and checks are recorded in
+\nolinkurl{docs/thesis/supervisor_revision_20261102.md}.
 
 \section{Reflection on AI Use}
 \label{sec:appendix-ai-reflection}
