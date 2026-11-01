@@ -159,7 +159,7 @@ def validate(output):
     partials = {p.relative_to(output).as_posix() for p in output.rglob('*.partial')} if not passed else set()
     expected_files |= partials
     require(type(manifest) is dict and set(manifest) == expected_files, 'manifest file inventory')
-    dirs = {str(p) for name in expected_files for p in Path(name).parents if str(p) != '.'} | {'jobs','requests'}
+    dirs = {p.as_posix() for name in expected_files for p in Path(name).parents if p.as_posix() != '.'} | {'jobs','requests'}
     require({p.relative_to(output).as_posix() for p in output.rglob('*')} == expected_files | dirs | {'manifest.json'}, 'unexpected entry')
     require(not any(p.is_symlink() for p in output.rglob('*')), 'archive symlink')
     for name, sha in manifest.items():

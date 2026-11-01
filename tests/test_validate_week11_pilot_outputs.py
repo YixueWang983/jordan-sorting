@@ -105,6 +105,7 @@ class ValidateWeek11PilotOutputsTests(unittest.TestCase):
             runner.os,
             "getloadavg",
             return_value=(0.5, 0.6, 0.7),
+            create=True,  # Synthetic historical POSIX evidence, including on Windows.
         ):
             load_status = runner.capture_load_status(
                 environment["benchmark_environment"]["logical_cpu_count"]

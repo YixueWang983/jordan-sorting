@@ -240,7 +240,7 @@ def validate(output, *, historical=False, dataset='common'):
     require(canonical(read(output/'summary.json')) == canonical(summary), 'summary reconstruction')
     require(read(output/'progress.json') == dict(status='COMPLETE' if passed else 'FAILED', committed_records=len(statuses)), 'campaign cursor')
     manifest = read(output/'manifest.json'); require(type(manifest) is dict and set(manifest) == files, 'manifest inventory')
-    dirs = {str(p) for f in files for p in Path(f).parents if str(p) != '.'}|{'jobs','requests'}
+    dirs = {p.as_posix() for f in files for p in Path(f).parents if p.as_posix() != '.'}|{'jobs','requests'}
     require({p.relative_to(output).as_posix() for p in output.rglob('*')} == files|dirs|{'manifest.json'}, 'extra entry')
     require(not any(p.is_symlink() for p in output.rglob('*')), 'symlink')
     for f, h in manifest.items():

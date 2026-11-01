@@ -36,6 +36,8 @@ $env:PYTHONIOENCODING = 'utf-8'
 
 单独修改一项测试可使用 `模块.测试类.测试方法` 定向执行。需要评测前先完成测试，禁止与计时会话并行运行。
 
+当前跨平台执行入口是下文的 `run_host_stability.py` 和 `run_input_suite.py`。历史 week11/week12 的执行器仍保留原 POSIX load-average 门槛；它们的合成档案测试可在 Windows 上运行，但不会将不存在的 Windows `os.getloadavg` 伪装成系统观测。新实验使用当前入口。
+
 ## 环境诊断与迁移决策
 
 开始诊断前提交代码，保持干净工作区。输出放仓库外的新目录；已有目录会被拒绝。默认按预定规则选择五来源各最小/最大 n 的 10 个输入，先做两后端 checked/fresh minimal 正确性检查、单独校准，再执行三会话配对计时。诊断不需要作者数学审阅收据，也不会生成该收据；其结果明确为 `performance_eligible=false`，不能充当论文正式数据。
@@ -75,3 +77,5 @@ PYTHONPATH=src:experiments python3 -B experiments/validate_host_stability.py ../
 历史统一档案使用 `validate_input_suite_run.py ARCHIVE --historical` 只读检查；旧档案的绝对前置引用需按原归档 relocation 说明恢复。新环境诊断没有此绝对前置限制，可按完整目录跨机复制后验证。
 
 平台 API 依据：[Python 文件同步和替换](https://docs.python.org/3.12/library/os.html#os.fsync)、[Windows GetSystemPowerStatus](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getsystempowerstatus)。文件同步在重命名前完成；Windows 的交流供电和节能状态直接取自系统 API。
+
+Windows 原生命令按实际[控制台输出码页](https://learn.microsoft.com/en-us/windows/console/getconsoleoutputcp)解码，无控制台时回退到系统 OEM 码页。不能用 Python UTF-8 模式或 ANSI 码页推断 `powercfg` 的输出编码。

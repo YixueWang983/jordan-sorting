@@ -117,7 +117,7 @@ def recheck(output):
                           full_140_qualified=False,efficient_backend_accepted=False)
     require(canonical(read(output/'summary.json'))==canonical(expected_summary),'summary')
     manifest=read(output/'manifest.json'); require(set(manifest)==files,'manifest inventory')
-    dirs={str(p) for f in files for p in Path(f).parents if str(p)!='.'}|{'jobs','requests'}
+    dirs={p.as_posix() for f in files for p in Path(f).parents if p.as_posix()!='.'}|{'jobs','requests'}
     require({p.relative_to(output).as_posix() for p in output.rglob('*')}==files|dirs|{'manifest.json'},'extra path')
     require(not any(p.is_symlink() for p in output.rglob('*')),'symlink')
     require(all(hashlib.sha256((output/f).read_bytes()).hexdigest()==h for f,h in manifest.items()),'manifest hashes')

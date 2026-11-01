@@ -131,6 +131,7 @@ class ValidateWeek12FormalSortingOutputsTests(unittest.TestCase):
             timing_support.os,
             "getloadavg",
             return_value=(0.40, 0.45, 0.50),
+            create=True,  # Synthetic historical POSIX evidence, including on Windows.
         ):
             load = timing_support.capture_load_status(8)
         environment["timing_readiness"] = (

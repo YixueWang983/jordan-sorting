@@ -76,7 +76,9 @@ class RunWeek11PilotTests(unittest.TestCase):
         }
 
     def _load_status(self, loads=(0.50, 0.60, 0.70), cpu_count=10):
-        with patch.object(runner.os, "getloadavg", return_value=loads):
+        # Synthetic POSIX load evidence remains testable on Windows, where the
+        # historical os.getloadavg API is absent. This is never host telemetry.
+        with patch.object(runner.os, "getloadavg", return_value=loads, create=True):
             return runner.capture_load_status(cpu_count)
 
     def _minimal_environment_record(self):
@@ -966,6 +968,10 @@ class RunWeek11PilotTests(unittest.TestCase):
             runner,
             "capture_power_status",
             return_value=self._power_status(),
+        ), patch.object(
+            runner,
+            "capture_load_status",
+            return_value=self._load_status(),
         ):
             environment = runner.build_environment_record(
                 git_state,
@@ -1395,6 +1401,10 @@ class RunWeek11PilotTests(unittest.TestCase):
             runner,
             "capture_power_status",
             return_value=self._power_status(),
+        ), patch.object(
+            runner,
+            "capture_load_status",
+            return_value=self._load_status(),
         ):
             runner.initialize_formal_evidence(
                 root,
@@ -1430,6 +1440,10 @@ class RunWeek11PilotTests(unittest.TestCase):
             runner,
             "capture_power_status",
             return_value=self._power_status(),
+        ), patch.object(
+            runner,
+            "capture_load_status",
+            return_value=self._load_status(),
         ):
             result = runner.initialize_formal_evidence(
                 root,

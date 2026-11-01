@@ -5,7 +5,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from common_input_protocol import source_identity
 from committed_records import atomic_bytes, atomic_json, commit_record, read_records, run_bounded
@@ -34,6 +34,27 @@ def windows_execution():
 
 
 class PlatformEnvironmentTests(unittest.TestCase):
+    def test_console_encoding_uses_active_codepage_and_detached_oem_fallback(self):
+        for console, oem, expected in ((65001,936,'cp65001'),(936,437,'cp936'),(0,936,'cp936')):
+            with self.subTest(console=console, oem=oem):
+                kernel=Mock()
+                kernel.GetConsoleOutputCP.return_value=console
+                kernel.GetOEMCP.return_value=oem
+                with patch.object(platform_env.ctypes,'WinDLL',return_value=kernel,create=True):
+                    self.assertEqual(platform_env.windows_console_encoding(),expected)
+                if console:
+                    kernel.GetOEMCP.assert_not_called()
+
+    def test_native_command_decodes_chinese_using_console_not_ansi_encoding(self):
+        expected='电源方案 GUID: '+SCHEME+' (平衡)'
+        def native(args, *, encoding, timeout):
+            self.assertEqual(timeout,30)
+            return expected.encode('utf-8').decode(encoding)
+        with patch.object(platform_env.sys,'platform','win32'), \
+                patch.object(platform_env,'windows_console_encoding',return_value='cp65001'), \
+                patch.object(platform_env.subprocess,'check_output',side_effect=native):
+            self.assertEqual(platform_env.command(['powercfg','/getactivescheme']),expected)
+
     def test_windows_raw_observations_and_machine_are_accepted_without_m4(self):
         env=windows_execution()
         protocol.require_machine(env)

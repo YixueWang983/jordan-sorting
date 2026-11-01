@@ -16,10 +16,22 @@ PYTHON_VERSION = '3.12.14'
 GUID = r'[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}'
 
 
+def windows_console_encoding():
+    # Native console output follows the console code page, not Python UTF-8
+    # mode or the ANSI code page. Detached processes fall back to the OEM page.
+    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+    for name in ('GetConsoleOutputCP', 'GetOEMCP'):
+        fn = getattr(kernel, name)
+        fn.argtypes, fn.restype = [], ctypes.c_uint
+        codepage = fn()
+        if codepage:
+            return 'cp' + str(codepage)
+    raise RuntimeError('Windows console encoding is unavailable')
+
+
 def command(args):
-    # Windows console utilities use the system code page even with Python's
-    # UTF-8 mode enabled. Only the locale-independent GUID is interpreted.
-    return subprocess.check_output(args, encoding='mbcs' if sys.platform == 'win32' else 'utf-8', timeout=30).strip()
+    encoding = windows_console_encoding() if sys.platform == 'win32' else 'utf-8'
+    return subprocess.check_output(args, encoding=encoding, timeout=30).strip()
 
 
 def windows_power_status():
