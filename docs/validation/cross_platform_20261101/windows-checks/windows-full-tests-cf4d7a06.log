@@ -1,0 +1,2365 @@
+......................................1/14 n32-strict_flat-00: PASS
+2/14 n32-strict_flat-00-mirror: PASS
+3/14 n32-low_nesting_valid-00: PASS
+4/14 n32-low_nesting_valid-00-mirror: PASS
+5/14 n32-low_nesting_valid-01: PASS
+6/14 n32-low_nesting_valid-01-mirror: PASS
+7/14 n32-medium_nesting_valid-00: PASS
+8/14 n32-medium_nesting_valid-00-mirror: PASS
+9/14 n32-medium_nesting_valid-01: PASS
+10/14 n32-medium_nesting_valid-01-mirror: PASS
+11/14 n32-nested_heavy_valid-00: PASS
+12/14 n32-nested_heavy_valid-00-mirror: PASS
+13/14 n32-nested_heavy_valid-01: PASS
+14/14 n32-nested_heavy_valid-01-mirror: PASS
+E1/14 n32-strict_flat-00: PASS
+2/14 n32-strict_flat-00-mirror: PASS
+3/14 n32-low_nesting_valid-00: PASS
+4/14 n32-low_nesting_valid-00-mirror: PASS
+5/14 n32-low_nesting_valid-01: PASS
+6/14 n32-low_nesting_valid-01-mirror: PASS
+7/14 n32-medium_nesting_valid-00: PASS
+8/14 n32-medium_nesting_valid-00-mirror: PASS
+9/14 n32-medium_nesting_valid-01: PASS
+10/14 n32-medium_nesting_valid-01-mirror: PASS
+11/14 n32-nested_heavy_valid-00: PASS
+12/14 n32-nested_heavy_valid-00-mirror: PASS
+13/14 n32-nested_heavy_valid-01: PASS
+14/14 n32-nested_heavy_valid-01-mirror: PASS
+.1/14 n32-strict_flat-00: PASS
+2/14 n32-strict_flat-00-mirror: TIMEOUT
+3/14 n32-low_nesting_valid-00: NOT_RUN
+4/14 n32-low_nesting_valid-00-mirror: NOT_RUN
+5/14 n32-low_nesting_valid-01: NOT_RUN
+6/14 n32-low_nesting_valid-01-mirror: NOT_RUN
+7/14 n32-medium_nesting_valid-00: NOT_RUN
+8/14 n32-medium_nesting_valid-00-mirror: NOT_RUN
+9/14 n32-medium_nesting_valid-01: NOT_RUN
+10/14 n32-medium_nesting_valid-01-mirror: NOT_RUN
+11/14 n32-nested_heavy_valid-00: NOT_RUN
+12/14 n32-nested_heavy_valid-00-mirror: NOT_RUN
+13/14 n32-nested_heavy_valid-01: NOT_RUN
+14/14 n32-nested_heavy_valid-01-mirror: NOT_RUN
+E...1/2 n32-strict_flat-00: TIMEOUT
+2/2 n32-strict_flat-00-mirror: NOT_RUN
+E...1/2 n32-strict_flat-00: PASS
+2/2 n32-strict_flat-00-mirror: PASS
+E.1/2 n32-strict_flat-00: PASS
+2/2 n32-strict_flat-00-mirror: PASS
+.1/2 n32-strict_flat-00: ERROR
+2/2 n32-strict_flat-00-mirror: NOT_RUN
+E..1/2 n32-strict_flat-00: ERROR
+2/2 n32-strict_flat-00-mirror: NOT_RUN
+E.......................................................................................{"accepted": true, "scope": "bounded_representation_locality_not_timing", "case_runs": 2, "distinct_input_hashes": 2, "original_runs": 4, "totals": {"ordinary": {"prefixes": 3, "iterations": 1}, "tree_off": {"prefixes": 3, "iterations": 1}}, "performance_eligible": false, "formal_proof_certified": false}
+............................................................................................................................................................................................................................EEE................................................................................................................................................................{"check": "real_finger_split", "shape_cut_cases": 1088, "max_leaves": 9, "repair_branch_counts": {"deletion_red_sibling": 37, "deletion_near_rotations": 25, "deletion_far_rotations": 63, "deletion_propagations": 68, "left_rotations": 88, "right_rotations": 138}}
+{"check": "orientation_round_trip", "colored_shapes": 271, "max_leaves": 10}
+BEGIN n=256
+BEGIN n=257
+BEGIN n=512
+BEGIN n=513
+BEGIN n=256
+.1/1 flat_valid_n256_probe: PASS
+..1/1 test-flat: PASS
+E1/1 test-flat: PASS
+............................................E.EEEE....EEE...EEEEEEEE......EE.......EE....E.E..E....EEEEEEEE...........................................................................................1/1 balanced-128: PASS
+E1/1 balanced-128: ERROR
+EE.............1/1 split-n128-k3: PASS
+E1/1 split-n128-k3: ERROR
+E......1/1 split-n128-k3: PASS
+EE........................................................EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE..EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE...............................
+======================================================================
+ERROR: test_rebuild_qualification_without_performance_acceptance (test_common_qualification.CommonQualificationTests.test_rebuild_qualification_without_performance_acceptance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_common_qualification.py", line 96, in test_rebuild_qualification_without_performance_acceptance
+    report = self.validate_fixture(output, specs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_common_qualification.py", line 48, in validate_fixture
+    return checker.validate(output)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_common_qualification.py", line 163, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')} == expected_files | dirs | {'manifest.json'}, 'unexpected entry')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: unexpected entry
+
+======================================================================
+ERROR: test_timeout_does_not_drop_selected_case_or_continue (test_common_qualification.CommonQualificationTests.test_timeout_does_not_drop_selected_case_or_continue)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_common_qualification.py", line 108, in test_timeout_does_not_drop_selected_case_or_continue
+    self.assertFalse(self.validate_fixture(output, specs)['all_selected_qualified'])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_common_qualification.py", line 48, in validate_fixture
+    return checker.validate(output)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_common_qualification.py", line 163, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')} == expected_files | dirs | {'manifest.json'}, 'unexpected entry')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: unexpected entry
+
+======================================================================
+ERROR: test_full_timeout_archive_retains_completed_mode_and_stops (test_common_qualification_v2.CommonV2Tests.test_full_timeout_archive_retains_completed_mode_and_stops)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_common_qualification_v2.py", line 174, in test_full_timeout_archive_retains_completed_mode_and_stops
+    with self.scope(selected,cfg):report=checker.validate(out)
+                                         ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_common_qualification_v2.py", line 244, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')} == files|dirs|{'manifest.json'}, 'extra entry')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: extra entry
+
+======================================================================
+ERROR: test_real_fixture_independent_reconstruction (test_common_qualification_v2.CommonV2Tests.test_real_fixture_independent_reconstruction)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_common_qualification_v2.py", line 76, in test_real_fixture_independent_reconstruction
+    with self.scope(selected,cfg): report = checker.validate(out)
+                                            ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_common_qualification_v2.py", line 244, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')} == files|dirs|{'manifest.json'}, 'extra entry')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: extra entry
+
+======================================================================
+ERROR: test_worker_exception_stops_and_archive_rebuilds (test_common_qualification_v2.CommonV2Tests.test_worker_exception_stops_and_archive_rebuilds)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_common_qualification_v2.py", line 126, in test_worker_exception_stops_and_archive_rebuilds
+    with self.scope(selected,cfg): report=checker.validate(out)
+                                          ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_common_qualification_v2.py", line 244, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')} == files|dirs|{'manifest.json'}, 'extra entry')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: extra entry
+
+======================================================================
+ERROR: test_zero_exit_with_missing_records_is_not_pass (test_common_qualification_v2.CommonV2Tests.test_zero_exit_with_missing_records_is_not_pass)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_common_qualification_v2.py", line 135, in test_zero_exit_with_missing_records_is_not_pass
+    with self.scope(selected,cfg): self.assertFalse(checker.validate(out)['all_selected_qualified'])
+                                                    ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_common_qualification_v2.py", line 244, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')} == files|dirs|{'manifest.json'}, 'extra entry')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: extra entry
+
+======================================================================
+ERROR: test_full_controller_and_independent_archive_rebuild_fixture (test_matched_measurement_tools.MatchedToolTests.test_full_controller_and_independent_archive_rebuild_fixture)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_matched_measurement_tools.py", line 145, in test_full_controller_and_independent_archive_rebuild_fixture
+    self.assertEqual(checker.validate(root/'cal',qualification=q)['batch_sizes'],{'mechanical-eight':2})
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_matched_measurement.py", line 213, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')}==files|dirs|{'manifest.json'},'extra entries')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: extra entries
+
+======================================================================
+ERROR: test_full_controller_failure_record_reconstruction (test_matched_measurement_tools.MatchedToolTests.test_full_controller_failure_record_reconstruction)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_matched_measurement_tools.py", line 177, in test_full_controller_failure_record_reconstruction
+    report=checker.validate(root/'cal',qualification=q);self.assertFalse(report['complete'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_matched_measurement.py", line 213, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')}==files|dirs|{'manifest.json'},'extra entries')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: extra entries
+
+======================================================================
+ERROR: test_full_controller_rejects_zero_exit_without_evidence (test_matched_measurement_tools.MatchedToolTests.test_full_controller_rejects_zero_exit_without_evidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_matched_measurement_tools.py", line 160, in test_full_controller_rejects_zero_exit_without_evidence
+    report=checker.validate(root/'cal',qualification=q)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_matched_measurement.py", line 213, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')}==files|dirs|{'manifest.json'},'extra entries')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: extra entries
+
+======================================================================
+ERROR: test_raw_comparison_and_summary_reconstruction (test_qualification_refactor_evidence.RefactorEvidenceTests.test_raw_comparison_and_summary_reconstruction)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_qualification_refactor_evidence.py", line 39, in test_raw_comparison_and_summary_reconstruction
+    with patch.object(checker,'plan',return_value=cfg):report=checker.recheck(output)
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\recheck_qualification_refactor.py", line 121, in recheck
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')}==files|dirs|{'manifest.json'},'extra path')
+  File "D:\project\experiments\recheck_qualification_refactor.py", line 20, in require
+    if not condition: raise ValueError(message)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: extra path
+
+======================================================================
+ERROR: test_distinct_execution_ids_use_distinct_output_directories (test_run_week11_pilot.RunWeek11PilotTests.test_distinct_execution_ids_use_distinct_output_directories)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 572, in test_distinct_execution_ids_use_distinct_output_directories
+    return_value=self._load_status(),
+                 ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_environment_contract_is_captured_before_timing (test_run_week11_pilot.RunWeek11PilotTests.test_environment_contract_is_captured_before_timing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\experiments\run_week11_pilot.py", line 1329, in capture_load_status
+    raw_loads = os.getloadavg()
+                ^^^^^^^^^^^^^
+AttributeError: module 'os' has no attribute 'getloadavg'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 970, in test_environment_contract_is_captured_before_timing
+    environment = runner.build_environment_record(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\run_week11_pilot.py", line 1570, in build_environment_record
+    load_status = capture_load_status(environment["logical_cpu_count"])
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\run_week11_pilot.py", line 1331, in capture_load_status
+    raise RuntimeError("system load averages are unavailable") from exc
+RuntimeError: system load averages are unavailable
+
+======================================================================
+ERROR: test_environment_write_failure_preserves_partial_evidence (test_run_week11_pilot.RunWeek11PilotTests.test_environment_write_failure_preserves_partial_evidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1351, in test_environment_write_failure_preserves_partial_evidence
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_execute_pilot_preserves_evidence_after_validation_failure (test_run_week11_pilot.RunWeek11PilotTests.test_execute_pilot_preserves_evidence_after_validation_failure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1286, in test_execute_pilot_preserves_evidence_after_validation_failure
+    return_value=self._load_status(),
+                 ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_execute_pilot_rechecks_environment_before_stubbed_timing (test_run_week11_pilot.RunWeek11PilotTests.test_execute_pilot_rechecks_environment_before_stubbed_timing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1183, in test_execute_pilot_rechecks_environment_before_stubbed_timing
+    elevated_load = self._load_status(
+                    ^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_formal_evidence_accepts_a_new_machine_with_a_new_execution_id (test_run_week11_pilot.RunWeek11PilotTests.test_formal_evidence_accepts_a_new_machine_with_a_new_execution_id)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\experiments\run_week11_pilot.py", line 1329, in capture_load_status
+    raw_loads = os.getloadavg()
+                ^^^^^^^^^^^^^
+AttributeError: module 'os' has no attribute 'getloadavg'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1434, in test_formal_evidence_accepts_a_new_machine_with_a_new_execution_id
+    result = runner.initialize_formal_evidence(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\run_week11_pilot.py", line 1775, in initialize_formal_evidence
+    environment = build_environment_record(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\run_week11_pilot.py", line 1570, in build_environment_record
+    load_status = capture_load_status(environment["logical_cpu_count"])
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\run_week11_pilot.py", line 1331, in capture_load_status
+    raise RuntimeError("system load averages are unavailable") from exc
+RuntimeError: system load averages are unavailable
+
+======================================================================
+ERROR: test_formal_evidence_is_initialized_before_future_sorter_call (test_run_week11_pilot.RunWeek11PilotTests.test_formal_evidence_is_initialized_before_future_sorter_call)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\experiments\run_week11_pilot.py", line 1329, in capture_load_status
+    raw_loads = os.getloadavg()
+                ^^^^^^^^^^^^^
+AttributeError: module 'os' has no attribute 'getloadavg'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1399, in test_formal_evidence_is_initialized_before_future_sorter_call
+    runner.initialize_formal_evidence(
+  File "D:\project\experiments\run_week11_pilot.py", line 1775, in initialize_formal_evidence
+    environment = build_environment_record(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\run_week11_pilot.py", line 1570, in build_environment_record
+    load_status = capture_load_status(environment["logical_cpu_count"])
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\run_week11_pilot.py", line 1331, in capture_load_status
+    raise RuntimeError("system load averages are unavailable") from exc
+RuntimeError: system load averages are unavailable
+
+======================================================================
+ERROR: test_formal_timing_readiness_rejects_high_or_unstable_load (test_run_week11_pilot.RunWeek11PilotTests.test_formal_timing_readiness_rejects_high_or_unstable_load)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1704, in test_formal_timing_readiness_rejects_high_or_unstable_load
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_initialize_evidence_directory_writes_and_verifies_json (test_run_week11_pilot.RunWeek11PilotTests.test_initialize_evidence_directory_writes_and_verifies_json)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1012, in test_initialize_evidence_directory_writes_and_verifies_json
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_initialize_evidence_rejects_duplicate_environment_fields (test_run_week11_pilot.RunWeek11PilotTests.test_initialize_evidence_rejects_duplicate_environment_fields)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1073, in test_initialize_evidence_rejects_duplicate_environment_fields
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_initialize_evidence_rejects_execution_mode_drift (test_run_week11_pilot.RunWeek11PilotTests.test_initialize_evidence_rejects_execution_mode_drift) (field='paper_execution_mode')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1100, in test_initialize_evidence_rejects_execution_mode_drift
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_initialize_evidence_rejects_execution_mode_drift (test_run_week11_pilot.RunWeek11PilotTests.test_initialize_evidence_rejects_execution_mode_drift) (field='audit_execution_mode')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1100, in test_initialize_evidence_rejects_execution_mode_drift
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_initialize_evidence_rejects_protocol_or_execution_drift (test_run_week11_pilot.RunWeek11PilotTests.test_initialize_evidence_rejects_protocol_or_execution_drift) (record='config')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1049, in test_initialize_evidence_rejects_protocol_or_execution_drift
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_initialize_evidence_rejects_protocol_or_execution_drift (test_run_week11_pilot.RunWeek11PilotTests.test_initialize_evidence_rejects_protocol_or_execution_drift) (record='environment')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1049, in test_initialize_evidence_rejects_protocol_or_execution_drift
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_initialize_evidence_rejects_timing_readiness_drift (test_run_week11_pilot.RunWeek11PilotTests.test_initialize_evidence_rejects_timing_readiness_drift)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1119, in test_initialize_evidence_rejects_timing_readiness_drift
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_initialize_evidence_rejects_unavailable_power_status (test_run_week11_pilot.RunWeek11PilotTests.test_initialize_evidence_rejects_unavailable_power_status)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1325, in test_initialize_evidence_rejects_unavailable_power_status
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_load_status_normalizes_by_logical_cpu_count (test_run_week11_pilot.RunWeek11PilotTests.test_load_status_normalizes_by_logical_cpu_count)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1557, in test_load_status_normalizes_by_logical_cpu_count
+    result = self._load_status(loads=(1.0, 1.5, 2.0), cpu_count=10)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_macos_finishing_charge_is_timing_ready (test_run_week11_pilot.RunWeek11PilotTests.test_macos_finishing_charge_is_timing_ready)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1842, in test_macos_finishing_charge_is_timing_ready
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_pilot_products_are_written_exclusively_with_manifest (test_run_week11_pilot.RunWeek11PilotTests.test_pilot_products_are_written_exclusively_with_manifest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1139, in test_pilot_products_are_written_exclusively_with_manifest
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_pilot_timing_readiness_warns_on_high_or_unstable_load (test_run_week11_pilot.RunWeek11PilotTests.test_pilot_timing_readiness_warns_on_high_or_unstable_load)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1681, in test_pilot_timing_readiness_warns_on_high_or_unstable_load
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_preflight_accepts_an_unseen_machine_as_a_new_execution (test_run_week11_pilot.RunWeek11PilotTests.test_preflight_accepts_an_unseen_machine_as_a_new_execution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 539, in test_preflight_accepts_an_unseen_machine_as_a_new_execution
+    return_value=self._load_status(),
+                 ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_preflight_is_read_only_and_reports_frozen_counts (test_run_week11_pilot.RunWeek11PilotTests.test_preflight_is_read_only_and_reports_frozen_counts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 411, in test_preflight_is_read_only_and_reports_frozen_counts
+    return_value=self._load_status(),
+                 ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_preflight_reports_load_warnings_without_writing_outputs (test_run_week11_pilot.RunWeek11PilotTests.test_preflight_reports_load_warnings_without_writing_outputs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 453, in test_preflight_reports_load_warnings_without_writing_outputs
+    elevated_load = self._load_status(
+                    ^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_timing_readiness_accepts_battery_free_environment (test_run_week11_pilot.RunWeek11PilotTests.test_timing_readiness_accepts_battery_free_environment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1661, in test_timing_readiness_accepts_battery_free_environment
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_timing_readiness_accepts_high_charge_discharging_on_ac (test_run_week11_pilot.RunWeek11PilotTests.test_timing_readiness_accepts_high_charge_discharging_on_ac)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1585, in test_timing_readiness_accepts_high_charge_discharging_on_ac
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_timing_readiness_rejects_discharging_in_low_power_mode (test_run_week11_pilot.RunWeek11PilotTests.test_timing_readiness_rejects_discharging_in_low_power_mode)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1643, in test_timing_readiness_rejects_discharging_in_low_power_mode
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_timing_readiness_rejects_discharging_power (test_run_week11_pilot.RunWeek11PilotTests.test_timing_readiness_rejects_discharging_power)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1567, in test_timing_readiness_rejects_discharging_power
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_timing_readiness_rejects_insufficient_disk (test_run_week11_pilot.RunWeek11PilotTests.test_timing_readiness_rejects_insufficient_disk)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1741, in test_timing_readiness_rejects_insufficient_disk
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_timing_readiness_rejects_invalid_execution_stage (test_run_week11_pilot.RunWeek11PilotTests.test_timing_readiness_rejects_invalid_execution_stage)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1726, in test_timing_readiness_rejects_invalid_execution_stage
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_timing_readiness_rejects_low_charge_discharging (test_run_week11_pilot.RunWeek11PilotTests.test_timing_readiness_rejects_low_charge_discharging)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1625, in test_timing_readiness_rejects_low_charge_discharging
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_timing_readiness_rejects_low_power_mode_while_charging (test_run_week11_pilot.RunWeek11PilotTests.test_timing_readiness_rejects_low_power_mode_while_charging)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_run_week11_pilot.py", line 1607, in test_timing_readiness_rejects_low_power_mode_while_charging
+    environment = self._minimal_environment_record()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 98, in _minimal_environment_record
+    self._load_status(),
+    ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_run_week11_pilot.py", line 79, in _load_status
+    with patch.object(runner.os, "getloadavg", return_value=loads):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_actual_single_case_qualification_routing_and_rebuild (test_structural_split_qualification.StructuralSplitTests.test_actual_single_case_qualification_routing_and_rebuild)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_structural_split_qualification.py", line 94, in test_actual_single_case_qualification_routing_and_rebuild
+    passed, report = self.qualification_fixture(Path(temp)/'run')
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_structural_split_qualification.py", line 89, in qualification_fixture
+    report = checker.validate(out, dataset='structural_split')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_common_qualification_v2.py", line 244, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')} == files|dirs|{'manifest.json'}, 'extra entry')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: extra entry
+
+======================================================================
+ERROR: test_correct_output_without_required_workload_cannot_qualify (test_structural_split_qualification.StructuralSplitTests.test_correct_output_without_required_workload_cannot_qualify)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_structural_split_qualification.py", line 101, in test_correct_output_without_required_workload_cannot_qualify
+    passed, report = self.qualification_fixture(Path(temp)/'run', wrong_shape=True)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_structural_split_qualification.py", line 89, in qualification_fixture
+    report = checker.validate(out, dataset='structural_split')
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_common_qualification_v2.py", line 244, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')} == files|dirs|{'manifest.json'}, 'extra entry')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: extra entry
+
+======================================================================
+ERROR: test_measurement_route_and_cross_dataset_rejection (test_structural_split_qualification.StructuralSplitTests.test_measurement_route_and_cross_dataset_rejection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_structural_split_qualification.py", line 119, in test_measurement_route_and_cross_dataset_rejection
+    result = timing_checker.validate(root/'cal', qualification=qualification)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_matched_measurement.py", line 213, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')}==files|dirs|{'manifest.json'},'extra entries')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: extra entries
+
+======================================================================
+ERROR: test_actual_single_case_routing_and_coverage_reconstruction (test_targeted_split_qualification.TargetedSplitTests.test_actual_single_case_routing_and_coverage_reconstruction)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_targeted_split_qualification.py", line 43, in test_actual_single_case_routing_and_coverage_reconstruction
+    with tempfile.TemporaryDirectory() as temp:passed,report=self.fixture(Path(temp)/'run')
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_targeted_split_qualification.py", line 39, in fixture
+    report=checker.validate(root,dataset='targeted_split')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_common_qualification_v2.py", line 244, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')} == files|dirs|{'manifest.json'}, 'extra entry')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: extra entry
+
+======================================================================
+ERROR: test_missing_actual_target_cannot_pass_even_if_all_outputs_pass (test_targeted_split_qualification.TargetedSplitTests.test_missing_actual_target_cannot_pass_even_if_all_outputs_pass)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_targeted_split_qualification.py", line 49, in test_missing_actual_target_cannot_pass_even_if_all_outputs_pass
+    with tempfile.TemporaryDirectory() as temp:passed,report=self.fixture(Path(temp)/'run',missing=True)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_targeted_split_qualification.py", line 39, in fixture
+    report=checker.validate(root,dataset='targeted_split')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_common_qualification_v2.py", line 244, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')} == files|dirs|{'manifest.json'}, 'extra entry')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: extra entry
+
+======================================================================
+ERROR: test_real_one_case_qualification_routes_and_rebuilds (test_uninstrumented_protocol.UninstrumentedProtocolTests.test_real_one_case_qualification_routes_and_rebuilds)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_uninstrumented_protocol.py", line 64, in test_real_one_case_qualification_routes_and_rebuilds
+    report=qualification_checker.validate(out,dataset='targeted_split')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_common_qualification_v2.py", line 244, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')} == files|dirs|{'manifest.json'}, 'extra entry')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: extra entry
+
+======================================================================
+ERROR: test_synthetic_complete_campaign_and_missing_author_receipt (test_uninstrumented_protocol.UninstrumentedProtocolTests.test_synthetic_complete_campaign_and_missing_author_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_uninstrumented_protocol.py", line 80, in test_synthetic_complete_campaign_and_missing_author_receipt
+    report=timing_checker.validate(root/'cal',qualification=q)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\experiments\validate_matched_measurement.py", line 213, in validate
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')}==files|dirs|{'manifest.json'},'extra entries')
+  File "D:\project\experiments\validate_common_qualification.py", line 23, in require
+    raise ValueError(message)
+ValueError: extra entries
+
+======================================================================
+ERROR: test_coordinated_case_metadata_tampering_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_coordinated_case_metadata_tampering_is_rejected) (field='family')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 354, in test_coordinated_case_metadata_tampering_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_coordinated_case_metadata_tampering_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_coordinated_case_metadata_tampering_is_rejected) (field='n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 354, in test_coordinated_case_metadata_tampering_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_coordinated_case_metadata_tampering_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_coordinated_case_metadata_tampering_is_rejected) (field='seed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 354, in test_coordinated_case_metadata_tampering_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_coordinated_case_metadata_tampering_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_coordinated_case_metadata_tampering_is_rejected) (field='sequence_sha256')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 354, in test_coordinated_case_metadata_tampering_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_coordinated_case_metadata_tampering_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_coordinated_case_metadata_tampering_is_rejected) (field='max_depth')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 354, in test_coordinated_case_metadata_tampering_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_coordinated_summary_tampering_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_coordinated_summary_tampering_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 423, in test_coordinated_summary_tampering_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_damaged_json_and_wrong_container_fail_closed (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_damaged_json_and_wrong_container_fail_closed) (label='damaged')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 544, in test_damaged_json_and_wrong_container_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_damaged_json_and_wrong_container_fail_closed (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_damaged_json_and_wrong_container_fail_closed) (label='wrong-container')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 544, in test_damaged_json_and_wrong_container_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_environment_contract_drift_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_environment_contract_drift_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 555, in test_environment_contract_drift_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_high_charge_discharging_power_status_is_accepted (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_high_charge_discharging_power_status_is_accepted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 620, in test_high_charge_discharging_power_status_is_accepted
+    environment = self._environment(
+                  ^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_inconsistent_available_power_status_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_inconsistent_available_power_status_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 602, in test_inconsistent_available_power_status_is_rejected
+    environment = self._environment(
+                  ^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_audit_fields_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_audit_fields_are_rejected) (field='audit_passed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 523, in test_invalid_audit_fields_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_audit_fields_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_audit_fields_are_rejected) (field='diagnostic_output_sha256')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 523, in test_invalid_audit_fields_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_audit_fields_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_audit_fields_are_rejected) (field='diagnostic_processed_count')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 523, in test_invalid_audit_fields_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_audit_fields_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_audit_fields_are_rejected) (field='diagnostic_trace_event_count')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 523, in test_invalid_audit_fields_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_audit_fields_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_audit_fields_are_rejected) (field='paper_predecessor_accesses')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 523, in test_invalid_audit_fields_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_audit_fields_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_audit_fields_are_rejected) (field='paper_predecessor_accesses_nonnegative_forgery')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 523, in test_invalid_audit_fields_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_numbers_and_certification_fields_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_numbers_and_certification_fields_are_rejected) (field='run_index')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 502, in test_invalid_numbers_and_certification_fields_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_numbers_and_certification_fields_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_numbers_and_certification_fields_are_rejected) (field='time_ns')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 502, in test_invalid_numbers_and_certification_fields_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_numbers_and_certification_fields_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_numbers_and_certification_fields_are_rejected) (field='nesting_density')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 502, in test_invalid_numbers_and_certification_fields_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_numbers_and_certification_fields_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_numbers_and_certification_fields_are_rejected) (field='oracle_valid')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 502, in test_invalid_numbers_and_certification_fields_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_numbers_and_certification_fields_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_numbers_and_certification_fields_are_rejected) (field='output_correct')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 502, in test_invalid_numbers_and_certification_fields_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_numbers_and_certification_fields_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_numbers_and_certification_fields_are_rejected) (field='audit_passed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 502, in test_invalid_numbers_and_certification_fields_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_numbers_and_certification_fields_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_numbers_and_certification_fields_are_rejected) (field='error')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 502, in test_invalid_numbers_and_certification_fields_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_summary_numbers_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_summary_numbers_are_rejected) (field='mean_time_ns')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 477, in test_invalid_summary_numbers_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_summary_numbers_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_summary_numbers_are_rejected) (field='stdev_time_ns')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 477, in test_invalid_summary_numbers_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_summary_numbers_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_summary_numbers_are_rejected) (field='median_time_ns')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 477, in test_invalid_summary_numbers_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_invalid_summary_numbers_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_invalid_summary_numbers_are_rejected) (field='iqr_time_ns')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 477, in test_invalid_summary_numbers_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_linux_desktop_power_status_is_accepted (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_linux_desktop_power_status_is_accepted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 585, in test_linux_desktop_power_status_is_accepted
+    environment = self._environment(
+                  ^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_low_charge_or_low_power_discharging_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_low_charge_or_low_power_discharging_is_rejected) (label='low_charge')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 645, in test_low_charge_or_low_power_discharging_is_rejected
+    environment = self._environment(
+                  ^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_low_charge_or_low_power_discharging_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_low_charge_or_low_power_discharging_is_rejected) (label='low_power_mode')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 645, in test_low_charge_or_low_power_discharging_is_rejected
+    environment = self._environment(
+                  ^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_low_charge_or_low_power_discharging_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_low_charge_or_low_power_discharging_is_rejected) (label='unknown_low_power_mode')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 645, in test_low_charge_or_low_power_discharging_is_rejected
+    environment = self._environment(
+                  ^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_manifest_hash_mismatch_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_manifest_hash_mismatch_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 685, in test_manifest_hash_mismatch_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_missing_and_unknown_csv_fields_fail_closed (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_missing_and_unknown_csv_fields_fail_closed) (mutation='missing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 439, in test_missing_and_unknown_csv_fields_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_missing_and_unknown_csv_fields_fail_closed (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_missing_and_unknown_csv_fields_fail_closed) (mutation='unknown')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 439, in test_missing_and_unknown_csv_fields_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_missing_and_unknown_csv_fields_fail_closed (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_missing_and_unknown_csv_fields_fail_closed) (mutation='duplicate')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 439, in test_missing_and_unknown_csv_fields_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_missing_duplicate_and_extra_raw_rows_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_missing_duplicate_and_extra_raw_rows_are_rejected) (mutation='missing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 404, in test_missing_duplicate_and_extra_raw_rows_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_missing_duplicate_and_extra_raw_rows_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_missing_duplicate_and_extra_raw_rows_are_rejected) (mutation='duplicate')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 404, in test_missing_duplicate_and_extra_raw_rows_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_missing_duplicate_and_extra_raw_rows_are_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_missing_duplicate_and_extra_raw_rows_are_rejected) (mutation='extra')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 404, in test_missing_duplicate_and_extra_raw_rows_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_scheduling_and_mode_tampering_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_scheduling_and_mode_tampering_is_rejected) (field='case_execution_position', value='999')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 380, in test_scheduling_and_mode_tampering_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_scheduling_and_mode_tampering_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_scheduling_and_mode_tampering_is_rejected) (field='algorithm_position', value='3')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 380, in test_scheduling_and_mode_tampering_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_scheduling_and_mode_tampering_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_scheduling_and_mode_tampering_is_rejected) (field='algorithm_position', value='4')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 380, in test_scheduling_and_mode_tampering_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_scheduling_and_mode_tampering_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_scheduling_and_mode_tampering_is_rejected) (field='algorithm_position', value='999')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 380, in test_scheduling_and_mode_tampering_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_scheduling_and_mode_tampering_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_scheduling_and_mode_tampering_is_rejected) (field='run_index', value='999')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 380, in test_scheduling_and_mode_tampering_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_scheduling_and_mode_tampering_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_scheduling_and_mode_tampering_is_rejected) (field='measured_round', value='9')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 380, in test_scheduling_and_mode_tampering_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_scheduling_and_mode_tampering_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_scheduling_and_mode_tampering_is_rejected) (field='paper_execution_mode', value='checked')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 380, in test_scheduling_and_mode_tampering_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_scheduling_and_mode_tampering_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_scheduling_and_mode_tampering_is_rejected) (field='audit_execution_mode', value='minimal')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 380, in test_scheduling_and_mode_tampering_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_stale_valid_report_cannot_authorize_tampered_evidence (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_stale_valid_report_cannot_authorize_tampered_evidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 662, in test_stale_valid_report_cannot_authorize_tampered_evidence
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_timing_readiness_warning_drift_is_rejected (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_timing_readiness_warning_drift_is_rejected)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 570, in test_timing_readiness_warning_drift_is_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_unexpected_validator_error_fails_closed (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_unexpected_validator_error_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 390, in test_unexpected_validator_error_fails_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_valid_full_evidence_is_accepted (test_validate_week11_pilot_outputs.ValidateWeek11PilotOutputsTests.test_valid_full_evidence_is_accepted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 331, in test_valid_full_evidence_is_accepted
+    report = validator.validate_outputs(self._build_evidence())
+                                        ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 268, in _build_evidence
+    environment or self._environment(),
+                   ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week11_pilot_outputs.py", line 104, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_config_environment_manifest_and_missing_file_fail_closed (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_config_environment_manifest_and_missing_file_fail_closed) (scenario='config')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 410, in test_config_environment_manifest_and_missing_file_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_config_environment_manifest_and_missing_file_fail_closed (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_config_environment_manifest_and_missing_file_fail_closed) (scenario='environment')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 410, in test_config_environment_manifest_and_missing_file_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_config_environment_manifest_and_missing_file_fail_closed (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_config_environment_manifest_and_missing_file_fail_closed) (scenario='manifest')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 410, in test_config_environment_manifest_and_missing_file_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_config_environment_manifest_and_missing_file_fail_closed (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_config_environment_manifest_and_missing_file_fail_closed) (scenario='missing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 410, in test_config_environment_manifest_and_missing_file_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_external_report_must_be_outside_archive (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_external_report_must_be_outside_archive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 506, in test_external_report_must_be_outside_archive
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_malformed_evidence_returns_report_instead_of_crashing (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_malformed_evidence_returns_report_instead_of_crashing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 434, in test_malformed_evidence_returns_report_instead_of_crashing
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_manifest_wall_clock_relationships_fail_closed (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_manifest_wall_clock_relationships_fail_closed) (label='elapsed below measured total')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 492, in test_manifest_wall_clock_relationships_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_manifest_wall_clock_relationships_fail_closed (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_manifest_wall_clock_relationships_fail_closed) (label='elapsed inconsistent with UTC duration')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 492, in test_manifest_wall_clock_relationships_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_manifest_wall_clock_relationships_fail_closed (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_manifest_wall_clock_relationships_fail_closed) (label='reversed UTC timestamps')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 492, in test_manifest_wall_clock_relationships_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_manifest_wall_clock_relationships_fail_closed (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_manifest_wall_clock_relationships_fail_closed) (label='small UTC and monotonic difference')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 492, in test_manifest_wall_clock_relationships_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_raw_product_and_schedule_corruption_fail_closed (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_raw_product_and_schedule_corruption_fail_closed) (label='missing row')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 344, in test_raw_product_and_schedule_corruption_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_raw_product_and_schedule_corruption_fail_closed (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_raw_product_and_schedule_corruption_fail_closed) (label='duplicate row')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 344, in test_raw_product_and_schedule_corruption_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_raw_product_and_schedule_corruption_fail_closed (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_raw_product_and_schedule_corruption_fail_closed) (label='bad position')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 344, in test_raw_product_and_schedule_corruption_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_raw_product_and_schedule_corruption_fail_closed (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_raw_product_and_schedule_corruption_fail_closed) (label='bad run')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 344, in test_raw_product_and_schedule_corruption_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_raw_product_and_schedule_corruption_fail_closed (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_raw_product_and_schedule_corruption_fail_closed) (label='incorrect output')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 344, in test_raw_product_and_schedule_corruption_fail_closed
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_rebuilt_case_and_audit_provenance_detects_coordinated_changes (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_rebuilt_case_and_audit_provenance_detects_coordinated_changes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 356, in test_rebuilt_case_and_audit_provenance_detects_coordinated_changes
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_timing_and_summary_corruption_fail_closed_after_hash_refresh (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_timing_and_summary_corruption_fail_closed_after_hash_refresh) (filename='raw.csv')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 396, in test_timing_and_summary_corruption_fail_closed_after_hash_refresh
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_timing_and_summary_corruption_fail_closed_after_hash_refresh (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_timing_and_summary_corruption_fail_closed_after_hash_refresh) (filename='case_summary.csv')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 396, in test_timing_and_summary_corruption_fail_closed_after_hash_refresh
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_timing_and_summary_corruption_fail_closed_after_hash_refresh (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_timing_and_summary_corruption_fail_closed_after_hash_refresh) (filename='group_summary.csv')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 396, in test_timing_and_summary_corruption_fail_closed_after_hash_refresh
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_unexpected_archive_file_and_non_utc_timestamp_are_rejected (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_unexpected_archive_file_and_non_utc_timestamp_are_rejected) (scenario='extra_file')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 443, in test_unexpected_archive_file_and_non_utc_timestamp_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_unexpected_archive_file_and_non_utc_timestamp_are_rejected (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_unexpected_archive_file_and_non_utc_timestamp_are_rejected) (scenario='non_utc')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 443, in test_unexpected_archive_file_and_non_utc_timestamp_are_rejected
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+======================================================================
+ERROR: test_valid_evidence_and_external_revalidation (test_validate_week12_formal_sorting_outputs.ValidateWeek12FormalSortingOutputsTests.test_valid_evidence_and_external_revalidation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 318, in test_valid_evidence_and_external_revalidation
+    run_dir = self._build_evidence()
+              ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 270, in _build_evidence
+    json.dumps(self._environment(), indent=2, sort_keys=True) + "\n",
+               ^^^^^^^^^^^^^^^^^^^
+  File "D:\project\tests\test_validate_week12_formal_sorting_outputs.py", line 130, in _environment
+    with patch.object(
+         ^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1467, in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Xue\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\unittest\mock.py", line 1437, in get_original
+    raise AttributeError(
+AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+
+----------------------------------------------------------------------
+Ran 868 tests in 523.626s
+
+FAILED (errors=121)

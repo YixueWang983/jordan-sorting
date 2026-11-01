@@ -1,0 +1,43 @@
+{
+  "CapturedAtUtc": "2026-11-01T18:04:15.7198585Z",
+  "OS": {
+    "Caption": "Microsoft Windows 11 专业工作站版",
+    "Architecture": "64 位",
+    "Version": "10.0.26300",
+    "Build": "26300"
+  },
+  "CPU": {
+    "Name": "AMD Ryzen 5 7500F 6-Core Processor             ",
+    "NumberOfCores": 6,
+    "NumberOfLogicalProcessors": 12
+  },
+  "RAMBytes": 33913995264,
+  "FreeRAMBytes": 25256718336,
+  "DVolume": {
+    "DriveLetter": "D",
+    "FileSystem": "NTFS",
+    "Size": 1511218548736,
+    "SizeRemaining": 802285510656,
+    "HealthStatus": "Healthy"
+  },
+  "Power": {
+    "ReadSucceeded": true,
+    "ActiveScheme": "电源方案 GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (平衡)",
+    "ACLineStatus": 1,
+    "BatteryFlag": 128
+  },
+  "UserConfirmed": {
+    "PhysicalMachine": true,
+    "IndependentlySoftwareMeasured": false,
+    "NoCompetingWorkload": true,
+    "DedicatedTestServer": true,
+    "BIOSCPUFrequencyGHz": 5.0
+  },
+  "Repository": {
+    "StatusPorcelain": "",
+    "Path": "D:\\project",
+    "Head": "2ae92952d1968add2e46b8610a6270fab828f60b",
+    "SourceChangesMade": false,
+    "FormalSamplingRun": false
+  }
+}

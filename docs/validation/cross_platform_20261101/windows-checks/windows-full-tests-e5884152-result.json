@@ -1,0 +1,33 @@
+{
+  "command": [
+    "D:\\project-env\\jordan-sorting-py312\\Scripts\\python.exe",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests"
+  ],
+  "cwd": "D:\\project",
+  "budget_seconds": 1200,
+  "timeout": false,
+  "returncode": 0,
+  "wall_seconds": 527.6858426000003,
+  "commit": "e58841525726b0a7326d0cd730199882f834bad8",
+  "source_digest": "15571418657d234eb08f28c3a7f521eab9c6cafd70579b1c03dbef72fad31b96",
+  "source_identity_unchanged": true,
+  "status_porcelain": "",
+  "log": "D:\\project-environment-check\\cross-platform-20261101\\windows-full-tests-e5884152.log",
+  "tests_run": 870,
+  "unittest_seconds": 526.867,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "expected_failures": 0,
+  "unexpected_successes": 0,
+  "errored_or_failed_methods": 0,
+  "error_or_failure_entries": 0,
+  "passed_methods": 870,
+  "counting_note": "Error/failure entries can include multiple subtests; passed methods subtract unique affected method IDs.",
+  "passed_full_suite": true
+}

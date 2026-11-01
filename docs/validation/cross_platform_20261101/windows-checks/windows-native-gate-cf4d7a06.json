@@ -1,0 +1,7 @@
+{
+  "native_environment_capture": true,
+  "require_machine_passed": true,
+  "commit": "cf4d7a068d989561d4d1ebc55df256a25cebbaa7",
+  "source_digest": "9138774df70805aeede0db292dc39cd0be5b062ec0be120b5e90fc3eb5e9c412",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]"
+}

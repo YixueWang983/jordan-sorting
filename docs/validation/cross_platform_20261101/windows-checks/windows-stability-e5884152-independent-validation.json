@@ -1,0 +1,12 @@
+{
+  "Command": [
+    "D:\\project-env\\jordan-sorting-py312\\Scripts\\python.exe",
+    "-B",
+    "experiments\\validate_host_stability.py",
+    "D:\\jordan-evaluation\\windows-e5884152-attempt-001",
+    "--output",
+    "D:\\jordan-evaluation\\windows-e5884152-analysis.json"
+  ],
+  "ExitCode": 0,
+  "ElapsedSeconds": 1.6327909
+}

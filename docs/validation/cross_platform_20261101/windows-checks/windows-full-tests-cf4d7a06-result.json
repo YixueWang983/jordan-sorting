@@ -1,0 +1,33 @@
+{
+  "command": [
+    "D:\\project-env\\jordan-sorting-py312\\Scripts\\python.exe",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests"
+  ],
+  "cwd": "D:\\project",
+  "budget_seconds": 600,
+  "timeout": false,
+  "returncode": 1,
+  "wall_seconds": 524.6217887000003,
+  "commit": "cf4d7a068d989561d4d1ebc55df256a25cebbaa7",
+  "source_digest": "9138774df70805aeede0db292dc39cd0be5b062ec0be120b5e90fc3eb5e9c412",
+  "source_identity_unchanged": true,
+  "status_porcelain": "",
+  "log": "D:\\project-environment-check\\cross-platform-20261101\\windows-full-tests-cf4d7a06.log",
+  "tests_run": 868,
+  "unittest_seconds": 523.626,
+  "failures": 0,
+  "errors": 121,
+  "skipped": 0,
+  "expected_failures": 0,
+  "unexpected_successes": 0,
+  "passed": 794,
+  "passed_full_suite": false,
+  "errored_test_methods": 74,
+  "error_entries": 121,
+  "counting_note": "Unittest errors include subtest entries. Passed methods are computed from unique errored method IDs; the initial derived 868-121 field was not a valid method count."
+}

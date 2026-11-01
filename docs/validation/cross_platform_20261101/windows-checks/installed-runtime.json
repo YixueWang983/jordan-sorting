@@ -1,0 +1,11 @@
+{
+  "executable": "D:\\project-env\\jordan-sorting-py312\\Scripts\\python.exe",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "implementation": "CPython",
+  "bits": 64,
+  "optimize": 0,
+  "matplotlib": "3.11.2",
+  "numpy": "2.5.4",
+  "matplotlib_path": "D:\\project-env\\jordan-sorting-py312\\Lib\\site-packages\\matplotlib\\__init__.py",
+  "numpy_path": "D:\\project-env\\jordan-sorting-py312\\Lib\\site-packages\\numpy\\__init__.py"
+}

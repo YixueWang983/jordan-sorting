@@ -1,0 +1,30 @@
+{
+  "command": [
+    "D:\\project-env\\jordan-sorting-py312\\Scripts\\python.exe",
+    "-B",
+    "experiments/run_host_stability.py",
+    "--output",
+    "D:\\jordan-evaluation\\windows-e5884152-attempt-001",
+    "--conditions",
+    "D:\\project-environment-check\\20261101\\user-confirmed-conditions.json"
+  ],
+  "archive": "D:\\jordan-evaluation\\windows-e5884152-attempt-001",
+  "performance_eligible": false,
+  "automatic_retry": false,
+  "returncode": 0,
+  "outer_guard_timeout": false,
+  "outer_guard_seconds": 1000,
+  "protocol_budget_seconds": 900,
+  "wall_seconds": 160.4619385000001,
+  "commit": "e58841525726b0a7326d0cd730199882f834bad8",
+  "source_digest": "15571418657d234eb08f28c3a7f521eab9c6cafd70579b1c03dbef72fad31b96",
+  "source_unchanged": true,
+  "status_porcelain": "",
+  "log": "D:\\project-environment-check\\cross-platform-20261101\\windows-stability-e5884152-attempt-001.log",
+  "completion": {
+    "complete": true,
+    "elapsed_seconds": 156.26499999999987,
+    "finished_utc": "2026-11-01T18:48:24.615172+00:00",
+    "performance_eligible": false
+  }
+}

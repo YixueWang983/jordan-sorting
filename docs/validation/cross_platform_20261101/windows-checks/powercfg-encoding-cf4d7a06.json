@@ -1,0 +1,29 @@
+{
+  "codepages": {
+    "GetConsoleOutputCP": 65001,
+    "GetACP": 936,
+    "GetOEMCP": 936
+  },
+  "command": [
+    "powercfg",
+    "/getactivescheme"
+  ],
+  "raw_repr": "b'\\xe7\\x94\\xb5\\xe6\\xba\\x90\\xe6\\x96\\xb9\\xe6\\xa1\\x88 GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (\\xe5\\xb9\\xb3\\xe8\\xa1\\xa1)'",
+  "raw_hex": "e794b5e6ba90e696b9e6a18820475549443a2033383162343232322d663639342d343166302d393638352d666635626232363064663265202028e5b9b3e8a1a129",
+  "byte_count": 65,
+  "strict_decodings": {
+    "utf-8": {
+      "decoded": true,
+      "text": "电源方案 GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (平衡)"
+    },
+    "mbcs": {
+      "decoded": true,
+      "text": "鐢垫簮鏂规 GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (骞宠　)"
+    },
+    "oem": {
+      "decoded": true,
+      "text": "鐢垫簮鏂规 GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (骞宠　)"
+    }
+  },
+  "system_settings_changed": false
+}

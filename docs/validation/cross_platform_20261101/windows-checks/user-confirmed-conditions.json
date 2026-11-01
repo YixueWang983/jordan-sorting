@@ -1,0 +1,10 @@
+{
+  "source": "User confirmation relayed by the coordinating Mac chat on 2026-11-01",
+  "physical_machine": true,
+  "bios_cpu_frequency_ghz": 5.0,
+  "dedicated_test_server": true,
+  "no_competing_programs_or_processes": true,
+  "accepted_as_operating_constraints": true,
+  "independently_software_measured": false,
+  "additional_power_vbs_background_tuning_requested": false
+}

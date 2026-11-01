@@ -1,0 +1,17 @@
+{
+  "Command": [
+    "D:\\project-env\\jordan-sorting-py312\\Scripts\\python.exe",
+    "-B",
+    "-m",
+    "pip",
+    "install",
+    "--disable-pip-version-check",
+    "--no-input",
+    "--index-url",
+    "https://pypi.org/simple",
+    "matplotlib==3.11.2"
+  ],
+  "ExitCode": 0,
+  "Source": "official PyPI",
+  "RequestedVersion": "3.11.2"
+}

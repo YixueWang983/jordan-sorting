@@ -1,0 +1,20 @@
+{
+  "raw_archive_files": 1905,
+  "raw_archive_bytes": 3703710,
+  "raw_bytes_identical": true,
+  "manifest_verified": true,
+  "copied_archive_independent_validation": true,
+  "validation_command": [
+    "D:\\project-env\\jordan-sorting-py312\\Scripts\\python.exe",
+    "-B",
+    "experiments/validate_host_stability.py",
+    "D:\\project\\docs\\validation\\cross_platform_20261101\\windows",
+    "--historical",
+    "--output",
+    "D:\\project-environment-check\\cross-platform-20261101\\windows-e5884152-copied-analysis.json"
+  ],
+  "source_digest": "15571418657d234eb08f28c3a7f521eab9c6cafd70579b1c03dbef72fad31b96",
+  "source_unchanged": true,
+  "archive_manifest_sha256": "d412a5c12d8c10a888f1c83c5eae17c4a9ed85828d58c8b6774ddcfecac2d0f9",
+  "elapsed_seconds": 5.534007299999757
+}

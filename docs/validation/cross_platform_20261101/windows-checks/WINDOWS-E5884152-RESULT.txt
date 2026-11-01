@@ -1,0 +1,15 @@
+Windows cross-platform tests and first host stability diagnostic
+Execution commit: e58841525726b0a7326d0cd730199882f834bad8
+Source identity digest: 15571418657d234eb08f28c3a7f521eab9c6cafd70579b1c03dbef72fad31b96
+Full unittest: 870 passed methods; 0 errors; 0 failures; 0 skipped; 526.867 seconds.
+Diagnostic: 10 registered inputs; 3 sessions; 1200 total sample batches / 600 paired batches.
+Diagnostic protocol wall seconds: 156.26499999999987; invocation wall seconds: 160.4619385000001.
+Independent reconstruction passed. performance_eligible=false. Not thesis formal sampling; no author review receipt created.
+CPU 5.0 GHz / dedicated physical host / no competing load: user-confirmed conditions, not software frequency telemetry.
+Aggregate fractions (not percentages): {"heterogeneous_finger_uninstrumented": {"median_relative_iqr": 0.01236011367390051, "median_relative_session_spread": 0.009666019550729935}, "ordinary_list": {"median_relative_iqr": 0.013421795316643018, "median_relative_session_spread": 0.015121396962921698}}
+Archive manifest digest: d412a5c12d8c10a888f1c83c5eae17c4a9ed85828d58c8b6774ddcfecac2d0f9
+Earlier cf4d7a06 attempt: 868 methods; 794 successful methods / 74 errored methods; 121 error entries including subtests; no stability diagnostic attempted.
+The old failure log, grouped errors, all tracebacks and raw powercfg bytes/decoding observations are retained alongside the successful evidence.
+Raw archive copy: docs/validation/cross_platform_20261101/windows
+Checks and dependency freeze: docs/validation/cross_platform_20261101/windows-checks
+Repository Python source and historical receipts were not changed by this evidence archive.

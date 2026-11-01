@@ -1,0 +1,25 @@
+Windows cross-platform full test attempt cf4d7a06
+Commit: cf4d7a068d989561d4d1ebc55df256a25cebbaa7
+Source digest: 9138774df70805aeede0db292dc39cd0be5b062ec0be120b5e90fc3eb5e9c412
+Full unittest: 868 methods; 794 passed; 74 errored methods; 121 error entries including subtests; 0 assertion failures; 0 skipped.
+Unittest seconds: 523.626; wall seconds: 524.6217887000003; timeout: False
+Native Windows capture_environment and require_machine: passed. powercfg raw Chinese text remains misdecoded by the current mbcs reader.
+All 121 traceback entries are preserved in windows-full-tests-cf4d7a06-tracebacks.txt and windows-full-tests-cf4d7a06-errors.json.
+Exception groups:
+2 entries / 2 methods: ValueError: unexpected entry
+9 entries / 9 methods: ValueError: extra entry
+5 entries / 5 methods: ValueError: extra entries
+1 entries / 1 methods: ValueError: extra path
+101 entries / 54 methods: AttributeError: <module 'os' (frozen)> does not have the attribute 'getloadavg'
+3 entries / 3 methods: RuntimeError: system load averages are unavailable
+
+Code pages: {"GetConsoleOutputCP": 65001, "GetACP": 936, "GetOEMCP": 936}
+Raw repr: b'\xe7\x94\xb5\xe6\xba\x90\xe6\x96\xb9\xe6\xa1\x88 GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (\xe5\xb9\xb3\xe8\xa1\xa1)'
+Raw hex: e794b5e6ba90e696b9e6a18820475549443a2033383162343232322d663639342d343166302d393638352d666635626232363064663265202028e5b9b3e8a1a129
+utf-8: {"decoded": true, "text": "电源方案 GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (平衡)"}
+mbcs: {"decoded": true, "text": "鐢垫簮鏂规 GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (骞宠　)"}
+oem: {"decoded": true, "text": "鐢垫簮鏂规 GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (骞宠　)"}
+
+Stable host condition: physical dedicated Windows machine at BIOS-fixed 5.0 GHz with no competing load, user-confirmed rather than software-measured.
+No source modifications, no automatic test retry, no stability diagnostic, no formal sampling, no receipt created, no evidence commit/push.
+No aggregate stability statistics or sample batches exist for this failed test gate. Awaiting corrected source commit.
