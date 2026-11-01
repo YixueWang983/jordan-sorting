@@ -1,0 +1,352 @@
+[
+  {
+    "round": 0,
+    "instrumented_ns": 493.9765625,
+    "uninstrumented_ns": 5288.73828125,
+    "difference_ns": 4794.76171875,
+    "ratio": 10.70645589840105
+  },
+  {
+    "round": 1,
+    "instrumented_ns": 410.97265625,
+    "uninstrumented_ns": 5190.59375,
+    "difference_ns": 4779.62109375,
+    "ratio": 12.63002214639432
+  },
+  {
+    "round": 2,
+    "instrumented_ns": 402.5078125,
+    "uninstrumented_ns": 5168.62109375,
+    "difference_ns": 4766.11328125,
+    "ratio": 12.84104539896353
+  },
+  {
+    "round": 3,
+    "instrumented_ns": 485.3515625,
+    "uninstrumented_ns": 5133.7890625,
+    "difference_ns": 4648.4375,
+    "ratio": 10.577464788732394
+  },
+  {
+    "round": 4,
+    "instrumented_ns": 394.37109375,
+    "uninstrumented_ns": 5351.234375,
+    "difference_ns": 4956.86328125,
+    "ratio": 13.569032973781436
+  },
+  {
+    "round": 5,
+    "instrumented_ns": 437.17578125,
+    "uninstrumented_ns": 5097.00390625,
+    "difference_ns": 4659.828125,
+    "ratio": 11.658934746285194
+  },
+  {
+    "round": 6,
+    "instrumented_ns": 405.43359375,
+    "uninstrumented_ns": 5438.4765625,
+    "difference_ns": 5033.04296875,
+    "ratio": 13.413976163636539
+  },
+  {
+    "round": 7,
+    "instrumented_ns": 422.203125,
+    "uninstrumented_ns": 5501.46484375,
+    "difference_ns": 5079.26171875,
+    "ratio": 13.030374523518745
+  },
+  {
+    "round": 8,
+    "instrumented_ns": 395.34375,
+    "uninstrumented_ns": 5242.67578125,
+    "difference_ns": 4847.33203125,
+    "ratio": 13.261056438226227
+  },
+  {
+    "round": 9,
+    "instrumented_ns": 416.015625,
+    "uninstrumented_ns": 5562.17578125,
+    "difference_ns": 5146.16015625,
+    "ratio": 13.370112676056339
+  },
+  {
+    "round": 10,
+    "instrumented_ns": 400.06640625,
+    "uninstrumented_ns": 5226.234375,
+    "difference_ns": 4826.16796875,
+    "ratio": 13.06341720612789
+  },
+  {
+    "round": 11,
+    "instrumented_ns": 420.57421875,
+    "uninstrumented_ns": 5134.6015625,
+    "difference_ns": 4714.02734375,
+    "ratio": 12.208550437924341
+  },
+  {
+    "round": 12,
+    "instrumented_ns": 401.85546875,
+    "uninstrumented_ns": 5425.29296875,
+    "difference_ns": 5023.4375,
+    "ratio": 13.500607533414337
+  },
+  {
+    "round": 13,
+    "instrumented_ns": 417.48046875,
+    "uninstrumented_ns": 5177.5703125,
+    "difference_ns": 4760.08984375,
+    "ratio": 12.401946198830409
+  },
+  {
+    "round": 14,
+    "instrumented_ns": 399.25,
+    "uninstrumented_ns": 5329.1015625,
+    "difference_ns": 4929.8515625,
+    "ratio": 13.347780995616782
+  },
+  {
+    "round": 15,
+    "instrumented_ns": 436.5234375,
+    "uninstrumented_ns": 5347.4921875,
+    "difference_ns": 4910.96875,
+    "ratio": 12.250183445190157
+  },
+  {
+    "round": 16,
+    "instrumented_ns": 420.73828125,
+    "uninstrumented_ns": 5267.41796875,
+    "difference_ns": 4846.6796875,
+    "ratio": 12.519464483005134
+  },
+  {
+    "round": 17,
+    "instrumented_ns": 484.21484375,
+    "uninstrumented_ns": 5338.21484375,
+    "difference_ns": 4854.0,
+    "ratio": 11.024475834751813
+  },
+  {
+    "round": 18,
+    "instrumented_ns": 418.9453125,
+    "uninstrumented_ns": 5390.7890625,
+    "difference_ns": 4971.84375,
+    "ratio": 12.867524475524476
+  },
+  {
+    "round": 19,
+    "instrumented_ns": 426.59765625,
+    "uninstrumented_ns": 5324.0546875,
+    "difference_ns": 4897.45703125,
+    "ratio": 12.480271772472964
+  },
+  {
+    "round": 20,
+    "instrumented_ns": 397.625,
+    "uninstrumented_ns": 5315.91796875,
+    "difference_ns": 4918.29296875,
+    "ratio": 13.36917439484439
+  },
+  {
+    "round": 21,
+    "instrumented_ns": 430.17578125,
+    "uninstrumented_ns": 5242.8359375,
+    "difference_ns": 4812.66015625,
+    "ratio": 12.187659477866061
+  },
+  {
+    "round": 22,
+    "instrumented_ns": 486.16796875,
+    "uninstrumented_ns": 5680.5,
+    "difference_ns": 5194.33203125,
+    "ratio": 11.684233361990696
+  },
+  {
+    "round": 23,
+    "instrumented_ns": 409.1796875,
+    "uninstrumented_ns": 5286.62109375,
+    "difference_ns": 4877.44140625,
+    "ratio": 12.920047732696897
+  },
+  {
+    "round": 24,
+    "instrumented_ns": 402.66796875,
+    "uninstrumented_ns": 5204.265625,
+    "difference_ns": 4801.59765625,
+    "ratio": 12.924458931152566
+  },
+  {
+    "round": 25,
+    "instrumented_ns": 417.8046875,
+    "uninstrumented_ns": 5179.03515625,
+    "difference_ns": 4761.23046875,
+    "ratio": 12.395828269040184
+  },
+  {
+    "round": 26,
+    "instrumented_ns": 405.2734375,
+    "uninstrumented_ns": 6132.32421875,
+    "difference_ns": 5727.05078125,
+    "ratio": 15.13132530120482
+  },
+  {
+    "round": 27,
+    "instrumented_ns": 425.78125,
+    "uninstrumented_ns": 5242.51171875,
+    "difference_ns": 4816.73046875,
+    "ratio": 12.312688073394495
+  },
+  {
+    "round": 28,
+    "instrumented_ns": 411.45703125,
+    "uninstrumented_ns": 5302.734375,
+    "difference_ns": 4891.27734375,
+    "ratio": 12.887699011705733
+  },
+  {
+    "round": 29,
+    "instrumented_ns": 574.3828125,
+    "uninstrumented_ns": 5267.90234375,
+    "difference_ns": 4693.51953125,
+    "ratio": 9.171413609716952
+  },
+  {
+    "round": 30,
+    "instrumented_ns": 403.80859375,
+    "uninstrumented_ns": 5203.61328125,
+    "difference_ns": 4799.8046875,
+    "ratio": 12.8863361547763
+  },
+  {
+    "round": 31,
+    "instrumented_ns": 425.29296875,
+    "uninstrumented_ns": 5393.06640625,
+    "difference_ns": 4967.7734375,
+    "ratio": 12.680826636050517
+  },
+  {
+    "round": 32,
+    "instrumented_ns": 413.24609375,
+    "uninstrumented_ns": 5458.8203125,
+    "difference_ns": 5045.57421875,
+    "ratio": 13.209611403616565
+  },
+  {
+    "round": 33,
+    "instrumented_ns": 438.80078125,
+    "uninstrumented_ns": 5289.55078125,
+    "difference_ns": 4850.75,
+    "ratio": 12.054560992762589
+  },
+  {
+    "round": 34,
+    "instrumented_ns": 421.05859375,
+    "uninstrumented_ns": 5303.7109375,
+    "difference_ns": 4882.65234375,
+    "ratio": 12.59613511332115
+  },
+  {
+    "round": 35,
+    "instrumented_ns": 572.1015625,
+    "uninstrumented_ns": 5289.7109375,
+    "difference_ns": 4717.609375,
+    "ratio": 9.24610468530227
+  },
+  {
+    "round": 36,
+    "instrumented_ns": 405.92578125,
+    "uninstrumented_ns": 5378.41796875,
+    "difference_ns": 4972.4921875,
+    "ratio": 13.249757017619832
+  },
+  {
+    "round": 37,
+    "instrumented_ns": 440.265625,
+    "uninstrumented_ns": 5392.90234375,
+    "difference_ns": 4952.63671875,
+    "ratio": 12.249201476381446
+  },
+  {
+    "round": 38,
+    "instrumented_ns": 397.62109375,
+    "uninstrumented_ns": 5970.5390625,
+    "difference_ns": 5572.91796875,
+    "ratio": 15.015649713628907
+  },
+  {
+    "round": 39,
+    "instrumented_ns": 424.96875,
+    "uninstrumented_ns": 5304.03515625,
+    "difference_ns": 4879.06640625,
+    "ratio": 12.481000441208913
+  },
+  {
+    "round": 40,
+    "instrumented_ns": 399.90234375,
+    "uninstrumented_ns": 5438.96484375,
+    "difference_ns": 5039.0625,
+    "ratio": 13.6007326007326
+  },
+  {
+    "round": 41,
+    "instrumented_ns": 416.6640625,
+    "uninstrumented_ns": 5289.0625,
+    "difference_ns": 4872.3984375,
+    "ratio": 12.693829336433353
+  },
+  {
+    "round": 42,
+    "instrumented_ns": 455.73046875,
+    "uninstrumented_ns": 5343.5859375,
+    "difference_ns": 4887.85546875,
+    "ratio": 11.725320784797757
+  },
+  {
+    "round": 43,
+    "instrumented_ns": 434.734375,
+    "uninstrumented_ns": 5171.05859375,
+    "difference_ns": 4736.32421875,
+    "ratio": 11.894754339934586
+  },
+  {
+    "round": 44,
+    "instrumented_ns": 407.55078125,
+    "uninstrumented_ns": 5303.7109375,
+    "difference_ns": 4896.16015625,
+    "ratio": 13.013619851820613
+  },
+  {
+    "round": 45,
+    "instrumented_ns": 427.24609375,
+    "uninstrumented_ns": 5234.5390625,
+    "difference_ns": 4807.29296875,
+    "ratio": 12.251812571428571
+  },
+  {
+    "round": 46,
+    "instrumented_ns": 421.7109375,
+    "uninstrumented_ns": 5552.41015625,
+    "difference_ns": 5130.69921875,
+    "ratio": 13.166388780822171
+  },
+  {
+    "round": 47,
+    "instrumented_ns": 431.8046875,
+    "uninstrumented_ns": 5218.09765625,
+    "difference_ns": 4786.29296875,
+    "ratio": 12.084393262289446
+  },
+  {
+    "round": 48,
+    "instrumented_ns": 400.55078125,
+    "uninstrumented_ns": 5306.4765625,
+    "difference_ns": 4905.92578125,
+    "ratio": 13.247949600647546
+  },
+  {
+    "round": 49,
+    "instrumented_ns": 425.45703125,
+    "uninstrumented_ns": 5324.54296875,
+    "difference_ns": 4899.0859375,
+    "ratio": 12.514878301826162
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "schema": "post_formal_followup_verification_v1",
+  "verified_at": "2026-11-01T22:07:16.241182+00:00",
+  "passed": true,
+  "constructor_batches": 110,
+  "measured_paired_rounds": 50,
+  "stability_inputs": 170,
+  "constructor_statistics_independently_rebuilt": true,
+  "stability_ratios_independently_rebuilt": true,
+  "csv_matches_json": true,
+  "original_formal_package_files_verified": 27444,
+  "original_preflight_package_files_verified": 12201,
+  "frozen_151_source_files_unchanged": true,
+  "same_machine_and_runtime": true,
+  "protocol_commit": "70d47e9141dbcc95a232bd133093e99e7260fca3",
+  "protocol_committed_before_measurement": true,
+  "no_sorting_in_constructor_loop": true,
+  "main_statistics_unchanged": true,
+  "stability_comparison_post_hoc": true,
+  "inferential_tests_performed": false
+}

@@ -1,0 +1,12 @@
+{
+  "schema": "post_formal_followup_relocation_v1",
+  "recorded_at": "2026-11-01T22:08:17.929535+00:00",
+  "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_followup_20261101",
+  "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_followup_20261101/results",
+  "original_path_is_directory_alias": true,
+  "original_files": 131,
+  "all_file_hashes_unchanged": true,
+  "constructor_manifest_sha256": "5a76f7fb3bde2702edb97eab012a10997d134825a0dcca0c855c3da680a5f513",
+  "analysis_manifest_sha256": "acd93e83870a9e1e7e1b037f70e10cc8526af5360f1a56281284084f71cabdd2",
+  "no_symlinks_inside_archive": true
+}

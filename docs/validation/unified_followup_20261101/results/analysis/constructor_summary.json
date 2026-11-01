@@ -1,0 +1,57 @@
+{
+  "schema": "constructor_descriptive_summary_v1",
+  "plan_sha256": "488431c624fa27a90d2696edb3d8dd3f538a5a89ccddbbf608870ecf55a185bb",
+  "scope": "constructor-path comparison only; not isolated binding cost; not subtracted from formal measurements",
+  "unit": "elapsed_ns/256, one observation per batch",
+  "per_configuration": {
+    "instrumented": {
+      "n": 50,
+      "median": 419.759765625,
+      "q1": 405.3134765625,
+      "q3": 431.3974609375,
+      "iqr": 26.083984375,
+      "minimum": 394.37109375,
+      "maximum": 574.3828125
+    },
+    "uninstrumented": {
+      "n": 50,
+      "median": 5303.7109375,
+      "q1": 5236.5322265625,
+      "q3": 5387.6962890625,
+      "iqr": 151.1640625,
+      "minimum": 5097.00390625,
+      "maximum": 6132.32421875
+    }
+  },
+  "paired_difference_ns": {
+    "n": 50,
+    "median": 4880.859375,
+    "q1": 4800.2529296875,
+    "q3": 4965.0458984375,
+    "iqr": 164.79296875,
+    "minimum": 4648.4375,
+    "maximum": 5727.05078125
+  },
+  "paired_ratio": {
+    "n": 50,
+    "median": 12.655424391222418,
+    "q1": 12.218713197538618,
+    "q3": 13.198805747917966,
+    "iqr": 0.9800925503793483,
+    "minimum": 9.171413609716952,
+    "maximum": 15.13132530120482
+  },
+  "ratio_of_medians": 12.635110298394263,
+  "automatic_gc_in_timed_sample_batches": {
+    "instrumented": [
+      100,
+      0,
+      0
+    ],
+    "uninstrumented": [
+      950,
+      50,
+      0
+    ]
+  }
+}
