@@ -64,8 +64,10 @@ def evaluate(values, name, mode, output, action):
     return dict(**captured, prefixes=prefixes, report=report, initializations=initializations, final=final)
 
 
-def qualify_case(request, output):
+def qualify_case(request, output, *, on_start=None):
     output.mkdir(parents=True, exist_ok=False)
+    if on_start is not None:
+        on_start()
     index = 0
     for name in request['backends']:
         for mode in MODES:

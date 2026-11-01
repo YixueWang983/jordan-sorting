@@ -130,10 +130,10 @@ def run(output):
     return complete
 
 
-def validate(output):
+def validate(output, *, historical=False):
     from validate_common_qualification_v2 import validate_environment
     cfg=read(output/'config.json');cases=selection();env=read(output/'environment.json')
-    validate_environment(env,power_fields=True)
+    validate_environment(env,power_fields=True,historical=historical)
     if cfg['schema']!=SCHEMA or cfg['cases']!=cases or cfg['preregistration']!=registration():
         raise ValueError('equivalence configuration/input binding')
     statuses=read_records(output)
@@ -173,9 +173,12 @@ def validate(output):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True)
-    p.add_argument('--worker',type=Path);p.add_argument('--check',action='store_true');a=p.parse_args()
+    p.add_argument('--worker',type=Path);p.add_argument('--check',action='store_true')
+    p.add_argument('--historical',action='store_true');a=p.parse_args()
+    if a.historical and not a.check:
+        p.error('--historical is only available with --check')
     if a.worker:
         a.output.mkdir(parents=True,exist_ok=False);request=read(a.worker)
         result=evaluate(**request);commit_record(a.output,0,result);raise SystemExit(0)
-    if a.check:print(json.dumps(validate(a.output),indent=2))
+    if a.check:print(json.dumps(validate(a.output,historical=a.historical),indent=2))
     else:raise SystemExit(0 if run(a.output) else 2)

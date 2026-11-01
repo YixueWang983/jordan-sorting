@@ -41,7 +41,7 @@ def rebuild_statistics(rows,batch,backends=BACKENDS):
     return dict(groups=groups,tree_over_list_median=groups[backends[1]]['median_ns_per_call']/groups[backends[0]]['median_ns_per_call'] if len(groups)==2 else None)
 
 
-def check_job(job,request,*,passing):
+def check_job(job,request,*,passing,verify_summary=True):
     rows=read_records(job);case=request['case'];rules=request['rules'];stage=request['stage'];i=request['index'];cursor=0
     configuration=request.get('configuration','instrumented');backends=BACKENDS
     require(configuration in ('instrumented','uninstrumented'),'worker configuration')
@@ -101,14 +101,15 @@ def check_job(job,request,*,passing):
     require(cursor==len(rows),'extra/continued measurement rows')
     if passing:
         require(full,'incomplete case schedule or no qualifying common batch')
-        require(canonical(read(job/'summary.json'))==canonical(dict(stage=stage,completed=True,records=len(rows),result=result)),'case summary/statistics')
+        if verify_summary:
+            require(canonical(read(job/'summary.json'))==canonical(dict(stage=stage,completed=True,records=len(rows),result=result)),'case summary/statistics')
         require(read(job/'progress.json')==dict(status='COMPLETE',committed_records=len(rows)),'case completion cursor')
     return dict(full=full,rows=len(rows),result=result)
 
 
-def check_environment(env,*,uninstrumented=False):
+def check_environment(env,*,uninstrumented=False,historical=False):
     require(type(env) is dict and set(env)=={'execution','clock'},'measurement environment fields')
-    validate_environment(env['execution'],purpose='matched calibration or formal measurement',power_fields=uninstrumented)
+    validate_environment(env['execution'],purpose='matched calibration or formal measurement',power_fields=uninstrumented,historical=historical)
     if uninstrumented:
         from uninstrumented_protocol import require_machine
         require_machine(env['execution'])
@@ -120,13 +121,13 @@ def check_environment(env,*,uninstrumented=False):
     require(type(deltas) is list and len(deltas)==1000 and all(type(d) is int and d>=0 for d in deltas) and any(deltas),'clock observations')
 
 
-def validate(output,*,qualification,calibration=None):
+def validate(output,*,qualification,calibration=None,historical=False):
     output=Path(output);cfg=read(output/'config.json');env=read(output/'environment.json')
     from uninstrumented_protocol import MEASUREMENT_SCHEMA
     uninstrumented=cfg['schema']==MEASUREMENT_SCHEMA;backends=BACKENDS
     if uninstrumented:
         from uninstrumented_protocol import BACKENDS as backends
-    check_environment(env,uninstrumented=uninstrumented)
+    check_environment(env,uninstrumented=uninstrumented,historical=historical)
     require(type(cfg) is dict and set(cfg)=={'schema','dataset','selection_sha256','cases','rules','backend_identities',
         'calibration_backend_first','interpretation','stage','scope','qualification','calibration_manifest_sha256','review','batch_sizes','performance_eligible'},'configuration fields')
     dataset=cfg['dataset'];require(dataset in ('common','targeted_split','structural_split'),'dataset')
@@ -145,7 +146,7 @@ def validate(output,*,qualification,calibration=None):
             and cfg['interpretation']=='datasets analyzed separately; mirrors and related constructions are dependent; batch is statistical unit','schedule/scope')
     q=validate_qualification(qualification,historical=True,dataset=dataset);require(q['all_selected_qualified'],'qualification incomplete')
     require((q.get('configuration','instrumented')=='uninstrumented')==uninstrumented,'qualification configuration mismatch')
-    qenv=read(Path(qualification)/'environment.json');production={p:h for p,h in source_identity().items() if p.startswith('src/')}
+    qenv=read(Path(qualification)/'environment.json');production={p:h for p,h in env['execution']['source_sha256'].items() if p.startswith('src/')}
     require({p:h for p,h in qenv['source_sha256'].items() if p.startswith('src/')}==production,'qualified production changed')
     expected_binding=dict(producing_head=qenv['head'],selection_sha256=q['selection_sha256'],
         archive_manifest_sha256=digest(read(Path(qualification)/'manifest.json')),production_sources_identical=True,current_production_sha256=production)
@@ -153,7 +154,7 @@ def validate(output,*,qualification,calibration=None):
     stage=cfg['stage'];require(stage in ('calibration','formal'),'stage')
     if stage=='formal':
         require(calibration is not None,'calibration archive required')
-        cal=validate(calibration,qualification=qualification)
+        cal=validate(calibration,qualification=qualification,historical=historical)
         require(cal['stage']=='calibration' and cal['complete'],'calibration is incomplete')
         require((cal.get('configuration','instrumented')=='uninstrumented')==uninstrumented,'calibration configuration mismatch')
         require(cal['dataset']==dataset and set(cal['batch_sizes'])=={c['case'] for c in cases},'calibration dataset mismatch')
@@ -212,5 +213,6 @@ def validate(output,*,qualification,calibration=None):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('directory',type=Path)
     parser.add_argument('--qualification',type=Path,required=True);parser.add_argument('--calibration',type=Path)
-    args=parser.parse_args();report=validate(args.directory,qualification=args.qualification,calibration=args.calibration)
+    parser.add_argument('--historical',action='store_true',help='verify the producing revision instead of requiring the current tool inventory')
+    args=parser.parse_args();report=validate(args.directory,qualification=args.qualification,calibration=args.calibration,historical=args.historical)
     print(json.dumps(report,indent=2));raise SystemExit(0 if report['complete'] else 2)

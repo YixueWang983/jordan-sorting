@@ -1,0 +1,73 @@
+......................................1/14 n32-strict_flat-00: PASS
+2/14 n32-strict_flat-00-mirror: PASS
+3/14 n32-low_nesting_valid-00: PASS
+4/14 n32-low_nesting_valid-00-mirror: PASS
+5/14 n32-low_nesting_valid-01: PASS
+6/14 n32-low_nesting_valid-01-mirror: PASS
+7/14 n32-medium_nesting_valid-00: PASS
+8/14 n32-medium_nesting_valid-00-mirror: PASS
+9/14 n32-medium_nesting_valid-01: PASS
+10/14 n32-medium_nesting_valid-01-mirror: PASS
+11/14 n32-nested_heavy_valid-00: PASS
+12/14 n32-nested_heavy_valid-00-mirror: PASS
+13/14 n32-nested_heavy_valid-01: PASS
+14/14 n32-nested_heavy_valid-01-mirror: PASS
+.1/14 n32-strict_flat-00: PASS
+2/14 n32-strict_flat-00-mirror: PASS
+3/14 n32-low_nesting_valid-00: PASS
+4/14 n32-low_nesting_valid-00-mirror: PASS
+5/14 n32-low_nesting_valid-01: PASS
+6/14 n32-low_nesting_valid-01-mirror: PASS
+7/14 n32-medium_nesting_valid-00: PASS
+8/14 n32-medium_nesting_valid-00-mirror: PASS
+9/14 n32-medium_nesting_valid-01: PASS
+10/14 n32-medium_nesting_valid-01-mirror: PASS
+11/14 n32-nested_heavy_valid-00: PASS
+12/14 n32-nested_heavy_valid-00-mirror: PASS
+13/14 n32-nested_heavy_valid-01: PASS
+14/14 n32-nested_heavy_valid-01-mirror: PASS
+.1/14 n32-strict_flat-00: PASS
+2/14 n32-strict_flat-00-mirror: TIMEOUT
+3/14 n32-low_nesting_valid-00: NOT_RUN
+4/14 n32-low_nesting_valid-00-mirror: NOT_RUN
+5/14 n32-low_nesting_valid-01: NOT_RUN
+6/14 n32-low_nesting_valid-01-mirror: NOT_RUN
+7/14 n32-medium_nesting_valid-00: NOT_RUN
+8/14 n32-medium_nesting_valid-00-mirror: NOT_RUN
+9/14 n32-medium_nesting_valid-01: NOT_RUN
+10/14 n32-medium_nesting_valid-01-mirror: NOT_RUN
+11/14 n32-nested_heavy_valid-00: NOT_RUN
+12/14 n32-nested_heavy_valid-00-mirror: NOT_RUN
+13/14 n32-nested_heavy_valid-01: NOT_RUN
+14/14 n32-nested_heavy_valid-01-mirror: NOT_RUN
+....1/2 n32-strict_flat-00: TIMEOUT
+2/2 n32-strict_flat-00-mirror: NOT_RUN
+....1/2 n32-strict_flat-00: PASS
+2/2 n32-strict_flat-00-mirror: PASS
+..1/2 n32-strict_flat-00: PASS
+2/2 n32-strict_flat-00-mirror: PASS
+.1/2 n32-strict_flat-00: ERROR
+2/2 n32-strict_flat-00-mirror: NOT_RUN
+...1/2 n32-strict_flat-00: ERROR
+2/2 n32-strict_flat-00-mirror: NOT_RUN
+........................................................................................{"accepted": true, "scope": "bounded_representation_locality_not_timing", "case_runs": 2, "distinct_input_hashes": 2, "original_runs": 4, "totals": {"ordinary": {"prefixes": 3, "iterations": 1}, "tree_off": {"prefixes": 3, "iterations": 1}}, "performance_eligible": false, "formal_proof_certified": false}
+...................................................................................................................................................................................................................................................................................................................................................................................{"check": "real_finger_split", "shape_cut_cases": 1088, "max_leaves": 9, "repair_branch_counts": {"deletion_red_sibling": 37, "deletion_near_rotations": 25, "deletion_far_rotations": 63, "deletion_propagations": 68, "left_rotations": 88, "right_rotations": 138}}
+{"check": "orientation_round_trip", "colored_shapes": 271, "max_leaves": 10}
+BEGIN n=256
+BEGIN n=257
+BEGIN n=512
+BEGIN n=513
+BEGIN n=256
+.1/1 flat_valid_n256_probe: PASS
+..1/1 test-flat: PASS
+.1/1 test-flat: PASS
+....................................................................................................................................................................................................1/1 balanced-128: PASS
+.1/1 balanced-128: ERROR
+...............1/1 split-n128-k3: PASS
+.1/1 split-n128-k3: ERROR
+.......1/1 split-n128-k3: PASS
+.......................................................................................................................
+----------------------------------------------------------------------
+Ran 856 tests in 207.724s
+
+OK

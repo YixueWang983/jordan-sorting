@@ -1,0 +1,45 @@
+{
+  "common": {
+    "complete": true,
+    "inputs": 140,
+    "formal": "docs/validation/final_review_formal_20261015/formal_common",
+    "qualification": "docs/validation/common_qualification_v2_20261015/qualification",
+    "calibration": "docs/validation/id_lifecycle_calibration_20261015/calibration_common"
+  },
+  "targeted_split": {
+    "complete": true,
+    "inputs": 12,
+    "formal": "docs/validation/final_review_formal_20261015/formal_targeted_split",
+    "qualification": "docs/validation/split_trace_followup_20261015/qualification",
+    "calibration": "docs/validation/id_lifecycle_calibration_20261015/calibration_targeted_split"
+  },
+  "structural_split": {
+    "complete": true,
+    "inputs": 18,
+    "formal": "docs/validation/structural_split_formal_20261101/formal",
+    "qualification": "docs/validation/structural_split_formal_20261101/qualification",
+    "calibration": "docs/validation/structural_split_formal_20261101/calibration"
+  },
+  "old_uninstrumented_common": {
+    "complete": true,
+    "inputs": 140,
+    "calibration": "docs/validation/uninstrumented_preflight_20261101/calibration/common",
+    "qualification": "docs/validation/uninstrumented_preflight_20261101/qualification/common"
+  },
+  "old_uninstrumented_targeted_split": {
+    "complete": true,
+    "inputs": 12,
+    "calibration": "docs/validation/uninstrumented_preflight_20261101/calibration/targeted_split",
+    "qualification": "docs/validation/uninstrumented_preflight_20261101/qualification/targeted_split"
+  },
+  "old_equivalence": {
+    "archive_valid": true,
+    "inputs": 192,
+    "completed_prefixes_per_configuration": 50626,
+    "trace_equal": true,
+    "legacy_traces_unchanged": 192,
+    "counted_comparisons": 1,
+    "source_head": "3bfc839fae8da3061938f48f490e936deb0c002e",
+    "performance_evidence": false
+  }
+}
