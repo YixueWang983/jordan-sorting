@@ -1,0 +1,91 @@
+{
+  "common": {
+    "low_nesting_valid": {
+      "inputs": 40,
+      "splits": 844,
+      "interior_splits": 0,
+      "inputs_with_interior_split": 0,
+      "inputs_with_no_split": 0,
+      "smaller_side_histogram": {},
+      "smaller_side_min": null,
+      "smaller_side_median": null,
+      "smaller_side_max": null
+    },
+    "medium_nesting_valid": {
+      "inputs": 40,
+      "splits": 2924,
+      "interior_splits": 0,
+      "inputs_with_interior_split": 0,
+      "inputs_with_no_split": 0,
+      "smaller_side_histogram": {},
+      "smaller_side_min": null,
+      "smaller_side_median": null,
+      "smaller_side_max": null
+    },
+    "nested_heavy_valid": {
+      "inputs": 40,
+      "splits": 20,
+      "interior_splits": 0,
+      "inputs_with_interior_split": 0,
+      "inputs_with_no_split": 20,
+      "smaller_side_histogram": {},
+      "smaller_side_min": null,
+      "smaller_side_median": null,
+      "smaller_side_max": null
+    },
+    "strict_flat": {
+      "inputs": 20,
+      "splits": 0,
+      "interior_splits": 0,
+      "inputs_with_interior_split": 0,
+      "inputs_with_no_split": 20,
+      "smaller_side_histogram": {},
+      "smaller_side_min": null,
+      "smaller_side_median": null,
+      "smaller_side_max": null
+    }
+  },
+  "structural": {
+    "balanced": {
+      "inputs": 6,
+      "splits": 12,
+      "interior_splits": 6,
+      "inputs_with_interior_split": 6,
+      "inputs_with_no_split": 0,
+      "smaller_side_histogram": {
+        "30": 2,
+        "62": 2,
+        "126": 2
+      },
+      "smaller_side_min": 30,
+      "smaller_side_median": 62.0,
+      "smaller_side_max": 126
+    },
+    "repeated": {
+      "inputs": 6,
+      "splits": 436,
+      "interior_splits": 218,
+      "inputs_with_interior_split": 6,
+      "inputs_with_no_split": 0,
+      "smaller_side_histogram": {
+        "1": 218
+      },
+      "smaller_side_min": 1,
+      "smaller_side_median": 1.0,
+      "smaller_side_max": 1
+    },
+    "skew": {
+      "inputs": 6,
+      "splits": 12,
+      "interior_splits": 6,
+      "inputs_with_interior_split": 6,
+      "inputs_with_no_split": 0,
+      "smaller_side_histogram": {
+        "1": 6
+      },
+      "smaller_side_min": 1,
+      "smaller_side_median": 1.0,
+      "smaller_side_max": 1
+    }
+  }
+}

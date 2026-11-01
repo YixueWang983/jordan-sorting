@@ -1,0 +1,163 @@
+{
+  "frozen_commit": "bca4c1c6a5480e22c7121987de2c97bb00688264",
+  "source_identity_sha256": "0cd50e8f3db8199a9d4e0804a6e6d648d4d337aa8f58791af6dbe3a328212a82",
+  "suite_sha256": "a8c2fe3aa2fe4b45bbe876db9e9dabe3b7f95fd666b3c3afab0776bef67234b7",
+  "canonical_inputs": 302,
+  "all_preparation_complete": true,
+  "sources": {
+    "common": {
+      "inputs": 140,
+      "stages": {
+        "equivalence": "COMPLETE",
+        "qualification": "COMPLETE",
+        "calibration": "COMPLETE"
+      },
+      "split_total": 3788,
+      "interior_split_total": 0,
+      "inputs_with_interior_split": 0,
+      "inputs_with_no_split": 40,
+      "smaller_side_histogram": {},
+      "smaller_side_min": null,
+      "smaller_side_median": null,
+      "smaller_side_max": null,
+      "batch_size_distribution": {
+        "1": 24,
+        "2": 15,
+        "4": 25,
+        "8": 29,
+        "16": 27,
+        "32": 20
+      }
+    },
+    "targeted_split": {
+      "inputs": 12,
+      "stages": {
+        "equivalence": "COMPLETE",
+        "qualification": "COMPLETE",
+        "calibration": "COMPLETE"
+      },
+      "split_total": 24,
+      "interior_split_total": 12,
+      "inputs_with_interior_split": 12,
+      "inputs_with_no_split": 0,
+      "smaller_side_histogram": {
+        "3": 4,
+        "7": 4,
+        "19": 4
+      },
+      "smaller_side_min": 3,
+      "smaller_side_median": 7.0,
+      "smaller_side_max": 19,
+      "batch_size_distribution": {
+        "8": 12
+      }
+    },
+    "structural": {
+      "inputs": 18,
+      "stages": {
+        "equivalence": "COMPLETE",
+        "qualification": "COMPLETE",
+        "calibration": "COMPLETE"
+      },
+      "split_total": 460,
+      "interior_split_total": 230,
+      "inputs_with_interior_split": 18,
+      "inputs_with_no_split": 0,
+      "smaller_side_histogram": {
+        "1": 224,
+        "30": 2,
+        "62": 2,
+        "126": 2
+      },
+      "smaller_side_min": 1,
+      "smaller_side_median": 1.0,
+      "smaller_side_max": 126,
+      "batch_size_distribution": {
+        "1": 6,
+        "2": 2,
+        "4": 6,
+        "8": 4
+      }
+    },
+    "geometric": {
+      "inputs": 100,
+      "stages": {
+        "equivalence": "COMPLETE",
+        "qualification": "COMPLETE",
+        "calibration": "COMPLETE"
+      },
+      "split_total": 9272,
+      "interior_split_total": 1774,
+      "inputs_with_interior_split": 99,
+      "inputs_with_no_split": 0,
+      "smaller_side_histogram": {
+        "1": 1013,
+        "2": 313,
+        "3": 162,
+        "4": 93,
+        "5": 73,
+        "6": 43,
+        "7": 27,
+        "8": 19,
+        "9": 9,
+        "10": 7,
+        "11": 3,
+        "12": 2,
+        "13": 1,
+        "14": 1,
+        "15": 4,
+        "16": 2,
+        "17": 2
+      },
+      "smaller_side_min": 1,
+      "smaller_side_median": 1.0,
+      "smaller_side_max": 17,
+      "batch_size_distribution": {
+        "1": 20,
+        "2": 20,
+        "4": 20,
+        "8": 19,
+        "16": 16,
+        "32": 5
+      }
+    },
+    "seeded": {
+      "inputs": 32,
+      "stages": {
+        "equivalence": "COMPLETE",
+        "qualification": "COMPLETE",
+        "calibration": "COMPLETE"
+      },
+      "split_total": 2946,
+      "interior_split_total": 307,
+      "inputs_with_interior_split": 30,
+      "inputs_with_no_split": 0,
+      "smaller_side_histogram": {
+        "1": 204,
+        "2": 64,
+        "3": 18,
+        "4": 9,
+        "5": 6,
+        "6": 4,
+        "7": 1,
+        "8": 1
+      },
+      "smaller_side_min": 1,
+      "smaller_side_median": 1,
+      "smaller_side_max": 8,
+      "batch_size_distribution": {
+        "1": 16,
+        "4": 8,
+        "8": 2,
+        "16": 2,
+        "32": 4
+      }
+    }
+  },
+  "resource_timeouts": 0,
+  "non_resource_errors": 0,
+  "formal_started": false,
+  "author_receipt_created": false,
+  "calibration_purpose": "select B only; not a backend performance comparison",
+  "structure_scope": "one primary checked trace per fully qualified canonical input; both backends verified equal; descriptive only"
+}

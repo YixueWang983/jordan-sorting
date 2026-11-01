@@ -1,0 +1,56 @@
+{
+  "status": "SUPERSEDED",
+  "reason": "Author requested suspension and a protocol revision before changing instance construction.",
+  "decision_date": "2026-11-01",
+  "stopped_utc": "2026-11-01T16:36:30.484425+00:00",
+  "frozen_commit": "bca4c1c6a5480e22c7121987de2c97bb00688264",
+  "replacement_commit": null,
+  "revision_draft": "docs/plan/uninstrumented_rerun_addendum_r1_20261101.md",
+  "revision_approved": false,
+  "stages": {
+    "equivalence": {
+      "status": "INTERRUPTED_SUPERSEDED",
+      "sources": {
+        "common": {
+          "planned": 140,
+          "committed_pass": 140,
+          "requests": 140,
+          "status": "COMPLETED_CASES_SUPERSEDED"
+        },
+        "targeted_split": {
+          "planned": 12,
+          "committed_pass": 12,
+          "requests": 12,
+          "status": "COMPLETED_CASES_SUPERSEDED"
+        },
+        "structural": {
+          "planned": 18,
+          "committed_pass": 12,
+          "requests": 13,
+          "status": "INTERRUPTED_SUPERSEDED"
+        },
+        "geometric": {
+          "planned": 100,
+          "committed_pass": 0,
+          "requests": 0,
+          "status": "NOT_RUN"
+        },
+        "seeded": {
+          "planned": 32,
+          "committed_pass": 0,
+          "requests": 0,
+          "status": "NOT_RUN"
+        }
+      },
+      "complete_archive_manifest": false
+    },
+    "qualification": "NOT_RUN",
+    "calibration": "NOT_RUN",
+    "formal": "NOT_RUN"
+  },
+  "interrupted_case": "structural--balanced-512",
+  "interrupted_case_committed_records": 0,
+  "original_files_preserved": true,
+  "eligible_as_prerequisite": false,
+  "note": "External status marker only. Existing raw records/configuration/progress were not edited or resealed; interrupted worker progress may still say RUNNING."
+}

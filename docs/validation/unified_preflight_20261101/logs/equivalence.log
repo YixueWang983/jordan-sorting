@@ -1,0 +1,16 @@
+equivalence: common: COMPLETE
+equivalence: targeted_split: COMPLETE
+equivalence: structural: COMPLETE
+equivalence: geometric: COMPLETE
+equivalence: seeded: COMPLETE
+{
+  "stage": "equivalence",
+  "sources": {
+    "common": "COMPLETE",
+    "targeted_split": "COMPLETE",
+    "structural": "COMPLETE",
+    "geometric": "COMPLETE",
+    "seeded": "COMPLETE"
+  },
+  "complete": true
+}

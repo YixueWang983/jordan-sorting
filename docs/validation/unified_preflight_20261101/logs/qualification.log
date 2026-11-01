@@ -1,0 +1,16 @@
+qualification: common: COMPLETE
+qualification: targeted_split: COMPLETE
+qualification: structural: COMPLETE
+qualification: geometric: COMPLETE
+qualification: seeded: COMPLETE
+{
+  "stage": "qualification",
+  "sources": {
+    "common": "COMPLETE",
+    "targeted_split": "COMPLETE",
+    "structural": "COMPLETE",
+    "geometric": "COMPLETE",
+    "seeded": "COMPLETE"
+  },
+  "complete": true
+}

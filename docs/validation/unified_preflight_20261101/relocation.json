@@ -1,0 +1,29 @@
+[
+  {
+    "stage": "equivalence",
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_preflight_20261101_bca4c1c6_rerun/equivalence",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_preflight_20261101/equivalence",
+    "original_path_is_directory_alias": true,
+    "files": 1518,
+    "unchanged": true,
+    "manifest_sha256": "c4a8182ed0979437ec06da77984165be34a202d26512c7b98a02b542b9cea57f"
+  },
+  {
+    "stage": "qualification",
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_preflight_20261101_bca4c1c6_rerun/qualification",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_preflight_20261101/qualification",
+    "original_path_is_directory_alias": true,
+    "files": 2424,
+    "unchanged": true,
+    "manifest_sha256": "2049de8a96512f8e855fae5d43d265aba324cfff5f81f511b98e770258dedbbf"
+  },
+  {
+    "stage": "calibration",
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_preflight_20261101_bca4c1c6_rerun/calibration",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_preflight_20261101/calibration",
+    "original_path_is_directory_alias": true,
+    "files": 7398,
+    "unchanged": true,
+    "manifest_sha256": "4fc7b3545a9d32e29dabec03686acd7c7b208c09d050692131771ac1cfc9884d"
+  }
+]

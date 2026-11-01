@@ -1,0 +1,11 @@
+{
+  "checked_at": "2026-11-01T17:41:42.613809+00:00",
+  "frozen_commit": "bca4c1c6a5480e22c7121987de2c97bb00688264",
+  "source_identity_sha256": "0cd50e8f3db8199a9d4e0804a6e6d648d4d337aa8f58791af6dbe3a328212a82",
+  "source_unchanged": true,
+  "worktree_clean_after_all_stages": true,
+  "protected_files": 24105,
+  "changed_files": [],
+  "formal_started": false,
+  "author_receipt_created": false
+}

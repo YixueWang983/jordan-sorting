@@ -1,0 +1,16 @@
+calibration: common: COMPLETE
+calibration: targeted_split: COMPLETE
+calibration: structural: COMPLETE
+calibration: geometric: COMPLETE
+calibration: seeded: COMPLETE
+{
+  "stage": "calibration",
+  "sources": {
+    "common": "COMPLETE",
+    "targeted_split": "COMPLETE",
+    "structural": "COMPLETE",
+    "geometric": "COMPLETE",
+    "seeded": "COMPLETE"
+  },
+  "complete": true
+}

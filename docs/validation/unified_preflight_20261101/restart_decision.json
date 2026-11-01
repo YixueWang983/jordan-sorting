@@ -1,0 +1,21 @@
+{
+  "status": "AUTHOR_INTERRUPTED_RESTARTED_SAME_VERSION",
+  "recorded_at": "2026-11-01T16:46:14.083593+00:00",
+  "original_directory": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_preflight_20261101_bca4c1c6",
+  "new_directory": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_preflight_20261101_bca4c1c6_rerun",
+  "frozen_commit": "bca4c1c6a5480e22c7121987de2c97bb00688264",
+  "explanation": "Author cancelled the proposed source change and authorized a fresh all-source run on the same frozen version. The previous partial equivalence run is retained and cannot serve as a prerequisite.",
+  "previous_status_marker": "superseded.json",
+  "previous_marker_is_historical": true,
+  "source_revision_superseded": false,
+  "old_equivalence_committed_pass": {
+    "common": 140,
+    "targeted_split": 12,
+    "structural": 12,
+    "geometric": 0,
+    "seeded": 0
+  },
+  "old_qualification": "NOT_RUN",
+  "old_calibration": "NOT_RUN",
+  "old_formal": "NOT_RUN"
+}
