@@ -12,6 +12,8 @@ git -c core.autocrlf=false clone --config core.autocrlf=false --config core.long
 
 已有仓库使用 `git fetch origin` 后检出明确提交，先检查 `git status`，不要覆盖未提交工作。仅设置 autocrlf 不会修复已转换的文件；应在干净副本重新检出并核对 Git blob/源码摘要。源码和 manifest 中的相对路径统一使用 `/`。
 
+Sherry02 已独立登录 GitHub 账号 `YixueWang983`，Git helper 为 `manager`，该仓库使用 `wincredman`（Windows Credential Manager）存储凭据。设备授权由用户完成；已验证远端读取和指定分支的 `push --dry-run`。后续使用正常的 `git fetch` / `git push`，不从 Mac 复制令牌。首次配置其他机器时使用官方 Git Credential Manager 登录流程；不要把密码、令牌或设备授权码写入仓库。
+
 评测采用 64 位 CPython 3.12.14。在仓库外建立虚拟环境；Windows 本次为 `D:\project-env\jordan-sorting-py312`。Mac 可使用自己的相同版本解释器。系统上的其他 Python 版本不参与比较。需要图形分析或全量工具测试时，在所选虚拟环境中安装 matplotlib 并将 `python -m pip freeze --all` 保存到环境记录；其余实验核心仅需标准库。Codex 自带 Python/Git 可使用，但应用更新后需重新核对实际版本。
 
 ## 测试
