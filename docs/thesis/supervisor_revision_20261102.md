@@ -29,3 +29,5 @@
 构建输出位于忽略目录 `thesis/build/supervisor-20261102/`；基线、核对记录与逐页渲染位于项目外层 `.codex-tmp/supervisor-revision-20261102/`。
 
 后续微调：按作者提供的表述，将引言的进度回顾单独成段，下一段改为 “Both backends share one Python core for the 1990 procedure.”，去除重复的后端列举。重新编译无警告，仍为 72 页；只有物理第 13 页的文字发生变化，已复查该页排版。
+
+1 November 2026 更新：按作者要求暂时清空 B.2「Documentation of AI Use」和 B.3「Reflection on AI Use」的正文，并移除反思末尾的语言辅助说明；保留两节标题和标签。B.1 证据与来源索引保持原样。原有文本仍可从 Git 历史恢复。新版 PDF 为 **70 页**，编译无警告；已核对正文未变，并复查更新后的目录、附录 B 和参考文献排版。
