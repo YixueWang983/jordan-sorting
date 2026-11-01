@@ -1,0 +1,25 @@
+{
+  "configuration": "uninstrumented",
+  "archive_valid": true,
+  "stage": "calibration",
+  "complete": true,
+  "dataset": "targeted_split",
+  "inputs": 12,
+  "batch_sizes": {
+    "split-n128-k3": 8,
+    "split-n128-k3-mirror": 8,
+    "split-n128-k7": 8,
+    "split-n128-k7-mirror": 8,
+    "split-n128-k19": 8,
+    "split-n128-k19-mirror": 8,
+    "split-n129-k3": 8,
+    "split-n129-k3-mirror": 8,
+    "split-n129-k7": 8,
+    "split-n129-k7-mirror": 8,
+    "split-n129-k19": 8,
+    "split-n129-k19-mirror": 8
+  },
+  "statistics": {},
+  "source_head": "3bfc839fae8da3061938f48f490e936deb0c002e",
+  "performance_eligible": false
+}

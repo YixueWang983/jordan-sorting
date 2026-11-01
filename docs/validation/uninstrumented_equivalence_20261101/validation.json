@@ -1,0 +1,10 @@
+{
+  "archive_valid": true,
+  "inputs": 192,
+  "completed_prefixes_per_configuration": 50626,
+  "trace_equal": true,
+  "legacy_traces_unchanged": 192,
+  "counted_comparisons": 1,
+  "source_head": "3bfc839fae8da3061938f48f490e936deb0c002e",
+  "performance_evidence": false
+}

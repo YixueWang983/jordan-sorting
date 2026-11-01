@@ -1,0 +1,12 @@
+1/12 split-n128-k3: PASS
+2/12 split-n128-k3-mirror: PASS
+3/12 split-n128-k7: PASS
+4/12 split-n128-k7-mirror: PASS
+5/12 split-n128-k19: PASS
+6/12 split-n128-k19-mirror: PASS
+7/12 split-n129-k3: PASS
+8/12 split-n129-k3-mirror: PASS
+9/12 split-n129-k7: PASS
+10/12 split-n129-k7-mirror: PASS
+11/12 split-n129-k19: PASS
+12/12 split-n129-k19-mirror: PASS
