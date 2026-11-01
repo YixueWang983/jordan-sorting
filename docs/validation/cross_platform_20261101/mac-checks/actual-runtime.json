@@ -1,0 +1,7 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "executable": "/Users/schnee/.local/share/python-env/bin/python",
+  "matplotlib": "3.11.1",
+  "matplotlib_path": "/Users/schnee/.local/share/python-env/lib/python3.12/site-packages/matplotlib/__init__.py",
+  "note": "Package/version inventory may include distributions in multiple search paths; this record identifies the actual imported plotting package."
+}

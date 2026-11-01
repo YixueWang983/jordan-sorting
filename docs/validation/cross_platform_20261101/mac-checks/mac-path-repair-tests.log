@@ -1,0 +1,57 @@
+.....1/14 n32-strict_flat-00: PASS
+2/14 n32-strict_flat-00-mirror: PASS
+3/14 n32-low_nesting_valid-00: PASS
+4/14 n32-low_nesting_valid-00-mirror: PASS
+5/14 n32-low_nesting_valid-01: PASS
+6/14 n32-low_nesting_valid-01-mirror: PASS
+7/14 n32-medium_nesting_valid-00: PASS
+8/14 n32-medium_nesting_valid-00-mirror: PASS
+9/14 n32-medium_nesting_valid-01: PASS
+10/14 n32-medium_nesting_valid-01-mirror: PASS
+11/14 n32-nested_heavy_valid-00: PASS
+12/14 n32-nested_heavy_valid-00-mirror: PASS
+13/14 n32-nested_heavy_valid-01: PASS
+14/14 n32-nested_heavy_valid-01-mirror: PASS
+.1/14 n32-strict_flat-00: PASS
+2/14 n32-strict_flat-00-mirror: PASS
+3/14 n32-low_nesting_valid-00: PASS
+4/14 n32-low_nesting_valid-00-mirror: PASS
+5/14 n32-low_nesting_valid-01: PASS
+6/14 n32-low_nesting_valid-01-mirror: PASS
+7/14 n32-medium_nesting_valid-00: PASS
+8/14 n32-medium_nesting_valid-00-mirror: PASS
+9/14 n32-medium_nesting_valid-01: PASS
+10/14 n32-medium_nesting_valid-01-mirror: PASS
+11/14 n32-nested_heavy_valid-00: PASS
+12/14 n32-nested_heavy_valid-00-mirror: PASS
+13/14 n32-nested_heavy_valid-01: PASS
+14/14 n32-nested_heavy_valid-01-mirror: PASS
+.1/14 n32-strict_flat-00: PASS
+2/14 n32-strict_flat-00-mirror: TIMEOUT
+3/14 n32-low_nesting_valid-00: NOT_RUN
+4/14 n32-low_nesting_valid-00-mirror: NOT_RUN
+5/14 n32-low_nesting_valid-01: NOT_RUN
+6/14 n32-low_nesting_valid-01-mirror: NOT_RUN
+7/14 n32-medium_nesting_valid-00: NOT_RUN
+8/14 n32-medium_nesting_valid-00-mirror: NOT_RUN
+9/14 n32-medium_nesting_valid-01: NOT_RUN
+10/14 n32-medium_nesting_valid-01-mirror: NOT_RUN
+11/14 n32-nested_heavy_valid-00: NOT_RUN
+12/14 n32-nested_heavy_valid-00-mirror: NOT_RUN
+13/14 n32-nested_heavy_valid-01: NOT_RUN
+14/14 n32-nested_heavy_valid-01-mirror: NOT_RUN
+....1/2 n32-strict_flat-00: TIMEOUT
+2/2 n32-strict_flat-00-mirror: NOT_RUN
+....1/2 n32-strict_flat-00: PASS
+2/2 n32-strict_flat-00-mirror: PASS
+..1/2 n32-strict_flat-00: PASS
+2/2 n32-strict_flat-00-mirror: PASS
+.1/2 n32-strict_flat-00: ERROR
+2/2 n32-strict_flat-00-mirror: NOT_RUN
+...1/2 n32-strict_flat-00: ERROR
+2/2 n32-strict_flat-00-mirror: NOT_RUN
+...............
+----------------------------------------------------------------------
+Ran 36 tests in 14.321s
+
+OK

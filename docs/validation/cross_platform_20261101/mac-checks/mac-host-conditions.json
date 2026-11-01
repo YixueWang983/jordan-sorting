@@ -1,0 +1,7 @@
+{
+  "source": "evaluation operator record",
+  "dedicated_host": false,
+  "role": "Mac development and research workstation",
+  "bios_fixed_frequency_ghz": null,
+  "measurement_conditions": "Run after the full test suite exits; no other project test/build/analysis command during the diagnostic. Background OS activity is not asserted absent."
+}

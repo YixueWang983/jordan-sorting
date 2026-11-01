@@ -1,0 +1,104 @@
+{
+  "equivalence": {
+    "archive_valid": true,
+    "complete": true,
+    "hard_error": false,
+    "all_sources_complete": true,
+    "suite_sha256": "a8c2fe3aa2fe4b45bbe876db9e9dabe3b7f95fd666b3c3afab0776bef67234b7",
+    "sources": {
+      "common": {
+        "status": "COMPLETE",
+        "entries": 140,
+        "passed": 140
+      },
+      "targeted_split": {
+        "status": "COMPLETE",
+        "entries": 12,
+        "passed": 12
+      },
+      "structural": {
+        "status": "COMPLETE",
+        "entries": 18,
+        "passed": 18
+      },
+      "geometric": {
+        "status": "COMPLETE",
+        "entries": 100,
+        "passed": 100
+      },
+      "seeded": {
+        "status": "COMPLETE",
+        "entries": 32,
+        "passed": 32
+      }
+    }
+  },
+  "qualification": {
+    "archive_valid": true,
+    "complete": true,
+    "hard_error": false,
+    "all_sources_complete": true,
+    "suite_sha256": "a8c2fe3aa2fe4b45bbe876db9e9dabe3b7f95fd666b3c3afab0776bef67234b7",
+    "sources": {
+      "common": {
+        "status": "COMPLETE",
+        "entries": 140,
+        "passed": 140
+      },
+      "targeted_split": {
+        "status": "COMPLETE",
+        "entries": 12,
+        "passed": 12
+      },
+      "structural": {
+        "status": "COMPLETE",
+        "entries": 18,
+        "passed": 18
+      },
+      "geometric": {
+        "status": "COMPLETE",
+        "entries": 100,
+        "passed": 100
+      },
+      "seeded": {
+        "status": "COMPLETE",
+        "entries": 32,
+        "passed": 32
+      }
+    }
+  },
+  "calibration": {
+    "archive_valid": true,
+    "complete": true,
+    "hard_error": false,
+    "all_sources_complete": true,
+    "suite_sha256": "a8c2fe3aa2fe4b45bbe876db9e9dabe3b7f95fd666b3c3afab0776bef67234b7",
+    "sources": {
+      "common": {
+        "status": "COMPLETE",
+        "entries": 140,
+        "passed": 140
+      },
+      "targeted_split": {
+        "status": "COMPLETE",
+        "entries": 12,
+        "passed": 12
+      },
+      "structural": {
+        "status": "COMPLETE",
+        "entries": 18,
+        "passed": 18
+      },
+      "geometric": {
+        "status": "COMPLETE",
+        "entries": 100,
+        "passed": 100
+      },
+      "seeded": {
+        "status": "COMPLETE",
+        "entries": 32,
+        "passed": 32
+      }
+    }
+  }
+}

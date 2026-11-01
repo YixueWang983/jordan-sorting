@@ -1,0 +1,219 @@
+{
+  "schema": "host_stability_comparison_v1",
+  "performance_eligible": false,
+  "left_archive": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/cross_platform_20261101/windows",
+  "right_archive": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/cross_platform_20261101/mac",
+  "left_manifest": "d412a5c12d8c10a888f1c83c5eae17c4a9ed85828d58c8b6774ddcfecac2d0f9",
+  "right_manifest": "8b0cb7e35be92a67c0e4ee796d84964222cedc2f2b87091b211bc41f87ef30b3",
+  "scope": "descriptive host comparison; no pooled samples, no OS causality or significance claim",
+  "aggregate": {
+    "ordinary_list": {
+      "cases": 10,
+      "left_lower_within_case_variation": 1,
+      "left_lower_between_session_variation": 4,
+      "left": {
+        "median_relative_iqr": 0.013421795316643018,
+        "median_relative_session_spread": 0.015121396962921698
+      },
+      "right": {
+        "median_relative_iqr": 0.009038359089066483,
+        "median_relative_session_spread": 0.008284194708691638
+      }
+    },
+    "heterogeneous_finger_uninstrumented": {
+      "cases": 10,
+      "left_lower_within_case_variation": 2,
+      "left_lower_between_session_variation": 6,
+      "left": {
+        "median_relative_iqr": 0.01236011367390051,
+        "median_relative_session_spread": 0.009666019550729935
+      },
+      "right": {
+        "median_relative_iqr": 0.010435171325565694,
+        "median_relative_session_spread": 0.009750314492255342
+      }
+    }
+  },
+  "rows": [
+    {
+      "case_id": "common--n513-low_nesting_valid-00",
+      "backend": "ordinary_list",
+      "left_relative_iqr": 0.013440788276474807,
+      "right_relative_iqr": 0.010713995453491512,
+      "left_session_spread": 0.015101317719093546,
+      "right_session_spread": 0.013447697224526286,
+      "left_over_right_time": 1.5950513607938257
+    },
+    {
+      "case_id": "common--n513-low_nesting_valid-00",
+      "backend": "heterogeneous_finger_uninstrumented",
+      "left_relative_iqr": 0.012361562420642942,
+      "right_relative_iqr": 0.014026113128179954,
+      "left_session_spread": 0.009765212149364426,
+      "right_session_spread": 0.007340504830435061,
+      "left_over_right_time": 1.5480022615876068
+    },
+    {
+      "case_id": "common--n32-low_nesting_valid-00",
+      "backend": "ordinary_list",
+      "left_relative_iqr": 0.011481581503710302,
+      "right_relative_iqr": 0.008584815211935269,
+      "left_session_spread": 0.016018889513328183,
+      "right_session_spread": 0.024069103112885622,
+      "left_over_right_time": 1.6355546068444349
+    },
+    {
+      "case_id": "common--n32-low_nesting_valid-00",
+      "backend": "heterogeneous_finger_uninstrumented",
+      "left_relative_iqr": 0.01697303347167421,
+      "right_relative_iqr": 0.008870858304438857,
+      "left_session_spread": 0.012395994477913088,
+      "right_session_spread": 0.06295583782648673,
+      "left_over_right_time": 1.5507933228368214
+    },
+    {
+      "case_id": "targeted_split--split-n128-k19",
+      "backend": "ordinary_list",
+      "left_relative_iqr": 0.013402802356811227,
+      "right_relative_iqr": 0.008009626429017772,
+      "left_session_spread": 0.015141476206749849,
+      "right_session_spread": 0.10120864086687163,
+      "left_over_right_time": 1.65550840079789
+    },
+    {
+      "case_id": "targeted_split--split-n128-k19",
+      "backend": "heterogeneous_finger_uninstrumented",
+      "left_relative_iqr": 0.012358664927158078,
+      "right_relative_iqr": 0.010545519235517935,
+      "left_session_spread": 0.01064065557465486,
+      "right_session_spread": 0.059755903149319875,
+      "left_over_right_time": 1.5718549948091052
+    },
+    {
+      "case_id": "targeted_split--split-n129-k19",
+      "backend": "ordinary_list",
+      "left_relative_iqr": 0.014163979330512649,
+      "right_relative_iqr": 0.008742506846038223,
+      "left_session_spread": 0.010559993308519092,
+      "right_session_spread": 0.0069775821256814795,
+      "left_over_right_time": 1.639090431969838
+    },
+    {
+      "case_id": "targeted_split--split-n129-k19",
+      "backend": "heterogeneous_finger_uninstrumented",
+      "left_relative_iqr": 0.014405959648878957,
+      "right_relative_iqr": 0.009297256779849083,
+      "left_session_spread": 0.008115651383575123,
+      "right_session_spread": 0.010512449556199887,
+      "left_over_right_time": 1.5777261278046444
+    },
+    {
+      "case_id": "structural--balanced-128",
+      "backend": "ordinary_list",
+      "left_relative_iqr": 0.01344257917629946,
+      "right_relative_iqr": 0.00933421133209474,
+      "left_session_spread": 0.005368108886930491,
+      "right_session_spread": 0.008099676438976066,
+      "left_over_right_time": 1.6462630143917036
+    },
+    {
+      "case_id": "structural--balanced-128",
+      "backend": "heterogeneous_finger_uninstrumented",
+      "left_relative_iqr": 0.015655471581915714,
+      "right_relative_iqr": 0.010324823415613454,
+      "left_session_spread": 0.001887751790389234,
+      "right_session_spread": 0.008210870477277447,
+      "left_over_right_time": 1.5694918414031873
+    },
+    {
+      "case_id": "structural--balanced-513",
+      "backend": "ordinary_list",
+      "left_relative_iqr": 0.01931031895168981,
+      "right_relative_iqr": 0.00982504886298079,
+      "left_session_spread": 0.006487841940536974,
+      "right_session_spread": 0.0033444284506870354,
+      "left_over_right_time": 1.5984655722085328
+    },
+    {
+      "case_id": "structural--balanced-513",
+      "backend": "heterogeneous_finger_uninstrumented",
+      "left_relative_iqr": 0.016638450010485344,
+      "right_relative_iqr": 0.010613117580957947,
+      "left_session_spread": 0.017125481388869594,
+      "right_session_spread": 0.007213030428920617,
+      "left_over_right_time": 1.6187716360096494
+    },
+    {
+      "case_id": "geometric--geometric-n32-00",
+      "backend": "ordinary_list",
+      "left_relative_iqr": 0.0179950574058291,
+      "right_relative_iqr": 0.009461989325422054,
+      "left_session_spread": 0.002882631487154849,
+      "right_session_spread": 0.014163804347770965,
+      "left_over_right_time": 1.6221940838378006
+    },
+    {
+      "case_id": "geometric--geometric-n32-00",
+      "backend": "heterogeneous_finger_uninstrumented",
+      "left_relative_iqr": 0.010541665253683042,
+      "right_relative_iqr": 0.008428940233134806,
+      "left_session_spread": 0.0017355093453300012,
+      "right_session_spread": 0.022282546540018475,
+      "left_over_right_time": 1.523994625076318
+    },
+    {
+      "case_id": "geometric--geometric-n512-00",
+      "backend": "ordinary_list",
+      "left_relative_iqr": 0.011915078854778612,
+      "right_relative_iqr": 0.007246960598887816,
+      "left_session_spread": 0.016653554156000273,
+      "right_session_spread": 0.006161485580033517,
+      "left_over_right_time": 1.5623468402872431
+    },
+    {
+      "case_id": "geometric--geometric-n512-00",
+      "backend": "heterogeneous_finger_uninstrumented",
+      "left_relative_iqr": 0.011282462513140598,
+      "right_relative_iqr": 0.011191273313921484,
+      "left_session_spread": 0.009566826952095446,
+      "right_session_spread": 0.005638754266048293,
+      "left_over_right_time": 1.4910937724672444
+    },
+    {
+      "case_id": "seeded--stress-11-513-0.05",
+      "backend": "ordinary_list",
+      "left_relative_iqr": 0.009183326719215242,
+      "right_relative_iqr": 0.014400867991038483,
+      "left_session_spread": 0.016075871459565558,
+      "right_session_spread": 0.006031134193289922,
+      "left_over_right_time": 1.5809069320719848
+    },
+    {
+      "case_id": "seeded--stress-11-513-0.05",
+      "backend": "heterogeneous_finger_uninstrumented",
+      "left_relative_iqr": 0.009408773471619383,
+      "right_relative_iqr": 0.013168188356868156,
+      "left_session_spread": 0.009042614826501235,
+      "right_session_spread": 0.01798049952650791,
+      "left_over_right_time": 1.5082244653296815
+    },
+    {
+      "case_id": "seeded--checked-21-32",
+      "backend": "ordinary_list",
+      "left_relative_iqr": 0.010492846284259323,
+      "right_relative_iqr": 0.007402171373904842,
+      "left_session_spread": 0.025568111030822516,
+      "right_session_spread": 0.008468712978407211,
+      "left_over_right_time": 1.6458033894843669
+    },
+    {
+      "case_id": "seeded--checked-21-32",
+      "backend": "heterogeneous_finger_uninstrumented",
+      "left_relative_iqr": 0.010877717566768821,
+      "right_relative_iqr": 0.005961279909197643,
+      "left_session_spread": 0.017893597047618573,
+      "right_session_spread": 0.008988179428310797,
+      "left_over_right_time": 1.5425305710153518
+    }
+  ]
+}

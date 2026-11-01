@@ -10,6 +10,11 @@ versions the new machine gates and preserves the original Mac archives.
 New unified runs use `unified_input_suite_run_v2`. Host diagnostics support
 `--case-id` but do not certify thesis performance or replace the author's review.
 
+The [November 1 cross-platform validation](docs/validation/cross_platform_20261101/README.md)
+passes 870 tests on each host and archives the first matched 10-input, three-session
+diagnostics. This first comparison does not show Windows to be uniformly more
+stable; host-specific results and the migration decision are recorded separately.
+
 
 Implementation and experimental evaluation of a simplified Jordan-sorting framework.
 
