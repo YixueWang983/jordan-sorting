@@ -1,0 +1,1814 @@
+[
+  {
+    "index": 1,
+    "case_id": "common--n32-low_nesting_valid-00",
+    "source": "common",
+    "n": 32
+  },
+  {
+    "index": 2,
+    "case_id": "common--n32-low_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 32
+  },
+  {
+    "index": 3,
+    "case_id": "common--n32-low_nesting_valid-01",
+    "source": "common",
+    "n": 32
+  },
+  {
+    "index": 4,
+    "case_id": "common--n32-low_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 32
+  },
+  {
+    "index": 5,
+    "case_id": "common--n32-medium_nesting_valid-00",
+    "source": "common",
+    "n": 32
+  },
+  {
+    "index": 6,
+    "case_id": "common--n32-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 32
+  },
+  {
+    "index": 7,
+    "case_id": "common--n32-medium_nesting_valid-01",
+    "source": "common",
+    "n": 32
+  },
+  {
+    "index": 8,
+    "case_id": "common--n32-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 32
+  },
+  {
+    "index": 9,
+    "case_id": "common--n32-nested_heavy_valid-00",
+    "source": "common",
+    "n": 32
+  },
+  {
+    "index": 10,
+    "case_id": "common--n32-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "n": 32
+  },
+  {
+    "index": 11,
+    "case_id": "common--n32-nested_heavy_valid-01",
+    "source": "common",
+    "n": 32
+  },
+  {
+    "index": 12,
+    "case_id": "common--n32-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "n": 32
+  },
+  {
+    "index": 13,
+    "case_id": "common--n32-strict_flat-00",
+    "source": "common",
+    "n": 32
+  },
+  {
+    "index": 14,
+    "case_id": "common--n32-strict_flat-00-mirror",
+    "source": "common",
+    "n": 32
+  },
+  {
+    "index": 15,
+    "case_id": "common--n33-low_nesting_valid-00",
+    "source": "common",
+    "n": 33
+  },
+  {
+    "index": 16,
+    "case_id": "common--n33-low_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 33
+  },
+  {
+    "index": 17,
+    "case_id": "common--n33-low_nesting_valid-01",
+    "source": "common",
+    "n": 33
+  },
+  {
+    "index": 18,
+    "case_id": "common--n33-low_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 33
+  },
+  {
+    "index": 19,
+    "case_id": "common--n33-medium_nesting_valid-00",
+    "source": "common",
+    "n": 33
+  },
+  {
+    "index": 20,
+    "case_id": "common--n33-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 33
+  },
+  {
+    "index": 21,
+    "case_id": "common--n33-medium_nesting_valid-01",
+    "source": "common",
+    "n": 33
+  },
+  {
+    "index": 22,
+    "case_id": "common--n33-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 33
+  },
+  {
+    "index": 23,
+    "case_id": "common--n33-nested_heavy_valid-00",
+    "source": "common",
+    "n": 33
+  },
+  {
+    "index": 24,
+    "case_id": "common--n33-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "n": 33
+  },
+  {
+    "index": 25,
+    "case_id": "common--n33-nested_heavy_valid-01",
+    "source": "common",
+    "n": 33
+  },
+  {
+    "index": 26,
+    "case_id": "common--n33-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "n": 33
+  },
+  {
+    "index": 27,
+    "case_id": "common--n33-strict_flat-00",
+    "source": "common",
+    "n": 33
+  },
+  {
+    "index": 28,
+    "case_id": "common--n33-strict_flat-00-mirror",
+    "source": "common",
+    "n": 33
+  },
+  {
+    "index": 29,
+    "case_id": "common--n64-low_nesting_valid-00",
+    "source": "common",
+    "n": 64
+  },
+  {
+    "index": 30,
+    "case_id": "common--n64-low_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 64
+  },
+  {
+    "index": 31,
+    "case_id": "common--n64-low_nesting_valid-01",
+    "source": "common",
+    "n": 64
+  },
+  {
+    "index": 32,
+    "case_id": "common--n64-low_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 64
+  },
+  {
+    "index": 33,
+    "case_id": "common--n64-medium_nesting_valid-00",
+    "source": "common",
+    "n": 64
+  },
+  {
+    "index": 34,
+    "case_id": "common--n64-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 64
+  },
+  {
+    "index": 35,
+    "case_id": "common--n64-medium_nesting_valid-01",
+    "source": "common",
+    "n": 64
+  },
+  {
+    "index": 36,
+    "case_id": "common--n64-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 64
+  },
+  {
+    "index": 37,
+    "case_id": "common--n64-nested_heavy_valid-00",
+    "source": "common",
+    "n": 64
+  },
+  {
+    "index": 38,
+    "case_id": "common--n64-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "n": 64
+  },
+  {
+    "index": 39,
+    "case_id": "common--n64-nested_heavy_valid-01",
+    "source": "common",
+    "n": 64
+  },
+  {
+    "index": 40,
+    "case_id": "common--n64-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "n": 64
+  },
+  {
+    "index": 41,
+    "case_id": "common--n64-strict_flat-00",
+    "source": "common",
+    "n": 64
+  },
+  {
+    "index": 42,
+    "case_id": "common--n64-strict_flat-00-mirror",
+    "source": "common",
+    "n": 64
+  },
+  {
+    "index": 43,
+    "case_id": "common--n65-low_nesting_valid-00",
+    "source": "common",
+    "n": 65
+  },
+  {
+    "index": 44,
+    "case_id": "common--n65-low_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 65
+  },
+  {
+    "index": 45,
+    "case_id": "common--n65-low_nesting_valid-01",
+    "source": "common",
+    "n": 65
+  },
+  {
+    "index": 46,
+    "case_id": "common--n65-low_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 65
+  },
+  {
+    "index": 47,
+    "case_id": "common--n65-medium_nesting_valid-00",
+    "source": "common",
+    "n": 65
+  },
+  {
+    "index": 48,
+    "case_id": "common--n65-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 65
+  },
+  {
+    "index": 49,
+    "case_id": "common--n65-medium_nesting_valid-01",
+    "source": "common",
+    "n": 65
+  },
+  {
+    "index": 50,
+    "case_id": "common--n65-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 65
+  },
+  {
+    "index": 51,
+    "case_id": "common--n65-nested_heavy_valid-00",
+    "source": "common",
+    "n": 65
+  },
+  {
+    "index": 52,
+    "case_id": "common--n65-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "n": 65
+  },
+  {
+    "index": 53,
+    "case_id": "common--n65-nested_heavy_valid-01",
+    "source": "common",
+    "n": 65
+  },
+  {
+    "index": 54,
+    "case_id": "common--n65-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "n": 65
+  },
+  {
+    "index": 55,
+    "case_id": "common--n65-strict_flat-00",
+    "source": "common",
+    "n": 65
+  },
+  {
+    "index": 56,
+    "case_id": "common--n65-strict_flat-00-mirror",
+    "source": "common",
+    "n": 65
+  },
+  {
+    "index": 57,
+    "case_id": "common--n128-low_nesting_valid-00",
+    "source": "common",
+    "n": 128
+  },
+  {
+    "index": 58,
+    "case_id": "common--n128-low_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 128
+  },
+  {
+    "index": 59,
+    "case_id": "common--n128-low_nesting_valid-01",
+    "source": "common",
+    "n": 128
+  },
+  {
+    "index": 60,
+    "case_id": "common--n128-low_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 128
+  },
+  {
+    "index": 61,
+    "case_id": "common--n128-medium_nesting_valid-00",
+    "source": "common",
+    "n": 128
+  },
+  {
+    "index": 62,
+    "case_id": "common--n128-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 128
+  },
+  {
+    "index": 63,
+    "case_id": "common--n128-medium_nesting_valid-01",
+    "source": "common",
+    "n": 128
+  },
+  {
+    "index": 64,
+    "case_id": "common--n128-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 128
+  },
+  {
+    "index": 65,
+    "case_id": "common--n128-nested_heavy_valid-00",
+    "source": "common",
+    "n": 128
+  },
+  {
+    "index": 66,
+    "case_id": "common--n128-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "n": 128
+  },
+  {
+    "index": 67,
+    "case_id": "common--n128-nested_heavy_valid-01",
+    "source": "common",
+    "n": 128
+  },
+  {
+    "index": 68,
+    "case_id": "common--n128-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "n": 128
+  },
+  {
+    "index": 69,
+    "case_id": "common--n128-strict_flat-00",
+    "source": "common",
+    "n": 128
+  },
+  {
+    "index": 70,
+    "case_id": "common--n128-strict_flat-00-mirror",
+    "source": "common",
+    "n": 128
+  },
+  {
+    "index": 71,
+    "case_id": "common--n129-low_nesting_valid-00",
+    "source": "common",
+    "n": 129
+  },
+  {
+    "index": 72,
+    "case_id": "common--n129-low_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 129
+  },
+  {
+    "index": 73,
+    "case_id": "common--n129-low_nesting_valid-01",
+    "source": "common",
+    "n": 129
+  },
+  {
+    "index": 74,
+    "case_id": "common--n129-low_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 129
+  },
+  {
+    "index": 75,
+    "case_id": "common--n129-medium_nesting_valid-00",
+    "source": "common",
+    "n": 129
+  },
+  {
+    "index": 76,
+    "case_id": "common--n129-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 129
+  },
+  {
+    "index": 77,
+    "case_id": "common--n129-medium_nesting_valid-01",
+    "source": "common",
+    "n": 129
+  },
+  {
+    "index": 78,
+    "case_id": "common--n129-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 129
+  },
+  {
+    "index": 79,
+    "case_id": "common--n129-nested_heavy_valid-00",
+    "source": "common",
+    "n": 129
+  },
+  {
+    "index": 80,
+    "case_id": "common--n129-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "n": 129
+  },
+  {
+    "index": 81,
+    "case_id": "common--n129-nested_heavy_valid-01",
+    "source": "common",
+    "n": 129
+  },
+  {
+    "index": 82,
+    "case_id": "common--n129-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "n": 129
+  },
+  {
+    "index": 83,
+    "case_id": "common--n129-strict_flat-00",
+    "source": "common",
+    "n": 129
+  },
+  {
+    "index": 84,
+    "case_id": "common--n129-strict_flat-00-mirror",
+    "source": "common",
+    "n": 129
+  },
+  {
+    "index": 85,
+    "case_id": "common--n256-low_nesting_valid-00",
+    "source": "common",
+    "n": 256
+  },
+  {
+    "index": 86,
+    "case_id": "common--n256-low_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 256
+  },
+  {
+    "index": 87,
+    "case_id": "common--n256-low_nesting_valid-01",
+    "source": "common",
+    "n": 256
+  },
+  {
+    "index": 88,
+    "case_id": "common--n256-low_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 256
+  },
+  {
+    "index": 89,
+    "case_id": "common--n256-medium_nesting_valid-00",
+    "source": "common",
+    "n": 256
+  },
+  {
+    "index": 90,
+    "case_id": "common--n256-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 256
+  },
+  {
+    "index": 91,
+    "case_id": "common--n256-medium_nesting_valid-01",
+    "source": "common",
+    "n": 256
+  },
+  {
+    "index": 92,
+    "case_id": "common--n256-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 256
+  },
+  {
+    "index": 93,
+    "case_id": "common--n256-nested_heavy_valid-00",
+    "source": "common",
+    "n": 256
+  },
+  {
+    "index": 94,
+    "case_id": "common--n256-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "n": 256
+  },
+  {
+    "index": 95,
+    "case_id": "common--n256-nested_heavy_valid-01",
+    "source": "common",
+    "n": 256
+  },
+  {
+    "index": 96,
+    "case_id": "common--n256-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "n": 256
+  },
+  {
+    "index": 97,
+    "case_id": "common--n256-strict_flat-00",
+    "source": "common",
+    "n": 256
+  },
+  {
+    "index": 98,
+    "case_id": "common--n256-strict_flat-00-mirror",
+    "source": "common",
+    "n": 256
+  },
+  {
+    "index": 99,
+    "case_id": "common--n257-low_nesting_valid-00",
+    "source": "common",
+    "n": 257
+  },
+  {
+    "index": 100,
+    "case_id": "common--n257-low_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 257
+  },
+  {
+    "index": 101,
+    "case_id": "common--n257-low_nesting_valid-01",
+    "source": "common",
+    "n": 257
+  },
+  {
+    "index": 102,
+    "case_id": "common--n257-low_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 257
+  },
+  {
+    "index": 103,
+    "case_id": "common--n257-medium_nesting_valid-00",
+    "source": "common",
+    "n": 257
+  },
+  {
+    "index": 104,
+    "case_id": "common--n257-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 257
+  },
+  {
+    "index": 105,
+    "case_id": "common--n257-medium_nesting_valid-01",
+    "source": "common",
+    "n": 257
+  },
+  {
+    "index": 106,
+    "case_id": "common--n257-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 257
+  },
+  {
+    "index": 107,
+    "case_id": "common--n257-nested_heavy_valid-00",
+    "source": "common",
+    "n": 257
+  },
+  {
+    "index": 108,
+    "case_id": "common--n257-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "n": 257
+  },
+  {
+    "index": 109,
+    "case_id": "common--n257-nested_heavy_valid-01",
+    "source": "common",
+    "n": 257
+  },
+  {
+    "index": 110,
+    "case_id": "common--n257-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "n": 257
+  },
+  {
+    "index": 111,
+    "case_id": "common--n257-strict_flat-00",
+    "source": "common",
+    "n": 257
+  },
+  {
+    "index": 112,
+    "case_id": "common--n257-strict_flat-00-mirror",
+    "source": "common",
+    "n": 257
+  },
+  {
+    "index": 113,
+    "case_id": "common--n512-low_nesting_valid-00",
+    "source": "common",
+    "n": 512
+  },
+  {
+    "index": 114,
+    "case_id": "common--n512-low_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 512
+  },
+  {
+    "index": 115,
+    "case_id": "common--n512-low_nesting_valid-01",
+    "source": "common",
+    "n": 512
+  },
+  {
+    "index": 116,
+    "case_id": "common--n512-low_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 512
+  },
+  {
+    "index": 117,
+    "case_id": "common--n512-medium_nesting_valid-00",
+    "source": "common",
+    "n": 512
+  },
+  {
+    "index": 118,
+    "case_id": "common--n512-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 512
+  },
+  {
+    "index": 119,
+    "case_id": "common--n512-medium_nesting_valid-01",
+    "source": "common",
+    "n": 512
+  },
+  {
+    "index": 120,
+    "case_id": "common--n512-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 512
+  },
+  {
+    "index": 121,
+    "case_id": "common--n512-nested_heavy_valid-00",
+    "source": "common",
+    "n": 512
+  },
+  {
+    "index": 122,
+    "case_id": "common--n512-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "n": 512
+  },
+  {
+    "index": 123,
+    "case_id": "common--n512-nested_heavy_valid-01",
+    "source": "common",
+    "n": 512
+  },
+  {
+    "index": 124,
+    "case_id": "common--n512-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "n": 512
+  },
+  {
+    "index": 125,
+    "case_id": "common--n512-strict_flat-00",
+    "source": "common",
+    "n": 512
+  },
+  {
+    "index": 126,
+    "case_id": "common--n512-strict_flat-00-mirror",
+    "source": "common",
+    "n": 512
+  },
+  {
+    "index": 127,
+    "case_id": "common--n513-low_nesting_valid-00",
+    "source": "common",
+    "n": 513
+  },
+  {
+    "index": 128,
+    "case_id": "common--n513-low_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 513
+  },
+  {
+    "index": 129,
+    "case_id": "common--n513-low_nesting_valid-01",
+    "source": "common",
+    "n": 513
+  },
+  {
+    "index": 130,
+    "case_id": "common--n513-low_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 513
+  },
+  {
+    "index": 131,
+    "case_id": "common--n513-medium_nesting_valid-00",
+    "source": "common",
+    "n": 513
+  },
+  {
+    "index": 132,
+    "case_id": "common--n513-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "n": 513
+  },
+  {
+    "index": 133,
+    "case_id": "common--n513-medium_nesting_valid-01",
+    "source": "common",
+    "n": 513
+  },
+  {
+    "index": 134,
+    "case_id": "common--n513-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "n": 513
+  },
+  {
+    "index": 135,
+    "case_id": "common--n513-nested_heavy_valid-00",
+    "source": "common",
+    "n": 513
+  },
+  {
+    "index": 136,
+    "case_id": "common--n513-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "n": 513
+  },
+  {
+    "index": 137,
+    "case_id": "common--n513-nested_heavy_valid-01",
+    "source": "common",
+    "n": 513
+  },
+  {
+    "index": 138,
+    "case_id": "common--n513-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "n": 513
+  },
+  {
+    "index": 139,
+    "case_id": "common--n513-strict_flat-00",
+    "source": "common",
+    "n": 513
+  },
+  {
+    "index": 140,
+    "case_id": "common--n513-strict_flat-00-mirror",
+    "source": "common",
+    "n": 513
+  },
+  {
+    "index": 141,
+    "case_id": "targeted_split--split-n128-k19",
+    "source": "targeted_split",
+    "n": 128
+  },
+  {
+    "index": 142,
+    "case_id": "targeted_split--split-n128-k19-mirror",
+    "source": "targeted_split",
+    "n": 128
+  },
+  {
+    "index": 143,
+    "case_id": "targeted_split--split-n128-k3",
+    "source": "targeted_split",
+    "n": 128
+  },
+  {
+    "index": 144,
+    "case_id": "targeted_split--split-n128-k3-mirror",
+    "source": "targeted_split",
+    "n": 128
+  },
+  {
+    "index": 145,
+    "case_id": "targeted_split--split-n128-k7",
+    "source": "targeted_split",
+    "n": 128
+  },
+  {
+    "index": 146,
+    "case_id": "targeted_split--split-n128-k7-mirror",
+    "source": "targeted_split",
+    "n": 128
+  },
+  {
+    "index": 147,
+    "case_id": "targeted_split--split-n129-k19",
+    "source": "targeted_split",
+    "n": 129
+  },
+  {
+    "index": 148,
+    "case_id": "targeted_split--split-n129-k19-mirror",
+    "source": "targeted_split",
+    "n": 129
+  },
+  {
+    "index": 149,
+    "case_id": "targeted_split--split-n129-k3",
+    "source": "targeted_split",
+    "n": 129
+  },
+  {
+    "index": 150,
+    "case_id": "targeted_split--split-n129-k3-mirror",
+    "source": "targeted_split",
+    "n": 129
+  },
+  {
+    "index": 151,
+    "case_id": "targeted_split--split-n129-k7",
+    "source": "targeted_split",
+    "n": 129
+  },
+  {
+    "index": 152,
+    "case_id": "targeted_split--split-n129-k7-mirror",
+    "source": "targeted_split",
+    "n": 129
+  },
+  {
+    "index": 153,
+    "case_id": "structural--balanced-128",
+    "source": "structural",
+    "n": 128
+  },
+  {
+    "index": 154,
+    "case_id": "structural--repeated-128",
+    "source": "structural",
+    "n": 128
+  },
+  {
+    "index": 155,
+    "case_id": "structural--skew-128",
+    "source": "structural",
+    "n": 128
+  },
+  {
+    "index": 156,
+    "case_id": "structural--balanced-129",
+    "source": "structural",
+    "n": 129
+  },
+  {
+    "index": 157,
+    "case_id": "structural--repeated-129",
+    "source": "structural",
+    "n": 129
+  },
+  {
+    "index": 158,
+    "case_id": "structural--skew-129",
+    "source": "structural",
+    "n": 129
+  },
+  {
+    "index": 159,
+    "case_id": "structural--balanced-256",
+    "source": "structural",
+    "n": 256
+  },
+  {
+    "index": 160,
+    "case_id": "structural--repeated-256",
+    "source": "structural",
+    "n": 256
+  },
+  {
+    "index": 161,
+    "case_id": "structural--skew-256",
+    "source": "structural",
+    "n": 256
+  },
+  {
+    "index": 162,
+    "case_id": "structural--balanced-257",
+    "source": "structural",
+    "n": 257
+  },
+  {
+    "index": 163,
+    "case_id": "structural--repeated-257",
+    "source": "structural",
+    "n": 257
+  },
+  {
+    "index": 164,
+    "case_id": "structural--skew-257",
+    "source": "structural",
+    "n": 257
+  },
+  {
+    "index": 165,
+    "case_id": "structural--balanced-512",
+    "source": "structural",
+    "n": 512
+  },
+  {
+    "index": 166,
+    "case_id": "structural--repeated-512",
+    "source": "structural",
+    "n": 512
+  },
+  {
+    "index": 167,
+    "case_id": "structural--skew-512",
+    "source": "structural",
+    "n": 512
+  },
+  {
+    "index": 168,
+    "case_id": "structural--balanced-513",
+    "source": "structural",
+    "n": 513
+  },
+  {
+    "index": 169,
+    "case_id": "structural--repeated-513",
+    "source": "structural",
+    "n": 513
+  },
+  {
+    "index": 170,
+    "case_id": "structural--skew-513",
+    "source": "structural",
+    "n": 513
+  },
+  {
+    "index": 171,
+    "case_id": "geometric--geometric-n32-00",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 172,
+    "case_id": "geometric--geometric-n32-01",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 173,
+    "case_id": "geometric--geometric-n32-02",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 174,
+    "case_id": "geometric--geometric-n32-03",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 175,
+    "case_id": "geometric--geometric-n32-04",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 176,
+    "case_id": "geometric--geometric-n32-05",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 177,
+    "case_id": "geometric--geometric-n32-06",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 178,
+    "case_id": "geometric--geometric-n32-07",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 179,
+    "case_id": "geometric--geometric-n32-08",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 180,
+    "case_id": "geometric--geometric-n32-09",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 181,
+    "case_id": "geometric--geometric-n32-10",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 182,
+    "case_id": "geometric--geometric-n32-11",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 183,
+    "case_id": "geometric--geometric-n32-12",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 184,
+    "case_id": "geometric--geometric-n32-13",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 185,
+    "case_id": "geometric--geometric-n32-14",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 186,
+    "case_id": "geometric--geometric-n32-15",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 187,
+    "case_id": "geometric--geometric-n32-16",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 188,
+    "case_id": "geometric--geometric-n32-17",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 189,
+    "case_id": "geometric--geometric-n32-18",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 190,
+    "case_id": "geometric--geometric-n32-19",
+    "source": "geometric",
+    "n": 32
+  },
+  {
+    "index": 191,
+    "case_id": "geometric--geometric-n64-00",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 192,
+    "case_id": "geometric--geometric-n64-01",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 193,
+    "case_id": "geometric--geometric-n64-02",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 194,
+    "case_id": "geometric--geometric-n64-03",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 195,
+    "case_id": "geometric--geometric-n64-04",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 196,
+    "case_id": "geometric--geometric-n64-05",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 197,
+    "case_id": "geometric--geometric-n64-06",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 198,
+    "case_id": "geometric--geometric-n64-07",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 199,
+    "case_id": "geometric--geometric-n64-08",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 200,
+    "case_id": "geometric--geometric-n64-09",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 201,
+    "case_id": "geometric--geometric-n64-10",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 202,
+    "case_id": "geometric--geometric-n64-11",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 203,
+    "case_id": "geometric--geometric-n64-12",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 204,
+    "case_id": "geometric--geometric-n64-13",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 205,
+    "case_id": "geometric--geometric-n64-14",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 206,
+    "case_id": "geometric--geometric-n64-15",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 207,
+    "case_id": "geometric--geometric-n64-16",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 208,
+    "case_id": "geometric--geometric-n64-17",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 209,
+    "case_id": "geometric--geometric-n64-18",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 210,
+    "case_id": "geometric--geometric-n64-19",
+    "source": "geometric",
+    "n": 64
+  },
+  {
+    "index": 211,
+    "case_id": "geometric--geometric-n128-00",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 212,
+    "case_id": "geometric--geometric-n128-01",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 213,
+    "case_id": "geometric--geometric-n128-02",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 214,
+    "case_id": "geometric--geometric-n128-03",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 215,
+    "case_id": "geometric--geometric-n128-04",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 216,
+    "case_id": "geometric--geometric-n128-05",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 217,
+    "case_id": "geometric--geometric-n128-06",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 218,
+    "case_id": "geometric--geometric-n128-07",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 219,
+    "case_id": "geometric--geometric-n128-08",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 220,
+    "case_id": "geometric--geometric-n128-09",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 221,
+    "case_id": "geometric--geometric-n128-10",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 222,
+    "case_id": "geometric--geometric-n128-11",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 223,
+    "case_id": "geometric--geometric-n128-12",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 224,
+    "case_id": "geometric--geometric-n128-13",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 225,
+    "case_id": "geometric--geometric-n128-14",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 226,
+    "case_id": "geometric--geometric-n128-15",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 227,
+    "case_id": "geometric--geometric-n128-16",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 228,
+    "case_id": "geometric--geometric-n128-17",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 229,
+    "case_id": "geometric--geometric-n128-18",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 230,
+    "case_id": "geometric--geometric-n128-19",
+    "source": "geometric",
+    "n": 128
+  },
+  {
+    "index": 231,
+    "case_id": "geometric--geometric-n256-00",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 232,
+    "case_id": "geometric--geometric-n256-01",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 233,
+    "case_id": "geometric--geometric-n256-02",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 234,
+    "case_id": "geometric--geometric-n256-03",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 235,
+    "case_id": "geometric--geometric-n256-04",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 236,
+    "case_id": "geometric--geometric-n256-05",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 237,
+    "case_id": "geometric--geometric-n256-06",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 238,
+    "case_id": "geometric--geometric-n256-07",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 239,
+    "case_id": "geometric--geometric-n256-08",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 240,
+    "case_id": "geometric--geometric-n256-09",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 241,
+    "case_id": "geometric--geometric-n256-10",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 242,
+    "case_id": "geometric--geometric-n256-11",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 243,
+    "case_id": "geometric--geometric-n256-12",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 244,
+    "case_id": "geometric--geometric-n256-13",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 245,
+    "case_id": "geometric--geometric-n256-14",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 246,
+    "case_id": "geometric--geometric-n256-15",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 247,
+    "case_id": "geometric--geometric-n256-16",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 248,
+    "case_id": "geometric--geometric-n256-17",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 249,
+    "case_id": "geometric--geometric-n256-18",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 250,
+    "case_id": "geometric--geometric-n256-19",
+    "source": "geometric",
+    "n": 256
+  },
+  {
+    "index": 251,
+    "case_id": "geometric--geometric-n512-00",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 252,
+    "case_id": "geometric--geometric-n512-01",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 253,
+    "case_id": "geometric--geometric-n512-02",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 254,
+    "case_id": "geometric--geometric-n512-03",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 255,
+    "case_id": "geometric--geometric-n512-04",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 256,
+    "case_id": "geometric--geometric-n512-05",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 257,
+    "case_id": "geometric--geometric-n512-06",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 258,
+    "case_id": "geometric--geometric-n512-07",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 259,
+    "case_id": "geometric--geometric-n512-08",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 260,
+    "case_id": "geometric--geometric-n512-09",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 261,
+    "case_id": "geometric--geometric-n512-10",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 262,
+    "case_id": "geometric--geometric-n512-11",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 263,
+    "case_id": "geometric--geometric-n512-12",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 264,
+    "case_id": "geometric--geometric-n512-13",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 265,
+    "case_id": "geometric--geometric-n512-14",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 266,
+    "case_id": "geometric--geometric-n512-15",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 267,
+    "case_id": "geometric--geometric-n512-16",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 268,
+    "case_id": "geometric--geometric-n512-17",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 269,
+    "case_id": "geometric--geometric-n512-18",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 270,
+    "case_id": "geometric--geometric-n512-19",
+    "source": "geometric",
+    "n": 512
+  },
+  {
+    "index": 271,
+    "case_id": "seeded--checked-21-32",
+    "source": "seeded",
+    "n": 32
+  },
+  {
+    "index": 272,
+    "case_id": "seeded--checked-22-32",
+    "source": "seeded",
+    "n": 32
+  },
+  {
+    "index": 273,
+    "case_id": "seeded--checked-21-33",
+    "source": "seeded",
+    "n": 33
+  },
+  {
+    "index": 274,
+    "case_id": "seeded--checked-22-33",
+    "source": "seeded",
+    "n": 33
+  },
+  {
+    "index": 275,
+    "case_id": "seeded--checked-21-64",
+    "source": "seeded",
+    "n": 64
+  },
+  {
+    "index": 276,
+    "case_id": "seeded--checked-22-64",
+    "source": "seeded",
+    "n": 64
+  },
+  {
+    "index": 277,
+    "case_id": "seeded--checked-21-70",
+    "source": "seeded",
+    "n": 70
+  },
+  {
+    "index": 278,
+    "case_id": "seeded--checked-22-70",
+    "source": "seeded",
+    "n": 70
+  },
+  {
+    "index": 279,
+    "case_id": "seeded--stress-11-128-0.05",
+    "source": "seeded",
+    "n": 128
+  },
+  {
+    "index": 280,
+    "case_id": "seeded--stress-11-128-0.25",
+    "source": "seeded",
+    "n": 128
+  },
+  {
+    "index": 281,
+    "case_id": "seeded--stress-12-128-0.05",
+    "source": "seeded",
+    "n": 128
+  },
+  {
+    "index": 282,
+    "case_id": "seeded--stress-12-128-0.25",
+    "source": "seeded",
+    "n": 128
+  },
+  {
+    "index": 283,
+    "case_id": "seeded--stress-13-128-0.05",
+    "source": "seeded",
+    "n": 128
+  },
+  {
+    "index": 284,
+    "case_id": "seeded--stress-13-128-0.25",
+    "source": "seeded",
+    "n": 128
+  },
+  {
+    "index": 285,
+    "case_id": "seeded--stress-14-128-0.05",
+    "source": "seeded",
+    "n": 128
+  },
+  {
+    "index": 286,
+    "case_id": "seeded--stress-14-128-0.25",
+    "source": "seeded",
+    "n": 128
+  },
+  {
+    "index": 287,
+    "case_id": "seeded--stress-11-512-0.05",
+    "source": "seeded",
+    "n": 512
+  },
+  {
+    "index": 288,
+    "case_id": "seeded--stress-11-512-0.25",
+    "source": "seeded",
+    "n": 512
+  },
+  {
+    "index": 289,
+    "case_id": "seeded--stress-12-512-0.05",
+    "source": "seeded",
+    "n": 512
+  },
+  {
+    "index": 290,
+    "case_id": "seeded--stress-12-512-0.25",
+    "source": "seeded",
+    "n": 512
+  },
+  {
+    "index": 291,
+    "case_id": "seeded--stress-13-512-0.05",
+    "source": "seeded",
+    "n": 512
+  },
+  {
+    "index": 292,
+    "case_id": "seeded--stress-13-512-0.25",
+    "source": "seeded",
+    "n": 512
+  },
+  {
+    "index": 293,
+    "case_id": "seeded--stress-14-512-0.05",
+    "source": "seeded",
+    "n": 512
+  },
+  {
+    "index": 294,
+    "case_id": "seeded--stress-14-512-0.25",
+    "source": "seeded",
+    "n": 512
+  },
+  {
+    "index": 295,
+    "case_id": "seeded--stress-11-513-0.05",
+    "source": "seeded",
+    "n": 513
+  },
+  {
+    "index": 296,
+    "case_id": "seeded--stress-11-513-0.25",
+    "source": "seeded",
+    "n": 513
+  },
+  {
+    "index": 297,
+    "case_id": "seeded--stress-12-513-0.05",
+    "source": "seeded",
+    "n": 513
+  },
+  {
+    "index": 298,
+    "case_id": "seeded--stress-12-513-0.25",
+    "source": "seeded",
+    "n": 513
+  },
+  {
+    "index": 299,
+    "case_id": "seeded--stress-13-513-0.05",
+    "source": "seeded",
+    "n": 513
+  },
+  {
+    "index": 300,
+    "case_id": "seeded--stress-13-513-0.25",
+    "source": "seeded",
+    "n": 513
+  },
+  {
+    "index": 301,
+    "case_id": "seeded--stress-14-513-0.05",
+    "source": "seeded",
+    "n": 513
+  },
+  {
+    "index": 302,
+    "case_id": "seeded--stress-14-513-0.25",
+    "source": "seeded",
+    "n": 513
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "schema": "byte_preserving_archive_check_v1",
+  "checked_at": "2026-11-01T21:44:23.114907+00:00",
+  "artifact_entries": 17,
+  "original_files": 27435,
+  "original_bytes": 39801471,
+  "all_original_file_hashes_unchanged": true,
+  "all_original_paths_resolve_to_archive": true,
+  "no_symlinks_inside_archive": true,
+  "source_identity_unchanged": true,
+  "source_identity_sha256": "0cd50e8f3db8199a9d4e0804a6e6d648d4d337aa8f58791af6dbe3a328212a82",
+  "all_run_and_analysis_manifests_preserved": true,
+  "inventory_sha256": "c3019a2c5c6a1c5e3354e1459836941ff9a6f0a2f69cff7a099d56858c13aacc"
+}

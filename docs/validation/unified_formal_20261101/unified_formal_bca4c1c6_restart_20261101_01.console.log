@@ -1,0 +1,16 @@
+formal: common: COMPLETE
+formal: targeted_split: COMPLETE
+formal: structural: COMPLETE
+formal: geometric: COMPLETE
+formal: seeded: COMPLETE
+{
+  "stage": "formal",
+  "sources": {
+    "common": "COMPLETE",
+    "targeted_split": "COMPLETE",
+    "structural": "COMPLETE",
+    "geometric": "COMPLETE",
+    "seeded": "COMPLETE"
+  },
+  "complete": true
+}

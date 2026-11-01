@@ -1,0 +1,189 @@
+[
+  {
+    "name": "author_unified_review_bca4c1c6.json",
+    "kind": "file",
+    "files": 1,
+    "bytes": 3978,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/author_unified_review_bca4c1c6.json",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/author_unified_review_bca4c1c6.json",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "sha256": "c8a5b8eec0358378d47b265d7635c5d19201341c697a2cd68e2aed8cce14582b"
+  },
+  {
+    "name": "unified_analysis_bca4c1c6_restart_20261101_01",
+    "kind": "directory",
+    "files": 17,
+    "bytes": 1727157,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_analysis_bca4c1c6_restart_20261101_01",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_analysis_bca4c1c6_restart_20261101_01",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "original_manifest_sha256": "caa097ac042125c0f5734f6230d9993537a62abc91e82c64eb675ac442a2d1e2"
+  },
+  {
+    "name": "unified_analysis_bca4c1c6_restart_20261101_01.console.json",
+    "kind": "file",
+    "files": 1,
+    "bytes": 9141,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_analysis_bca4c1c6_restart_20261101_01.console.json",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_analysis_bca4c1c6_restart_20261101_01.console.json",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "sha256": "fd05e26f86a48f410b5626874703d6186b5c716c55c4a785407ace978b602fb2"
+  },
+  {
+    "name": "unified_analysis_bca4c1c6_restart_20261101_01.stderr.log",
+    "kind": "file",
+    "files": 1,
+    "bytes": 0,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_analysis_bca4c1c6_restart_20261101_01.stderr.log",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_analysis_bca4c1c6_restart_20261101_01.stderr.log",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "unified_formal_bca4c1c6",
+    "kind": "directory",
+    "files": 10786,
+    "bytes": 14570748,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_formal_bca4c1c6",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_formal_bca4c1c6",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "original_manifest_sha256": "8d6e1ee94535034b3fc6be29bbd648147bb3bbf9c7386d71c366231eeec4c782"
+  },
+  {
+    "name": "unified_formal_bca4c1c6.console.log",
+    "kind": "file",
+    "files": 1,
+    "bytes": 341,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_formal_bca4c1c6.console.log",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_formal_bca4c1c6.console.log",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "sha256": "8f69ba746a8b8b4eb4367c0ca89b17d2d7c77d45c5db1de08243d01b6d7d77ec"
+  },
+  {
+    "name": "unified_formal_bca4c1c6.diagnosis.md",
+    "kind": "file",
+    "files": 1,
+    "bytes": 2804,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_formal_bca4c1c6.diagnosis.md",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_formal_bca4c1c6.diagnosis.md",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "sha256": "c9bd1f9e49ddf5cd8c3d5fdd927777f7719d59913957e202604eb94486934d55"
+  },
+  {
+    "name": "unified_formal_bca4c1c6.evidence_sha256.json",
+    "kind": "file",
+    "files": 1,
+    "bytes": 674,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_formal_bca4c1c6.evidence_sha256.json",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_formal_bca4c1c6.evidence_sha256.json",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "sha256": "99c4f85b797bddcb0cc57ecb4b2478e5f0819011ced2347959005f113ec16564"
+  },
+  {
+    "name": "unified_formal_bca4c1c6.validation.json",
+    "kind": "file",
+    "files": 1,
+    "bytes": 304141,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_formal_bca4c1c6.validation.json",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_formal_bca4c1c6.validation.json",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "sha256": "e33f7551132b0fe302167cfaaf33f9e7cd6ea897dccbf6b6e77d5e278f9049df"
+  },
+  {
+    "name": "unified_formal_bca4c1c6.validation.stderr.log",
+    "kind": "file",
+    "files": 1,
+    "bytes": 0,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_formal_bca4c1c6.validation.stderr.log",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_formal_bca4c1c6.validation.stderr.log",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "name": "unified_formal_bca4c1c6_restart_20261101_01",
+    "kind": "directory",
+    "files": 16618,
+    "bytes": 22793263,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_formal_bca4c1c6_restart_20261101_01",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_formal_bca4c1c6_restart_20261101_01",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "original_manifest_sha256": "c55e517c2b17c0cccb7c60a73e64f42f6cd613cdad2c55fea7f0952028b3c6bd"
+  },
+  {
+    "name": "unified_formal_bca4c1c6_restart_20261101_01.console.log",
+    "kind": "file",
+    "files": 1,
+    "bytes": 348,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_formal_bca4c1c6_restart_20261101_01.console.log",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_formal_bca4c1c6_restart_20261101_01.console.log",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "sha256": "1b21320b3ec2b537fcd15d8fe3d4e95d4868979c757994f4eb118687ff1b74f9"
+  },
+  {
+    "name": "unified_formal_bca4c1c6_restart_20261101_01.delivery.json",
+    "kind": "file",
+    "files": 1,
+    "bytes": 1836,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_formal_bca4c1c6_restart_20261101_01.delivery.json",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_formal_bca4c1c6_restart_20261101_01.delivery.json",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "sha256": "238d00bb2a7be15fc10033c1a1c2b89a063d30dc01b509ec76e6663efd75b1e9"
+  },
+  {
+    "name": "unified_formal_bca4c1c6_restart_20261101_01.report.md",
+    "kind": "file",
+    "files": 1,
+    "bytes": 5400,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_formal_bca4c1c6_restart_20261101_01.report.md",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_formal_bca4c1c6_restart_20261101_01.report.md",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "sha256": "17724fb444ceb8a74414dc06bce09b37512fe52fe7502539dead33426275fb0a"
+  },
+  {
+    "name": "unified_formal_bca4c1c6_restart_20261101_01.restart_decision.json",
+    "kind": "file",
+    "files": 1,
+    "bytes": 3087,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_formal_bca4c1c6_restart_20261101_01.restart_decision.json",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_formal_bca4c1c6_restart_20261101_01.restart_decision.json",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "sha256": "4b7c7d5159107727bfaeb62fd7849a129e8e25e5b9f03edfb7bf016e86d2729d"
+  },
+  {
+    "name": "unified_formal_bca4c1c6_restart_20261101_01.validation.json",
+    "kind": "file",
+    "files": 1,
+    "bytes": 378553,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_formal_bca4c1c6_restart_20261101_01.validation.json",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_formal_bca4c1c6_restart_20261101_01.validation.json",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "sha256": "9feae7b4aaeabf1650c8e42ad849e9cd81cccf93cb2e12c70e9c288f88d8ad8c"
+  },
+  {
+    "name": "unified_formal_bca4c1c6_restart_20261101_01.validation.stderr.log",
+    "kind": "file",
+    "files": 1,
+    "bytes": 0,
+    "original_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_formal_bca4c1c6_restart_20261101_01.validation.stderr.log",
+    "archived_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/jordan-sorting/docs/validation/unified_formal_20261101/unified_formal_bca4c1c6_restart_20261101_01.validation.stderr.log",
+    "original_path_is_alias": true,
+    "unchanged": true,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "cases.csv": "c243c0de501195b7f2c4026edcbc778a211e93a6cada167efe920f6925b49f55",
+  "cases.json": "25f9da452389e77af908c540ea04243e9cb8442006cb487b198a3ac8c3f17916",
+  "execution_statuses.json": "625844d83b7567c085c081a5f4b37fc84c11469fe3f0560ba4e08509789fbacb",
+  "figures.json": "b35953b9b55fe73152a4e28429b7c30cf439db1d3eaf8a998dbbd9470ec35f4a",
+  "membership.json": "f28bd05857274baffb0ec9303f85714cbc2c68e491ee5eea913fa832cb24ba7c",
+  "overview.pdf": "fa702944e0edf82792c184d5905a4ef76478b2e05674f02c4107dd3ae6a89477",
+  "overview.png": "69888b10e612e5896b25eaf7a469c145bfde4ad8334ce992bedf67feb5c677e1",
+  "overview_order.json": "b4a4cccfa7faf3f89990a72c0d71622660a503c4e004f3fc5474b4ba44415a12",
+  "qualified_structure.json": "8c9948e28fd51b23cf92daf1f0aaae35b0edc42e1b32fef85f276d0e495d264d",
+  "ratio_by_n.pdf": "c57d4adb68cbc384153b17701611675b462effedb151bff8557a56c68cf6045e",
+  "ratio_by_n.png": "987a4d9b2d9572210cf97c846a939f15e394af2b9c3b583f130f0491827c4f72",
+  "ratio_by_split_fraction.pdf": "3cd045f89e4732bc5c34ec8d6092e1995e402c5848438ee94ae1b4ff41138874",
+  "ratio_by_split_fraction.png": "f13ccaf2d2996dca678099399e9679eff7866fd3a7147ed142c0e7a6b3a82cb0",
+  "summary.json": "fd05e26f86a48f410b5626874703d6186b5c716c55c4a785407ace978b602fb2",
+  "values_for_by_k.pdf": "ebb14bb2a20ece8a3d266d3beab4c5562477ab814256c3c8509e33c2e502b173",
+  "values_for_by_k.png": "a5134bda18fd1b0267157834e75b71737d03a72406209000bb0e55716d28f5e1"
+}

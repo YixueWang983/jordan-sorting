@@ -1,0 +1,18 @@
+{
+  "files": [
+    "overview.png",
+    "overview.pdf",
+    "ratio_by_n.png",
+    "ratio_by_n.pdf",
+    "values_for_by_k.png",
+    "values_for_by_k.pdf",
+    "ratio_by_split_fraction.png",
+    "ratio_by_split_fraction.pdf"
+  ],
+  "captions": {
+    "overview": "All complete-source inputs, one ratio each; missing/incomplete sources remain in the source table.",
+    "ratio_by_n": "Counts label source/size medians; no trend fitting or complexity inference.",
+    "values_for_by_k": "Same values_for construction; n, mirror and shape shown separately; repeated omitted. Parameter, size, parity and mirror coverage are unbalanced.",
+    "ratio_by_split_fraction": "One point per input; S=0 yields NA, not zero. No causal interpretation."
+  }
+}

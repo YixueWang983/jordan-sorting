@@ -1,0 +1,42 @@
+{
+  "schema": "author_authorized_formal_restart_v1",
+  "recorded_at_utc": "2026-11-01T21:07:49.574339+00:00",
+  "recorded_at_berlin": "2026-11-01T22:07:49.574479+01:00",
+  "authorization": {
+    "source": "direct human messages in this chat after failure diagnosis",
+    "messages": [
+      "重新开始",
+      "继续吧"
+    ]
+  },
+  "prior_attempt": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_formal_bca4c1c6",
+  "prior_attempt_status": "INCOMPLETE_POWER_GATE_FAILURE",
+  "prior_attempt_manifest_sha256": "8d6e1ee94535034b3fc6be29bbd648147bb3bbf9c7386d71c366231eeec4c782",
+  "prior_attempt_file_count": 10785,
+  "prior_sidecar_sha256": {
+    "author_unified_review_bca4c1c6.json": "c8a5b8eec0358378d47b265d7635c5d19201341c697a2cd68e2aed8cce14582b",
+    "unified_formal_bca4c1c6.console.log": "8f69ba746a8b8b4eb4367c0ca89b17d2d7c77d45c5db1de08243d01b6d7d77ec",
+    "unified_formal_bca4c1c6.validation.json": "e33f7551132b0fe302167cfaaf33f9e7cd6ea897dccbf6b6e77d5e278f9049df",
+    "unified_formal_bca4c1c6.validation.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "unified_formal_bca4c1c6.diagnosis.md": "c9bd1f9e49ddf5cd8c3d5fdd927777f7719d59913957e202604eb94486934d55",
+    "unified_formal_bca4c1c6/manifest.json": "8d6e1ee94535034b3fc6be29bbd648147bb3bbf9c7386d71c366231eeec4c782"
+  },
+  "new_attempt": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/unified_formal_bca4c1c6_restart_20261101_01",
+  "reason": "The author explicitly requested a fresh attempt after the first formal session stopped on post-job Battery Power. AC Power and lowpowermode 0 have been re-established.",
+  "protocol_deviation": "This is an author-authorized second formal attempt, departing from the original no-retry rule. It must be disclosed alongside the preserved first failure; it is not the first successful execution of an unchanged no-retry campaign.",
+  "execution": "Rerun all 302 inputs from the beginning in one continuous source-all session; no continuation, source stitching, removal of inputs, or reuse of timing observations. Use the same input order rules, source version, B table, budgets and environment gates.",
+  "reporting": "Keep the two attempts separate. Do not conceal the initial failure or combine the first attempt timings with this attempt. No performance ratios were analyzed before deciding to restart.",
+  "frozen_commit": "bca4c1c6a5480e22c7121987de2c97bb00688264",
+  "checkout_head": "2ae92952d1968add2e46b8610a6270fab828f60b",
+  "source_identity_sha256": "0cd50e8f3db8199a9d4e0804a6e6d648d4d337aa8f58791af6dbe3a328212a82",
+  "receipt_path": "/Users/schnee/Documents/Codex/files-mentioned-by-the-user-thesis/.codex-tmp/author_unified_review_bca4c1c6.json",
+  "receipt_sha256": "c8a5b8eec0358378d47b265d7635c5d19201341c697a2cd68e2aed8cce14582b",
+  "prestart_checks": {
+    "worktree_clean": true,
+    "source_matches": true,
+    "environment_matches": true,
+    "power_source": "AC Power",
+    "lowpowermode": "0",
+    "previous_evidence_unchanged": true
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "formal_archive_validation_summary_v1",
+  "checked_at": "2026-11-01T21:46:06.950562+00:00",
+  "reports": {
+    "first_attempt": {
+      "archive_valid": true,
+      "complete": false,
+      "hard_error": true,
+      "all_sources_complete": false
+    },
+    "second_attempt": {
+      "archive_valid": true,
+      "complete": true,
+      "hard_error": false,
+      "all_sources_complete": true
+    }
+  },
+  "all_27435_original_file_hashes_unchanged": true,
+  "all_17_original_path_aliases_valid": true,
+  "preflight_path_aliases_valid": true,
+  "analysis_manifest_valid": true,
+  "existing_sidecar_manifests_valid": true,
+  "readme_and_original_report_links_valid": true,
+  "no_archive_internal_symlinks": true,
+  "python_source_identity_unchanged": true,
+  "stage_two_not_executed": true,
+  "thesis_not_modified": true
+}

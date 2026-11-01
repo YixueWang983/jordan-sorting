@@ -1,0 +1,2116 @@
+[
+  {
+    "case_id": "common--n513-strict_flat-00",
+    "source": "common",
+    "canonical_case_id": "common--n513-strict_flat-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n513-strict_flat-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n513-strict_flat-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n513-low_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n513-low_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n513-low_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n513-low_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n513-low_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n513-low_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n513-low_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n513-low_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n513-medium_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n513-medium_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n513-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n513-medium_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n513-medium_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n513-medium_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n513-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n513-medium_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n513-nested_heavy_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n513-nested_heavy_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n513-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n513-nested_heavy_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n513-nested_heavy_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n513-nested_heavy_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n513-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n513-nested_heavy_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n512-strict_flat-00",
+    "source": "common",
+    "canonical_case_id": "common--n512-strict_flat-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n512-strict_flat-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n512-strict_flat-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n512-low_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n512-low_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n512-low_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n512-low_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n512-low_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n512-low_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n512-low_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n512-low_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n512-medium_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n512-medium_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n512-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n512-medium_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n512-medium_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n512-medium_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n512-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n512-medium_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n512-nested_heavy_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n512-nested_heavy_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n512-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n512-nested_heavy_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n512-nested_heavy_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n512-nested_heavy_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n512-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n512-nested_heavy_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n257-strict_flat-00",
+    "source": "common",
+    "canonical_case_id": "common--n257-strict_flat-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n257-strict_flat-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n257-strict_flat-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n257-low_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n257-low_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n257-low_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n257-low_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n257-low_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n257-low_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n257-low_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n257-low_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n257-medium_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n257-medium_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n257-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n257-medium_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n257-medium_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n257-medium_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n257-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n257-medium_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n257-nested_heavy_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n257-nested_heavy_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n257-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n257-nested_heavy_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n257-nested_heavy_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n257-nested_heavy_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n257-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n257-nested_heavy_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n256-strict_flat-00",
+    "source": "common",
+    "canonical_case_id": "common--n256-strict_flat-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n256-strict_flat-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n256-strict_flat-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n256-low_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n256-low_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n256-low_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n256-low_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n256-low_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n256-low_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n256-low_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n256-low_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n256-medium_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n256-medium_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n256-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n256-medium_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n256-medium_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n256-medium_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n256-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n256-medium_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n256-nested_heavy_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n256-nested_heavy_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n256-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n256-nested_heavy_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n256-nested_heavy_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n256-nested_heavy_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n256-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n256-nested_heavy_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n129-strict_flat-00",
+    "source": "common",
+    "canonical_case_id": "common--n129-strict_flat-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n129-strict_flat-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n129-strict_flat-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n129-low_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n129-low_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n129-low_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n129-low_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n129-low_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n129-low_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n129-low_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n129-low_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n129-medium_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n129-medium_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n129-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n129-medium_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n129-medium_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n129-medium_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n129-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n129-medium_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n129-nested_heavy_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n129-nested_heavy_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n129-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n129-nested_heavy_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n129-nested_heavy_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n129-nested_heavy_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n129-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n129-nested_heavy_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n128-strict_flat-00",
+    "source": "common",
+    "canonical_case_id": "common--n128-strict_flat-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n128-strict_flat-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n128-strict_flat-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n128-low_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n128-low_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n128-low_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n128-low_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n128-low_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n128-low_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n128-low_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n128-low_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n128-medium_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n128-medium_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n128-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n128-medium_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n128-medium_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n128-medium_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n128-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n128-medium_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n128-nested_heavy_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n128-nested_heavy_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n128-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n128-nested_heavy_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n128-nested_heavy_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n128-nested_heavy_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n128-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n128-nested_heavy_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n65-strict_flat-00",
+    "source": "common",
+    "canonical_case_id": "common--n65-strict_flat-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n65-strict_flat-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n65-strict_flat-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n65-low_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n65-low_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n65-low_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n65-low_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n65-low_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n65-low_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n65-low_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n65-low_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n65-medium_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n65-medium_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n65-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n65-medium_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n65-medium_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n65-medium_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n65-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n65-medium_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n65-nested_heavy_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n65-nested_heavy_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n65-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n65-nested_heavy_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n65-nested_heavy_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n65-nested_heavy_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n65-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n65-nested_heavy_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n64-strict_flat-00",
+    "source": "common",
+    "canonical_case_id": "common--n64-strict_flat-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n64-strict_flat-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n64-strict_flat-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n64-low_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n64-low_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n64-low_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n64-low_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n64-low_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n64-low_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n64-low_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n64-low_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n64-medium_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n64-medium_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n64-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n64-medium_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n64-medium_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n64-medium_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n64-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n64-medium_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n64-nested_heavy_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n64-nested_heavy_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n64-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n64-nested_heavy_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n64-nested_heavy_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n64-nested_heavy_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n64-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n64-nested_heavy_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n33-strict_flat-00",
+    "source": "common",
+    "canonical_case_id": "common--n33-strict_flat-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n33-strict_flat-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n33-strict_flat-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n33-low_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n33-low_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n33-low_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n33-low_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n33-low_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n33-low_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n33-low_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n33-low_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n33-medium_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n33-medium_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n33-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n33-medium_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n33-medium_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n33-medium_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n33-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n33-medium_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n33-nested_heavy_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n33-nested_heavy_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n33-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n33-nested_heavy_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n33-nested_heavy_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n33-nested_heavy_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n33-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n33-nested_heavy_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n32-strict_flat-00",
+    "source": "common",
+    "canonical_case_id": "common--n32-strict_flat-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n32-strict_flat-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n32-strict_flat-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n32-low_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n32-low_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n32-low_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n32-low_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n32-low_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n32-low_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n32-low_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n32-low_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n32-medium_nesting_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n32-medium_nesting_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n32-medium_nesting_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n32-medium_nesting_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n32-medium_nesting_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n32-medium_nesting_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n32-medium_nesting_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n32-medium_nesting_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n32-nested_heavy_valid-00",
+    "source": "common",
+    "canonical_case_id": "common--n32-nested_heavy_valid-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n32-nested_heavy_valid-00-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n32-nested_heavy_valid-00-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n32-nested_heavy_valid-01",
+    "source": "common",
+    "canonical_case_id": "common--n32-nested_heavy_valid-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "common--n32-nested_heavy_valid-01-mirror",
+    "source": "common",
+    "canonical_case_id": "common--n32-nested_heavy_valid-01-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "targeted_split--split-n128-k3",
+    "source": "targeted_split",
+    "canonical_case_id": "targeted_split--split-n128-k3",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "targeted_split--split-n128-k3-mirror",
+    "source": "targeted_split",
+    "canonical_case_id": "targeted_split--split-n128-k3-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "targeted_split--split-n128-k7",
+    "source": "targeted_split",
+    "canonical_case_id": "targeted_split--split-n128-k7",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "targeted_split--split-n128-k7-mirror",
+    "source": "targeted_split",
+    "canonical_case_id": "targeted_split--split-n128-k7-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "targeted_split--split-n128-k19",
+    "source": "targeted_split",
+    "canonical_case_id": "targeted_split--split-n128-k19",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "targeted_split--split-n128-k19-mirror",
+    "source": "targeted_split",
+    "canonical_case_id": "targeted_split--split-n128-k19-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "targeted_split--split-n129-k3",
+    "source": "targeted_split",
+    "canonical_case_id": "targeted_split--split-n129-k3",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "targeted_split--split-n129-k3-mirror",
+    "source": "targeted_split",
+    "canonical_case_id": "targeted_split--split-n129-k3-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "targeted_split--split-n129-k7",
+    "source": "targeted_split",
+    "canonical_case_id": "targeted_split--split-n129-k7",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "targeted_split--split-n129-k7-mirror",
+    "source": "targeted_split",
+    "canonical_case_id": "targeted_split--split-n129-k7-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "targeted_split--split-n129-k19",
+    "source": "targeted_split",
+    "canonical_case_id": "targeted_split--split-n129-k19",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "targeted_split--split-n129-k19-mirror",
+    "source": "targeted_split",
+    "canonical_case_id": "targeted_split--split-n129-k19-mirror",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--balanced-128",
+    "source": "structural",
+    "canonical_case_id": "structural--balanced-128",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--skew-128",
+    "source": "structural",
+    "canonical_case_id": "structural--skew-128",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--repeated-128",
+    "source": "structural",
+    "canonical_case_id": "structural--repeated-128",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--balanced-129",
+    "source": "structural",
+    "canonical_case_id": "structural--balanced-129",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--skew-129",
+    "source": "structural",
+    "canonical_case_id": "structural--skew-129",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--repeated-129",
+    "source": "structural",
+    "canonical_case_id": "structural--repeated-129",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--balanced-256",
+    "source": "structural",
+    "canonical_case_id": "structural--balanced-256",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--skew-256",
+    "source": "structural",
+    "canonical_case_id": "structural--skew-256",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--repeated-256",
+    "source": "structural",
+    "canonical_case_id": "structural--repeated-256",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--balanced-257",
+    "source": "structural",
+    "canonical_case_id": "structural--balanced-257",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--skew-257",
+    "source": "structural",
+    "canonical_case_id": "structural--skew-257",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--repeated-257",
+    "source": "structural",
+    "canonical_case_id": "structural--repeated-257",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--balanced-512",
+    "source": "structural",
+    "canonical_case_id": "structural--balanced-512",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--skew-512",
+    "source": "structural",
+    "canonical_case_id": "structural--skew-512",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--repeated-512",
+    "source": "structural",
+    "canonical_case_id": "structural--repeated-512",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--balanced-513",
+    "source": "structural",
+    "canonical_case_id": "structural--balanced-513",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--skew-513",
+    "source": "structural",
+    "canonical_case_id": "structural--skew-513",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "structural--repeated-513",
+    "source": "structural",
+    "canonical_case_id": "structural--repeated-513",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-00",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-01",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-02",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-02",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-03",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-03",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-04",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-04",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-05",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-06",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-06",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-07",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-07",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-08",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-08",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-09",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-09",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-10",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-10",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-11",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-11",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-12",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-12",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-13",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-13",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-14",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-14",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-15",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-15",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-16",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-16",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-17",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-17",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-18",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-18",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n32-19",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n32-19",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-00",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-01",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-02",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-02",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-03",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-03",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-04",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-04",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-05",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-06",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-06",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-07",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-07",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-08",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-08",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-09",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-09",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-10",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-10",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-11",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-11",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-12",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-12",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-13",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-13",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-14",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-14",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-15",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-15",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-16",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-16",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-17",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-17",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-18",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-18",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n64-19",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n64-19",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-00",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-01",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-02",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-02",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-03",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-03",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-04",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-04",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-05",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-06",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-06",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-07",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-07",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-08",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-08",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-09",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-09",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-10",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-10",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-11",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-11",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-12",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-12",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-13",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-13",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-14",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-14",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-15",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-15",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-16",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-16",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-17",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-17",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-18",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-18",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n128-19",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n128-19",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-00",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-01",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-02",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-02",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-03",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-03",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-04",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-04",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-05",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-06",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-06",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-07",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-07",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-08",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-08",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-09",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-09",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-10",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-10",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-11",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-11",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-12",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-12",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-13",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-13",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-14",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-14",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-15",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-15",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-16",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-16",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-17",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-17",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-18",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-18",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n256-19",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n256-19",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-00",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-00",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-01",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-01",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-02",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-02",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-03",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-03",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-04",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-04",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-05",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-06",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-06",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-07",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-07",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-08",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-08",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-09",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-09",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-10",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-10",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-11",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-11",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-12",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-12",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-13",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-13",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-14",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-14",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-15",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-15",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-16",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-16",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-17",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-17",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-18",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-18",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "geometric--geometric-n512-19",
+    "source": "geometric",
+    "canonical_case_id": "geometric--geometric-n512-19",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-11-128-0.05",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-11-128-0.05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-11-128-0.25",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-11-128-0.25",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-11-512-0.05",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-11-512-0.05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-11-512-0.25",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-11-512-0.25",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-11-513-0.05",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-11-513-0.05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-11-513-0.25",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-11-513-0.25",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-12-128-0.05",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-12-128-0.05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-12-128-0.25",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-12-128-0.25",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-12-512-0.05",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-12-512-0.05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-12-512-0.25",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-12-512-0.25",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-12-513-0.05",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-12-513-0.05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-12-513-0.25",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-12-513-0.25",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-13-128-0.05",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-13-128-0.05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-13-128-0.25",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-13-128-0.25",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-13-512-0.05",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-13-512-0.05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-13-512-0.25",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-13-512-0.25",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-13-513-0.05",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-13-513-0.05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-13-513-0.25",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-13-513-0.25",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-14-128-0.05",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-14-128-0.05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-14-128-0.25",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-14-128-0.25",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-14-512-0.05",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-14-512-0.05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-14-512-0.25",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-14-512-0.25",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-14-513-0.05",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-14-513-0.05",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--stress-14-513-0.25",
+    "source": "seeded",
+    "canonical_case_id": "seeded--stress-14-513-0.25",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--checked-21-32",
+    "source": "seeded",
+    "canonical_case_id": "seeded--checked-21-32",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--checked-21-33",
+    "source": "seeded",
+    "canonical_case_id": "seeded--checked-21-33",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--checked-21-64",
+    "source": "seeded",
+    "canonical_case_id": "seeded--checked-21-64",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--checked-21-70",
+    "source": "seeded",
+    "canonical_case_id": "seeded--checked-21-70",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--checked-22-32",
+    "source": "seeded",
+    "canonical_case_id": "seeded--checked-22-32",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--checked-22-33",
+    "source": "seeded",
+    "canonical_case_id": "seeded--checked-22-33",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--checked-22-64",
+    "source": "seeded",
+    "canonical_case_id": "seeded--checked-22-64",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  },
+  {
+    "case_id": "seeded--checked-22-70",
+    "source": "seeded",
+    "canonical_case_id": "seeded--checked-22-70",
+    "duplicate_of": null,
+    "membership_status": "CANONICAL"
+  }
+]
