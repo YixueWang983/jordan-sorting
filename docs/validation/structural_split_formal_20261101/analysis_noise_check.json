@@ -1,0 +1,11 @@
+{
+  "maximum_relative_iqr": [
+    0.02401033137336967,
+    "repeated-256",
+    "ordinary_list"
+  ],
+  "cells_over_50_percent_iqr": 0,
+  "sample_batches_below_10ms": 0,
+  "sample_batch_seconds_min": 0.010381916,
+  "sample_batch_seconds_max": 0.091354417
+}

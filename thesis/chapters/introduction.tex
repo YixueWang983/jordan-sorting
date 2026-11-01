@@ -64,19 +64,24 @@ reversed-pointer representation, locality and two potentials to linear total
 source-level work. This bound assumes unit-cost comparisons and machine-word
 operations, expected dictionary lookup and amortized growth.
 
-The current study compares the backends on 140 controlled inputs and a separate
-twelve-input split set, all of which passed validation on both backends.
-All 66,560 formal sample calls return correct output in 6,080 batches.
+The study compares the backends on 140 controlled inputs, a separate
+twelve-input split set and a later eighteen-input structural extension.
+All inputs passed validation on both backends, and all 69,360 formal sample
+calls return correct output in 6,800 batches.
 The measured tree retains instrumentation hooks, which intercept field
 reads and writes, with work counting disabled. Its median runtime exceeds
 the list's on every input. Across the common and targeted sets, the within-input
 tree/list ratios have medians 2.898 and 3.180, and ranges 1.114--3.535 and
 3.147--3.213, respectively.
+The structural extension has a median ratio of 2.987 and range 2.376--3.222;
+its later measurement session is analyzed separately.
 
 The common workload has no two-sided splits. The targeted set exercises that
 path with smaller-side sizes of 3/7/19. These workloads provide complementary
 views of the implementations: the common set covers endpoint insertion and
 whole-group transfer, while the targeted set also exercises interior splitting.
+The structural extension adds larger balanced and skew splits and repeated
+splits of earlier outputs.
 
 \section{Reading Guide}
 \label{sec:introduction-structure}

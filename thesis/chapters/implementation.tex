@@ -219,7 +219,7 @@ source snapshot; the qualification rows identify the measured versions.
     $n=128/129,256/257,512/513$; checked/minimal and three backend configurations.
     Correctness and resource evidence only. & Structural campaign \\
     Common group & 140 inputs qualified, including fresh minimal calls; 3,788 splits
-    per backend, all with an empty side. Formal timing therefore does not
+    per backend, all with an empty side. This group's timing does not
     exercise interior splitting. & Common-set qualification \\
     Targeted group & 12 inputs qualified separately; 12 two-sided splits per
     backend, source size 61, smaller side 3/7/19. Later direct insertions reach
@@ -238,6 +238,9 @@ configuration's original runs. Within it, \texttt{repeated-512} contributes resp
 126, 63, 189 and 62 operations; its two-sided splits always have smaller side
 one. The 512-point balanced and skew cases split 253 siblings into $126+127$
 and $1+252$; the 513-point cases mirror these constructions.
+The same eighteen inputs were subsequently qualified again and formally
+timed in the separate November extension
+(\cref{sec:method-structural-extension,sec:results-structural-extension}).
 
 The seeded generator extends from $z_{i-1}$ into an axis gap such that no
 same-parity arc has exactly one endpoint between $z_{i-1}$ and the new
@@ -251,8 +254,8 @@ $b=0.1$. Each seed uses one sequential Python \texttt{random.Random}
 stream; all forty inputs are saved and independently certified by the oracle.
 Thirty-eight contain a two-sided split, with maximum smaller side 13.
 The eight smaller inputs also receive checked validation.
-This supplement extends the tested operation histories; the common and
-targeted groups supply the formal timing data.
+This seeded supplement extends the tested operation histories; the common,
+targeted and November structural groups supply the formal timing data.
 Archive locators and the source-hash distinction are in
 \cref{sec:appendix-development-coverage}.
 

@@ -13,12 +13,26 @@ not the later commits that saved their results.
 | 12-input qualification | `668371f` | `split_trace_followup_20261015/` |
 | ID recheck and calibration | `c5b5ac3` | `id_lifecycle_calibration_20261015/` |
 | Formal 140 + 12 | `4a83fa6` | `final_review_formal_20261015/` |
+| 18-input structural qualification, calibration and formal extension (1 November) | `bdfcdcf8` | `structural_split_formal_20261101/` |
 
 The formal archive contains 5,600 common and 480 targeted sample batches.
 Its Python code matches calibration source `c5b5ac3`; result storage at
 `ce0148b` does not change execution identity. UTC timestamps identify runs;
 dated directories identify work packages. Inputs, B tables and data stay frozen.
 Full hashes and manifests remain in those archives.
+
+The November extension keeps the original eighteen structural inputs and
+production sorting sources. It adds 720 formal sample batches containing 2,800
+correct calls, plus 180 correct warm-up calls. Its own qualification traces
+contain 230 two-sided splits and 212 re-splits per backend. Every tree median
+is higher than the corresponding list median (ratio median 2.987, range
+2.376–3.222). The predeclared protocol, exact inputs, raw archives and complete
+eighteen-row reconstruction are saved together in the new directory. Its
+README gives reproduction commands and the existing review-receipt binding.
+This is a separate session on macOS 27.2 with battery at 32%; original formal
+runs recorded macOS 26.6 and 100%. Do not pool the campaigns or interpret their
+between-dataset differences as an isolated workload effect. A hash audit found
+all 13,256 files in the seven original archive trees unchanged.
 
 ## Proof-to-source correspondence
 

@@ -1,0 +1,2672 @@
+{
+  "archive_valid": true,
+  "stage": "formal",
+  "complete": true,
+  "dataset": "common",
+  "inputs": 140,
+  "batch_sizes": {},
+  "statistics": {
+    "n64-medium_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1289179.625,
+          "q25_ns_per_call": 1273138.0625,
+          "q75_ns_per_call": 1303622.4375,
+          "iqr_ns_per_call": 30484.375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 3904419.25,
+          "q25_ns_per_call": 3875226.53125,
+          "q75_ns_per_call": 3925336.0,
+          "iqr_ns_per_call": 50109.46875
+        }
+      },
+      "tree_over_list_median": 3.02860763099634
+    },
+    "n256-nested_heavy_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 5978583.5,
+          "q25_ns_per_call": 5938833.375,
+          "q75_ns_per_call": 6031255.25,
+          "iqr_ns_per_call": 92421.875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 9108166.75,
+          "q25_ns_per_call": 9063145.875,
+          "q75_ns_per_call": 9175953.125,
+          "iqr_ns_per_call": 112807.25
+        }
+      },
+      "tree_over_list_median": 1.5234656754396756
+    },
+    "n513-medium_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 15970270.5,
+          "q25_ns_per_call": 15723145.75,
+          "q75_ns_per_call": 16271135.75,
+          "iqr_ns_per_call": 547990.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 33798604.0,
+          "q25_ns_per_call": 33451906.0,
+          "q75_ns_per_call": 34210395.75,
+          "iqr_ns_per_call": 758489.75
+        }
+      },
+      "tree_over_list_median": 2.1163451176359223
+    },
+    "n257-low_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 4837645.875,
+          "q25_ns_per_call": 4796992.125,
+          "q75_ns_per_call": 4873184.875,
+          "iqr_ns_per_call": 76192.75
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 14194062.5,
+          "q25_ns_per_call": 14137976.5625,
+          "q75_ns_per_call": 14228140.5625,
+          "iqr_ns_per_call": 90164.0
+        }
+      },
+      "tree_over_list_median": 2.9340846491786667
+    },
+    "n128-nested_heavy_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2469809.875,
+          "q25_ns_per_call": 2451183.625,
+          "q75_ns_per_call": 2481609.375,
+          "iqr_ns_per_call": 30425.75
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4587213.5625,
+          "q25_ns_per_call": 4571645.84375,
+          "q75_ns_per_call": 4619044.3125,
+          "iqr_ns_per_call": 47398.46875
+        }
+      },
+      "tree_over_list_median": 1.8573144471292553
+    },
+    "n513-medium_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 16300792.0,
+          "q25_ns_per_call": 16117104.5,
+          "q75_ns_per_call": 16398166.75,
+          "iqr_ns_per_call": 281062.25
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 33783895.5,
+          "q25_ns_per_call": 33618624.75,
+          "q75_ns_per_call": 33979979.25,
+          "iqr_ns_per_call": 361354.5
+        }
+      },
+      "tree_over_list_median": 2.0725309236508265
+    },
+    "n64-nested_heavy_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1083720.03125,
+          "q25_ns_per_call": 1074589.203125,
+          "q75_ns_per_call": 1091798.1875,
+          "iqr_ns_per_call": 17208.984375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 2334792.96875,
+          "q25_ns_per_call": 2318094.40625,
+          "q75_ns_per_call": 2351722.625,
+          "iqr_ns_per_call": 33628.21875
+        }
+      },
+      "tree_over_list_median": 2.1544244836528206
+    },
+    "n32-medium_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 621645.1875,
+          "q25_ns_per_call": 620016.59375,
+          "q75_ns_per_call": 625102.8671875,
+          "iqr_ns_per_call": 5086.2734375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1962500.65625,
+          "q25_ns_per_call": 1952679.9921875,
+          "q75_ns_per_call": 1965761.71875,
+          "iqr_ns_per_call": 13081.7265625
+        }
+      },
+      "tree_over_list_median": 3.156946592223076
+    },
+    "n65-medium_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1322718.75,
+          "q25_ns_per_call": 1309872.34375,
+          "q75_ns_per_call": 1328569.03125,
+          "iqr_ns_per_call": 18696.6875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4077440.125,
+          "q25_ns_per_call": 4063190.0625,
+          "q75_ns_per_call": 4106414.125,
+          "iqr_ns_per_call": 43224.0625
+        }
+      },
+      "tree_over_list_median": 3.0826206440333594
+    },
+    "n256-medium_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 6292406.25,
+          "q25_ns_per_call": 6193187.5,
+          "q75_ns_per_call": 6323078.375,
+          "iqr_ns_per_call": 129890.875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 16294823.0,
+          "q25_ns_per_call": 16237005.0,
+          "q75_ns_per_call": 16406078.125,
+          "iqr_ns_per_call": 169073.125
+        }
+      },
+      "tree_over_list_median": 2.589601235616343
+    },
+    "n257-nested_heavy_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 6149541.75,
+          "q25_ns_per_call": 6061463.5,
+          "q75_ns_per_call": 6183984.375,
+          "iqr_ns_per_call": 122520.875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 9280166.5,
+          "q25_ns_per_call": 9218557.375,
+          "q75_ns_per_call": 9331521.125,
+          "iqr_ns_per_call": 112963.75
+        }
+      },
+      "tree_over_list_median": 1.509082607659343
+    },
+    "n33-nested_heavy_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 521349.609375,
+          "q25_ns_per_call": 518603.1875,
+          "q75_ns_per_call": 523861.6484375,
+          "iqr_ns_per_call": 5258.4609375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1218014.3125,
+          "q25_ns_per_call": 1214121.7421875,
+          "q75_ns_per_call": 1222392.90625,
+          "iqr_ns_per_call": 8271.1640625
+        }
+      },
+      "tree_over_list_median": 2.336271650726218
+    },
+    "n256-nested_heavy_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 6000166.75,
+          "q25_ns_per_call": 5972963.5,
+          "q75_ns_per_call": 6016296.75,
+          "iqr_ns_per_call": 43333.25
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 9149218.75,
+          "q25_ns_per_call": 9093901.125,
+          "q75_ns_per_call": 9192411.625,
+          "iqr_ns_per_call": 98510.5
+        }
+      },
+      "tree_over_list_median": 1.5248274141714477
+    },
+    "n257-nested_heavy_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 6273187.5,
+          "q25_ns_per_call": 6204020.75,
+          "q75_ns_per_call": 6347786.25,
+          "iqr_ns_per_call": 143765.5
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 9485239.25,
+          "q25_ns_per_call": 9412463.625,
+          "q75_ns_per_call": 9619718.75,
+          "iqr_ns_per_call": 207255.125
+        }
+      },
+      "tree_over_list_median": 1.5120286536947922
+    },
+    "n32-strict_flat-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 434570.953125,
+          "q25_ns_per_call": 433183.59375,
+          "q75_ns_per_call": 436911.1484375,
+          "iqr_ns_per_call": 3727.5546875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1497020.203125,
+          "q25_ns_per_call": 1494011.0625,
+          "q75_ns_per_call": 1503694.0234375,
+          "iqr_ns_per_call": 9682.9609375
+        }
+      },
+      "tree_over_list_median": 3.4448234341479265
+    },
+    "n256-strict_flat-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 3892968.625,
+          "q25_ns_per_call": 3871424.5625,
+          "q75_ns_per_call": 3922713.4375,
+          "iqr_ns_per_call": 51288.875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 13100854.125,
+          "q25_ns_per_call": 13070898.3125,
+          "q75_ns_per_call": 13163249.9375,
+          "iqr_ns_per_call": 92351.625
+        }
+      },
+      "tree_over_list_median": 3.365260649897994
+    },
+    "n512-low_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 11156521.0,
+          "q25_ns_per_call": 11003020.75,
+          "q75_ns_per_call": 11202875.25,
+          "iqr_ns_per_call": 199854.5
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 28580562.5,
+          "q25_ns_per_call": 28421208.5,
+          "q75_ns_per_call": 28704125.0,
+          "iqr_ns_per_call": 282916.5
+        }
+      },
+      "tree_over_list_median": 2.5617809082239886
+    },
+    "n64-medium_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1292531.1875,
+          "q25_ns_per_call": 1281003.875,
+          "q75_ns_per_call": 1301884.125,
+          "iqr_ns_per_call": 20880.25
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 3917598.9375,
+          "q25_ns_per_call": 3912925.78125,
+          "q75_ns_per_call": 3930239.625,
+          "iqr_ns_per_call": 17313.84375
+        }
+      },
+      "tree_over_list_median": 3.030951187396397
+    },
+    "n65-medium_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1328567.6875,
+          "q25_ns_per_call": 1315093.71875,
+          "q75_ns_per_call": 1349528.625,
+          "iqr_ns_per_call": 34434.90625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4075252.625,
+          "q25_ns_per_call": 4051053.4375,
+          "q75_ns_per_call": 4097833.40625,
+          "iqr_ns_per_call": 46779.96875
+        }
+      },
+      "tree_over_list_median": 3.0674030863030453
+    },
+    "n64-strict_flat-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 901376.28125,
+          "q25_ns_per_call": 897620.46875,
+          "q75_ns_per_call": 905704.421875,
+          "iqr_ns_per_call": 8083.953125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 3135110.6875,
+          "q25_ns_per_call": 3130194.640625,
+          "q75_ns_per_call": 3152462.21875,
+          "iqr_ns_per_call": 22267.578125
+        }
+      },
+      "tree_over_list_median": 3.478137546677319
+    },
+    "n65-strict_flat-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 906330.71875,
+          "q25_ns_per_call": 903295.578125,
+          "q75_ns_per_call": 908132.140625,
+          "iqr_ns_per_call": 4836.5625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 3203480.4375,
+          "q25_ns_per_call": 3200231.140625,
+          "q75_ns_per_call": 3217692.71875,
+          "iqr_ns_per_call": 17461.578125
+        }
+      },
+      "tree_over_list_median": 3.5345601459014873
+    },
+    "n64-strict_flat-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 901899.71875,
+          "q25_ns_per_call": 897387.390625,
+          "q75_ns_per_call": 906363.296875,
+          "iqr_ns_per_call": 8975.90625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 3156109.375,
+          "q25_ns_per_call": 3147702.46875,
+          "q75_ns_per_call": 3170125.015625,
+          "iqr_ns_per_call": 22422.546875
+        }
+      },
+      "tree_over_list_median": 3.4994016622759925
+    },
+    "n65-nested_heavy_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1117428.375,
+          "q25_ns_per_call": 1113345.015625,
+          "q75_ns_per_call": 1128660.8125,
+          "iqr_ns_per_call": 15315.796875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 2324307.28125,
+          "q25_ns_per_call": 2317051.390625,
+          "q75_ns_per_call": 2346774.75,
+          "iqr_ns_per_call": 29723.359375
+        }
+      },
+      "tree_over_list_median": 2.080050348864642
+    },
+    "n65-nested_heavy_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1132589.8125,
+          "q25_ns_per_call": 1126373.078125,
+          "q75_ns_per_call": 1139168.59375,
+          "iqr_ns_per_call": 12795.515625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 2398020.84375,
+          "q25_ns_per_call": 2392914.046875,
+          "q75_ns_per_call": 2404814.46875,
+          "iqr_ns_per_call": 11900.421875
+        }
+      },
+      "tree_over_list_median": 2.117289787780075
+    },
+    "n512-medium_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 16118208.0,
+          "q25_ns_per_call": 16017072.75,
+          "q75_ns_per_call": 16200947.25,
+          "iqr_ns_per_call": 183874.5
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 33907708.0,
+          "q25_ns_per_call": 33796312.5,
+          "q75_ns_per_call": 34112510.25,
+          "iqr_ns_per_call": 316197.75
+        }
+      },
+      "tree_over_list_median": 2.103689690566098
+    },
+    "n256-low_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 4566375.0,
+          "q25_ns_per_call": 4544106.6875,
+          "q75_ns_per_call": 4589742.125,
+          "iqr_ns_per_call": 45635.4375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 13973442.75,
+          "q25_ns_per_call": 13943643.3125,
+          "q75_ns_per_call": 14017523.3125,
+          "iqr_ns_per_call": 73880.0
+        }
+      },
+      "tree_over_list_median": 3.0600734170978074
+    },
+    "n128-medium_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2780463.5,
+          "q25_ns_per_call": 2761210.8125,
+          "q75_ns_per_call": 2805893.1875,
+          "iqr_ns_per_call": 44682.375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 8044505.25,
+          "q25_ns_per_call": 8026085.875,
+          "q75_ns_per_call": 8059984.4375,
+          "iqr_ns_per_call": 33898.5625
+        }
+      },
+      "tree_over_list_median": 2.89322454691457
+    },
+    "n129-medium_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2863755.125,
+          "q25_ns_per_call": 2848591.0,
+          "q75_ns_per_call": 2882737.0625,
+          "iqr_ns_per_call": 34146.0625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 8182057.25,
+          "q25_ns_per_call": 8147296.8125,
+          "q75_ns_per_call": 8216263.125,
+          "iqr_ns_per_call": 68966.3125
+        }
+      },
+      "tree_over_list_median": 2.8571078506581458
+    },
+    "n129-nested_heavy_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2500106.8125,
+          "q25_ns_per_call": 2495432.25,
+          "q75_ns_per_call": 2514813.78125,
+          "iqr_ns_per_call": 19381.53125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4665950.5625,
+          "q25_ns_per_call": 4641020.8125,
+          "q75_ns_per_call": 4700408.875,
+          "iqr_ns_per_call": 59388.0625
+        }
+      },
+      "tree_over_list_median": 1.8663004873116795
+    },
+    "n128-low_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2161781.1875,
+          "q25_ns_per_call": 2152708.34375,
+          "q75_ns_per_call": 2168575.46875,
+          "iqr_ns_per_call": 15867.125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 6897531.25,
+          "q25_ns_per_call": 6869763.0,
+          "q75_ns_per_call": 6919684.9375,
+          "iqr_ns_per_call": 49921.9375
+        }
+      },
+      "tree_over_list_median": 3.1906704017424983
+    },
+    "n64-medium_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1304625.0,
+          "q25_ns_per_call": 1297153.625,
+          "q75_ns_per_call": 1315239.5625,
+          "iqr_ns_per_call": 18085.9375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 3920963.5625,
+          "q25_ns_per_call": 3912648.4375,
+          "q75_ns_per_call": 3937145.84375,
+          "iqr_ns_per_call": 24497.40625
+        }
+      },
+      "tree_over_list_median": 3.005433409983712
+    },
+    "n64-nested_heavy_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1089536.46875,
+          "q25_ns_per_call": 1083735.640625,
+          "q75_ns_per_call": 1093481.734375,
+          "iqr_ns_per_call": 9746.09375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 2341641.90625,
+          "q25_ns_per_call": 2335953.75,
+          "q75_ns_per_call": 2349952.484375,
+          "iqr_ns_per_call": 13998.734375
+        }
+      },
+      "tree_over_list_median": 2.149209295340533
+    },
+    "n257-medium_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 6458729.25,
+          "q25_ns_per_call": 6380552.125,
+          "q75_ns_per_call": 6511312.625,
+          "iqr_ns_per_call": 130760.5
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 16523802.0,
+          "q25_ns_per_call": 16464249.875,
+          "q75_ns_per_call": 16659718.625,
+          "iqr_ns_per_call": 195468.75
+        }
+      },
+      "tree_over_list_median": 2.558367344474147
+    },
+    "n128-medium_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2799812.375,
+          "q25_ns_per_call": 2787197.875,
+          "q75_ns_per_call": 2820150.9375,
+          "iqr_ns_per_call": 32953.0625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 8119239.5,
+          "q25_ns_per_call": 8091609.3125,
+          "q75_ns_per_call": 8138973.9375,
+          "iqr_ns_per_call": 47364.625
+        }
+      },
+      "tree_over_list_median": 2.899922713571119
+    },
+    "n256-strict_flat-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 3859973.875,
+          "q25_ns_per_call": 3844239.6875,
+          "q75_ns_per_call": 3879955.8125,
+          "iqr_ns_per_call": 35716.125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 13002385.375,
+          "q25_ns_per_call": 12948637.9375,
+          "q75_ns_per_call": 13033143.1875,
+          "iqr_ns_per_call": 84505.25
+        }
+      },
+      "tree_over_list_median": 3.368516419039235
+    },
+    "n65-medium_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1330432.3125,
+          "q25_ns_per_call": 1319138.0625,
+          "q75_ns_per_call": 1339746.09375,
+          "iqr_ns_per_call": 20608.03125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4062549.4375,
+          "q25_ns_per_call": 4042326.78125,
+          "q75_ns_per_call": 4084143.21875,
+          "iqr_ns_per_call": 41816.4375
+        }
+      },
+      "tree_over_list_median": 3.053555900086424
+    },
+    "n512-nested_heavy_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 16815750.5,
+          "q25_ns_per_call": 16741250.5,
+          "q75_ns_per_call": 16857385.5,
+          "iqr_ns_per_call": 116135.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 18826021.0,
+          "q25_ns_per_call": 18796125.25,
+          "q75_ns_per_call": 18880864.5,
+          "iqr_ns_per_call": 84739.25
+        }
+      },
+      "tree_over_list_median": 1.1195468795757881
+    },
+    "n65-medium_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1320093.8125,
+          "q25_ns_per_call": 1309143.15625,
+          "q75_ns_per_call": 1334399.78125,
+          "iqr_ns_per_call": 25256.625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4086986.9375,
+          "q25_ns_per_call": 4077145.90625,
+          "q75_ns_per_call": 4095683.65625,
+          "iqr_ns_per_call": 18537.75
+        }
+      },
+      "tree_over_list_median": 3.0959821936897383
+    },
+    "n128-nested_heavy_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2490986.9375,
+          "q25_ns_per_call": 2482223.96875,
+          "q75_ns_per_call": 2519543.0,
+          "iqr_ns_per_call": 37319.03125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4660520.875,
+          "q25_ns_per_call": 4642980.4375,
+          "q75_ns_per_call": 4697386.6875,
+          "iqr_ns_per_call": 54406.25
+        }
+      },
+      "tree_over_list_median": 1.8709535585430985
+    },
+    "n513-nested_heavy_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 17020708.5,
+          "q25_ns_per_call": 16966375.0,
+          "q75_ns_per_call": 17137302.25,
+          "iqr_ns_per_call": 170927.25
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 18960313.0,
+          "q25_ns_per_call": 18918667.0,
+          "q75_ns_per_call": 19083020.5,
+          "iqr_ns_per_call": 164353.5
+        }
+      },
+      "tree_over_list_median": 1.1139555677132946
+    },
+    "n257-medium_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 6434146.0,
+          "q25_ns_per_call": 6404661.375,
+          "q75_ns_per_call": 6457609.375,
+          "iqr_ns_per_call": 52948.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 16697375.0,
+          "q25_ns_per_call": 16647083.625,
+          "q75_ns_per_call": 16752359.375,
+          "iqr_ns_per_call": 105275.75
+        }
+      },
+      "tree_over_list_median": 2.5951190725233775
+    },
+    "n129-nested_heavy_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2547583.3125,
+          "q25_ns_per_call": 2525062.5,
+          "q75_ns_per_call": 2564871.125,
+          "iqr_ns_per_call": 39808.625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4740315.125,
+          "q25_ns_per_call": 4718053.34375,
+          "q75_ns_per_call": 4810522.15625,
+          "iqr_ns_per_call": 92468.8125
+        }
+      },
+      "tree_over_list_median": 1.8607105415320937
+    },
+    "n128-low_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2190518.1875,
+          "q25_ns_per_call": 2176932.3125,
+          "q75_ns_per_call": 2224037.78125,
+          "iqr_ns_per_call": 47105.46875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 7062273.4375,
+          "q25_ns_per_call": 7035738.28125,
+          "q75_ns_per_call": 7096790.375,
+          "iqr_ns_per_call": 61052.09375
+        }
+      },
+      "tree_over_list_median": 3.22401953921234
+    },
+    "n512-nested_heavy_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 16660958.5,
+          "q25_ns_per_call": 16613770.5,
+          "q75_ns_per_call": 16870875.5,
+          "iqr_ns_per_call": 257105.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 18925792.0,
+          "q25_ns_per_call": 18874999.5,
+          "q75_ns_per_call": 19037187.75,
+          "iqr_ns_per_call": 162188.25
+        }
+      },
+      "tree_over_list_median": 1.1359365669148027
+    },
+    "n257-low_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 4948901.125,
+          "q25_ns_per_call": 4918283.8125,
+          "q75_ns_per_call": 4986520.8125,
+          "iqr_ns_per_call": 68237.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 14411802.125,
+          "q25_ns_per_call": 14358049.5,
+          "q75_ns_per_call": 14436932.25,
+          "iqr_ns_per_call": 78882.75
+        }
+      },
+      "tree_over_list_median": 2.9121216530669725
+    },
+    "n257-strict_flat-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 4007567.625,
+          "q25_ns_per_call": 3999624.875,
+          "q75_ns_per_call": 4036656.1875,
+          "iqr_ns_per_call": 37031.3125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 13238656.25,
+          "q25_ns_per_call": 13215916.5625,
+          "q75_ns_per_call": 13320080.6875,
+          "iqr_ns_per_call": 104164.125
+        }
+      },
+      "tree_over_list_median": 3.3034143123161894
+    },
+    "n129-low_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2175523.4375,
+          "q25_ns_per_call": 2163075.59375,
+          "q75_ns_per_call": 2180027.3125,
+          "iqr_ns_per_call": 16951.71875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 7082125.0,
+          "q25_ns_per_call": 7076342.5,
+          "q75_ns_per_call": 7121690.125,
+          "iqr_ns_per_call": 45347.625
+        }
+      },
+      "tree_over_list_median": 3.2553659859157458
+    },
+    "n257-nested_heavy_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 6162906.25,
+          "q25_ns_per_call": 6148380.5,
+          "q75_ns_per_call": 6181692.625,
+          "iqr_ns_per_call": 33312.125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 9321572.75,
+          "q25_ns_per_call": 9307567.625,
+          "q75_ns_per_call": 9347703.375,
+          "iqr_ns_per_call": 40135.75
+        }
+      },
+      "tree_over_list_median": 1.5125287278222024
+    },
+    "n129-medium_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2821395.875,
+          "q25_ns_per_call": 2793458.3125,
+          "q75_ns_per_call": 2834763.0,
+          "iqr_ns_per_call": 41304.6875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 8185078.125,
+          "q25_ns_per_call": 8159002.6875,
+          "q75_ns_per_call": 8227534.0,
+          "iqr_ns_per_call": 68531.3125
+        }
+      },
+      "tree_over_list_median": 2.9010739675090793
+    },
+    "n512-strict_flat-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 8816052.0,
+          "q25_ns_per_call": 8779953.125,
+          "q75_ns_per_call": 8889036.25,
+          "iqr_ns_per_call": 109083.125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 26756281.5,
+          "q25_ns_per_call": 26707260.375,
+          "q75_ns_per_call": 26845395.75,
+          "iqr_ns_per_call": 138135.375
+        }
+      },
+      "tree_over_list_median": 3.0349505084588886
+    },
+    "n65-low_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1045765.65625,
+          "q25_ns_per_call": 1041429.65625,
+          "q75_ns_per_call": 1052652.359375,
+          "iqr_ns_per_call": 11222.703125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 3455502.59375,
+          "q25_ns_per_call": 3450770.8125,
+          "q75_ns_per_call": 3463623.0625,
+          "iqr_ns_per_call": 12852.25
+        }
+      },
+      "tree_over_list_median": 3.3042800488792587
+    },
+    "n512-low_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 11328187.5,
+          "q25_ns_per_call": 11272823.0,
+          "q75_ns_per_call": 11409865.0,
+          "iqr_ns_per_call": 137042.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 28863625.0,
+          "q25_ns_per_call": 28817073.0,
+          "q75_ns_per_call": 29001177.0,
+          "iqr_ns_per_call": 184104.0
+        }
+      },
+      "tree_over_list_median": 2.5479473216699495
+    },
+    "n257-medium_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 6445833.0,
+          "q25_ns_per_call": 6436635.375,
+          "q75_ns_per_call": 6478088.375,
+          "iqr_ns_per_call": 41453.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 16757708.5,
+          "q25_ns_per_call": 16723338.375,
+          "q75_ns_per_call": 16830572.875,
+          "iqr_ns_per_call": 107234.5
+        }
+      },
+      "tree_over_list_median": 2.599773915954695
+    },
+    "n129-low_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2242359.375,
+          "q25_ns_per_call": 2233658.78125,
+          "q75_ns_per_call": 2257976.625,
+          "iqr_ns_per_call": 24317.84375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 7009328.125,
+          "q25_ns_per_call": 6990398.4375,
+          "q75_ns_per_call": 7021770.8125,
+          "iqr_ns_per_call": 31372.375
+        }
+      },
+      "tree_over_list_median": 3.125871884385169
+    },
+    "n128-nested_heavy_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2502713.5625,
+          "q25_ns_per_call": 2497942.78125,
+          "q75_ns_per_call": 2508417.9375,
+          "iqr_ns_per_call": 10475.15625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4637510.4375,
+          "q25_ns_per_call": 4617865.96875,
+          "q75_ns_per_call": 4651832.09375,
+          "iqr_ns_per_call": 33966.125
+        }
+      },
+      "tree_over_list_median": 1.852992890192163
+    },
+    "n513-nested_heavy_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 17107041.5,
+          "q25_ns_per_call": 16992406.0,
+          "q75_ns_per_call": 17186614.0,
+          "iqr_ns_per_call": 194208.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 19241479.0,
+          "q25_ns_per_call": 19086083.25,
+          "q75_ns_per_call": 19366656.25,
+          "iqr_ns_per_call": 280573.0
+        }
+      },
+      "tree_over_list_median": 1.1247695283839698
+    },
+    "n512-low_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 11280687.5,
+          "q25_ns_per_call": 11216229.5,
+          "q75_ns_per_call": 11441479.25,
+          "iqr_ns_per_call": 225249.75
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 29217625.5,
+          "q25_ns_per_call": 29062625.5,
+          "q75_ns_per_call": 29706979.5,
+          "iqr_ns_per_call": 644354.0
+        }
+      },
+      "tree_over_list_median": 2.5900571662852996
+    },
+    "n64-low_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1012376.28125,
+          "q25_ns_per_call": 1003551.46875,
+          "q75_ns_per_call": 1015698.5625,
+          "iqr_ns_per_call": 12147.09375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 3387835.9375,
+          "q25_ns_per_call": 3368143.875,
+          "q75_ns_per_call": 3392902.34375,
+          "iqr_ns_per_call": 24758.46875
+        }
+      },
+      "tree_over_list_median": 3.346419706037537
+    },
+    "n256-low_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 4601286.375,
+          "q25_ns_per_call": 4578255.3125,
+          "q75_ns_per_call": 4619036.375,
+          "iqr_ns_per_call": 40781.0625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 14025531.375,
+          "q25_ns_per_call": 13950314.9375,
+          "q75_ns_per_call": 14083205.625,
+          "iqr_ns_per_call": 132890.6875
+        }
+      },
+      "tree_over_list_median": 3.0481761472627316
+    },
+    "n65-nested_heavy_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1132924.5,
+          "q25_ns_per_call": 1127077.5,
+          "q75_ns_per_call": 1138935.578125,
+          "iqr_ns_per_call": 11858.078125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 2398906.25,
+          "q25_ns_per_call": 2383768.203125,
+          "q75_ns_per_call": 2417013.671875,
+          "iqr_ns_per_call": 33245.46875
+        }
+      },
+      "tree_over_list_median": 2.1174458227357604
+    },
+    "n33-nested_heavy_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 511616.53125,
+          "q25_ns_per_call": 508966.46875,
+          "q75_ns_per_call": 514788.0859375,
+          "iqr_ns_per_call": 5821.6171875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1168095.046875,
+          "q25_ns_per_call": 1163287.7578125,
+          "q75_ns_per_call": 1172578.1171875,
+          "iqr_ns_per_call": 9290.359375
+        }
+      },
+      "tree_over_list_median": 2.283145628662678
+    },
+    "n33-low_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 461046.21875,
+          "q25_ns_per_call": 454301.1171875,
+          "q75_ns_per_call": 466937.828125,
+          "iqr_ns_per_call": 12636.7109375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1570475.28125,
+          "q25_ns_per_call": 1552692.6953125,
+          "q75_ns_per_call": 1580031.9140625,
+          "iqr_ns_per_call": 27339.21875
+        }
+      },
+      "tree_over_list_median": 3.406329381700411
+    },
+    "n33-medium_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 611578.765625,
+          "q25_ns_per_call": 594236.6484375,
+          "q75_ns_per_call": 620618.15625,
+          "iqr_ns_per_call": 26381.5078125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1879831.375,
+          "q25_ns_per_call": 1842126.3125,
+          "q75_ns_per_call": 1908609.6796875,
+          "iqr_ns_per_call": 66483.3671875
+        }
+      },
+      "tree_over_list_median": 3.073735519706796
+    },
+    "n256-nested_heavy_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 6763624.75,
+          "q25_ns_per_call": 6378349.25,
+          "q75_ns_per_call": 6807625.125,
+          "iqr_ns_per_call": 429275.875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 10279541.75,
+          "q25_ns_per_call": 9665151.125,
+          "q75_ns_per_call": 10324557.625,
+          "iqr_ns_per_call": 659406.5
+        }
+      },
+      "tree_over_list_median": 1.519827330751902
+    },
+    "n33-strict_flat-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 580161.453125,
+          "q25_ns_per_call": 517813.4609375,
+          "q75_ns_per_call": 809421.234375,
+          "iqr_ns_per_call": 291607.7734375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 2009209.640625,
+          "q25_ns_per_call": 1811084.3046875,
+          "q75_ns_per_call": 3052958.34375,
+          "iqr_ns_per_call": 1241874.0390625
+        }
+      },
+      "tree_over_list_median": 3.463190513265798
+    },
+    "n256-low_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 6650557.375,
+          "q25_ns_per_call": 6183473.9375,
+          "q75_ns_per_call": 7386237.0,
+          "iqr_ns_per_call": 1202763.0625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 19965229.125,
+          "q25_ns_per_call": 18558164.1875,
+          "q75_ns_per_call": 22696281.1875,
+          "iqr_ns_per_call": 4138117.0
+        }
+      },
+      "tree_over_list_median": 3.002038475760086
+    },
+    "n129-medium_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 3467359.375,
+          "q25_ns_per_call": 3449106.75,
+          "q75_ns_per_call": 3496890.625,
+          "iqr_ns_per_call": 47783.875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 9979489.625,
+          "q25_ns_per_call": 9944322.8125,
+          "q75_ns_per_call": 10017416.5625,
+          "iqr_ns_per_call": 73093.75
+        }
+      },
+      "tree_over_list_median": 2.878123824416095
+    },
+    "n32-medium_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 970202.46875,
+          "q25_ns_per_call": 882247.71875,
+          "q75_ns_per_call": 1077564.1328125,
+          "iqr_ns_per_call": 195316.4140625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 3042974.59375,
+          "q25_ns_per_call": 2776167.640625,
+          "q75_ns_per_call": 3457680.3515625,
+          "iqr_ns_per_call": 681512.7109375
+        }
+      },
+      "tree_over_list_median": 3.1364325403856586
+    },
+    "n129-nested_heavy_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 3115877.625,
+          "q25_ns_per_call": 3079979.21875,
+          "q75_ns_per_call": 3131347.65625,
+          "iqr_ns_per_call": 51368.4375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 5825752.625,
+          "q25_ns_per_call": 5760813.84375,
+          "q75_ns_per_call": 5840631.5,
+          "iqr_ns_per_call": 79817.65625
+        }
+      },
+      "tree_over_list_median": 1.8696987899195816
+    },
+    "n33-low_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 668245.4375,
+          "q25_ns_per_call": 610655.59375,
+          "q75_ns_per_call": 709467.46875,
+          "iqr_ns_per_call": 98811.875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 2328302.078125,
+          "q25_ns_per_call": 2053882.4921875,
+          "q75_ns_per_call": 2439094.71875,
+          "iqr_ns_per_call": 385212.2265625
+        }
+      },
+      "tree_over_list_median": 3.4842019824864123
+    },
+    "n257-nested_heavy_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 8724739.75,
+          "q25_ns_per_call": 8632958.0,
+          "q75_ns_per_call": 8807484.375,
+          "iqr_ns_per_call": 174526.375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 13167031.25,
+          "q25_ns_per_call": 13113620.0,
+          "q75_ns_per_call": 13250213.375,
+          "iqr_ns_per_call": 136593.375
+        }
+      },
+      "tree_over_list_median": 1.5091603448687394
+    },
+    "n513-nested_heavy_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 22153770.5,
+          "q25_ns_per_call": 21936354.25,
+          "q75_ns_per_call": 22449218.25,
+          "iqr_ns_per_call": 512864.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 24982249.5,
+          "q25_ns_per_call": 24760937.5,
+          "q75_ns_per_call": 25037156.0,
+          "iqr_ns_per_call": 276218.5
+        }
+      },
+      "tree_over_list_median": 1.1276748353062518
+    },
+    "n128-low_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2852877.5625,
+          "q25_ns_per_call": 2799946.625,
+          "q75_ns_per_call": 2878609.4375,
+          "iqr_ns_per_call": 78662.8125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 9145791.625,
+          "q25_ns_per_call": 8973200.53125,
+          "q75_ns_per_call": 9271826.78125,
+          "iqr_ns_per_call": 298626.25
+        }
+      },
+      "tree_over_list_median": 3.2058128765208793
+    },
+    "n512-low_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 14615729.0,
+          "q25_ns_per_call": 14557916.75,
+          "q75_ns_per_call": 14753177.0,
+          "iqr_ns_per_call": 195260.25
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 37816645.5,
+          "q25_ns_per_call": 37604062.25,
+          "q75_ns_per_call": 38279041.5,
+          "iqr_ns_per_call": 674979.25
+        }
+      },
+      "tree_over_list_median": 2.5873937249383867
+    },
+    "n256-medium_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 7966500.0,
+          "q25_ns_per_call": 7765416.5,
+          "q75_ns_per_call": 8242505.25,
+          "iqr_ns_per_call": 477088.75
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 20932427.25,
+          "q25_ns_per_call": 20554890.625,
+          "q75_ns_per_call": 21539182.25,
+          "iqr_ns_per_call": 984291.625
+        }
+      },
+      "tree_over_list_median": 2.6275562982489173
+    },
+    "n257-low_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 6310395.75,
+          "q25_ns_per_call": 6064572.875,
+          "q75_ns_per_call": 6355078.1875,
+          "iqr_ns_per_call": 290505.3125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 18639145.875,
+          "q25_ns_per_call": 18077330.75,
+          "q75_ns_per_call": 18769447.9375,
+          "iqr_ns_per_call": 692117.1875
+        }
+      },
+      "tree_over_list_median": 2.9537205927219383
+    },
+    "n32-nested_heavy_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 613151.6875,
+          "q25_ns_per_call": 606899.734375,
+          "q75_ns_per_call": 648056.0,
+          "iqr_ns_per_call": 41156.265625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1421173.828125,
+          "q25_ns_per_call": 1392895.515625,
+          "q75_ns_per_call": 1485056.984375,
+          "iqr_ns_per_call": 92161.46875
+        }
+      },
+      "tree_over_list_median": 2.3178176903003305
+    },
+    "n128-low_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2865872.375,
+          "q25_ns_per_call": 2841166.6875,
+          "q75_ns_per_call": 3067148.46875,
+          "iqr_ns_per_call": 225981.78125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 9104338.5625,
+          "q25_ns_per_call": 9003325.5,
+          "q75_ns_per_call": 9615675.8125,
+          "iqr_ns_per_call": 612350.3125
+        }
+      },
+      "tree_over_list_median": 3.176812283031271
+    },
+    "n33-medium_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 820316.40625,
+          "q25_ns_per_call": 811696.640625,
+          "q75_ns_per_call": 978876.96875,
+          "iqr_ns_per_call": 167180.328125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 2533830.75,
+          "q25_ns_per_call": 2500106.140625,
+          "q75_ns_per_call": 3001404.921875,
+          "iqr_ns_per_call": 501298.78125
+        }
+      },
+      "tree_over_list_median": 3.0888456340684094
+    },
+    "n65-nested_heavy_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1482779.9375,
+          "q25_ns_per_call": 1457089.859375,
+          "q75_ns_per_call": 1570505.84375,
+          "iqr_ns_per_call": 113415.984375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 3090931.0,
+          "q25_ns_per_call": 3035632.78125,
+          "q75_ns_per_call": 3268397.15625,
+          "iqr_ns_per_call": 232764.375
+        }
+      },
+      "tree_over_list_median": 2.0845514036367248
+    },
+    "n32-low_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 571970.703125,
+          "q25_ns_per_call": 570531.8828125,
+          "q75_ns_per_call": 573029.9453125,
+          "iqr_ns_per_call": 2498.0625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1918217.4375,
+          "q25_ns_per_call": 1912713.8671875,
+          "q75_ns_per_call": 1922465.4921875,
+          "iqr_ns_per_call": 9751.625
+        }
+      },
+      "tree_over_list_median": 3.3536987594289207
+    },
+    "n32-medium_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 767223.296875,
+          "q25_ns_per_call": 764073.2421875,
+          "q75_ns_per_call": 770170.5625,
+          "iqr_ns_per_call": 6097.3203125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 2384991.53125,
+          "q25_ns_per_call": 2380936.8515625,
+          "q75_ns_per_call": 2398721.6796875,
+          "iqr_ns_per_call": 17784.828125
+        }
+      },
+      "tree_over_list_median": 3.1086015518094663
+    },
+    "n129-low_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2722528.625,
+          "q25_ns_per_call": 2669552.03125,
+          "q75_ns_per_call": 2766578.09375,
+          "iqr_ns_per_call": 97026.0625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 8995908.875,
+          "q25_ns_per_call": 8815294.28125,
+          "q75_ns_per_call": 9133917.96875,
+          "iqr_ns_per_call": 318623.6875
+        }
+      },
+      "tree_over_list_median": 3.3042476734289616
+    },
+    "n512-nested_heavy_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 23286375.0,
+          "q25_ns_per_call": 22017615.25,
+          "q75_ns_per_call": 26178780.75,
+          "iqr_ns_per_call": 4161165.5
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 26375667.0,
+          "q25_ns_per_call": 24580676.75,
+          "q75_ns_per_call": 29237885.25,
+          "iqr_ns_per_call": 4657208.5
+        }
+      },
+      "tree_over_list_median": 1.1326652173212877
+    },
+    "n128-strict_flat-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2404388.0,
+          "q25_ns_per_call": 2397585.96875,
+          "q75_ns_per_call": 2469223.96875,
+          "iqr_ns_per_call": 71638.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 8421703.125,
+          "q25_ns_per_call": 8377375.0625,
+          "q75_ns_per_call": 8567968.8125,
+          "iqr_ns_per_call": 190593.75
+        }
+      },
+      "tree_over_list_median": 3.502638977153438
+    },
+    "n32-low_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 571757.8125,
+          "q25_ns_per_call": 570282.21875,
+          "q75_ns_per_call": 576274.4140625,
+          "iqr_ns_per_call": 5992.1953125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1950343.75,
+          "q25_ns_per_call": 1944662.75,
+          "q75_ns_per_call": 1960778.0,
+          "iqr_ns_per_call": 16115.25
+        }
+      },
+      "tree_over_list_median": 3.4111361617817857
+    },
+    "n513-low_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 14119791.5,
+          "q25_ns_per_call": 14052583.0,
+          "q75_ns_per_call": 14170365.0,
+          "iqr_ns_per_call": 117782.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 35691187.5,
+          "q25_ns_per_call": 35440645.75,
+          "q75_ns_per_call": 36239801.75,
+          "iqr_ns_per_call": 799156.0
+        }
+      },
+      "tree_over_list_median": 2.527741822533286
+    },
+    "n32-low_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 586941.421875,
+          "q25_ns_per_call": 584608.0703125,
+          "q75_ns_per_call": 589051.7734375,
+          "iqr_ns_per_call": 4443.703125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1959729.8125,
+          "q25_ns_per_call": 1951017.2421875,
+          "q75_ns_per_call": 1969108.078125,
+          "iqr_ns_per_call": 18090.8359375
+        }
+      },
+      "tree_over_list_median": 3.3388848349458637
+    },
+    "n512-nested_heavy_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 20944770.5,
+          "q25_ns_per_call": 20613749.5,
+          "q75_ns_per_call": 21373677.25,
+          "iqr_ns_per_call": 759927.75
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 23484250.0,
+          "q25_ns_per_call": 23370010.0,
+          "q75_ns_per_call": 24025719.25,
+          "iqr_ns_per_call": 655709.25
+        }
+      },
+      "tree_over_list_median": 1.1212464705688707
+    },
+    "n33-nested_heavy_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 642396.484375,
+          "q25_ns_per_call": 640880.1875,
+          "q75_ns_per_call": 643233.390625,
+          "iqr_ns_per_call": 2353.203125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1508435.5625,
+          "q25_ns_per_call": 1500691.7265625,
+          "q75_ns_per_call": 1514457.03125,
+          "iqr_ns_per_call": 13765.3046875
+        }
+      },
+      "tree_over_list_median": 2.3481379478089552
+    },
+    "n512-strict_flat-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 10931708.5,
+          "q25_ns_per_call": 10799817.625,
+          "q75_ns_per_call": 11006067.875,
+          "iqr_ns_per_call": 206250.25
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 33380479.0,
+          "q25_ns_per_call": 33291948.0,
+          "q75_ns_per_call": 33617687.375,
+          "iqr_ns_per_call": 325739.375
+        }
+      },
+      "tree_over_list_median": 3.053546387556895
+    },
+    "n33-medium_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 759956.390625,
+          "q25_ns_per_call": 756585.2734375,
+          "q75_ns_per_call": 762888.015625,
+          "iqr_ns_per_call": 6302.7421875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 2343746.09375,
+          "q25_ns_per_call": 2337116.2109375,
+          "q75_ns_per_call": 2351509.765625,
+          "iqr_ns_per_call": 14393.5546875
+        }
+      },
+      "tree_over_list_median": 3.0840534044624146
+    },
+    "n129-medium_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 3502406.375,
+          "q25_ns_per_call": 3486179.75,
+          "q75_ns_per_call": 3517489.5625,
+          "iqr_ns_per_call": 31309.8125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 10083458.25,
+          "q25_ns_per_call": 10050226.6875,
+          "q75_ns_per_call": 10112406.1875,
+          "iqr_ns_per_call": 62179.5
+        }
+      },
+      "tree_over_list_median": 2.879008650159849
+    },
+    "n129-strict_flat-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2288872.375,
+          "q25_ns_per_call": 2284484.3125,
+          "q75_ns_per_call": 2291160.21875,
+          "iqr_ns_per_call": 6675.90625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 7923528.6875,
+          "q25_ns_per_call": 7907170.59375,
+          "q75_ns_per_call": 7947010.34375,
+          "iqr_ns_per_call": 39839.75
+        }
+      },
+      "tree_over_list_median": 3.46176081027672
+    },
+    "n33-medium_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 766358.734375,
+          "q25_ns_per_call": 763497.0859375,
+          "q75_ns_per_call": 767462.5859375,
+          "iqr_ns_per_call": 3965.5
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 2363308.59375,
+          "q25_ns_per_call": 2353371.7421875,
+          "q75_ns_per_call": 2385464.1875,
+          "iqr_ns_per_call": 32092.4453125
+        }
+      },
+      "tree_over_list_median": 3.0838150434566187
+    },
+    "n128-medium_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 3465979.25,
+          "q25_ns_per_call": 3434791.5625,
+          "q75_ns_per_call": 3488447.9375,
+          "iqr_ns_per_call": 53656.375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 10034312.5,
+          "q25_ns_per_call": 9909234.375,
+          "q75_ns_per_call": 10125744.75,
+          "iqr_ns_per_call": 216510.375
+        }
+      },
+      "tree_over_list_median": 2.8950872974787716
+    },
+    "n128-nested_heavy_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 3060979.1875,
+          "q25_ns_per_call": 3040824.25,
+          "q75_ns_per_call": 3074617.21875,
+          "iqr_ns_per_call": 33792.96875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 5753377.5625,
+          "q25_ns_per_call": 5738320.375,
+          "q75_ns_per_call": 5819632.8125,
+          "iqr_ns_per_call": 81312.4375
+        }
+      },
+      "tree_over_list_median": 1.8795872856616735
+    },
+    "n513-strict_flat-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 10749260.25,
+          "q25_ns_per_call": 10664484.125,
+          "q75_ns_per_call": 10955125.125,
+          "iqr_ns_per_call": 290641.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 33034323.0,
+          "q25_ns_per_call": 32781229.25,
+          "q75_ns_per_call": 33521718.875,
+          "iqr_ns_per_call": 740489.625
+        }
+      },
+      "tree_over_list_median": 3.0731717561680583
+    },
+    "n512-medium_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 20105458.5,
+          "q25_ns_per_call": 20026646.0,
+          "q75_ns_per_call": 20138552.0,
+          "iqr_ns_per_call": 111906.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 41598896.0,
+          "q25_ns_per_call": 41492697.75,
+          "q75_ns_per_call": 41643823.0,
+          "iqr_ns_per_call": 151125.25
+        }
+      },
+      "tree_over_list_median": 2.069034933970792
+    },
+    "n32-nested_heavy_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 640656.90625,
+          "q25_ns_per_call": 622408.1953125,
+          "q75_ns_per_call": 658558.2578125,
+          "iqr_ns_per_call": 36150.0625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1491100.265625,
+          "q25_ns_per_call": 1481132.1640625,
+          "q75_ns_per_call": 1543044.921875,
+          "iqr_ns_per_call": 61912.7578125
+        }
+      },
+      "tree_over_list_median": 2.327455227717683
+    },
+    "n129-strict_flat-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2363984.4375,
+          "q25_ns_per_call": 2321066.40625,
+          "q75_ns_per_call": 2383044.28125,
+          "iqr_ns_per_call": 61977.875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 8080455.75,
+          "q25_ns_per_call": 8024971.40625,
+          "q75_ns_per_call": 8245225.25,
+          "iqr_ns_per_call": 220253.84375
+        }
+      },
+      "tree_over_list_median": 3.4181509919521202
+    },
+    "n129-nested_heavy_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 3086182.25,
+          "q25_ns_per_call": 3061625.0,
+          "q75_ns_per_call": 3107019.5,
+          "iqr_ns_per_call": 45394.5
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 5788776.0625,
+          "q25_ns_per_call": 5757674.53125,
+          "q75_ns_per_call": 5807510.4375,
+          "iqr_ns_per_call": 49835.90625
+        }
+      },
+      "tree_over_list_median": 1.8757077818395202
+    },
+    "n513-strict_flat-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 10880937.75,
+          "q25_ns_per_call": 10811687.75,
+          "q75_ns_per_call": 10913255.5,
+          "iqr_ns_per_call": 101567.75
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 33041645.75,
+          "q25_ns_per_call": 32841020.75,
+          "q75_ns_per_call": 33217359.625,
+          "iqr_ns_per_call": 376338.875
+        }
+      },
+      "tree_over_list_median": 3.0366542396587097
+    },
+    "n64-low_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1245294.25,
+          "q25_ns_per_call": 1240072.953125,
+          "q75_ns_per_call": 1249602.203125,
+          "iqr_ns_per_call": 9529.25
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4148264.34375,
+          "q25_ns_per_call": 4121244.765625,
+          "q75_ns_per_call": 4172345.078125,
+          "iqr_ns_per_call": 51100.3125
+        }
+      },
+      "tree_over_list_median": 3.331151929553999
+    },
+    "n64-medium_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1598932.3125,
+          "q25_ns_per_call": 1595621.03125,
+          "q75_ns_per_call": 1608247.3125,
+          "iqr_ns_per_call": 12626.28125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4812994.75,
+          "q25_ns_per_call": 4789402.34375,
+          "q75_ns_per_call": 4837386.71875,
+          "iqr_ns_per_call": 47984.375
+        }
+      },
+      "tree_over_list_median": 3.010130392871149
+    },
+    "n65-low_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1271848.9375,
+          "q25_ns_per_call": 1268065.109375,
+          "q75_ns_per_call": 1283089.875,
+          "iqr_ns_per_call": 15024.765625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4187403.65625,
+          "q25_ns_per_call": 4171255.859375,
+          "q75_ns_per_call": 4217634.140625,
+          "iqr_ns_per_call": 46378.28125
+        }
+      },
+      "tree_over_list_median": 3.2923750083724075
+    },
+    "n513-low_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 13988208.0,
+          "q25_ns_per_call": 13931437.5,
+          "q75_ns_per_call": 14122489.0,
+          "iqr_ns_per_call": 191051.5
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 35324104.0,
+          "q25_ns_per_call": 35143531.75,
+          "q75_ns_per_call": 35613697.75,
+          "iqr_ns_per_call": 470166.0
+        }
+      },
+      "tree_over_list_median": 2.525277290700853
+    },
+    "n513-low_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 14319291.5,
+          "q25_ns_per_call": 14183072.5,
+          "q75_ns_per_call": 14618791.75,
+          "iqr_ns_per_call": 435719.25
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 36269021.5,
+          "q25_ns_per_call": 35992364.25,
+          "q75_ns_per_call": 36616791.5,
+          "iqr_ns_per_call": 624427.25
+        }
+      },
+      "tree_over_list_median": 2.532878215378184
+    },
+    "n32-low_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 574562.515625,
+          "q25_ns_per_call": 573392.890625,
+          "q75_ns_per_call": 576554.3671875,
+          "iqr_ns_per_call": 3161.4765625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1953550.796875,
+          "q25_ns_per_call": 1938294.6015625,
+          "q75_ns_per_call": 1969293.6171875,
+          "iqr_ns_per_call": 30999.015625
+        }
+      },
+      "tree_over_list_median": 3.4000665615123853
+    },
+    "n512-medium_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 19939209.0,
+          "q25_ns_per_call": 19843302.0,
+          "q75_ns_per_call": 19963667.0,
+          "iqr_ns_per_call": 120365.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 41699854.0,
+          "q25_ns_per_call": 41564291.75,
+          "q75_ns_per_call": 41873166.5,
+          "iqr_ns_per_call": 308874.75
+        }
+      },
+      "tree_over_list_median": 2.0913494612549575
+    },
+    "n32-nested_heavy_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 623121.09375,
+          "q25_ns_per_call": 621195.953125,
+          "q75_ns_per_call": 623832.0234375,
+          "iqr_ns_per_call": 2636.0703125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1450027.984375,
+          "q25_ns_per_call": 1446426.4453125,
+          "q75_ns_per_call": 1458340.8046875,
+          "iqr_ns_per_call": 11914.359375
+        }
+      },
+      "tree_over_list_median": 2.327040440323723
+    },
+    "n128-medium_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 3478057.125,
+          "q25_ns_per_call": 3465718.6875,
+          "q75_ns_per_call": 3494690.125,
+          "iqr_ns_per_call": 28971.4375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 9975802.125,
+          "q25_ns_per_call": 9953526.1875,
+          "q75_ns_per_call": 9998596.5,
+          "iqr_ns_per_call": 45070.3125
+        }
+      },
+      "tree_over_list_median": 2.8682111208854857
+    },
+    "n33-low_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 597899.734375,
+          "q25_ns_per_call": 595902.6796875,
+          "q75_ns_per_call": 599832.6796875,
+          "iqr_ns_per_call": 3930.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 2014572.265625,
+          "q25_ns_per_call": 2007293.625,
+          "q75_ns_per_call": 2029150.0546875,
+          "iqr_ns_per_call": 21856.4296875
+        }
+      },
+      "tree_over_list_median": 3.369414886479059
+    },
+    "n257-low_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 5940880.25,
+          "q25_ns_per_call": 5919544.125,
+          "q75_ns_per_call": 6009674.5,
+          "iqr_ns_per_call": 90130.375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 17934557.25,
+          "q25_ns_per_call": 17871406.25,
+          "q75_ns_per_call": 18053346.375,
+          "iqr_ns_per_call": 181940.125
+        }
+      },
+      "tree_over_list_median": 3.018838369953678
+    },
+    "n65-low_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1277960.9375,
+          "q25_ns_per_call": 1272931.671875,
+          "q75_ns_per_call": 1287419.9375,
+          "iqr_ns_per_call": 14488.265625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4242959.625,
+          "q25_ns_per_call": 4216459.625,
+          "q75_ns_per_call": 4256850.921875,
+          "iqr_ns_per_call": 40391.296875
+        }
+      },
+      "tree_over_list_median": 3.32010118658263
+    },
+    "n256-low_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 5766213.5,
+          "q25_ns_per_call": 5748442.75,
+          "q75_ns_per_call": 5802830.75,
+          "iqr_ns_per_call": 54388.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 17441031.25,
+          "q25_ns_per_call": 17341713.6875,
+          "q75_ns_per_call": 17471252.625,
+          "iqr_ns_per_call": 129538.9375
+        }
+      },
+      "tree_over_list_median": 3.024693978119263
+    },
+    "n513-medium_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 20137291.0,
+          "q25_ns_per_call": 20046333.75,
+          "q75_ns_per_call": 20337656.5,
+          "iqr_ns_per_call": 291322.75
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 42882562.5,
+          "q25_ns_per_call": 42633375.25,
+          "q75_ns_per_call": 43304458.0,
+          "iqr_ns_per_call": 671082.75
+        }
+      },
+      "tree_over_list_median": 2.1295099971490705
+    },
+    "n257-medium_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 7894323.0,
+          "q25_ns_per_call": 7862843.75,
+          "q75_ns_per_call": 7951078.0,
+          "iqr_ns_per_call": 88234.25
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 20534000.0,
+          "q25_ns_per_call": 20403187.5,
+          "q75_ns_per_call": 20630083.375,
+          "iqr_ns_per_call": 226895.875
+        }
+      },
+      "tree_over_list_median": 2.6011096835029424
+    },
+    "n65-strict_flat-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1130260.40625,
+          "q25_ns_per_call": 1123532.546875,
+          "q75_ns_per_call": 1141431.65625,
+          "iqr_ns_per_call": 17899.109375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 3961808.5625,
+          "q25_ns_per_call": 3920049.46875,
+          "q75_ns_per_call": 3986596.96875,
+          "iqr_ns_per_call": 66547.5
+        }
+      },
+      "tree_over_list_median": 3.505217506153795
+    },
+    "n32-nested_heavy_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 611247.40625,
+          "q25_ns_per_call": 605692.7109375,
+          "q75_ns_per_call": 615927.7265625,
+          "iqr_ns_per_call": 10235.015625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1397765.625,
+          "q25_ns_per_call": 1381249.6875,
+          "q75_ns_per_call": 1408276.3671875,
+          "iqr_ns_per_call": 27026.6796875
+        }
+      },
+      "tree_over_list_median": 2.2867428322932044
+    },
+    "n512-medium_nesting_valid-01-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 20136687.5,
+          "q25_ns_per_call": 19992917.25,
+          "q75_ns_per_call": 20229479.5,
+          "iqr_ns_per_call": 236562.25
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 41670895.5,
+          "q25_ns_per_call": 41508958.75,
+          "q75_ns_per_call": 41862969.25,
+          "iqr_ns_per_call": 354010.5
+        }
+      },
+      "tree_over_list_median": 2.069401707703911
+    },
+    "n128-strict_flat-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2342515.625,
+          "q25_ns_per_call": 2305194.0,
+          "q75_ns_per_call": 2442453.0625,
+          "iqr_ns_per_call": 137259.0625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 8195815.125,
+          "q25_ns_per_call": 8067860.65625,
+          "q75_ns_per_call": 8456544.25,
+          "iqr_ns_per_call": 388683.59375
+        }
+      },
+      "tree_over_list_median": 3.4987237811914276
+    },
+    "n257-strict_flat-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 4893572.875,
+          "q25_ns_per_call": 4858815.1875,
+          "q75_ns_per_call": 4948950.5,
+          "iqr_ns_per_call": 90135.3125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 16441630.25,
+          "q25_ns_per_call": 16315169.25,
+          "q75_ns_per_call": 16512666.5625,
+          "iqr_ns_per_call": 197497.3125
+        }
+      },
+      "tree_over_list_median": 3.359841708702458
+    },
+    "n32-medium_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 778955.09375,
+          "q25_ns_per_call": 773738.28125,
+          "q75_ns_per_call": 784324.21875,
+          "iqr_ns_per_call": 10585.9375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 2452439.453125,
+          "q25_ns_per_call": 2425860.34375,
+          "q75_ns_per_call": 2478160.4765625,
+          "iqr_ns_per_call": 52300.1328125
+        }
+      },
+      "tree_over_list_median": 3.148370776187636
+    },
+    "n33-low_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 627884.109375,
+          "q25_ns_per_call": 599208.96875,
+          "q75_ns_per_call": 637287.109375,
+          "iqr_ns_per_call": 38078.140625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 2079089.1875,
+          "q25_ns_per_call": 2032078.109375,
+          "q75_ns_per_call": 2137398.7578125,
+          "iqr_ns_per_call": 105320.6484375
+        }
+      },
+      "tree_over_list_median": 3.3112626302480233
+    },
+    "n64-nested_heavy_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1441042.96875,
+          "q25_ns_per_call": 1414595.6875,
+          "q75_ns_per_call": 1527596.359375,
+          "iqr_ns_per_call": 113000.671875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 3000269.53125,
+          "q25_ns_per_call": 2967437.515625,
+          "q75_ns_per_call": 3217389.96875,
+          "iqr_ns_per_call": 249952.453125
+        }
+      },
+      "tree_over_list_median": 2.0820125397457896
+    },
+    "n65-low_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1355141.9375,
+          "q25_ns_per_call": 1352515.65625,
+          "q75_ns_per_call": 1359182.328125,
+          "iqr_ns_per_call": 6666.671875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4495350.25,
+          "q25_ns_per_call": 4469861.328125,
+          "q75_ns_per_call": 4508007.171875,
+          "iqr_ns_per_call": 38145.84375
+        }
+      },
+      "tree_over_list_median": 3.3172541750815676
+    },
+    "n32-strict_flat-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 528561.203125,
+          "q25_ns_per_call": 526198.8828125,
+          "q75_ns_per_call": 531941.40625,
+          "iqr_ns_per_call": 5742.5234375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1847814.46875,
+          "q25_ns_per_call": 1831825.8515625,
+          "q75_ns_per_call": 1856148.4296875,
+          "iqr_ns_per_call": 24322.578125
+        }
+      },
+      "tree_over_list_median": 3.4959328415048434
+    },
+    "n129-low_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 3055445.375,
+          "q25_ns_per_call": 2918550.71875,
+          "q75_ns_per_call": 3166636.75,
+          "iqr_ns_per_call": 248086.03125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 9503213.5625,
+          "q25_ns_per_call": 9175959.65625,
+          "q75_ns_per_call": 9987018.21875,
+          "iqr_ns_per_call": 811058.5625
+        }
+      },
+      "tree_over_list_median": 3.1102547734141703
+    },
+    "n64-low_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1328903.65625,
+          "q25_ns_per_call": 1271306.640625,
+          "q75_ns_per_call": 1348445.96875,
+          "iqr_ns_per_call": 77139.328125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4368843.75,
+          "q25_ns_per_call": 4218071.0,
+          "q75_ns_per_call": 4428806.625,
+          "iqr_ns_per_call": 210735.625
+        }
+      },
+      "tree_over_list_median": 3.287554917508716
+    },
+    "n64-low_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1340621.0625,
+          "q25_ns_per_call": 1283445.953125,
+          "q75_ns_per_call": 1359471.390625,
+          "iqr_ns_per_call": 76025.4375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 4425329.4375,
+          "q25_ns_per_call": 4336744.125,
+          "q75_ns_per_call": 4458371.078125,
+          "iqr_ns_per_call": 121626.953125
+        }
+      },
+      "tree_over_list_median": 3.3009547300768296
+    },
+    "n64-nested_heavy_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 1354428.34375,
+          "q25_ns_per_call": 1348253.9375,
+          "q75_ns_per_call": 1361761.734375,
+          "iqr_ns_per_call": 13507.796875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 2842226.5625,
+          "q25_ns_per_call": 2815853.515625,
+          "q75_ns_per_call": 2851451.171875,
+          "iqr_ns_per_call": 35597.65625
+        }
+      },
+      "tree_over_list_median": 2.098469494983204
+    },
+    "n256-medium_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 7771218.75,
+          "q25_ns_per_call": 7735031.25,
+          "q75_ns_per_call": 7830114.5,
+          "iqr_ns_per_call": 95083.25
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 20272687.75,
+          "q25_ns_per_call": 20146218.75,
+          "q75_ns_per_call": 20440567.875,
+          "iqr_ns_per_call": 294349.125
+        }
+      },
+      "tree_over_list_median": 2.6086883411948736
+    },
+    "n513-medium_nesting_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 21644520.5,
+          "q25_ns_per_call": 21284270.5,
+          "q75_ns_per_call": 22397083.0,
+          "iqr_ns_per_call": 1112812.5
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 44538229.0,
+          "q25_ns_per_call": 44189271.0,
+          "q75_ns_per_call": 44935145.75,
+          "iqr_ns_per_call": 745874.75
+        }
+      },
+      "tree_over_list_median": 2.057713821842346
+    },
+    "n513-nested_heavy_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 21872541.5,
+          "q25_ns_per_call": 21711792.0,
+          "q75_ns_per_call": 22364999.75,
+          "iqr_ns_per_call": 653207.75
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 24517458.5,
+          "q25_ns_per_call": 24444198.0,
+          "q75_ns_per_call": 24782604.0,
+          "iqr_ns_per_call": 338406.0
+        }
+      },
+      "tree_over_list_median": 1.120924081913389
+    },
+    "n513-low_nesting_valid-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 14585020.5,
+          "q25_ns_per_call": 14200634.75,
+          "q75_ns_per_call": 15122385.5,
+          "iqr_ns_per_call": 921750.75
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 36534291.5,
+          "q25_ns_per_call": 36260093.75,
+          "q75_ns_per_call": 37925646.0,
+          "iqr_ns_per_call": 1665552.25
+        }
+      },
+      "tree_over_list_median": 2.504918762369926
+    },
+    "n33-nested_heavy_valid-00-mirror": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 629425.140625,
+          "q25_ns_per_call": 628177.734375,
+          "q75_ns_per_call": 633028.9765625,
+          "iqr_ns_per_call": 4851.2421875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1433325.515625,
+          "q25_ns_per_call": 1427868.796875,
+          "q75_ns_per_call": 1435785.1484375,
+          "iqr_ns_per_call": 7916.3515625
+        }
+      },
+      "tree_over_list_median": 2.277197752542505
+    },
+    "n33-strict_flat-00": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 554913.421875,
+          "q25_ns_per_call": 553009.125,
+          "q75_ns_per_call": 557141.921875,
+          "iqr_ns_per_call": 4132.796875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 1904631.515625,
+          "q25_ns_per_call": 1894536.140625,
+          "q75_ns_per_call": 1911263.6796875,
+          "iqr_ns_per_call": 16727.5390625
+        }
+      },
+      "tree_over_list_median": 3.4323039244382127
+    },
+    "n256-medium_nesting_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 8029250.0,
+          "q25_ns_per_call": 7746114.5,
+          "q75_ns_per_call": 8215937.625,
+          "iqr_ns_per_call": 469823.125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 21054927.0,
+          "q25_ns_per_call": 20622161.375,
+          "q75_ns_per_call": 21583984.25,
+          "iqr_ns_per_call": 961822.875
+        }
+      },
+      "tree_over_list_median": 2.622278170439331
+    },
+    "n256-nested_heavy_valid-01": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 7437125.0,
+          "q25_ns_per_call": 7400307.375,
+          "q75_ns_per_call": 7502901.0,
+          "iqr_ns_per_call": 102593.625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 11326854.0,
+          "q25_ns_per_call": 11287505.25,
+          "q75_ns_per_call": 11409895.875,
+          "iqr_ns_per_call": 122390.625
+        }
+      },
+      "tree_over_list_median": 1.5230151436206867
+    }
+  },
+  "source_head": "4a83fa6b7a4213e9e5758fe3454e002ebc266459",
+  "performance_eligible": false
+}

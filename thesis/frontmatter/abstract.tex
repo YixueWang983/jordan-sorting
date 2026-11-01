@@ -18,6 +18,8 @@ additional inputs exercising two-sided splits, both backends produced correct
 output in all 66,560 measured calls. Nevertheless, the tree backend had a
 higher median runtime on every input. The median tree/list ratio was about
 2.9 on the common set (range 1.1--3.5) and 3.2 on the split set.
+A subsequent experiment on eighteen inputs with larger or repeated two-sided
+splits also found the tree slower throughout, with a median ratio of 3.0.
 A supplementary diagnostic examined instrumentation hooks, the code that
 intercepts field accesses for work counting. Although counting was disabled
 in the measured configuration, removing these hooks reduced median tree

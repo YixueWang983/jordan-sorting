@@ -16,14 +16,16 @@ The shared Step~1/2/3 loop maintains geometric ownership, exact sibling groups
 and sorted prefixes. The argument in \cref{app:backend-argument} explains the
 two odd-stage $z_1$ corrections, temporary transfer, reversed ribs and recursive
 repair transients. Stable pair identities and child groups survive splitting.
-The two predetermined input sets passed qualification; all 66,560 formal sample
-calls and 1,520 warm-ups returned correct outputs.
+The three predetermined input sets passed qualification; all 69,360 formal sample
+calls and 1,700 warm-ups returned correct outputs.
 
 \label{sec:conclusion-rq2}
 \textbf{RQ2: observed runtime.}
 For the measured configuration retaining instrumentation hooks, every input has a
 higher tree median runtime. Common-set tree/list ratios have median 2.898 and range
 1.114--3.535; the targeted set has median 3.180 and range 3.147--3.213.
+The separate structural extension has median 2.987 and range 2.376--3.222,
+covering larger balanced and skew splits and repeated splits of earlier outputs.
 These are ratios of twenty-batch input medians for the measured implementations,
 including their wrapping, checking and allocation costs. A separate
 fifteen-input supplementary diagnostic reduces tree medians by 37.7--52.1\% when instrumentation
@@ -41,7 +43,9 @@ operations, expected dictionary lookup and amortized growth. Ordinary-list
 insertion copying alone has a quadratic lower bound.
 
 The common workload has no two-sided splits; the targeted group contains one
-per input with source size 61 and smaller sides 3/7/19. The measurements thus
+per input with source size 61 and smaller sides 3/7/19. The structural extension
+adds balanced smaller sides up to 126 and 212 re-splits across its primary
+qualification traces per backend. The measurements thus
 cover different operation mixes within complete sorting calls. The practical
 slowdown of the measured Python configuration is compatible with the structural
 bound.
@@ -56,8 +60,9 @@ reconstruction and cost argument, together with reproducible measurements.
 Independent review of the finite-parent locality extension and mixed-operation
 proof would strengthen confidence in the argument. The next empirical step is
 to qualify a production hook-free configuration and test broader split
-histories and environments under predeclared rules. The supplementary diagnostic
-and 40-input seeded correctness supplement provide starting points, while the
+histories, including direct updates to both outputs, and environments under
+predeclared rules. The supplementary diagnostic and 40-input seeded correctness
+supplement provide starting points, while the
 existing data remain available for comparison. Recognition, invalid-input
 behavior, error correction and geometric applications would each require
 their own specification and evaluation.

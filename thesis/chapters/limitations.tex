@@ -5,8 +5,8 @@
 \label{sec:limitations-scope}
 \label{sec:limitations-version}
 
-The current results describe the ordinary-list and finger-tree minimal cores
-in the measured version, with Python sources unchanged from calibration
+The current results describe the ordinary-list and finger-tree minimal cores,
+with Python sources unchanged between each campaign's calibration and sampling
 (\cref{sec:appendix-revision-bindings}).
 The earlier rollback-enabled experiment used different code and timing scopes,
 so comparison with it cannot isolate the effect of removing rollback.
@@ -51,9 +51,15 @@ contains twelve constructions at 128/129, with nonempty smaller sides 3, 7 and
 19. Its source size is always 61, its owner is finite, and its later direct
 updates occur only on the retained side. It does not establish broad coverage
 of all split ratios, black-height differences or both-output update histories.
-Earlier operation tests, the 18-input structural campaign and the bounded
-seeded supplement cover other transitions (\cref{sec:implementation-coverage}).
-They provide correctness evidence, not additional formal performance samples.
+The November extension adds formal timings for the eighteen structural inputs,
+including balanced splits with smaller sides up to 126 and 212 re-splits of
+earlier outputs per backend's primary qualification traces. It still does not
+cover arbitrary split histories: all two-sided splits have finite owners,
+repeated splits have smaller side one, and direct updates before the next
+split affect only retained outputs. Odd-length inputs are mirrored, coupling
+parity with direction. Earlier operation tests and the bounded seeded
+supplement cover other transitions (\cref{sec:implementation-coverage});
+their observations remain correctness evidence rather than timing samples.
 
 The narrowing common-set gap at larger sizes does not establish a crossover
 beyond 513 or the same trend for another generator. Constants in the
@@ -88,6 +94,10 @@ and order effects, but do not establish stable frequency, temperature or
 absence of all unrelated operating-system activity. The local diagnostic uses the same
 machine and interpreter version in a later session; it does not replicate
 the formal protocol.
+The November structural campaign used macOS 27.2 rather than the original
+26.6, and captured 32\% battery charge rather than 100\%. It supplies paired
+comparisons within its own session; differences from the earlier datasets
+do not isolate a workload effect.
 
 Historical paper/reference ratios have a further scope mismatch: the reference
 includes certification and its oracle-backed pipeline, while the old paper
@@ -135,6 +145,7 @@ correction and geometric applications remain outside this evaluation.
 
 The cost argument and the experiments answer different questions. The former
 accounts for source-level operations under the stated model; the latter
-compares runtime on two input sets fixed in advance in one environment. Extending the
+compares runtime on three input sets fixed before their respective measurements
+on one machine in separate sessions. Extending the
 performance conclusions requires broader input histories, qualified hook-free
 variants and measurements in additional environments.

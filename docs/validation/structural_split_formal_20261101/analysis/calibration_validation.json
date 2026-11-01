@@ -1,0 +1,30 @@
+{
+  "archive_valid": true,
+  "stage": "calibration",
+  "complete": true,
+  "dataset": "structural_split",
+  "inputs": 18,
+  "batch_sizes": {
+    "balanced-128": 8,
+    "skew-128": 8,
+    "repeated-128": 4,
+    "balanced-129": 8,
+    "skew-129": 8,
+    "repeated-129": 4,
+    "balanced-256": 4,
+    "skew-256": 4,
+    "repeated-256": 2,
+    "balanced-257": 4,
+    "skew-257": 4,
+    "repeated-257": 2,
+    "balanced-512": 2,
+    "skew-512": 2,
+    "repeated-512": 1,
+    "balanced-513": 2,
+    "skew-513": 2,
+    "repeated-513": 1
+  },
+  "statistics": {},
+  "source_head": "bdfcdcf8f13da2a88151ae0524b388181ea7e5a6",
+  "performance_eligible": false
+}

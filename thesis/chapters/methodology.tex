@@ -7,9 +7,11 @@
 \label{sec:method-scope}
 
 The current ordinary-list and tree implementations have completed qualification,
-separate batch calibration and formal paired measurement. Current results in
-\cref{chap:results} use the measured version indexed in
-\cref{sec:appendix-revision-bindings}; the older rollback-enabled
+separate batch calibration and formal paired measurement. The original common
+and targeted campaigns and the November structural extension have separate
+execution identities, indexed in \cref{sec:appendix-revision-bindings}.
+The production sorting code is identical across these campaigns; the timing
+tools were extended to accept the additional dataset. The older rollback-enabled
 ordinary-list study is described in the historical section of this chapter.
 
 \section{Current Inputs and Qualification}
@@ -32,7 +34,7 @@ $k=3,7,19$, with each direction and its mirror: twelve cases, all qualified.
 Actual traces contain twelve two-sided splits per backend, with smaller sides
 3, 7 and 19 occurring four times each. Each source has size 61 and a finite
 owner; later direct updates affect only the retained side.
-The 152 inputs are reported as two datasets.
+These original 152 inputs are reported as two datasets.
 
 For each input/backend, qualification advances two independent checked instances,
 compares every completed prefix, and executes a third fresh checked replay
@@ -42,6 +44,27 @@ into the core. This protocol is recorded as version 2 in the experiment
 archives. Compared with the earlier protocol, which reconstructed a fresh
 state at every prefix, it retains prefix comparisons but reduces repeated
 initialization.
+
+\subsection{Structural Split Extension}
+\label{sec:method-structural-extension}
+
+On November 1, a separate campaign qualified and timed all eighteen inputs
+from the earlier structural correctness study. It uses the balanced, skew and
+repeated constructions at lengths $128,129,256,257,512,513$, with exactly the
+previously saved input values. The protocol and selection were committed before
+qualification; no input was chosen or replaced on the basis of timing.
+This extension addresses the absence of interior splits in the common set
+and the single, fixed-size split in each targeted input.
+
+For each length pair, the balanced and skew constructions split one source
+of size 61, 125 or 253. Their smaller sides are respectively 30, 62 or 126,
+and one. Repeated constructions perform 15, 31 or 63 two-sided splits per
+input, each with smaller side one. Qualification requires these actual
+events on both backends and, for repeated cases, subsequent splits of earlier
+outputs. All eighteen inputs pass. Odd lengths use the original mirrored
+constructions, so parity and direction are coupled. These related inputs
+form a third descriptive dataset, reported separately in
+\cref{sec:results-structural-extension}.
 
 \section{Compared Implementations and Call Scopes}
 \label{sec:method-implementations}
@@ -72,6 +95,9 @@ outputs are retained. With the calibration version, the common set selected
 B=1,2,4,8,16,32 for respectively 24,20,20,28,21,27 inputs; all twelve targeted
 inputs selected B=8. Independent reconstruction accepted both campaigns,
 within their separate 600-second budgets.
+The structural extension uses the same calibration rule and budget. It
+selected $B=1,2,4,8$ for respectively 2, 6, 6 and 4 inputs; this calibration
+also passed independent reconstruction.
 
 \subsection{Scheduling and Noise}
 \label{sec:method-scheduling}
@@ -97,8 +123,12 @@ platform, CPU, RAM, power observations, GC thresholds and monotonic-clock
 metadata. Calibration and formal execution must match source and recorded
 machine/runtime settings. Tests, qualification and compilation were not run
 concurrently with calibration or formal sampling. The current formal archives
-record Apple M4/arm64, 16 GB RAM, ten logical CPUs, macOS 26.6 and CPython
-3.12.14; their captured power state is battery at 100\%.
+record Apple M4/arm64, 16 GB RAM, ten logical CPUs and CPython 3.12.14.
+The original common and targeted runs record macOS 26.6 and battery at 100\%.
+The November extension records macOS 27.2 and battery at 32\%, discharging.
+Its calibration and formal run match each other, but it is a later session
+under a different operating-system version. Cross-campaign timing differences
+cannot therefore be attributed solely to the input constructions.
 
 \section{Aggregation and Statistical Units}
 \label{sec:method-aggregation}
@@ -125,7 +155,8 @@ and environment. Campaign wall time includes untimed checking and storage.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=.94\textwidth]{current_experiment_pipeline.pdf}
-  \caption{Current evidence flow. Qualification, calibration and formal
+  \caption{Evidence flow for the original common and targeted campaigns.
+  The structural extension follows the same stages. Qualification, calibration and formal
   sampling have separate identities. The same predetermined inputs and per-input B
   reach the samples; independent reconstruction checks each archive.}
   \label{fig:method-formal-pipeline}
@@ -138,7 +169,9 @@ The current archive checker verifies schemas, source blobs, input identities,
 outputs, event order, sizes, owners, counters and list-ID lifetimes. A live-ID
 map checks current membership; a separate seen-ID set prevents a singleton or
 split output from reusing any retired ID. Boundary insertion keeps its live
-ID. Read-only rechecks accept both existing datasets without rerunning sorting.
+ID. Read-only rechecks accept both original datasets using their corresponding
+tooling, without rerunning sorting. The structural extension also passes
+independent reconstruction of qualification and measurement records.
 The measurement validator independently reconstructs candidate order, every
 attempt, the first qualifying common B and output correctness. For formal
 archives it reconstructs warm-ups, paired sample order, twenty-batch medians,

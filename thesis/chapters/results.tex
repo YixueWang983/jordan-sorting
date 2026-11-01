@@ -4,7 +4,7 @@
 \section{Execution Summary and Output Checks}
 \label{sec:results-correctness}
 
-The current paired experiments used the measured version, whose Python
+The original paired experiments used the measured version, whose Python
 sources are identical to those of the calibration version. The
 common and targeted datasets remain separate. Both archives passed independent
 reconstruction of inputs, configuration, schedule, outputs, predetermined batch sizes
@@ -12,10 +12,13 @@ and statistics. An additional analysis rebuilt the per-input medians and
 quartiles from every original sample record and agreed with the validator's values.
 The manifest-bound records and reproducible analysis are indexed in
 \cref{sec:appendix-current-formal}.
+The later eighteen-input structural extension passed the same checks using
+its own qualification, calibration and formal archives. Its production
+sorting sources are unchanged; its results are reported separately below.
 
 \begin{table}[htbp]
 \centering
-\caption{Current formal execution. Sample calls are grouped into batches.}
+\caption{Formal execution in three separately measured datasets. Sample calls are grouped into batches. The structural extension was run in a later session.}
 \label{tab:results-current-counts}
 \begin{tabular}{lrrrr}
 \toprule
@@ -23,12 +26,13 @@ Dataset & Inputs & Sample batches & Sample calls & Warm-up calls\\
 \midrule
 Common & 140 & 5600 & 62720 & 1400\\
 Targeted split & 12 & 480 & 3840 & 120\\
+Structural extension & 18 & 720 & 2800 & 180\\
 \bottomrule
 \end{tabular}
 \end{table}
 
 Each input/backend contributes twenty sample batches after five warm-up calls.
-All 66,560 sample calls and 1,520 warm-up calls returned the expected output;
+All 69,360 sample calls and 1,700 warm-up calls returned the expected output;
 no case was erroneous, timed out, skipped or replaced. These output checks
 followed qualification and were performed outside the timed
 intervals.
@@ -220,6 +224,70 @@ cases. The diagnostic identifies a runtime effect of the configuration changes
 on these inputs. The qualification status, process order and environment
 limits are discussed in
 \cref{sec:limitations-timing-scopes}.
+
+\clearpage
+\section{Structural Split Extension}
+\label{sec:results-structural-extension}
+
+The November 1 extension measures all eighteen constructions specified in
+\cref{sec:method-structural-extension}, using the same complete sorting scope
+and numerical protocol. Its different operating-system version and battery
+observation make this a separate measurement session
+(\cref{sec:method-environment}).
+
+Primary qualification traces on each backend contain 460 splits, of which
+230 are two-sided, and 212 re-splits of earlier outputs. All two-sided splits
+have finite owners. The 666 direct later insertions and 212 re-splits affect
+retained outputs; no acquired output receives a direct update before the next
+split. These counts come from qualification, not the untraced timing calls.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{All eighteen structural inputs. Qualification gives two-sided split
+count $S$ and smaller-side size $k$, identical on both backends. Times are
+twenty-batch medians in milliseconds per call; T/L is their ratio. Odd lengths
+use mirrored constructions.}
+\label{tab:results-structural-extension}
+\begin{tabular}{rlrrrrrr}
+\toprule
+$n$ & Shape & $S$ & $k$ & $B$ & List (ms) & Tree (ms) & T/L\\
+\midrule
+128 & Balanced & 1 & 30 & 8 & 2.146 & 6.807 & 3.172\\
+128 & Skew & 1 & 1 & 8 & 2.134 & 6.867 & 3.217\\
+128 & Repeated & 15 & 1 & 4 & 2.675 & 7.925 & 2.963\\
+\addlinespace
+129 & Balanced & 1 & 30 & 8 & 2.163 & 6.970 & 3.222\\
+129 & Skew & 1 & 1 & 8 & 2.142 & 6.802 & 3.175\\
+129 & Repeated & 15 & 1 & 4 & 2.697 & 8.340 & 3.092\\
+\addlinespace
+256 & Balanced & 1 & 62 & 4 & 4.489 & 13.732 & 3.059\\
+256 & Skew & 1 & 1 & 4 & 4.448 & 13.612 & 3.060\\
+256 & Repeated & 31 & 1 & 2 & 5.795 & 16.187 & 2.793\\
+\addlinespace
+257 & Balanced & 1 & 62 & 4 & 4.570 & 13.852 & 3.031\\
+257 & Skew & 1 & 1 & 4 & 4.563 & 13.740 & 3.012\\
+257 & Repeated & 31 & 1 & 2 & 5.838 & 17.123 & 2.933\\
+\addlinespace
+512 & Balanced & 1 & 126 & 2 & 10.008 & 28.390 & 2.837\\
+512 & Skew & 1 & 1 & 2 & 10.089 & 28.102 & 2.785\\
+512 & Repeated & 63 & 1 & 1 & 14.116 & 33.540 & 2.376\\
+\addlinespace
+513 & Balanced & 1 & 126 & 2 & 9.983 & 28.379 & 2.843\\
+513 & Skew & 1 & 1 & 2 & 9.970 & 27.846 & 2.793\\
+513 & Repeated & 63 & 1 & 1 & 14.168 & 35.242 & 2.487\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The measured tree is slower on all eighteen inputs. The overall median T/L
+ratio is 2.987, with range 2.376--3.222. The six balanced cases have median
+3.045, the six skew cases 3.036, and the six repeated cases 2.863. The largest
+within-input/backend IQR is 2.4\% of its median, and all sample batches exceed
+10 ms. No samples were removed or rerun. The slower-tree observation thus
+extends to these larger and repeated interior splits. Full sorting times do
+not isolate the cost of a split, and the related constructions do not form
+an independent random sample.
 
 \clearpage
 \section{Historical Rollback-Enabled Evidence}

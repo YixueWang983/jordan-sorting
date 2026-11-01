@@ -1,0 +1,354 @@
+{
+  "archive_valid": true,
+  "stage": "formal",
+  "complete": true,
+  "dataset": "structural_split",
+  "inputs": 18,
+  "batch_sizes": {},
+  "statistics": {
+    "repeated-128": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2674901.125,
+          "q25_ns_per_call": 2666231.875,
+          "q75_ns_per_call": 2686700.4375,
+          "iqr_ns_per_call": 20468.5625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 7925046.875,
+          "q25_ns_per_call": 7903877.625,
+          "q75_ns_per_call": 7984010.375,
+          "iqr_ns_per_call": 80132.75
+        }
+      },
+      "tree_over_list_median": 2.9627438565603055
+    },
+    "repeated-257": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 5837989.75,
+          "q25_ns_per_call": 5805573.0,
+          "q75_ns_per_call": 5899317.625,
+          "iqr_ns_per_call": 93744.625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 17123239.5,
+          "q25_ns_per_call": 17099234.5,
+          "q75_ns_per_call": 17240775.875,
+          "iqr_ns_per_call": 141541.375
+        }
+      },
+      "tree_over_list_median": 2.933071182593289
+    },
+    "repeated-129": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2697005.25,
+          "q25_ns_per_call": 2678708.4375,
+          "q75_ns_per_call": 2715018.375,
+          "iqr_ns_per_call": 36309.9375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 8340317.75,
+          "q25_ns_per_call": 8313419.125,
+          "q75_ns_per_call": 8372651.0,
+          "iqr_ns_per_call": 59231.875
+        }
+      },
+      "tree_over_list_median": 3.092436601671428
+    },
+    "skew-128": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2134158.875,
+          "q25_ns_per_call": 2127796.875,
+          "q75_ns_per_call": 2146768.25,
+          "iqr_ns_per_call": 18971.375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 6866645.875,
+          "q25_ns_per_call": 6833557.28125,
+          "q75_ns_per_call": 6906403.65625,
+          "iqr_ns_per_call": 72846.375
+        }
+      },
+      "tree_over_list_median": 3.2174951712533586
+    },
+    "balanced-513": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 9982677.0,
+          "q25_ns_per_call": 9922250.0,
+          "q75_ns_per_call": 10075974.0,
+          "iqr_ns_per_call": 153724.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 28378823.0,
+          "q25_ns_per_call": 28268541.625,
+          "q75_ns_per_call": 28855099.125,
+          "iqr_ns_per_call": 586557.5
+        }
+      },
+      "tree_over_list_median": 2.84280689438314
+    },
+    "skew-129": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2142369.75,
+          "q25_ns_per_call": 2136208.3125,
+          "q75_ns_per_call": 2152790.40625,
+          "iqr_ns_per_call": 16582.09375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 6801820.375,
+          "q25_ns_per_call": 6789368.4375,
+          "q75_ns_per_call": 6827382.75,
+          "iqr_ns_per_call": 38014.3125
+        }
+      },
+      "tree_over_list_median": 3.174904973802958
+    },
+    "skew-257": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 4562630.25,
+          "q25_ns_per_call": 4542583.375,
+          "q75_ns_per_call": 4575117.125,
+          "iqr_ns_per_call": 32533.75
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 13740479.125,
+          "q25_ns_per_call": 13697843.6875,
+          "q75_ns_per_call": 13754539.125,
+          "iqr_ns_per_call": 56695.4375
+        }
+      },
+      "tree_over_list_median": 3.011525890137602
+    },
+    "skew-513": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 9969864.5,
+          "q25_ns_per_call": 9929109.5,
+          "q75_ns_per_call": 10024322.875,
+          "iqr_ns_per_call": 95213.375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 27845885.25,
+          "q25_ns_per_call": 27808322.625,
+          "q75_ns_per_call": 27942244.75,
+          "iqr_ns_per_call": 133922.125
+        }
+      },
+      "tree_over_list_median": 2.793005386382132
+    },
+    "repeated-256": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 5795260.5,
+          "q25_ns_per_call": 5767385.25,
+          "q75_ns_per_call": 5906531.375,
+          "iqr_ns_per_call": 139146.125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 16186687.5,
+          "q25_ns_per_call": 16146765.625,
+          "q75_ns_per_call": 16313500.0,
+          "iqr_ns_per_call": 166734.375
+        }
+      },
+      "tree_over_list_median": 2.793090578068061
+    },
+    "balanced-129": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2163226.5625,
+          "q25_ns_per_call": 2157953.125,
+          "q75_ns_per_call": 2175059.90625,
+          "iqr_ns_per_call": 17106.78125
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 6969885.375,
+          "q25_ns_per_call": 6922480.5,
+          "q75_ns_per_call": 6987597.65625,
+          "iqr_ns_per_call": 65117.15625
+        }
+      },
+      "tree_over_list_median": 3.2219858501298337
+    },
+    "balanced-257": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 4569505.25,
+          "q25_ns_per_call": 4549880.1875,
+          "q75_ns_per_call": 4588906.125,
+          "iqr_ns_per_call": 39025.9375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 13851963.625,
+          "q25_ns_per_call": 13818122.4375,
+          "q75_ns_per_call": 13885927.125,
+          "iqr_ns_per_call": 67804.6875
+        }
+      },
+      "tree_over_list_median": 3.0313924302855324
+    },
+    "balanced-512": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 10008021.0,
+          "q25_ns_per_call": 9971661.25,
+          "q75_ns_per_call": 10030781.25,
+          "iqr_ns_per_call": 59120.0
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 28390364.5,
+          "q25_ns_per_call": 28361395.75,
+          "q75_ns_per_call": 28471744.75,
+          "iqr_ns_per_call": 110349.0
+        }
+      },
+      "tree_over_list_median": 2.8367610839345763
+    },
+    "skew-512": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 10089479.25,
+          "q25_ns_per_call": 10026896.0,
+          "q75_ns_per_call": 10156526.25,
+          "iqr_ns_per_call": 129630.25
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 28102093.75,
+          "q25_ns_per_call": 28008359.625,
+          "q75_ns_per_call": 28201125.0,
+          "iqr_ns_per_call": 192765.375
+        }
+      },
+      "tree_over_list_median": 2.785286837276562
+    },
+    "balanced-128": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 2146356.75,
+          "q25_ns_per_call": 2140212.1875,
+          "q75_ns_per_call": 2154134.125,
+          "iqr_ns_per_call": 13921.9375
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 6807174.5,
+          "q25_ns_per_call": 6789286.5,
+          "q75_ns_per_call": 6835220.0,
+          "iqr_ns_per_call": 45933.5
+        }
+      },
+      "tree_over_list_median": 3.171501895013492
+    },
+    "skew-256": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 4448104.125,
+          "q25_ns_per_call": 4435934.875,
+          "q75_ns_per_call": 4480080.75,
+          "iqr_ns_per_call": 44145.875
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 13611723.875,
+          "q25_ns_per_call": 13578718.6875,
+          "q75_ns_per_call": 13645041.625,
+          "iqr_ns_per_call": 66322.9375
+        }
+      },
+      "tree_over_list_median": 3.060118084578337
+    },
+    "repeated-512": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 14116229.5,
+          "q25_ns_per_call": 14049645.5,
+          "q75_ns_per_call": 14200854.25,
+          "iqr_ns_per_call": 151208.75
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 33540291.5,
+          "q25_ns_per_call": 33472490.0,
+          "q75_ns_per_call": 33596521.25,
+          "iqr_ns_per_call": 124031.25
+        }
+      },
+      "tree_over_list_median": 2.3760092239928516
+    },
+    "repeated-513": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 14167792.0,
+          "q25_ns_per_call": 14134697.5,
+          "q75_ns_per_call": 14197646.0,
+          "iqr_ns_per_call": 62948.5
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 35242271.0,
+          "q25_ns_per_call": 35172927.25,
+          "q75_ns_per_call": 35329396.0,
+          "iqr_ns_per_call": 156468.75
+        }
+      },
+      "tree_over_list_median": 2.487492122978655
+    },
+    "balanced-256": {
+      "groups": {
+        "ordinary_list": {
+          "batches": 20,
+          "median_ns_per_call": 4489260.375,
+          "q25_ns_per_call": 4462981.875,
+          "q75_ns_per_call": 4510822.9375,
+          "iqr_ns_per_call": 47841.0625
+        },
+        "heterogeneous_finger": {
+          "batches": 20,
+          "median_ns_per_call": 13732338.5,
+          "q25_ns_per_call": 13704447.75,
+          "q75_ns_per_call": 13775598.875,
+          "iqr_ns_per_call": 71151.125
+        }
+      },
+      "tree_over_list_median": 3.0589311719305208
+    }
+  },
+  "source_head": "bdfcdcf8f13da2a88151ae0524b388181ea7e5a6",
+  "performance_eligible": false
+}
