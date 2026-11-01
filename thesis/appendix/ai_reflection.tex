@@ -1,1 +1,48 @@
-% Intentionally left blank at the author's request, 1 November 2026.
+% Author-supplied version approved for inclusion on 1 November 2026.
+AI tools supported my work on an executable reconstruction of Jordan sorting.
+I required the sorting procedure to recover its output from its own maintained
+state, and I distinguished correctness, complexity arguments and measured runtime
+when assessing revisions. These requirements shaped how I wanted the
+reconstruction and its results to be evaluated. The choice of a red--black finger
+tree as the efficient backend and the implementation of the sorting algorithm
+were my own decisions and work.
+
+During revision, I questioned whether the common set's lack of two-sided splits
+left a gap in experimental coverage. The resulting discussion distinguished
+twelve targeted inputs with formal timings from eighteen structural inputs that
+had undergone correctness checks without formal timing. This clarified an
+important limitation: variation in nesting depth does not by itself establish
+coverage of the operations that distinguish the backends. It also helped me
+formulate a more specific question about which additional workloads would
+strengthen the comparison.
+
+ChatGPT helped with translation, algorithm explanations and discussions of review
+findings. Concrete examples were useful when I was trying to understand the
+relationship between sibling groups and the red--black finger tree. Codex
+assisted with implementation changes, tests, validation tooling and manuscript
+revisions. I found literature searches, architecture discussions and help
+expressing technical ideas in English particularly useful.
+
+For Appendix~\ref{app:backend-argument}, Codex helped formulate my extensions of
+the arguments of Fung et~al. in English and LaTeX. Claude subsequently identified
+an omitted premise and an incomplete diagnostic table. I decided to address both
+findings and specified the required changes; Codex checked the premise against
+the source paper and carried out the revisions. The omission showed me that
+readable mathematical prose can still leave an argument incomplete. Successful
+tests and fluent explanations therefore required different kinds of scrutiny.
+
+I also questioned repeated qualifications that obscured the main findings and
+requested a more direct presentation. For small edits whose intended wording was
+already clear, working directly on the text might have been faster. When revising
+the introduction, I supplied replacement wording to remove a repeated description
+of the two backends. Explaining such a local change and checking another version
+offered limited additional benefit.
+
+I am satisfied that both backends produced correct output in the formal
+measurements and that the thesis reports the tree's slower measured runtime
+alongside its stronger structural bound. I am less satisfied with the incomplete
+documentation of some earlier decisions and AI assistance. An independent human
+review of the locality and mixed-operation arguments would also strengthen my
+confidence in the work. In future projects, I would record decisions and their
+reasons as they arise. Responsibility for understanding and defending the
+submitted work remains mine.

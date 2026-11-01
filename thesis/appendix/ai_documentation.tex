@@ -1,0 +1,139 @@
+% Author-supplied version approved for inclusion on 1 November 2026.
+\subsection*{Tools used}
+
+\begingroup
+\small
+\setstretch{1.05}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.13\textwidth}>{\raggedright\arraybackslash}p{.55\textwidth}>{\raggedright\arraybackslash}p{\dimexpr.32\textwidth-4\tabcolsep\relax}@{}}
+\toprule
+Tool & Provider / model & Period of use\\
+\midrule
+\endfirsthead
+\toprule
+Tool & Provider / model & Period of use\\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r}{\textit{Continued on the next page}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+ChatGPT & OpenAI, ChatGPT 6 Sol & June and September 2026\\
+\addlinespace
+Codex & OpenAI, GPT-5.6 Sol; including the \nolinkurl{academic-humanizer} skill, version 0.3.3 & September--November 2026\\
+\addlinespace
+Claude & Anthropic, Opus 5.5, medium setting & October 2026\\
+\end{longtable}
+\endgroup
+
+\clearpage
+\subsection*{Influence on process and product}
+
+\begingroup
+\small
+\setstretch{1.05}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.14\textwidth}>{\raggedright\arraybackslash}p{.10\textwidth}>{\raggedright\arraybackslash}p{.47\textwidth}>{\raggedright\arraybackslash}p{\dimexpr.29\textwidth-6\tabcolsep\relax}@{}}
+\toprule
+Phase & Tool & Use & Affected parts\\
+\midrule
+\endfirsthead
+\toprule
+Phase & Tool & Use & Affected parts\\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{\textit{Continued on the next page}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+Understanding and planning & ChatGPT, Codex & Translation, algorithm explanations, examples of sibling groups and finger trees, literature searches, architecture discussions and discussion of review findings & Research process; background and implementation explanations\\
+\addlinespace
+Implementation & Codex & Assistance with implementation changes, tests and validation tooling. The choice of a red--black finger tree as the efficient backend and the implementation of the sorting algorithm are my own. & Implementation and test files; qualification and archive-validation scripts\\
+\addlinespace
+Proof & Codex & English and LaTeX formulation of my extensions of the arguments of Fung et~al., source checking and subsequent revisions & Appendix~\ref{app:backend-argument}\\
+\addlinespace
+Experiments and results & Codex & Calibration and measurement tooling, inspection of saved records, reconstruction of result tables and revision of their interpretation & Experimental pipeline; Chapters~\ref{chap:methodology} and~\ref{chap:results} and related summaries\\
+\addlinespace
+Writing & Codex & English and LaTeX drafting and revision; use of Academic Humanizer to reduce repetitive qualifications and improve clarity & Abstract, main chapters and appendices\\
+\addlinespace
+Review & Claude & Technical and manuscript review, including identification of an omitted proof premise and an incomplete diagnostic table & Appendix~\ref{app:backend-argument}, Table~\ref{tab:results-hooks} and related discussion\\
+\end{longtable}
+\endgroup
+
+All measurement values reported in Chapter~\ref{chap:results} come from the
+archived program runs indexed in Section~\ref{sec:appendix-current-formal}.
+Codex assisted with the tooling used to check and present those results.
+
+The following examples contain excerpts of recorded requests. English prompts
+are translations of the Chinese originals; descriptions of outputs are summaries
+rather than verbatim transcripts.
+
+\subsection*{Example 1: reducing repetitive qualifications}
+\textit{Codex, 31 October 2026}
+
+\textbf{Prompt excerpt:}
+\begin{quote}
+\enquote{Do you think the repeated emphasis on the limits of the evidence needs changing?}
+\end{quote}
+
+\textbf{Output, summarized:}
+
+The subsequent revision used the Academic Humanizer skill to reduce repetitive
+qualifications and improve wording and transitions while retaining the relevant
+assumptions and scope.
+
+\textbf{Use:}
+
+The revisions were incorporated into the manuscript. Checks for this revision
+compared equations, mathematical environments, table contents and citations with
+the preceding version and confirmed that these remained unchanged.
+
+\subsection*{Example 2: correcting a proof premise}
+\textit{Claude review, revision carried out with Codex, 20 October 2026}
+
+\textbf{Request excerpts forwarded to Codex:}
+\begin{quote}
+\enquote{Add the missing premises to A.5/A.6.}
+
+\enquote{Ensure that the bracketing condition appears explicitly in the text, and
+identify its source as Fung, p.~88(b).}
+\end{quote}
+
+\textbf{Output, summarized:}
+
+Codex checked the relevant passage in the source paper, added the bracketing
+premise to Lemma~\ref{lem:proof-reentry} and explained its role in the available
+group slot in Lemma~\ref{lem:proof-locality}.
+
+\textbf{Use:}
+
+I decided to address this finding and specified the required change and its
+source in the requests above. The correction was incorporated into
+Appendix~\ref{app:backend-argument}. It changed the proof exposition; the sorting
+implementation was unchanged.
+
+\subsection*{Example 3: completing the diagnostic table}
+\textit{Claude review, revision carried out with Codex, 20 October 2026}
+
+\textbf{Request excerpt forwarded to Codex:}
+\begin{quote}
+\enquote{Show all fifteen rows in Table 6.5, or present the fifteen combinations
+of input size and nesting level.}
+\end{quote}
+
+\textbf{Output, summarized:}
+
+Codex reconstructed the complete table from the saved measurements and revised
+the accompanying interpretation. The revised presentation reports four cases
+favoring the hook-free tree and eleven favoring the list backend.
+
+\textbf{Use:}
+
+I decided that the table should report all fifteen cases and specified the
+required format. The complete table and revised interpretation were incorporated
+into the results, abstract and conclusion. No new timing measurements were taken
+for this revision.
