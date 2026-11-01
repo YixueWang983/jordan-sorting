@@ -499,7 +499,7 @@ def main():
 
     output_path = str(output)
     try:
-        output_path = str(output.relative_to(PROJECT_ROOT))
+        output_path = output.relative_to(PROJECT_ROOT).as_posix()
     except ValueError:
         pass
 

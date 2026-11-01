@@ -50,7 +50,10 @@ def validate(output):
     require(stamp.tzinfo is not None and stamp.utcoffset() == timedelta(0), 'UTC timestamp')
     require(type(env['hardware']) is dict and env['hardware']
             and all(type(k) is str and type(v) is str and v.strip() for k,v in env['hardware'].items()), 'hardware')
-    if env['platform'].startswith('macOS'):
+    if 'environment_schema' in env['hardware']:
+        from platform_environment import validate_hardware
+        validate_hardware(env['hardware'])
+    elif env['platform'].startswith('macOS'):
         require(set(env['hardware']) == {'machdep.cpu.brand_string','hw.physicalcpu','hw.logicalcpu','hw.memsize','power'}, 'hardware fields')
         require(all(env['hardware'][k].isdigit() and int(env['hardware'][k]) > 0
                     for k in ('hw.physicalcpu','hw.logicalcpu','hw.memsize')), 'hardware numeric values')
@@ -153,11 +156,11 @@ def validate(output):
     manifest = read(output/'manifest.json')
     # Successful campaigns have an exact directory/file inventory. Interrupted
     # worker partials in failed campaigns are retained but never passing rows.
-    partials = {str(p.relative_to(output)) for p in output.rglob('*.partial')} if not passed else set()
+    partials = {p.relative_to(output).as_posix() for p in output.rglob('*.partial')} if not passed else set()
     expected_files |= partials
     require(type(manifest) is dict and set(manifest) == expected_files, 'manifest file inventory')
     dirs = {str(p) for name in expected_files for p in Path(name).parents if str(p) != '.'} | {'jobs','requests'}
-    require({str(p.relative_to(output)) for p in output.rglob('*')} == expected_files | dirs | {'manifest.json'}, 'unexpected entry')
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')} == expected_files | dirs | {'manifest.json'}, 'unexpected entry')
     require(not any(p.is_symlink() for p in output.rglob('*')), 'archive symlink')
     for name, sha in manifest.items():
         path = output/name

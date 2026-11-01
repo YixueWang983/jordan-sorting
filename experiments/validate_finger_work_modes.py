@@ -162,7 +162,7 @@ def evaluate(spec):
 
 def sources():
     paths = sorted((ROOT/'src').glob('*.py')) + [Path(__file__).resolve(), ROOT/'experiments/validate_heterogeneous_integration.py']
-    return {str(p.relative_to(ROOT)): sha_bytes(p.read_bytes()) for p in paths}
+    return {p.relative_to(ROOT).as_posix(): sha_bytes(p.read_bytes()) for p in paths}
 
 
 def run(output):

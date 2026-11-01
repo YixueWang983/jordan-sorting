@@ -52,7 +52,7 @@ def git(*args):
 
 
 def frozen_snapshot():
-    return {str(p.relative_to(ROOT)): sha(p) for directory in FROZEN for p in sorted((ROOT / directory).rglob('*')) if p.is_file()}
+    return {p.relative_to(ROOT).as_posix(): sha(p) for directory in FROZEN for p in sorted((ROOT / directory).rglob('*')) if p.is_file()}
 
 
 def reserve(path):
@@ -363,7 +363,7 @@ def run(output, batch_seconds=1800, case_seconds=120):
     frozen=frozen_snapshot();write_json(output/'frozen_before.json',frozen)
     history=historical_report();write_json(output/'historical_coverage.json',history)
     dependencies=sorted(list((ROOT/'src').glob('*.py'))+[ROOT/'experiments/audit_generator_coverage.py',ROOT/'experiments/validate_paper_algorithm.py',ROOT/'experiments/validate_week12_formal_sorting_outputs.py',Path(__file__).resolve(),ROOT/'tests/test_validate_ordinary_list_extended.py'])
-    source={str(p.relative_to(ROOT)):{'sha256':sha(p),'matches_HEAD':subprocess.check_output(['git','show','HEAD:'+str(p.relative_to(ROOT))],cwd=ROOT)==p.read_bytes() if str(p.relative_to(ROOT)) in git('ls-files').splitlines() else False} for p in dependencies}
+    source={p.relative_to(ROOT).as_posix():{'sha256':sha(p),'matches_HEAD':subprocess.check_output(['git','show','HEAD:'+p.relative_to(ROOT).as_posix()],cwd=ROOT)==p.read_bytes() if p.relative_to(ROOT).as_posix() in git('ls-files').splitlines() else False} for p in dependencies}
     historical_diff=git('diff','--name-only',history['source_commit'],'HEAD','--','src','experiments/audit_generator_coverage.py','experiments/validate_paper_algorithm.py','experiments/validate_week12_formal_sorting_outputs.py')
     manifest={'source_commit':git('rev-parse','HEAD'),'origin_main':git('rev-parse','origin/main'),'historical_source_commit':history['source_commit'],'historical_dependency_diff':historical_diff.splitlines(),
               'git_status_at_start':git('status','--short'),'source_files':source,'uncommitted_tool_boundary':'new tool/tests are content-hashed; HEAD does not contain them',
@@ -397,7 +397,7 @@ def run(output, batch_seconds=1800, case_seconds=120):
         write_json(output/'coverage.json',merge_coverage(rows))
         manifest['finished_at_utc']=datetime.now(timezone.utc).isoformat()
         manifest['source_hashes_unchanged']=all(sha(ROOT/n)==v['sha256'] for n,v in source.items())
-        manifest['files']={str(p.relative_to(output)):sha(p) for p in sorted(output.rglob('*')) if p.is_file() and p.name!='manifest.json'}
+        manifest['files']={p.relative_to(output).as_posix():sha(p) for p in sorted(output.rglob('*')) if p.is_file() and p.name!='manifest.json'}
         write_json(output/'manifest.json',manifest)
     assert summary['frozen_unchanged'] and manifest['source_hashes_unchanged']
     return 1 if summary['failed'] else 2 if summary['timed_out'] or summary['resource_errors'] or summary['not_run'] or not summary['plan_fully_accounted'] else 0

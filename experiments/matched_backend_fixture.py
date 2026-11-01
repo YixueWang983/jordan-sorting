@@ -20,7 +20,7 @@ from sibling_backend_contract import SiblingBackendSpec, resolve_sibling_backend
 
 SCHEMA='matched_backend_fixture_v2'
 BACKENDS=('ordinary_list','heterogeneous_finger')
-SOURCE_FILES=tuple(sorted(str(p.relative_to(ROOT)) for p in (ROOT/'src').glob('*.py')))+(
+SOURCE_FILES=tuple(sorted(p.relative_to(ROOT).as_posix() for p in (ROOT/'src').glob('*.py')))+(
     'experiments/matched_backend_fixture.py','experiments/validate_matched_backend_fixture.py')
 PROTOCOL={'stage':'fixture','measurement_kind':'synthetic_ticks','performance_eligible':False,
           'execution_mode':'minimal','audit_execution_mode':'checked','tree_detailed_work':False,

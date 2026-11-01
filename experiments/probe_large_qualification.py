@@ -78,7 +78,7 @@ def run(output):
         qualification='Only PASS inputs qualify; timeout is neither a sorting error nor a pass.',
     ))
     write_json(output/'manifest.json', dict(files={
-        str(p.relative_to(output)): sha(p) for p in sorted(output.rglob('*')) if p.is_file()
+        p.relative_to(output).as_posix(): sha(p) for p in sorted(output.rglob('*')) if p.is_file()
     }))
     return 0 if counts.get('PASS') == 16 and unchanged else 2
 

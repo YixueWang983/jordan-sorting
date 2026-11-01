@@ -38,7 +38,7 @@ def run(output):
     output.mkdir(parents=True,exist_ok=False)
     plan=[{'n':n,'k':k,'mirror':mirror} for n in (128,129) for k in (3,7,19) for mirror in (False,True)]
     paths=sorted((ROOT/'src').glob('*.py'))+[Path(__file__).resolve(),ROOT/'experiments/validate_finger_work_modes.py',ROOT/'experiments/validate_heterogeneous_integration.py']
-    source=lambda:{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
+    source=lambda:{p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
     before=source()
     (output/'plan.json').write_text(json.dumps({'scope':'targeted_correctness_only','plan':plan,'source_sha256':before,
         'whole_batch_timeout_seconds':RESOURCE_SECONDS,'retry_or_replacement':False,

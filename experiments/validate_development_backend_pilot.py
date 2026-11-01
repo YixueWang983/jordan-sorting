@@ -115,7 +115,7 @@ def validate(directory):
     manifest=json.loads((directory/'manifest.json').read_text())
     expected_files={'config.json','environment.json','summary.json','progress.json'}|{f'records/{i:06d}.json.gz' for i in range(len(rows))}
     require(type(manifest) is dict and set(manifest)==expected_files,'manifest file set')
-    entries={str(p.relative_to(directory)) for p in directory.rglob('*')}
+    entries={p.relative_to(directory).as_posix() for p in directory.rglob('*')}
     require(entries==expected_files|{'manifest.json','records'},'unexpected archive entry')
     require(all((directory/p).is_file() and not (directory/p).is_symlink() and hashlib.sha256((directory/p).read_bytes()).hexdigest()==h for p,h in manifest.items()),'archive file hash/type')
     require(not (directory/'records').is_symlink() and not (directory/'manifest.json').is_symlink(),'archive symlink')

@@ -26,7 +26,7 @@ def digest(value):
 def source_identity():
     # Bind every Python helper/test as well as the production modules. Later
     # evidence tools must be run from this producing revision, not a newer one.
-    return {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
+    return {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
             for folder in ('src', 'experiments', 'tests')
             for p in sorted((ROOT/folder).glob('*.py'))}
 

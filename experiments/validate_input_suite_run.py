@@ -10,7 +10,7 @@ from committed_records import canonical, read_records
 from common_input_protocol import digest
 from input_suite_registry import load_suite, canonical_cases, SOURCE_ORDER
 from input_suite_protocol import (
-    SCHEMA, STAGES, BACKENDS, DEADLINE, profile, stamp, limits, prerequisite_stages,
+    SCHEMA, LEGACY_SCHEMA, STAGES, BACKENDS, DEADLINE, profile, stamp, limits, prerequisite_stages,
     environment_equal, require_workload, old_trace_digest,
 )
 from matched_backend_fixture import identity
@@ -32,7 +32,7 @@ def file_hash(path):
 
 def verify_manifest(path):
     require(not any(p.is_symlink() for p in path.rglob("*")), "symlink in run evidence")
-    actual = {str(p.relative_to(path)): file_hash(p) for p in path.rglob("*")
+    actual = {p.relative_to(path).as_posix(): file_hash(p) for p in path.rglob("*")
               if p.is_file() and p != path / "manifest.json"}
     require(read(path / "manifest.json") == actual, "run file manifest")
 
@@ -80,8 +80,13 @@ def inspect_job(job, request, passing):
     if rows or passing:
         power = read(job / "power.json")
         require_power(power["before"])
+        if 'power_binding' in request:
+            from platform_environment import require_power_binding
+            require_power_binding(power['before'], request['power_binding'])
         if passing:
             require_power(power["after"])
+            if 'power_binding' in request:
+                require_power_binding(power['after'], request['power_binding'])
     if stage == "equivalence":
         return check_equivalence(job, entry, request["counted"]) if passing else dict(records=len(rows))
     records = validate_job(job, request["qualification"], entry["input_sha256"], passing=passing)
@@ -158,9 +163,13 @@ def validate(path, *, historical=False, cache=None, active=None):
         verify_manifest(path)
         require(not (path / "source_failure.json").exists(), "source changed during run")
         cfg, env = read(path / "config.json"), read(path / "environment.json")
-        require(cfg["schema"] == SCHEMA and cfg["stage"] in STAGES, "unified run schema/stage")
+        require(cfg["schema"] in (SCHEMA, LEGACY_SCHEMA) and cfg["stage"] in STAGES, "unified run schema/stage")
+        from platform_environment import SCHEMA as environment_schema
+        require((env['execution']['hardware'].get('environment_schema') == environment_schema)
+                if cfg['schema'] == SCHEMA else 'environment_schema' not in env['execution']['hardware'],
+                'run schema/environment protocol mismatch')
         suite = load_suite()
-        wanted = profile(suite, cfg["stage"], cfg["source_filter"])
+        wanted = profile(suite, cfg["stage"], cfg["source_filter"], schema=cfg['schema'])
         for key, value in wanted.items():
             require(canonical(cfg[key]) == canonical(value), "frozen profile: " + key)
         require(set(cfg) == set(wanted) | {"source_filter", "started_utc", "prerequisites", "review"},
@@ -243,9 +252,12 @@ def validate(path, *, historical=False, cache=None, active=None):
                 require(0 < row["budget_seconds"] <= maximum, "case resource budget")
                 request = read(folder / "requests" / (entry["case_id"] + ".json"))
                 # Reconstruct request fields independently of the runner's adapter.
-                wanted_request = dict(schema=SCHEMA, stage=cfg["stage"], suite_sha256=suite["suite_sha256"],
+                wanted_request = dict(schema=cfg['schema'], stage=cfg["stage"], suite_sha256=suite["suite_sha256"],
                                       source_sha256=env["execution"]["source_sha256"], entry=entry,
                                       counted=entry["case_id"] == cfg["counted_case"], review=cfg["review"])
+                if cfg['schema'] == SCHEMA:
+                    from platform_environment import power_binding
+                    wanted_request['power_binding'] = power_binding(env['execution']['hardware'])
                 if cfg["stage"] == "qualification":
                     wanted_request["qualification"] = dict(case=entry["case_id"], values=entry["values"],
                                                           backends=list(BACKENDS if index % 2 == 0 else BACKENDS[::-1]))
@@ -255,6 +267,8 @@ def validate(path, *, historical=False, cache=None, active=None):
                         case=dict(case=entry["case_id"], values=entry["values"], input_sha256=entry["input_sha256"]),
                         batch_size=batch, configuration="uninstrumented",
                         gc_thresholds=env["execution"]["gc_thresholds"])
+                    if cfg['schema'] == SCHEMA:
+                        wanted_request['measurement']['power_binding'] = wanted_request['power_binding']
                 require(canonical(request) == canonical(wanted_request), "worker request binding")
                 job = folder / "jobs" / entry["case_id"]
                 result = inspect_job(job, request, row["status"] == "PASS")

@@ -31,7 +31,7 @@ PROTOCOL={'stage':'development_pilot','measurement_kind':'perf_counter_ns','perf
           'gc':'enabled in measured calls; gc.collect before each batch outside clock',
           'order':'alternate first backend by case index plus batch-size index plus repetition',
           'failure':'stop at first detected error; batch outputs checked after timer; no retry, input deletion or replacement'}
-SOURCE_FILES=tuple(sorted(str(p.relative_to(ROOT)) for p in (ROOT/'src').glob('*.py')))+(
+SOURCE_FILES=tuple(sorted(p.relative_to(ROOT).as_posix() for p in (ROOT/'src').glob('*.py')))+(
     'experiments/committed_records.py','experiments/development_backend_pilot.py',
     'experiments/validate_development_backend_pilot.py','experiments/matched_backend_fixture.py',
     'experiments/validate_finger_middle_splits.py')
@@ -176,7 +176,7 @@ def run(output):
     atomic_json(output/'summary.json',summary)
     atomic_json(output/'progress.json',{'status':'COMPLETE' if passed else 'FAILED','committed_records':len(rows)})
     files=sorted(p for p in output.rglob('*') if p.is_file())
-    atomic_json(output/'manifest.json',{str(p.relative_to(output)):hashlib.sha256(p.read_bytes()).hexdigest() for p in files})
+    atomic_json(output/'manifest.json',{p.relative_to(output).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in files})
     return passed
 
 

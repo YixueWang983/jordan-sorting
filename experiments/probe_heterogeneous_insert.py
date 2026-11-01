@@ -117,7 +117,7 @@ def main(argv=None):
         "metrics_schema": HeterogeneousFingerBackend.metrics_schema,
         "seed_for_seeded_histories": 20261012, "cases": cases,
         "raw_sha256": hashlib.sha256(raw.read_bytes()).hexdigest(),
-        "source_sha256": {str(p.relative_to(PROJECT_ROOT)): hashlib.sha256(p.read_bytes()).hexdigest()
+        "source_sha256": {p.relative_to(PROJECT_ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
                           for p in (PROJECT_ROOT / "src/heterogeneous_finger_backend.py",
                                     PROJECT_ROOT / "src/sibling_backend_contract.py", Path(__file__))},
     }

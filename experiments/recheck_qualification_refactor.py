@@ -34,7 +34,10 @@ def recheck(output):
     require(env['gc_enabled'] is True and type(env['gc_thresholds']) is list and len(env['gc_thresholds'])==3
             and all(type(x) is int and x>=0 for x in env['gc_thresholds']),'GC')
     hardware=env['hardware'];require(type(hardware) is dict and hardware and all(type(k) is str and type(v) is str and v.strip() for k,v in hardware.items()),'hardware')
-    if env['platform'].startswith('macOS'):
+    if 'environment_schema' in hardware:
+        from platform_environment import validate_hardware
+        validate_hardware(hardware)
+    elif env['platform'].startswith('macOS'):
         require(set(hardware)=={'machdep.cpu.brand_string','hw.physicalcpu','hw.logicalcpu','hw.memsize','power'},'hardware keys')
         require(all(hardware[k].isdigit() and int(hardware[k])>0 for k in ('hw.physicalcpu','hw.logicalcpu','hw.memsize')),'hardware values')
     require(env['purpose']=='qualification resource observations only','purpose')
@@ -105,7 +108,7 @@ def recheck(output):
             profiles.append(dict(case=cid,backend=name,mode=mode,counts=row['counts'],history_work=row['history_work'],resource_wall_seconds=row['resource_wall_seconds']))
         if passed: require(read(job/'progress.json')==dict(status='COMPLETE',records=len(rows)),'completion cursor')
         # Failed jobs may contain ignored partials/current progress, never passing rows.
-        job_files={str(p.relative_to(output)) for p in job.rglob('*') if p.is_file()}
+        job_files={p.relative_to(output).as_posix() for p in job.rglob('*') if p.is_file()}
         if passed:
             require(job_files=={f'jobs/{cid}/progress.json'}|{f'jobs/{cid}/records/{j:06d}.json.gz' for j in range(len(rows))},'unexpected worker file')
         files|=job_files
@@ -115,7 +118,7 @@ def recheck(output):
     require(canonical(read(output/'summary.json'))==canonical(expected_summary),'summary')
     manifest=read(output/'manifest.json'); require(set(manifest)==files,'manifest inventory')
     dirs={str(p) for f in files for p in Path(f).parents if str(p)!='.'}|{'jobs','requests'}
-    require({str(p.relative_to(output)) for p in output.rglob('*')}==files|dirs|{'manifest.json'},'extra path')
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')}==files|dirs|{'manifest.json'},'extra path')
     require(not any(p.is_symlink() for p in output.rglob('*')),'symlink')
     require(all(hashlib.sha256((output/f).read_bytes()).hexdigest()==h for f,h in manifest.items()),'manifest hashes')
     return dict(archive_valid=True,completed=passed,cases=len(statuses),runs=dict(total),

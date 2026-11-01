@@ -64,8 +64,10 @@ class UnifiedPipelineTests(unittest.TestCase):
             captured_at=self.t.isoformat(), python='3.12.14 TEST FIXTURE', executable=sys.executable,
             platform='macOS TEST FIXTURE', machine='arm64', python_optimize=0, gc_enabled=True,
             gc_thresholds=list(gc.get_threshold()), purpose='matched calibration or formal measurement',
-            hardware=dict(POWER, **{'machdep.cpu.brand_string':'Apple M4', 'hw.physicalcpu':'10',
-                                   'hw.logicalcpu':'10', 'hw.memsize':'16000000000'})),
+            hardware=dict(POWER, environment_schema='mac_windows_environment_v1',
+                          os_family='macos', host_name='TEST ONLY', architecture='arm64', os_version='TEST',
+                          python_implementation='CPython', python_bits='64', cpu_model='Apple M4',
+                          physical_cores='10', logical_cores='10', memory_bytes='16000000000')),
             clock=dict(implementation='TEST ONLY', resolution_seconds=1e-9, monotonic=True,
                        adjustable=False, successive_read_deltas_ns=[1] * 1000))
         self.receipt = dict(schema='representation_locality_cost_review_v1', approved=True,

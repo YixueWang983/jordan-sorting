@@ -7,7 +7,8 @@ from common_input_protocol import measurement_protocol, digest
 from committed_records import read_records
 from uninstrumented_protocol import BACKENDS
 
-SCHEMA = "unified_input_suite_run_v1"
+LEGACY_SCHEMA = "unified_input_suite_run_v1"
+SCHEMA = "unified_input_suite_run_v2"
 STAGES = ("equivalence", "qualification", "calibration", "formal")
 DEADLINE = "2026-11-14T23:00:00+00:00"  # 15 November 00:00 Europe/Berlin.
 COUNTED_ORIGINAL_CASE = "split-n128-k3"
@@ -44,14 +45,23 @@ def limits(stage):
     raise ValueError("unknown stage")
 
 
-def profile(suite, stage, source):
-    return dict(schema=SCHEMA, stage=stage, suite_sha256=suite["suite_sha256"],
+def profile(suite, stage, source, *, schema=SCHEMA):
+    if schema not in (SCHEMA, LEGACY_SCHEMA):
+        raise ValueError('unknown unified protocol schema')
+    result = dict(schema=schema, stage=stage, suite_sha256=suite["suite_sha256"],
                 registration=suite["registration"], selected_sources=selected_sources(source),
                 source_order=list(SOURCE_ORDER), rules=measurement_protocol(), limits=limits(stage),
                 deadline=DEADLINE, backends=list(BACKENDS),
                 counted_case=next((e["case_id"] for e in suite["entries"]
                                    if e["source"] == "targeted_split"
                                    and e["original_case_id"] == COUNTED_ORIGINAL_CASE), None))
+    if schema == SCHEMA:
+        from platform_environment import SCHEMA as environment_schema
+        import hashlib
+        path = 'docs/plan/cross_platform_evaluation_20261101.md'
+        result['platform_protocol'] = dict(schema=environment_schema, path=path,
+            sha256=hashlib.sha256((ROOT / path).read_bytes()).hexdigest())
+    return result
 
 
 def case_payload(entry):
@@ -105,10 +115,13 @@ def prerequisite_stages(stage):
 def make_request(cfg, env, entry, index, batch=None):
     """Pure input/config adaptation; does not execute or choose experimental rules."""
     stage = cfg["stage"]
-    request = dict(schema=SCHEMA, stage=stage, suite_sha256=cfg["suite_sha256"],
+    request = dict(schema=cfg['schema'], stage=stage, suite_sha256=cfg["suite_sha256"],
                    source_sha256=env["execution"]["source_sha256"], entry=entry,
                    counted=entry["case_id"] == cfg["counted_case"],
                    review=cfg.get("review"))
+    if cfg['schema'] == SCHEMA:
+        from platform_environment import power_binding
+        request['power_binding'] = power_binding(env['execution']['hardware'])
     if stage == "qualification":
         order = list(BACKENDS if index % 2 == 0 else BACKENDS[::-1])
         request["qualification"] = dict(case=entry["case_id"], values=entry["values"], backends=order)
@@ -116,4 +129,6 @@ def make_request(cfg, env, entry, index, batch=None):
         request["measurement"] = dict(stage=stage, case=case_payload(entry), index=index,
                                       rules=cfg["rules"], batch_size=batch, configuration="uninstrumented",
                                       gc_thresholds=env["execution"]["gc_thresholds"])
+        if cfg['schema'] == SCHEMA:
+            request['measurement']['power_binding'] = request['power_binding']
     return request

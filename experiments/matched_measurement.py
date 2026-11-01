@@ -76,7 +76,11 @@ def execute_case(request,output):
         def checkpoint(when):
             try:
                 power[when]=power_observation();atomic_json(output/'power.json',power)
-                require_power(power[when]);return True
+                require_power(power[when])
+                if 'power_binding' in request:
+                    from platform_environment import require_power_binding
+                    require_power_binding(power[when], request['power_binding'])
+                return True
             except (ValueError,RuntimeError,OSError) as exc:
                 atomic_json(output/'failure.json',dict(status='WORKER_ERROR',accepted=False,
                     performance_eligible=False,error=error_details(exc),committed_records=len(read_records(output))))
@@ -115,7 +119,7 @@ def execute_case(request,output):
             atomic_json(output/'failure.json',dict(status='NO_COMMON_BATCH',cause='NO_COMMON_BATCH',accepted=False,performance_eligible=False))
             return 2
         result=dict(chosen_batch=chosen,median_batch_ns=medians)
-    elif stage=='formal':
+    elif stage in ('formal', 'stability'):
         batch=request['batch_size']
         for rep in range(rules['warmups_per_backend']):
             for name in (backends if (case_index+rep)%2==0 else backends[::-1]):

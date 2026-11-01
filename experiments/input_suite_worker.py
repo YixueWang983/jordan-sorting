@@ -68,7 +68,8 @@ def execute(request, output):
         if (request["measurement"]["case"] != case_payload(entry)
                 or request["measurement"]["stage"] != stage
                 or request["measurement"]["configuration"] != "uninstrumented"
-                or request["measurement"]["rules"] != measurement_protocol()):
+                or request["measurement"]["rules"] != measurement_protocol()
+                or request["measurement"].get('power_binding') != request.get('power_binding')):
             raise ValueError("worker measurement binding")
         if stage == "formal":
             from validate_matched_measurement import check_review
@@ -80,6 +81,8 @@ def execute(request, output):
         raise ValueError("invalid registered Jordan input")
     power = {"before": power_observation()}
     require_power(power["before"])
+    from platform_environment import require_power_binding
+    require_power_binding(power['before'], request['power_binding'])
     if stage == "equivalence":
         output.mkdir(parents=True, exist_ok=False)
         atomic_json(output / "power.json", power)
@@ -95,6 +98,7 @@ def execute(request, output):
     power["after"] = power_observation()
     atomic_json(output / "power.json", power)
     require_power(power["after"])
+    require_power_binding(power['after'], request['power_binding'])
     if source_identity() != request["source_sha256"]:
         raise ValueError("source changed during worker")
     return code

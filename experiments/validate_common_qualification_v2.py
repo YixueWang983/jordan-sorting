@@ -71,7 +71,10 @@ def validate_environment(env, *, historical=False, purpose='qualification resour
     require(stamp.tzinfo is not None and stamp.utcoffset() == timedelta(0), 'UTC timestamp')
     require(type(env['hardware']) is dict and env['hardware']
             and all(type(k) is str and type(v) is str and v.strip() for k,v in env['hardware'].items()), 'hardware')
-    if env['platform'].startswith('macOS'):
+    if 'environment_schema' in env['hardware']:
+        from platform_environment import validate_hardware
+        validate_hardware(env['hardware'])
+    elif env['platform'].startswith('macOS'):
         expected = {'machdep.cpu.brand_string','hw.physicalcpu','hw.logicalcpu','hw.memsize','power'}
         if power_fields:
             from uninstrumented_protocol import parsed_power
@@ -210,7 +213,7 @@ def validate(output, *, historical=False, dataset='common'):
             if 'current' in failure:
                 require(failure['current'] == (read(job/'progress.json') if (job/'progress.json').exists() else None), 'failure cursor')
             # Only uncommitted atomic files in this failed job are tolerated.
-            files |= {str(p.relative_to(output)) for p in job.rglob('*.partial') if p.name.startswith('.')}
+            files |= {p.relative_to(output).as_posix() for p in job.rglob('*.partial') if p.name.startswith('.')}
         for record in records:
             if record['status'] != 'PASS': continue
             name = record['backend']; runs[record['mode']] += 1
@@ -238,7 +241,7 @@ def validate(output, *, historical=False, dataset='common'):
     require(read(output/'progress.json') == dict(status='COMPLETE' if passed else 'FAILED', committed_records=len(statuses)), 'campaign cursor')
     manifest = read(output/'manifest.json'); require(type(manifest) is dict and set(manifest) == files, 'manifest inventory')
     dirs = {str(p) for f in files for p in Path(f).parents if str(p) != '.'}|{'jobs','requests'}
-    require({str(p.relative_to(output)) for p in output.rglob('*')} == files|dirs|{'manifest.json'}, 'extra entry')
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')} == files|dirs|{'manifest.json'}, 'extra entry')
     require(not any(p.is_symlink() for p in output.rglob('*')), 'symlink')
     for f, h in manifest.items():
         require((output/f).is_file() and hashlib.sha256((output/f).read_bytes()).hexdigest() == h, 'manifest hash/type')

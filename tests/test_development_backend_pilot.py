@@ -41,7 +41,7 @@ class DevelopmentPilotTests(unittest.TestCase):
 
     def reseal(self,out):
         files=sorted(p for p in out.rglob('*') if p.is_file() and p.name!='manifest.json')
-        atomic_json(out/'manifest.json',{str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest() for p in files})
+        atomic_json(out/'manifest.json',{p.relative_to(out).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in files})
 
     def test_real_public_calls_fresh_unobserved_trees_inside_timer_checks_outside(self):
         active=False;events=[];instances=[]

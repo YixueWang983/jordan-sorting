@@ -30,11 +30,15 @@ def atomic_bytes(path, data):
             stream.flush()
             os.fsync(stream.fileno())
         os.replace(temporary,path)
-        directory=os.open(path.parent,os.O_RDONLY)
-        try:
-            os.fsync(directory)
-        finally:
-            os.close(directory)
+        # Windows cannot open directories with the POSIX CRT operation. The
+        # closed file is fsynced before same-directory replacement on both OSes.
+        # This is a worker-termination guarantee, not a power-loss guarantee.
+        if sys.platform != 'win32':
+            directory=os.open(path.parent,os.O_RDONLY)
+            try:
+                os.fsync(directory)
+            finally:
+                os.close(directory)
     finally:
         # On SIGKILL this may not execute. Readers ignore the partial file.
         if os.path.exists(temporary):

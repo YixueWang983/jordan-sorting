@@ -270,7 +270,7 @@ def write_bundle(output, root=ROOT):
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
     for name, data in artifacts(suite).items():
-        (output / name).write_text(json.dumps(data, ensure_ascii=False, sort_keys=True, indent=2) + "\n")
+        (output / name).write_text(json.dumps(data, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding='utf-8', newline='\n')
     return suite
 
 

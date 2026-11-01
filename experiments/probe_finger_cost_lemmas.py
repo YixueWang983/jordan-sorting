@@ -249,7 +249,7 @@ def run(output):
     paths = sorted((ROOT/'src').glob('*.py')) + [ROOT/p for p in (
         'experiments/probe_finger_cost_lemmas.py','experiments/probe_heterogeneous_split.py',
         'tests/test_heterogeneous_finger_backend.py','tests/test_heterogeneous_finger_split.py')]
-    source = lambda: {str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
+    source = lambda: {p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
     before = source()
     (output/'plan.json').write_text(json.dumps({'max_exhaustive_leaves':10,
         'mixed_n_k_seed':[(32,3,0),(32,7,1),(32,11,2),(128,5,0),(128,17,1),(128,41,2)],

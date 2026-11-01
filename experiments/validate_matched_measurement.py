@@ -19,9 +19,11 @@ def read(path):return json.loads(Path(path).read_text())
 
 
 def check_review(receipt,source):
+    production = {p:h for p,h in source.items() if p.startswith('src/')}
+    require(bool(production) and all('\\' not in p for p in source), 'empty or noncanonical production source inventory')
     require(type(receipt) is dict and set(receipt)=={'schema','approved','production_sha256','review_references'},'manual review receipt fields')
     require(receipt['schema']=='representation_locality_cost_review_v1' and receipt['approved'] is True,'manual review not approved')
-    require(receipt['production_sha256']=={p:h for p,h in source.items() if p.startswith('src/')},'manual review source')
+    require(receipt['production_sha256']==production,'manual review source')
     require(type(receipt['review_references']) is list and receipt['review_references']
             and all(type(r) is str and r.strip() for r in receipt['review_references']),'manual review references')
 
@@ -50,9 +52,14 @@ def check_job(job,request,*,passing,verify_summary=True):
         if passing or rows:
             power=read(job/'power.json');require('before' in power,'missing initial power check')
             require_power(power['before'])
+            if 'power_binding' in request:
+                from platform_environment import require_power_binding
+                require_power_binding(power['before'], request['power_binding'])
             if passing:
                 require(set(power)=={'before','after'},'missing final power check')
                 require_power(power['after'])
+                if 'power_binding' in request:
+                    require_power_binding(power['after'], request['power_binding'])
     def consume(kind,backend,batch,repeat):
         nonlocal cursor
         if cursor==len(rows):return False
@@ -88,7 +95,7 @@ def check_job(job,request,*,passing,verify_summary=True):
             if all(medians[name]>=cfg['target_batch_ns'] for name in backends):
                 chosen=batch;result=dict(chosen_batch=batch,median_batch_ns=medians);break
         full=full and chosen is not None
-    elif stage=='formal':
+    elif stage in ('formal', 'stability'):
         batch=request['batch_size'];require(type(batch) is int and batch in rules['calibration']['batch_candidates'],'frozen batch size')
         for kind,count,size in (('warmup',rules['warmups_per_backend'],1),('sample',rules['repetitions'],batch)):
             for rep in range(count):
@@ -197,13 +204,13 @@ def validate(output,*,qualification,calibration=None,historical=False):
             require(failure.get('status') in (('RESOURCE_TIMEOUT',) if status['status']=='TIMEOUT' else ('WORKER_ERROR','INVALID_WORKER_EVIDENCE')),'failure type')
             if status['status']=='TIMEOUT':require(failure.get('budget_seconds')==status['budget_seconds'],'timeout budget')
             if 'current' in failure:require(failure['current']==(read(job/'progress.json') if (job/'progress.json').exists() else None),'failure cursor')
-            files|={str(p.relative_to(output)) for p in job.rglob('*.partial') if p.name.startswith('.')}
+            files|={p.relative_to(output).as_posix() for p in job.rglob('*.partial') if p.name.startswith('.')}
     complete=all(r['status']=='PASS' for r in statuses)
     require(canonical(read(output/'summary.json'))==canonical(dict(stage=stage,complete=complete,
         status_counts={s:sum(r['status']==s for r in statuses) for s in ('PASS','ERROR','TIMEOUT','NOT_RUN')},source_unchanged=True,performance_eligible=False)),'summary reconstruction')
     manifest=read(output/'manifest.json');require(type(manifest) is dict and set(manifest)==files,'manifest inventory')
     dirs={str(p) for f in files for p in Path(f).parents if str(p)!='.'}|{'jobs','requests'}
-    require({str(p.relative_to(output)) for p in output.rglob('*')}==files|dirs|{'manifest.json'},'extra entries')
+    require({p.relative_to(output).as_posix() for p in output.rglob('*')}==files|dirs|{'manifest.json'},'extra entries')
     require(not any(p.is_symlink() for p in output.rglob('*')),'symlink')
     require(all((output/f).is_file() and hashlib.sha256((output/f).read_bytes()).hexdigest()==h for f,h in manifest.items()),'manifest hashes')
     return dict(**({'configuration':'uninstrumented'} if uninstrumented else {}),archive_valid=True,stage=stage,complete=complete,dataset=dataset,inputs=len(cases),batch_sizes=batches,

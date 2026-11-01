@@ -164,7 +164,7 @@ def validate(output, *, historical=False):
             counted+=1
     if counted!=1:raise ValueError('missing counted comparison')
     manifest=read(output/'manifest.json')
-    actual={str(p.relative_to(output)):hashlib.sha256(p.read_bytes()).hexdigest() for p in output.rglob('*') if p.is_file() and p.name!='manifest.json'}
+    actual={p.relative_to(output).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in output.rglob('*') if p.is_file() and p.name!='manifest.json'}
     if manifest!=actual:raise ValueError('manifest mismatch')
     if read(output/'summary.json')!=dict(complete=True,inputs=192,passed=192,source_unchanged=True):raise ValueError('summary')
     return dict(archive_valid=True,inputs=192,completed_prefixes_per_configuration=prefixes,trace_equal=True,

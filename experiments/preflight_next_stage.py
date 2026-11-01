@@ -87,7 +87,7 @@ def config():
 
 
 def source_hashes():
-    return {str(p.relative_to(ROOT)): sha(p)
+    return {p.relative_to(ROOT).as_posix(): sha(p)
             for folder in ('src','experiments','tests')
             for p in sorted((ROOT/folder).glob('*.py'))}
 
@@ -145,7 +145,7 @@ def run(output, run_config=None):
         'Success traces do not measure injected failures; current abort/no-retry '
         'regressions cover failure handling. The core has no rollback contract.')
     write_json(output/'coverage.json',coverage)
-    write_json(output/'manifest.json',{'files':{str(p.relative_to(output)):sha(p) for p in sorted(output.rglob('*')) if p.is_file()}})
+    write_json(output/'manifest.json',{'files':{p.relative_to(output).as_posix():sha(p) for p in sorted(output.rglob('*')) if p.is_file()}})
     success = (
         report['passed']
         and not report['failed']

@@ -2,6 +2,7 @@
 import re
 import subprocess
 import hashlib
+import sys
 from common_input_protocol import ROOT
 
 from common_input_protocol import measurement_protocol
@@ -49,6 +50,13 @@ def parsed_power(power, settings):
 
 
 def power_observation(power=None):
+    if sys.platform == 'win32':
+        if power is not None:
+            raise ValueError('Windows power evidence must come from GetSystemPowerStatus')
+        from platform_environment import windows_power_observation
+        return windows_power_observation()
+    if sys.platform != 'darwin':
+        raise RuntimeError('evaluation supports native macOS and Windows only')
     if power is None:
         power = subprocess.check_output(['pmset', '-g', 'batt'], text=True).strip()
     settings = subprocess.check_output(['pmset', '-g'], text=True).strip()
@@ -59,15 +67,34 @@ def power_observation(power=None):
 def require_power(observation):
     if not POWER_FIELDS <= set(observation):
         raise ValueError('missing recorded AC/low-power observations')
-    source, mode = parsed_power(observation['power'], observation['power_settings'])
+    if observation.get('power_platform') == 'windows':
+        from platform_environment import parse_windows_power
+        source, mode, scheme = parse_windows_power(observation['power'], observation['power_settings'])
+        if scheme != observation.get('power_scheme'):
+            raise ValueError('power scheme disagrees with raw powercfg evidence')
+    else:
+        if observation.get('power_platform', 'macos') != 'macos':
+            raise ValueError('unknown power observation platform')
+        source, mode = parsed_power(observation['power'], observation['power_settings'])
     if (source, mode) != (observation['power_source'], observation['lowpowermode']):
-        raise ValueError('power fields disagree with raw pmset evidence')
+        raise ValueError('power fields disagree with raw evidence')
     if source != 'AC Power' or mode != '0':
         raise RuntimeError('Connect AC power and disable Low Power Mode before measurement.')
 
 
 def require_machine(execution):
     require_power(execution['hardware'])
+    if 'environment_schema' in execution['hardware']:
+        from platform_environment import validate_hardware, PYTHON_VERSION
+        hardware = execution['hardware']
+        validate_hardware(hardware)
+        prefix = 'macOS' if hardware['os_family'] == 'macos' else 'Windows'
+        if (not execution['platform'].startswith(prefix) or execution['machine'] != hardware['architecture'] or
+                not execution['python'].startswith(PYTHON_VERSION + ' ') or
+                type(execution['python_optimize']) is not int or execution['python_optimize'] != 0):
+            raise RuntimeError('cross-platform evaluation requires matching OS and CPython 3.12.14 without optimization')
+        return
+    # The immutable historical Mac protocol retains its original machine gate.
     if (execution['hardware'].get('machdep.cpu.brand_string') != 'Apple M4'
             or not execution['python'].startswith('3.12.14 ')
             or execution['python_optimize'] != 0):

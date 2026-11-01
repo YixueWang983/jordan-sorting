@@ -156,7 +156,7 @@ def main():
     parser.add_argument('--max-n', type=int, default=7, choices=range(3, 9))
     args = parser.parse_args()
     sources = sorted(ROOT.glob('src/*.py')) + [Path(__file__).resolve(), ROOT / 'tests/test_heterogeneous_sort_integration.py']
-    source_hashes = {str(p.relative_to(ROOT)): digest(p.read_bytes()) for p in sources}
+    source_hashes = {p.relative_to(ROOT).as_posix(): digest(p.read_bytes()) for p in sources}
     args.output_dir.mkdir(parents=True, exist_ok=False)
     records = []
     # Output remains unaccepted if an exception occurs; no failure filtering.
@@ -175,7 +175,7 @@ def main():
                               for name in ('splits', 'both_sides_nonempty', 'z1_boundary', 'z1_output')}
         aggregate[backend]['completed_prefixes_checked'] = sum(len(r['results'][backend]['prefixes']) for r in records)
         aggregate[backend]['branches'] = dict(branches)
-    if source_hashes != {str(p.relative_to(ROOT)): digest(p.read_bytes()) for p in sources}:
+    if source_hashes != {p.relative_to(ROOT).as_posix(): digest(p.read_bytes()) for p in sources}:
         raise RuntimeError('validation sources changed during the run')
     summary = {
         'scope': 'bounded_end_to_end_correctness_not_timing', 'accepted': True,

@@ -1,5 +1,16 @@
 # Jordan Sorting
 
+## Mac / Windows evaluation
+
+The current evaluation tools support native macOS and Windows with 64-bit
+CPython 3.12.14. See the [cross-platform runbook](docs/development/cross_platform_runbook.md)
+for setup, targeted/full tests, immutable evidence, the host-stability diagnostic,
+and paired host comparison. The [protocol supplement](docs/plan/cross_platform_evaluation_20261101.md)
+versions the new machine gates and preserves the original Mac archives.
+New unified runs use `unified_input_suite_run_v2`. Host diagnostics support
+`--case-id` but do not certify thesis performance or replace the author's review.
+
+
 Implementation and experimental evaluation of a simplified Jordan-sorting framework.
 
 This repository is part of a master's thesis preparation project. The long-term goal is to study and implement a simplified reference version of Jordan sorting, then compare it with ordinary sorting baselines and explain the gap between a straightforward implementation and the theoretical linear-time framework.

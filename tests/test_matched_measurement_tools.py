@@ -118,6 +118,10 @@ raise SystemExit(r.execute_case(json.loads(Path(sys.argv[2]).read_text()),Path(s
     def fixture_scope(self,root):
         stack=ExitStack();selection=dict(cases=[dict(spec={'case':'mechanical-eight'},values=list(range(1,9)),input_sha256=digest(list(range(1,9))))],selection_sha256='fixture-selection')
         env=runner.capture_environment();env['execution']['dirty']=False
+        # Synthetic fixtures are independent of the OS executing the test suite.
+        env['execution'].update(platform='macOS TEST FIXTURE',machine='arm64',python='3.12.14 TEST FIXTURE')
+        env['execution']['hardware']={'machdep.cpu.brand_string':'Apple M4','hw.physicalcpu':'10',
+            'hw.logicalcpu':'10','hw.memsize':'16000000000','power':"Now drawing from 'AC Power'"}
         qualification=root/'q';qualification.mkdir();atomic_json(qualification/'environment.json',env['execution']);atomic_json(qualification/'manifest.json',{})
         binding=dict(producing_head=env['execution']['head'],selection_sha256=selection['selection_sha256'],archive_manifest_sha256=digest({}),
                      production_sources_identical=True,current_production_sha256={p:h for p,h in source_identity().items() if p.startswith('src/')})

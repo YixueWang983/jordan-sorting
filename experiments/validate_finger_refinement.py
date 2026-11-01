@@ -47,7 +47,7 @@ def run(output):
     sources = sorted((ROOT/'src').glob('*.py')) + [Path(__file__).resolve(),
         ROOT/'tests/finger_refinement_model.py', ROOT/'tests/test_finger_refinement.py',
         ROOT/'experiments/validate_finger_middle_splits.py', ROOT/'experiments/committed_records.py']
-    hashes = lambda: {str(p.relative_to(ROOT)):digest(p.read_bytes()) for p in sources}
+    hashes = lambda: {p.relative_to(ROOT).as_posix():digest(p.read_bytes()) for p in sources}
     before = hashes()
     plan = {'archive_schema':'finger_refinement_records_v2', 'scope':'bounded_representation_locality_not_timing',
             'selection':'all legal permutations n=3..7; two fixed cases and mirrors; n=128/129 k=3/7/19 and mirrors',

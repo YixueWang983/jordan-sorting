@@ -23,23 +23,15 @@ from paper_jordan_sort import paper_jordan_diagnostics_valid, paper_jordan_sort_
 
 
 def read(path):
-    return json.loads(Path(path).read_text())
+    return json.loads(Path(path).read_text(encoding='utf-8-sig'))
 
 
 def environment(*, include_power_settings=False):
     def command(args):
         result = subprocess.run(args, cwd=ROOT, capture_output=True, text=True, check=True)
         return result.stdout.strip()
-    hardware = {}
-    if sys.platform == 'darwin':
-        for key in ('machdep.cpu.brand_string', 'hw.physicalcpu', 'hw.logicalcpu', 'hw.memsize'):
-            hardware[key] = command(['sysctl', '-n', key])
-        hardware['power'] = command(['pmset', '-g', 'batt'])
-        if include_power_settings:
-            from uninstrumented_protocol import power_observation
-            hardware.update(power_observation(hardware['power']))
-    else:
-        hardware['processor'] = platform.processor() or 'unavailable'
+    from platform_environment import collect_hardware
+    hardware = collect_hardware()
     return dict(head=command(['git', 'rev-parse', 'HEAD']),
                 dirty=bool(command(['git', 'status', '--porcelain'])),
                 source_sha256=source_identity(), captured_at=datetime.now(timezone.utc).isoformat(),
@@ -133,7 +125,7 @@ def qualify_case(request, output):
 
 
 def seal(output):
-    atomic_json(output/'manifest.json', {str(p.relative_to(output)):hashlib.sha256(p.read_bytes()).hexdigest()
+    atomic_json(output/'manifest.json', {p.relative_to(output).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
                 for p in sorted(output.rglob('*')) if p.is_file() and p != output/'manifest.json'})
 
 
