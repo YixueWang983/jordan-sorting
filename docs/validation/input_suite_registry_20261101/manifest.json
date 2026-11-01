@@ -1,0 +1,21 @@
+{
+  "files": {
+    "README.md": "9c33e80c4e026e3788452dac1717a283594901f4a0706a446dad572c96e98215",
+    "deduplication.json": "8641965d0f426e44b203237e8abbcd57e06136b171c1e67d4a5e3531fd6d84cb",
+    "exclusions.json": "99c5ffdd37229f4ed8ec61cc6a94c1a211352aca909418810dd25a5b6b0fa755",
+    "initial_execution_state.json": "9059a6b81cc4303d27781ffb365dd85426782e7e9d2da2cad71d0c189b18381a",
+    "preservation.json": "c6ab1b9891c9f3b2b46d2506eb450c3a3f12e22faf6e90dba9c20c8f29b5159f",
+    "suite.json": "04a2735ceb8403155cd2d359596bcbe45537515ed88338b37dc0b498d6286f31",
+    "summary.json": "4a75364d714ace2e5071dc4f487dd13fb5977e449e668bfa587b97336e448669",
+    "verification.json": "54d1e278518813b38031921ae7ffcb7effeccceed2e689af7d3a7d58c7be9eb6"
+  },
+  "final_execution_version_frozen": false,
+  "registration_commit": "afbbff68525b112ad9bc03c163b435ca74590212",
+  "scope": "input_inventory_only_not_qualification",
+  "suite_sha256": "a8c2fe3aa2fe4b45bbe876db9e9dabe3b7f95fd666b3c3afab0776bef67234b7",
+  "tool_sha256": {
+    "experiments/input_suite_registry.py": "47746e89105c2d73cb228e6f065bb04249f352944a0f9e719939df3978ce5d34",
+    "experiments/validate_input_suite.py": "ad80ab903a55ac4da1d599920f7337f1de4b3547bdedfad161a3dd35681c0846",
+    "tests/test_input_suite_registry.py": "b7bd3a11e3cbbd456122335378e3e593a48f83a43ea413f75832ee2851fc28cd"
+  }
+}

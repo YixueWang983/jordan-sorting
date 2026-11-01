@@ -1,0 +1,9 @@
+{
+  "scope": "preexisting_source_archives_results_thesis_and_output_bytes",
+  "checked_files": 24075,
+  "changed_files": [],
+  "baseline_manifest_sha256": "8ce4287336f656b3fa8f2b1b03f20b234433c6242a5a62d4d1fa32e11d0b4f0e",
+  "src_unchanged": true,
+  "existing_archives_unchanged": true,
+  "thesis_and_output_unchanged": true
+}

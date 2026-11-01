@@ -1,0 +1,120 @@
+{
+  "calibration_performed": false,
+  "canonical_inputs": 302,
+  "duplicate_entries": 0,
+  "entries": 302,
+  "excluded_entries": 8,
+  "max_n": 513,
+  "per_source": {
+    "common": {
+      "canonical_inputs": 140,
+      "construction_families": {
+        "increasing_flat": 20,
+        "low_nesting_block": 40,
+        "medium_nesting_block": 40,
+        "nested_suffix": 40
+      },
+      "cross_source_duplicates": 0,
+      "duplicate_entries": 0,
+      "entries": 140,
+      "excluded_entries": 0,
+      "sizes": {
+        "128": 14,
+        "129": 14,
+        "256": 14,
+        "257": 14,
+        "32": 14,
+        "33": 14,
+        "512": 14,
+        "513": 14,
+        "64": 14,
+        "65": 14
+      },
+      "within_source_duplicates": 0
+    },
+    "geometric": {
+      "canonical_inputs": 100,
+      "construction_families": {
+        "grid_tree_corridor_polygon": 100
+      },
+      "cross_source_duplicates": 0,
+      "duplicate_entries": 0,
+      "entries": 100,
+      "excluded_entries": 0,
+      "sizes": {
+        "128": 20,
+        "256": 20,
+        "32": 20,
+        "512": 20,
+        "64": 20
+      },
+      "within_source_duplicates": 0
+    },
+    "seeded": {
+      "canonical_inputs": 32,
+      "construction_families": {
+        "seeded_legal_gap": 32
+      },
+      "cross_source_duplicates": 0,
+      "duplicate_entries": 0,
+      "entries": 32,
+      "excluded_entries": 8,
+      "sizes": {
+        "128": 8,
+        "32": 2,
+        "33": 2,
+        "512": 8,
+        "513": 8,
+        "64": 2,
+        "70": 2
+      },
+      "within_source_duplicates": 0
+    },
+    "structural": {
+      "canonical_inputs": 18,
+      "construction_families": {
+        "repeated": 6,
+        "values_for": 12
+      },
+      "cross_source_duplicates": 0,
+      "duplicate_entries": 0,
+      "entries": 18,
+      "excluded_entries": 0,
+      "sizes": {
+        "128": 3,
+        "129": 3,
+        "256": 3,
+        "257": 3,
+        "512": 3,
+        "513": 3
+      },
+      "within_source_duplicates": 0
+    },
+    "targeted_split": {
+      "canonical_inputs": 12,
+      "construction_families": {
+        "values_for": 12
+      },
+      "cross_source_duplicates": 0,
+      "duplicate_entries": 0,
+      "entries": 12,
+      "excluded_entries": 0,
+      "sizes": {
+        "128": 6,
+        "129": 6
+      },
+      "within_source_duplicates": 0
+    }
+  },
+  "qualification_performed": false,
+  "schema": "input_suite_inventory_summary_v1",
+  "source_order": [
+    "common",
+    "targeted_split",
+    "structural",
+    "geometric",
+    "seeded"
+  ],
+  "suite_sha256": "a8c2fe3aa2fe4b45bbe876db9e9dabe3b7f95fd666b3c3afab0776bef67234b7",
+  "timing_performed": false
+}

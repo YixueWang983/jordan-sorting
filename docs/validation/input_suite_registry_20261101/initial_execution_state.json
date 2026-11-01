@@ -1,0 +1,3027 @@
+{
+  "cases": {
+    "common--n128-low_nesting_valid-00": {
+      "canonical_case_id": "common--n128-low_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n128-low_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n128-low_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n128-low_nesting_valid-01": {
+      "canonical_case_id": "common--n128-low_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n128-low_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n128-low_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n128-medium_nesting_valid-00": {
+      "canonical_case_id": "common--n128-medium_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n128-medium_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n128-medium_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n128-medium_nesting_valid-01": {
+      "canonical_case_id": "common--n128-medium_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n128-medium_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n128-medium_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n128-nested_heavy_valid-00": {
+      "canonical_case_id": "common--n128-nested_heavy_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n128-nested_heavy_valid-00-mirror": {
+      "canonical_case_id": "common--n128-nested_heavy_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n128-nested_heavy_valid-01": {
+      "canonical_case_id": "common--n128-nested_heavy_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n128-nested_heavy_valid-01-mirror": {
+      "canonical_case_id": "common--n128-nested_heavy_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n128-strict_flat-00": {
+      "canonical_case_id": "common--n128-strict_flat-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n128-strict_flat-00-mirror": {
+      "canonical_case_id": "common--n128-strict_flat-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n129-low_nesting_valid-00": {
+      "canonical_case_id": "common--n129-low_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n129-low_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n129-low_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n129-low_nesting_valid-01": {
+      "canonical_case_id": "common--n129-low_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n129-low_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n129-low_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n129-medium_nesting_valid-00": {
+      "canonical_case_id": "common--n129-medium_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n129-medium_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n129-medium_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n129-medium_nesting_valid-01": {
+      "canonical_case_id": "common--n129-medium_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n129-medium_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n129-medium_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n129-nested_heavy_valid-00": {
+      "canonical_case_id": "common--n129-nested_heavy_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n129-nested_heavy_valid-00-mirror": {
+      "canonical_case_id": "common--n129-nested_heavy_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n129-nested_heavy_valid-01": {
+      "canonical_case_id": "common--n129-nested_heavy_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n129-nested_heavy_valid-01-mirror": {
+      "canonical_case_id": "common--n129-nested_heavy_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n129-strict_flat-00": {
+      "canonical_case_id": "common--n129-strict_flat-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n129-strict_flat-00-mirror": {
+      "canonical_case_id": "common--n129-strict_flat-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n256-low_nesting_valid-00": {
+      "canonical_case_id": "common--n256-low_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n256-low_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n256-low_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n256-low_nesting_valid-01": {
+      "canonical_case_id": "common--n256-low_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n256-low_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n256-low_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n256-medium_nesting_valid-00": {
+      "canonical_case_id": "common--n256-medium_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n256-medium_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n256-medium_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n256-medium_nesting_valid-01": {
+      "canonical_case_id": "common--n256-medium_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n256-medium_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n256-medium_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n256-nested_heavy_valid-00": {
+      "canonical_case_id": "common--n256-nested_heavy_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n256-nested_heavy_valid-00-mirror": {
+      "canonical_case_id": "common--n256-nested_heavy_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n256-nested_heavy_valid-01": {
+      "canonical_case_id": "common--n256-nested_heavy_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n256-nested_heavy_valid-01-mirror": {
+      "canonical_case_id": "common--n256-nested_heavy_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n256-strict_flat-00": {
+      "canonical_case_id": "common--n256-strict_flat-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n256-strict_flat-00-mirror": {
+      "canonical_case_id": "common--n256-strict_flat-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n257-low_nesting_valid-00": {
+      "canonical_case_id": "common--n257-low_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n257-low_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n257-low_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n257-low_nesting_valid-01": {
+      "canonical_case_id": "common--n257-low_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n257-low_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n257-low_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n257-medium_nesting_valid-00": {
+      "canonical_case_id": "common--n257-medium_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n257-medium_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n257-medium_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n257-medium_nesting_valid-01": {
+      "canonical_case_id": "common--n257-medium_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n257-medium_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n257-medium_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n257-nested_heavy_valid-00": {
+      "canonical_case_id": "common--n257-nested_heavy_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n257-nested_heavy_valid-00-mirror": {
+      "canonical_case_id": "common--n257-nested_heavy_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n257-nested_heavy_valid-01": {
+      "canonical_case_id": "common--n257-nested_heavy_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n257-nested_heavy_valid-01-mirror": {
+      "canonical_case_id": "common--n257-nested_heavy_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n257-strict_flat-00": {
+      "canonical_case_id": "common--n257-strict_flat-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n257-strict_flat-00-mirror": {
+      "canonical_case_id": "common--n257-strict_flat-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n32-low_nesting_valid-00": {
+      "canonical_case_id": "common--n32-low_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n32-low_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n32-low_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n32-low_nesting_valid-01": {
+      "canonical_case_id": "common--n32-low_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n32-low_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n32-low_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n32-medium_nesting_valid-00": {
+      "canonical_case_id": "common--n32-medium_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n32-medium_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n32-medium_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n32-medium_nesting_valid-01": {
+      "canonical_case_id": "common--n32-medium_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n32-medium_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n32-medium_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n32-nested_heavy_valid-00": {
+      "canonical_case_id": "common--n32-nested_heavy_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n32-nested_heavy_valid-00-mirror": {
+      "canonical_case_id": "common--n32-nested_heavy_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n32-nested_heavy_valid-01": {
+      "canonical_case_id": "common--n32-nested_heavy_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n32-nested_heavy_valid-01-mirror": {
+      "canonical_case_id": "common--n32-nested_heavy_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n32-strict_flat-00": {
+      "canonical_case_id": "common--n32-strict_flat-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n32-strict_flat-00-mirror": {
+      "canonical_case_id": "common--n32-strict_flat-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n33-low_nesting_valid-00": {
+      "canonical_case_id": "common--n33-low_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n33-low_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n33-low_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n33-low_nesting_valid-01": {
+      "canonical_case_id": "common--n33-low_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n33-low_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n33-low_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n33-medium_nesting_valid-00": {
+      "canonical_case_id": "common--n33-medium_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n33-medium_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n33-medium_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n33-medium_nesting_valid-01": {
+      "canonical_case_id": "common--n33-medium_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n33-medium_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n33-medium_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n33-nested_heavy_valid-00": {
+      "canonical_case_id": "common--n33-nested_heavy_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n33-nested_heavy_valid-00-mirror": {
+      "canonical_case_id": "common--n33-nested_heavy_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n33-nested_heavy_valid-01": {
+      "canonical_case_id": "common--n33-nested_heavy_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n33-nested_heavy_valid-01-mirror": {
+      "canonical_case_id": "common--n33-nested_heavy_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n33-strict_flat-00": {
+      "canonical_case_id": "common--n33-strict_flat-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n33-strict_flat-00-mirror": {
+      "canonical_case_id": "common--n33-strict_flat-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n512-low_nesting_valid-00": {
+      "canonical_case_id": "common--n512-low_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n512-low_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n512-low_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n512-low_nesting_valid-01": {
+      "canonical_case_id": "common--n512-low_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n512-low_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n512-low_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n512-medium_nesting_valid-00": {
+      "canonical_case_id": "common--n512-medium_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n512-medium_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n512-medium_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n512-medium_nesting_valid-01": {
+      "canonical_case_id": "common--n512-medium_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n512-medium_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n512-medium_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n512-nested_heavy_valid-00": {
+      "canonical_case_id": "common--n512-nested_heavy_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n512-nested_heavy_valid-00-mirror": {
+      "canonical_case_id": "common--n512-nested_heavy_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n512-nested_heavy_valid-01": {
+      "canonical_case_id": "common--n512-nested_heavy_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n512-nested_heavy_valid-01-mirror": {
+      "canonical_case_id": "common--n512-nested_heavy_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n512-strict_flat-00": {
+      "canonical_case_id": "common--n512-strict_flat-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n512-strict_flat-00-mirror": {
+      "canonical_case_id": "common--n512-strict_flat-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n513-low_nesting_valid-00": {
+      "canonical_case_id": "common--n513-low_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n513-low_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n513-low_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n513-low_nesting_valid-01": {
+      "canonical_case_id": "common--n513-low_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n513-low_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n513-low_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n513-medium_nesting_valid-00": {
+      "canonical_case_id": "common--n513-medium_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n513-medium_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n513-medium_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n513-medium_nesting_valid-01": {
+      "canonical_case_id": "common--n513-medium_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n513-medium_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n513-medium_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n513-nested_heavy_valid-00": {
+      "canonical_case_id": "common--n513-nested_heavy_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n513-nested_heavy_valid-00-mirror": {
+      "canonical_case_id": "common--n513-nested_heavy_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n513-nested_heavy_valid-01": {
+      "canonical_case_id": "common--n513-nested_heavy_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n513-nested_heavy_valid-01-mirror": {
+      "canonical_case_id": "common--n513-nested_heavy_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n513-strict_flat-00": {
+      "canonical_case_id": "common--n513-strict_flat-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n513-strict_flat-00-mirror": {
+      "canonical_case_id": "common--n513-strict_flat-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n64-low_nesting_valid-00": {
+      "canonical_case_id": "common--n64-low_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n64-low_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n64-low_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n64-low_nesting_valid-01": {
+      "canonical_case_id": "common--n64-low_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n64-low_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n64-low_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n64-medium_nesting_valid-00": {
+      "canonical_case_id": "common--n64-medium_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n64-medium_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n64-medium_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n64-medium_nesting_valid-01": {
+      "canonical_case_id": "common--n64-medium_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n64-medium_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n64-medium_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n64-nested_heavy_valid-00": {
+      "canonical_case_id": "common--n64-nested_heavy_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n64-nested_heavy_valid-00-mirror": {
+      "canonical_case_id": "common--n64-nested_heavy_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n64-nested_heavy_valid-01": {
+      "canonical_case_id": "common--n64-nested_heavy_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n64-nested_heavy_valid-01-mirror": {
+      "canonical_case_id": "common--n64-nested_heavy_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n64-strict_flat-00": {
+      "canonical_case_id": "common--n64-strict_flat-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n64-strict_flat-00-mirror": {
+      "canonical_case_id": "common--n64-strict_flat-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n65-low_nesting_valid-00": {
+      "canonical_case_id": "common--n65-low_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n65-low_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n65-low_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n65-low_nesting_valid-01": {
+      "canonical_case_id": "common--n65-low_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n65-low_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n65-low_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n65-medium_nesting_valid-00": {
+      "canonical_case_id": "common--n65-medium_nesting_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n65-medium_nesting_valid-00-mirror": {
+      "canonical_case_id": "common--n65-medium_nesting_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n65-medium_nesting_valid-01": {
+      "canonical_case_id": "common--n65-medium_nesting_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n65-medium_nesting_valid-01-mirror": {
+      "canonical_case_id": "common--n65-medium_nesting_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n65-nested_heavy_valid-00": {
+      "canonical_case_id": "common--n65-nested_heavy_valid-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n65-nested_heavy_valid-00-mirror": {
+      "canonical_case_id": "common--n65-nested_heavy_valid-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n65-nested_heavy_valid-01": {
+      "canonical_case_id": "common--n65-nested_heavy_valid-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n65-nested_heavy_valid-01-mirror": {
+      "canonical_case_id": "common--n65-nested_heavy_valid-01-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n65-strict_flat-00": {
+      "canonical_case_id": "common--n65-strict_flat-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "common--n65-strict_flat-00-mirror": {
+      "canonical_case_id": "common--n65-strict_flat-00-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-00": {
+      "canonical_case_id": "geometric--geometric-n128-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-01": {
+      "canonical_case_id": "geometric--geometric-n128-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-02": {
+      "canonical_case_id": "geometric--geometric-n128-02",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-03": {
+      "canonical_case_id": "geometric--geometric-n128-03",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-04": {
+      "canonical_case_id": "geometric--geometric-n128-04",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-05": {
+      "canonical_case_id": "geometric--geometric-n128-05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-06": {
+      "canonical_case_id": "geometric--geometric-n128-06",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-07": {
+      "canonical_case_id": "geometric--geometric-n128-07",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-08": {
+      "canonical_case_id": "geometric--geometric-n128-08",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-09": {
+      "canonical_case_id": "geometric--geometric-n128-09",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-10": {
+      "canonical_case_id": "geometric--geometric-n128-10",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-11": {
+      "canonical_case_id": "geometric--geometric-n128-11",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-12": {
+      "canonical_case_id": "geometric--geometric-n128-12",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-13": {
+      "canonical_case_id": "geometric--geometric-n128-13",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-14": {
+      "canonical_case_id": "geometric--geometric-n128-14",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-15": {
+      "canonical_case_id": "geometric--geometric-n128-15",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-16": {
+      "canonical_case_id": "geometric--geometric-n128-16",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-17": {
+      "canonical_case_id": "geometric--geometric-n128-17",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-18": {
+      "canonical_case_id": "geometric--geometric-n128-18",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n128-19": {
+      "canonical_case_id": "geometric--geometric-n128-19",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-00": {
+      "canonical_case_id": "geometric--geometric-n256-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-01": {
+      "canonical_case_id": "geometric--geometric-n256-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-02": {
+      "canonical_case_id": "geometric--geometric-n256-02",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-03": {
+      "canonical_case_id": "geometric--geometric-n256-03",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-04": {
+      "canonical_case_id": "geometric--geometric-n256-04",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-05": {
+      "canonical_case_id": "geometric--geometric-n256-05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-06": {
+      "canonical_case_id": "geometric--geometric-n256-06",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-07": {
+      "canonical_case_id": "geometric--geometric-n256-07",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-08": {
+      "canonical_case_id": "geometric--geometric-n256-08",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-09": {
+      "canonical_case_id": "geometric--geometric-n256-09",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-10": {
+      "canonical_case_id": "geometric--geometric-n256-10",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-11": {
+      "canonical_case_id": "geometric--geometric-n256-11",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-12": {
+      "canonical_case_id": "geometric--geometric-n256-12",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-13": {
+      "canonical_case_id": "geometric--geometric-n256-13",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-14": {
+      "canonical_case_id": "geometric--geometric-n256-14",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-15": {
+      "canonical_case_id": "geometric--geometric-n256-15",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-16": {
+      "canonical_case_id": "geometric--geometric-n256-16",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-17": {
+      "canonical_case_id": "geometric--geometric-n256-17",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-18": {
+      "canonical_case_id": "geometric--geometric-n256-18",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n256-19": {
+      "canonical_case_id": "geometric--geometric-n256-19",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-00": {
+      "canonical_case_id": "geometric--geometric-n32-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-01": {
+      "canonical_case_id": "geometric--geometric-n32-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-02": {
+      "canonical_case_id": "geometric--geometric-n32-02",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-03": {
+      "canonical_case_id": "geometric--geometric-n32-03",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-04": {
+      "canonical_case_id": "geometric--geometric-n32-04",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-05": {
+      "canonical_case_id": "geometric--geometric-n32-05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-06": {
+      "canonical_case_id": "geometric--geometric-n32-06",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-07": {
+      "canonical_case_id": "geometric--geometric-n32-07",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-08": {
+      "canonical_case_id": "geometric--geometric-n32-08",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-09": {
+      "canonical_case_id": "geometric--geometric-n32-09",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-10": {
+      "canonical_case_id": "geometric--geometric-n32-10",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-11": {
+      "canonical_case_id": "geometric--geometric-n32-11",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-12": {
+      "canonical_case_id": "geometric--geometric-n32-12",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-13": {
+      "canonical_case_id": "geometric--geometric-n32-13",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-14": {
+      "canonical_case_id": "geometric--geometric-n32-14",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-15": {
+      "canonical_case_id": "geometric--geometric-n32-15",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-16": {
+      "canonical_case_id": "geometric--geometric-n32-16",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-17": {
+      "canonical_case_id": "geometric--geometric-n32-17",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-18": {
+      "canonical_case_id": "geometric--geometric-n32-18",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n32-19": {
+      "canonical_case_id": "geometric--geometric-n32-19",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-00": {
+      "canonical_case_id": "geometric--geometric-n512-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-01": {
+      "canonical_case_id": "geometric--geometric-n512-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-02": {
+      "canonical_case_id": "geometric--geometric-n512-02",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-03": {
+      "canonical_case_id": "geometric--geometric-n512-03",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-04": {
+      "canonical_case_id": "geometric--geometric-n512-04",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-05": {
+      "canonical_case_id": "geometric--geometric-n512-05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-06": {
+      "canonical_case_id": "geometric--geometric-n512-06",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-07": {
+      "canonical_case_id": "geometric--geometric-n512-07",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-08": {
+      "canonical_case_id": "geometric--geometric-n512-08",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-09": {
+      "canonical_case_id": "geometric--geometric-n512-09",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-10": {
+      "canonical_case_id": "geometric--geometric-n512-10",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-11": {
+      "canonical_case_id": "geometric--geometric-n512-11",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-12": {
+      "canonical_case_id": "geometric--geometric-n512-12",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-13": {
+      "canonical_case_id": "geometric--geometric-n512-13",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-14": {
+      "canonical_case_id": "geometric--geometric-n512-14",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-15": {
+      "canonical_case_id": "geometric--geometric-n512-15",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-16": {
+      "canonical_case_id": "geometric--geometric-n512-16",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-17": {
+      "canonical_case_id": "geometric--geometric-n512-17",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-18": {
+      "canonical_case_id": "geometric--geometric-n512-18",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n512-19": {
+      "canonical_case_id": "geometric--geometric-n512-19",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-00": {
+      "canonical_case_id": "geometric--geometric-n64-00",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-01": {
+      "canonical_case_id": "geometric--geometric-n64-01",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-02": {
+      "canonical_case_id": "geometric--geometric-n64-02",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-03": {
+      "canonical_case_id": "geometric--geometric-n64-03",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-04": {
+      "canonical_case_id": "geometric--geometric-n64-04",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-05": {
+      "canonical_case_id": "geometric--geometric-n64-05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-06": {
+      "canonical_case_id": "geometric--geometric-n64-06",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-07": {
+      "canonical_case_id": "geometric--geometric-n64-07",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-08": {
+      "canonical_case_id": "geometric--geometric-n64-08",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-09": {
+      "canonical_case_id": "geometric--geometric-n64-09",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-10": {
+      "canonical_case_id": "geometric--geometric-n64-10",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-11": {
+      "canonical_case_id": "geometric--geometric-n64-11",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-12": {
+      "canonical_case_id": "geometric--geometric-n64-12",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-13": {
+      "canonical_case_id": "geometric--geometric-n64-13",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-14": {
+      "canonical_case_id": "geometric--geometric-n64-14",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-15": {
+      "canonical_case_id": "geometric--geometric-n64-15",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-16": {
+      "canonical_case_id": "geometric--geometric-n64-16",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-17": {
+      "canonical_case_id": "geometric--geometric-n64-17",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-18": {
+      "canonical_case_id": "geometric--geometric-n64-18",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "geometric--geometric-n64-19": {
+      "canonical_case_id": "geometric--geometric-n64-19",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--checked-21-32": {
+      "canonical_case_id": "seeded--checked-21-32",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--checked-21-33": {
+      "canonical_case_id": "seeded--checked-21-33",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--checked-21-64": {
+      "canonical_case_id": "seeded--checked-21-64",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--checked-21-70": {
+      "canonical_case_id": "seeded--checked-21-70",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--checked-22-32": {
+      "canonical_case_id": "seeded--checked-22-32",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--checked-22-33": {
+      "canonical_case_id": "seeded--checked-22-33",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--checked-22-64": {
+      "canonical_case_id": "seeded--checked-22-64",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--checked-22-70": {
+      "canonical_case_id": "seeded--checked-22-70",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-11-128-0.05": {
+      "canonical_case_id": "seeded--stress-11-128-0.05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-11-128-0.25": {
+      "canonical_case_id": "seeded--stress-11-128-0.25",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-11-512-0.05": {
+      "canonical_case_id": "seeded--stress-11-512-0.05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-11-512-0.25": {
+      "canonical_case_id": "seeded--stress-11-512-0.25",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-11-513-0.05": {
+      "canonical_case_id": "seeded--stress-11-513-0.05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-11-513-0.25": {
+      "canonical_case_id": "seeded--stress-11-513-0.25",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-12-128-0.05": {
+      "canonical_case_id": "seeded--stress-12-128-0.05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-12-128-0.25": {
+      "canonical_case_id": "seeded--stress-12-128-0.25",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-12-512-0.05": {
+      "canonical_case_id": "seeded--stress-12-512-0.05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-12-512-0.25": {
+      "canonical_case_id": "seeded--stress-12-512-0.25",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-12-513-0.05": {
+      "canonical_case_id": "seeded--stress-12-513-0.05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-12-513-0.25": {
+      "canonical_case_id": "seeded--stress-12-513-0.25",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-13-128-0.05": {
+      "canonical_case_id": "seeded--stress-13-128-0.05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-13-128-0.25": {
+      "canonical_case_id": "seeded--stress-13-128-0.25",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-13-512-0.05": {
+      "canonical_case_id": "seeded--stress-13-512-0.05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-13-512-0.25": {
+      "canonical_case_id": "seeded--stress-13-512-0.25",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-13-513-0.05": {
+      "canonical_case_id": "seeded--stress-13-513-0.05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-13-513-0.25": {
+      "canonical_case_id": "seeded--stress-13-513-0.25",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-14-128-0.05": {
+      "canonical_case_id": "seeded--stress-14-128-0.05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-14-128-0.25": {
+      "canonical_case_id": "seeded--stress-14-128-0.25",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-14-512-0.05": {
+      "canonical_case_id": "seeded--stress-14-512-0.05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-14-512-0.25": {
+      "canonical_case_id": "seeded--stress-14-512-0.25",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-14-513-0.05": {
+      "canonical_case_id": "seeded--stress-14-513-0.05",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "seeded--stress-14-513-0.25": {
+      "canonical_case_id": "seeded--stress-14-513-0.25",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--balanced-128": {
+      "canonical_case_id": "structural--balanced-128",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--balanced-129": {
+      "canonical_case_id": "structural--balanced-129",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--balanced-256": {
+      "canonical_case_id": "structural--balanced-256",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--balanced-257": {
+      "canonical_case_id": "structural--balanced-257",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--balanced-512": {
+      "canonical_case_id": "structural--balanced-512",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--balanced-513": {
+      "canonical_case_id": "structural--balanced-513",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--repeated-128": {
+      "canonical_case_id": "structural--repeated-128",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--repeated-129": {
+      "canonical_case_id": "structural--repeated-129",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--repeated-256": {
+      "canonical_case_id": "structural--repeated-256",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--repeated-257": {
+      "canonical_case_id": "structural--repeated-257",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--repeated-512": {
+      "canonical_case_id": "structural--repeated-512",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--repeated-513": {
+      "canonical_case_id": "structural--repeated-513",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--skew-128": {
+      "canonical_case_id": "structural--skew-128",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--skew-129": {
+      "canonical_case_id": "structural--skew-129",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--skew-256": {
+      "canonical_case_id": "structural--skew-256",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--skew-257": {
+      "canonical_case_id": "structural--skew-257",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--skew-512": {
+      "canonical_case_id": "structural--skew-512",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "structural--skew-513": {
+      "canonical_case_id": "structural--skew-513",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "targeted_split--split-n128-k19": {
+      "canonical_case_id": "targeted_split--split-n128-k19",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "targeted_split--split-n128-k19-mirror": {
+      "canonical_case_id": "targeted_split--split-n128-k19-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "targeted_split--split-n128-k3": {
+      "canonical_case_id": "targeted_split--split-n128-k3",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "targeted_split--split-n128-k3-mirror": {
+      "canonical_case_id": "targeted_split--split-n128-k3-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "targeted_split--split-n128-k7": {
+      "canonical_case_id": "targeted_split--split-n128-k7",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "targeted_split--split-n128-k7-mirror": {
+      "canonical_case_id": "targeted_split--split-n128-k7-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "targeted_split--split-n129-k19": {
+      "canonical_case_id": "targeted_split--split-n129-k19",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "targeted_split--split-n129-k19-mirror": {
+      "canonical_case_id": "targeted_split--split-n129-k19-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "targeted_split--split-n129-k3": {
+      "canonical_case_id": "targeted_split--split-n129-k3",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "targeted_split--split-n129-k3-mirror": {
+      "canonical_case_id": "targeted_split--split-n129-k3-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "targeted_split--split-n129-k7": {
+      "canonical_case_id": "targeted_split--split-n129-k7",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    },
+    "targeted_split--split-n129-k7-mirror": {
+      "canonical_case_id": "targeted_split--split-n129-k7-mirror",
+      "stages": {
+        "calibration": "NOT_RUN",
+        "equivalence": "NOT_RUN",
+        "formal": "NOT_RUN",
+        "independent_validation": "NOT_RUN",
+        "qualification": "NOT_RUN"
+      }
+    }
+  },
+  "schema": "input_suite_initial_execution_state_v1",
+  "scope": "not_run_template_only",
+  "suite_sha256": "a8c2fe3aa2fe4b45bbe876db9e9dabe3b7f95fd666b3c3afab0776bef67234b7"
+}
