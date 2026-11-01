@@ -123,7 +123,7 @@ def check_trace(values, trace, metrics, backend):
         calculated['output_insertions']+=1;calculated['z1_output_anchor_adjustments']+=adjusted
     # Tree scan counters count backend work absent from trace; preserve their
     # integer checks but do not pretend to independently reconstruct them.
-    keys=set(names)-({'sibling_scan_checks','split_items_scanned'} if backend=='heterogeneous_finger' else set())
+    keys=set(names)-({'sibling_scan_checks','split_items_scanned'} if backend in ('heterogeneous_finger','heterogeneous_finger_uninstrumented') else set())
     require(all(metrics[k]==calculated[k] for k in keys),'reconstructed metrics')
     for split in splits:
         follow={}

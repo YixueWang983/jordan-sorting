@@ -277,12 +277,25 @@ class HeterogeneousFingerBackend:
     supported_operations = frozenset(("register_pair", "make_list", "insert_boundary",
                                       "split_value", "adopt_split", "split_pairs_at_value"))
 
-    def __init__(self, point_value, *, execution_policy=CHECKED_POLICY, detailed_work=True):
+    def __init__(self, point_value, *, execution_policy=CHECKED_POLICY, detailed_work=True,
+                 instrumented=True):
         if not callable(point_value):
             raise TypeError("point_value must be callable")
+        if type(instrumented) is not bool:
+            raise TypeError("instrumented must be a bool")
+        if type(detailed_work) is not bool:
+            raise TypeError("detailed_work must be a bool")
+        if not instrumented and detailed_work:
+            raise ValueError("uninstrumented tree cannot collect detailed work")
         self.execution_policy = require_fixed_paper_execution_policy(execution_policy)
         self._point_value = point_value
-        self.work = WorkLedger(detailed_work)
+        self._instrumented = instrumented
+        if instrumented:
+            self.work = WorkLedger(detailed_work)
+        else:
+            self.work = None
+            from uninstrumented_finger import bind_uninstrumented
+            bind_uninstrumented(self)
         # The four public SplitWork observations are separate from detailed
         # recording. Only counted policies allocate these two split-local ints.
         self._split_observations = None
@@ -296,9 +309,15 @@ class HeterogeneousFingerBackend:
 
     @property
     def detailed_work(self):
-        return self.work.enabled
+        return self.work.enabled if self._instrumented else False
+
+    @property
+    def instrumented(self):
+        return self._instrumented
 
     def validate_configuration(self, options):
+        if self.instrumented is not options.get("instrumented", True):
+            raise RuntimeError("backend instrumentation configuration changed")
         if self.detailed_work is not options.get("detailed_work", True):
             raise RuntimeError("backend detailed-work configuration changed")
 

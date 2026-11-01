@@ -46,6 +46,11 @@ def backend_spec(name):
         return resolve_sibling_backend(name)
     if name=='heterogeneous_finger':
         return SiblingBackendSpec(HeterogeneousFingerBackend,(('detailed_work',False),))
+    if name=='heterogeneous_finger_uninstrumented':
+        from uninstrumented_finger import prepare_uninstrumented
+        prepare_uninstrumented()  # class/method generation stays outside batch timing
+        return SiblingBackendSpec(HeterogeneousFingerBackend,
+                                  (('detailed_work',False),('instrumented',False)))
     raise ValueError('unknown backend')
 
 

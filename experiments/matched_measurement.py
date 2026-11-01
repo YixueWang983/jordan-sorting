@@ -19,22 +19,27 @@ SCHEMA='matched_measurement_tools_v1'
 PURPOSE='matched calibration or formal measurement'
 
 
-def dataset_config(dataset):
+def dataset_config(dataset,configuration="instrumented"):
     if dataset=='common':selection=frozen_selection();rules=measurement_protocol()
     elif dataset=='targeted_split':selection=split_selection();rules=split_measurement_protocol()['rules']
     elif dataset=='structural_split':
         from structural_split_protocol import structural_selection, structural_measurement_protocol
         selection=structural_selection();rules=structural_measurement_protocol()['rules']
     else:raise ValueError('unknown dataset')
-    return dict(schema=SCHEMA,dataset=dataset,selection_sha256=selection['selection_sha256'],
+    backends=BACKENDS;schema=SCHEMA
+    if configuration=="uninstrumented":
+        from uninstrumented_protocol import BACKENDS as backends, MEASUREMENT_SCHEMA as schema
+        if dataset not in ("common","targeted_split"):raise ValueError("unregistered uninstrumented dataset")
+    elif configuration!="instrumented":raise ValueError("unknown tree configuration")
+    return dict(schema=schema,dataset=dataset,selection_sha256=selection['selection_sha256'],
         cases=[dict(case=c['spec']['case'],values=c['values'],input_sha256=c['input_sha256']) for c in selection['cases']],
-        rules=rules,backend_identities={n:identity(n) for n in BACKENDS},
+        rules=rules,backend_identities={n:identity(n) for n in backends},
         calibration_backend_first='alternate case index + candidate index + repeat',
         interpretation='datasets analyzed separately; mirrors and related constructions are dependent; batch is statistical unit')
 
 
-def capture_environment():
-    execution=environment();execution['purpose']=PURPOSE
+def capture_environment(*, configuration="instrumented"):
+    execution=environment(include_power_settings=True) if configuration=="uninstrumented" else environment();execution['purpose']=PURPOSE
     info=time.get_clock_info('perf_counter');ticks=[time.perf_counter_ns() for _ in range(1001)]
     if not info.monotonic or not gc.isenabled():raise RuntimeError('requires monotonic clock and enabled GC')
     return dict(execution=execution,clock=dict(implementation=info.implementation,resolution_seconds=info.resolution,
@@ -51,19 +56,33 @@ def quantile(values,p):
     return ordered[i]+(ordered[min(i+1,len(ordered)-1)]-ordered[i])*(x-i)
 
 
-def case_statistics(rows,batch):
+def case_statistics(rows,batch,backends=BACKENDS):
     groups={}
-    for name in BACKENDS:
+    for name in backends:
         samples=[r['elapsed_ns']/batch for r in rows if r['kind']=='sample' and r['backend']==name and r['status']=='PASS']
         if samples:
             q1,q3=quantile(samples,.25),quantile(samples,.75)
             groups[name]=dict(batches=len(samples),median_ns_per_call=statistics.median(samples),q25_ns_per_call=q1,q75_ns_per_call=q3,iqr_ns_per_call=q3-q1)
-    return dict(groups=groups,tree_over_list_median=groups[BACKENDS[1]]['median_ns_per_call']/groups[BACKENDS[0]]['median_ns_per_call'] if len(groups)==2 else None)
+    return dict(groups=groups,tree_over_list_median=groups[backends[1]]['median_ns_per_call']/groups[backends[0]]['median_ns_per_call'] if len(groups)==2 else None)
 
 
 def execute_case(request,output):
     output.mkdir(parents=True,exist_ok=False)
     case=request['case'];rules=request['rules'];stage=request['stage'];case_index=request['index']
+    configuration=request.get('configuration','instrumented');backends=BACKENDS
+    if configuration=='uninstrumented':
+        from uninstrumented_protocol import BACKENDS as backends, power_observation, require_power
+        power={}
+        def checkpoint(when):
+            try:
+                power[when]=power_observation();atomic_json(output/'power.json',power)
+                require_power(power[when]);return True
+            except (ValueError,RuntimeError,OSError) as exc:
+                atomic_json(output/'failure.json',dict(status='WORKER_ERROR',accepted=False,
+                    performance_eligible=False,error=error_details(exc),committed_records=len(read_records(output))))
+                return False
+        if not checkpoint('before'):return 2
+    elif configuration!='instrumented':raise ValueError('unknown worker configuration')
     expected=sorted(case['values']);rows=[];index=0;chosen=None
     thresholds=gc.get_threshold()
     if list(thresholds)!=request['gc_thresholds'] or not gc.isenabled():raise RuntimeError('worker GC differs from frozen environment')
@@ -87,9 +106,9 @@ def execute_case(request,output):
         cfg=rules['calibration']
         for bidx,batch in enumerate(cfg['batch_candidates']):
             for rep in range(cfg['repetitions']):
-                for name in (BACKENDS if (case_index+bidx+rep)%2==0 else BACKENDS[::-1]):
+                for name in (backends if (case_index+bidx+rep)%2==0 else backends[::-1]):
                     if not perform('calibration',name,batch,rep):return 2
-            medians={name:statistics.median(r['elapsed_ns'] for r in rows if r['batch_size']==batch and r['backend']==name) for name in BACKENDS}
+            medians={name:statistics.median(r['elapsed_ns'] for r in rows if r['batch_size']==batch and r['backend']==name) for name in backends}
             if min(medians.values())>=cfg['target_batch_ns']:
                 chosen=batch;break
         if chosen is None:
@@ -99,22 +118,24 @@ def execute_case(request,output):
     elif stage=='formal':
         batch=request['batch_size']
         for rep in range(rules['warmups_per_backend']):
-            for name in (BACKENDS if (case_index+rep)%2==0 else BACKENDS[::-1]):
+            for name in (backends if (case_index+rep)%2==0 else backends[::-1]):
                 if not perform('warmup',name,1,rep):return 2
         for rep in range(rules['repetitions']):
-            for name in (BACKENDS if (case_index+rep)%2==0 else BACKENDS[::-1]):
+            for name in (backends if (case_index+rep)%2==0 else backends[::-1]):
                 if not perform('sample',name,batch,rep):return 2
-        result=case_statistics(rows,batch)
+        result=case_statistics(rows,batch,backends)
     else:raise ValueError('unknown stage')
+    if configuration=='uninstrumented' and not checkpoint('after'):return 2
     atomic_json(output/'summary.json',dict(stage=stage,completed=True,records=len(rows),result=result))
     atomic_json(output/'progress.json',dict(status='COMPLETE',committed_records=len(rows)))
     return 0
 
 
-def qualify_binding(path,dataset):
+def qualify_binding(path,dataset,configuration="instrumented"):
     from validate_common_qualification_v2 import validate
     report=validate(path,historical=True,dataset=dataset)
     if not report['all_selected_qualified']:raise ValueError('dataset is not qualified')
+    if report.get('configuration','instrumented')!=configuration:raise ValueError('qualification tree configuration mismatch')
     env=read(Path(path)/'environment.json');current=source_identity()
     if {p:h for p,h in env['source_sha256'].items() if p.startswith('src/')}!={p:h for p,h in current.items() if p.startswith('src/')}:
         raise ValueError('production changed since qualification; requalify affected paths')
@@ -123,24 +144,31 @@ def qualify_binding(path,dataset):
         current_production_sha256={p:h for p,h in current.items() if p.startswith('src/')})
 
 
-def run(output,stage,dataset,qualification,*,calibration=None,review=None):
+def run(output,stage,dataset,qualification,*,calibration=None,review=None,configuration="instrumented"):
     # No output or timing until qualification and, for formal, calibration and
     # manual-review provenance are checked. This is not a proof validator.
     from validate_matched_measurement import validate,check_review,check_job
-    cfg=dataset_config(dataset);binding=qualify_binding(qualification,dataset);batches={};calibration_binding=None
-    env=capture_environment()
+    cfg=dataset_config(dataset,configuration) if configuration!='instrumented' else dataset_config(dataset)
+    binding=qualify_binding(qualification,dataset,configuration) if configuration!='instrumented' else qualify_binding(qualification,dataset)
+    batches={};calibration_binding=None
+    env=capture_environment(configuration=configuration) if configuration!='instrumented' else capture_environment()
+    if configuration=='uninstrumented':
+        from uninstrumented_protocol import require_machine
+        require_machine(env['execution'])
     if env['execution']['dirty']:raise RuntimeError('freeze tools before actual calibration/measurement')
     if stage=='formal':
         if calibration is None or review is None:raise ValueError('formal needs calibration and explicit manual review receipt')
         report=validate(calibration,qualification=qualification)
         if not report['complete'] or report['stage']!='calibration':raise ValueError('incomplete calibration')
+        if report.get('configuration','instrumented')!=configuration:raise ValueError('calibration tree configuration mismatch')
         if report['dataset']!=dataset or set(report['batch_sizes'])!={c['case'] for c in cfg['cases']}:
             raise ValueError('calibration belongs to a different dataset')
         calenv=read(Path(calibration)/'environment.json')
         if calenv['execution']['source_sha256']!=env['execution']['source_sha256']:raise ValueError('source changed after calibration')
         for key in ('python','executable','platform','machine','gc_thresholds'):
             if calenv['execution'][key]!=env['execution'][key]:raise ValueError('calibration environment changed')
-        if {k:v for k,v in calenv['execution']['hardware'].items() if k!='power'}!={k:v for k,v in env['execution']['hardware'].items() if k!='power'}:
+        from uninstrumented_protocol import hardware_binding
+        if hardware_binding(calenv['execution']['hardware'])!=hardware_binding(env['execution']['hardware']):
             raise ValueError('calibration hardware changed')
         check_review(review,env['execution']['source_sha256'])
         batches=report['batch_sizes'];calibration_binding=digest(read(Path(calibration)/'manifest.json'))
@@ -155,6 +183,7 @@ def run(output,stage,dataset,qualification,*,calibration=None,review=None):
     deadline=time.monotonic()+budget;statuses=[];stop=None
     for i,case in enumerate(cases):
         request=dict(stage=stage,case=case,index=i,rules=cfg['rules'],batch_size=batches.get(case['case']),gc_thresholds=env['execution']['gc_thresholds'])
+        if configuration=='uninstrumented':request['configuration']=configuration
         path=output/'requests'/f"{case['case']}.json";atomic_json(path,request);job=output/'jobs'/case['case']
         remaining=deadline-time.monotonic();seconds=max(0,min(remaining,budget if stage=='calibration' else cfg['rules']['input_seconds']))
         row=dict(case=case['case'],status='NOT_RUN',reason=stop,budget_seconds=seconds)
@@ -179,8 +208,9 @@ if __name__=='__main__':
     parser.add_argument('--worker',type=Path);parser.add_argument('--stage',choices=('calibration','formal'))
     parser.add_argument('--dataset',choices=('common','targeted_split','structural_split'));parser.add_argument('--qualification',type=Path)
     parser.add_argument('--calibration',type=Path);parser.add_argument('--review',type=Path)
+    parser.add_argument('--configuration',choices=('instrumented','uninstrumented'),default='instrumented')
     args=parser.parse_args()
     if args.worker:raise SystemExit(execute_case(read(args.worker),args.output))
     if not args.stage or not args.dataset or not args.qualification:parser.error('stage, dataset and qualification required')
     raise SystemExit(0 if run(args.output,args.stage,args.dataset,args.qualification,calibration=args.calibration,
-                              review=read(args.review) if args.review else None) else 2)
+                              review=read(args.review) if args.review else None,configuration=args.configuration) else 2)

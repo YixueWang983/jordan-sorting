@@ -90,8 +90,14 @@ def qualify_case(request, output):
     return 0
 
 
-def run(output, *, dataset='common'):
-    if dataset == 'common':
+def run(output, *, dataset='common', configuration='instrumented'):
+    backends = BACKENDS
+    if configuration == 'uninstrumented':
+        from uninstrumented_protocol import BACKENDS as backends, qualification_config
+        cfg, selection, measurement = qualification_config(dataset)
+    elif configuration != 'instrumented':
+        raise ValueError('unknown tree configuration')
+    elif dataset == 'common':
         cfg, selection, measurement = plan(), frozen_selection(), measurement_protocol()
     elif dataset == 'targeted_split':
         from split_qualification_protocol import split_plan, split_selection, split_measurement_protocol
@@ -101,7 +107,7 @@ def run(output, *, dataset='common'):
         cfg, selection, measurement = structural_plan(), structural_selection(), structural_measurement_protocol()
     else:
         raise ValueError('unknown qualification dataset')
-    env = environment()
+    env = environment(include_power_settings=True) if configuration == 'uninstrumented' else environment()
     if env['dirty']:
         raise RuntimeError('freeze source and rules before full qualification')
     output.mkdir(parents=True, exist_ok=False)
@@ -110,7 +116,7 @@ def run(output, *, dataset='common'):
     (output/'requests').mkdir(); (output/'jobs').mkdir()
     rows = []; stop = None; deadline = time.monotonic()+cfg['campaign_seconds']
     for index, case in enumerate(selection['cases']):
-        cid = case['spec']['case']; order = list(BACKENDS if index%2 == 0 else BACKENDS[::-1])
+        cid = case['spec']['case']; order = list(backends if index%2 == 0 else backends[::-1])
         request = dict(schema=cfg['schema'], case=cid, values=case['values'], backends=order)
         path = output/'requests'/f'{cid}.json'; atomic_json(path, request)
         remaining = deadline-time.monotonic(); budget = max(0, min(cfg['case_seconds'], remaining))
@@ -163,12 +169,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True); parser.add_argument('--worker', type=Path, help=argparse.SUPPRESS)
     parser.add_argument('--dataset',choices=('common','targeted_split','structural_split'),default='common')
+    parser.add_argument('--configuration',choices=('instrumented','uninstrumented'),default='instrumented')
     args = parser.parse_args()
     if args.worker:
         request = read(args.worker)
         from split_qualification_protocol import SPLIT_SCHEMA
         from structural_split_protocol import STRUCTURAL_SCHEMA
-        if request.get('schema') not in (SCHEMA,SPLIT_SCHEMA,STRUCTURAL_SCHEMA) or sorted(request['backends']) != sorted(BACKENDS):
+        from uninstrumented_protocol import QUALIFICATION_SCHEMAS, BACKENDS as U_BACKENDS
+        expected = U_BACKENDS if request.get('schema') in QUALIFICATION_SCHEMAS.values() else BACKENDS
+        if request.get('schema') not in (SCHEMA,SPLIT_SCHEMA,STRUCTURAL_SCHEMA,*QUALIFICATION_SCHEMAS.values()) or sorted(request['backends']) != sorted(expected):
             raise ValueError('wrong worker schema/backend set')
         raise SystemExit(qualify_case(request, args.output))
-    raise SystemExit(0 if run(args.output,dataset=args.dataset) else 2)
+    raise SystemExit(0 if run(args.output,dataset=args.dataset,configuration=args.configuration) else 2)

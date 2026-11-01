@@ -54,7 +54,7 @@ def validate_revision(env):
     require(offset==len(result.stdout),'source blob framing')
 
 
-def validate_environment(env, *, historical=False, purpose='qualification resource observations only'):
+def validate_environment(env, *, historical=False, purpose='qualification resource observations only', power_fields=False):
     fields = {'head','dirty','source_sha256','captured_at','python','executable','platform','machine',
               'hardware','python_optimize','gc_enabled','gc_thresholds','purpose'}
     require(type(env) is dict and set(env) == fields, 'environment fields')
@@ -72,7 +72,13 @@ def validate_environment(env, *, historical=False, purpose='qualification resour
     require(type(env['hardware']) is dict and env['hardware']
             and all(type(k) is str and type(v) is str and v.strip() for k,v in env['hardware'].items()), 'hardware')
     if env['platform'].startswith('macOS'):
-        require(set(env['hardware']) == {'machdep.cpu.brand_string','hw.physicalcpu','hw.logicalcpu','hw.memsize','power'}, 'hardware fields')
+        expected = {'machdep.cpu.brand_string','hw.physicalcpu','hw.logicalcpu','hw.memsize','power'}
+        if power_fields:
+            from uninstrumented_protocol import parsed_power
+            expected |= {'power_settings','power_source','lowpowermode'}
+            require(parsed_power(env['hardware']['power'],env['hardware']['power_settings']) ==
+                    (env['hardware']['power_source'],env['hardware']['lowpowermode']), 'parsed power fields')
+        require(set(env['hardware']) == expected, 'hardware fields')
         require(all(env['hardware'][k].isdigit() and int(env['hardware'][k]) > 0
                     for k in ('hw.physicalcpu','hw.logicalcpu','hw.memsize')), 'hardware numeric values')
     require(env['purpose'] == purpose, 'evidence purpose')
@@ -134,7 +140,13 @@ def validate_job(job, request, input_sha256, *, passing):
 
 def validate(output, *, historical=False, dataset='common'):
     output = Path(output)
-    if dataset == 'common':
+    from uninstrumented_protocol import QUALIFICATION_SCHEMAS
+    uninstrumented = read(output/'plan.json')['schema'] in QUALIFICATION_SCHEMAS.values()
+    backends = BACKENDS
+    if uninstrumented:
+        from uninstrumented_protocol import BACKENDS as backends, qualification_config
+        cfg, selection, measurement = qualification_config(dataset)
+    elif dataset == 'common':
         cfg, selection, measurement = plan(), frozen_selection(), measurement_protocol()
     elif dataset == 'targeted_split':
         from split_qualification_protocol import split_plan, split_selection, split_measurement_protocol
@@ -146,7 +158,7 @@ def validate(output, *, historical=False, dataset='common'):
         raise ValueError('unknown qualification dataset')
     require(canonical(read(output/'plan.json')) == canonical(cfg), 'qualification rules')
     require(canonical(read(output/'measurement_protocol.json')) == canonical(measurement), 'measurement rules')
-    env = read(output/'environment.json'); validate_environment(env, historical=historical)
+    env = read(output/'environment.json'); validate_environment(env, historical=historical, power_fields=uninstrumented)
     require(canonical(read(output/'selected.json')) == canonical(selection), 'frozen input set')
     require(selection['selection_sha256'] == cfg['selection_sha256'] == digest(selection['cases']) and not selection['deficits'], 'selection hash/deficits')
     counts = Counter(); hashes = set()
@@ -166,7 +178,7 @@ def validate(output, *, historical=False, dataset='common'):
     coverage_rows = []
     stopped = False; runs = Counter(); prefixes = Counter(); splits = Counter(); nonempty = Counter(); constructors = Counter(); replays = Counter()
     for i, (case, row) in enumerate(zip(selection['cases'],statuses)):
-        cid = case['spec']['case']; order = list(BACKENDS if i%2 == 0 else BACKENDS[::-1])
+        cid = case['spec']['case']; order = list(backends if i%2 == 0 else backends[::-1])
         request = dict(schema=cfg['schema'], case=cid, values=case['values'], backends=order)
         require(canonical(read(output/'requests'/f'{cid}.json')) == canonical(request), 'request binding')
         files |= {f'requests/{cid}.json',f'records/{i:06d}.json.gz'}
@@ -233,6 +245,7 @@ def validate(output, *, historical=False, dataset='common'):
     return dict(archive_valid=True, all_selected_qualified=passed, inputs=len(statuses), status_counts=summary['status_counts'],
         completed_modes=dict(runs), per_backend_synchronous_prefixes=dict(prefixes), per_backend_final_fresh_replays=dict(replays),
         per_backend_initializations=dict(constructors), per_backend_splits=dict(splits), per_backend_nonempty_splits=dict(nonempty),
+        **({'configuration':'uninstrumented'} if uninstrumented else {}),
         source_head=env['head'], dataset=dataset, split_coverage=coverage_rows, read_only_historical_audit=historical,
         checker_source_sha256=source_identity(),
         checker_head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),

@@ -26,7 +26,7 @@ def read(path):
     return json.loads(Path(path).read_text())
 
 
-def environment():
+def environment(*, include_power_settings=False):
     def command(args):
         result = subprocess.run(args, cwd=ROOT, capture_output=True, text=True, check=True)
         return result.stdout.strip()
@@ -35,6 +35,9 @@ def environment():
         for key in ('machdep.cpu.brand_string', 'hw.physicalcpu', 'hw.logicalcpu', 'hw.memsize'):
             hardware[key] = command(['sysctl', '-n', key])
         hardware['power'] = command(['pmset', '-g', 'batt'])
+        if include_power_settings:
+            from uninstrumented_protocol import power_observation
+            hardware.update(power_observation(hardware['power']))
     else:
         hardware['processor'] = platform.processor() or 'unavailable'
     return dict(head=command(['git', 'rev-parse', 'HEAD']),
