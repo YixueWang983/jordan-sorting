@@ -1,0 +1,10 @@
+{
+  "existing_receipt": "docs/validation/final_review_formal_20261015/manual_review_receipt.json",
+  "receipt_sha256": "9525235ac3a525a6c62a24a1ac4208d145c21e5642cb91b28bc9d9b44418e81b",
+  "production_sources_identical": true,
+  "original_review_head": "4a83fa6b7a4213e9e5758fe3454e002ebc266459",
+  "original_review_sha256": "b7b73beeb454580524261776e9be2de945da0a907b2b6167a9e7bb8bf9e0e6ca",
+  "current_review_sha256": "a125e3108fdbf0f14c13208e832539bf022b036847a5d8a1a60653e8e91406fb",
+  "new_human_review_claimed": false,
+  "note": "Original receipt reused for unchanged production sources; later corrected review document retains its own identity."
+}

@@ -111,8 +111,12 @@ def validate(output,*,qualification,calibration=None):
     output=Path(output);cfg=read(output/'config.json');env=read(output/'environment.json');check_environment(env)
     require(type(cfg) is dict and set(cfg)=={'schema','dataset','selection_sha256','cases','rules','backend_identities',
         'calibration_backend_first','interpretation','stage','scope','qualification','calibration_manifest_sha256','review','batch_sizes','performance_eligible'},'configuration fields')
-    dataset=cfg['dataset'];require(dataset in ('common','targeted_split'),'dataset')
-    selection=frozen_selection() if dataset=='common' else split_selection()
+    dataset=cfg['dataset'];require(dataset in ('common','targeted_split','structural_split'),'dataset')
+    if dataset=='structural_split':
+        from structural_split_protocol import structural_selection
+        selection=structural_selection()
+    else:
+        selection=frozen_selection() if dataset=='common' else split_selection()
     cases=[dict(case=c['spec']['case'],values=c['values'],input_sha256=c['input_sha256']) for c in selection['cases']]
     require(cfg['schema']=='matched_measurement_tools_v1' and cfg['scope']=='actual' and cfg['performance_eligible'] is False,'measurement identity')
     require(canonical(cfg['rules'])==canonical(measurement_protocol()) and canonical(cfg['cases'])==canonical(cases)

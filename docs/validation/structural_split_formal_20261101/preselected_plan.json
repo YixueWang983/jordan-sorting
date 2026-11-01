@@ -1,0 +1,36 @@
+{
+  "schema": "structural_split_qualification_v1",
+  "qualification_schema": "synchronous_checked_prefixes_v2",
+  "selection_sha256": "e91e7a3ecfdc1506b621d7e7b286b3830f0bf48a993b279eb3f15902a914cf3b",
+  "sizes": [
+    128,
+    129,
+    256,
+    257,
+    512,
+    513
+  ],
+  "targets": {
+    "shapes": [
+      "balanced",
+      "skew",
+      "repeated"
+    ],
+    "inputs": 18
+  },
+  "selection": "all 18 existing structural constructions; n=128/129/256/257/512/513; balanced/skew/repeated; odd n mirrored; no timing-based choices",
+  "case_seconds": 180,
+  "campaign_seconds": 1800,
+  "coverage": "per backend: two independent CHECKED instances compared and audited at every completed prefix; third fresh CHECKED final replay; then independent public minimal call",
+  "change_from_v1": "not fresh construction at every prefix; fewer repeated early updates; v1 archive retained unchanged",
+  "records": "synchronous prefix comparisons n-2; final fresh checked replays 1; actual checked initializations 3; separate fresh minimal initialization 1",
+  "configuration": "ordinary_list and heterogeneous_finger with detailed_work=False; same backend/config in all instances",
+  "order": "ascending n then balanced/skew/repeated; backend first alternates by case index",
+  "failure": "first ERROR/TIMEOUT stops later inputs; retain committed mode records; remaining NOT_RUN; no retries or replacements",
+  "resource_scope": "180 seconds shared by both backends and all checks/startup/persistence per case; 1800 seconds campaign; resource observations are not sorting times",
+  "performance_eligible": false,
+  "efficient_backend_accepted": false,
+  "coverage_gate": "primary checked traces on both backends: one finite-owner two-sided split of size m=(even_n-6)/2 with smaller side floor(m/2) or 1 for balanced/skew; repeated has floor((even_n-4)/8) finite-owner two-sided splits and at least that count minus one re-splits of earlier outputs",
+  "coverage_report": "actual split source/output sizes, owners, smaller sides and direct later output updates up to the next split; no inferred full lineage",
+  "interpretation": "separate descriptive timing extension; existing structural checks are not timing samples; related constructions and parity/mirror pairs are dependent"
+}

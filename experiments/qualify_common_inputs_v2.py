@@ -96,6 +96,9 @@ def run(output, *, dataset='common'):
     elif dataset == 'targeted_split':
         from split_qualification_protocol import split_plan, split_selection, split_measurement_protocol
         cfg, selection, measurement = split_plan(), split_selection(), split_measurement_protocol()
+    elif dataset == 'structural_split':
+        from structural_split_protocol import structural_plan, structural_selection, structural_measurement_protocol
+        cfg, selection, measurement = structural_plan(), structural_selection(), structural_measurement_protocol()
     else:
         raise ValueError('unknown qualification dataset')
     env = environment()
@@ -124,12 +127,15 @@ def run(output, *, dataset='common'):
                 try:
                     from validate_common_qualification_v2 import validate_job
                     evidence=validate_job(job, request, case['input_sha256'], passing=True)
-                    if dataset == 'targeted_split':
+                    if dataset in ('targeted_split', 'structural_split'):
                         from qualification_trace_semantics import check_trace
                         for record in evidence:
                             if record['mode']=='synchronous_v2':
                                 coverage=check_trace(case['values'],record['final']['trace'],record['final']['metrics'],record['backend'])
-                                if not any(s['smaller_side']==case['spec']['k'] for s in coverage['splits']):
+                                if dataset == 'structural_split':
+                                    from structural_split_protocol import require_structural_coverage
+                                    require_structural_coverage(case['spec'], coverage)
+                                elif not any(s['smaller_side']==case['spec']['k'] for s in coverage['splits']):
                                     raise ValueError('missing actual target two-sided split')
                 except (ValueError, KeyError, TypeError, OSError) as exc:
                     code = 2
@@ -156,12 +162,13 @@ def run(output, *, dataset='common'):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True); parser.add_argument('--worker', type=Path, help=argparse.SUPPRESS)
-    parser.add_argument('--dataset',choices=('common','targeted_split'),default='common')
+    parser.add_argument('--dataset',choices=('common','targeted_split','structural_split'),default='common')
     args = parser.parse_args()
     if args.worker:
         request = read(args.worker)
         from split_qualification_protocol import SPLIT_SCHEMA
-        if request.get('schema') not in (SCHEMA,SPLIT_SCHEMA) or sorted(request['backends']) != sorted(BACKENDS):
+        from structural_split_protocol import STRUCTURAL_SCHEMA
+        if request.get('schema') not in (SCHEMA,SPLIT_SCHEMA,STRUCTURAL_SCHEMA) or sorted(request['backends']) != sorted(BACKENDS):
             raise ValueError('wrong worker schema/backend set')
         raise SystemExit(qualify_case(request, args.output))
     raise SystemExit(0 if run(args.output,dataset=args.dataset) else 2)

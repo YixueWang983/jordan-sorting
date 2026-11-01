@@ -22,6 +22,9 @@ PURPOSE='matched calibration or formal measurement'
 def dataset_config(dataset):
     if dataset=='common':selection=frozen_selection();rules=measurement_protocol()
     elif dataset=='targeted_split':selection=split_selection();rules=split_measurement_protocol()['rules']
+    elif dataset=='structural_split':
+        from structural_split_protocol import structural_selection, structural_measurement_protocol
+        selection=structural_selection();rules=structural_measurement_protocol()['rules']
     else:raise ValueError('unknown dataset')
     return dict(schema=SCHEMA,dataset=dataset,selection_sha256=selection['selection_sha256'],
         cases=[dict(case=c['spec']['case'],values=c['values'],input_sha256=c['input_sha256']) for c in selection['cases']],
@@ -174,7 +177,7 @@ def run(output,stage,dataset,qualification,*,calibration=None,review=None):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--worker',type=Path);parser.add_argument('--stage',choices=('calibration','formal'))
-    parser.add_argument('--dataset',choices=('common','targeted_split'));parser.add_argument('--qualification',type=Path)
+    parser.add_argument('--dataset',choices=('common','targeted_split','structural_split'));parser.add_argument('--qualification',type=Path)
     parser.add_argument('--calibration',type=Path);parser.add_argument('--review',type=Path)
     args=parser.parse_args()
     if args.worker:raise SystemExit(execute_case(read(args.worker),args.output))

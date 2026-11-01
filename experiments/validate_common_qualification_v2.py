@@ -139,6 +139,9 @@ def validate(output, *, historical=False, dataset='common'):
     elif dataset == 'targeted_split':
         from split_qualification_protocol import split_plan, split_selection, split_measurement_protocol
         cfg, selection, measurement = split_plan(), split_selection(), split_measurement_protocol()
+    elif dataset == 'structural_split':
+        from structural_split_protocol import structural_plan, structural_selection, structural_measurement_protocol
+        cfg, selection, measurement = structural_plan(), structural_selection(), structural_measurement_protocol()
     else:
         raise ValueError('unknown qualification dataset')
     require(canonical(read(output/'plan.json')) == canonical(cfg), 'qualification rules')
@@ -202,11 +205,15 @@ def validate(output, *, historical=False, dataset='common'):
             constructors[name] += len(record['initializations'])
             if record['mode'] == 'synchronous_v2':
                 prefixes[name] += record['report']['prefix_comparisons']; replays[name] += record['report']['fresh_final_replays']
-                if dataset == 'targeted_split':
+                if dataset in ('targeted_split', 'structural_split'):
                     from qualification_trace_semantics import check_trace
                     coverage = check_trace(case['values'],record['final']['trace'],record['final']['metrics'],name)
                     if passing:
-                        require(any(s['smaller_side']==case['spec']['k'] for s in coverage['splits']), 'missing actual target two-sided split')
+                        if dataset == 'structural_split':
+                            from structural_split_protocol import require_structural_coverage
+                            require_structural_coverage(case['spec'], coverage)
+                        else:
+                            require(any(s['smaller_side']==case['spec']['k'] for s in coverage['splits']), 'missing actual target two-sided split')
                     coverage_rows.append(dict(case=cid,backend=name,**coverage))
                 events = [e for e in record['final']['trace'] if e.get('step') == 'step3b_split_sibling_list' and e['performed']]
                 splits[name] += len(events); nonempty[name] += sum(e['left_size'] > 0 and e['right_size'] > 0 for e in events)
@@ -235,6 +242,6 @@ def validate(output, *, historical=False, dataset='common'):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__); parser.add_argument('directory', type=Path)
     parser.add_argument('--historical',action='store_true',help='Read-only audit binding old producer and current checker separately; no source upgrade')
-    parser.add_argument('--dataset',choices=('common','targeted_split'),default='common')
+    parser.add_argument('--dataset',choices=('common','targeted_split','structural_split'),default='common')
     args=parser.parse_args(); report = validate(args.directory,historical=args.historical,dataset=args.dataset); print(json.dumps(report, indent=2))
     raise SystemExit(0 if report['all_selected_qualified'] else 2)
