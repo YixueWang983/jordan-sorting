@@ -69,9 +69,7 @@ with median tree/list ratio \OldCommonMedian{}. A separate
 \OldDiagnosticN{}-input diagnostic reduced tree medians by
 \OldDiagnosticDropLow{}--\OldDiagnosticDropHigh{}\% when field-access
 instrumentation was removed. This observation motivated a configuration that
-excludes observation machinery from the final timing comparison. It does not
-assign an additive share of total algorithm cost to instrumentation, nor
-extend the diagnostic result beyond its selected inputs. The earlier
+excludes observation machinery from the final timing comparison. The earlier
 instrumented campaigns and diagnostic retain their original archives, indexed
 in \cref{sec:appendix-current-formal,sec:appendix-external-review}.
 
@@ -88,10 +86,11 @@ parameters: five warm-up pairs and fifty measured pairs, with 256 retained
 instances per batch and alternating configuration order. Its median times
 were \UnifiedCtorInstrumented{}~$\mu$s per instance for the instrumented tree
 and \UnifiedCtorUninstrumented{}~$\mu$s for the uninstrumented tree. The median
-paired difference was \UnifiedCtorDifference{}~$\mu$s. These measure constructor
-paths, including automatic GC and loop/storage overhead, not pure method
-binding. Objects were released after timing. Nothing was subtracted from the
-formal sorting observations.
+paired difference was \UnifiedCtorDifference{}~$\mu$s. For scale, this is
+\UnifiedCtorShortestPercent{}\% of the shortest tree median across the formal
+inputs (\UnifiedShortestTreeUs{}~$\mu$s). The timed constructor paths include
+automatic GC and loop/storage overhead; objects were released after timing.
+Nothing was subtracted from the formal sorting observations.
 
 \section{Timing, Calibration and Scheduling}
 \label{sec:method-timing}
@@ -157,8 +156,6 @@ All \UnifiedStabilitySame{} retain the same faster backend. The absolute
 relative change $100|r_i^{(2)}/r_i^{(1)}-1|$ has median
 \UnifiedStabilityMedian{}\% and maximum \UnifiedStabilityMaximum{}\%.
 This check is outside the protocol and excluded from the main statistics.
-It describes these two sessions, without establishing equivalence or undoing
-the first failure.
 
 \section{Aggregation and Structural Descriptions}
 \label{sec:method-aggregation}

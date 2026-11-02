@@ -1,0 +1,251 @@
+{
+  "source_endpoints": {
+    "common": {
+      "by_length": [
+        {
+          "n": 32,
+          "inputs": 14,
+          "median": 1.381191905784775
+        },
+        {
+          "n": 33,
+          "inputs": 14,
+          "median": 1.3685265925164467
+        },
+        {
+          "n": 64,
+          "inputs": 14,
+          "median": 1.3133991066394697
+        },
+        {
+          "n": 65,
+          "inputs": 14,
+          "median": 1.3243602047902459
+        },
+        {
+          "n": 128,
+          "inputs": 14,
+          "median": 1.2361934104246706
+        },
+        {
+          "n": 129,
+          "inputs": 14,
+          "median": 1.2346000124896515
+        },
+        {
+          "n": 256,
+          "inputs": 14,
+          "median": 1.11251155130644
+        },
+        {
+          "n": 257,
+          "inputs": 14,
+          "median": 1.1124706163900453
+        },
+        {
+          "n": 512,
+          "inputs": 14,
+          "median": 0.9070488668304529
+        },
+        {
+          "n": 513,
+          "inputs": 14,
+          "median": 0.9095678592471232
+        }
+      ],
+      "smallest": {
+        "n": 32,
+        "inputs": 14,
+        "median": 1.381191905784775
+      },
+      "largest": {
+        "n": 513,
+        "inputs": 14,
+        "median": 0.9095678592471232
+      },
+      "largest_lower_than_smallest": true
+    },
+    "targeted_split": {
+      "by_length": [
+        {
+          "n": 128,
+          "inputs": 6,
+          "median": 1.3520669266941867
+        },
+        {
+          "n": 129,
+          "inputs": 6,
+          "median": 1.3519380545902326
+        }
+      ],
+      "smallest": {
+        "n": 128,
+        "inputs": 6,
+        "median": 1.3520669266941867
+      },
+      "largest": {
+        "n": 129,
+        "inputs": 6,
+        "median": 1.3519380545902326
+      },
+      "largest_lower_than_smallest": true
+    },
+    "structural": {
+      "by_length": [
+        {
+          "n": 128,
+          "inputs": 3,
+          "median": 1.3366761331980972
+        },
+        {
+          "n": 129,
+          "inputs": 3,
+          "median": 1.3499504792307317
+        },
+        {
+          "n": 256,
+          "inputs": 3,
+          "median": 1.2851352947829717
+        },
+        {
+          "n": 257,
+          "inputs": 3,
+          "median": 1.27364751542806
+        },
+        {
+          "n": 512,
+          "inputs": 3,
+          "median": 1.1822131910093174
+        },
+        {
+          "n": 513,
+          "inputs": 3,
+          "median": 1.190720170110608
+        }
+      ],
+      "smallest": {
+        "n": 128,
+        "inputs": 3,
+        "median": 1.3366761331980972
+      },
+      "largest": {
+        "n": 513,
+        "inputs": 3,
+        "median": 1.190720170110608
+      },
+      "largest_lower_than_smallest": true
+    },
+    "geometric": {
+      "by_length": [
+        {
+          "n": 32,
+          "inputs": 20,
+          "median": 1.3709403072067916
+        },
+        {
+          "n": 64,
+          "inputs": 20,
+          "median": 1.3474070474348372
+        },
+        {
+          "n": 128,
+          "inputs": 20,
+          "median": 1.3023121677658351
+        },
+        {
+          "n": 256,
+          "inputs": 20,
+          "median": 1.216489755570405
+        },
+        {
+          "n": 512,
+          "inputs": 20,
+          "median": 1.031554402164125
+        }
+      ],
+      "smallest": {
+        "n": 32,
+        "inputs": 20,
+        "median": 1.3709403072067916
+      },
+      "largest": {
+        "n": 512,
+        "inputs": 20,
+        "median": 1.031554402164125
+      },
+      "largest_lower_than_smallest": true
+    },
+    "seeded": {
+      "by_length": [
+        {
+          "n": 32,
+          "inputs": 2,
+          "median": 1.3641227828181297
+        },
+        {
+          "n": 33,
+          "inputs": 2,
+          "median": 1.394232356238887
+        },
+        {
+          "n": 64,
+          "inputs": 2,
+          "median": 1.3490874531098664
+        },
+        {
+          "n": 70,
+          "inputs": 2,
+          "median": 1.2993997229176955
+        },
+        {
+          "n": 128,
+          "inputs": 8,
+          "median": 1.2348725250868575
+        },
+        {
+          "n": 512,
+          "inputs": 8,
+          "median": 1.0323061904220086
+        },
+        {
+          "n": 513,
+          "inputs": 8,
+          "median": 1.0316630707379415
+        }
+      ],
+      "smallest": {
+        "n": 32,
+        "inputs": 2,
+        "median": 1.3641227828181297
+      },
+      "largest": {
+        "n": 513,
+        "inputs": 8,
+        "median": 1.0316630707379415
+      },
+      "largest_lower_than_smallest": true
+    }
+  },
+  "abstract_band_medians": {
+    "32/33": 1.3725930596622602,
+    "512/513": 1.0371378103297668
+  },
+  "macros": {
+    "UnifiedMinN": 32,
+    "UnifiedFamilyCount": "five",
+    "UnifiedSmallBand": "32/33",
+    "UnifiedLargeBand": "512/513",
+    "UnifiedSmallBandMedian": "1.373",
+    "UnifiedLargeBandMedian": "1.037",
+    "UnifiedShortestTreeUs": "605.462",
+    "UnifiedCtorShortestPercent": "0.81"
+  },
+  "constructor_comparison": {
+    "shortest_tree_case": "common--n32-nested_heavy_valid-00-mirror",
+    "shortest_tree_median_ns": 605462.25,
+    "paired_constructor_difference_ns": 4880.859375,
+    "percent_of_shortest_tree_median": 0.8061376865361961,
+    "formula": "100 * paired_difference_ns.median / min(tree_median_ns_per_call)",
+    "interpretation": "Scale comparison across two measurement designs, not an isolated binding-cost estimate."
+  }
+}

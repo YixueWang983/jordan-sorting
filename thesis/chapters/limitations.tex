@@ -81,18 +81,23 @@ above that range, or the same behavior for other generators.
 The timed call includes construction, the shared algorithm, output recovery
 and batching overhead. The backends retain different local checks,
 allocations and ownership work. The uninstrumented tree also binds methods
-when each instance is created. Complete-sort measurements do not separate
-these contributions. The constructor microbenchmark describes its own fixed
-batch design, including automatic GC and object retention, and cannot provide
-an exact binding-only cost or a fraction to subtract from sorting time.
+when each instance is created. Complete-sort measurements do not isolate
+individual operation costs, including the cost of a split and the operations
+behind the tree's advantage on deeply nested inputs. Split fractions and
+sizes omit other parts of the work history, and operation counts describe the
+work mix without assigning runtime shares. The earlier instrumentation
+diagnostic likewise covers its selected inputs without assigning an additive
+share of total algorithm cost. The constructor microbenchmark describes its
+own fixed batch design, including automatic GC and object retention; its
+comparison with the shortest sorting median provides a scale reference,
+not an isolated binding cost or a correction to sorting time.
 
 The complete formal session uses one Apple M4 machine, macOS 27.2 and
 CPython 3.12.14 with AC power and low-power mode disabled. CPU affinity was
 not fixed, and actual core scheduling was not recorded. Warm-ups and
 alternating order do not establish stable frequency, temperature or absence
-of unrelated system activity. The first attempt's power failure and the
-authorized restart remain a departure from the no-retry protocol, despite
-successful validation of the second archive.
+of unrelated system activity. The restart is documented in
+\cref{sec:method-deviation}.
 
 Sources ran in a fixed sequence. Session drift can therefore be confounded
 with source, while alternation balances only the backend order within an
@@ -113,16 +118,12 @@ variation cannot be assigned to CPU scheduling from these records.
 
 Cross-input ranges and quartiles describe a collection of input summaries,
 not uncertainty intervals for a universal effect. The histogram and the
-2\% near-equality band are post hoc descriptive additions. The comparison of
+2\% near-equality band are post hoc descriptive additions. The band is a
+descriptive threshold, not an equivalence test. The comparison of
 \UnifiedStabilityN{} overlapping inputs from the two attempts is also post hoc,
-outside the protocol and outside the main statistics. Its small observed
-changes neither establish equivalence nor cancel the restart deviation.
-
-Neither split fraction nor the selected smaller-side parameter isolates a
-single operation's contribution to complete sorting. Operation counts can
-describe the work mix, but counts alone do not assign runtime shares. No
-significance tests, independent-sample confidence intervals or causal
-conclusions are drawn from these dependent constructions.
+outside the protocol and outside the main statistics; its observed changes do
+not establish equivalence. No significance tests, independent-sample confidence
+intervals or causal conclusions are drawn from these dependent constructions.
 
 \section{Output Provenance and Recognition}
 \label{sec:limitations-provenance}

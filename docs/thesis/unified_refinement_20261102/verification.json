@@ -1,0 +1,17 @@
+{
+  "baseline": "a0543049b68926044b95c63cad3a57095bef9c74",
+  "passed": true,
+  "new_measurements_executed": false,
+  "preserved_baseline_files": 63100,
+  "preserved_path_map_digest": "65b600078de62d83d7bc677db8992d210149e5b140c5f5258f093c99b91a27d7",
+  "appendix_A_and_B_unchanged": true,
+  "original_PDF_preserved": true,
+  "source_endpoint_medians_independently_verified": true,
+  "constructor_percentage_independently_verified": 0.8061376865361961,
+  "generated_macros_and_references_verified": true,
+  "result_float_placement": "htbp for all three figures and four tables",
+  "compile_warnings": 0,
+  "undefined_references": 0,
+  "overfull_boxes": 0,
+  "underfull_boxes": 0
+}

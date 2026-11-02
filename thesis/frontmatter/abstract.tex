@@ -13,16 +13,14 @@ analysis gives linear total work on valid inputs under unit-cost comparison
 and machine-word assumptions, with expected dictionary lookup and amortized
 growth.
 
-In a paired experiment on \UnifiedN{} unique inputs from five construction
-families, the uninstrumented tree is faster on \UnifiedWins{} inputs and the
-ordinary list on the remainder. The median tree/list ratio is
-\UnifiedMedian{}, with range \UnifiedMinimum{}--\UnifiedMaximum{}.
-Median ratios decrease across the measured size bands, and the common
-source's more heavily nested categories favor the tree more often. These
-observations describe the selected inputs of lengths 32--\UnifiedMaxN{};
-they do not establish performance on larger or application-derived inputs.
-The strongest tree advantages occur on heavily nested inputs with almost no
-splitting. Complete-sort measurements therefore do not identify a split's
-cost or the operations responsible for those advantages. The main results
-come from a complete second attempt after a power-check failure; the restart
-is disclosed as a departure from the no-retry protocol.
+In a paired experiment on \UnifiedN{} fixed inputs of lengths
+\UnifiedMinN{}--\UnifiedMaxN{} from \UnifiedFamilyCount{} input families,
+the tree backend, timed without the instrumentation used for operation
+counting, was faster on \UnifiedWins{} inputs and the list backend on the
+remaining \UnifiedListWins{}; the median tree/list ratio was \UnifiedMedian{}
+(range \UnifiedMinimum{}--\UnifiedMaximum{}). The median ratio fell from
+\UnifiedSmallBandMedian{} for lengths \UnifiedSmallBand{} to
+\UnifiedLargeBandMedian{} for \UnifiedLargeBand{}, and the tree's largest
+advantages occurred on heavily nested inputs that require almost no
+splitting. The results describe these input families on one machine;
+the experiment does not isolate the cost of individual operations.

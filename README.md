@@ -7,12 +7,12 @@ and heterogeneous finger-tree backends.
 ## Current thesis and results
 
 The current review draft is the **80-page unified-results thesis**, built on
-1 November 2026:
+2 November 2026:
 
-- [Read the current PDF](output/pdf/Wang_Thesis_Unified_Results_2026-11-01.pdf)
+- [Read the current PDF](output/pdf/Wang_Thesis_Refined_Results_2026-11-02.pdf)
 - [LaTeX sources and build instructions](thesis/README.md)
-- [Revision record and numerical sources](docs/thesis/unified_results_revision_20261101.md)
-- [Build and visual-review record](docs/thesis/unified_results_20261101/build_report.json)
+- [Revision record and numerical sources](docs/thesis/unified_refinement_20261102.md)
+- [Build and visual-review record](docs/thesis/unified_refinement_20261102/build_report.json)
 
 The complete formal attempt measures 302 inputs from five predetermined sources.
 The uninstrumented tree is faster on 44 inputs. The input-level tree/list ratio
@@ -27,7 +27,7 @@ check are separate follow-ups.
 
 Appendix A remains unchanged by the results revision. The requested Appendix B
 content update is still deferred; the current experiment paths are listed in
-the method chapter and the indexes below. This PDF remains a review draft.
+the method chapter and the indexes below. This PDF is not ready for supervisor circulation until Appendix B is updated.
 
 ## Evidence
 

@@ -9,21 +9,16 @@ The uninstrumented tree is faster on \UnifiedWins{} of the \UnifiedN{} measured
 inputs; the ordinary list is faster on the remaining \UnifiedListWins{}.
 There are no exact ties. Each input contributes one ratio $r_i$ of the tree's
 median time to the list's median time, as defined in
-\cref{sec:method-aggregation}. Only the second, complete attempt supplies these
-results. The first attempt and the departure from the no-retry rule are
-reported in \cref{sec:method-deviation}.
+\cref{sec:method-aggregation}.
 
 Giving every input equal weight, the median ratio is \UnifiedMedian{}, with
-range \UnifiedMinimum{}--\UnifiedMaximum{}. This is a secondary description
-of the five-source collection, whose composition is given in
-\cref{tab:results-sources}; it is not an estimate of performance on an
-application's input distribution. \Cref{fig:results-distribution} shows the
-spread. A further descriptive count places \UnifiedNear{} inputs within
+range \UnifiedMinimum{}--\UnifiedMaximum{}.
+\Cref{fig:results-distribution} shows the spread across inputs. A further descriptive count places \UnifiedNear{} inputs within
 $0.98<r_i<1.02$. These inputs are approximately tied under this chosen band,
-which was added after sampling. The band is not an equivalence test and does
-not change the strict $r_i<1$ count above.
+which was added after sampling. It leaves the strict $r_i<1$ count above
+unchanged.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=.94\textwidth]{unified_distribution.pdf}
 \caption[Distribution of the complete-session ratios]{Distribution of the
@@ -41,11 +36,12 @@ sampling; it is not one of the four figures specified in advance.}
 median ratios decrease from the smallest to the largest band. Tree-faster
 inputs first occur in the 128/129 band and are most numerous at 512/513.
 The bands have different source compositions, so their pooled medians do not
-isolate a size effect. \Cref{fig:results-size} retains individual observations
-and the median at each exact length within each source. These observations do
-not establish the behavior above $n=\UnifiedMaxN{}$.
+isolate a size effect. Within every source measured at several lengths, the
+median ratio at the largest length is lower than at the smallest.
+\Cref{fig:results-size} retains individual observations and the median at each
+exact length within each source.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \caption{Ratios by input-length band. Counts use unrounded ratios. The
 64--70 band contains only the measured lengths 64, 65 and 70.}
@@ -59,12 +55,12 @@ Length band & Inputs & Tree faster & Median & Range\\
 \end{tabular}
 \end{table}
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{unified_ratio_by_n.pdf}
 \caption[Individual ratios and per-source medians by length]{Individual ratios
-and per-source medians at each exact length. Lines connect observed medians
-only; they are not fits or predictions between lengths. The count panel gives
+and per-source medians at each exact length. Lines connect observed medians.
+The count panel gives
 the number of inputs behind every source/length median, replacing the
 overlapping labels in the archived figure. Observations are unchanged.}
 \label{fig:results-size}
@@ -78,11 +74,9 @@ Structure is the clearest distinction within the common source.
 Each category has the same representation across lengths, although the
 strict-flat quota is smaller. The category medians decline from strict-flat
 to heavy nesting. No strict-flat or low-nesting input favors the tree, whereas
-tree-faster inputs occur in the medium and heavy categories. This is a
-comparison of the selected constructions, not an experiment that varies
-nesting depth while holding all other features fixed.
+tree-faster inputs occur in the medium and heavy categories.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \caption{Common-source nesting categories. $S$ and $I$ sum the performed
 splits and two-sided splits over one primary qualification trace per input;
@@ -103,10 +97,7 @@ The heavy category contains the strongest tree advantages. Among its
 has $S_i\leq1$, and none has a two-sided split; \UnifiedHeavyZero{} have no
 split at all. Thus the advantage on these constructions does not require
 frequent splitting. For the inputs without splits, it arises within the
-remaining work of complete sorting. For inputs with one split, the total time
-does not separate that split from the other operations. These measurements
-cannot identify the contributions of insertion, navigation, ownership,
-initialization or output recovery.
+remaining work of complete sorting.
 
 \subsection{Structural Shapes}
 \label{sec:results-structural-extension}
@@ -115,10 +106,9 @@ The structural source retains its balanced, skew and repeated shapes
 (\cref{tab:results-shapes}). None favors the tree. The repeated inputs have a
 lower descriptive median ratio than the other two shapes, but their complete
 operation histories differ. In particular, repeated inputs are a different
-construction from the single-interior-split balanced and skew inputs. Their
-ratios are not isolated comparisons of split implementations.
+construction from the single-interior-split balanced and skew inputs.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \caption{The three shapes within the structural source.}
 \label{tab:results-shapes}
@@ -139,20 +129,17 @@ The targeted, balanced and skew inputs share the parameterized
 \texttt{values\_for} construction. Within each measured $n$, their ratios
 vary little across the selected $k$ values in
 \cref{fig:results-splits}(a). At the larger lengths, however, only the skew
-and balanced settings are available. Parameter, shape, size, parity and mirror
-coverage are not balanced. These points do not identify a general effect of
-$k$, and the repeated construction has no single comparable $k$.
+and balanced settings are available. The repeated construction has no single
+comparable $k$.
 
 The fraction $p_i=I_i/S_i$ also shows no clear monotonic relationship with the
 ratio across this collection (\cref{fig:results-splits}(b)). An input with no
 performed split has $p_i=\mathrm{NA}$, not zero. The figure therefore omits
 \UnifiedNoSplit{} inputs from its horizontal axis while retaining them in
-all main timing summaries. A fraction alone omits both the absolute number
-and the sizes of the splits. Neither panel measures the cost of one split:
-the timed call also includes construction, insertion, navigation, ownership
-updates and output recovery.
+all main timing summaries. Absolute split counts and smaller-side sizes are
+reported in \cref{app:results-supplement}.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{unified_split_panels.pdf}
 \caption[Split parameters and whole-sort ratios]{Two predetermined descriptive
@@ -160,7 +147,7 @@ plots combined into one figure. (a) The shared construction at each length:
 circles denote targeted inputs, triangles balanced inputs and squares skew
 inputs; open markers denote mirrors. Colors identify $n$. Repeated inputs
 are excluded. (b) One point per input with $S_i>0$, colored and shaped by
-source. Neither panel supports an independent-sample or causal interpretation.}
+source.}
 \label{fig:results-splits}
 \end{figure}
 
@@ -171,11 +158,9 @@ All five sources completed qualification and formal sampling in the second
 attempt. \Cref{tab:results-sources} reports their registration, deduplication
 and completion counts alongside their timing summaries, as required by the
 reporting protocol. Tree-faster inputs occur in common, geometric and seeded;
-none occurs in targeted or structural. The inputs' generation rules and
-coverage differ, so the source medians describe these collections rather
-than ranking generators as populations.
+none occurs in targeted or structural.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
 \caption{Complete reporting by source. Reg.: registered; Dup.: duplicates;
 Can.: canonical; Qual.: qualified; Timed: formally measured; Faster: tree
@@ -197,3 +182,12 @@ The predetermined all-input overview is retained in
 smaller-side summaries and complete event-size frequency table. Those
 structural descriptions use the same qualified inputs as the timing tables.
 The underlying records and original four figures remain in the formal archive.
+
+\paragraph{Summary of Observations.}
+The tree is faster on \UnifiedWins{} of \UnifiedN{} inputs, with a median
+tree/list ratio of \UnifiedMedian{}. Median ratios fall across the measured
+size bands, and every source has a lower median at its largest measured
+length than at its smallest. The tree's largest advantages occur on heavily
+nested inputs with almost no splitting. Neither the selected split parameter
+$k$ at a fixed length nor the two-sided split fraction shows a clear
+relationship with the complete-sort ratio.

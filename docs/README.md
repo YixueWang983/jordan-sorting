@@ -3,7 +3,7 @@
 ## Current manuscript and experiment
 
 Start with the [current thesis](../thesis/README.md) and its
-[revision record](thesis/unified_results_revision_20261101.md). The record maps
+[revision record](thesis/unified_refinement_20261102.md). The record maps
 new numerical statements to archived inputs, timing records and follow-up data.
 
 | Topic | Entry point |

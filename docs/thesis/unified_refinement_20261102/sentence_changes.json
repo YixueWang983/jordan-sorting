@@ -1,0 +1,176 @@
+[
+  {
+    "file": "thesis/frontmatter/abstract.tex",
+    "reason": "Use the author-supplied abstract, generated scale medians, and one short scope sentence; remove restart disclosure here.",
+    "before": "In a paired experiment on \\UnifiedN{} unique inputs from five construction\nfamilies, the uninstrumented tree is faster on \\UnifiedWins{} inputs and the\nordinary list on the remainder. The median tree/list ratio is\n\\UnifiedMedian{}, with range \\UnifiedMinimum{}--\\UnifiedMaximum{}.\nMedian ratios decrease across the measured size bands, and the common\nsource's more heavily nested categories favor the tree more often. These\nobservations describe the selected inputs of lengths 32--\\UnifiedMaxN{};\nthey do not establish performance on larger or application-derived inputs.\nThe strongest tree advantages occur on heavily nested inputs with almost no\nsplitting. Complete-sort measurements therefore do not identify a split's\ncost or the operations responsible for those advantages. The main results\ncome from a complete second attempt after a power-check failure; the restart\nis disclosed as a departure from the no-retry protocol.\n",
+    "after": "In a paired experiment on \\UnifiedN{} fixed inputs of lengths\n\\UnifiedMinN{}--\\UnifiedMaxN{} from \\UnifiedFamilyCount{} input families,\nthe tree backend, timed without the instrumentation used for operation\ncounting, was faster on \\UnifiedWins{} inputs and the list backend on the\nremaining \\UnifiedListWins{}; the median tree/list ratio was \\UnifiedMedian{}\n(range \\UnifiedMinimum{}--\\UnifiedMaximum{}). The median ratio fell from\n\\UnifiedSmallBandMedian{} for lengths \\UnifiedSmallBand{} to\n\\UnifiedLargeBandMedian{} for \\UnifiedLargeBand{}, and the tree's largest\nadvantages occurred on heavily nested inputs that require almost no\nsplitting. The results describe these input families on one machine;\nthe experiment does not isolate the cost of individual operations.\n"
+  },
+  {
+    "file": "thesis/chapters/introduction.tex",
+    "reason": "Move the full population qualification to Limitations.",
+    "before": "range \\UnifiedMinimum{}--\\UnifiedMaximum{}. These are descriptive summaries\nof related constructions, not estimates for a population of Jordan sequences.",
+    "after": "range \\UnifiedMinimum{}--\\UnifiedMaximum{}."
+  },
+  {
+    "file": "thesis/chapters/introduction.tex",
+    "reason": "Keep source-composition detail with the size analysis.",
+    "before": "Ratios decrease across the measured size bands, whose source compositions\ndiffer.",
+    "after": "Ratios decrease across the measured size bands."
+  },
+  {
+    "file": "thesis/chapters/introduction.tex",
+    "reason": "Remove repeated operation-cost limitation and restart disclosure from the introduction.",
+    "before": "The complete-sort timings do not identify the cost of one split or the\nspecific operations responsible for a tree advantage. The first attempt\nstopped on a power check; the authorized restart and the separation of the\ntwo attempts are explained in \\cref{sec:method-deviation}.\n",
+    "after": ""
+  },
+  {
+    "file": "thesis/chapters/results.tex",
+    "reason": "Keep full attempt-selection and restart account in Experimental Method.",
+    "before": "\\cref{sec:method-aggregation}. Only the second, complete attempt supplies these\nresults. The first attempt and the departure from the no-retry rule are\nreported in \\cref{sec:method-deviation}.",
+    "after": "\\cref{sec:method-aggregation}."
+  },
+  {
+    "file": "thesis/chapters/results.tex",
+    "reason": "Remove repeated population qualification.",
+    "before": "range \\UnifiedMinimum{}--\\UnifiedMaximum{}. This is a secondary description\nof the five-source collection, whose composition is given in\n\\cref{tab:results-sources}; it is not an estimate of performance on an\napplication's input distribution. \\Cref{fig:results-distribution} shows the\nspread.",
+    "after": "range \\UnifiedMinimum{}--\\UnifiedMaximum{}.\n\\Cref{fig:results-distribution} shows the spread across inputs."
+  },
+  {
+    "file": "thesis/chapters/results.tex",
+    "reason": "Keep the operational definition here; explain non-equivalence in Limitations.",
+    "before": "which was added after sampling. The band is not an equivalence test and does\nnot change the strict $r_i<1$ count above.",
+    "after": "which was added after sampling. It leaves the strict $r_i<1$ count above\nunchanged."
+  },
+  {
+    "file": "thesis/chapters/results.tex",
+    "reason": "Add the archive-checked within-source endpoint comparison; move extrapolation restriction to Limitations.",
+    "before": "The bands have different source compositions, so their pooled medians do not\nisolate a size effect. \\Cref{fig:results-size} retains individual observations\nand the median at each exact length within each source. These observations do\nnot establish the behavior above $n=\\UnifiedMaxN{}$.",
+    "after": "The bands have different source compositions, so their pooled medians do not\nisolate a size effect. Within every source measured at several lengths, the\nmedian ratio at the largest length is lower than at the smallest.\n\\Cref{fig:results-size} retains individual observations and the median at each\nexact length within each source."
+  },
+  {
+    "file": "thesis/chapters/results.tex",
+    "reason": "Describe the figure directly without repeated extrapolation warning.",
+    "before": "and per-source medians at each exact length. Lines connect observed medians\nonly; they are not fits or predictions between lengths. The count panel gives",
+    "after": "and per-source medians at each exact length. Lines connect observed medians.\nThe count panel gives"
+  },
+  {
+    "file": "thesis/chapters/results.tex",
+    "reason": "Keep the systematic-design limitation in Input Coverage and Scale.",
+    "before": "tree-faster inputs occur in the medium and heavy categories. This is a\ncomparison of the selected constructions, not an experiment that varies\nnesting depth while holding all other features fixed.",
+    "after": "tree-faster inputs occur in the medium and heavy categories."
+  },
+  {
+    "file": "thesis/chapters/results.tex",
+    "reason": "Remove repeated operation-cost decomposition limitation.",
+    "before": "remaining work of complete sorting. For inputs with one split, the total time\ndoes not separate that split from the other operations. These measurements\ncannot identify the contributions of insertion, navigation, ownership,\ninitialization or output recovery.",
+    "after": "remaining work of complete sorting."
+  },
+  {
+    "file": "thesis/chapters/results.tex",
+    "reason": "Keep the shape observation and move the isolation limitation to Limitations.",
+    "before": "construction from the single-interior-split balanced and skew inputs. Their\nratios are not isolated comparisons of split implementations.",
+    "after": "construction from the single-interior-split balanced and skew inputs."
+  },
+  {
+    "file": "thesis/chapters/results.tex",
+    "reason": "Keep construction coverage facts; consolidate design limitations in Limitations.",
+    "before": "and balanced settings are available. Parameter, shape, size, parity and mirror\ncoverage are not balanced. These points do not identify a general effect of\n$k$, and the repeated construction has no single comparable $k$.",
+    "after": "and balanced settings are available. The repeated construction has no single\ncomparable $k$."
+  },
+  {
+    "file": "thesis/chapters/results.tex",
+    "reason": "Replace repeated operation-cost warning with a pointer to measured structural descriptions.",
+    "before": "all main timing summaries. A fraction alone omits both the absolute number\nand the sizes of the splits. Neither panel measures the cost of one split:\nthe timed call also includes construction, insertion, navigation, ownership\nupdates and output recovery.",
+    "after": "all main timing summaries. Absolute split counts and smaller-side sizes are\nreported in \\cref{app:results-supplement}."
+  },
+  {
+    "file": "thesis/chapters/results.tex",
+    "reason": "Keep the statistical interpretation boundary in Limitations.",
+    "before": "source. Neither panel supports an independent-sample or causal interpretation.",
+    "after": "source."
+  },
+  {
+    "file": "thesis/chapters/results.tex",
+    "reason": "Remove repeated population qualification.",
+    "before": "none occurs in targeted or structural. The inputs' generation rules and\ncoverage differ, so the source medians describe these collections rather\nthan ranking generators as populations.",
+    "after": "none occurs in targeted or structural."
+  },
+  {
+    "file": "thesis/chapters/results.tex",
+    "reason": "Allow normal placement of all three result figures and four result tables.",
+    "before": "7 occurrences of [H]",
+    "after": "7 occurrences of [htbp]"
+  },
+  {
+    "file": "thesis/chapters/results.tex",
+    "reason": "Add four sentences collecting the main observations without another limitation paragraph.",
+    "before": "The underlying records and original four figures remain in the formal archive.\n",
+    "after": "The underlying records and original four figures remain in the formal archive.\n\n\\paragraph{Summary of Observations.}\nThe tree is faster on \\UnifiedWins{} of \\UnifiedN{} inputs, with a median\ntree/list ratio of \\UnifiedMedian{}. Median ratios fall across the measured\nsize bands, and every source has a lower median at its largest measured\nlength than at its smallest. The tree's largest advantages occur on heavily\nnested inputs with almost no splitting. Neither the selected split parameter\n$k$ at a fixed length nor the two-sided split fraction shows a clear\nrelationship with the complete-sort ratio.\n"
+  },
+  {
+    "file": "thesis/chapters/methodology.tex",
+    "reason": "Consolidate interpretation of component costs in Limitations.",
+    "before": "excludes observation machinery from the final timing comparison. It does not\nassign an additive share of total algorithm cost to instrumentation, nor\nextend the diagnostic result beyond its selected inputs. The earlier",
+    "after": "excludes observation machinery from the final timing comparison. The earlier"
+  },
+  {
+    "file": "thesis/chapters/methodology.tex",
+    "reason": "Add the generated constructor-to-shortest-sort percentage; keep binding-cost interpretation in Limitations.",
+    "before": "paired difference was \\UnifiedCtorDifference{}~$\\mu$s. These measure constructor\npaths, including automatic GC and loop/storage overhead, not pure method\nbinding. Objects were released after timing. Nothing was subtracted from the\nformal sorting observations.",
+    "after": "paired difference was \\UnifiedCtorDifference{}~$\\mu$s. For scale, this is\n\\UnifiedCtorShortestPercent{}\\% of the shortest tree median across the formal\ninputs (\\UnifiedShortestTreeUs{}~$\\mu$s). The timed constructor paths include\nautomatic GC and loop/storage overhead; objects were released after timing.\nNothing was subtracted from the formal sorting observations."
+  },
+  {
+    "file": "thesis/chapters/methodology.tex",
+    "reason": "Remove repeated equivalence and restart qualification after the full restart account.",
+    "before": "This check is outside the protocol and excluded from the main statistics.\nIt describes these two sessions, without establishing equivalence or undoing\nthe first failure.",
+    "after": "This check is outside the protocol and excluded from the main statistics."
+  },
+  {
+    "file": "thesis/chapters/limitations.tex",
+    "reason": "Keep the complete operation-cost limitation once, including the new scale-reference interpretation.",
+    "before": "when each instance is created. Complete-sort measurements do not separate\nthese contributions. The constructor microbenchmark describes its own fixed\nbatch design, including automatic GC and object retention, and cannot provide\nan exact binding-only cost or a fraction to subtract from sorting time.",
+    "after": "when each instance is created. Complete-sort measurements do not isolate\nindividual operation costs, including the cost of a split and the operations\nbehind the tree's advantage on deeply nested inputs. Split fractions and\nsizes omit other parts of the work history, and operation counts describe the\nwork mix without assigning runtime shares. The earlier instrumentation\ndiagnostic likewise covers its selected inputs without assigning an additive\nshare of total algorithm cost. The constructor microbenchmark describes its\nown fixed batch design, including automatic GC and object retention; its\ncomparison with the shortest sorting median provides a scale reference,\nnot an isolated binding cost or a correction to sorting time."
+  },
+  {
+    "file": "thesis/chapters/limitations.tex",
+    "reason": "Replace repeated procedural-deviation account with one short method reference.",
+    "before": "of unrelated system activity. The first attempt's power failure and the\nauthorized restart remain a departure from the no-retry protocol, despite\nsuccessful validation of the second archive.",
+    "after": "of unrelated system activity. The restart is documented in\n\\cref{sec:method-deviation}."
+  },
+  {
+    "file": "thesis/chapters/limitations.tex",
+    "reason": "Remove the second operation-cost and restart caveats within Limitations itself; retain statistical boundaries once.",
+    "before": "2\\% near-equality band are post hoc descriptive additions. The comparison of\n\\UnifiedStabilityN{} overlapping inputs from the two attempts is also post hoc,\noutside the protocol and outside the main statistics. Its small observed\nchanges neither establish equivalence nor cancel the restart deviation.\n\nNeither split fraction nor the selected smaller-side parameter isolates a\nsingle operation's contribution to complete sorting. Operation counts can\ndescribe the work mix, but counts alone do not assign runtime shares. No\nsignificance tests, independent-sample confidence intervals or causal\nconclusions are drawn from these dependent constructions.",
+    "after": "2\\% near-equality band are post hoc descriptive additions. The band is a\ndescriptive threshold, not an equivalence test. The comparison of\n\\UnifiedStabilityN{} overlapping inputs from the two attempts is also post hoc,\noutside the protocol and outside the main statistics; its observed changes do\nnot establish equivalence. No significance tests, independent-sample confidence\nintervals or causal conclusions are drawn from these dependent constructions."
+  },
+  {
+    "file": "thesis/chapters/conclusion.tex",
+    "reason": "Remove repeated population, scale and restart limitations from the research-question answer.",
+    "before": "source's more heavily nested categories have lower ratios. These observations\napply to the selected families and lengths up to \\UnifiedMaxN{} on one host.\nThe main statistics use only the complete second attempt; the first power\nfailure and the departure from the no-retry rule remain disclosed.",
+    "after": "source's more heavily nested categories have lower ratios."
+  },
+  {
+    "file": "thesis/chapters/conclusion.tex",
+    "reason": "Remove repeated operation-cost limitation.",
+    "before": "a fixed length. Complete-sort time does not isolate a split's cost or explain\nwhich remaining operations account for the tree's advantages.",
+    "after": "a fixed length."
+  },
+  {
+    "file": "thesis/chapters/conclusion.tex",
+    "reason": "Keep the future-work action without repeating the limitation on counts.",
+    "before": "measurements of candidate explanations; they cannot alone assign runtime\ncontributions. Independent review",
+    "after": "measurements of candidate explanations. Independent review"
+  },
+  {
+    "file": "thesis/main.tex",
+    "reason": "Load new archive-derived macros without modifying the November 1 generator or records.",
+    "before": "\\input{generated/unified_numbers}",
+    "after": "\\input{generated/unified_numbers}\n\\input{generated/unified_refinement}"
+  },
+  {
+    "file": "thesis/config/metadata.tex",
+    "reason": "Use the actual local build date.",
+    "before": "\\newcommand{\\ReviewDraftDate}{1 November 2026}",
+    "after": "\\newcommand{\\ReviewDraftDate}{2 November 2026}"
+  }
+]
