@@ -1,0 +1,20 @@
+{
+  "revision": "edc8d56f3496f2e5a115d5ca5eac998e90090ccd",
+  "files": {
+    "docs/validation/cross_platform_20261101/mac/config.json": {
+      "sha256": "90c0ea365f191066d4d18fc8c335756a507e54feae7d1dfb24c59d446cb185f2"
+    },
+    "docs/validation/cross_platform_20261101/mac/completion.json": {
+      "sha256": "6be4e8d0ddf857752153da8fffed699921b8273829b8dd19681186aa6bbc0314"
+    },
+    "docs/validation/cross_platform_20261101/comparison.json": {
+      "sha256": "7f396f468e84469f4c4a65b40b4980c528e2c1812127a0db799c51330dbd451b"
+    },
+    "docs/validation/cross_platform_20261101/README.md": {
+      "sha256": "5fcf451e6c8f4a5f0465825769ce149b8bc30d15068d0463c93013689a7e0b28"
+    }
+  },
+  "input_count": 10,
+  "completed_utc": "2026-11-01T18:51:15.919554+00:00",
+  "use": "Methodology: prior ten-input host-selection diagnostic only. No timings pooled."
+}

@@ -1,0 +1,17 @@
+{
+  "baseline": "7006629fa93a43001ce32c73f9446be90ba15ba8",
+  "sorter_executed": false,
+  "checks": {
+    "unchanged_source_and_historical_files": 170,
+    "appendix_B_only_removed_table_reference_repaired": true,
+    "archive_files_match_original_manifests": {
+      "unified_preflight_20261101": 12201,
+      "unified_formal_20261101": 27444,
+      "unified_followup_20261101": 142
+    },
+    "numbers_graph_inputs_and_sources_reconciled": true,
+    "terminology_labels_and_three_main_result_figures": true
+  },
+  "appendix_A_sha256": "dc621f87b09366239c6b5495affe0c0ac44a843692a64dda599c12e454d7782c",
+  "passed": true
+}

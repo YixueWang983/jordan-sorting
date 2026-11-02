@@ -1,17 +1,17 @@
 \chapter{Limitations}
 \label{chap:limitations}
 
-\section{Scope and Version}
+\section{Scope and Configuration}
 \label{sec:limitations-scope}
 \label{sec:limitations-version}
 
-The current results describe the ordinary-list and finger-tree minimal cores,
-with Python sources unchanged between each campaign's calibration and sampling
-(\cref{sec:appendix-revision-bindings}).
-The earlier rollback-enabled experiment used different code and timing scopes,
-so comparison with it cannot isolate the effect of removing rollback.
-In the current implementation, an update failure may leave a partial state
-that must be discarded; the invariants apply to completed updates.
+The results compare two concrete Python implementations: ordinary lists and
+the uninstrumented finger tree, both using the minimal sorting core. Source
+code, inputs and batch sizes stayed unchanged between preparation and the
+complete formal session. Earlier instrumented and rollback-enabled studies
+have different timing scopes and environments and are not pooled with these
+results. In the current implementation, an update failure may leave a partial
+state that must be discarded; invariants apply to completed updates.
 
 \section{Mathematical Model and Backend Fidelity}
 \label{sec:limitations-backend}
@@ -21,7 +21,8 @@ manual review. They have not been machine formalized or independently certified
 by a separate external reviewer. The endpoint and first-point rules are
 executable interpretations of details left implicit in the paper. The
 finite-parent locality case is an argument developed for this implementation;
-the published lemma covers the latest-child case.
+the published lemma covers the latest-child case. The mixed-operation
+potential argument also remains open to independent review.
 
 The tree's linear total bound uses unit-cost comparisons and machine-word
 operations with expected dictionary lookup and amortized growth. Arbitrary
@@ -33,100 +34,95 @@ reassessing the source-level argument as well as rerunning affected tests.
 Ordinary lists do not inherit that bound: insertion copying alone is quadratic
 on increasing inputs, and their membership, ancestry and ownership work differs.
 The runtime comparison includes these differences in implementation. Timing
-curves alone establish neither complexity statement.
+curves alone establish neither complexity statement. The experiment's
+instrumented/uninstrumented equivalence check covers the \UnifiedN{} registered
+inputs; it is finite evidence, not a general proof about the source transformation.
 
 \section{Input Coverage and Scale}
 \label{sec:limitations-sizes}
 \label{sec:limitations-generality}
 
-The common set contains fourteen controlled inputs at each of ten lengths
-32/33 through 512/513. Its nesting strata have fixed quotas, and the inputs are
-constructed rather than sampled from a population of Jordan sequences. Mirror
-pairs and related constructors are dependent. Consequently, the overall ratio
-is a descriptive median for this fixed set, not a population performance estimate.
+The \UnifiedN{} inputs come from five families chosen to vary nesting,
+sibling-list structure and interior splitting. They are controlled
+constructions, not a uniform sample from the space of valid Jordan sequences.
+Common uses fixed category quotas; targeted and part of structural share one
+parameterized construction. Geometric uses one grid-tree polygon generator,
+and seeded uses gap-selection heuristics. Mirrors, shared random streams and
+related parameter settings are dependent. The mixed median and faster-input
+count depend on this collection's composition.
 
-All 3,788 recorded common-set splits per backend have an empty side, so that
-set does not cover the interior split path. The separate targeted set
-contains twelve constructions at 128/129, with nonempty smaller sides 3, 7 and
-19. Its source size is always 61, its owner is finite, and its later direct
-updates occur only on the retained side. It does not establish broad coverage
-of all split ratios, black-height differences or both-output update histories.
-The November extension adds formal timings for the eighteen structural inputs,
-including balanced splits with smaller sides up to 126 and 212 re-splits of
-earlier outputs per backend's primary qualification traces. It still does not
-cover arbitrary split histories: all two-sided splits have finite owners,
-repeated splits have smaller side one, and direct updates before the next
-split affect only retained outputs. Odd-length inputs are mirrored, coupling
-parity with direction. Earlier operation tests and the bounded seeded
-supplement cover other transitions (\cref{sec:implementation-coverage});
-their observations remain correctness evidence rather than timing samples.
+The families leave structural gaps. Nesting depth and sibling-list length
+are not varied independently in a systematic design: a heavily nested suffix
+and an increasing flat construction test different operation histories.
+Balanced constructions deliberately include larger interior splits, while the
+geometric family's observed smaller side never exceeds
+\UnifiedGeometricSmallMax{} pair entries. The targeted and structural
+constructions provide only selected sizes and update histories, with parity
+and direction coupled in the structural source. They do not cover arbitrary
+combinations of deep nesting, long sibling lists and large repeated splits.
 
-The narrowing common-set gap at larger sizes does not establish a crossover
-beyond 513 or the same trend for another generator. Constants in the
-implementation can dominate throughout the measured range.
+The geometric source contains only even lengths. A closed simple polygon in
+general position crosses a line an even number of times, and this generator
+uses only one sampled start and direction per polygon. Its fixed grid height
+also changes the aspect ratio as length grows. None of the inputs comes from
+an application dataset of real polygons undergoing clipping.
+
+The largest measured length is \UnifiedMaxN{}; the \UnifiedExcluded{} seeded
+inputs of length 1500 were excluded before sampling. Their earlier correctness
+records do not provide runtime evidence for this experiment. The lower ratios
+on larger and more heavily nested constructions describe these families over
+the measured range. They do not establish a crossover or continued improvement
+above that range, or the same behavior for other generators.
 
 \section{Timing Scopes and Environment}
 \label{sec:limitations-timing-scopes}
 \label{sec:limitations-execution}
 
-The current interval includes fresh initialization, the shared algorithm,
-output recovery and batching overhead. Both backends receive the same scope,
-but their local checks, field-access wrappers and allocations differ. Their
-individual contributions were not isolated by the formal protocol. Disabling
-ledger collection retains field-access interception and wrapper dispatch.
-The observed slowdown therefore applies to the measured configuration.
-Expected-output comparison, pre-batch GC collection and evidence persistence
-are outside timing, while GC remains enabled during sorting.
+The timed call includes construction, the shared algorithm, output recovery
+and batching overhead. The backends retain different local checks,
+allocations and ownership work. The uninstrumented tree also binds methods
+when each instance is created. Complete-sort measurements do not separate
+these contributions. The constructor microbenchmark describes its own fixed
+batch design, including automatic GC and object retention, and cannot provide
+an exact binding-only cost or a fraction to subtract from sorting time.
 
-The supplementary diagnostic in \cref{sec:results-hooks} removes instrumentation hooks
-only in isolated worker processes and checks every saved output. It quantifies
-a configuration effect on fifteen selected inputs, not an exact additive
-fraction of abstract tree cost. Its inputs were selected after review of the
-formal results rather than fixed by the formal protocol. Variant
-batches are not interleaved, and process order and thermal effects are not
-fully controlled. Hook-free variants have not passed the full qualification
-protocol and are not registered production backends. The original supplied
-logs have weaker execution bindings (\cref{sec:appendix-external-review}).
+The complete formal session uses one Apple M4 machine, macOS 27.2 and
+CPython 3.12.14 with AC power and low-power mode disabled. CPU affinity was
+not fixed, and actual core scheduling was not recorded. Warm-ups and
+alternating order do not establish stable frequency, temperature or absence
+of unrelated system activity. The first attempt's power failure and the
+authorized restart remain a departure from the no-retry protocol, despite
+successful validation of the second archive.
 
-The formal campaigns record one Apple M4 environment with CPython 3.12.14 and
-battery power. Warm-ups and alternating first positions reduce selected startup
-and order effects, but do not establish stable frequency, temperature or
-absence of all unrelated operating-system activity. The local diagnostic uses the same
-machine and interpreter version in a later session; it does not replicate
-the formal protocol.
-The November structural campaign used macOS 27.2 rather than the original
-26.6, and captured 32\% battery charge rather than 100\%. It supplies paired
-comparisons within its own session; differences from the earlier datasets
-do not isolate a workload effect.
-
-Historical paper/reference ratios have a further scope mismatch: the reference
-includes certification and its oracle-backed pipeline, while the old paper
-call is pre-certified minimal sorting. Those ratios are not equivalent
-end-to-end speedups. Historical CPython 3.12.4 observations, the development
-pilot and current formal values are not pooled.
+Sources ran in a fixed sequence. Session drift can therefore be confounded
+with source, while alternation balances only the backend order within an
+input. The prior cross-host diagnostic informed host selection; it does not
+make this single-host experiment a cross-platform performance study.
 
 \section{Statistical and Exploratory Reach}
 \label{sec:limitations-statistics}
 \label{sec:limitations-exploratory}
 
-Twenty batches characterize repeat variability for each fixed input/backend.
-Dividing by B gives a per-call duration, not B independent samples. The median
-and R7 IQR describe those observations; they do not remove persistent bias or
-provide an independence justification for confidence intervals over related
-inputs. Cross-input quartiles and ranges are distributions of case summaries,
-not uncertainty intervals for a universal effect.
+\UnifiedRounds{} batches describe repeat variability for each fixed
+input/backend. Dividing duration by B does not yield B independent samples.
+Across inputs, median relative IQR is \UnifiedListIQRMedian{}\% for the list
+and \UnifiedTreeIQRMedian{}\% for the tree; the maxima are
+\UnifiedListIQRMax{}\% and \UnifiedTreeIQRMax{}\%, respectively. All batches
+remain included. The causes of the larger spreads were not measured, and
+variation cannot be assigned to CPU scheduling from these records.
 
-Some common-set cells have relative IQR above 50\%. They remain included,
-without a post hoc noise filter, retry or parameter change. One sample batch
-falls below the calibration target, which applied to three-batch calibration
-medians rather than every future sample. The exact cause of either observation
-was not measured. The fixed batch-size table was used throughout.
+Cross-input ranges and quartiles describe a collection of input summaries,
+not uncertainty intervals for a universal effect. The histogram and the
+2\% near-equality band are post hoc descriptive additions. The comparison of
+\UnifiedStabilityN{} overlapping inputs from the two attempts is also post hoc,
+outside the protocol and outside the main statistics. Its small observed
+changes neither establish equivalence nor cancel the restart deviation.
 
-Old within-size counter correlations are descriptive, based on an unbalanced
-mix of twelve cases per size. Checked counters and minimal times also come
-from different observation policies. These correlations cannot causally
-explain the current tree/list difference. In particular, a constant invariant
-counter produces an undefined correlation rather than a zero effect.
+Neither split fraction nor the selected smaller-side parameter isolates a
+single operation's contribution to complete sorting. Operation counts can
+describe the work mix, but counts alone do not assign runtime shares. No
+significance tests, independent-sample confidence intervals or causal
+conclusions are drawn from these dependent constructions.
 
 \section{Output Provenance and Recognition}
 \label{sec:limitations-provenance}
@@ -140,12 +136,4 @@ recognition accuracy, invalid-input failure reasons or recognition runtime.
 The sorting proof likewise starts from its validity precondition. Error
 correction and geometric applications remain outside this evaluation.
 
-\section{Consequences for the Conclusions}
 \label{sec:limitations-conclusions}
-
-The cost argument and the experiments answer different questions. The former
-accounts for source-level operations under the stated model; the latter
-compares runtime on three input sets fixed before their respective measurements
-on one machine in separate sessions. Extending the
-performance conclusions requires broader input histories, qualified hook-free
-variants and measurements in additional environments.

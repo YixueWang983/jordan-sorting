@@ -16,22 +16,21 @@ The shared Step~1/2/3 loop maintains geometric ownership, exact sibling groups
 and sorted prefixes. The argument in \cref{app:backend-argument} explains the
 two odd-stage $z_1$ corrections, temporary transfer, reversed ribs and recursive
 repair transients. Stable pair identities and child groups survive splitting.
-The three predetermined input sets passed qualification; all 69,360 formal sample
-calls and 1,700 warm-ups returned correct outputs.
+All \UnifiedN{} inputs passed the experiment's equivalence and qualification
+checks, and every saved output in the \UnifiedBatches{} formal sample batches
+of the complete attempt agrees with its expected sorted order. These checks
+support the reconstruction on the tested inputs without replacing its argument.
 
 \label{sec:conclusion-rq2}
 \textbf{RQ2: observed runtime.}
-For the measured configuration retaining instrumentation hooks, every input has a
-higher tree median runtime. Common-set tree/list ratios have median 2.898 and range
-1.114--3.535; the targeted set has median 3.180 and range 3.147--3.213.
-The separate structural extension has median 2.987 and range 2.376--3.222,
-covering larger balanced and skew splits and repeated splits of earlier outputs.
-These are ratios of twenty-batch input medians for the measured implementations,
-including their wrapping, checking and allocation costs. A separate
-fifteen-input supplementary diagnostic reduces tree medians by 37.7--52.1\% when instrumentation
-hooks are removed. Four of fifteen cases, the large heavy constructions,
-favor the hook-free tree; the remaining eleven take 1.09--1.68 times the
-list time.
+The uninstrumented tree is faster on \UnifiedWins{} of \UnifiedN{} inputs;
+the ordinary list is faster on the remainder. The input-level tree/list ratio
+has median \UnifiedMedian{} and range \UnifiedMinimum{}--\UnifiedMaximum{}.
+The pooled median decreases across the measured size bands, and the common
+source's more heavily nested categories have lower ratios. These observations
+apply to the selected families and lengths up to \UnifiedMaxN{} on one host.
+The main statistics use only the complete second attempt; the first power
+failure and the departure from the no-retry rule remain disclosed.
 
 \label{sec:conclusion-rq3}
 \textbf{RQ3: structure and cost.}
@@ -42,13 +41,13 @@ shared-core work. The linear total uses unit-cost comparisons and machine-word
 operations, expected dictionary lookup and amortized growth. Ordinary-list
 insertion copying alone has a quadratic lower bound.
 
-The common workload has no two-sided splits; the targeted group contains one
-per input with source size 61 and smaller sides 3/7/19. The structural extension
-adds balanced smaller sides up to 126 and 212 re-splits across its primary
-qualification traces per backend. The measurements thus
-cover different operation mixes within complete sorting calls. The practical
-slowdown of the measured Python configuration is compatible with the structural
-bound.
+The five sources cover different splitting histories, including two-sided
+splits in targeted, structural, geometric and seeded inputs. Yet the strongest
+tree advantages occur among heavily nested common inputs with at most one
+split and no two-sided split. Within the shared targeted/balanced/skew
+construction, ratios vary little with the selected smaller-side parameter at
+a fixed length. Complete-sort time does not isolate a split's cost or explain
+which remaining operations account for the tree's advantages.
 
 \section{Contributions and Further Work}
 \label{sec:conclusion-contributions}
@@ -57,12 +56,19 @@ bound.
 
 The thesis provides an implementation whose operations can be traced to the
 reconstruction and cost argument, together with reproducible measurements.
-Independent review of the finite-parent locality extension and mixed-operation
-proof would strengthen confidence in the argument. The next empirical step is
-to qualify a production hook-free configuration and test broader split
-histories, including direct updates to both outputs, and environments under
-predeclared rules. The supplementary diagnostic and 40-input seeded correctness
-supplement provide starting points, while the
-existing data remain available for comparison. Recognition, invalid-input
-behavior, error correction and geometric applications would each require
-their own specification and evaluation.
+Several extensions would test how far the observed trends carry. Generators
+that combine depth with long sibling lists, and application-derived inputs
+with large interior splits, would address structural gaps in the current
+families. Open polygonal chains would add odd lengths, while multiple starts
+and directions per polygon would test dependence on traversal choice.
+
+Larger inputs, including the excluded length-1500 cases, would test whether
+the narrowing of the tree/list ratio continues beyond $n=\UnifiedMaxN{}$.
+Intersection sequences from real polygon data would connect the measurements
+to the clipping application of Fung et al.\ Operation counts from the
+instrumented tree could describe differences in work mix and guide targeted
+measurements of candidate explanations; they cannot alone assign runtime
+contributions. Independent review of the finite-parent locality extension and
+the mixed-operation potential argument would strengthen confidence in the
+cost analysis. Recognition, invalid-input behavior and error correction each
+require their own specification and evaluation.

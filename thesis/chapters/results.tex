@@ -1,315 +1,199 @@
 \chapter{Results}
 \label{chap:results}
 
-\section{Execution Summary and Output Checks}
-\label{sec:results-correctness}
+\section{Overall Comparison}
+\label{sec:results-overall}
+\label{sec:results-current}
 
-The original paired experiments used the measured version, whose Python
-sources are identical to those of the calibration version. The
-common and targeted datasets remain separate. Both archives passed independent
-reconstruction of inputs, configuration, schedule, outputs, predetermined batch sizes
-and statistics. An additional analysis rebuilt the per-input medians and
-quartiles from every original sample record and agreed with the validator's values.
-The manifest-bound records and reproducible analysis are indexed in
-\cref{sec:appendix-current-formal}.
-The later eighteen-input structural extension passed the same checks using
-its own qualification, calibration and formal archives. Its production
-sorting sources are unchanged; its results are reported separately below.
+The uninstrumented tree is faster on \UnifiedWins{} of the \UnifiedN{} measured
+inputs; the ordinary list is faster on the remaining \UnifiedListWins{}.
+There are no exact ties. Each input contributes one ratio $r_i$ of the tree's
+median time to the list's median time, as defined in
+\cref{sec:method-aggregation}. Only the second, complete attempt supplies these
+results. The first attempt and the departure from the no-retry rule are
+reported in \cref{sec:method-deviation}.
 
-\begin{table}[htbp]
+Giving every input equal weight, the median ratio is \UnifiedMedian{}, with
+range \UnifiedMinimum{}--\UnifiedMaximum{}. This is a secondary description
+of the five-source collection, whose composition is given in
+\cref{tab:results-sources}; it is not an estimate of performance on an
+application's input distribution. \Cref{fig:results-distribution} shows the
+spread. A further descriptive count places \UnifiedNear{} inputs within
+$0.98<r_i<1.02$. These inputs are approximately tied under this chosen band,
+which was added after sampling. The band is not an equivalence test and does
+not change the strict $r_i<1$ count above.
+
+\begin{figure}[H]
 \centering
-\caption{Formal execution in three separately measured datasets. Sample calls are grouped into batches. The structural extension was run in a later session.}
-\label{tab:results-current-counts}
-\begin{tabular}{lrrrr}
-\toprule
-Dataset & Inputs & Sample batches & Sample calls & Warm-up calls\\
-\midrule
-Common & 140 & 5600 & 62720 & 1400\\
-Targeted split & 12 & 480 & 3840 & 120\\
-Structural extension & 18 & 720 & 2800 & 180\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Each input/backend contributes twenty sample batches after five warm-up calls.
-All 69,360 sample calls and 1,700 warm-up calls returned the expected output;
-no case was erroneous, timed out, skipped or replaced. These output checks
-followed qualification and were performed outside the timed
-intervals.
-
-\section{Common-Set Runtime and Paired Ratios}
-\label{sec:results-runtime-size}
-\label{sec:results-ratios}
-
-The runs use Apple M4/arm64, 16 GB RAM, ten logical CPUs, macOS 26.6 and
-CPython 3.12.14, with GC enabled at thresholds 700/10/10. The captured power
-state is battery power at 100\%. Both backends use the same public minimal
-sorting scope, and the tree disables work counting while retaining instrumentation hooks
-(\cref{sec:implementation-policies}).
-Initialization, sorting, output recovery, the batch loop and output append are
-included; expected-output comparisons and persistence are excluded.
-
-\Cref{tab:results-runtime-size} gives medians across input-specific medians.
-The last column is the median of ratios formed within each input, rather than
-the ratio of the aggregate time columns. Ratios above
-one mean a slower tree implementation under this protocol.
-
-\begin{table}[htbp]
-\centering
-\caption{Common set: descriptive runtime and paired ratios. Times are milliseconds per call; each input first contributes a median of twenty batch-derived observations.}
-\label{tab:results-runtime-size}
-\begin{tabular}{rrrrr}
-\toprule
-$n$ & Inputs & List (ms) & Tree (ms) & Median ratio\\
-\midrule
-    32 & 14 & 0.612 & 1.934 & 3.153 \\
-    33 & 14 & 0.620 & 1.957 & 3.086 \\
-    64 & 14 & 1.291 & 3.646 & 3.030 \\
-    65 & 14 & 1.275 & 4.012 & 3.089 \\
-    128 & 14 & 2.642 & 8.082 & 2.898 \\
-    129 & 14 & 2.772 & 8.002 & 2.890 \\
-    256 & 14 & 6.146 & 13.999 & 2.625 \\
-    257 & 14 & 6.218 & 15.427 & 2.600 \\
-    512 & 14 & 16.390 & 29.041 & 2.098 \\
-    513 & 14 & 16.136 & 33.791 & 2.123 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\textwidth]{current_formal_common.pdf}
-\caption{Current common set. Left: medians of input medians, with a logarithmic time axis. Right: all fourteen input ratios per length; horizontal marks are their medians. Horizontal offsets separate points. The dashed line denotes equal runtime.}
-\label{fig:results-runtime-size}
+\includegraphics[width=.94\textwidth]{unified_distribution.pdf}
+\caption[Distribution of the complete-session ratios]{Distribution of the
+\UnifiedN{} complete-session ratios, with bin width 0.05 and a reference at
+$r=1$. This histogram is a supplementary descriptive figure added after
+sampling; it is not one of the four figures specified in advance.}
+\label{fig:results-distribution}
 \end{figure}
 
-Across the 140 inputs, tree/list ratios range from 1.114 to 3.535, with
-median 2.898 and cross-input quartiles 2.117 and 3.210. Every input has a tree
-median above its paired list median. The size-stratum median decreases from
-3.153 at $n=32$ to 2.123 at $n=513$, with local nonmonotonic changes.
+\section{Variation with Input Length}
+\label{sec:results-size}
+\label{sec:results-common}
 
-\subsection{Structural Strata}
-\label{sec:results-family}
+\Cref{tab:results-size} groups the measured lengths into five bands. Their
+median ratios decrease from the smallest to the largest band. Tree-faster
+inputs first occur in the 128/129 band and are most numerous at 512/513.
+The bands have different source compositions, so their pooled medians do not
+isolate a size effect. \Cref{fig:results-size} retains individual observations
+and the median at each exact length within each source. These observations do
+not establish the behavior above $n=\UnifiedMaxN{}$.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
-\caption{Common-set ratios grouped by the predetermined nesting classification. These aggregates mix lengths and related constructions. Split counts are per backend in qualification traces.}
-\label{tab:results-family-ratios}
+\caption{Ratios by input-length band. Counts use unrounded ratios. The
+64--70 band contains only the measured lengths 64, 65 and 70.}
+\label{tab:results-size}
 \begin{tabular}{lrrrr}
 \toprule
-Stratum & Inputs & Median ratio & Range & Two-sided splits\\
+Length band & Inputs & Tree faster & Median & Range\\
 \midrule
-Strict-flat & 20 & 3.439 & 3.035--3.535 & 0\\
-Low nesting & 40 & 3.198 & 2.505--3.484 & 0\\
-Medium nesting & 40 & 2.886 & 2.058--3.157 & 0\\
-Heavy nesting & 40 & 1.868 & 1.114--2.348 & 0\\
+\UnifiedSizesRows
 \bottomrule
 \end{tabular}
 \end{table}
 
-The heavy group has the smallest descriptive ratios. Its constructors differ
-from the other groups in several features, so the ratios cannot be attributed
-to nesting alone. The qualification traces contain 3,788 split calls per
-backend, all with an empty-side outcome. The nesting classes thus compare
-workloads involving insertion, whole-group movement and ownership updates;
-interior splitting is examined in the targeted set below.
-
-\section{Targeted Split Set}
-\label{sec:results-targeted}
-
-The twelve targeted inputs at $n=128,129$ contain the intended nonempty
-splits: the smaller side is 3, 7 or 19, each represented by four inputs.
-Source size is 61 under a finite owner. The traces also cover subsequent
-retained-side insertion, but not updates to both outputs in every case.
-These operation histories come from the qualification traces.
-
-\begin{table}[htbp]
+\begin{figure}[H]
 \centering
-\caption{Targeted set, separately analyzed. Each $k$ group has both lengths and both directions.}
-\label{tab:results-targeted}
-\begin{tabular}{rrrrr}
-\toprule
-$k$ & Inputs & List (ms) & Tree (ms) & Median ratio\\
-\midrule
-3 & 4 & 2.654 & 8.432 & 3.177\\
-7 & 4 & 2.673 & 8.478 & 3.163\\
-19 & 4 & 2.560 & 8.171 & 3.207\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.86\textwidth]{current_formal_targeted.pdf}
-\caption{All targeted-set input ratios. M denotes the mirrored construction. Each point is a ratio of twenty-batch medians for one input.}
-\label{fig:results-targeted}
+\includegraphics[width=\textwidth]{unified_ratio_by_n.pdf}
+\caption[Individual ratios and per-source medians by length]{Individual ratios
+and per-source medians at each exact length. Lines connect observed medians
+only; they are not fits or predictions between lengths. The count panel gives
+the number of inputs behind every source/length median, replacing the
+overlapping labels in the archived figure. Observations are unchanged.}
+\label{fig:results-size}
 \end{figure}
 
-Ratios range from 3.147 to 3.213; the median is 3.180, with cross-input
-quartiles 3.165 and 3.189. The tree is slower on all twelve cases, and the ratios
-show no monotonic relation with $k$. These measurements cover complete sorting
-calls, including insertion, ownership updates and output recovery alongside
-the targeted split.
+\section{Variation with Structure}
+\label{sec:results-structure}
 
-\section{Variability and Measurement Accounting}
-\label{sec:results-variability}
-\label{sec:results-elapsed}
+Structure is the clearest distinction within the common source.
+\Cref{tab:results-nesting} compares its four predetermined categories.
+Each category has the same representation across lengths, although the
+strict-flat quota is smaller. The category medians decline from strict-flat
+to heavy nesting. No strict-flat or low-nesting input favors the tree, whereas
+tree-faster inputs occur in the medium and heavy categories. This is a
+comparison of the selected constructions, not an experiment that varies
+nesting depth while holding all other features fixed.
 
-For each input/backend, relative IQR is the R7-interpolated IQR divided by
-its own twenty-batch median. Across the common set its median is 1.37\% for
-the list and 1.08\% for the tree; maxima are 50.26\% and 61.81\%, respectively.
-The targeted-set medians are 1.18\% and 1.55\%, with maxima 9.08\% and 7.52\%.
-Thus typical cells have narrow central spreads, but some common-set cells do
-not. Every batch is retained, including the high-variability cells.
-
-One common-set sample batch is below 10 ms; none in the targeted set is.
-The predetermined calibration criterion was the median of three calibration batches,
-not a lower bound on every later batch. The protocol therefore retained both
-the observation and the fixed batch size B.
-
-Summed sample intervals are 183.511 seconds for the common set and 21.290
-seconds for the targeted set. These are accumulated timed intervals, not
-campaign wall times: worker startup, GC preparation, validation, compression,
-synchronization and other orchestration occur outside them.
-
-\section{Supplementary Instrumentation-Hook Diagnostic}
-\label{sec:results-hooks}
-
-A supplementary diagnostic on October 20 uses the reviewer's fixed fifteen common-set
-inputs at $n=128,512,513$, on the same M4 and CPython 3.12.14 in a later session.
-Each input has four isolated processes: list, measured tree, tree without
-instrumentation hooks, and additionally unwrapped operation/phase methods.
-Only process-local class attributes change; production files remain unchanged.
-Three warm-ups precede fifteen batches of 25 calls at 128 or 7 calls at
-512/513. All 11,700 timed outputs and 180 warm-up outputs are saved and checked;
-the timer includes output append but excludes comparisons and pre-batch GC.
-This protocol was specific to the diagnostic.
-
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
-\caption{All fifteen local diagnostic inputs. T, H and U are the measured,
-hook-free and additionally unwrapped trees; L is the list. Each row gives
-ratios of that input's batch medians. Drop is $100(1-H/T)$, not an additive
-cost attribution. Original and mirror constructions are related inputs.}
-\label{tab:results-hooks}
-\begin{tabular}{rllrrrr}
+\caption{Common-source nesting categories. $S$ and $I$ sum the performed
+splits and two-sided splits over one primary qualification trace per input;
+the backends agree on these counts.}
+\label{tab:results-nesting}
+\small
+\begin{tabular}{lrrrrrr}
 \toprule
-$n$ & Workload & Direction & T/L & H/L & U/L & Drop (\%)\\
+Category & Inputs & Tree faster & Median & Range & $S$ & $I$\\
 \midrule
-128 & Low & Original & 3.255 & 1.635 & 1.469 & 49.8\\
-128 & Medium & Original & 2.923 & 1.495 & 1.341 & 48.9\\
-128 & Heavy & Original & 1.859 & 1.138 & 1.011 & 38.8\\
-128 & Heavy & Mirror & 1.890 & 1.135 & 1.014 & 40.0\\
-128 & Strict-flat & Original & 3.512 & 1.684 & 1.505 & 52.1\\
-512 & Low & Original & 2.600 & 1.298 & 1.153 & 50.1\\
-512 & Medium & Original & 2.109 & 1.107 & 0.964 & 47.5\\
-512 & Heavy & Original & 1.112 & 0.689 & 0.623 & 38.0\\
-512 & Heavy & Mirror & 1.118 & 0.693 & 0.612 & 38.0\\
-512 & Strict-flat & Original & 3.086 & 1.487 & 1.305 & 51.8\\
-513 & Low & Original & 2.556 & 1.262 & 1.123 & 50.6\\
-513 & Medium & Original & 2.102 & 1.088 & 0.977 & 48.3\\
-513 & Heavy & Original & 1.103 & 0.687 & 0.615 & 37.7\\
-513 & Heavy & Mirror & 1.115 & 0.689 & 0.616 & 38.2\\
-513 & Strict-flat & Original & 3.073 & 1.485 & 1.293 & 51.7\\
+\UnifiedCommonRows
 \bottomrule
 \end{tabular}
 \end{table}
 
-Removing instrumentation hooks lowers the tree median by 37.7--52.1\% across the fifteen cases.
-Four of fifteen cases, the large heavy constructions, favor the hook-free
-tree; the remaining eleven take 1.09--1.68 times the list time.
-Additionally removing operation and phase wrappers (U) yields lower medians
-than the list in six of fifteen cases, including the two large medium-nesting
-cases. The diagnostic identifies a runtime effect of the configuration changes
-on these inputs. The qualification status, process order and environment
-limits are discussed in
-\cref{sec:limitations-timing-scopes}.
+The heavy category contains the strongest tree advantages. Among its
+\UnifiedHeavyN{} inputs, \UnifiedHeavyWins{} favor the tree. Every heavy input
+has $S_i\leq1$, and none has a two-sided split; \UnifiedHeavyZero{} have no
+split at all. Thus the advantage on these constructions does not require
+frequent splitting. For the inputs without splits, it arises within the
+remaining work of complete sorting. For inputs with one split, the total time
+does not separate that split from the other operations. These measurements
+cannot identify the contributions of insertion, navigation, ownership,
+initialization or output recovery.
 
-\clearpage
-\section{Structural Split Extension}
+\subsection{Structural Shapes}
 \label{sec:results-structural-extension}
 
-The November 1 extension measures all eighteen constructions specified in
-\cref{sec:method-structural-extension}, using the same complete sorting scope
-and numerical protocol. Its different operating-system version and battery
-observation make this a separate measurement session
-(\cref{sec:method-environment}).
+The structural source retains its balanced, skew and repeated shapes
+(\cref{tab:results-shapes}). None favors the tree. The repeated inputs have a
+lower descriptive median ratio than the other two shapes, but their complete
+operation histories differ. In particular, repeated inputs are a different
+construction from the single-interior-split balanced and skew inputs. Their
+ratios are not isolated comparisons of split implementations.
 
-Primary qualification traces on each backend contain 460 splits, of which
-230 are two-sided, and 212 re-splits of earlier outputs. All two-sided splits
-have finite owners. The 666 direct later insertions and 212 re-splits affect
-retained outputs; no acquired output receives a direct update before the next
-split. These counts come from qualification, not the untraced timing calls.
-
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
-\small
-\caption{All eighteen structural inputs. Qualification gives two-sided split
-count $S$ and smaller-side size $k$, identical on both backends. Times are
-twenty-batch medians in milliseconds per call; T/L is their ratio. Odd lengths
-use mirrored constructions.}
-\label{tab:results-structural-extension}
-\begin{tabular}{rlrrrrrr}
+\caption{The three shapes within the structural source.}
+\label{tab:results-shapes}
+\begin{tabular}{lrrrr}
 \toprule
-$n$ & Shape & $S$ & $k$ & $B$ & List (ms) & Tree (ms) & T/L\\
+Shape & Inputs & Tree faster & Median & Range\\
 \midrule
-128 & Balanced & 1 & 30 & 8 & 2.146 & 6.807 & 3.172\\
-128 & Skew & 1 & 1 & 8 & 2.134 & 6.867 & 3.217\\
-128 & Repeated & 15 & 1 & 4 & 2.675 & 7.925 & 2.963\\
-\addlinespace
-129 & Balanced & 1 & 30 & 8 & 2.163 & 6.970 & 3.222\\
-129 & Skew & 1 & 1 & 8 & 2.142 & 6.802 & 3.175\\
-129 & Repeated & 15 & 1 & 4 & 2.697 & 8.340 & 3.092\\
-\addlinespace
-256 & Balanced & 1 & 62 & 4 & 4.489 & 13.732 & 3.059\\
-256 & Skew & 1 & 1 & 4 & 4.448 & 13.612 & 3.060\\
-256 & Repeated & 31 & 1 & 2 & 5.795 & 16.187 & 2.793\\
-\addlinespace
-257 & Balanced & 1 & 62 & 4 & 4.570 & 13.852 & 3.031\\
-257 & Skew & 1 & 1 & 4 & 4.563 & 13.740 & 3.012\\
-257 & Repeated & 31 & 1 & 2 & 5.838 & 17.123 & 2.933\\
-\addlinespace
-512 & Balanced & 1 & 126 & 2 & 10.008 & 28.390 & 2.837\\
-512 & Skew & 1 & 1 & 2 & 10.089 & 28.102 & 2.785\\
-512 & Repeated & 63 & 1 & 1 & 14.116 & 33.540 & 2.376\\
-\addlinespace
-513 & Balanced & 1 & 126 & 2 & 9.983 & 28.379 & 2.843\\
-513 & Skew & 1 & 1 & 2 & 9.970 & 27.846 & 2.793\\
-513 & Repeated & 63 & 1 & 1 & 14.168 & 35.242 & 2.487\\
+\UnifiedStructuralRows
 \bottomrule
 \end{tabular}
 \end{table}
 
-The measured tree is slower on all eighteen inputs. The overall median T/L
-ratio is 2.987, with range 2.376--3.222. The six balanced cases have median
-3.045, the six skew cases 3.036, and the six repeated cases 2.863. The largest
-within-input/backend IQR is 2.4\% of its median, and all sample batches exceed
-10 ms. No samples were removed or rerun. The slower-tree observation thus
-extends to these larger and repeated interior splits. Full sorting times do
-not isolate the cost of a split, and the related constructions do not form
-an independent random sample.
+\section{Splitting and Complete-Sort Time}
+\label{sec:results-targeted}
+\label{sec:results-splits}
 
-\clearpage
-\section{Historical Rollback-Enabled Evidence}
-\label{sec:results-historical}
-\label{sec:results-replication}
-\label{sec:results-exploratory}
+The targeted, balanced and skew inputs share the parameterized
+\texttt{values\_for} construction. Within each measured $n$, their ratios
+vary little across the selected $k$ values in
+\cref{fig:results-splits}(a). At the larger lengths, however, only the skew
+and balanced settings are available. Parameter, shape, size, parity and mirror
+coverage are not balanced. These points do not identify a general effect of
+$k$, and the repeated construction has no single comparable $k$.
 
-The earlier rollback-enabled study contains 3,600 measured calls on 60
-inputs at its own source and environment. Python sort had the smallest
-median call time at every historical size. Its paper/reference ratios and
-counter correlations compare different pipeline scopes, not the two current
-backends. Full tables remain in the unchanged archive indexed in
-\cref{sec:appendix-history}; none enters the current numerical tables.
+The fraction $p_i=I_i/S_i$ also shows no clear monotonic relationship with the
+ratio across this collection (\cref{fig:results-splits}(b)). An input with no
+performed split has $p_i=\mathrm{NA}$, not zero. The figure therefore omits
+\UnifiedNoSplit{} inputs from its horizontal axis while retaining them in
+all main timing summaries. A fraction alone omits both the absolute number
+and the sizes of the splits. Neither panel measures the cost of one split:
+the timed call also includes construction, insertion, navigation, ownership
+updates and output recovery.
 
-\section{What the Comparison Shows}
-\label{sec:results-boundary}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{unified_split_panels.pdf}
+\caption[Split parameters and whole-sort ratios]{Two predetermined descriptive
+plots combined into one figure. (a) The shared construction at each length:
+circles denote targeted inputs, triangles balanced inputs and squares skew
+inputs; open markers denote mirrors. Colors identify $n$. Repeated inputs
+are excluded. (b) One point per input with $S_i>0$, colored and shaped by
+source. Neither panel supports an independent-sample or causal interpretation.}
+\label{fig:results-splits}
+\end{figure}
 
-On the predetermined inputs, the measured tree configuration has higher per-input
-median runtimes despite its stronger source-level amortized bound. Removing
-instrumentation hooks substantially lowers runtime in the supplementary diagnostic, although
-most diagnostic inputs still favor the list. These observations make the cost
-of the concrete Python implementation central to the comparison: field access,
-wrappers, local checks, allocation and tree maintenance all contribute to the
-measured calls. Their effects on broader workloads remain a question for
-further experiments.
+\section{Results by Source}
+\label{sec:results-sources}
+
+All five sources completed qualification and formal sampling in the second
+attempt. \Cref{tab:results-sources} reports their registration, deduplication
+and completion counts alongside their timing summaries, as required by the
+reporting protocol. Tree-faster inputs occur in common, geometric and seeded;
+none occurs in targeted or structural. The inputs' generation rules and
+coverage differ, so the source medians describe these collections rather
+than ranking generators as populations.
+
+\begin{table}[H]
+\centering
+\caption{Complete reporting by source. Reg.: registered; Dup.: duplicates;
+Can.: canonical; Qual.: qualified; Timed: formally measured; Faster: tree
+faster. Targeted denotes \texttt{targeted\_split}.}
+\label{tab:results-sources}
+\small
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+Source & Reg. & Dup. & Can. & Qual. & Timed & Faster & Median & Range\\
+\midrule
+\UnifiedSourcesRows
+\bottomrule
+\end{tabular}
+\end{table}
+
+The predetermined all-input overview is retained in
+\cref{app:results-supplement}, together with the source-level split totals,
+smaller-side summaries and complete event-size frequency table. Those
+structural descriptions use the same qualified inputs as the timing tables.
+The underlying records and original four figures remain in the formal archive.

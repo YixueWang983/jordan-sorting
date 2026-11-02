@@ -2,11 +2,11 @@
 \input{figure_style}
 \begin{document}
 \begin{tikzpicture}[font=\small,node distance=7mm and 7mm]
-\node[box,text width=3.8cm] (inputs) {Inputs fixed in advance\\common 140 / targeted 12};
-\node[box,text width=3.8cm,right=of inputs] (qual) {Qualification\\compare checked prefixes\\fresh replay and minimal call};
+\node[box,text width=3.8cm] (inputs) {Inputs fixed in advance\\302 unique inputs\\five sources};
+\node[box,text width=3.8cm,right=of inputs] (qual) {Equivalence and qualification\\compare checked prefixes\\fresh replay and minimal call};
 \node[box,text width=3.8cm,right=of qual] (cal) {Separate calibration\\first common batch size $B$\\both medians $\geq10$ ms};
 \node[box,text width=3.8cm,below=of cal] (gate) {Bind source, environment, $B$\\five warm-ups per backend};
-\node[accent box,text width=3.8cm,left=of gate] (sample) {Formal samples\\20 paired batches per input\\instrumentation hooks retained};
+\node[accent box,text width=3.8cm,left=of gate] (sample) {Formal samples\\20 paired batches per input\\uninstrumented tree / list};
 \node[box,text width=3.8cm,left=of sample] (check) {External output checks\\commit every batch\\independent archive reconstruction};
 \draw[flow] (inputs)--(qual); \draw[flow] (qual)--(cal);
 \draw[flow] (cal)--(gate); \draw[accent flow] (gate)--(sample);

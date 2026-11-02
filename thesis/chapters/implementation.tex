@@ -197,15 +197,15 @@ failure.
 \subsection{Correctness Coverage}
 \label{sec:implementation-coverage}
 
-\Cref{tab:implementation-coverage} separates operation tests, complete sorting
-runs and measured workloads. Each development result refers to its recorded
-source snapshot; the qualification rows identify the measured versions.
+\Cref{tab:implementation-coverage} indexes earlier operation, sorting and
+qualification checks at their recorded source snapshots. The current
+five-source qualification is described in \cref{sec:method-qualification}.
 
 \begin{table}[htbp]
   \centering
   \small
-  \caption{Selected correctness coverage and its version boundaries. Source
-  identities for the evidence records are listed in \cref{sec:appendix-revision-bindings}.}
+  \caption{Selected earlier correctness evidence. Source identities are listed
+  in \cref{sec:appendix-revision-bindings}.}
   \label{tab:implementation-coverage}
   \begin{tabular}{@{}p{0.20\textwidth}p{0.53\textwidth}>{\raggedright\arraybackslash}p{0.20\textwidth}@{}}
     \toprule
@@ -239,7 +239,7 @@ configuration's original runs. Within it, \texttt{repeated-512} contributes resp
 one. The 512-point balanced and skew cases split 253 siblings into $126+127$
 and $1+252$; the 513-point cases mirror these constructions.
 The same eighteen inputs were subsequently qualified again and formally
-timed in the separate November extension
+timed, first in the separate November extension and then in the unified study
 (\cref{sec:method-structural-extension,sec:results-structural-extension}).
 
 The seeded generator extends from $z_{i-1}$ into an axis gap such that no
@@ -254,8 +254,9 @@ $b=0.1$. Each seed uses one sequential Python \texttt{random.Random}
 stream; all forty inputs are saved and independently certified by the oracle.
 Thirty-eight contain a two-sided split, with maximum smaller side 13.
 The eight smaller inputs also receive checked validation.
-This seeded supplement extends the tested operation histories; the common,
-targeted and November structural groups supply the formal timing data.
+This seeded supplement extends the tested operation histories. The unified
+timing study includes its inputs of length at most 513 alongside common,
+targeted, structural and geometric sources.
 Archive locators and the source-hash distinction are in
 \cref{sec:appendix-development-coverage}.
 
@@ -269,22 +270,20 @@ isolate observation costs. All use the same Step~1/2/3 sequence and retain
 stage results, necessary local checks, input materialization and output
 recovery. The revised implementation has no rollback under any policy.
 
-The tree accesses node, handle and header fields through \emph{instrumentation
-hooks}: methods that intercept field reads and writes and record work when
-the detailed work ledger is enabled. This ledger has a separate configuration
-switch; minimal mode alone does not disable it. Qualification, calibration
-and formal measurement explicitly select \texttt{detailed\_work=False},
-suppressing work-count accumulation, ledger snapshots and per-operation
-reports. The hooks remain in place, so field access still incurs Python
-method dispatch and field-membership and ledger-switch checks. In particular,
-\texttt{\_Tracked.\_\_getattribute\_\_} and
-\texttt{\_\_setattr\_\_} still intercept accesses before testing the ledger
-switch; local geometry checks, pending-state checks, and operation and phase
-wrappers also remain. Throughout the empirical
-chapters, ``measured tree'' means this configuration with retained
-instrumentation hooks.
+In the instrumented tree, field interception and wrappers record work when
+a separate ledger is enabled. Minimal mode alone does not disable it.
+Setting \texttt{detailed\_work=False} suppresses accumulation and reports but
+retains these observers. The earlier instrumented experiments used this
+configuration.
 
-The archived studies instead timed the rollback-enabled implementation,
+The current timings use the uninstrumented tree, generated from the same
+source with observation statements and wrappers removed and ordinary field
+access. Unsupported observation calls or residual ledger references cause
+generation to fail. Preparation precedes timing; binding methods to each new
+instance is timed. Local checks remain. \Cref{sec:method-qualification}
+describes the equivalence and qualification evidence.
+
+The earliest archived study timed the rollback-enabled implementation,
 including recovery-state preparation in \texttt{minimal}; a successful call
 need not actually roll back to incur that preparation. The historical scope
 is specified in \cref{sec:method-paper-implementation}.

@@ -1,0 +1,6101 @@
+{
+  "overall": {
+    "inputs": 302,
+    "wins": 44,
+    "median": 1.257263649274024,
+    "minimum": 0.5902228145931654,
+    "maximum": 1.5176088280662896
+  },
+  "size_bins": {
+    "32/33": {
+      "inputs": 52,
+      "wins": 0,
+      "median": 1.3725930596622602,
+      "minimum": 1.2141357644763293,
+      "maximum": 1.5176088280662896
+    },
+    "64--70": {
+      "inputs": 52,
+      "wins": 0,
+      "median": 1.335254184305522,
+      "minimum": 1.0971421347249244,
+      "maximum": 1.4900063604282319
+    },
+    "128/129": {
+      "inputs": 74,
+      "wins": 8,
+      "median": 1.3040507321392112,
+      "minimum": 0.9741879308966775,
+      "maximum": 1.4502856751373132
+    },
+    "256/257": {
+      "inputs": 54,
+      "wins": 8,
+      "median": 1.214714335947411,
+      "minimum": 0.7903505489773999,
+      "maximum": 1.3668659486025307
+    },
+    "512/513": {
+      "inputs": 70,
+      "wins": 28,
+      "median": 1.0371378103297668,
+      "minimum": 0.5902228145931654,
+      "maximum": 1.2694054005665938
+    }
+  },
+  "near_one_case_ids": [
+    "common--n129-nested_heavy_valid-00",
+    "common--n129-nested_heavy_valid-00-mirror",
+    "common--n129-nested_heavy_valid-01",
+    "common--n129-nested_heavy_valid-01-mirror",
+    "common--n128-nested_heavy_valid-00-mirror",
+    "common--n128-nested_heavy_valid-01",
+    "common--n128-nested_heavy_valid-01-mirror",
+    "geometric--geometric-n512-01",
+    "geometric--geometric-n512-02",
+    "geometric--geometric-n512-05",
+    "geometric--geometric-n512-10",
+    "geometric--geometric-n512-12",
+    "seeded--stress-11-512-0.25",
+    "seeded--stress-14-512-0.25"
+  ],
+  "macros": {
+    "UnifiedN": 302,
+    "UnifiedWins": 44,
+    "UnifiedListWins": 258,
+    "UnifiedMedian": "1.257",
+    "UnifiedMinimum": "0.590",
+    "UnifiedMaximum": "1.518",
+    "UnifiedNear": 14,
+    "UnifiedExcluded": 8,
+    "UnifiedMaxN": 513,
+    "UnifiedNoSplit": 40,
+    "UnifiedBatches": 12080,
+    "UnifiedCalls": 102080,
+    "UnifiedHeavyN": 40,
+    "UnifiedHeavyWins": 24,
+    "UnifiedHeavyZero": 20,
+    "UnifiedGeometricSmallMax": 17,
+    "UnifiedCtorInstrumented": "0.420",
+    "UnifiedCtorUninstrumented": "5.304",
+    "UnifiedCtorDifference": "4.881",
+    "UnifiedStabilityN": 170,
+    "UnifiedStabilitySame": 170,
+    "UnifiedStabilityMedian": "0.426",
+    "UnifiedStabilityMaximum": "1.984",
+    "OldCommonN": 140,
+    "OldCommonMedian": "2.898",
+    "OldDiagnosticN": 15,
+    "OldDiagnosticDropLow": "37.7",
+    "OldDiagnosticDropHigh": "52.1",
+    "UnifiedListIQRMedian": "0.965",
+    "UnifiedTreeIQRMedian": "0.942",
+    "UnifiedListIQRMax": "2.601",
+    "UnifiedTreeIQRMax": "3.080",
+    "UnifiedCommonN": 140,
+    "UnifiedTargetedN": 12,
+    "UnifiedStructuralN": 18,
+    "UnifiedGeometricN": 100,
+    "UnifiedSeededN": 32,
+    "UnifiedWarmups": 5,
+    "UnifiedRounds": 20
+  },
+  "histogram": {
+    "edges": [
+      0.55,
+      0.6000000000000001,
+      0.6500000000000001,
+      0.7000000000000002,
+      0.7500000000000002,
+      0.8000000000000003,
+      0.8500000000000003,
+      0.9000000000000004,
+      0.9500000000000004,
+      1.0000000000000004,
+      1.0500000000000005,
+      1.1000000000000005,
+      1.1500000000000006,
+      1.2000000000000006,
+      1.2500000000000007,
+      1.3000000000000007,
+      1.3500000000000008,
+      1.4000000000000008,
+      1.4500000000000008,
+      1.5000000000000009,
+      1.550000000000001
+    ],
+    "counts": [
+      8,
+      0,
+      0,
+      0,
+      7,
+      1,
+      4,
+      7,
+      17,
+      11,
+      18,
+      20,
+      12,
+      40,
+      25,
+      43,
+      57,
+      15,
+      13,
+      4
+    ],
+    "supplementary": true
+  },
+  "variability_percent": {
+    "ordinary_list": {
+      "median": 0.9649688323747355,
+      "maximum": 2.601192973667734
+    },
+    "heterogeneous_finger_uninstrumented": {
+      "median": 0.9422350172368545,
+      "maximum": 3.079624302669632
+    }
+  },
+  "graph_inputs": {
+    "overview": [
+      {
+        "index": 1,
+        "case_id": "common--n32-low_nesting_valid-00",
+        "ratio": 1.4670409763614116
+      },
+      {
+        "index": 2,
+        "case_id": "common--n32-low_nesting_valid-00-mirror",
+        "ratio": 1.4829994705212506
+      },
+      {
+        "index": 3,
+        "case_id": "common--n32-low_nesting_valid-01",
+        "ratio": 1.4837680402219349
+      },
+      {
+        "index": 4,
+        "case_id": "common--n32-low_nesting_valid-01-mirror",
+        "ratio": 1.4880622294707606
+      },
+      {
+        "index": 5,
+        "case_id": "common--n32-medium_nesting_valid-00",
+        "ratio": 1.380617394765039
+      },
+      {
+        "index": 6,
+        "case_id": "common--n32-medium_nesting_valid-00-mirror",
+        "ratio": 1.381766416804511
+      },
+      {
+        "index": 7,
+        "case_id": "common--n32-medium_nesting_valid-01",
+        "ratio": 1.3661105661236623
+      },
+      {
+        "index": 8,
+        "case_id": "common--n32-medium_nesting_valid-01-mirror",
+        "ratio": 1.3678154874539126
+      },
+      {
+        "index": 9,
+        "case_id": "common--n32-nested_heavy_valid-00",
+        "ratio": 1.221383719288454
+      },
+      {
+        "index": 10,
+        "case_id": "common--n32-nested_heavy_valid-00-mirror",
+        "ratio": 1.2150077232991034
+      },
+      {
+        "index": 11,
+        "case_id": "common--n32-nested_heavy_valid-01",
+        "ratio": 1.223466471348408
+      },
+      {
+        "index": 12,
+        "case_id": "common--n32-nested_heavy_valid-01-mirror",
+        "ratio": 1.2297713126984735
+      },
+      {
+        "index": 13,
+        "case_id": "common--n32-strict_flat-00",
+        "ratio": 1.5035480072774854
+      },
+      {
+        "index": 14,
+        "case_id": "common--n32-strict_flat-00-mirror",
+        "ratio": 1.5176088280662896
+      },
+      {
+        "index": 15,
+        "case_id": "common--n33-low_nesting_valid-00",
+        "ratio": 1.4842446053304679
+      },
+      {
+        "index": 16,
+        "case_id": "common--n33-low_nesting_valid-00-mirror",
+        "ratio": 1.4794000538736782
+      },
+      {
+        "index": 17,
+        "case_id": "common--n33-low_nesting_valid-01",
+        "ratio": 1.4820815314169422
+      },
+      {
+        "index": 18,
+        "case_id": "common--n33-low_nesting_valid-01-mirror",
+        "ratio": 1.4813122041979576
+      },
+      {
+        "index": 19,
+        "case_id": "common--n33-medium_nesting_valid-00",
+        "ratio": 1.3635210505624913
+      },
+      {
+        "index": 20,
+        "case_id": "common--n33-medium_nesting_valid-00-mirror",
+        "ratio": 1.3607600093866963
+      },
+      {
+        "index": 21,
+        "case_id": "common--n33-medium_nesting_valid-01",
+        "ratio": 1.3572939640593256
+      },
+      {
+        "index": 22,
+        "case_id": "common--n33-medium_nesting_valid-01-mirror",
+        "ratio": 1.3735321344704023
+      },
+      {
+        "index": 23,
+        "case_id": "common--n33-nested_heavy_valid-00",
+        "ratio": 1.2141357644763293
+      },
+      {
+        "index": 24,
+        "case_id": "common--n33-nested_heavy_valid-00-mirror",
+        "ratio": 1.2203568334408073
+      },
+      {
+        "index": 25,
+        "case_id": "common--n33-nested_heavy_valid-01",
+        "ratio": 1.2295950448809247
+      },
+      {
+        "index": 26,
+        "case_id": "common--n33-nested_heavy_valid-01-mirror",
+        "ratio": 1.2293431841648075
+      },
+      {
+        "index": 27,
+        "case_id": "common--n33-strict_flat-00",
+        "ratio": 1.5087488005846696
+      },
+      {
+        "index": 28,
+        "case_id": "common--n33-strict_flat-00-mirror",
+        "ratio": 1.5074674437494044
+      },
+      {
+        "index": 29,
+        "case_id": "common--n64-low_nesting_valid-00",
+        "ratio": 1.4089361580992168
+      },
+      {
+        "index": 30,
+        "case_id": "common--n64-low_nesting_valid-00-mirror",
+        "ratio": 1.414547492890286
+      },
+      {
+        "index": 31,
+        "case_id": "common--n64-low_nesting_valid-01",
+        "ratio": 1.4358028231927895
+      },
+      {
+        "index": 32,
+        "case_id": "common--n64-low_nesting_valid-01-mirror",
+        "ratio": 1.432886449088961
+      },
+      {
+        "index": 33,
+        "case_id": "common--n64-medium_nesting_valid-00",
+        "ratio": 1.3124775585712212
+      },
+      {
+        "index": 34,
+        "case_id": "common--n64-medium_nesting_valid-00-mirror",
+        "ratio": 1.3117004404746448
+      },
+      {
+        "index": 35,
+        "case_id": "common--n64-medium_nesting_valid-01",
+        "ratio": 1.3032605679590585
+      },
+      {
+        "index": 36,
+        "case_id": "common--n64-medium_nesting_valid-01-mirror",
+        "ratio": 1.3143206547077182
+      },
+      {
+        "index": 37,
+        "case_id": "common--n64-nested_heavy_valid-00",
+        "ratio": 1.1178003359834165
+      },
+      {
+        "index": 38,
+        "case_id": "common--n64-nested_heavy_valid-00-mirror",
+        "ratio": 1.1114285553634433
+      },
+      {
+        "index": 39,
+        "case_id": "common--n64-nested_heavy_valid-01",
+        "ratio": 1.0971421347249244
+      },
+      {
+        "index": 40,
+        "case_id": "common--n64-nested_heavy_valid-01-mirror",
+        "ratio": 1.1383478337623087
+      },
+      {
+        "index": 41,
+        "case_id": "common--n64-strict_flat-00",
+        "ratio": 1.4739434222789878
+      },
+      {
+        "index": 42,
+        "case_id": "common--n64-strict_flat-00-mirror",
+        "ratio": 1.4900063604282319
+      },
+      {
+        "index": 43,
+        "case_id": "common--n65-low_nesting_valid-00",
+        "ratio": 1.4084830489871079
+      },
+      {
+        "index": 44,
+        "case_id": "common--n65-low_nesting_valid-00-mirror",
+        "ratio": 1.4114334935243062
+      },
+      {
+        "index": 45,
+        "case_id": "common--n65-low_nesting_valid-01",
+        "ratio": 1.424932503176847
+      },
+      {
+        "index": 46,
+        "case_id": "common--n65-low_nesting_valid-01-mirror",
+        "ratio": 1.425140979066381
+      },
+      {
+        "index": 47,
+        "case_id": "common--n65-medium_nesting_valid-00",
+        "ratio": 1.3150889867126012
+      },
+      {
+        "index": 48,
+        "case_id": "common--n65-medium_nesting_valid-00-mirror",
+        "ratio": 1.31095301530153
+      },
+      {
+        "index": 49,
+        "case_id": "common--n65-medium_nesting_valid-01",
+        "ratio": 1.3336314228678905
+      },
+      {
+        "index": 50,
+        "case_id": "common--n65-medium_nesting_valid-01-mirror",
+        "ratio": 1.3089721130235292
+      },
+      {
+        "index": 51,
+        "case_id": "common--n65-nested_heavy_valid-00",
+        "ratio": 1.113873432107663
+      },
+      {
+        "index": 52,
+        "case_id": "common--n65-nested_heavy_valid-00-mirror",
+        "ratio": 1.1121386783275578
+      },
+      {
+        "index": 53,
+        "case_id": "common--n65-nested_heavy_valid-01",
+        "ratio": 1.1198845676323557
+      },
+      {
+        "index": 54,
+        "case_id": "common--n65-nested_heavy_valid-01-mirror",
+        "ratio": 1.1206884230709253
+      },
+      {
+        "index": 55,
+        "case_id": "common--n65-strict_flat-00",
+        "ratio": 1.4828083354130608
+      },
+      {
+        "index": 56,
+        "case_id": "common--n65-strict_flat-00-mirror",
+        "ratio": 1.480687616966499
+      },
+      {
+        "index": 57,
+        "case_id": "common--n128-low_nesting_valid-00",
+        "ratio": 1.3473338804965842
+      },
+      {
+        "index": 58,
+        "case_id": "common--n128-low_nesting_valid-00-mirror",
+        "ratio": 1.3611315960167085
+      },
+      {
+        "index": 59,
+        "case_id": "common--n128-low_nesting_valid-01",
+        "ratio": 1.353675683517815
+      },
+      {
+        "index": 60,
+        "case_id": "common--n128-low_nesting_valid-01-mirror",
+        "ratio": 1.356187424116393
+      },
+      {
+        "index": 61,
+        "case_id": "common--n128-medium_nesting_valid-00",
+        "ratio": 1.223034989150392
+      },
+      {
+        "index": 62,
+        "case_id": "common--n128-medium_nesting_valid-00-mirror",
+        "ratio": 1.228869254809401
+      },
+      {
+        "index": 63,
+        "case_id": "common--n128-medium_nesting_valid-01",
+        "ratio": 1.2372128763542893
+      },
+      {
+        "index": 64,
+        "case_id": "common--n128-medium_nesting_valid-01-mirror",
+        "ratio": 1.2351739444950518
+      },
+      {
+        "index": 65,
+        "case_id": "common--n128-nested_heavy_valid-00",
+        "ratio": 0.9741879308966775
+      },
+      {
+        "index": 66,
+        "case_id": "common--n128-nested_heavy_valid-00-mirror",
+        "ratio": 0.9878409041493769
+      },
+      {
+        "index": 67,
+        "case_id": "common--n128-nested_heavy_valid-01",
+        "ratio": 0.9868197564429585
+      },
+      {
+        "index": 68,
+        "case_id": "common--n128-nested_heavy_valid-01-mirror",
+        "ratio": 0.9896288090869628
+      },
+      {
+        "index": 69,
+        "case_id": "common--n128-strict_flat-00",
+        "ratio": 1.4438501685339054
+      },
+      {
+        "index": 70,
+        "case_id": "common--n128-strict_flat-00-mirror",
+        "ratio": 1.4502856751373132
+      },
+      {
+        "index": 71,
+        "case_id": "common--n129-low_nesting_valid-00",
+        "ratio": 1.3174595245297
+      },
+      {
+        "index": 72,
+        "case_id": "common--n129-low_nesting_valid-00-mirror",
+        "ratio": 1.320987885938716
+      },
+      {
+        "index": 73,
+        "case_id": "common--n129-low_nesting_valid-01",
+        "ratio": 1.3727761541722137
+      },
+      {
+        "index": 74,
+        "case_id": "common--n129-low_nesting_valid-01-mirror",
+        "ratio": 1.3807754542542694
+      },
+      {
+        "index": 75,
+        "case_id": "common--n129-medium_nesting_valid-00",
+        "ratio": 1.2285338794202885
+      },
+      {
+        "index": 76,
+        "case_id": "common--n129-medium_nesting_valid-00-mirror",
+        "ratio": 1.2369964005933571
+      },
+      {
+        "index": 77,
+        "case_id": "common--n129-medium_nesting_valid-01",
+        "ratio": 1.2322036243859458
+      },
+      {
+        "index": 78,
+        "case_id": "common--n129-medium_nesting_valid-01-mirror",
+        "ratio": 1.2281559941612257
+      },
+      {
+        "index": 79,
+        "case_id": "common--n129-nested_heavy_valid-00",
+        "ratio": 0.9809294134320908
+      },
+      {
+        "index": 80,
+        "case_id": "common--n129-nested_heavy_valid-00-mirror",
+        "ratio": 0.9849196570183916
+      },
+      {
+        "index": 81,
+        "case_id": "common--n129-nested_heavy_valid-01",
+        "ratio": 0.9858181035919344
+      },
+      {
+        "index": 82,
+        "case_id": "common--n129-nested_heavy_valid-01-mirror",
+        "ratio": 0.9878365917298974
+      },
+      {
+        "index": 83,
+        "case_id": "common--n129-strict_flat-00",
+        "ratio": 1.4375039878917453
+      },
+      {
+        "index": 84,
+        "case_id": "common--n129-strict_flat-00-mirror",
+        "ratio": 1.4477467092930272
+      },
+      {
+        "index": 85,
+        "case_id": "common--n256-low_nesting_valid-00",
+        "ratio": 1.234737209672846
+      },
+      {
+        "index": 86,
+        "case_id": "common--n256-low_nesting_valid-00-mirror",
+        "ratio": 1.250342759284328
+      },
+      {
+        "index": 87,
+        "case_id": "common--n256-low_nesting_valid-01",
+        "ratio": 1.2635153696724168
+      },
+      {
+        "index": 88,
+        "case_id": "common--n256-low_nesting_valid-01-mirror",
+        "ratio": 1.274703668285377
+      },
+      {
+        "index": 89,
+        "case_id": "common--n256-medium_nesting_valid-00",
+        "ratio": 1.1171408227288044
+      },
+      {
+        "index": 90,
+        "case_id": "common--n256-medium_nesting_valid-00-mirror",
+        "ratio": 1.1029593775273954
+      },
+      {
+        "index": 91,
+        "case_id": "common--n256-medium_nesting_valid-01",
+        "ratio": 1.1078822798840755
+      },
+      {
+        "index": 92,
+        "case_id": "common--n256-medium_nesting_valid-01-mirror",
+        "ratio": 1.1005137659329054
+      },
+      {
+        "index": 93,
+        "case_id": "common--n256-nested_heavy_valid-00",
+        "ratio": 0.7966452086372836
+      },
+      {
+        "index": 94,
+        "case_id": "common--n256-nested_heavy_valid-00-mirror",
+        "ratio": 0.7903505489773999
+      },
+      {
+        "index": 95,
+        "case_id": "common--n256-nested_heavy_valid-01",
+        "ratio": 0.7969030516231664
+      },
+      {
+        "index": 96,
+        "case_id": "common--n256-nested_heavy_valid-01-mirror",
+        "ratio": 0.7994478170563153
+      },
+      {
+        "index": 97,
+        "case_id": "common--n256-strict_flat-00",
+        "ratio": 1.3618459703543602
+      },
+      {
+        "index": 98,
+        "case_id": "common--n256-strict_flat-00-mirror",
+        "ratio": 1.360833770284894
+      },
+      {
+        "index": 99,
+        "case_id": "common--n257-low_nesting_valid-00",
+        "ratio": 1.2411331257125024
+      },
+      {
+        "index": 100,
+        "case_id": "common--n257-low_nesting_valid-00-mirror",
+        "ratio": 1.244262368179142
+      },
+      {
+        "index": 101,
+        "case_id": "common--n257-low_nesting_valid-01",
+        "ratio": 1.20550586502086
+      },
+      {
+        "index": 102,
+        "case_id": "common--n257-low_nesting_valid-01-mirror",
+        "ratio": 1.2182717399527767
+      },
+      {
+        "index": 103,
+        "case_id": "common--n257-medium_nesting_valid-00",
+        "ratio": 1.1068485825607954
+      },
+      {
+        "index": 104,
+        "case_id": "common--n257-medium_nesting_valid-00-mirror",
+        "ratio": 1.1061470324408755
+      },
+      {
+        "index": 105,
+        "case_id": "common--n257-medium_nesting_valid-01",
+        "ratio": 1.1125301309843094
+      },
+      {
+        "index": 106,
+        "case_id": "common--n257-medium_nesting_valid-01-mirror",
+        "ratio": 1.112411101795781
+      },
+      {
+        "index": 107,
+        "case_id": "common--n257-nested_heavy_valid-00",
+        "ratio": 0.7904242250236428
+      },
+      {
+        "index": 108,
+        "case_id": "common--n257-nested_heavy_valid-00-mirror",
+        "ratio": 0.7998686667173668
+      },
+      {
+        "index": 109,
+        "case_id": "common--n257-nested_heavy_valid-01",
+        "ratio": 0.7965724108194417
+      },
+      {
+        "index": 110,
+        "case_id": "common--n257-nested_heavy_valid-01-mirror",
+        "ratio": 0.8019705399684719
+      },
+      {
+        "index": 111,
+        "case_id": "common--n257-strict_flat-00",
+        "ratio": 1.3526183251904915
+      },
+      {
+        "index": 112,
+        "case_id": "common--n257-strict_flat-00-mirror",
+        "ratio": 1.3668659486025307
+      },
+      {
+        "index": 113,
+        "case_id": "common--n512-low_nesting_valid-00",
+        "ratio": 1.0784137494627917
+      },
+      {
+        "index": 114,
+        "case_id": "common--n512-low_nesting_valid-00-mirror",
+        "ratio": 1.070346920770173
+      },
+      {
+        "index": 115,
+        "case_id": "common--n512-low_nesting_valid-01",
+        "ratio": 1.0701502743727647
+      },
+      {
+        "index": 116,
+        "case_id": "common--n512-low_nesting_valid-01-mirror",
+        "ratio": 1.0637729070444295
+      },
+      {
+        "index": 117,
+        "case_id": "common--n512-medium_nesting_valid-00",
+        "ratio": 0.9061845444738311
+      },
+      {
+        "index": 118,
+        "case_id": "common--n512-medium_nesting_valid-00-mirror",
+        "ratio": 0.8961532912541412
+      },
+      {
+        "index": 119,
+        "case_id": "common--n512-medium_nesting_valid-01",
+        "ratio": 0.9079131891870748
+      },
+      {
+        "index": 120,
+        "case_id": "common--n512-medium_nesting_valid-01-mirror",
+        "ratio": 0.9012652946058948
+      },
+      {
+        "index": 121,
+        "case_id": "common--n512-nested_heavy_valid-00",
+        "ratio": 0.5907092936092225
+      },
+      {
+        "index": 122,
+        "case_id": "common--n512-nested_heavy_valid-00-mirror",
+        "ratio": 0.5902228145931654
+      },
+      {
+        "index": 123,
+        "case_id": "common--n512-nested_heavy_valid-01",
+        "ratio": 0.5913583894485844
+      },
+      {
+        "index": 124,
+        "case_id": "common--n512-nested_heavy_valid-01-mirror",
+        "ratio": 0.5966850943995111
+      },
+      {
+        "index": 125,
+        "case_id": "common--n512-strict_flat-00",
+        "ratio": 1.2545755909754321
+      },
+      {
+        "index": 126,
+        "case_id": "common--n512-strict_flat-00-mirror",
+        "ratio": 1.266474664645345
+      },
+      {
+        "index": 127,
+        "case_id": "common--n513-low_nesting_valid-00",
+        "ratio": 1.0608317435773817
+      },
+      {
+        "index": 128,
+        "case_id": "common--n513-low_nesting_valid-00-mirror",
+        "ratio": 1.0503386228899794
+      },
+      {
+        "index": 129,
+        "case_id": "common--n513-low_nesting_valid-01",
+        "ratio": 1.064021654390085
+      },
+      {
+        "index": 130,
+        "case_id": "common--n513-low_nesting_valid-01-mirror",
+        "ratio": 1.0656587607648673
+      },
+      {
+        "index": 131,
+        "case_id": "common--n513-medium_nesting_valid-00",
+        "ratio": 0.9107344738987757
+      },
+      {
+        "index": 132,
+        "case_id": "common--n513-medium_nesting_valid-00-mirror",
+        "ratio": 0.8950180810707212
+      },
+      {
+        "index": 133,
+        "case_id": "common--n513-medium_nesting_valid-01",
+        "ratio": 0.9084012445954707
+      },
+      {
+        "index": 134,
+        "case_id": "common--n513-medium_nesting_valid-01-mirror",
+        "ratio": 0.8969686167178293
+      },
+      {
+        "index": 135,
+        "case_id": "common--n513-nested_heavy_valid-00",
+        "ratio": 0.5914582997543831
+      },
+      {
+        "index": 136,
+        "case_id": "common--n513-nested_heavy_valid-00-mirror",
+        "ratio": 0.5905654032366995
+      },
+      {
+        "index": 137,
+        "case_id": "common--n513-nested_heavy_valid-01",
+        "ratio": 0.5974557893632302
+      },
+      {
+        "index": 138,
+        "case_id": "common--n513-nested_heavy_valid-01-mirror",
+        "ratio": 0.5934878438547561
+      },
+      {
+        "index": 139,
+        "case_id": "common--n513-strict_flat-00",
+        "ratio": 1.2510808944962424
+      },
+      {
+        "index": 140,
+        "case_id": "common--n513-strict_flat-00-mirror",
+        "ratio": 1.2694054005665938
+      },
+      {
+        "index": 141,
+        "case_id": "targeted_split--split-n128-k19",
+        "ratio": 1.341997176609335
+      },
+      {
+        "index": 142,
+        "case_id": "targeted_split--split-n128-k19-mirror",
+        "ratio": 1.3572478223027844
+      },
+      {
+        "index": 143,
+        "case_id": "targeted_split--split-n128-k3",
+        "ratio": 1.3574429597478521
+      },
+      {
+        "index": 144,
+        "case_id": "targeted_split--split-n128-k3-mirror",
+        "ratio": 1.3520239857994796
+      },
+      {
+        "index": 145,
+        "case_id": "targeted_split--split-n128-k7",
+        "ratio": 1.3507505667400386
+      },
+      {
+        "index": 146,
+        "case_id": "targeted_split--split-n128-k7-mirror",
+        "ratio": 1.3521098675888938
+      },
+      {
+        "index": 147,
+        "case_id": "targeted_split--split-n129-k19",
+        "ratio": 1.353213365063527
+      },
+      {
+        "index": 148,
+        "case_id": "targeted_split--split-n129-k19-mirror",
+        "ratio": 1.351873021299125
+      },
+      {
+        "index": 149,
+        "case_id": "targeted_split--split-n129-k3",
+        "ratio": 1.3520030878813403
+      },
+      {
+        "index": 150,
+        "case_id": "targeted_split--split-n129-k3-mirror",
+        "ratio": 1.3496671466318573
+      },
+      {
+        "index": 151,
+        "case_id": "targeted_split--split-n129-k7",
+        "ratio": 1.346244274095075
+      },
+      {
+        "index": 152,
+        "case_id": "targeted_split--split-n129-k7-mirror",
+        "ratio": 1.3535871083203856
+      },
+      {
+        "index": 153,
+        "case_id": "structural--balanced-128",
+        "ratio": 1.3585824359373893
+      },
+      {
+        "index": 154,
+        "case_id": "structural--repeated-128",
+        "ratio": 1.2643507003187975
+      },
+      {
+        "index": 155,
+        "case_id": "structural--skew-128",
+        "ratio": 1.3366761331980972
+      },
+      {
+        "index": 156,
+        "case_id": "structural--balanced-129",
+        "ratio": 1.3499504792307317
+      },
+      {
+        "index": 157,
+        "case_id": "structural--repeated-129",
+        "ratio": 1.2993219069508957
+      },
+      {
+        "index": 158,
+        "case_id": "structural--skew-129",
+        "ratio": 1.3520358850248382
+      },
+      {
+        "index": 159,
+        "case_id": "structural--balanced-256",
+        "ratio": 1.2851352947829717
+      },
+      {
+        "index": 160,
+        "case_id": "structural--repeated-256",
+        "ratio": 1.1869024487549875
+      },
+      {
+        "index": 161,
+        "case_id": "structural--skew-256",
+        "ratio": 1.286468331114167
+      },
+      {
+        "index": 162,
+        "case_id": "structural--balanced-257",
+        "ratio": 1.2865809421379688
+      },
+      {
+        "index": 163,
+        "case_id": "structural--repeated-257",
+        "ratio": 1.2229582868328592
+      },
+      {
+        "index": 164,
+        "case_id": "structural--skew-257",
+        "ratio": 1.27364751542806
+      },
+      {
+        "index": 165,
+        "case_id": "structural--balanced-512",
+        "ratio": 1.1860342482284865
+      },
+      {
+        "index": 166,
+        "case_id": "structural--repeated-512",
+        "ratio": 1.040819904209883
+      },
+      {
+        "index": 167,
+        "case_id": "structural--skew-512",
+        "ratio": 1.1822131910093174
+      },
+      {
+        "index": 168,
+        "case_id": "structural--balanced-513",
+        "ratio": 1.1998611867236786
+      },
+      {
+        "index": 169,
+        "case_id": "structural--repeated-513",
+        "ratio": 1.061244189024532
+      },
+      {
+        "index": 170,
+        "case_id": "structural--skew-513",
+        "ratio": 1.190720170110608
+      },
+      {
+        "index": 171,
+        "case_id": "geometric--geometric-n32-00",
+        "ratio": 1.4410703783587584
+      },
+      {
+        "index": 172,
+        "case_id": "geometric--geometric-n32-01",
+        "ratio": 1.3638835831886307
+      },
+      {
+        "index": 173,
+        "case_id": "geometric--geometric-n32-02",
+        "ratio": 1.3654352827618748
+      },
+      {
+        "index": 174,
+        "case_id": "geometric--geometric-n32-03",
+        "ratio": 1.3589969660158125
+      },
+      {
+        "index": 175,
+        "case_id": "geometric--geometric-n32-04",
+        "ratio": 1.3619879447174088
+      },
+      {
+        "index": 176,
+        "case_id": "geometric--geometric-n32-05",
+        "ratio": 1.3702266295594652
+      },
+      {
+        "index": 177,
+        "case_id": "geometric--geometric-n32-06",
+        "ratio": 1.4261922044681603
+      },
+      {
+        "index": 178,
+        "case_id": "geometric--geometric-n32-07",
+        "ratio": 1.3790292441371579
+      },
+      {
+        "index": 179,
+        "case_id": "geometric--geometric-n32-08",
+        "ratio": 1.3700562877482463
+      },
+      {
+        "index": 180,
+        "case_id": "geometric--geometric-n32-09",
+        "ratio": 1.3549610207402552
+      },
+      {
+        "index": 181,
+        "case_id": "geometric--geometric-n32-10",
+        "ratio": 1.3883740502350457
+      },
+      {
+        "index": 182,
+        "case_id": "geometric--geometric-n32-11",
+        "ratio": 1.3826467540384029
+      },
+      {
+        "index": 183,
+        "case_id": "geometric--geometric-n32-12",
+        "ratio": 1.3643832297884906
+      },
+      {
+        "index": 184,
+        "case_id": "geometric--geometric-n32-13",
+        "ratio": 1.3787443082470172
+      },
+      {
+        "index": 185,
+        "case_id": "geometric--geometric-n32-14",
+        "ratio": 1.4344069197676081
+      },
+      {
+        "index": 186,
+        "case_id": "geometric--geometric-n32-15",
+        "ratio": 1.3571400728060317
+      },
+      {
+        "index": 187,
+        "case_id": "geometric--geometric-n32-16",
+        "ratio": 1.3292014378478665
+      },
+      {
+        "index": 188,
+        "case_id": "geometric--geometric-n32-17",
+        "ratio": 1.371653984854118
+      },
+      {
+        "index": 189,
+        "case_id": "geometric--geometric-n32-18",
+        "ratio": 1.377987134501909
+      },
+      {
+        "index": 190,
+        "case_id": "geometric--geometric-n32-19",
+        "ratio": 1.3895609540729696
+      },
+      {
+        "index": 191,
+        "case_id": "geometric--geometric-n64-00",
+        "ratio": 1.362819452112975
+      },
+      {
+        "index": 192,
+        "case_id": "geometric--geometric-n64-01",
+        "ratio": 1.3833060469888872
+      },
+      {
+        "index": 193,
+        "case_id": "geometric--geometric-n64-02",
+        "ratio": 1.3141118645907013
+      },
+      {
+        "index": 194,
+        "case_id": "geometric--geometric-n64-03",
+        "ratio": 1.3289547825868193
+      },
+      {
+        "index": 195,
+        "case_id": "geometric--geometric-n64-04",
+        "ratio": 1.3368769457431535
+      },
+      {
+        "index": 196,
+        "case_id": "geometric--geometric-n64-05",
+        "ratio": 1.3375972733446764
+      },
+      {
+        "index": 197,
+        "case_id": "geometric--geometric-n64-06",
+        "ratio": 1.3865723140302535
+      },
+      {
+        "index": 198,
+        "case_id": "geometric--geometric-n64-07",
+        "ratio": 1.3157855302667905
+      },
+      {
+        "index": 199,
+        "case_id": "geometric--geometric-n64-08",
+        "ratio": 1.3836948788337835
+      },
+      {
+        "index": 200,
+        "case_id": "geometric--geometric-n64-09",
+        "ratio": 1.3625651233012734
+      },
+      {
+        "index": 201,
+        "case_id": "geometric--geometric-n64-10",
+        "ratio": 1.3568719934071998
+      },
+      {
+        "index": 202,
+        "case_id": "geometric--geometric-n64-11",
+        "ratio": 1.3250868169788341
+      },
+      {
+        "index": 203,
+        "case_id": "geometric--geometric-n64-12",
+        "ratio": 1.3593979826360905
+      },
+      {
+        "index": 204,
+        "case_id": "geometric--geometric-n64-13",
+        "ratio": 1.3651992760090972
+      },
+      {
+        "index": 205,
+        "case_id": "geometric--geometric-n64-14",
+        "ratio": 1.3251288271404609
+      },
+      {
+        "index": 206,
+        "case_id": "geometric--geometric-n64-15",
+        "ratio": 1.3429260941025563
+      },
+      {
+        "index": 207,
+        "case_id": "geometric--geometric-n64-16",
+        "ratio": 1.3518880007671181
+      },
+      {
+        "index": 208,
+        "case_id": "geometric--geometric-n64-17",
+        "ratio": 1.3152423033946077
+      },
+      {
+        "index": 209,
+        "case_id": "geometric--geometric-n64-18",
+        "ratio": 1.3646529703465262
+      },
+      {
+        "index": 210,
+        "case_id": "geometric--geometric-n64-19",
+        "ratio": 1.3240300069898894
+      },
+      {
+        "index": 211,
+        "case_id": "geometric--geometric-n128-00",
+        "ratio": 1.2841730987050788
+      },
+      {
+        "index": 212,
+        "case_id": "geometric--geometric-n128-01",
+        "ratio": 1.3078223519622696
+      },
+      {
+        "index": 213,
+        "case_id": "geometric--geometric-n128-02",
+        "ratio": 1.3024493274664044
+      },
+      {
+        "index": 214,
+        "case_id": "geometric--geometric-n128-03",
+        "ratio": 1.3035694031556984
+      },
+      {
+        "index": 215,
+        "case_id": "geometric--geometric-n128-04",
+        "ratio": 1.3162798665344608
+      },
+      {
+        "index": 216,
+        "case_id": "geometric--geometric-n128-05",
+        "ratio": 1.301211951660593
+      },
+      {
+        "index": 217,
+        "case_id": "geometric--geometric-n128-06",
+        "ratio": 1.2824552420465496
+      },
+      {
+        "index": 218,
+        "case_id": "geometric--geometric-n128-07",
+        "ratio": 1.2897181780024785
+      },
+      {
+        "index": 219,
+        "case_id": "geometric--geometric-n128-08",
+        "ratio": 1.250639941915003
+      },
+      {
+        "index": 220,
+        "case_id": "geometric--geometric-n128-09",
+        "ratio": 1.3286810171841998
+      },
+      {
+        "index": 221,
+        "case_id": "geometric--geometric-n128-10",
+        "ratio": 1.2551280632465605
+      },
+      {
+        "index": 222,
+        "case_id": "geometric--geometric-n128-11",
+        "ratio": 1.3021750080652659
+      },
+      {
+        "index": 223,
+        "case_id": "geometric--geometric-n128-12",
+        "ratio": 1.3198691080911658
+      },
+      {
+        "index": 224,
+        "case_id": "geometric--geometric-n128-13",
+        "ratio": 1.2697704722935417
+      },
+      {
+        "index": 225,
+        "case_id": "geometric--geometric-n128-14",
+        "ratio": 1.3045320611227238
+      },
+      {
+        "index": 226,
+        "case_id": "geometric--geometric-n128-15",
+        "ratio": 1.311621489488308
+      },
+      {
+        "index": 227,
+        "case_id": "geometric--geometric-n128-16",
+        "ratio": 1.264570723951066
+      },
+      {
+        "index": 228,
+        "case_id": "geometric--geometric-n128-17",
+        "ratio": 1.325696423958534
+      },
+      {
+        "index": 229,
+        "case_id": "geometric--geometric-n128-18",
+        "ratio": 1.3136522454879445
+      },
+      {
+        "index": 230,
+        "case_id": "geometric--geometric-n128-19",
+        "ratio": 1.2988571980096089
+      },
+      {
+        "index": 231,
+        "case_id": "geometric--geometric-n256-00",
+        "ratio": 1.2593992353014876
+      },
+      {
+        "index": 232,
+        "case_id": "geometric--geometric-n256-01",
+        "ratio": 1.189362713611673
+      },
+      {
+        "index": 233,
+        "case_id": "geometric--geometric-n256-02",
+        "ratio": 1.2080978729269076
+      },
+      {
+        "index": 234,
+        "case_id": "geometric--geometric-n256-03",
+        "ratio": 1.237209805149905
+      },
+      {
+        "index": 235,
+        "case_id": "geometric--geometric-n256-04",
+        "ratio": 1.2067196257591195
+      },
+      {
+        "index": 236,
+        "case_id": "geometric--geometric-n256-05",
+        "ratio": 1.213180389102046
+      },
+      {
+        "index": 237,
+        "case_id": "geometric--geometric-n256-06",
+        "ratio": 1.2527607192119667
+      },
+      {
+        "index": 238,
+        "case_id": "geometric--geometric-n256-07",
+        "ratio": 1.1911390833432631
+      },
+      {
+        "index": 239,
+        "case_id": "geometric--geometric-n256-08",
+        "ratio": 1.2162482827927763
+      },
+      {
+        "index": 240,
+        "case_id": "geometric--geometric-n256-09",
+        "ratio": 1.2234912490519039
+      },
+      {
+        "index": 241,
+        "case_id": "geometric--geometric-n256-10",
+        "ratio": 1.2452845691745023
+      },
+      {
+        "index": 242,
+        "case_id": "geometric--geometric-n256-11",
+        "ratio": 1.216731228348034
+      },
+      {
+        "index": 243,
+        "case_id": "geometric--geometric-n256-12",
+        "ratio": 1.2194987498337733
+      },
+      {
+        "index": 244,
+        "case_id": "geometric--geometric-n256-13",
+        "ratio": 1.2442757922928136
+      },
+      {
+        "index": 245,
+        "case_id": "geometric--geometric-n256-14",
+        "ratio": 1.2045476834163242
+      },
+      {
+        "index": 246,
+        "case_id": "geometric--geometric-n256-15",
+        "ratio": 1.1971530348748383
+      },
+      {
+        "index": 247,
+        "case_id": "geometric--geometric-n256-16",
+        "ratio": 1.1914929823912763
+      },
+      {
+        "index": 248,
+        "case_id": "geometric--geometric-n256-17",
+        "ratio": 1.2263543063735496
+      },
+      {
+        "index": 249,
+        "case_id": "geometric--geometric-n256-18",
+        "ratio": 1.218237613263004
+      },
+      {
+        "index": 250,
+        "case_id": "geometric--geometric-n256-19",
+        "ratio": 1.1921421419739622
+      },
+      {
+        "index": 251,
+        "case_id": "geometric--geometric-n512-00",
+        "ratio": 1.0280048557571204
+      },
+      {
+        "index": 252,
+        "case_id": "geometric--geometric-n512-01",
+        "ratio": 0.9985398038927404
+      },
+      {
+        "index": 253,
+        "case_id": "geometric--geometric-n512-02",
+        "ratio": 0.9993961333328422
+      },
+      {
+        "index": 254,
+        "case_id": "geometric--geometric-n512-03",
+        "ratio": 1.055591593658447
+      },
+      {
+        "index": 255,
+        "case_id": "geometric--geometric-n512-04",
+        "ratio": 1.0907107568837302
+      },
+      {
+        "index": 256,
+        "case_id": "geometric--geometric-n512-05",
+        "ratio": 0.9917790737512445
+      },
+      {
+        "index": 257,
+        "case_id": "geometric--geometric-n512-06",
+        "ratio": 1.0650683170326325
+      },
+      {
+        "index": 258,
+        "case_id": "geometric--geometric-n512-07",
+        "ratio": 1.0482321884299726
+      },
+      {
+        "index": 259,
+        "case_id": "geometric--geometric-n512-08",
+        "ratio": 1.0247194665381216
+      },
+      {
+        "index": 260,
+        "case_id": "geometric--geometric-n512-09",
+        "ratio": 1.0256416604838776
+      },
+      {
+        "index": 261,
+        "case_id": "geometric--geometric-n512-10",
+        "ratio": 0.9804110590560203
+      },
+      {
+        "index": 262,
+        "case_id": "geometric--geometric-n512-11",
+        "ratio": 1.0674626974042476
+      },
+      {
+        "index": 263,
+        "case_id": "geometric--geometric-n512-12",
+        "ratio": 1.0097828624307532
+      },
+      {
+        "index": 264,
+        "case_id": "geometric--geometric-n512-13",
+        "ratio": 1.0626296464686056
+      },
+      {
+        "index": 265,
+        "case_id": "geometric--geometric-n512-14",
+        "ratio": 1.056525714834005
+      },
+      {
+        "index": 266,
+        "case_id": "geometric--geometric-n512-15",
+        "ratio": 0.9556890313634332
+      },
+      {
+        "index": 267,
+        "case_id": "geometric--geometric-n512-16",
+        "ratio": 1.04894192649406
+      },
+      {
+        "index": 268,
+        "case_id": "geometric--geometric-n512-17",
+        "ratio": 1.0296530878785994
+      },
+      {
+        "index": 269,
+        "case_id": "geometric--geometric-n512-18",
+        "ratio": 1.0334557164496507
+      },
+      {
+        "index": 270,
+        "case_id": "geometric--geometric-n512-19",
+        "ratio": 1.0480496324565818
+      },
+      {
+        "index": 271,
+        "case_id": "seeded--checked-21-32",
+        "ratio": 1.333911222067828
+      },
+      {
+        "index": 272,
+        "case_id": "seeded--checked-22-32",
+        "ratio": 1.3943343435684314
+      },
+      {
+        "index": 273,
+        "case_id": "seeded--checked-21-33",
+        "ratio": 1.3620802451294447
+      },
+      {
+        "index": 274,
+        "case_id": "seeded--checked-22-33",
+        "ratio": 1.4263844673483295
+      },
+      {
+        "index": 275,
+        "case_id": "seeded--checked-21-64",
+        "ratio": 1.330123991285277
+      },
+      {
+        "index": 276,
+        "case_id": "seeded--checked-22-64",
+        "ratio": 1.368050914934456
+      },
+      {
+        "index": 277,
+        "case_id": "seeded--checked-21-70",
+        "ratio": 1.3152046695429869
+      },
+      {
+        "index": 278,
+        "case_id": "seeded--checked-22-70",
+        "ratio": 1.283594776292404
+      },
+      {
+        "index": 279,
+        "case_id": "seeded--stress-11-128-0.05",
+        "ratio": 1.2267958567011157
+      },
+      {
+        "index": 280,
+        "case_id": "seeded--stress-11-128-0.25",
+        "ratio": 1.2429491934725994
+      },
+      {
+        "index": 281,
+        "case_id": "seeded--stress-12-128-0.05",
+        "ratio": 1.221392567915534
+      },
+      {
+        "index": 282,
+        "case_id": "seeded--stress-12-128-0.25",
+        "ratio": 1.2151112545479552
+      },
+      {
+        "index": 283,
+        "case_id": "seeded--stress-13-128-0.05",
+        "ratio": 1.2820634751253261
+      },
+      {
+        "index": 284,
+        "case_id": "seeded--stress-13-128-0.25",
+        "ratio": 1.1700196307939168
+      },
+      {
+        "index": 285,
+        "case_id": "seeded--stress-14-128-0.05",
+        "ratio": 1.3084580580269074
+      },
+      {
+        "index": 286,
+        "case_id": "seeded--stress-14-128-0.25",
+        "ratio": 1.243859638651299
+      },
+      {
+        "index": 287,
+        "case_id": "seeded--stress-11-512-0.05",
+        "ratio": 1.1376057049659942
+      },
+      {
+        "index": 288,
+        "case_id": "seeded--stress-11-512-0.25",
+        "ratio": 0.9863265859397625
+      },
+      {
+        "index": 289,
+        "case_id": "seeded--stress-12-512-0.05",
+        "ratio": 1.1649221431395775
+      },
+      {
+        "index": 290,
+        "case_id": "seeded--stress-12-512-0.25",
+        "ratio": 0.9542936873302265
+      },
+      {
+        "index": 291,
+        "case_id": "seeded--stress-13-512-0.05",
+        "ratio": 1.051502858429695
+      },
+      {
+        "index": 292,
+        "case_id": "seeded--stress-13-512-0.25",
+        "ratio": 0.8917256306181458
+      },
+      {
+        "index": 293,
+        "case_id": "seeded--stress-14-512-0.05",
+        "ratio": 1.1403926551266315
+      },
+      {
+        "index": 294,
+        "case_id": "seeded--stress-14-512-0.25",
+        "ratio": 1.013109522414322
+      },
+      {
+        "index": 295,
+        "case_id": "seeded--stress-11-513-0.05",
+        "ratio": 1.1140298501225643
+      },
+      {
+        "index": 296,
+        "case_id": "seeded--stress-11-513-0.25",
+        "ratio": 0.9644820037769606
+      },
+      {
+        "index": 297,
+        "case_id": "seeded--stress-12-513-0.05",
+        "ratio": 1.0988441376989224
+      },
+      {
+        "index": 298,
+        "case_id": "seeded--stress-12-513-0.25",
+        "ratio": 0.9316525221934092
+      },
+      {
+        "index": 299,
+        "case_id": "seeded--stress-13-513-0.05",
+        "ratio": 1.1268738123147592
+      },
+      {
+        "index": 300,
+        "case_id": "seeded--stress-13-513-0.25",
+        "ratio": 0.9467925956081323
+      },
+      {
+        "index": 301,
+        "case_id": "seeded--stress-14-513-0.05",
+        "ratio": 1.1346879927389648
+      },
+      {
+        "index": 302,
+        "case_id": "seeded--stress-14-513-0.25",
+        "ratio": 0.9622678195694182
+      }
+    ],
+    "ratio_by_n": [
+      {
+        "case_id": "common--n513-strict_flat-00",
+        "source": "common",
+        "n": 513,
+        "ratio": 1.2510808944962424
+      },
+      {
+        "case_id": "common--n513-strict_flat-00-mirror",
+        "source": "common",
+        "n": 513,
+        "ratio": 1.2694054005665938
+      },
+      {
+        "case_id": "common--n513-low_nesting_valid-00",
+        "source": "common",
+        "n": 513,
+        "ratio": 1.0608317435773817
+      },
+      {
+        "case_id": "common--n513-low_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 513,
+        "ratio": 1.0503386228899794
+      },
+      {
+        "case_id": "common--n513-low_nesting_valid-01",
+        "source": "common",
+        "n": 513,
+        "ratio": 1.064021654390085
+      },
+      {
+        "case_id": "common--n513-low_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 513,
+        "ratio": 1.0656587607648673
+      },
+      {
+        "case_id": "common--n513-medium_nesting_valid-00",
+        "source": "common",
+        "n": 513,
+        "ratio": 0.9107344738987757
+      },
+      {
+        "case_id": "common--n513-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 513,
+        "ratio": 0.8950180810707212
+      },
+      {
+        "case_id": "common--n513-medium_nesting_valid-01",
+        "source": "common",
+        "n": 513,
+        "ratio": 0.9084012445954707
+      },
+      {
+        "case_id": "common--n513-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 513,
+        "ratio": 0.8969686167178293
+      },
+      {
+        "case_id": "common--n513-nested_heavy_valid-00",
+        "source": "common",
+        "n": 513,
+        "ratio": 0.5914582997543831
+      },
+      {
+        "case_id": "common--n513-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "n": 513,
+        "ratio": 0.5905654032366995
+      },
+      {
+        "case_id": "common--n513-nested_heavy_valid-01",
+        "source": "common",
+        "n": 513,
+        "ratio": 0.5974557893632302
+      },
+      {
+        "case_id": "common--n513-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "n": 513,
+        "ratio": 0.5934878438547561
+      },
+      {
+        "case_id": "common--n512-strict_flat-00",
+        "source": "common",
+        "n": 512,
+        "ratio": 1.2545755909754321
+      },
+      {
+        "case_id": "common--n512-strict_flat-00-mirror",
+        "source": "common",
+        "n": 512,
+        "ratio": 1.266474664645345
+      },
+      {
+        "case_id": "common--n512-low_nesting_valid-00",
+        "source": "common",
+        "n": 512,
+        "ratio": 1.0784137494627917
+      },
+      {
+        "case_id": "common--n512-low_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 512,
+        "ratio": 1.070346920770173
+      },
+      {
+        "case_id": "common--n512-low_nesting_valid-01",
+        "source": "common",
+        "n": 512,
+        "ratio": 1.0701502743727647
+      },
+      {
+        "case_id": "common--n512-low_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 512,
+        "ratio": 1.0637729070444295
+      },
+      {
+        "case_id": "common--n512-medium_nesting_valid-00",
+        "source": "common",
+        "n": 512,
+        "ratio": 0.9061845444738311
+      },
+      {
+        "case_id": "common--n512-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 512,
+        "ratio": 0.8961532912541412
+      },
+      {
+        "case_id": "common--n512-medium_nesting_valid-01",
+        "source": "common",
+        "n": 512,
+        "ratio": 0.9079131891870748
+      },
+      {
+        "case_id": "common--n512-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 512,
+        "ratio": 0.9012652946058948
+      },
+      {
+        "case_id": "common--n512-nested_heavy_valid-00",
+        "source": "common",
+        "n": 512,
+        "ratio": 0.5907092936092225
+      },
+      {
+        "case_id": "common--n512-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "n": 512,
+        "ratio": 0.5902228145931654
+      },
+      {
+        "case_id": "common--n512-nested_heavy_valid-01",
+        "source": "common",
+        "n": 512,
+        "ratio": 0.5913583894485844
+      },
+      {
+        "case_id": "common--n512-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "n": 512,
+        "ratio": 0.5966850943995111
+      },
+      {
+        "case_id": "common--n257-strict_flat-00",
+        "source": "common",
+        "n": 257,
+        "ratio": 1.3526183251904915
+      },
+      {
+        "case_id": "common--n257-strict_flat-00-mirror",
+        "source": "common",
+        "n": 257,
+        "ratio": 1.3668659486025307
+      },
+      {
+        "case_id": "common--n257-low_nesting_valid-00",
+        "source": "common",
+        "n": 257,
+        "ratio": 1.2411331257125024
+      },
+      {
+        "case_id": "common--n257-low_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 257,
+        "ratio": 1.244262368179142
+      },
+      {
+        "case_id": "common--n257-low_nesting_valid-01",
+        "source": "common",
+        "n": 257,
+        "ratio": 1.20550586502086
+      },
+      {
+        "case_id": "common--n257-low_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 257,
+        "ratio": 1.2182717399527767
+      },
+      {
+        "case_id": "common--n257-medium_nesting_valid-00",
+        "source": "common",
+        "n": 257,
+        "ratio": 1.1068485825607954
+      },
+      {
+        "case_id": "common--n257-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 257,
+        "ratio": 1.1061470324408755
+      },
+      {
+        "case_id": "common--n257-medium_nesting_valid-01",
+        "source": "common",
+        "n": 257,
+        "ratio": 1.1125301309843094
+      },
+      {
+        "case_id": "common--n257-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 257,
+        "ratio": 1.112411101795781
+      },
+      {
+        "case_id": "common--n257-nested_heavy_valid-00",
+        "source": "common",
+        "n": 257,
+        "ratio": 0.7904242250236428
+      },
+      {
+        "case_id": "common--n257-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "n": 257,
+        "ratio": 0.7998686667173668
+      },
+      {
+        "case_id": "common--n257-nested_heavy_valid-01",
+        "source": "common",
+        "n": 257,
+        "ratio": 0.7965724108194417
+      },
+      {
+        "case_id": "common--n257-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "n": 257,
+        "ratio": 0.8019705399684719
+      },
+      {
+        "case_id": "common--n256-strict_flat-00",
+        "source": "common",
+        "n": 256,
+        "ratio": 1.3618459703543602
+      },
+      {
+        "case_id": "common--n256-strict_flat-00-mirror",
+        "source": "common",
+        "n": 256,
+        "ratio": 1.360833770284894
+      },
+      {
+        "case_id": "common--n256-low_nesting_valid-00",
+        "source": "common",
+        "n": 256,
+        "ratio": 1.234737209672846
+      },
+      {
+        "case_id": "common--n256-low_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 256,
+        "ratio": 1.250342759284328
+      },
+      {
+        "case_id": "common--n256-low_nesting_valid-01",
+        "source": "common",
+        "n": 256,
+        "ratio": 1.2635153696724168
+      },
+      {
+        "case_id": "common--n256-low_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 256,
+        "ratio": 1.274703668285377
+      },
+      {
+        "case_id": "common--n256-medium_nesting_valid-00",
+        "source": "common",
+        "n": 256,
+        "ratio": 1.1171408227288044
+      },
+      {
+        "case_id": "common--n256-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 256,
+        "ratio": 1.1029593775273954
+      },
+      {
+        "case_id": "common--n256-medium_nesting_valid-01",
+        "source": "common",
+        "n": 256,
+        "ratio": 1.1078822798840755
+      },
+      {
+        "case_id": "common--n256-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 256,
+        "ratio": 1.1005137659329054
+      },
+      {
+        "case_id": "common--n256-nested_heavy_valid-00",
+        "source": "common",
+        "n": 256,
+        "ratio": 0.7966452086372836
+      },
+      {
+        "case_id": "common--n256-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "n": 256,
+        "ratio": 0.7903505489773999
+      },
+      {
+        "case_id": "common--n256-nested_heavy_valid-01",
+        "source": "common",
+        "n": 256,
+        "ratio": 0.7969030516231664
+      },
+      {
+        "case_id": "common--n256-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "n": 256,
+        "ratio": 0.7994478170563153
+      },
+      {
+        "case_id": "common--n129-strict_flat-00",
+        "source": "common",
+        "n": 129,
+        "ratio": 1.4375039878917453
+      },
+      {
+        "case_id": "common--n129-strict_flat-00-mirror",
+        "source": "common",
+        "n": 129,
+        "ratio": 1.4477467092930272
+      },
+      {
+        "case_id": "common--n129-low_nesting_valid-00",
+        "source": "common",
+        "n": 129,
+        "ratio": 1.3174595245297
+      },
+      {
+        "case_id": "common--n129-low_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 129,
+        "ratio": 1.320987885938716
+      },
+      {
+        "case_id": "common--n129-low_nesting_valid-01",
+        "source": "common",
+        "n": 129,
+        "ratio": 1.3727761541722137
+      },
+      {
+        "case_id": "common--n129-low_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 129,
+        "ratio": 1.3807754542542694
+      },
+      {
+        "case_id": "common--n129-medium_nesting_valid-00",
+        "source": "common",
+        "n": 129,
+        "ratio": 1.2285338794202885
+      },
+      {
+        "case_id": "common--n129-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 129,
+        "ratio": 1.2369964005933571
+      },
+      {
+        "case_id": "common--n129-medium_nesting_valid-01",
+        "source": "common",
+        "n": 129,
+        "ratio": 1.2322036243859458
+      },
+      {
+        "case_id": "common--n129-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 129,
+        "ratio": 1.2281559941612257
+      },
+      {
+        "case_id": "common--n129-nested_heavy_valid-00",
+        "source": "common",
+        "n": 129,
+        "ratio": 0.9809294134320908
+      },
+      {
+        "case_id": "common--n129-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "n": 129,
+        "ratio": 0.9849196570183916
+      },
+      {
+        "case_id": "common--n129-nested_heavy_valid-01",
+        "source": "common",
+        "n": 129,
+        "ratio": 0.9858181035919344
+      },
+      {
+        "case_id": "common--n129-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "n": 129,
+        "ratio": 0.9878365917298974
+      },
+      {
+        "case_id": "common--n128-strict_flat-00",
+        "source": "common",
+        "n": 128,
+        "ratio": 1.4438501685339054
+      },
+      {
+        "case_id": "common--n128-strict_flat-00-mirror",
+        "source": "common",
+        "n": 128,
+        "ratio": 1.4502856751373132
+      },
+      {
+        "case_id": "common--n128-low_nesting_valid-00",
+        "source": "common",
+        "n": 128,
+        "ratio": 1.3473338804965842
+      },
+      {
+        "case_id": "common--n128-low_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 128,
+        "ratio": 1.3611315960167085
+      },
+      {
+        "case_id": "common--n128-low_nesting_valid-01",
+        "source": "common",
+        "n": 128,
+        "ratio": 1.353675683517815
+      },
+      {
+        "case_id": "common--n128-low_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 128,
+        "ratio": 1.356187424116393
+      },
+      {
+        "case_id": "common--n128-medium_nesting_valid-00",
+        "source": "common",
+        "n": 128,
+        "ratio": 1.223034989150392
+      },
+      {
+        "case_id": "common--n128-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 128,
+        "ratio": 1.228869254809401
+      },
+      {
+        "case_id": "common--n128-medium_nesting_valid-01",
+        "source": "common",
+        "n": 128,
+        "ratio": 1.2372128763542893
+      },
+      {
+        "case_id": "common--n128-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 128,
+        "ratio": 1.2351739444950518
+      },
+      {
+        "case_id": "common--n128-nested_heavy_valid-00",
+        "source": "common",
+        "n": 128,
+        "ratio": 0.9741879308966775
+      },
+      {
+        "case_id": "common--n128-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "n": 128,
+        "ratio": 0.9878409041493769
+      },
+      {
+        "case_id": "common--n128-nested_heavy_valid-01",
+        "source": "common",
+        "n": 128,
+        "ratio": 0.9868197564429585
+      },
+      {
+        "case_id": "common--n128-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "n": 128,
+        "ratio": 0.9896288090869628
+      },
+      {
+        "case_id": "common--n65-strict_flat-00",
+        "source": "common",
+        "n": 65,
+        "ratio": 1.4828083354130608
+      },
+      {
+        "case_id": "common--n65-strict_flat-00-mirror",
+        "source": "common",
+        "n": 65,
+        "ratio": 1.480687616966499
+      },
+      {
+        "case_id": "common--n65-low_nesting_valid-00",
+        "source": "common",
+        "n": 65,
+        "ratio": 1.4084830489871079
+      },
+      {
+        "case_id": "common--n65-low_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 65,
+        "ratio": 1.4114334935243062
+      },
+      {
+        "case_id": "common--n65-low_nesting_valid-01",
+        "source": "common",
+        "n": 65,
+        "ratio": 1.424932503176847
+      },
+      {
+        "case_id": "common--n65-low_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 65,
+        "ratio": 1.425140979066381
+      },
+      {
+        "case_id": "common--n65-medium_nesting_valid-00",
+        "source": "common",
+        "n": 65,
+        "ratio": 1.3150889867126012
+      },
+      {
+        "case_id": "common--n65-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 65,
+        "ratio": 1.31095301530153
+      },
+      {
+        "case_id": "common--n65-medium_nesting_valid-01",
+        "source": "common",
+        "n": 65,
+        "ratio": 1.3336314228678905
+      },
+      {
+        "case_id": "common--n65-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 65,
+        "ratio": 1.3089721130235292
+      },
+      {
+        "case_id": "common--n65-nested_heavy_valid-00",
+        "source": "common",
+        "n": 65,
+        "ratio": 1.113873432107663
+      },
+      {
+        "case_id": "common--n65-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "n": 65,
+        "ratio": 1.1121386783275578
+      },
+      {
+        "case_id": "common--n65-nested_heavy_valid-01",
+        "source": "common",
+        "n": 65,
+        "ratio": 1.1198845676323557
+      },
+      {
+        "case_id": "common--n65-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "n": 65,
+        "ratio": 1.1206884230709253
+      },
+      {
+        "case_id": "common--n64-strict_flat-00",
+        "source": "common",
+        "n": 64,
+        "ratio": 1.4739434222789878
+      },
+      {
+        "case_id": "common--n64-strict_flat-00-mirror",
+        "source": "common",
+        "n": 64,
+        "ratio": 1.4900063604282319
+      },
+      {
+        "case_id": "common--n64-low_nesting_valid-00",
+        "source": "common",
+        "n": 64,
+        "ratio": 1.4089361580992168
+      },
+      {
+        "case_id": "common--n64-low_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 64,
+        "ratio": 1.414547492890286
+      },
+      {
+        "case_id": "common--n64-low_nesting_valid-01",
+        "source": "common",
+        "n": 64,
+        "ratio": 1.4358028231927895
+      },
+      {
+        "case_id": "common--n64-low_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 64,
+        "ratio": 1.432886449088961
+      },
+      {
+        "case_id": "common--n64-medium_nesting_valid-00",
+        "source": "common",
+        "n": 64,
+        "ratio": 1.3124775585712212
+      },
+      {
+        "case_id": "common--n64-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 64,
+        "ratio": 1.3117004404746448
+      },
+      {
+        "case_id": "common--n64-medium_nesting_valid-01",
+        "source": "common",
+        "n": 64,
+        "ratio": 1.3032605679590585
+      },
+      {
+        "case_id": "common--n64-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 64,
+        "ratio": 1.3143206547077182
+      },
+      {
+        "case_id": "common--n64-nested_heavy_valid-00",
+        "source": "common",
+        "n": 64,
+        "ratio": 1.1178003359834165
+      },
+      {
+        "case_id": "common--n64-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "n": 64,
+        "ratio": 1.1114285553634433
+      },
+      {
+        "case_id": "common--n64-nested_heavy_valid-01",
+        "source": "common",
+        "n": 64,
+        "ratio": 1.0971421347249244
+      },
+      {
+        "case_id": "common--n64-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "n": 64,
+        "ratio": 1.1383478337623087
+      },
+      {
+        "case_id": "common--n33-strict_flat-00",
+        "source": "common",
+        "n": 33,
+        "ratio": 1.5087488005846696
+      },
+      {
+        "case_id": "common--n33-strict_flat-00-mirror",
+        "source": "common",
+        "n": 33,
+        "ratio": 1.5074674437494044
+      },
+      {
+        "case_id": "common--n33-low_nesting_valid-00",
+        "source": "common",
+        "n": 33,
+        "ratio": 1.4842446053304679
+      },
+      {
+        "case_id": "common--n33-low_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 33,
+        "ratio": 1.4794000538736782
+      },
+      {
+        "case_id": "common--n33-low_nesting_valid-01",
+        "source": "common",
+        "n": 33,
+        "ratio": 1.4820815314169422
+      },
+      {
+        "case_id": "common--n33-low_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 33,
+        "ratio": 1.4813122041979576
+      },
+      {
+        "case_id": "common--n33-medium_nesting_valid-00",
+        "source": "common",
+        "n": 33,
+        "ratio": 1.3635210505624913
+      },
+      {
+        "case_id": "common--n33-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 33,
+        "ratio": 1.3607600093866963
+      },
+      {
+        "case_id": "common--n33-medium_nesting_valid-01",
+        "source": "common",
+        "n": 33,
+        "ratio": 1.3572939640593256
+      },
+      {
+        "case_id": "common--n33-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 33,
+        "ratio": 1.3735321344704023
+      },
+      {
+        "case_id": "common--n33-nested_heavy_valid-00",
+        "source": "common",
+        "n": 33,
+        "ratio": 1.2141357644763293
+      },
+      {
+        "case_id": "common--n33-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "n": 33,
+        "ratio": 1.2203568334408073
+      },
+      {
+        "case_id": "common--n33-nested_heavy_valid-01",
+        "source": "common",
+        "n": 33,
+        "ratio": 1.2295950448809247
+      },
+      {
+        "case_id": "common--n33-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "n": 33,
+        "ratio": 1.2293431841648075
+      },
+      {
+        "case_id": "common--n32-strict_flat-00",
+        "source": "common",
+        "n": 32,
+        "ratio": 1.5035480072774854
+      },
+      {
+        "case_id": "common--n32-strict_flat-00-mirror",
+        "source": "common",
+        "n": 32,
+        "ratio": 1.5176088280662896
+      },
+      {
+        "case_id": "common--n32-low_nesting_valid-00",
+        "source": "common",
+        "n": 32,
+        "ratio": 1.4670409763614116
+      },
+      {
+        "case_id": "common--n32-low_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 32,
+        "ratio": 1.4829994705212506
+      },
+      {
+        "case_id": "common--n32-low_nesting_valid-01",
+        "source": "common",
+        "n": 32,
+        "ratio": 1.4837680402219349
+      },
+      {
+        "case_id": "common--n32-low_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 32,
+        "ratio": 1.4880622294707606
+      },
+      {
+        "case_id": "common--n32-medium_nesting_valid-00",
+        "source": "common",
+        "n": 32,
+        "ratio": 1.380617394765039
+      },
+      {
+        "case_id": "common--n32-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "n": 32,
+        "ratio": 1.381766416804511
+      },
+      {
+        "case_id": "common--n32-medium_nesting_valid-01",
+        "source": "common",
+        "n": 32,
+        "ratio": 1.3661105661236623
+      },
+      {
+        "case_id": "common--n32-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "n": 32,
+        "ratio": 1.3678154874539126
+      },
+      {
+        "case_id": "common--n32-nested_heavy_valid-00",
+        "source": "common",
+        "n": 32,
+        "ratio": 1.221383719288454
+      },
+      {
+        "case_id": "common--n32-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "n": 32,
+        "ratio": 1.2150077232991034
+      },
+      {
+        "case_id": "common--n32-nested_heavy_valid-01",
+        "source": "common",
+        "n": 32,
+        "ratio": 1.223466471348408
+      },
+      {
+        "case_id": "common--n32-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "n": 32,
+        "ratio": 1.2297713126984735
+      },
+      {
+        "case_id": "targeted_split--split-n128-k3",
+        "source": "targeted_split",
+        "n": 128,
+        "ratio": 1.3574429597478521
+      },
+      {
+        "case_id": "targeted_split--split-n128-k3-mirror",
+        "source": "targeted_split",
+        "n": 128,
+        "ratio": 1.3520239857994796
+      },
+      {
+        "case_id": "targeted_split--split-n128-k7",
+        "source": "targeted_split",
+        "n": 128,
+        "ratio": 1.3507505667400386
+      },
+      {
+        "case_id": "targeted_split--split-n128-k7-mirror",
+        "source": "targeted_split",
+        "n": 128,
+        "ratio": 1.3521098675888938
+      },
+      {
+        "case_id": "targeted_split--split-n128-k19",
+        "source": "targeted_split",
+        "n": 128,
+        "ratio": 1.341997176609335
+      },
+      {
+        "case_id": "targeted_split--split-n128-k19-mirror",
+        "source": "targeted_split",
+        "n": 128,
+        "ratio": 1.3572478223027844
+      },
+      {
+        "case_id": "targeted_split--split-n129-k3",
+        "source": "targeted_split",
+        "n": 129,
+        "ratio": 1.3520030878813403
+      },
+      {
+        "case_id": "targeted_split--split-n129-k3-mirror",
+        "source": "targeted_split",
+        "n": 129,
+        "ratio": 1.3496671466318573
+      },
+      {
+        "case_id": "targeted_split--split-n129-k7",
+        "source": "targeted_split",
+        "n": 129,
+        "ratio": 1.346244274095075
+      },
+      {
+        "case_id": "targeted_split--split-n129-k7-mirror",
+        "source": "targeted_split",
+        "n": 129,
+        "ratio": 1.3535871083203856
+      },
+      {
+        "case_id": "targeted_split--split-n129-k19",
+        "source": "targeted_split",
+        "n": 129,
+        "ratio": 1.353213365063527
+      },
+      {
+        "case_id": "targeted_split--split-n129-k19-mirror",
+        "source": "targeted_split",
+        "n": 129,
+        "ratio": 1.351873021299125
+      },
+      {
+        "case_id": "structural--balanced-128",
+        "source": "structural",
+        "n": 128,
+        "ratio": 1.3585824359373893
+      },
+      {
+        "case_id": "structural--skew-128",
+        "source": "structural",
+        "n": 128,
+        "ratio": 1.3366761331980972
+      },
+      {
+        "case_id": "structural--repeated-128",
+        "source": "structural",
+        "n": 128,
+        "ratio": 1.2643507003187975
+      },
+      {
+        "case_id": "structural--balanced-129",
+        "source": "structural",
+        "n": 129,
+        "ratio": 1.3499504792307317
+      },
+      {
+        "case_id": "structural--skew-129",
+        "source": "structural",
+        "n": 129,
+        "ratio": 1.3520358850248382
+      },
+      {
+        "case_id": "structural--repeated-129",
+        "source": "structural",
+        "n": 129,
+        "ratio": 1.2993219069508957
+      },
+      {
+        "case_id": "structural--balanced-256",
+        "source": "structural",
+        "n": 256,
+        "ratio": 1.2851352947829717
+      },
+      {
+        "case_id": "structural--skew-256",
+        "source": "structural",
+        "n": 256,
+        "ratio": 1.286468331114167
+      },
+      {
+        "case_id": "structural--repeated-256",
+        "source": "structural",
+        "n": 256,
+        "ratio": 1.1869024487549875
+      },
+      {
+        "case_id": "structural--balanced-257",
+        "source": "structural",
+        "n": 257,
+        "ratio": 1.2865809421379688
+      },
+      {
+        "case_id": "structural--skew-257",
+        "source": "structural",
+        "n": 257,
+        "ratio": 1.27364751542806
+      },
+      {
+        "case_id": "structural--repeated-257",
+        "source": "structural",
+        "n": 257,
+        "ratio": 1.2229582868328592
+      },
+      {
+        "case_id": "structural--balanced-512",
+        "source": "structural",
+        "n": 512,
+        "ratio": 1.1860342482284865
+      },
+      {
+        "case_id": "structural--skew-512",
+        "source": "structural",
+        "n": 512,
+        "ratio": 1.1822131910093174
+      },
+      {
+        "case_id": "structural--repeated-512",
+        "source": "structural",
+        "n": 512,
+        "ratio": 1.040819904209883
+      },
+      {
+        "case_id": "structural--balanced-513",
+        "source": "structural",
+        "n": 513,
+        "ratio": 1.1998611867236786
+      },
+      {
+        "case_id": "structural--skew-513",
+        "source": "structural",
+        "n": 513,
+        "ratio": 1.190720170110608
+      },
+      {
+        "case_id": "structural--repeated-513",
+        "source": "structural",
+        "n": 513,
+        "ratio": 1.061244189024532
+      },
+      {
+        "case_id": "geometric--geometric-n32-00",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.4410703783587584
+      },
+      {
+        "case_id": "geometric--geometric-n32-01",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.3638835831886307
+      },
+      {
+        "case_id": "geometric--geometric-n32-02",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.3654352827618748
+      },
+      {
+        "case_id": "geometric--geometric-n32-03",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.3589969660158125
+      },
+      {
+        "case_id": "geometric--geometric-n32-04",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.3619879447174088
+      },
+      {
+        "case_id": "geometric--geometric-n32-05",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.3702266295594652
+      },
+      {
+        "case_id": "geometric--geometric-n32-06",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.4261922044681603
+      },
+      {
+        "case_id": "geometric--geometric-n32-07",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.3790292441371579
+      },
+      {
+        "case_id": "geometric--geometric-n32-08",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.3700562877482463
+      },
+      {
+        "case_id": "geometric--geometric-n32-09",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.3549610207402552
+      },
+      {
+        "case_id": "geometric--geometric-n32-10",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.3883740502350457
+      },
+      {
+        "case_id": "geometric--geometric-n32-11",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.3826467540384029
+      },
+      {
+        "case_id": "geometric--geometric-n32-12",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.3643832297884906
+      },
+      {
+        "case_id": "geometric--geometric-n32-13",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.3787443082470172
+      },
+      {
+        "case_id": "geometric--geometric-n32-14",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.4344069197676081
+      },
+      {
+        "case_id": "geometric--geometric-n32-15",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.3571400728060317
+      },
+      {
+        "case_id": "geometric--geometric-n32-16",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.3292014378478665
+      },
+      {
+        "case_id": "geometric--geometric-n32-17",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.371653984854118
+      },
+      {
+        "case_id": "geometric--geometric-n32-18",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.377987134501909
+      },
+      {
+        "case_id": "geometric--geometric-n32-19",
+        "source": "geometric",
+        "n": 32,
+        "ratio": 1.3895609540729696
+      },
+      {
+        "case_id": "geometric--geometric-n64-00",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.362819452112975
+      },
+      {
+        "case_id": "geometric--geometric-n64-01",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3833060469888872
+      },
+      {
+        "case_id": "geometric--geometric-n64-02",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3141118645907013
+      },
+      {
+        "case_id": "geometric--geometric-n64-03",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3289547825868193
+      },
+      {
+        "case_id": "geometric--geometric-n64-04",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3368769457431535
+      },
+      {
+        "case_id": "geometric--geometric-n64-05",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3375972733446764
+      },
+      {
+        "case_id": "geometric--geometric-n64-06",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3865723140302535
+      },
+      {
+        "case_id": "geometric--geometric-n64-07",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3157855302667905
+      },
+      {
+        "case_id": "geometric--geometric-n64-08",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3836948788337835
+      },
+      {
+        "case_id": "geometric--geometric-n64-09",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3625651233012734
+      },
+      {
+        "case_id": "geometric--geometric-n64-10",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3568719934071998
+      },
+      {
+        "case_id": "geometric--geometric-n64-11",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3250868169788341
+      },
+      {
+        "case_id": "geometric--geometric-n64-12",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3593979826360905
+      },
+      {
+        "case_id": "geometric--geometric-n64-13",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3651992760090972
+      },
+      {
+        "case_id": "geometric--geometric-n64-14",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3251288271404609
+      },
+      {
+        "case_id": "geometric--geometric-n64-15",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3429260941025563
+      },
+      {
+        "case_id": "geometric--geometric-n64-16",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3518880007671181
+      },
+      {
+        "case_id": "geometric--geometric-n64-17",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3152423033946077
+      },
+      {
+        "case_id": "geometric--geometric-n64-18",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3646529703465262
+      },
+      {
+        "case_id": "geometric--geometric-n64-19",
+        "source": "geometric",
+        "n": 64,
+        "ratio": 1.3240300069898894
+      },
+      {
+        "case_id": "geometric--geometric-n128-00",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.2841730987050788
+      },
+      {
+        "case_id": "geometric--geometric-n128-01",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.3078223519622696
+      },
+      {
+        "case_id": "geometric--geometric-n128-02",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.3024493274664044
+      },
+      {
+        "case_id": "geometric--geometric-n128-03",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.3035694031556984
+      },
+      {
+        "case_id": "geometric--geometric-n128-04",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.3162798665344608
+      },
+      {
+        "case_id": "geometric--geometric-n128-05",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.301211951660593
+      },
+      {
+        "case_id": "geometric--geometric-n128-06",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.2824552420465496
+      },
+      {
+        "case_id": "geometric--geometric-n128-07",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.2897181780024785
+      },
+      {
+        "case_id": "geometric--geometric-n128-08",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.250639941915003
+      },
+      {
+        "case_id": "geometric--geometric-n128-09",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.3286810171841998
+      },
+      {
+        "case_id": "geometric--geometric-n128-10",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.2551280632465605
+      },
+      {
+        "case_id": "geometric--geometric-n128-11",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.3021750080652659
+      },
+      {
+        "case_id": "geometric--geometric-n128-12",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.3198691080911658
+      },
+      {
+        "case_id": "geometric--geometric-n128-13",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.2697704722935417
+      },
+      {
+        "case_id": "geometric--geometric-n128-14",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.3045320611227238
+      },
+      {
+        "case_id": "geometric--geometric-n128-15",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.311621489488308
+      },
+      {
+        "case_id": "geometric--geometric-n128-16",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.264570723951066
+      },
+      {
+        "case_id": "geometric--geometric-n128-17",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.325696423958534
+      },
+      {
+        "case_id": "geometric--geometric-n128-18",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.3136522454879445
+      },
+      {
+        "case_id": "geometric--geometric-n128-19",
+        "source": "geometric",
+        "n": 128,
+        "ratio": 1.2988571980096089
+      },
+      {
+        "case_id": "geometric--geometric-n256-00",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.2593992353014876
+      },
+      {
+        "case_id": "geometric--geometric-n256-01",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.189362713611673
+      },
+      {
+        "case_id": "geometric--geometric-n256-02",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.2080978729269076
+      },
+      {
+        "case_id": "geometric--geometric-n256-03",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.237209805149905
+      },
+      {
+        "case_id": "geometric--geometric-n256-04",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.2067196257591195
+      },
+      {
+        "case_id": "geometric--geometric-n256-05",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.213180389102046
+      },
+      {
+        "case_id": "geometric--geometric-n256-06",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.2527607192119667
+      },
+      {
+        "case_id": "geometric--geometric-n256-07",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.1911390833432631
+      },
+      {
+        "case_id": "geometric--geometric-n256-08",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.2162482827927763
+      },
+      {
+        "case_id": "geometric--geometric-n256-09",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.2234912490519039
+      },
+      {
+        "case_id": "geometric--geometric-n256-10",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.2452845691745023
+      },
+      {
+        "case_id": "geometric--geometric-n256-11",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.216731228348034
+      },
+      {
+        "case_id": "geometric--geometric-n256-12",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.2194987498337733
+      },
+      {
+        "case_id": "geometric--geometric-n256-13",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.2442757922928136
+      },
+      {
+        "case_id": "geometric--geometric-n256-14",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.2045476834163242
+      },
+      {
+        "case_id": "geometric--geometric-n256-15",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.1971530348748383
+      },
+      {
+        "case_id": "geometric--geometric-n256-16",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.1914929823912763
+      },
+      {
+        "case_id": "geometric--geometric-n256-17",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.2263543063735496
+      },
+      {
+        "case_id": "geometric--geometric-n256-18",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.218237613263004
+      },
+      {
+        "case_id": "geometric--geometric-n256-19",
+        "source": "geometric",
+        "n": 256,
+        "ratio": 1.1921421419739622
+      },
+      {
+        "case_id": "geometric--geometric-n512-00",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 1.0280048557571204
+      },
+      {
+        "case_id": "geometric--geometric-n512-01",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 0.9985398038927404
+      },
+      {
+        "case_id": "geometric--geometric-n512-02",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 0.9993961333328422
+      },
+      {
+        "case_id": "geometric--geometric-n512-03",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 1.055591593658447
+      },
+      {
+        "case_id": "geometric--geometric-n512-04",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 1.0907107568837302
+      },
+      {
+        "case_id": "geometric--geometric-n512-05",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 0.9917790737512445
+      },
+      {
+        "case_id": "geometric--geometric-n512-06",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 1.0650683170326325
+      },
+      {
+        "case_id": "geometric--geometric-n512-07",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 1.0482321884299726
+      },
+      {
+        "case_id": "geometric--geometric-n512-08",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 1.0247194665381216
+      },
+      {
+        "case_id": "geometric--geometric-n512-09",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 1.0256416604838776
+      },
+      {
+        "case_id": "geometric--geometric-n512-10",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 0.9804110590560203
+      },
+      {
+        "case_id": "geometric--geometric-n512-11",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 1.0674626974042476
+      },
+      {
+        "case_id": "geometric--geometric-n512-12",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 1.0097828624307532
+      },
+      {
+        "case_id": "geometric--geometric-n512-13",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 1.0626296464686056
+      },
+      {
+        "case_id": "geometric--geometric-n512-14",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 1.056525714834005
+      },
+      {
+        "case_id": "geometric--geometric-n512-15",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 0.9556890313634332
+      },
+      {
+        "case_id": "geometric--geometric-n512-16",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 1.04894192649406
+      },
+      {
+        "case_id": "geometric--geometric-n512-17",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 1.0296530878785994
+      },
+      {
+        "case_id": "geometric--geometric-n512-18",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 1.0334557164496507
+      },
+      {
+        "case_id": "geometric--geometric-n512-19",
+        "source": "geometric",
+        "n": 512,
+        "ratio": 1.0480496324565818
+      },
+      {
+        "case_id": "seeded--stress-11-128-0.05",
+        "source": "seeded",
+        "n": 128,
+        "ratio": 1.2267958567011157
+      },
+      {
+        "case_id": "seeded--stress-11-128-0.25",
+        "source": "seeded",
+        "n": 128,
+        "ratio": 1.2429491934725994
+      },
+      {
+        "case_id": "seeded--stress-11-512-0.05",
+        "source": "seeded",
+        "n": 512,
+        "ratio": 1.1376057049659942
+      },
+      {
+        "case_id": "seeded--stress-11-512-0.25",
+        "source": "seeded",
+        "n": 512,
+        "ratio": 0.9863265859397625
+      },
+      {
+        "case_id": "seeded--stress-11-513-0.05",
+        "source": "seeded",
+        "n": 513,
+        "ratio": 1.1140298501225643
+      },
+      {
+        "case_id": "seeded--stress-11-513-0.25",
+        "source": "seeded",
+        "n": 513,
+        "ratio": 0.9644820037769606
+      },
+      {
+        "case_id": "seeded--stress-12-128-0.05",
+        "source": "seeded",
+        "n": 128,
+        "ratio": 1.221392567915534
+      },
+      {
+        "case_id": "seeded--stress-12-128-0.25",
+        "source": "seeded",
+        "n": 128,
+        "ratio": 1.2151112545479552
+      },
+      {
+        "case_id": "seeded--stress-12-512-0.05",
+        "source": "seeded",
+        "n": 512,
+        "ratio": 1.1649221431395775
+      },
+      {
+        "case_id": "seeded--stress-12-512-0.25",
+        "source": "seeded",
+        "n": 512,
+        "ratio": 0.9542936873302265
+      },
+      {
+        "case_id": "seeded--stress-12-513-0.05",
+        "source": "seeded",
+        "n": 513,
+        "ratio": 1.0988441376989224
+      },
+      {
+        "case_id": "seeded--stress-12-513-0.25",
+        "source": "seeded",
+        "n": 513,
+        "ratio": 0.9316525221934092
+      },
+      {
+        "case_id": "seeded--stress-13-128-0.05",
+        "source": "seeded",
+        "n": 128,
+        "ratio": 1.2820634751253261
+      },
+      {
+        "case_id": "seeded--stress-13-128-0.25",
+        "source": "seeded",
+        "n": 128,
+        "ratio": 1.1700196307939168
+      },
+      {
+        "case_id": "seeded--stress-13-512-0.05",
+        "source": "seeded",
+        "n": 512,
+        "ratio": 1.051502858429695
+      },
+      {
+        "case_id": "seeded--stress-13-512-0.25",
+        "source": "seeded",
+        "n": 512,
+        "ratio": 0.8917256306181458
+      },
+      {
+        "case_id": "seeded--stress-13-513-0.05",
+        "source": "seeded",
+        "n": 513,
+        "ratio": 1.1268738123147592
+      },
+      {
+        "case_id": "seeded--stress-13-513-0.25",
+        "source": "seeded",
+        "n": 513,
+        "ratio": 0.9467925956081323
+      },
+      {
+        "case_id": "seeded--stress-14-128-0.05",
+        "source": "seeded",
+        "n": 128,
+        "ratio": 1.3084580580269074
+      },
+      {
+        "case_id": "seeded--stress-14-128-0.25",
+        "source": "seeded",
+        "n": 128,
+        "ratio": 1.243859638651299
+      },
+      {
+        "case_id": "seeded--stress-14-512-0.05",
+        "source": "seeded",
+        "n": 512,
+        "ratio": 1.1403926551266315
+      },
+      {
+        "case_id": "seeded--stress-14-512-0.25",
+        "source": "seeded",
+        "n": 512,
+        "ratio": 1.013109522414322
+      },
+      {
+        "case_id": "seeded--stress-14-513-0.05",
+        "source": "seeded",
+        "n": 513,
+        "ratio": 1.1346879927389648
+      },
+      {
+        "case_id": "seeded--stress-14-513-0.25",
+        "source": "seeded",
+        "n": 513,
+        "ratio": 0.9622678195694182
+      },
+      {
+        "case_id": "seeded--checked-21-32",
+        "source": "seeded",
+        "n": 32,
+        "ratio": 1.333911222067828
+      },
+      {
+        "case_id": "seeded--checked-21-33",
+        "source": "seeded",
+        "n": 33,
+        "ratio": 1.3620802451294447
+      },
+      {
+        "case_id": "seeded--checked-21-64",
+        "source": "seeded",
+        "n": 64,
+        "ratio": 1.330123991285277
+      },
+      {
+        "case_id": "seeded--checked-21-70",
+        "source": "seeded",
+        "n": 70,
+        "ratio": 1.3152046695429869
+      },
+      {
+        "case_id": "seeded--checked-22-32",
+        "source": "seeded",
+        "n": 32,
+        "ratio": 1.3943343435684314
+      },
+      {
+        "case_id": "seeded--checked-22-33",
+        "source": "seeded",
+        "n": 33,
+        "ratio": 1.4263844673483295
+      },
+      {
+        "case_id": "seeded--checked-22-64",
+        "source": "seeded",
+        "n": 64,
+        "ratio": 1.368050914934456
+      },
+      {
+        "case_id": "seeded--checked-22-70",
+        "source": "seeded",
+        "n": 70,
+        "ratio": 1.283594776292404
+      }
+    ],
+    "values_for": [
+      {
+        "case_id": "targeted_split--split-n128-k3",
+        "n": 128,
+        "shape": "targeted",
+        "mirror": false,
+        "smaller_side_k": 3,
+        "ratio": 1.3574429597478521
+      },
+      {
+        "case_id": "targeted_split--split-n128-k3-mirror",
+        "n": 128,
+        "shape": "targeted",
+        "mirror": true,
+        "smaller_side_k": 3,
+        "ratio": 1.3520239857994796
+      },
+      {
+        "case_id": "targeted_split--split-n128-k7",
+        "n": 128,
+        "shape": "targeted",
+        "mirror": false,
+        "smaller_side_k": 7,
+        "ratio": 1.3507505667400386
+      },
+      {
+        "case_id": "targeted_split--split-n128-k7-mirror",
+        "n": 128,
+        "shape": "targeted",
+        "mirror": true,
+        "smaller_side_k": 7,
+        "ratio": 1.3521098675888938
+      },
+      {
+        "case_id": "targeted_split--split-n128-k19",
+        "n": 128,
+        "shape": "targeted",
+        "mirror": false,
+        "smaller_side_k": 19,
+        "ratio": 1.341997176609335
+      },
+      {
+        "case_id": "targeted_split--split-n128-k19-mirror",
+        "n": 128,
+        "shape": "targeted",
+        "mirror": true,
+        "smaller_side_k": 19,
+        "ratio": 1.3572478223027844
+      },
+      {
+        "case_id": "targeted_split--split-n129-k3",
+        "n": 129,
+        "shape": "targeted",
+        "mirror": false,
+        "smaller_side_k": 3,
+        "ratio": 1.3520030878813403
+      },
+      {
+        "case_id": "targeted_split--split-n129-k3-mirror",
+        "n": 129,
+        "shape": "targeted",
+        "mirror": true,
+        "smaller_side_k": 3,
+        "ratio": 1.3496671466318573
+      },
+      {
+        "case_id": "targeted_split--split-n129-k7",
+        "n": 129,
+        "shape": "targeted",
+        "mirror": false,
+        "smaller_side_k": 7,
+        "ratio": 1.346244274095075
+      },
+      {
+        "case_id": "targeted_split--split-n129-k7-mirror",
+        "n": 129,
+        "shape": "targeted",
+        "mirror": true,
+        "smaller_side_k": 7,
+        "ratio": 1.3535871083203856
+      },
+      {
+        "case_id": "targeted_split--split-n129-k19",
+        "n": 129,
+        "shape": "targeted",
+        "mirror": false,
+        "smaller_side_k": 19,
+        "ratio": 1.353213365063527
+      },
+      {
+        "case_id": "targeted_split--split-n129-k19-mirror",
+        "n": 129,
+        "shape": "targeted",
+        "mirror": true,
+        "smaller_side_k": 19,
+        "ratio": 1.351873021299125
+      },
+      {
+        "case_id": "structural--balanced-128",
+        "n": 128,
+        "shape": "balanced",
+        "mirror": false,
+        "smaller_side_k": 30,
+        "ratio": 1.3585824359373893
+      },
+      {
+        "case_id": "structural--skew-128",
+        "n": 128,
+        "shape": "skew",
+        "mirror": false,
+        "smaller_side_k": 1,
+        "ratio": 1.3366761331980972
+      },
+      {
+        "case_id": "structural--balanced-129",
+        "n": 129,
+        "shape": "balanced",
+        "mirror": true,
+        "smaller_side_k": 30,
+        "ratio": 1.3499504792307317
+      },
+      {
+        "case_id": "structural--skew-129",
+        "n": 129,
+        "shape": "skew",
+        "mirror": true,
+        "smaller_side_k": 1,
+        "ratio": 1.3520358850248382
+      },
+      {
+        "case_id": "structural--balanced-256",
+        "n": 256,
+        "shape": "balanced",
+        "mirror": false,
+        "smaller_side_k": 62,
+        "ratio": 1.2851352947829717
+      },
+      {
+        "case_id": "structural--skew-256",
+        "n": 256,
+        "shape": "skew",
+        "mirror": false,
+        "smaller_side_k": 1,
+        "ratio": 1.286468331114167
+      },
+      {
+        "case_id": "structural--balanced-257",
+        "n": 257,
+        "shape": "balanced",
+        "mirror": true,
+        "smaller_side_k": 62,
+        "ratio": 1.2865809421379688
+      },
+      {
+        "case_id": "structural--skew-257",
+        "n": 257,
+        "shape": "skew",
+        "mirror": true,
+        "smaller_side_k": 1,
+        "ratio": 1.27364751542806
+      },
+      {
+        "case_id": "structural--balanced-512",
+        "n": 512,
+        "shape": "balanced",
+        "mirror": false,
+        "smaller_side_k": 126,
+        "ratio": 1.1860342482284865
+      },
+      {
+        "case_id": "structural--skew-512",
+        "n": 512,
+        "shape": "skew",
+        "mirror": false,
+        "smaller_side_k": 1,
+        "ratio": 1.1822131910093174
+      },
+      {
+        "case_id": "structural--balanced-513",
+        "n": 513,
+        "shape": "balanced",
+        "mirror": true,
+        "smaller_side_k": 126,
+        "ratio": 1.1998611867236786
+      },
+      {
+        "case_id": "structural--skew-513",
+        "n": 513,
+        "shape": "skew",
+        "mirror": true,
+        "smaller_side_k": 1,
+        "ratio": 1.190720170110608
+      }
+    ],
+    "split_fraction": [
+      {
+        "case_id": "common--n513-strict_flat-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.2510808944962424
+      },
+      {
+        "case_id": "common--n513-strict_flat-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.2694054005665938
+      },
+      {
+        "case_id": "common--n513-low_nesting_valid-00",
+        "source": "common",
+        "S_i": 56,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.0608317435773817
+      },
+      {
+        "case_id": "common--n513-low_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 56,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.0503386228899794
+      },
+      {
+        "case_id": "common--n513-low_nesting_valid-01",
+        "source": "common",
+        "S_i": 56,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.064021654390085
+      },
+      {
+        "case_id": "common--n513-low_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 56,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.0656587607648673
+      },
+      {
+        "case_id": "common--n513-medium_nesting_valid-00",
+        "source": "common",
+        "S_i": 192,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.9107344738987757
+      },
+      {
+        "case_id": "common--n513-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 192,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.8950180810707212
+      },
+      {
+        "case_id": "common--n513-medium_nesting_valid-01",
+        "source": "common",
+        "S_i": 190,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.9084012445954707
+      },
+      {
+        "case_id": "common--n513-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 190,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.8969686167178293
+      },
+      {
+        "case_id": "common--n513-nested_heavy_valid-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 0.5914582997543831
+      },
+      {
+        "case_id": "common--n513-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 0.5905654032366995
+      },
+      {
+        "case_id": "common--n513-nested_heavy_valid-01",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.5974557893632302
+      },
+      {
+        "case_id": "common--n513-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.5934878438547561
+      },
+      {
+        "case_id": "common--n512-strict_flat-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.2545755909754321
+      },
+      {
+        "case_id": "common--n512-strict_flat-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.266474664645345
+      },
+      {
+        "case_id": "common--n512-low_nesting_valid-00",
+        "source": "common",
+        "S_i": 56,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.0784137494627917
+      },
+      {
+        "case_id": "common--n512-low_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 56,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.070346920770173
+      },
+      {
+        "case_id": "common--n512-low_nesting_valid-01",
+        "source": "common",
+        "S_i": 56,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.0701502743727647
+      },
+      {
+        "case_id": "common--n512-low_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 56,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.0637729070444295
+      },
+      {
+        "case_id": "common--n512-medium_nesting_valid-00",
+        "source": "common",
+        "S_i": 190,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.9061845444738311
+      },
+      {
+        "case_id": "common--n512-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 190,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.8961532912541412
+      },
+      {
+        "case_id": "common--n512-medium_nesting_valid-01",
+        "source": "common",
+        "S_i": 190,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.9079131891870748
+      },
+      {
+        "case_id": "common--n512-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 190,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.9012652946058948
+      },
+      {
+        "case_id": "common--n512-nested_heavy_valid-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 0.5907092936092225
+      },
+      {
+        "case_id": "common--n512-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 0.5902228145931654
+      },
+      {
+        "case_id": "common--n512-nested_heavy_valid-01",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.5913583894485844
+      },
+      {
+        "case_id": "common--n512-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.5966850943995111
+      },
+      {
+        "case_id": "common--n257-strict_flat-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.3526183251904915
+      },
+      {
+        "case_id": "common--n257-strict_flat-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.3668659486025307
+      },
+      {
+        "case_id": "common--n257-low_nesting_valid-00",
+        "source": "common",
+        "S_i": 28,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.2411331257125024
+      },
+      {
+        "case_id": "common--n257-low_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 28,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.244262368179142
+      },
+      {
+        "case_id": "common--n257-low_nesting_valid-01",
+        "source": "common",
+        "S_i": 28,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.20550586502086
+      },
+      {
+        "case_id": "common--n257-low_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 28,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.2182717399527767
+      },
+      {
+        "case_id": "common--n257-medium_nesting_valid-00",
+        "source": "common",
+        "S_i": 94,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.1068485825607954
+      },
+      {
+        "case_id": "common--n257-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 94,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.1061470324408755
+      },
+      {
+        "case_id": "common--n257-medium_nesting_valid-01",
+        "source": "common",
+        "S_i": 94,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.1125301309843094
+      },
+      {
+        "case_id": "common--n257-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 94,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.112411101795781
+      },
+      {
+        "case_id": "common--n257-nested_heavy_valid-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 0.7904242250236428
+      },
+      {
+        "case_id": "common--n257-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 0.7998686667173668
+      },
+      {
+        "case_id": "common--n257-nested_heavy_valid-01",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.7965724108194417
+      },
+      {
+        "case_id": "common--n257-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.8019705399684719
+      },
+      {
+        "case_id": "common--n256-strict_flat-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.3618459703543602
+      },
+      {
+        "case_id": "common--n256-strict_flat-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.360833770284894
+      },
+      {
+        "case_id": "common--n256-low_nesting_valid-00",
+        "source": "common",
+        "S_i": 28,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.234737209672846
+      },
+      {
+        "case_id": "common--n256-low_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 28,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.250342759284328
+      },
+      {
+        "case_id": "common--n256-low_nesting_valid-01",
+        "source": "common",
+        "S_i": 27,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.2635153696724168
+      },
+      {
+        "case_id": "common--n256-low_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 27,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.274703668285377
+      },
+      {
+        "case_id": "common--n256-medium_nesting_valid-00",
+        "source": "common",
+        "S_i": 96,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.1171408227288044
+      },
+      {
+        "case_id": "common--n256-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 96,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.1029593775273954
+      },
+      {
+        "case_id": "common--n256-medium_nesting_valid-01",
+        "source": "common",
+        "S_i": 94,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.1078822798840755
+      },
+      {
+        "case_id": "common--n256-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 94,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.1005137659329054
+      },
+      {
+        "case_id": "common--n256-nested_heavy_valid-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 0.7966452086372836
+      },
+      {
+        "case_id": "common--n256-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 0.7903505489773999
+      },
+      {
+        "case_id": "common--n256-nested_heavy_valid-01",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.7969030516231664
+      },
+      {
+        "case_id": "common--n256-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.7994478170563153
+      },
+      {
+        "case_id": "common--n129-strict_flat-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.4375039878917453
+      },
+      {
+        "case_id": "common--n129-strict_flat-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.4477467092930272
+      },
+      {
+        "case_id": "common--n129-low_nesting_valid-00",
+        "source": "common",
+        "S_i": 14,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3174595245297
+      },
+      {
+        "case_id": "common--n129-low_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 14,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.320987885938716
+      },
+      {
+        "case_id": "common--n129-low_nesting_valid-01",
+        "source": "common",
+        "S_i": 14,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3727761541722137
+      },
+      {
+        "case_id": "common--n129-low_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 14,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3807754542542694
+      },
+      {
+        "case_id": "common--n129-medium_nesting_valid-00",
+        "source": "common",
+        "S_i": 48,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.2285338794202885
+      },
+      {
+        "case_id": "common--n129-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 48,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.2369964005933571
+      },
+      {
+        "case_id": "common--n129-medium_nesting_valid-01",
+        "source": "common",
+        "S_i": 46,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.2322036243859458
+      },
+      {
+        "case_id": "common--n129-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 46,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.2281559941612257
+      },
+      {
+        "case_id": "common--n129-nested_heavy_valid-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 0.9809294134320908
+      },
+      {
+        "case_id": "common--n129-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 0.9849196570183916
+      },
+      {
+        "case_id": "common--n129-nested_heavy_valid-01",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.9858181035919344
+      },
+      {
+        "case_id": "common--n129-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.9878365917298974
+      },
+      {
+        "case_id": "common--n128-strict_flat-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.4438501685339054
+      },
+      {
+        "case_id": "common--n128-strict_flat-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.4502856751373132
+      },
+      {
+        "case_id": "common--n128-low_nesting_valid-00",
+        "source": "common",
+        "S_i": 14,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3473338804965842
+      },
+      {
+        "case_id": "common--n128-low_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 14,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3611315960167085
+      },
+      {
+        "case_id": "common--n128-low_nesting_valid-01",
+        "source": "common",
+        "S_i": 13,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.353675683517815
+      },
+      {
+        "case_id": "common--n128-low_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 13,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.356187424116393
+      },
+      {
+        "case_id": "common--n128-medium_nesting_valid-00",
+        "source": "common",
+        "S_i": 46,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.223034989150392
+      },
+      {
+        "case_id": "common--n128-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 46,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.228869254809401
+      },
+      {
+        "case_id": "common--n128-medium_nesting_valid-01",
+        "source": "common",
+        "S_i": 46,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.2372128763542893
+      },
+      {
+        "case_id": "common--n128-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 46,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.2351739444950518
+      },
+      {
+        "case_id": "common--n128-nested_heavy_valid-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 0.9741879308966775
+      },
+      {
+        "case_id": "common--n128-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 0.9878409041493769
+      },
+      {
+        "case_id": "common--n128-nested_heavy_valid-01",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.9868197564429585
+      },
+      {
+        "case_id": "common--n128-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 0.9896288090869628
+      },
+      {
+        "case_id": "common--n65-strict_flat-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.4828083354130608
+      },
+      {
+        "case_id": "common--n65-strict_flat-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.480687616966499
+      },
+      {
+        "case_id": "common--n65-low_nesting_valid-00",
+        "source": "common",
+        "S_i": 6,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.4084830489871079
+      },
+      {
+        "case_id": "common--n65-low_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 6,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.4114334935243062
+      },
+      {
+        "case_id": "common--n65-low_nesting_valid-01",
+        "source": "common",
+        "S_i": 6,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.424932503176847
+      },
+      {
+        "case_id": "common--n65-low_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 6,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.425140979066381
+      },
+      {
+        "case_id": "common--n65-medium_nesting_valid-00",
+        "source": "common",
+        "S_i": 24,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3150889867126012
+      },
+      {
+        "case_id": "common--n65-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 24,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.31095301530153
+      },
+      {
+        "case_id": "common--n65-medium_nesting_valid-01",
+        "source": "common",
+        "S_i": 24,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3336314228678905
+      },
+      {
+        "case_id": "common--n65-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 24,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3089721130235292
+      },
+      {
+        "case_id": "common--n65-nested_heavy_valid-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.113873432107663
+      },
+      {
+        "case_id": "common--n65-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.1121386783275578
+      },
+      {
+        "case_id": "common--n65-nested_heavy_valid-01",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.1198845676323557
+      },
+      {
+        "case_id": "common--n65-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.1206884230709253
+      },
+      {
+        "case_id": "common--n64-strict_flat-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.4739434222789878
+      },
+      {
+        "case_id": "common--n64-strict_flat-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.4900063604282319
+      },
+      {
+        "case_id": "common--n64-low_nesting_valid-00",
+        "source": "common",
+        "S_i": 6,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.4089361580992168
+      },
+      {
+        "case_id": "common--n64-low_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 6,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.414547492890286
+      },
+      {
+        "case_id": "common--n64-low_nesting_valid-01",
+        "source": "common",
+        "S_i": 6,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.4358028231927895
+      },
+      {
+        "case_id": "common--n64-low_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 6,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.432886449088961
+      },
+      {
+        "case_id": "common--n64-medium_nesting_valid-00",
+        "source": "common",
+        "S_i": 22,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3124775585712212
+      },
+      {
+        "case_id": "common--n64-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 22,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3117004404746448
+      },
+      {
+        "case_id": "common--n64-medium_nesting_valid-01",
+        "source": "common",
+        "S_i": 22,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3032605679590585
+      },
+      {
+        "case_id": "common--n64-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 22,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3143206547077182
+      },
+      {
+        "case_id": "common--n64-nested_heavy_valid-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.1178003359834165
+      },
+      {
+        "case_id": "common--n64-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.1114285553634433
+      },
+      {
+        "case_id": "common--n64-nested_heavy_valid-01",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.0971421347249244
+      },
+      {
+        "case_id": "common--n64-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.1383478337623087
+      },
+      {
+        "case_id": "common--n33-strict_flat-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.5087488005846696
+      },
+      {
+        "case_id": "common--n33-strict_flat-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.5074674437494044
+      },
+      {
+        "case_id": "common--n33-low_nesting_valid-00",
+        "source": "common",
+        "S_i": 2,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.4842446053304679
+      },
+      {
+        "case_id": "common--n33-low_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 2,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.4794000538736782
+      },
+      {
+        "case_id": "common--n33-low_nesting_valid-01",
+        "source": "common",
+        "S_i": 2,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.4820815314169422
+      },
+      {
+        "case_id": "common--n33-low_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 2,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.4813122041979576
+      },
+      {
+        "case_id": "common--n33-medium_nesting_valid-00",
+        "source": "common",
+        "S_i": 10,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3635210505624913
+      },
+      {
+        "case_id": "common--n33-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 10,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3607600093866963
+      },
+      {
+        "case_id": "common--n33-medium_nesting_valid-01",
+        "source": "common",
+        "S_i": 10,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3572939640593256
+      },
+      {
+        "case_id": "common--n33-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 10,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3735321344704023
+      },
+      {
+        "case_id": "common--n33-nested_heavy_valid-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.2141357644763293
+      },
+      {
+        "case_id": "common--n33-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.2203568334408073
+      },
+      {
+        "case_id": "common--n33-nested_heavy_valid-01",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.2295950448809247
+      },
+      {
+        "case_id": "common--n33-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.2293431841648075
+      },
+      {
+        "case_id": "common--n32-strict_flat-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.5035480072774854
+      },
+      {
+        "case_id": "common--n32-strict_flat-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.5176088280662896
+      },
+      {
+        "case_id": "common--n32-low_nesting_valid-00",
+        "source": "common",
+        "S_i": 2,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.4670409763614116
+      },
+      {
+        "case_id": "common--n32-low_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 2,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.4829994705212506
+      },
+      {
+        "case_id": "common--n32-low_nesting_valid-01",
+        "source": "common",
+        "S_i": 2,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.4837680402219349
+      },
+      {
+        "case_id": "common--n32-low_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 2,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.4880622294707606
+      },
+      {
+        "case_id": "common--n32-medium_nesting_valid-00",
+        "source": "common",
+        "S_i": 12,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.380617394765039
+      },
+      {
+        "case_id": "common--n32-medium_nesting_valid-00-mirror",
+        "source": "common",
+        "S_i": 12,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.381766416804511
+      },
+      {
+        "case_id": "common--n32-medium_nesting_valid-01",
+        "source": "common",
+        "S_i": 12,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3661105661236623
+      },
+      {
+        "case_id": "common--n32-medium_nesting_valid-01-mirror",
+        "source": "common",
+        "S_i": 12,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3678154874539126
+      },
+      {
+        "case_id": "common--n32-nested_heavy_valid-00",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.221383719288454
+      },
+      {
+        "case_id": "common--n32-nested_heavy_valid-00-mirror",
+        "source": "common",
+        "S_i": 0,
+        "I_i": 0,
+        "p_i": null,
+        "ratio": 1.2150077232991034
+      },
+      {
+        "case_id": "common--n32-nested_heavy_valid-01",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.223466471348408
+      },
+      {
+        "case_id": "common--n32-nested_heavy_valid-01-mirror",
+        "source": "common",
+        "S_i": 1,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.2297713126984735
+      },
+      {
+        "case_id": "targeted_split--split-n128-k3",
+        "source": "targeted_split",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.3574429597478521
+      },
+      {
+        "case_id": "targeted_split--split-n128-k3-mirror",
+        "source": "targeted_split",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.3520239857994796
+      },
+      {
+        "case_id": "targeted_split--split-n128-k7",
+        "source": "targeted_split",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.3507505667400386
+      },
+      {
+        "case_id": "targeted_split--split-n128-k7-mirror",
+        "source": "targeted_split",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.3521098675888938
+      },
+      {
+        "case_id": "targeted_split--split-n128-k19",
+        "source": "targeted_split",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.341997176609335
+      },
+      {
+        "case_id": "targeted_split--split-n128-k19-mirror",
+        "source": "targeted_split",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.3572478223027844
+      },
+      {
+        "case_id": "targeted_split--split-n129-k3",
+        "source": "targeted_split",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.3520030878813403
+      },
+      {
+        "case_id": "targeted_split--split-n129-k3-mirror",
+        "source": "targeted_split",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.3496671466318573
+      },
+      {
+        "case_id": "targeted_split--split-n129-k7",
+        "source": "targeted_split",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.346244274095075
+      },
+      {
+        "case_id": "targeted_split--split-n129-k7-mirror",
+        "source": "targeted_split",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.3535871083203856
+      },
+      {
+        "case_id": "targeted_split--split-n129-k19",
+        "source": "targeted_split",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.353213365063527
+      },
+      {
+        "case_id": "targeted_split--split-n129-k19-mirror",
+        "source": "targeted_split",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.351873021299125
+      },
+      {
+        "case_id": "structural--balanced-128",
+        "source": "structural",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.3585824359373893
+      },
+      {
+        "case_id": "structural--skew-128",
+        "source": "structural",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.3366761331980972
+      },
+      {
+        "case_id": "structural--repeated-128",
+        "source": "structural",
+        "S_i": 30,
+        "I_i": 15,
+        "p_i": 0.5,
+        "ratio": 1.2643507003187975
+      },
+      {
+        "case_id": "structural--balanced-129",
+        "source": "structural",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.3499504792307317
+      },
+      {
+        "case_id": "structural--skew-129",
+        "source": "structural",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.3520358850248382
+      },
+      {
+        "case_id": "structural--repeated-129",
+        "source": "structural",
+        "S_i": 30,
+        "I_i": 15,
+        "p_i": 0.5,
+        "ratio": 1.2993219069508957
+      },
+      {
+        "case_id": "structural--balanced-256",
+        "source": "structural",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.2851352947829717
+      },
+      {
+        "case_id": "structural--skew-256",
+        "source": "structural",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.286468331114167
+      },
+      {
+        "case_id": "structural--repeated-256",
+        "source": "structural",
+        "S_i": 62,
+        "I_i": 31,
+        "p_i": 0.5,
+        "ratio": 1.1869024487549875
+      },
+      {
+        "case_id": "structural--balanced-257",
+        "source": "structural",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.2865809421379688
+      },
+      {
+        "case_id": "structural--skew-257",
+        "source": "structural",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.27364751542806
+      },
+      {
+        "case_id": "structural--repeated-257",
+        "source": "structural",
+        "S_i": 62,
+        "I_i": 31,
+        "p_i": 0.5,
+        "ratio": 1.2229582868328592
+      },
+      {
+        "case_id": "structural--balanced-512",
+        "source": "structural",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.1860342482284865
+      },
+      {
+        "case_id": "structural--skew-512",
+        "source": "structural",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.1822131910093174
+      },
+      {
+        "case_id": "structural--repeated-512",
+        "source": "structural",
+        "S_i": 126,
+        "I_i": 63,
+        "p_i": 0.5,
+        "ratio": 1.040819904209883
+      },
+      {
+        "case_id": "structural--balanced-513",
+        "source": "structural",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.1998611867236786
+      },
+      {
+        "case_id": "structural--skew-513",
+        "source": "structural",
+        "S_i": 2,
+        "I_i": 1,
+        "p_i": 0.5,
+        "ratio": 1.190720170110608
+      },
+      {
+        "case_id": "structural--repeated-513",
+        "source": "structural",
+        "S_i": 126,
+        "I_i": 63,
+        "p_i": 0.5,
+        "ratio": 1.061244189024532
+      },
+      {
+        "case_id": "geometric--geometric-n32-00",
+        "source": "geometric",
+        "S_i": 8,
+        "I_i": 2,
+        "p_i": 0.25,
+        "ratio": 1.4410703783587584
+      },
+      {
+        "case_id": "geometric--geometric-n32-01",
+        "source": "geometric",
+        "S_i": 9,
+        "I_i": 1,
+        "p_i": 0.1111111111111111,
+        "ratio": 1.3638835831886307
+      },
+      {
+        "case_id": "geometric--geometric-n32-02",
+        "source": "geometric",
+        "S_i": 12,
+        "I_i": 2,
+        "p_i": 0.16666666666666666,
+        "ratio": 1.3654352827618748
+      },
+      {
+        "case_id": "geometric--geometric-n32-03",
+        "source": "geometric",
+        "S_i": 14,
+        "I_i": 2,
+        "p_i": 0.14285714285714285,
+        "ratio": 1.3589969660158125
+      },
+      {
+        "case_id": "geometric--geometric-n32-04",
+        "source": "geometric",
+        "S_i": 12,
+        "I_i": 1,
+        "p_i": 0.08333333333333333,
+        "ratio": 1.3619879447174088
+      },
+      {
+        "case_id": "geometric--geometric-n32-05",
+        "source": "geometric",
+        "S_i": 11,
+        "I_i": 2,
+        "p_i": 0.18181818181818182,
+        "ratio": 1.3702266295594652
+      },
+      {
+        "case_id": "geometric--geometric-n32-06",
+        "source": "geometric",
+        "S_i": 6,
+        "I_i": 1,
+        "p_i": 0.16666666666666666,
+        "ratio": 1.4261922044681603
+      },
+      {
+        "case_id": "geometric--geometric-n32-07",
+        "source": "geometric",
+        "S_i": 14,
+        "I_i": 3,
+        "p_i": 0.21428571428571427,
+        "ratio": 1.3790292441371579
+      },
+      {
+        "case_id": "geometric--geometric-n32-08",
+        "source": "geometric",
+        "S_i": 15,
+        "I_i": 2,
+        "p_i": 0.13333333333333333,
+        "ratio": 1.3700562877482463
+      },
+      {
+        "case_id": "geometric--geometric-n32-09",
+        "source": "geometric",
+        "S_i": 16,
+        "I_i": 2,
+        "p_i": 0.125,
+        "ratio": 1.3549610207402552
+      },
+      {
+        "case_id": "geometric--geometric-n32-10",
+        "source": "geometric",
+        "S_i": 8,
+        "I_i": 2,
+        "p_i": 0.25,
+        "ratio": 1.3883740502350457
+      },
+      {
+        "case_id": "geometric--geometric-n32-11",
+        "source": "geometric",
+        "S_i": 12,
+        "I_i": 3,
+        "p_i": 0.25,
+        "ratio": 1.3826467540384029
+      },
+      {
+        "case_id": "geometric--geometric-n32-12",
+        "source": "geometric",
+        "S_i": 15,
+        "I_i": 1,
+        "p_i": 0.06666666666666667,
+        "ratio": 1.3643832297884906
+      },
+      {
+        "case_id": "geometric--geometric-n32-13",
+        "source": "geometric",
+        "S_i": 17,
+        "I_i": 2,
+        "p_i": 0.11764705882352941,
+        "ratio": 1.3787443082470172
+      },
+      {
+        "case_id": "geometric--geometric-n32-14",
+        "source": "geometric",
+        "S_i": 9,
+        "I_i": 2,
+        "p_i": 0.2222222222222222,
+        "ratio": 1.4344069197676081
+      },
+      {
+        "case_id": "geometric--geometric-n32-15",
+        "source": "geometric",
+        "S_i": 16,
+        "I_i": 2,
+        "p_i": 0.125,
+        "ratio": 1.3571400728060317
+      },
+      {
+        "case_id": "geometric--geometric-n32-16",
+        "source": "geometric",
+        "S_i": 14,
+        "I_i": 1,
+        "p_i": 0.07142857142857142,
+        "ratio": 1.3292014378478665
+      },
+      {
+        "case_id": "geometric--geometric-n32-17",
+        "source": "geometric",
+        "S_i": 10,
+        "I_i": 4,
+        "p_i": 0.4,
+        "ratio": 1.371653984854118
+      },
+      {
+        "case_id": "geometric--geometric-n32-18",
+        "source": "geometric",
+        "S_i": 12,
+        "I_i": 2,
+        "p_i": 0.16666666666666666,
+        "ratio": 1.377987134501909
+      },
+      {
+        "case_id": "geometric--geometric-n32-19",
+        "source": "geometric",
+        "S_i": 11,
+        "I_i": 2,
+        "p_i": 0.18181818181818182,
+        "ratio": 1.3895609540729696
+      },
+      {
+        "case_id": "geometric--geometric-n64-00",
+        "source": "geometric",
+        "S_i": 36,
+        "I_i": 5,
+        "p_i": 0.1388888888888889,
+        "ratio": 1.362819452112975
+      },
+      {
+        "case_id": "geometric--geometric-n64-01",
+        "source": "geometric",
+        "S_i": 25,
+        "I_i": 6,
+        "p_i": 0.24,
+        "ratio": 1.3833060469888872
+      },
+      {
+        "case_id": "geometric--geometric-n64-02",
+        "source": "geometric",
+        "S_i": 18,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3141118645907013
+      },
+      {
+        "case_id": "geometric--geometric-n64-03",
+        "source": "geometric",
+        "S_i": 24,
+        "I_i": 6,
+        "p_i": 0.25,
+        "ratio": 1.3289547825868193
+      },
+      {
+        "case_id": "geometric--geometric-n64-04",
+        "source": "geometric",
+        "S_i": 18,
+        "I_i": 3,
+        "p_i": 0.16666666666666666,
+        "ratio": 1.3368769457431535
+      },
+      {
+        "case_id": "geometric--geometric-n64-05",
+        "source": "geometric",
+        "S_i": 39,
+        "I_i": 5,
+        "p_i": 0.1282051282051282,
+        "ratio": 1.3375972733446764
+      },
+      {
+        "case_id": "geometric--geometric-n64-06",
+        "source": "geometric",
+        "S_i": 16,
+        "I_i": 3,
+        "p_i": 0.1875,
+        "ratio": 1.3865723140302535
+      },
+      {
+        "case_id": "geometric--geometric-n64-07",
+        "source": "geometric",
+        "S_i": 23,
+        "I_i": 4,
+        "p_i": 0.17391304347826086,
+        "ratio": 1.3157855302667905
+      },
+      {
+        "case_id": "geometric--geometric-n64-08",
+        "source": "geometric",
+        "S_i": 22,
+        "I_i": 5,
+        "p_i": 0.22727272727272727,
+        "ratio": 1.3836948788337835
+      },
+      {
+        "case_id": "geometric--geometric-n64-09",
+        "source": "geometric",
+        "S_i": 23,
+        "I_i": 7,
+        "p_i": 0.30434782608695654,
+        "ratio": 1.3625651233012734
+      },
+      {
+        "case_id": "geometric--geometric-n64-10",
+        "source": "geometric",
+        "S_i": 24,
+        "I_i": 2,
+        "p_i": 0.08333333333333333,
+        "ratio": 1.3568719934071998
+      },
+      {
+        "case_id": "geometric--geometric-n64-11",
+        "source": "geometric",
+        "S_i": 27,
+        "I_i": 4,
+        "p_i": 0.14814814814814814,
+        "ratio": 1.3250868169788341
+      },
+      {
+        "case_id": "geometric--geometric-n64-12",
+        "source": "geometric",
+        "S_i": 18,
+        "I_i": 4,
+        "p_i": 0.2222222222222222,
+        "ratio": 1.3593979826360905
+      },
+      {
+        "case_id": "geometric--geometric-n64-13",
+        "source": "geometric",
+        "S_i": 44,
+        "I_i": 8,
+        "p_i": 0.18181818181818182,
+        "ratio": 1.3651992760090972
+      },
+      {
+        "case_id": "geometric--geometric-n64-14",
+        "source": "geometric",
+        "S_i": 30,
+        "I_i": 3,
+        "p_i": 0.1,
+        "ratio": 1.3251288271404609
+      },
+      {
+        "case_id": "geometric--geometric-n64-15",
+        "source": "geometric",
+        "S_i": 29,
+        "I_i": 5,
+        "p_i": 0.1724137931034483,
+        "ratio": 1.3429260941025563
+      },
+      {
+        "case_id": "geometric--geometric-n64-16",
+        "source": "geometric",
+        "S_i": 38,
+        "I_i": 7,
+        "p_i": 0.18421052631578946,
+        "ratio": 1.3518880007671181
+      },
+      {
+        "case_id": "geometric--geometric-n64-17",
+        "source": "geometric",
+        "S_i": 25,
+        "I_i": 3,
+        "p_i": 0.12,
+        "ratio": 1.3152423033946077
+      },
+      {
+        "case_id": "geometric--geometric-n64-18",
+        "source": "geometric",
+        "S_i": 31,
+        "I_i": 5,
+        "p_i": 0.16129032258064516,
+        "ratio": 1.3646529703465262
+      },
+      {
+        "case_id": "geometric--geometric-n64-19",
+        "source": "geometric",
+        "S_i": 29,
+        "I_i": 3,
+        "p_i": 0.10344827586206896,
+        "ratio": 1.3240300069898894
+      },
+      {
+        "case_id": "geometric--geometric-n128-00",
+        "source": "geometric",
+        "S_i": 52,
+        "I_i": 15,
+        "p_i": 0.28846153846153844,
+        "ratio": 1.2841730987050788
+      },
+      {
+        "case_id": "geometric--geometric-n128-01",
+        "source": "geometric",
+        "S_i": 68,
+        "I_i": 12,
+        "p_i": 0.17647058823529413,
+        "ratio": 1.3078223519622696
+      },
+      {
+        "case_id": "geometric--geometric-n128-02",
+        "source": "geometric",
+        "S_i": 53,
+        "I_i": 11,
+        "p_i": 0.20754716981132076,
+        "ratio": 1.3024493274664044
+      },
+      {
+        "case_id": "geometric--geometric-n128-03",
+        "source": "geometric",
+        "S_i": 52,
+        "I_i": 8,
+        "p_i": 0.15384615384615385,
+        "ratio": 1.3035694031556984
+      },
+      {
+        "case_id": "geometric--geometric-n128-04",
+        "source": "geometric",
+        "S_i": 63,
+        "I_i": 9,
+        "p_i": 0.14285714285714285,
+        "ratio": 1.3162798665344608
+      },
+      {
+        "case_id": "geometric--geometric-n128-05",
+        "source": "geometric",
+        "S_i": 66,
+        "I_i": 13,
+        "p_i": 0.19696969696969696,
+        "ratio": 1.301211951660593
+      },
+      {
+        "case_id": "geometric--geometric-n128-06",
+        "source": "geometric",
+        "S_i": 92,
+        "I_i": 12,
+        "p_i": 0.13043478260869565,
+        "ratio": 1.2824552420465496
+      },
+      {
+        "case_id": "geometric--geometric-n128-07",
+        "source": "geometric",
+        "S_i": 51,
+        "I_i": 11,
+        "p_i": 0.21568627450980393,
+        "ratio": 1.2897181780024785
+      },
+      {
+        "case_id": "geometric--geometric-n128-08",
+        "source": "geometric",
+        "S_i": 55,
+        "I_i": 6,
+        "p_i": 0.10909090909090909,
+        "ratio": 1.250639941915003
+      },
+      {
+        "case_id": "geometric--geometric-n128-09",
+        "source": "geometric",
+        "S_i": 48,
+        "I_i": 7,
+        "p_i": 0.14583333333333334,
+        "ratio": 1.3286810171841998
+      },
+      {
+        "case_id": "geometric--geometric-n128-10",
+        "source": "geometric",
+        "S_i": 56,
+        "I_i": 15,
+        "p_i": 0.26785714285714285,
+        "ratio": 1.2551280632465605
+      },
+      {
+        "case_id": "geometric--geometric-n128-11",
+        "source": "geometric",
+        "S_i": 51,
+        "I_i": 9,
+        "p_i": 0.17647058823529413,
+        "ratio": 1.3021750080652659
+      },
+      {
+        "case_id": "geometric--geometric-n128-12",
+        "source": "geometric",
+        "S_i": 56,
+        "I_i": 12,
+        "p_i": 0.21428571428571427,
+        "ratio": 1.3198691080911658
+      },
+      {
+        "case_id": "geometric--geometric-n128-13",
+        "source": "geometric",
+        "S_i": 51,
+        "I_i": 9,
+        "p_i": 0.17647058823529413,
+        "ratio": 1.2697704722935417
+      },
+      {
+        "case_id": "geometric--geometric-n128-14",
+        "source": "geometric",
+        "S_i": 53,
+        "I_i": 10,
+        "p_i": 0.18867924528301888,
+        "ratio": 1.3045320611227238
+      },
+      {
+        "case_id": "geometric--geometric-n128-15",
+        "source": "geometric",
+        "S_i": 67,
+        "I_i": 14,
+        "p_i": 0.208955223880597,
+        "ratio": 1.311621489488308
+      },
+      {
+        "case_id": "geometric--geometric-n128-16",
+        "source": "geometric",
+        "S_i": 47,
+        "I_i": 12,
+        "p_i": 0.2553191489361702,
+        "ratio": 1.264570723951066
+      },
+      {
+        "case_id": "geometric--geometric-n128-17",
+        "source": "geometric",
+        "S_i": 62,
+        "I_i": 10,
+        "p_i": 0.16129032258064516,
+        "ratio": 1.325696423958534
+      },
+      {
+        "case_id": "geometric--geometric-n128-18",
+        "source": "geometric",
+        "S_i": 73,
+        "I_i": 14,
+        "p_i": 0.1917808219178082,
+        "ratio": 1.3136522454879445
+      },
+      {
+        "case_id": "geometric--geometric-n128-19",
+        "source": "geometric",
+        "S_i": 55,
+        "I_i": 9,
+        "p_i": 0.16363636363636364,
+        "ratio": 1.2988571980096089
+      },
+      {
+        "case_id": "geometric--geometric-n256-00",
+        "source": "geometric",
+        "S_i": 146,
+        "I_i": 32,
+        "p_i": 0.2191780821917808,
+        "ratio": 1.2593992353014876
+      },
+      {
+        "case_id": "geometric--geometric-n256-01",
+        "source": "geometric",
+        "S_i": 105,
+        "I_i": 16,
+        "p_i": 0.1523809523809524,
+        "ratio": 1.189362713611673
+      },
+      {
+        "case_id": "geometric--geometric-n256-02",
+        "source": "geometric",
+        "S_i": 150,
+        "I_i": 24,
+        "p_i": 0.16,
+        "ratio": 1.2080978729269076
+      },
+      {
+        "case_id": "geometric--geometric-n256-03",
+        "source": "geometric",
+        "S_i": 118,
+        "I_i": 24,
+        "p_i": 0.2033898305084746,
+        "ratio": 1.237209805149905
+      },
+      {
+        "case_id": "geometric--geometric-n256-04",
+        "source": "geometric",
+        "S_i": 112,
+        "I_i": 23,
+        "p_i": 0.20535714285714285,
+        "ratio": 1.2067196257591195
+      },
+      {
+        "case_id": "geometric--geometric-n256-05",
+        "source": "geometric",
+        "S_i": 123,
+        "I_i": 28,
+        "p_i": 0.22764227642276422,
+        "ratio": 1.213180389102046
+      },
+      {
+        "case_id": "geometric--geometric-n256-06",
+        "source": "geometric",
+        "S_i": 131,
+        "I_i": 25,
+        "p_i": 0.19083969465648856,
+        "ratio": 1.2527607192119667
+      },
+      {
+        "case_id": "geometric--geometric-n256-07",
+        "source": "geometric",
+        "S_i": 121,
+        "I_i": 17,
+        "p_i": 0.14049586776859505,
+        "ratio": 1.1911390833432631
+      },
+      {
+        "case_id": "geometric--geometric-n256-08",
+        "source": "geometric",
+        "S_i": 138,
+        "I_i": 26,
+        "p_i": 0.18840579710144928,
+        "ratio": 1.2162482827927763
+      },
+      {
+        "case_id": "geometric--geometric-n256-09",
+        "source": "geometric",
+        "S_i": 127,
+        "I_i": 23,
+        "p_i": 0.18110236220472442,
+        "ratio": 1.2234912490519039
+      },
+      {
+        "case_id": "geometric--geometric-n256-10",
+        "source": "geometric",
+        "S_i": 116,
+        "I_i": 23,
+        "p_i": 0.19827586206896552,
+        "ratio": 1.2452845691745023
+      },
+      {
+        "case_id": "geometric--geometric-n256-11",
+        "source": "geometric",
+        "S_i": 120,
+        "I_i": 25,
+        "p_i": 0.20833333333333334,
+        "ratio": 1.216731228348034
+      },
+      {
+        "case_id": "geometric--geometric-n256-12",
+        "source": "geometric",
+        "S_i": 124,
+        "I_i": 25,
+        "p_i": 0.20161290322580644,
+        "ratio": 1.2194987498337733
+      },
+      {
+        "case_id": "geometric--geometric-n256-13",
+        "source": "geometric",
+        "S_i": 114,
+        "I_i": 24,
+        "p_i": 0.21052631578947367,
+        "ratio": 1.2442757922928136
+      },
+      {
+        "case_id": "geometric--geometric-n256-14",
+        "source": "geometric",
+        "S_i": 123,
+        "I_i": 24,
+        "p_i": 0.1951219512195122,
+        "ratio": 1.2045476834163242
+      },
+      {
+        "case_id": "geometric--geometric-n256-15",
+        "source": "geometric",
+        "S_i": 120,
+        "I_i": 28,
+        "p_i": 0.23333333333333334,
+        "ratio": 1.1971530348748383
+      },
+      {
+        "case_id": "geometric--geometric-n256-16",
+        "source": "geometric",
+        "S_i": 120,
+        "I_i": 20,
+        "p_i": 0.16666666666666666,
+        "ratio": 1.1914929823912763
+      },
+      {
+        "case_id": "geometric--geometric-n256-17",
+        "source": "geometric",
+        "S_i": 128,
+        "I_i": 21,
+        "p_i": 0.1640625,
+        "ratio": 1.2263543063735496
+      },
+      {
+        "case_id": "geometric--geometric-n256-18",
+        "source": "geometric",
+        "S_i": 116,
+        "I_i": 26,
+        "p_i": 0.22413793103448276,
+        "ratio": 1.218237613263004
+      },
+      {
+        "case_id": "geometric--geometric-n256-19",
+        "source": "geometric",
+        "S_i": 126,
+        "I_i": 20,
+        "p_i": 0.15873015873015872,
+        "ratio": 1.1921421419739622
+      },
+      {
+        "case_id": "geometric--geometric-n512-00",
+        "source": "geometric",
+        "S_i": 249,
+        "I_i": 53,
+        "p_i": 0.21285140562248997,
+        "ratio": 1.0280048557571204
+      },
+      {
+        "case_id": "geometric--geometric-n512-01",
+        "source": "geometric",
+        "S_i": 253,
+        "I_i": 42,
+        "p_i": 0.16600790513833993,
+        "ratio": 0.9985398038927404
+      },
+      {
+        "case_id": "geometric--geometric-n512-02",
+        "source": "geometric",
+        "S_i": 240,
+        "I_i": 46,
+        "p_i": 0.19166666666666668,
+        "ratio": 0.9993961333328422
+      },
+      {
+        "case_id": "geometric--geometric-n512-03",
+        "source": "geometric",
+        "S_i": 243,
+        "I_i": 51,
+        "p_i": 0.20987654320987653,
+        "ratio": 1.055591593658447
+      },
+      {
+        "case_id": "geometric--geometric-n512-04",
+        "source": "geometric",
+        "S_i": 232,
+        "I_i": 56,
+        "p_i": 0.2413793103448276,
+        "ratio": 1.0907107568837302
+      },
+      {
+        "case_id": "geometric--geometric-n512-05",
+        "source": "geometric",
+        "S_i": 215,
+        "I_i": 41,
+        "p_i": 0.19069767441860466,
+        "ratio": 0.9917790737512445
+      },
+      {
+        "case_id": "geometric--geometric-n512-06",
+        "source": "geometric",
+        "S_i": 260,
+        "I_i": 43,
+        "p_i": 0.16538461538461538,
+        "ratio": 1.0650683170326325
+      },
+      {
+        "case_id": "geometric--geometric-n512-07",
+        "source": "geometric",
+        "S_i": 235,
+        "I_i": 47,
+        "p_i": 0.2,
+        "ratio": 1.0482321884299726
+      },
+      {
+        "case_id": "geometric--geometric-n512-08",
+        "source": "geometric",
+        "S_i": 211,
+        "I_i": 44,
+        "p_i": 0.20853080568720378,
+        "ratio": 1.0247194665381216
+      },
+      {
+        "case_id": "geometric--geometric-n512-09",
+        "source": "geometric",
+        "S_i": 261,
+        "I_i": 43,
+        "p_i": 0.16475095785440613,
+        "ratio": 1.0256416604838776
+      },
+      {
+        "case_id": "geometric--geometric-n512-10",
+        "source": "geometric",
+        "S_i": 227,
+        "I_i": 48,
+        "p_i": 0.21145374449339208,
+        "ratio": 0.9804110590560203
+      },
+      {
+        "case_id": "geometric--geometric-n512-11",
+        "source": "geometric",
+        "S_i": 259,
+        "I_i": 50,
+        "p_i": 0.19305019305019305,
+        "ratio": 1.0674626974042476
+      },
+      {
+        "case_id": "geometric--geometric-n512-12",
+        "source": "geometric",
+        "S_i": 233,
+        "I_i": 49,
+        "p_i": 0.21030042918454936,
+        "ratio": 1.0097828624307532
+      },
+      {
+        "case_id": "geometric--geometric-n512-13",
+        "source": "geometric",
+        "S_i": 254,
+        "I_i": 54,
+        "p_i": 0.2125984251968504,
+        "ratio": 1.0626296464686056
+      },
+      {
+        "case_id": "geometric--geometric-n512-14",
+        "source": "geometric",
+        "S_i": 244,
+        "I_i": 37,
+        "p_i": 0.15163934426229508,
+        "ratio": 1.056525714834005
+      },
+      {
+        "case_id": "geometric--geometric-n512-15",
+        "source": "geometric",
+        "S_i": 238,
+        "I_i": 50,
+        "p_i": 0.21008403361344538,
+        "ratio": 0.9556890313634332
+      },
+      {
+        "case_id": "geometric--geometric-n512-16",
+        "source": "geometric",
+        "S_i": 226,
+        "I_i": 41,
+        "p_i": 0.18141592920353983,
+        "ratio": 1.04894192649406
+      },
+      {
+        "case_id": "geometric--geometric-n512-17",
+        "source": "geometric",
+        "S_i": 227,
+        "I_i": 51,
+        "p_i": 0.22466960352422907,
+        "ratio": 1.0296530878785994
+      },
+      {
+        "case_id": "geometric--geometric-n512-18",
+        "source": "geometric",
+        "S_i": 284,
+        "I_i": 53,
+        "p_i": 0.18661971830985916,
+        "ratio": 1.0334557164496507
+      },
+      {
+        "case_id": "geometric--geometric-n512-19",
+        "source": "geometric",
+        "S_i": 252,
+        "I_i": 56,
+        "p_i": 0.2222222222222222,
+        "ratio": 1.0480496324565818
+      },
+      {
+        "case_id": "seeded--stress-11-128-0.05",
+        "source": "seeded",
+        "S_i": 29,
+        "I_i": 2,
+        "p_i": 0.06896551724137931,
+        "ratio": 1.2267958567011157
+      },
+      {
+        "case_id": "seeded--stress-11-128-0.25",
+        "source": "seeded",
+        "S_i": 48,
+        "I_i": 5,
+        "p_i": 0.10416666666666667,
+        "ratio": 1.2429491934725994
+      },
+      {
+        "case_id": "seeded--stress-11-512-0.05",
+        "source": "seeded",
+        "S_i": 137,
+        "I_i": 9,
+        "p_i": 0.06569343065693431,
+        "ratio": 1.1376057049659942
+      },
+      {
+        "case_id": "seeded--stress-11-512-0.25",
+        "source": "seeded",
+        "S_i": 189,
+        "I_i": 22,
+        "p_i": 0.1164021164021164,
+        "ratio": 0.9863265859397625
+      },
+      {
+        "case_id": "seeded--stress-11-513-0.05",
+        "source": "seeded",
+        "S_i": 165,
+        "I_i": 11,
+        "p_i": 0.06666666666666667,
+        "ratio": 1.1140298501225643
+      },
+      {
+        "case_id": "seeded--stress-11-513-0.25",
+        "source": "seeded",
+        "S_i": 175,
+        "I_i": 19,
+        "p_i": 0.10857142857142857,
+        "ratio": 0.9644820037769606
+      },
+      {
+        "case_id": "seeded--stress-12-128-0.05",
+        "source": "seeded",
+        "S_i": 46,
+        "I_i": 2,
+        "p_i": 0.043478260869565216,
+        "ratio": 1.221392567915534
+      },
+      {
+        "case_id": "seeded--stress-12-128-0.25",
+        "source": "seeded",
+        "S_i": 41,
+        "I_i": 4,
+        "p_i": 0.0975609756097561,
+        "ratio": 1.2151112545479552
+      },
+      {
+        "case_id": "seeded--stress-12-512-0.05",
+        "source": "seeded",
+        "S_i": 122,
+        "I_i": 9,
+        "p_i": 0.07377049180327869,
+        "ratio": 1.1649221431395775
+      },
+      {
+        "case_id": "seeded--stress-12-512-0.25",
+        "source": "seeded",
+        "S_i": 146,
+        "I_i": 24,
+        "p_i": 0.1643835616438356,
+        "ratio": 0.9542936873302265
+      },
+      {
+        "case_id": "seeded--stress-12-513-0.05",
+        "source": "seeded",
+        "S_i": 104,
+        "I_i": 7,
+        "p_i": 0.0673076923076923,
+        "ratio": 1.0988441376989224
+      },
+      {
+        "case_id": "seeded--stress-12-513-0.25",
+        "source": "seeded",
+        "S_i": 193,
+        "I_i": 25,
+        "p_i": 0.12953367875647667,
+        "ratio": 0.9316525221934092
+      },
+      {
+        "case_id": "seeded--stress-13-128-0.05",
+        "source": "seeded",
+        "S_i": 34,
+        "I_i": 4,
+        "p_i": 0.11764705882352941,
+        "ratio": 1.2820634751253261
+      },
+      {
+        "case_id": "seeded--stress-13-128-0.25",
+        "source": "seeded",
+        "S_i": 43,
+        "I_i": 6,
+        "p_i": 0.13953488372093023,
+        "ratio": 1.1700196307939168
+      },
+      {
+        "case_id": "seeded--stress-13-512-0.05",
+        "source": "seeded",
+        "S_i": 135,
+        "I_i": 9,
+        "p_i": 0.06666666666666667,
+        "ratio": 1.051502858429695
+      },
+      {
+        "case_id": "seeded--stress-13-512-0.25",
+        "source": "seeded",
+        "S_i": 171,
+        "I_i": 20,
+        "p_i": 0.11695906432748537,
+        "ratio": 0.8917256306181458
+      },
+      {
+        "case_id": "seeded--stress-13-513-0.05",
+        "source": "seeded",
+        "S_i": 157,
+        "I_i": 16,
+        "p_i": 0.10191082802547771,
+        "ratio": 1.1268738123147592
+      },
+      {
+        "case_id": "seeded--stress-13-513-0.25",
+        "source": "seeded",
+        "S_i": 164,
+        "I_i": 23,
+        "p_i": 0.1402439024390244,
+        "ratio": 0.9467925956081323
+      },
+      {
+        "case_id": "seeded--stress-14-128-0.05",
+        "source": "seeded",
+        "S_i": 56,
+        "I_i": 6,
+        "p_i": 0.10714285714285714,
+        "ratio": 1.3084580580269074
+      },
+      {
+        "case_id": "seeded--stress-14-128-0.25",
+        "source": "seeded",
+        "S_i": 29,
+        "I_i": 6,
+        "p_i": 0.20689655172413793,
+        "ratio": 1.243859638651299
+      },
+      {
+        "case_id": "seeded--stress-14-512-0.05",
+        "source": "seeded",
+        "S_i": 136,
+        "I_i": 7,
+        "p_i": 0.051470588235294115,
+        "ratio": 1.1403926551266315
+      },
+      {
+        "case_id": "seeded--stress-14-512-0.25",
+        "source": "seeded",
+        "S_i": 175,
+        "I_i": 22,
+        "p_i": 0.12571428571428572,
+        "ratio": 1.013109522414322
+      },
+      {
+        "case_id": "seeded--stress-14-513-0.05",
+        "source": "seeded",
+        "S_i": 162,
+        "I_i": 9,
+        "p_i": 0.05555555555555555,
+        "ratio": 1.1346879927389648
+      },
+      {
+        "case_id": "seeded--stress-14-513-0.25",
+        "source": "seeded",
+        "S_i": 194,
+        "I_i": 24,
+        "p_i": 0.12371134020618557,
+        "ratio": 0.9622678195694182
+      },
+      {
+        "case_id": "seeded--checked-21-32",
+        "source": "seeded",
+        "S_i": 9,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.333911222067828
+      },
+      {
+        "case_id": "seeded--checked-21-33",
+        "source": "seeded",
+        "S_i": 5,
+        "I_i": 1,
+        "p_i": 0.2,
+        "ratio": 1.3620802451294447
+      },
+      {
+        "case_id": "seeded--checked-21-64",
+        "source": "seeded",
+        "S_i": 13,
+        "I_i": 2,
+        "p_i": 0.15384615384615385,
+        "ratio": 1.330123991285277
+      },
+      {
+        "case_id": "seeded--checked-21-70",
+        "source": "seeded",
+        "S_i": 22,
+        "I_i": 3,
+        "p_i": 0.13636363636363635,
+        "ratio": 1.3152046695429869
+      },
+      {
+        "case_id": "seeded--checked-22-32",
+        "source": "seeded",
+        "S_i": 3,
+        "I_i": 0,
+        "p_i": 0.0,
+        "ratio": 1.3943343435684314
+      },
+      {
+        "case_id": "seeded--checked-22-33",
+        "source": "seeded",
+        "S_i": 4,
+        "I_i": 2,
+        "p_i": 0.5,
+        "ratio": 1.4263844673483295
+      },
+      {
+        "case_id": "seeded--checked-22-64",
+        "source": "seeded",
+        "S_i": 14,
+        "I_i": 4,
+        "p_i": 0.2857142857142857,
+        "ratio": 1.368050914934456
+      },
+      {
+        "case_id": "seeded--checked-22-70",
+        "source": "seeded",
+        "S_i": 25,
+        "I_i": 4,
+        "p_i": 0.16,
+        "ratio": 1.283594776292404
+      }
+    ]
+  }
+}

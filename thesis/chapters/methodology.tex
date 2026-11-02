@@ -1,190 +1,223 @@
 \chapter{Experimental Method}
 \label{chap:methodology}
 
-\section{Study Design and Versions}
+\section{Study Design}
 \label{sec:method-positioning}
 \label{sec:method-experiment-stages}
 \label{sec:method-scope}
 
-The current ordinary-list and tree implementations have completed qualification,
-separate batch calibration and formal paired measurement. The original common
-and targeted campaigns and the November structural extension have separate
-execution identities, indexed in \cref{sec:appendix-revision-bindings}.
-The production sorting code is identical across these campaigns; the timing
-tools were extended to accept the additional dataset. The older rollback-enabled
-ordinary-list study is described in the historical section of this chapter.
+The main experiment compares ordinary lists with an uninstrumented finger
+tree on \UnifiedN{} unique inputs from five sources. The input registry,
+exclusions, reporting rules and preparation stages were fixed before formal
+sampling. Both implementations use the same public Jordan sorting core.
+Equivalence checks, qualification and separate batch calibration precede
+measurement. The results use one complete session; the earlier failed
+attempt and the decision to restart are disclosed below.
 
-\section{Current Inputs and Qualification}
+\section{Inputs and Qualification}
 \label{sec:method-qualification}
 
-Before any timing, every input was run on both backends with all state
-audits enabled; we call this step \emph{qualification}. Only inputs that
-passed qualification on both backends were measured.
+The unified registry assigns every input to a source and deduplicates its
+rank permutation in the fixed source order. It contains no duplicates.
+\UnifiedExcluded{} previously saved seeded inputs of length 1500 were excluded
+before this experiment under the resource-scope rule. No input was added or
+removed in response to the formal ratios.
 
-The common set was fixed in advance and contains 140 unique rank inputs at ten lengths:
-$32,33$, $64,65$, $128,129$, $256,257$ and $512,513$, with two strict-flat and four each of
-low, medium and heavy nesting per length. Fixed constructors, seeds, candidate
-budgets, rank deduplication and first-eligible retention preceded timing.
-All 140 cases pass both backends' qualification checks. Their 3,788 recorded splits per
-backend all have an empty output side. The common set therefore exercises
-endpoint insertion and whole-group transfer.
+\textbf{Common} contains \UnifiedCommonN{} inputs at lengths 32/33, 64/65,
+128/129, 256/257 and 512/513. At each length, fixed quotas select increasing
+strict-flat sequences, low- and medium-nesting block constructions, and
+sequences with a heavily nested suffix. Original and mirrored sequences
+remain related constructions.
 
-A separate targeted set uses the existing construction at $n=128,129$,
-$k=3,7,19$, with each direction and its mirror: twelve cases, all qualified.
-Actual traces contain twelve two-sided splits per backend, with smaller sides
-3, 7 and 19 occurring four times each. Each source has size 61 and a finite
-owner; later direct updates affect only the retained side.
-These original 152 inputs are reported as two datasets.
+\textbf{Targeted} contains \UnifiedTargetedN{} inputs at $n=128,129$, using
+\texttt{values\_for} with smaller-side parameters $k=3,7,19$ in both directions.
+The parameters were chosen to exercise interior splits, not from timing results.
 
-For each input/backend, qualification advances two independent checked instances,
-compares every completed prefix, and executes a third fresh checked replay
-at the end. Another fresh minimal call uses the intended timing configuration.
-Each output is compared to external sorting, without feeding that expectation
-into the core. This protocol is recorded as version 2 in the experiment
-archives. Compared with the earlier protocol, which reconstructed a fresh
-state at every prefix, it retains prefix comparisons but reduces repeated
-initialization.
-
-\subsection{Structural Split Extension}
 \label{sec:method-structural-extension}
+\textbf{Structural} contains \UnifiedStructuralN{} saved inputs: balanced,
+skew and repeated shapes at $128,129,256,257,512,513$. Balanced and skew share
+the targeted construction; repeated uses a separate template that splits
+previous outputs again. Even lengths use the original direction and odd
+lengths the mirror, coupling parity with direction.
 
-On November 1, a separate campaign qualified and timed all eighteen inputs
-from the earlier structural correctness study. It uses the balanced, skew and
-repeated constructions at lengths $128,129,256,257,512,513$, with exactly the
-previously saved input values. The protocol and selection were committed before
-qualification; no input was chosen or replaced on the basis of timing.
-This extension addresses the absence of interior splits in the common set
-and the single, fixed-size split in each targeted input.
+\textbf{Geometric} contains \UnifiedGeometricN{} inputs obtained by widening
+random grid trees into simple orthogonal polygons and recording the boundary
+order of intersections with a horizontal line. The grid height is fixed, and
+each polygon uses one sampled traversal start and direction. Only the even
+lengths $32,64,128,256,512$ occur.
 
-For each length pair, the balanced and skew constructions split one source
-of size 61, 125 or 253. Their smaller sides are respectively 30, 62 or 126,
-and one. Repeated constructions perform 15, 31 or 63 two-sided splits per
-input, each with smaller side one. Qualification requires these actual
-events on both backends and, for repeated cases, subsequent splits of earlier
-outputs. All eighteen inputs pass. Odd lengths use the original mirrored
-constructions, so parity and direction are coupled. These related inputs
-form a third descriptive dataset, reported separately in
-\cref{sec:results-structural-extension}.
+\textbf{Seeded} contains \UnifiedSeededN{} inputs generated by successive
+insertions into gaps allowed by the noncrossing condition, with fixed seeds,
+gap preferences and direction changes. Its measured lengths are
+$32,33,64,70,128,512,513$. Shared random-number streams and related settings
+do not constitute independent repetitions.
 
-\section{Compared Implementations and Call Scopes}
+Before timing, the instrumented and uninstrumented trees were compared on
+all registered inputs. Qualification then checked both the ordinary list and
+the uninstrumented tree. Two checked instances advanced through the same
+prefixes; a fresh checked replay and a fresh minimal call supplied additional
+checks. Expected sorted outputs were computed outside the core. This is finite
+execution evidence, not a proof of equivalence on all valid inputs.
+
+\section{Compared Configurations and Timing Scope}
 \label{sec:method-implementations}
 
-The current comparison uses the same public Jordan core with ordinary-list or
-heterogeneous-finger storage, both minimal; the tree explicitly sets
-\texttt{detailed\_work=False}. Every call initializes fresh state and recovers
-its output. Production hashes match the qualified versions; changes require renewed
-validation of the affected evidence.
+\paragraph{Configuration choice.}
+An earlier formal experiment used the instrumented tree with detailed counting
+disabled. On its \OldCommonN{} common inputs, the tree was slower throughout,
+with median tree/list ratio \OldCommonMedian{}. A separate
+\OldDiagnosticN{}-input diagnostic reduced tree medians by
+\OldDiagnosticDropLow{}--\OldDiagnosticDropHigh{}\% when field-access
+instrumentation was removed. This observation motivated a configuration that
+excludes observation machinery from the final timing comparison. It does not
+assign an additive share of total algorithm cost to instrumentation, nor
+extend the diagnostic result beyond its selected inputs. The earlier
+instrumented campaigns and diagnostic retain their original archives, indexed
+in \cref{sec:appendix-current-formal,sec:appendix-external-review}.
 
-The retained instrumentation hooks described in \cref{sec:implementation-policies}
-are inside the measured interval. The experiment compares these two concrete
-programs, including their different checks and object-access machinery.
+The uninstrumented tree is generated from the same implementation source by
+removing observation statements and wrappers and replacing tracked field
+access with ordinary field access. Algorithmic checks and data-structure
+operations remain. Preparation and compilation occur once before timing.
+Each new tree instance binds the generated methods during its constructor,
+inside the timed sorting call. The instrumented tree remains available for
+operation counts and validation, outside the formal timing samples.
+
+A subsequent constructor-only microbenchmark on the same machine used fixed
+parameters: five warm-up pairs and fifty measured pairs, with 256 retained
+instances per batch and alternating configuration order. Its median times
+were \UnifiedCtorInstrumented{}~$\mu$s per instance for the instrumented tree
+and \UnifiedCtorUninstrumented{}~$\mu$s for the uninstrumented tree. The median
+paired difference was \UnifiedCtorDifference{}~$\mu$s. These measure constructor
+paths, including automatic GC and loop/storage overhead, not pure method
+binding. Objects were released after timing. Nothing was subtracted from the
+formal sorting observations.
 
 \section{Timing, Calibration and Scheduling}
 \label{sec:method-timing}
 
-Current timing uses \nolinkurl{time.perf_counter_ns()}. The interval includes
-fresh initialization, the main loop, output recovery, the batch loop and output
-append. External comparisons, pre-batch garbage collection, compression and
-persistence are outside it. GC remains enabled, with thresholds recorded;
-necessary local checks remain enabled.
+Timing uses \nolinkurl{time.perf_counter_ns()}. Each call includes fresh
+initialization, the main loop and output recovery; the batch loop and output
+append are also inside the interval. Expected-output comparison, explicit
+pre-batch garbage collection, compression and persistence are outside it.
+Automatic GC remains enabled.
 
-Calibration tries $B=1,2,4,8,16,32,64,128$ in order, three batches per backend
-at each attempted value. It chooses the first common B for which both median
-batch durations reach 10 ms, irrespective of their ratio. All attempts and
-outputs are retained. With the calibration version, the common set selected
-B=1,2,4,8,16,32 for respectively 24,20,20,28,21,27 inputs; all twelve targeted
-inputs selected B=8. Independent reconstruction accepted both campaigns,
-within their separate 600-second budgets.
-The structural extension uses the same calibration rule and budget. It
-selected $B=1,2,4,8$ for respectively 2, 6, 6 and 4 inputs; this calibration
-also passed independent reconstruction.
+Separate calibration tries common batch sizes
+$B=1,2,4,8,16,32,64,128$ in order, using three batches per backend at each
+attempted value. It selects the first B for which both calibration medians
+reach 10~ms, without consulting the ratio. Each input's B is then held fixed.
+Qualification allows 180 seconds per input and 1800 per source; calibration
+allows 600 seconds per source. Formal limits are 120 seconds per input and
+1800 per source. Preparation completed for every source before sampling.
 
-\subsection{Scheduling and Noise}
+\subsection{Scheduling and Environment}
 \label{sec:method-scheduling}
-
-Calibration alternates the first backend by case index, candidate index and
-repeat. The executed formal protocol shuffles cases with seed
-\texttt{20261015}, uses five warm-up calls per backend and twenty paired batches
-at each predetermined B, alternating first position by case index and round. Each
-backend is first ten times. Failures stop subsequent cases; timeouts preserve
-committed batches and leave explicit unrun statuses. No outlier removal or
-speed-based input replacement is allowed.
-
-Alternating the first backend reduces fixed-position bias, while thermal and
-operating-system effects remain possible sources of noise
-\parencite{mytkowicz2009wrong}. Repetition alone does not establish adequate
-statistical power \parencite{kalibera2013benchmarking}.
-
-\subsection{Recorded Environment}
 \label{sec:method-environment}
 
-Each current archive binds source hashes, Python executable/version/flags,
-platform, CPU, RAM, power observations, GC thresholds and monotonic-clock
-metadata. Calibration and formal execution must match source and recorded
-machine/runtime settings. Tests, qualification and compilation were not run
-concurrently with calibration or formal sampling. The current formal archives
-record Apple M4/arm64, 16 GB RAM, ten logical CPUs and CPython 3.12.14.
-The original common and targeted runs record macOS 26.6 and battery at 100\%.
-The November extension records macOS 27.2 and battery at 32\%, discharging.
-Its calibration and formal run match each other, but it is a later session
-under a different operating-system version. Cross-campaign timing differences
-cannot therefore be attributed solely to the input constructions.
+One continuous session executes common, targeted, structural, geometric and
+seeded in that order. Within sources, the protocol shuffles inputs with seed
+\texttt{20261015}. Each backend receives \UnifiedWarmups{} warm-ups and
+\UnifiedRounds{} measured batches per input. First position alternates by
+input index and round, giving each backend ten first positions. No tests,
+compilation or other experiments run between sources. Outlier deletion and
+speed-based replacement are prohibited.
 
-\section{Aggregation and Statistical Units}
+The environment is Apple M4/arm64 with ten logical CPUs, 16~GiB RAM,
+macOS 27.2 and CPython 3.12.14, with optimization disabled. GC thresholds
+are 700/10/10. Calibration and formal sampling require AC power and low-power
+mode off, checked before and after each input. Sleep is inhibited during the
+session. These are discrete power observations, not continuous monitoring.
+A preceding ten-input cross-host stability diagnostic informed the choice of
+host; it was separate from this experiment and did not change its protocol.
+
+Alternating order balances first position within an input, but cannot remove
+all thermal or operating-system effects \parencite{mytkowicz2009wrong}.
+Repetition alone does not justify statistical inference
+\parencite{kalibera2013benchmarking}.
+
+\subsection{First Attempt and Restart}
+\label{sec:method-deviation}
+
+The first attempt stopped when a post-input power check recorded battery
+power during the geometric source. Common, targeted and structural had
+completed; subsequent work stopped and all partial records were retained.
+The cause and exact time of the supply change were not determined.
+
+After the failure diagnosis, the author authorized a restart from the
+beginning before any performance ratios were calculated. This was an explicit
+departure from the protocol's no-retry rule. The second attempt used the same
+inputs, batch sizes, source code and scheduling rules and completed all five
+sources. The two attempts are not joined or pooled. Archive validation
+confirms the recorded technical conditions; it does not erase the procedural
+deviation.
+
+A later, post hoc descriptive check compares the ratios of the
+\UnifiedStabilityN{} inputs in the first attempt's three complete sources.
+All \UnifiedStabilitySame{} retain the same faster backend. The absolute
+relative change $100|r_i^{(2)}/r_i^{(1)}-1|$ has median
+\UnifiedStabilityMedian{}\% and maximum \UnifiedStabilityMaximum{}\%.
+This check is outside the protocol and excluded from the main statistics.
+It describes these two sessions, without establishing equivalence or undoing
+the first failure.
+
+\section{Aggregation and Structural Descriptions}
 \label{sec:method-aggregation}
 
-The batch is the statistical unit. Dividing its duration by B gives a per-call
-duration for that batch. The protocol reports twenty such observations per
-input/backend, their median, R7-interpolated quartiles and IQR, and the paired
-ratio of backend medians. The inputs are controlled structural constructions;
-mirror pairs and related constructions are dependent. Cross-input summaries
-therefore describe these fixed datasets.
+A batch contributes one duration divided by B. For each input/backend, the
+\UnifiedRounds{} values yield a median, R7-interpolated quartiles and IQR.
+The input-level comparison is
+\[
+ r_i=\frac{\operatorname{median}_{b}(t_{i,\mathrm{tree},b}/B_i)}
+ {\operatorname{median}_{b}(t_{i,\mathrm{list},b}/B_i)}.
+\]
+A ratio below one favors the tree. Comparisons use unrounded values. Each
+unique input contributes one ratio; neither the batches nor the calls within
+them increase the number of independent inputs. Source, nesting-category and
+structural-shape summaries remain descriptive, without significance tests or
+confidence intervals over dependent constructions.
 
-\section{Experimental Records and Validation}
+For each input, $S_i$ is the number of actually performed splits in its
+primary checked qualification trace, and $I_i$ counts those with two nonempty
+outputs. The smaller side is the minimum of the two output sizes, measured
+in sibling-list pair entries. Define $p_i=I_i/S_i$ for $S_i>0$ and record NA
+otherwise. The two backends' logical traces agree. Counting one primary trace
+per input avoids multiplying events across backends, peer instances or replays.
+The parameter $k$ in the targeted, balanced and skew construction is checked
+against the actual smaller side; repeated inputs are reported separately.
+
+\section{Records and Independent Validation}
 \label{sec:method-evidence}
-
-Execution identities, source bindings and archive locations are collected in
-\cref{sec:appendix-revision-bindings}. Formal execution uses the qualified
-production code, fixed batch-size tables and required matching environment fields.
-Each archive retains the identity of the execution that produced it.
-
-Records are individually compressed and atomically committed, so termination
-preserves earlier completed batches. A manifest binds configuration, records
-and environment. Campaign wall time includes untimed checking and storage.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=.94\textwidth]{current_experiment_pipeline.pdf}
-  \caption{Evidence flow for the original common and targeted campaigns.
-  The structural extension follows the same stages. Qualification, calibration and formal
-  sampling have separate identities. The same predetermined inputs and per-input B
-  reach the samples; independent reconstruction checks each archive.}
-  \label{fig:method-formal-pipeline}
-\end{figure}
-
-\subsection{Fail-Closed Validation}
 \label{sec:method-validation}
-
-The current archive checker verifies schemas, source blobs, input identities,
-outputs, event order, sizes, owners, counters and list-ID lifetimes. A live-ID
-map checks current membership; a separate seen-ID set prevents a singleton or
-split output from reusing any retired ID. Boundary insertion keeps its live
-ID. Read-only rechecks accept both original datasets using their corresponding
-tooling, without rerunning sorting. The structural extension also passes
-independent reconstruction of qualification and measurement records.
-The measurement validator independently reconstructs candidate order, every
-attempt, the first qualifying common B and output correctness. For formal
-archives it reconstructs warm-ups, paired sample order, twenty-batch medians,
-R7 quartiles and within-input ratios. Acceptance requires all of these checks
-to pass.
-
-\section{Study Stages}
 \label{sec:method-boundaries}
 
-Qualification checks the candidate implementations, calibration fixes the
-batch sizes, and formal measurement collects the runtime samples. The formal
-runs followed the manual proof review and passed archive validation. Their
-samples supply the current performance tables.
+The preparation archive binds equivalence, qualification, calibration,
+source identities and environment. Each formal archive retains input and
+configuration identities, outputs, per-input power checks, execution order and
+individually committed compressed batches. Independent reconstruction checks
+the first qualifying B, sample order, correctness and all reported medians,
+quartiles and ratios. The second attempt contains \UnifiedBatches{} formal
+batches comprising \UnifiedCalls{} checked sorting calls.
+
+The preparation, formal and subsequent descriptive records are stored,
+respectively, in these repository directories:
+\begin{quote}\small
+\nolinkurl{docs/validation/unified_preflight_20261101/}\par
+\nolinkurl{docs/validation/unified_formal_20261101/}\par
+\nolinkurl{docs/validation/unified_followup_20261101/}
+\end{quote}
+Their original records remain unchanged. The formal archive contains both attempts, the restart
+decision, validation reports and analysis; only its complete second attempt
+supplies the main results. Source versions for the earlier studies remain
+indexed in \cref{sec:appendix-revision-bindings}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.94\textwidth]{current_experiment_pipeline.pdf}
+\caption{Preparation and formal evidence flow for the unified five-source
+comparison. The same predetermined inputs and per-input B reach formal
+sampling. Checks and evidence persistence occur outside the timed intervals.}
+\label{fig:method-formal-pipeline}
+\end{figure}
 
 \section{Historical Study: Separate Scope}
 \label{sec:method-protocol}
@@ -193,13 +226,9 @@ samples supply the current performance tables.
 \label{sec:method-reference-pipeline}
 \label{sec:method-paper-implementation}
 
-The earlier study used 60 inputs: flat, nested and ten seeded incremental
-cases at each of five even lengths 32--512. It compared Python sort, the
-oracle-backed reference pipeline and the rollback-enabled ordinary-list core,
-with five warm-ups and twenty individual calls per case/algorithm. The latter
-core paid recovery preparation even on successful calls; the reference also
-included recognition and structural analysis. Its GC-disabled timed calls,
-CPython 3.12.4, median-of-halves quartiles and separate scheduling differ from
-the current protocol. The 3,600 historical rows and full method remain bound
-to their original archive (\cref{sec:appendix-history}); they are not pooled
-with the current comparison or used to infer a rollback-removal benefit.
+The earlier rollback-enabled study compared Python sort, the oracle-backed
+reference pipeline and the ordinary-list core. Its recovery preparation,
+recognition scope, GC-disabled timing, interpreter and scheduling differ
+from the present experiment. Its records remain in the historical archive
+(\cref{sec:appendix-history}). They are not pooled with the current comparison
+or used to infer a benefit from removing rollback.
