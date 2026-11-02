@@ -9,13 +9,13 @@ The completed unified study is governed by:
 - [Preparation archive](../validation/unified_preflight_20261101/README.md)
 - [Formal attempts and documented restart](../validation/unified_formal_20261101/README.md)
 - [Fixed follow-up plan and results](../validation/unified_followup_20261101/README.md)
-- [Current manuscript revision](../thesis/unified_results_revision_20261101.md)
+- [Current manuscript revision](../thesis/appendix_b_revision_20261102.md)
 
 These protocols remain records of decisions made before measurement. The first
 formal failure and the authorized restart are recorded as a protocol deviation;
 the protocols have not been rewritten to remove that deviation.
 
-The current thesis and its pending Appendix B content update are described in
+The current thesis and its completed Appendix B content update are described in
 the [thesis README](../../thesis/README.md). This directory does not authorize
 another formal run.
 

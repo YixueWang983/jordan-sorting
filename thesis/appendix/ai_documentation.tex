@@ -1,4 +1,4 @@
-% Author-supplied version approved for inclusion on 1 November 2026.
+% Author-supplied attribution and factual updates, 2 November 2026.
 \subsection*{Tools used}
 
 \begingroup
@@ -24,11 +24,10 @@ ChatGPT & OpenAI, ChatGPT 6 Sol & June and September 2026\\
 \addlinespace
 Codex & OpenAI, GPT-5.6 Sol; including the \nolinkurl{academic-humanizer} skill, version 0.3.3 & September--November 2026\\
 \addlinespace
-Claude & Anthropic, Opus 5.5, medium setting & October 2026\\
+Claude & Anthropic, Opus 5.5, medium setting & October--November 2026\\
 \end{longtable}
 \endgroup
 
-\clearpage
 \subsection*{Influence on process and product}
 
 \begingroup
@@ -52,15 +51,15 @@ Phase & Tool & Use & Affected parts\\
 \endlastfoot
 Understanding and planning & ChatGPT, Codex & Translation, algorithm explanations, examples of sibling groups and finger trees, literature searches, architecture discussions and discussion of review findings & Research process; background and implementation explanations\\
 \addlinespace
-Implementation & Codex & Assistance with implementation changes, tests and validation tooling. The choice of a red--black finger tree as the efficient backend and the implementation of the sorting algorithm are my own. & Implementation and test files; qualification and archive-validation scripts\\
+Implementation & Codex & I wrote the shared sorting core (Steps 1--3) and the finger-tree backend. Codex wrote the tests and the validation and experiment tooling, assisted with later revisions of the core and backend, and wrote the module that derives the uninstrumented tree from the backend source. & Test files; validation and experiment scripts; revisions in \texttt{src/}; \texttt{src/\allowbreak uninstrumented\_\allowbreak finger.py}\\
 \addlinespace
 Proof & Codex & English and LaTeX formulation of my extensions of the arguments of Fung et~al., source checking and subsequent revisions & Appendix~\ref{app:backend-argument}\\
 \addlinespace
-Experiments and results & Codex & Calibration and measurement tooling, inspection of saved records, reconstruction of result tables and revision of their interpretation & Experimental pipeline; Chapters~\ref{chap:methodology} and~\ref{chap:results} and related summaries\\
+Experiments and results & Codex & Calibration and measurement tooling, inspection of saved records, reconstruction of result tables and revision of their interpretation. On 1 November: implementation and equivalence validation of the uninstrumented timing configuration; the unified input registry; execution of preparation (equivalence, qualification and calibration); validation and analysis of formal results; the constructor microbenchmark and the stability check. & Experimental pipeline and archives; Chapters~\ref{chap:methodology} and~\ref{chap:results} and related summaries\\
 \addlinespace
 Writing & Codex & English and LaTeX drafting and revision; use of Academic Humanizer to reduce repetitive qualifications and improve clarity & Abstract, main chapters and appendices\\
 \addlinespace
-Review & Claude & Technical and manuscript review, including identification of an omitted proof premise and an incomplete diagnostic table & Appendix~\ref{app:backend-argument} and the archived diagnostic indexed in Section~\ref{sec:appendix-external-review}\\
+Review and planning & Claude & Technical and manuscript review (omitted proof premise, incomplete diagnostic table); review of wording and terminology, with suggested wording for the abstract, research questions and selected definitions; discussion of the experimental design, including the geometric input probe, the input suite and the analysis plan; drafting of instructions for Codex & Appendix~\ref{app:backend-argument}; abstract; Chapters~1, 5 and~6\\
 \end{longtable}
 \endgroup
 
@@ -68,12 +67,19 @@ All measurement values reported in Chapter~\ref{chap:results} come from the
 archived program runs indexed in Section~\ref{sec:appendix-current-formal}.
 Codex assisted with the tooling used to check and present those results.
 
+On 1 November 2026, I proposed using the uninstrumented configuration for
+formal timing. Claude participated in the experimental-design discussion and
+drafted instructions for Codex. I initiated formal sampling on my local
+machine, with Codex running the commands at my explicit request. Codex wrote
+the author review receipt only after I confirmed that I had completed the
+review and explicitly instructed it to create the receipt.
+
 The following examples contain excerpts of recorded requests. English prompts
 are translations of the Chinese originals; descriptions of outputs are summaries
 rather than verbatim transcripts.
 
 \subsection*{Example 1: reducing repetitive qualifications}
-\textit{Codex, 31 October 2026}
+\textit{Claude review, revision carried out with Codex, 31 October 2026}
 
 \textbf{Prompt excerpt:}
 \begin{quote}
@@ -82,11 +88,12 @@ rather than verbatim transcripts.
 
 \textbf{Output, summarized:}
 
-The subsequent revision used the Academic Humanizer skill to reduce repetitive
-qualifications and improve wording and transitions while retaining the relevant
-assumptions and scope.
+Claude's review identified repeated qualifications that obscured the findings.
+Codex revised the text accordingly, using the Academic Humanizer skill to
+improve wording and transitions while retaining the relevant assumptions and
+scope.
 
-\textbf{Use:}
+\textbf{Use:}\par\nopagebreak[4]
 
 The revisions were incorporated into the manuscript. Checks for this revision
 compared equations, mathematical environments, table contents and citations with
@@ -109,7 +116,7 @@ Codex checked the relevant passage in the source paper, added the bracketing
 premise to Lemma~\ref{lem:proof-reentry} and explained its role in the available
 group slot in Lemma~\ref{lem:proof-locality}.
 
-\textbf{Use:}
+\textbf{Use:}\par\nopagebreak[4]
 
 I decided to address this finding and specified the required change and its
 source in the requests above. The correction was incorporated into
@@ -128,12 +135,17 @@ of input size and nesting level.}
 \textbf{Output, summarized:}
 
 Codex reconstructed the complete table from the saved measurements and revised
-the accompanying interpretation. The revised presentation reports four cases
-favoring the hook-free tree and eleven favoring the list backend.
+the accompanying interpretation. At that stage, the table reported four cases
+favoring the tree with field-access instrumentation removed and eleven
+favoring the list backend.
 
-\textbf{Use:}
+\textbf{Use:}\par\nopagebreak[4]
 
 I decided that the table should report all fifteen cases and specified the
-required format. The complete table and revised interpretation were incorporated
-into the results, abstract and conclusion. No new timing measurements were taken
-for this revision.
+required format. At that time, the complete table was added to the results
+chapter, and its interpretation was reflected in the abstract and conclusion.
+No new timing measurements were taken for that revision. When the November
+experiment switched to uninstrumented timing, the diagnostic table was removed
+from the results chapter. In the main text, the diagnostic findings are now
+mentioned briefly in the ``Configuration choice'' paragraph of
+\cref{sec:method-implementations}.

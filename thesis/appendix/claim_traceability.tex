@@ -8,13 +8,72 @@
 \label{sec:appendix-history}
 \label{sec:appendix-external-review}
 
-\textbf{Current experiments.} The measured version is \texttt{4a83fa6}
+\textbf{Current experiments.} The unified comparison uses \UnifiedN{} inputs
+and the source binding \texttt{bca4c1c6}. Both formal attempts ran from the
+clean checkout \texttt{2ae92952}, whose Python sources retain that binding.
+Only the complete second attempt supplies the main results. The input registry
+is under \nolinkurl{docs/validation/input_suite_registry_20261101/}.
+Source versions below identify execution code; archive commits identify the
+later storage of the records.
+
+\textbf{Unified preparation.} Equivalence, qualification and calibration ran
+at \texttt{bca4c1c6}; the archive was committed as \texttt{d0d47a67}. Its root is
+\begin{quote}\small
+\nolinkurl{docs/validation/unified_preflight_20261101/}
+\end{quote}
+The \nolinkurl{equivalence/}, \nolinkurl{qualification/} and
+\nolinkurl{calibration/} subdirectories retain the original records.
+The \nolinkurl{checks/} directory contains the independent validation reports
+before and after relocation. \nolinkurl{freeze.json} and
+\nolinkurl{production_sha256.json} bind the source files.
+
+\textbf{Formal attempts, validation and analysis.} The records were archived
+at \texttt{1f1d68e5} under
+\begin{quote}\small
+\nolinkurl{docs/validation/unified_formal_20261101/}
+\end{quote}
+The following paths are relative to that root:
+\begin{itemize}
+\item First attempt: \nolinkurl{unified_formal_bca4c1c6/}.
+\item Complete second attempt:
+\nolinkurl{unified_formal_bca4c1c6_restart_20261101_01/}.
+\item Analysis:
+\nolinkurl{unified_analysis_bca4c1c6_restart_20261101_01/}, including
+\nolinkurl{cases.json}, \nolinkurl{summary.json} and the four original figures.
+\item Independent validation after archival:
+\nolinkurl{checks/archived_first_attempt_validation.json} and
+\nolinkurl{checks/archived_second_attempt_validation.json}.
+\end{itemize}
+Each attempt also has a sibling \nolinkurl{.validation.json} file using its
+run-directory basename. The diagnosis, restart decision and author review
+receipt remain beside the runs; the README indexes their exact filenames.
+The restart is described in \cref{sec:method-deviation}.
+
+\textbf{Constructor benchmark and stability check.} The follow-up plan,
+scripts and execution version are \texttt{70d47e91}; results were archived
+at \texttt{7006629f}. The production source binding remains
+\texttt{bca4c1c6}. The archive root is
+\begin{quote}\small
+\nolinkurl{docs/validation/unified_followup_20261101/}
+\end{quote}
+The constructor configuration, environment and raw batches are under
+\nolinkurl{results/constructor/}. The analysis directory
+\nolinkurl{results/analysis/} contains \nolinkurl{constructor_summary.json},
+\nolinkurl{stability_summary.json} and the \nolinkurl{stability_cases.csv}
+and \nolinkurl{stability_cases.json} records for the \UnifiedStabilityN{}
+overlapping inputs. Independent checks are saved as
+\nolinkurl{results/verification.json} and
+\nolinkurl{checks/archived_verification.json}. The stability comparison is a
+post hoc supplement outside the main statistics. Each archive's README
+records its path bindings and read-only validation commands.
+
+\textbf{Earlier instrumented experiments.} The measured version is \texttt{4a83fa6}
 (5,600 common-set and 480 targeted-set batches). Its Python sources are
 identical to those of the calibration version, \texttt{c5b5ac3}.
 Qualification sources are \texttt{3cafb44} for the 140-input common set
 and \texttt{668371f} for the 12-input split set.
 
-\textbf{Structural timing extension.} The eighteen-input November 1 campaign
+\textbf{Earlier instrumented structural extension.} The eighteen-input November 1 campaign
 uses \texttt{bdfcdcf8} for qualification, calibration and formal sampling
 (720 sample batches). All production sorting sources match the original
 formal version. The exact input selection, protocol, raw records and
@@ -33,6 +92,7 @@ The archive index and proof-to-source map cover development, historical and
 supplementary evidence:
 \nolinkurl{docs/thesis/evidence_source_index_20261022.md}.
 
+\clearpage
 \section{Documentation of AI Use}
 \label{sec:appendix-ai-use}
 

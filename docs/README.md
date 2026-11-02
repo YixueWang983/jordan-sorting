@@ -3,8 +3,10 @@
 ## Current manuscript and experiment
 
 Start with the [current thesis](../thesis/README.md) and its
-[revision record](thesis/unified_refinement_20261102.md). The record maps
-new numerical statements to archived inputs, timing records and follow-up data.
+[Appendix B revision record](thesis/appendix_b_revision_20261102.md), with a
+[Chinese review copy](thesis/appendix_b_chinese_review_20261102.md). The earlier
+[results revision](thesis/unified_refinement_20261102.md) maps numerical
+statements to archived inputs, timing records and follow-up data.
 
 | Topic | Entry point |
 | --- | --- |
@@ -19,7 +21,8 @@ new numerical statements to archived inputs, timing records and follow-up data.
 
 The current main results use the complete second formal attempt. The first
 failed attempt remains archived. Follow-up statistics are kept separate from
-the main results. Appendix B's requested content update remains deferred.
+the main results. Appendix B now includes the current evidence index and the
+author-supplied account of AI use and implementation attribution.
 
 ## Document families
 

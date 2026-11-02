@@ -1,0 +1,105 @@
+[
+  {
+    "file": "thesis/appendix/claim_traceability.tex",
+    "before": "\\textbf{Current experiments.} The measured version is \\texttt{4a83fa6}",
+    "after": "\\textbf{Current experiments.} The unified comparison uses \\UnifiedN{} inputs\nand the source binding \\texttt{bca4c1c6}. Both formal attempts ran from the\nclean checkout \\texttt{2ae92952}, whose Python sources retain that binding.\nOnly the complete second attempt supplies the main results. The input registry\nis under \\nolinkurl{docs/validation/input_suite_registry_20261101/}.\nSource versions below identify execution code; archive commits identify the\nlater storage of the records.\n\n\\textbf{Unified preparation.} Equivalence, qualification and calibration ran\nat \\texttt{bca4c1c6}; the archive was committed as \\texttt{d0d47a67}. Its root is\n\\begin{quote}\\small\n\\nolinkurl{docs/validation/unified_preflight_20261101/}\n\\end{quote}\nThe \\nolinkurl{equivalence/}, \\nolinkurl{qualification/} and\n\\nolinkurl{calibration/} subdirectories retain the original records.\nThe \\nolinkurl{checks/} directory contains the independent validation reports\nbefore and after relocation. \\nolinkurl{freeze.json} and\n\\nolinkurl{production_sha256.json} bind the source files.\n\n\\textbf{Formal attempts, validation and analysis.} The records were archived\nat \\texttt{1f1d68e5} under\n\\begin{quote}\\small\n\\nolinkurl{docs/validation/unified_formal_20261101/}\n\\end{quote}\nThe following paths are relative to that root:\n\\begin{itemize}\n\\item First attempt: \\nolinkurl{unified_formal_bca4c1c6/}.\n\\item Complete second attempt:\n\\nolinkurl{unified_formal_bca4c1c6_restart_20261101_01/}.\n\\item Analysis:\n\\nolinkurl{unified_analysis_bca4c1c6_restart_20261101_01/}, including\n\\nolinkurl{cases.json}, \\nolinkurl{summary.json} and the four original figures.\n\\item Independent validation after archival:\n\\nolinkurl{checks/archived_first_attempt_validation.json} and\n\\nolinkurl{checks/archived_second_attempt_validation.json}.\n\\end{itemize}\nEach attempt also has a sibling \\nolinkurl{.validation.json} file using its\nrun-directory basename. The diagnosis, restart decision and author review\nreceipt remain beside the runs; the README indexes their exact filenames.\nThe restart is described in \\cref{sec:method-deviation}.\n\n\\textbf{Constructor benchmark and stability check.} The follow-up plan,\nscripts and execution version are \\texttt{70d47e91}; results were archived\nat \\texttt{7006629f}. The production source binding remains\n\\texttt{bca4c1c6}. The archive root is\n\\begin{quote}\\small\n\\nolinkurl{docs/validation/unified_followup_20261101/}\n\\end{quote}\nThe constructor configuration, environment and raw batches are under\n\\nolinkurl{results/constructor/}. The analysis directory\n\\nolinkurl{results/analysis/} contains \\nolinkurl{constructor_summary.json},\n\\nolinkurl{stability_summary.json} and the \\nolinkurl{stability_cases.csv}\nand \\nolinkurl{stability_cases.json} records for the \\UnifiedStabilityN{}\noverlapping inputs. Independent checks are saved as\n\\nolinkurl{results/verification.json} and\n\\nolinkurl{checks/archived_verification.json}. The stability comparison is a\npost hoc supplement outside the main statistics. Each archive's README\nrecords its path bindings and read-only validation commands.\n\n\\textbf{Earlier instrumented experiments.} The measured version is \\texttt{4a83fa6}"
+  },
+  {
+    "file": "thesis/appendix/claim_traceability.tex",
+    "before": "\\textbf{Structural timing extension.}",
+    "after": "\\textbf{Earlier instrumented structural extension.}"
+  },
+  {
+    "file": "thesis/appendix/ai_documentation.tex",
+    "before": "% Author-supplied version approved for inclusion on 1 November 2026.",
+    "after": "% Author-supplied attribution and factual updates, 2 November 2026."
+  },
+  {
+    "file": "thesis/appendix/ai_documentation.tex",
+    "before": "Claude & Anthropic, Opus 5.5, medium setting & October 2026\\\\",
+    "after": "Claude & Anthropic, Opus 5.5, medium setting & October--November 2026\\\\"
+  },
+  {
+    "file": "thesis/appendix/ai_documentation.tex",
+    "before": "Implementation & Codex & Assistance with implementation changes, tests and validation tooling. The choice of a red--black finger tree as the efficient backend and the implementation of the sorting algorithm are my own. & Implementation and test files; qualification and archive-validation scripts\\\\",
+    "after": "Implementation & Codex & I wrote the shared sorting core (Steps 1--3) and the finger-tree backend. Codex wrote the tests and the validation and experiment tooling, assisted with later revisions of the core and backend, and wrote the module that derives the uninstrumented tree from the backend source. & Test files; validation and experiment scripts; revisions in \\texttt{src/}; \\texttt{src/\\allowbreak uninstrumented\\_\\allowbreak finger.py}\\\\"
+  },
+  {
+    "file": "thesis/appendix/ai_documentation.tex",
+    "before": "Experiments and results & Codex & Calibration and measurement tooling, inspection of saved records, reconstruction of result tables and revision of their interpretation & Experimental pipeline; Chapters~\\ref{chap:methodology} and~\\ref{chap:results} and related summaries\\\\",
+    "after": "Experiments and results & Codex & Calibration and measurement tooling, inspection of saved records, reconstruction of result tables and revision of their interpretation. On 1 November: implementation and equivalence validation of the uninstrumented timing configuration; the unified input registry; execution of preparation (equivalence, qualification and calibration); validation and analysis of formal results; the constructor microbenchmark and the stability check. & Experimental pipeline and archives; Chapters~\\ref{chap:methodology} and~\\ref{chap:results} and related summaries\\\\"
+  },
+  {
+    "file": "thesis/appendix/ai_documentation.tex",
+    "before": "Review & Claude & Technical and manuscript review, including identification of an omitted proof premise and an incomplete diagnostic table & Appendix~\\ref{app:backend-argument} and the archived diagnostic indexed in Section~\\ref{sec:appendix-external-review}\\\\",
+    "after": "Review and planning & Claude & Technical and manuscript review (omitted proof premise, incomplete diagnostic table); review of wording and terminology, with suggested wording for the abstract, research questions and selected definitions; discussion of the experimental design, including the geometric input probe, the input suite and the analysis plan; drafting of instructions for Codex & Appendix~\\ref{app:backend-argument}; abstract; Chapters~1, 5 and~6\\\\"
+  },
+  {
+    "file": "thesis/appendix/ai_documentation.tex",
+    "before": "Codex assisted with the tooling used to check and present those results.\n",
+    "after": "Codex assisted with the tooling used to check and present those results.\n\nOn 1 November 2026, I proposed using the uninstrumented configuration for\nformal timing. Claude participated in the experimental-design discussion and\ndrafted instructions for Codex. I initiated formal sampling on my local\nmachine, with Codex running the commands at my explicit request. Codex wrote\nthe author review receipt only after I confirmed that I had completed the\nreview and explicitly instructed it to create the receipt.\n"
+  },
+  {
+    "file": "thesis/appendix/ai_documentation.tex",
+    "before": "\\textit{Codex, 31 October 2026}",
+    "after": "\\textit{Claude review, revision carried out with Codex, 31 October 2026}"
+  },
+  {
+    "file": "thesis/appendix/ai_documentation.tex",
+    "before": "The subsequent revision used the Academic Humanizer skill to reduce repetitive\nqualifications and improve wording and transitions while retaining the relevant\nassumptions and scope.",
+    "after": "Claude's review identified repeated qualifications that obscured the findings.\nCodex revised the text accordingly, using the Academic Humanizer skill to\nimprove wording and transitions while retaining the relevant assumptions and\nscope."
+  },
+  {
+    "file": "thesis/appendix/ai_documentation.tex",
+    "before": "the accompanying interpretation. The revised presentation reports four cases\nfavoring the hook-free tree and eleven favoring the list backend.",
+    "after": "the accompanying interpretation. At that stage, the table reported four cases\nfavoring the tree with field-access instrumentation removed and eleven\nfavoring the list backend."
+  },
+  {
+    "file": "thesis/appendix/ai_documentation.tex",
+    "before": "required format. The complete table and revised interpretation were incorporated\ninto the results, abstract and conclusion. No new timing measurements were taken\nfor this revision.",
+    "after": "required format. At that time, the complete table was added to the results\nchapter, and its interpretation was reflected in the abstract and conclusion.\nNo new timing measurements were taken for that revision. When the November\nexperiment switched to uninstrumented timing, the diagnostic table was removed\nfrom the results chapter. In the main text, the diagnostic findings are now\nmentioned briefly in the ``Configuration choice'' paragraph of\n\\cref{sec:method-implementations}."
+  },
+  {
+    "file": "thesis/appendix/ai_reflection.tex",
+    "before": "% Author-supplied version approved for inclusion on 1 November 2026.",
+    "after": "% Author-supplied reflection with factual updates, 2 November 2026."
+  },
+  {
+    "file": "thesis/appendix/ai_reflection.tex",
+    "before": "reconstruction and its results to be evaluated. The choice of a red--black finger\ntree as the efficient backend and the implementation of the sorting algorithm\nwere my own decisions and work.",
+    "after": "reconstruction and its results to be evaluated. My supervisor suggested\nattempting an efficient backend. After studying Fung et~al., I chose a\nheterogeneous red--black finger tree for it. I wrote the shared sorting core\nand the tree backend; Codex wrote the tests and the experiment tooling and\nassisted with later revisions of my code."
+  },
+  {
+    "file": "thesis/appendix/ai_reflection.tex",
+    "before": "Those eighteen inputs were subsequently included in the separate timed\nextension reported in \\cref{sec:results-structural-extension}.",
+    "after": "Those eighteen inputs were subsequently timed in a separate instrumented\nextension and then included in the unified comparison reported in\n\\cref{sec:results-structural-extension}."
+  },
+  {
+    "file": "thesis/appendix/ai_reflection.tex",
+    "before": "I am satisfied that both backends produced correct output in the formal\nmeasurements and that the thesis reports the tree's slower measured runtime\nalongside its stronger structural bound.",
+    "after": "I noticed that timing included the overhead of operation-counting\ninstrumentation and proposed using the uninstrumented configuration.\nI am satisfied that both backends produced correct output in the formal\nmeasurements. With instrumentation removed, the tree was faster on\n\\UnifiedWins{} of \\UnifiedN{} inputs, and the gap narrowed across the measured\nsize bands; the thesis reports these results alongside the tree's stronger\nstructural bound."
+  },
+  {
+    "file": "thesis/config/metadata.tex",
+    "before": "% The review draft shows the confirmed author and planned sending date.",
+    "after": "% The review draft shows the confirmed author and actual review-build date."
+  },
+  {
+    "file": "thesis/appendix/claim_traceability.tex",
+    "before": "\\section{Documentation of AI Use}",
+    "after": "\\clearpage\n\\section{Documentation of AI Use}",
+    "purpose": "Pagination; prose unchanged."
+  },
+  {
+    "file": "thesis/appendix/ai_documentation.tex",
+    "before": "\\clearpage\n\\subsection*{Influence on process and product}",
+    "after": "\\subsection*{Influence on process and product}",
+    "purpose": "Pagination; prose unchanged."
+  },
+  {
+    "file": "thesis/appendix/ai_documentation.tex",
+    "before": "\\textbf{Use:}",
+    "after": "\\textbf{Use:}\\par\\nopagebreak[4]",
+    "purpose": "Pagination; prose unchanged."
+  }
+]

@@ -6,13 +6,15 @@ and heterogeneous finger-tree backends.
 
 ## Current thesis and results
 
-The current review draft is the **80-page unified-results thesis**, built on
+The current review draft is the **82-page unified-results thesis**, built on
 2 November 2026:
 
-- [Read the current PDF](output/pdf/Wang_Thesis_Refined_Results_2026-11-02_r2.pdf)
+- [Read the current PDF](output/pdf/Wang_Thesis_Appendix_B_2026-11-02.pdf)
 - [LaTeX sources and build instructions](thesis/README.md)
-- [Revision record and numerical sources](docs/thesis/unified_refinement_20261102.md)
-- [Build and visual-review record](docs/thesis/unified_refinement_20261102/source_scope_correction.json)
+- [Appendix B revision record](docs/thesis/appendix_b_revision_20261102.md)
+- [Chinese review copy of Appendix B](docs/thesis/appendix_b_chinese_review_20261102.md)
+- [Results revision and numerical sources](docs/thesis/unified_refinement_20261102.md)
+- [Build and visual-review record](docs/thesis/appendix_b_update_20261102/build_report.json)
 
 The complete formal attempt measures 302 inputs from five predetermined sources.
 The uninstrumented tree is faster on 44 inputs. The input-level tree/list ratio
@@ -25,9 +27,9 @@ second attempt. Both attempts, the diagnosis and the restart decision remain
 in the formal archive. The constructor benchmark and the 170-input stability
 check are separate follow-ups.
 
-Appendix A remains unchanged by the results revision. The requested Appendix B
-content update is still deferred; the current experiment paths are listed in
-the method chapter and the indexes below. This PDF is not ready for supervisor circulation until Appendix B is updated.
+Appendix A remains unchanged. Appendix B now indexes the unified experiments
+and follow-ups and records AI use and implementation attribution using the
+author's supplied account. The Chinese copy supports the author's review.
 
 ## Evidence
 

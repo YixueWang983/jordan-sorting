@@ -1,11 +1,13 @@
-% Author-supplied version approved for inclusion on 1 November 2026.
+% Author-supplied reflection with factual updates, 2 November 2026.
 AI tools supported my work on an executable reconstruction of Jordan sorting.
 I required the sorting procedure to recover its output from its own maintained
 state, and I distinguished correctness, complexity arguments and measured runtime
 when assessing revisions. These requirements shaped how I wanted the
-reconstruction and its results to be evaluated. The choice of a red--black finger
-tree as the efficient backend and the implementation of the sorting algorithm
-were my own decisions and work.
+reconstruction and its results to be evaluated. My supervisor suggested
+attempting an efficient backend. After studying Fung et~al., I chose a
+heterogeneous red--black finger tree for it. I wrote the shared sorting core
+and the tree backend; Codex wrote the tests and the experiment tooling and
+assisted with later revisions of my code.
 
 During revision, I questioned whether the common set's lack of two-sided splits
 left a gap in experimental coverage. The resulting discussion distinguished
@@ -15,8 +17,9 @@ important limitation: variation in nesting depth does not by itself establish
 coverage of the operations that distinguish the backends. It also helped me
 formulate a more specific question about which additional workloads would
 strengthen the comparison.
-Those eighteen inputs were subsequently included in the separate timed
-extension reported in \cref{sec:results-structural-extension}.
+Those eighteen inputs were subsequently timed in a separate instrumented
+extension and then included in the unified comparison reported in
+\cref{sec:results-structural-extension}.
 
 ChatGPT helped with translation, algorithm explanations and discussions of review
 findings. Concrete examples were useful when I was trying to understand the
@@ -40,9 +43,13 @@ the introduction, I supplied replacement wording to remove a repeated descriptio
 of the two backends. Explaining such a local change and checking another version
 offered limited additional benefit.
 
+I noticed that timing included the overhead of operation-counting
+instrumentation and proposed using the uninstrumented configuration.
 I am satisfied that both backends produced correct output in the formal
-measurements and that the thesis reports the tree's slower measured runtime
-alongside its stronger structural bound. I am less satisfied with the incomplete
+measurements. With instrumentation removed, the tree was faster on
+\UnifiedWins{} of \UnifiedN{} inputs, and the gap narrowed across the measured
+size bands; the thesis reports these results alongside the tree's stronger
+structural bound. I am less satisfied with the incomplete
 documentation of some earlier decisions and AI assistance. An independent human
 review of the locality and mixed-operation arguments would also strengthen my
 confidence in the work. In future projects, I would record decisions and their

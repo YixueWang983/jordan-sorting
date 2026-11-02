@@ -2,19 +2,21 @@
 
 ## Current review draft
 
-[Wang_Thesis_Refined_Results_2026-11-02_r2.pdf](../output/pdf/Wang_Thesis_Refined_Results_2026-11-02_r2.pdf)
-is the current **80-page** draft, built on 2 November 2026. It reports the
+[Wang_Thesis_Appendix_B_2026-11-02.pdf](../output/pdf/Wang_Thesis_Appendix_B_2026-11-02.pdf)
+is the current **82-page** draft, built on 2 November 2026. It reports the
 complete 302-input unified comparison, with three main result figures and the
 prespecified overview in Appendix C.
 
-- [Revision details and every new number's source](../docs/thesis/unified_refinement_20261102.md)
-- [Compilation and visual-review record](../docs/thesis/unified_refinement_20261102/source_scope_correction.json)
+- [Appendix B revision details](../docs/thesis/appendix_b_revision_20261102.md)
+- [Chinese review copy of Appendix B](../docs/thesis/appendix_b_chinese_review_20261102.md)
+- [Results revision and every new number's source](../docs/thesis/unified_refinement_20261102.md)
+- [Compilation and visual-review record](../docs/thesis/appendix_b_update_20261102/build_report.json)
 - [Data and preservation checks at the revision](../docs/thesis/unified_refinement_20261102/verification.json)
 - [Formal evidence, both attempts and restart decision](../docs/validation/unified_formal_20261101/README.md)
 
-Appendix A is unchanged. The requested Appendix B content update remains
-deferred; only the deleted diagnostic-table reference was repaired. This is a
-review manuscript; it must not be sent to the supervisor until Appendix B is updated.
+Appendix A is unchanged. Appendix B has been updated with current evidence
+paths, versions and the author's supplied account of AI use and code attribution.
+The complete Chinese translation is available for author review.
 
 ## Build
 
