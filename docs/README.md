@@ -1,345 +1,48 @@
 # Documentation
 
-This folder is organized by document type so the thesis notes, plans, progress records, and papers do not get mixed together.
-
-## Design Documents
-
-Path:
-
-```text
-docs/design/
-```
-
-Use this folder for technical design notes and implementation-facing definitions.
-
-Current files:
-
-- `oracle_and_test_generation.md`
-  Week 1 design notes for the oracle, upper/lower pairs, rank intervals, laminarity checks, generator families, and JSON test-case format.
-
-- `notation.md`
-  Reusable terminology for the project and thesis.
-
-- `simplified_algorithm_design.md`
-  Design document for the simplified Jordan-sorting reference implementation.
-
-- `structural_examples.md`
-  Concrete flat / nested / invalid structural examples used for debug and thesis drafts.
-
-- `experimental_questions_and_metrics.md`
-  Week 7 research questions, metric definitions, and interpretation boundaries.
-
-- `benchmark_protocol.md`
-  Timing, correctness-audit, aggregation, and frozen Week 11 paper-pilot
-  protocol.
-
-- `final_scope_and_contributions.md`
-  Historical Week 8 supervisor-confirmed minimum scope, contribution claims,
-  non-contributions, success criteria, and decision record.
-
-- `final_scope_amendment_paper_ordinary_list.md`
-  Current implementation and evaluation scope after the ordinary-list paper
-  algorithm was completed; distinguishes reference and paper output provenance.
-
-- `theory_to_implementation_mapping.md`
-  Week 8 mapping from theoretical Jordan-sorting concepts to current code,
-  explicit gaps, and non-implemented algorithmic structures.
-
-- `final_experiment_spec.md`
-  Week 8 frozen experiment questions, variables, correctness fields,
-  aggregation rules, CSV semantics, and non-claims.
-
-- `paper_algorithm_ordinary_list.md`
-  Week 9 implementation-facing reconstruction of the 1990 paper algorithm,
-  including state, parity, sibling-list ownership, Step 1/2/3 pseudocode,
-  invariants, and an initial worked trace.
-
-- `paper_timing_modes.md`
-  Week 10 timing call graph, contamination classification, fixed five-mode
-  execution-policy architecture, checked-only complete backend audit boundary,
-  independently controlled trace/counters, always-on local split safety, and
-  non-claim contract.
-
-## Progress Documents
-
-Path:
-
-```text
-docs/progress/
-```
-
-Use this folder for weekly checklists and weekly summaries.
-
-Current files:
-
-- `week1_progress.md`
-  Checklist-style Week 1 progress tracker.
-
-- `week1_summary.md`
-  Completed Week 1 summary, including implemented components, experiment configuration, validation results, limitations, and next steps.
-
-- `week2_summary.md`
-  Week 2 completion summary, including design/skeleton boundary and Week3 handoff.
-
-- `week3_progress.md`
-  Week 3 execution note log for contract audit and debug utility rollout.
-
-- `week3_summary.md`
-  Week 3 completion summary and Week 4 handoff.
-
-- `week4_notes.md`
-  Week 4 Day 1 notes and scope freeze record.
-
-- `week4_summary.md`
-  Week 4 completion summary and reference-pipeline handoff notes.
-
-- `week5_progress.md`
-  Week 5 execution log and checkpoint record.
-
-- `week6_progress.md`
-  Week 6 execution log and verification checkpoint.
-
-- `week6_summary.md`
-  Week 6 completion summary and Week 7 handoff constraints.
-
-- `week7_progress.md`
-  Week 7 execution log for metrics, instrumentation, audit, and pilot analysis.
-
-- `week7_summary.md`
-  Week 7 completion summary and Week 8 handoff constraints.
-
-- `week8_summary.md`
-  Week 8 scope freeze, benchmark hardening, generator audit v2, dry-run
-  validation, and Week 9 gate.
-
-- `week9_progress.md`
-  Week 9 daily implementation log from the executable specification through
-  the complete ordinary-list loop, adversarial state audit, and integration
-  pilot.
-
-- `week9_summary.md`
-  Week 9 completion summary, correctness evidence, pilot results, timing
-  boundary, and Week 10 handoff.
-
-- `week10_progress.md`
-  Week 10 daily execution record. Day 1 freezes the baseline, Day 2 implements
-  immutable policy plumbing, Day 3 separates complete backend scans from
-  always-on local split safety, Day 4 decouples trace and counters, and Day 5
-  adds safe certification plus the contamination runner/validator. Day 6 runs,
-  validates, and analyzes the full 1,500-row contamination pilot. Day 7 selects
-  `minimal` and freezes the unexecuted Week 11 gate.
-
-- `week10_summary.md`
-  Week 10 final timing-mode decision, correctness/timing boundary,
-  contamination evidence, and Week 11 handoff.
-
-- `week11_progress.md`
-  Week 11 daily execution record through the archived pilot, reproducible
-  analysis, and frozen Week 12 gate.
-
-- `week11_summary.md`
-  Week 11 validated run003 evidence, runtime findings, limitations, process
-  decision, and Week 12 handoff.
-
-- `week12_progress.md`
-  Completed Week 12 three-checkpoint execution record through immutable
-  run001, formal analysis, and the Week 13 handoff.
-
-- `week12_summary.md`
-  Week 12 formal evidence, primary runtime pattern, interpretation limits,
-  reproduction commands, and thesis-synthesis boundary.
-
-- `week13_progress.md`
-  Week 13 claim-to-evidence checkpoint and remaining chapter-drafting gate.
-
-## Analysis Documents
-
-Path:
-
-```text
-docs/analysis/
-```
-
-Current Week 11 and Week 12 analysis:
-
-- `week11_pilot_analysis.md`
-  Reproducible runtime, ratio, variability, structure, and checked-counter
-  analysis derived from immutable run003 evidence.
-
-- `week12_formal_sorting_run001_independent_validation.json`
-  Independent fail-closed validation report for the immutable Week 12 formal
-  sorting evidence.
-
-- `week12_formal_sorting_analysis.md`
-  Reproducible formal correctness, runtime, ratio, variability, structure,
-  checked-counter, and Week 11 trend analysis.
-
-- `week12_*.csv`, `week12_*.svg`, and `week12_analysis_summary.json`
-  Deterministic thesis-facing tables, figures, and machine-readable summary
-  generated outside the immutable run001 archive.
-
-## Plan Documents
-
-Path:
-
-```text
-docs/plan/
-```
-
-Use this folder for schedule, thesis scope, and planning documents.
-
-Current files:
-
-- `README.md`
-- `four_month_roadmap.md`
-- `week2_plan.md`
-- `week3_plan.md`
-- `week4_plan.md`
-- `week5_plan.md`
-- `week6_plan.md`
-- `week7_plan.md`
-- `week8_plan.md`
-- `refined_thesis_direction_after_week8.md`
-- `week9_plan.md`
-- `week10_plan.md`
-- `week11_plan.md`
-- `week12_plan.md`
-- `week13_plan.md`
-- `thesis_scope_and_research_questions.pdf`
-
-Planned files:
-
-- `thesis_scope_and_research_questions.md`
-  Markdown version of the approved thesis scope, research questions, goals, planned contributions, implementation scope, and experimental scope.
-
-## Papers
-
-Path:
-
-```text
-docs/papers/
-```
-
-Use this folder for source papers and paper-specific notes.
-
-Current files:
-
-- `finger_search_trees_jordan_sorting.pdf`
-- `simplified_linear_jordan_sorting.pdf`
-- `README.md`
-
-## Backlog
-
-Path:
-
-```text
-docs/backlog/
-```
-
-Use this folder for future work ideas that should not block the current weekly plan.
-
-Current files:
-
-- `future_work_todo.md`
-
-## Analysis
-
-Path:
-
-```text
-docs/analysis/
-```
-
-Use this folder for small pilot interpretations and thesis-facing analysis
-drafts that are derived from generated results.
-
-Current files:
-
-- `week7_pilot_interpretation.md`
-- `week7_pilot_auto_report.md`
-- `week10_timing_baseline.md`
-- `week10_contamination_pilot.md`
-- `week10_component_overhead_table.csv`
-- `week10_mode_overhead_table.csv`
-- `week10_runtime_ratio_by_size.csv`
-- `week10_runtime_ratio_by_family.csv`
-- `week10_runtime_ratio_by_family_size.csv`
-- `week10_runtime_ratio_by_size.svg`
-- `week10_observation_ratio_by_size.svg`
-- `week11_pilot_analysis.md`
-- `week11_*.csv` and `week11_*.svg`
-- `week12_formal_sorting_run001_independent_validation.json`
-- `week12_formal_sorting_analysis.md`
-- `week12_*.csv`, `week12_*.svg`, and `week12_analysis_summary.json`
-- `week11_machine_preflight_v1_m1.md`
-  Preserved preflight record for the unexecuted historical v1 M1 gate.
-
-- `week11_machine_preflight_v2_m4.md`
-  Preserved v2 M4 identity, source baseline, and power/load snapshot from the
-  historical machine-bound design.
-
-- `week11_machine_baseline_v1_m1.json`
-  Preserved structured v1 M1 identity.
-
-- `week11_machine_baseline_v2_m4.json`
-  Preserved structured M4 identity from the historical v2 gate. Neither
-  baseline contains a serial number or hardware UUID.
-
-## Thesis Drafts
-
-Path:
-
-```text
-docs/thesis/
-```
-
-Use this folder for thesis-facing prose drafts promoted from implementation and
-experiment notes.
-
-Current files:
-
-- `claim_to_evidence_table.md`
-  Week 13 drafting authority linking permitted implementation, method, result,
-  exploratory, and limitation claims to primary evidence locators.
-
-- `experimental_methodology_draft.md`
-  Week 13 method-chapter draft covering the frozen valid-input protocol,
-  timing scopes, scheduling, aggregation, evidence, validator, and provenance.
-- `implementation_draft.md`
-  Week 13 implementation-chapter draft covering the reference/paper boundary,
-  ordinary-list state, Step 1/2/3, validation, policies, and fixed non-claims.
-- `results_draft.md`
-  Week 13 Results draft covering correctness, runtime, matched-case ratios,
-  family balance, variability, directional replication, and exploratory
-  relationships.
-- `limitations_draft.md`
-  Week 13 Limitations draft covering backend fidelity, finite-size inference,
-  timing scope, recognition, sampling, execution, and exploratory boundaries.
-- `final_claim_audit.md`
-  Final Week 13 cross-chapter audit binding the 46 controlled claims to the
-  reviewed drafts, evidence targets, and fixed interpretation boundaries.
-
-The four audited draft files retain their historical `awaiting review` headers
-because the final audit binds their exact SHA-256 values. Week 13 is closed;
-`docs/progress/week13_progress.md` is the current status record.
-
-## LaTeX Thesis
-
-Path:
-
-```text
-thesis/
-```
-
-The post-Week-13 FU Berlin scaffold contains the title page, chapter tree,
-bibliography, figure area, appendix, and reproducible LuaLaTeX build. Its
-content migration plan and template provenance are recorded in
-`plan/latex_integration_plan.md` and `../thesis/README.md`.
-
-## Other Files
-
-- `notes.md`
-  General notes that have not yet been promoted into a structured design or plan document.
-
-- `week1_todo.pdf`
-  Original Week 1 TODO PDF copied into the project.
+## Current manuscript and experiment
+
+Start with the [current thesis](../thesis/README.md) and its
+[revision record](thesis/unified_results_revision_20261101.md). The record maps
+new numerical statements to archived inputs, timing records and follow-up data.
+
+| Topic | Entry point |
+| --- | --- |
+| Input scope and exclusions | [Unified registry](validation/input_suite_registry_20261101/README.md) |
+| Fixed measurement and reporting rules | [Protocol](plan/uninstrumented_rerun_protocol_20261101.md), [addendum](plan/uninstrumented_rerun_addendum_20261101.md) |
+| Preparation evidence | [Unified preparation](validation/unified_preflight_20261101/README.md) |
+| Formal attempts, deviation and analysis | [Unified formal archive](validation/unified_formal_20261101/README.md) |
+| Constructor and stability follow-ups | [Follow-up archive](validation/unified_followup_20261101/README.md) |
+| Manuscript numbers, figures and checks | [Generation and audit files](thesis/unified_results_20261101/) |
+| Earlier evidence cited in the thesis | [Dated evidence/source index](thesis/evidence_source_index_20261022.md) |
+| Removed old deliverables | [Cleanup and recovery record](maintenance/repository_cleanup_20261102.md) |
+
+The current main results use the complete second formal attempt. The first
+failed attempt remains archived. Follow-up statistics are kept separate from
+the main results. Appendix B's requested content update remains deferred.
+
+## Document families
+
+| Directory | Contents |
+| --- | --- |
+| `validation/` | Original experimental, correctness and manuscript-review archives |
+| `thesis/` | Revision records, generated manuscript data and earlier audited chapter drafts |
+| `plan/` | [Current protocol pointers and historical plans](plan/README.md) |
+| `development/` | Implementation notes, proof reviews and development probes |
+| `design/` | Definitions, interfaces, scope decisions and algorithm designs |
+| `analysis/` | Earlier analyses and their derived tables and figures |
+| `progress/` | Dated progress and handoff records |
+| `papers/` | [Reference-paper notes and local copies](papers/README.md) |
+| `maintenance/` | Repository organization and recovery records |
+
+Dated plans and reports retain the state of their original milestone. Statements
+such as “current” or “pending” inside those records must be read with that date
+and source revision. The root README describes the present project state.
+
+The four Markdown chapter drafts and their claim audit are historical evidence,
+not the active manuscript. They remain unchanged because their hashes are part
+of the recorded review. Current editing belongs in `thesis/` at repository root.
+
+Old delivery PDFs and ZIPs are recoverable through the cleanup record. Their
+original review reports and links remain unchanged; reproduce a historical
+whole-checkout audit at its recorded revision, where those files still exist.

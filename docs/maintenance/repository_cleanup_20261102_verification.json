@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-02",
+  "baseline": "649e5ebae022704b774cc8958f9d7524a84afc66",
+  "passed": true,
+  "deleted_files": 26,
+  "deleted_bytes": 40576949,
+  "all_deleted_bytes_recoverable_from_baseline": true,
+  "current_manuscript_pdf_and_build_hashes_verified": 53,
+  "changed_tracked_paths_within_cleanup_scope": true,
+  "code_tests_experiments_and_evidence_archives_unchanged": true,
+  "new_measurements_executed": false,
+  "history_rewritten": false,
+  "historical_audits_require_their_recorded_revision": true,
+  "navigation_local_links_verified": 58,
+  "navigation_files_checked": [
+    "README.md",
+    "docs/README.md",
+    "docs/plan/README.md",
+    "thesis/README.md",
+    "thesis/figures/README.md",
+    "output/README.md",
+    "docs/maintenance/repository_cleanup_20261102.md"
+  ]
+}

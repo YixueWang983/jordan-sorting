@@ -1,0 +1,166 @@
+{
+  "baseline": "649e5ebae022704b774cc8958f9d7524a84afc66",
+  "scope": "Superseded thesis PDFs and delivery packages only; ordinary Git deletions, no history rewrite.",
+  "current_pdf": "output/pdf/Wang_Thesis_Unified_Results_2026-11-01.pdf",
+  "removals": [
+    {
+      "path": "output/packages/jordan_review_20261016.zip",
+      "bytes": 10034262,
+      "sha256": "a4b057c8f427ef829feabbec1f08489208c7fef260689378e52b881b2e9d69e7"
+    },
+    {
+      "path": "output/packages/jordan_review_20261016.zip.sha256",
+      "bytes": 93,
+      "sha256": "6a79da797e03785ec05feb9333a72c48a91e79a4a1c0330befc52d0753113150"
+    },
+    {
+      "path": "output/packages/jordan_supervisor_review_20261016.verification.json",
+      "bytes": 507,
+      "sha256": "9eacf6e32f8b23927e1b0e322062babc4ca6104910c9a7b884c01ceae1bbf029"
+    },
+    {
+      "path": "output/packages/jordan_supervisor_review_20261016.zip",
+      "bytes": 2866160,
+      "sha256": "98566c7af89c50d143a290438574c4f49c01dd2ff2f0fb2213dd1285a507f8f2"
+    },
+    {
+      "path": "output/packages/jordan_supervisor_review_20261016.zip.sha256",
+      "bytes": 104,
+      "sha256": "ccaa0d2f941a14fc2ec93f71993ef84a0212d228203a9927b5b557f670b502f8"
+    },
+    {
+      "path": "output/packages/jordan_supervisor_review_20261020.verification.json",
+      "bytes": 360,
+      "sha256": "7f6f8b32dd42f83e074b35c84ad42bbb78801701d172e3342a14946d45f07bf9"
+    },
+    {
+      "path": "output/packages/jordan_supervisor_review_20261020.zip",
+      "bytes": 9919613,
+      "sha256": "ef28e60fb14e578e43ee9b263ce55b67b34972e17ebcbf97affd6639158338d1"
+    },
+    {
+      "path": "output/packages/jordan_supervisor_review_20261020.zip.sha256",
+      "bytes": 104,
+      "sha256": "3d852d12bdfe0b49ddad43d4c956ccc1128736f7e6cf4da571f9dfd39796ee77"
+    },
+    {
+      "path": "output/packages/jordan_supervisor_review_20261020_r2.verification.json",
+      "bytes": 409,
+      "sha256": "97204fa63b650ce86f1f2d03205febf06b60f057e199f985656b96ae35360919"
+    },
+    {
+      "path": "output/packages/jordan_supervisor_review_20261020_r2.zip",
+      "bytes": 11866607,
+      "sha256": "58dbadce35524aa0b7ae4a9cc3c7462760861a215ca43cbddf9f616074799aaf"
+    },
+    {
+      "path": "output/packages/jordan_supervisor_review_20261020_r2.zip.sha256",
+      "bytes": 107,
+      "sha256": "6207b8af1a3b1a5f24a9017a462f02942a38ff4817c542c706df80763448c42c"
+    },
+    {
+      "path": "output/pdf/Wang_Thesis_Draft_2026-11-02.pdf",
+      "bytes": 403877,
+      "sha256": "d662ef5d6e2950dce361c5b092911a343512c92e0b65de3bc725fce48ee7d33f"
+    },
+    {
+      "path": "output/pdf/jordan_thesis_20261015.pdf",
+      "bytes": 498989,
+      "sha256": "4a8f2a7ea3210b4ec3ed1b42f1750f8c8711799e2eb420b78ab63110adf586d9"
+    },
+    {
+      "path": "output/pdf/jordan_thesis_formal_20261016.pdf",
+      "bytes": 351025,
+      "sha256": "957f38b36ebd8383a914f89459660e24bfc8b12143f66a69e06bbbc422807043"
+    },
+    {
+      "path": "output/pdf/jordan_thesis_language_revision_20261031.pdf",
+      "bytes": 386799,
+      "sha256": "50262cb9463999a1121f66ae6443983a0cc92a3a5a2d12c6506cab1f3175c2db"
+    },
+    {
+      "path": "output/pdf/jordan_thesis_review_20261016.pdf",
+      "bytes": 352046,
+      "sha256": "754b3d8e1629248e7b0a057e8c67199b9d5c4b59faa876ddd7ea07e1f59516c0"
+    },
+    {
+      "path": "output/pdf/jordan_thesis_supervisor_review_20261016.pdf",
+      "bytes": 357005,
+      "sha256": "ba77bbec5e8393097347447831dce24bef5456ff447976d52794b898c03ade12"
+    },
+    {
+      "path": "output/pdf/jordan_thesis_supervisor_review_20261020.pdf",
+      "bytes": 391761,
+      "sha256": "a86aa4be9bec3f36d74bfb78403a29250b538384967e9b965528e6a942eeb740"
+    },
+    {
+      "path": "output/pdf/jordan_thesis_supervisor_review_20261020_r2.pdf",
+      "bytes": 393702,
+      "sha256": "bbdd4d49bed6acccb2a7c51960cb2cc8382093164ed63760ba5d682e8a57edc6"
+    },
+    {
+      "path": "output/pdf/jordan_thesis_supervisor_review_20261022_ai_alignment.pdf",
+      "bytes": 394208,
+      "sha256": "591068b412e38353449dbf47fec7d2a932c9d50009bbe81b2f851a6ccd117ccf"
+    },
+    {
+      "path": "output/pdf/jordan_thesis_supervisor_review_20261022_ai_wording.pdf",
+      "bytes": 394050,
+      "sha256": "04cc6c7b1c597345746f56744f87a72840dd682fb17a690e8bd9bd3f9de852d6"
+    },
+    {
+      "path": "output/pdf/jordan_thesis_supervisor_review_20261022_algorithm_review.pdf",
+      "bytes": 392868,
+      "sha256": "450c0a3e02c38fa9225844a65c68be36f4d9ea0fbb40acf66e18ad67efc868f7"
+    },
+    {
+      "path": "output/pdf/jordan_thesis_supervisor_review_20261022_disclosure_scope.pdf",
+      "bytes": 392692,
+      "sha256": "7e5c679e0bc956869de1f8d94e3d1f52f2ea752090c529be689f8e0dc62a25cf"
+    },
+    {
+      "path": "output/pdf/jordan_thesis_supervisor_review_20261022_numeric.pdf",
+      "bytes": 393697,
+      "sha256": "ed62a74165814671b24a2742eaf37331f994f675c0e3b660871b85c915147902"
+    },
+    {
+      "path": "output/pdf/jordan_thesis_supervisor_review_20261022_ownership_diagnostic.pdf",
+      "bytes": 393273,
+      "sha256": "8eabe10ed98712d5762c23fc11986a9c7ce28ee4ea705d658a63fcf1855b733d"
+    },
+    {
+      "path": "output/pdf/jordan_thesis_supervisor_review_20261022_reflection.pdf",
+      "bytes": 392631,
+      "sha256": "98c9e7a04ae0ed50952faab898dbd224bd8874638e8f3e068d5b8d11678347f4"
+    }
+  ],
+  "bytes_removed": 40576949,
+  "date": "2026-11-02",
+  "authorization": "Author selected cleanup of old drafts and duplicate deliverables; preserve experiment and review archives.",
+  "historical_reference_files": [
+    "docs/thesis/ai_appendix_integration_20261101.md",
+    "docs/thesis/language_revision_20261031.md",
+    "docs/thesis/structural_split_extension_20261101.md",
+    "docs/thesis/supervisor_revision_20261102.md",
+    "docs/validation/ai_alignment_20261022/README.md",
+    "docs/validation/ai_alignment_20261022/manifest.json",
+    "docs/validation/ai_disclosure_scope_20261022/README.md",
+    "docs/validation/ai_disclosure_scope_20261022/manifest.json",
+    "docs/validation/ai_reflection_integration_20261022/README.md",
+    "docs/validation/ai_reflection_integration_20261022/manifest.json",
+    "docs/validation/ai_wording_20261022/README.md",
+    "docs/validation/ai_wording_20261022/manifest.json",
+    "docs/validation/algorithm_wording_20261022/README.md",
+    "docs/validation/algorithm_wording_20261022/manifest.json",
+    "docs/validation/final_review_formal_20261015/README.md",
+    "docs/validation/id_lifecycle_calibration_20261015/README.md",
+    "docs/validation/id_lifecycle_calibration_20261015/thesis_review/README.md",
+    "docs/validation/join_proof_correction_20261016/README.md",
+    "docs/validation/numeric_citations_20261022/README.md",
+    "docs/validation/numeric_citations_20261022/manifest.json",
+    "docs/validation/ownership_diagnostic_20261022/manifest.json",
+    "docs/validation/review_delivery_20261016/README.md",
+    "docs/validation/thesis_review_round2_20261020/README.md",
+    "docs/validation/thesis_revision_20261020/README.md"
+  ]
+}

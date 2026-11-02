@@ -1,98 +1,37 @@
-# Thesis Plan
+# Experiment Protocols and Historical Plans
 
-This folder stores the approved thesis scope and research-question documents.
+## Current study
 
-The active next-stage execution plan is
-[remaining_work_20261011.md](remaining_work_20261011.md). The efficient
-heterogeneous finger-search backend is now minimum delivery, followed by final
-validation of both backends, matched experiments, and thesis integration.
-Approximately 140/380 inputs are core/expanded coverage targets. It is a working plan following the user's
-request, not a new claim of supervisor approval. Older schedules and completed
-experiment restrictions retain their historical scope.
+The completed unified study is governed by:
 
-The superseded ordinary-list-first plan from `fa67fc6` is archived byte-for-byte
-in [archive/remaining_work_20261011_before_backend_required.md](archive/remaining_work_20261011_before_backend_required.md).
+- [Uninstrumented comparison protocol](uninstrumented_rerun_protocol_20261101.md)
+- [Five-source scope and reporting addendum](uninstrumented_rerun_addendum_20261101.md)
+- [Preparation archive](../validation/unified_preflight_20261101/README.md)
+- [Formal attempts and documented restart](../validation/unified_formal_20261101/README.md)
+- [Fixed follow-up plan and results](../validation/unified_followup_20261101/README.md)
+- [Current manuscript revision](../thesis/unified_results_revision_20261101.md)
 
-- `thesis_scope_and_research_questions.pdf`
-  Approved draft thesis plan for the Jordan-sorting project, including goals, research questions, planned contributions, implementation scope, and experimental scope.
+These protocols remain records of decisions made before measurement. The first
+formal failure and the authorized restart are recorded as a protocol deviation;
+the protocols have not been rewritten to remove that deviation.
 
-- `thesis_scope_and_research_questions.md`
-  Planned Markdown companion to the approved PDF. This should be created from the approved scope, not invented from memory.
+The current thesis and its pending Appendix B content update are described in
+the [thesis README](../../thesis/README.md). This directory does not authorize
+another formal run.
 
-- `four_month_roadmap.md`
-  Compressed 3-4 month execution plan for the thesis implementation and writing schedule. It defines the minimum 12-week deliverable, the 16-week high-quality target, phase gates, risks, fallback options, and the immediate next coding task.
+## Retained historical plans
 
-- `week2_plan.md`
-  Detailed Week 2 execution plan. It focuses on notation, simplified algorithm design scope, family-tree data structures, structural metrics, and a clearly marked reference skeleton.
+The weekly plans, four-month roadmap, October remaining-work plan, approved
+scope PDF and LaTeX integration plan describe earlier stages. Their deadlines
+and unfinished-task lists are historical, rather than the current task queue.
+They remain at their original paths for references from dated progress reports
+and experiment records.
 
-- `week3_plan.md`
-  Week 3 execution plan for converting the Week 2 skeleton into a more explicit
-  reference pipeline with stronger experiment support.
+- [Approved scope and research questions](thesis_scope_and_research_questions.pdf)
+- [Original roadmap](four_month_roadmap.md)
+- [October backend and manuscript plan](remaining_work_20261011.md)
+- [Earlier ordinary-list-first plan](archive/remaining_work_20261011_before_backend_required.md)
+- [LaTeX integration plan](latex_integration_plan.md)
 
-- `week4_plan.md`
-  Week 4 execution plan for building an algorithm-facing reference pipeline, adding
-  differential checks, and preparing seminar-oriented Week 4 outputs.
-- `week5_plan.md`
-  Week 5 execution plan for debugging and validating the simplified-reference
-  experimental workflow, and preparing thesis-facing narrative artifacts.
-- `week6_plan.md`
-  Week 6 execution plan for experimental revalidation, result interpretation,
-  and thesis-facing evidence packing.
-- `week7_plan.md`
-  Week 7 execution plan for experiment-design hardening, structural metric
-  clarification, operation counters, generator audit, and pilot analysis.
-- `week8_plan.md`
-  Week 8 execution plan for scope freeze, final experiment specification,
-  benchmark-runner hardening, generator audit v2, dry runs, and thesis drafts.
-
-- `refined_thesis_direction_after_week8.md`
-  Post-Week-8 scope revision and Weeks 9-16 plan. It makes the ordinary-list
-  reconstruction of the 1990 paper algorithm the core implementation target,
-  fixes the purity and data-structure boundaries, and delays formal performance
-  experiments until correctness gates pass.
-
-- `week9_plan.md`
-  Detailed daily execution plan for specifying, implementing, validating, and
-  lightly integrating the ordinary-list reconstruction of the 1990 algorithm.
-
-- `week10_plan.md`
-  Daily plan for decomposing paper-algorithm timing contamination, adding fixed
-  execution policies without duplicating the main loop, running a controlled
-  overhead pilot, and freezing the Week 11 timing gate.
-
-- `week11_plan.md`
-  Daily plan for the immutable paper-sorting integration runner, fail-closed
-  validator, formal preflight, single 1,050-row pilot, evidence archive,
-  analysis, and Week 12 gate freeze.
-
-- `week12_plan.md`
-  Three-checkpoint plan for the frozen 3,600-row formal valid-input sorting
-  experiment: runner/validator review, one immutable evidence execution, and
-  reproducible thesis-facing analysis.
-
-- `week13_plan.md`
-  Frozen thesis-synthesis and claim-audit handoff based on immutable Week 12
-  evidence. It explicitly forbids another formal timing execution.
-
-- `latex_integration_plan.md`
-  Post-Week-13 plan for migrating the audited Markdown baseline into the FU
-  Berlin LaTeX structure while preserving claim and evidence boundaries.
-
-The frozen Week 12 valid-input sorting choices are in:
-
-```text
-experiments/week12_experiment_gate.py
-```
-
-The gate was executed exactly once as `week12_formal_sorting_v1__run001`; its
-evidence is archived and the public execution entry is disabled.
-
-The canonical machine-independent Week 11 integration-pilot values are in:
-
-```text
-experiments/week11_experiment_protocol.py
-```
-
-Per-run identity and machine evidence are defined in
-`experiments/week11_execution_context.py`. The unexecuted v1 M1 and v2 M4 gate
-files remain historical records.
+The Week 11/12 pilot and formal records retain their original protocols and
+execution identities. They are not pooled with the current five-source results.
