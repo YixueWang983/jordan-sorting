@@ -2,13 +2,13 @@
 
 ## Current review draft
 
-[Wang_Thesis_Refined_Results_2026-11-02.pdf](../output/pdf/Wang_Thesis_Refined_Results_2026-11-02.pdf)
+[Wang_Thesis_Refined_Results_2026-11-02_r2.pdf](../output/pdf/Wang_Thesis_Refined_Results_2026-11-02_r2.pdf)
 is the current **80-page** draft, built on 2 November 2026. It reports the
 complete 302-input unified comparison, with three main result figures and the
 prespecified overview in Appendix C.
 
 - [Revision details and every new number's source](../docs/thesis/unified_refinement_20261102.md)
-- [Compilation and visual-review record](../docs/thesis/unified_refinement_20261102/build_report.json)
+- [Compilation and visual-review record](../docs/thesis/unified_refinement_20261102/source_scope_correction.json)
 - [Data and preservation checks at the revision](../docs/thesis/unified_refinement_20261102/verification.json)
 - [Formal evidence, both attempts and restart decision](../docs/validation/unified_formal_20261101/README.md)
 

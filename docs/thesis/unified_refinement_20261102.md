@@ -49,3 +49,9 @@
 - [ ] B.2 补充 11 月 1 日记录：作者提出无插桩计时；Claude 参与设计及修改说明；Codex 实现、验证、准备、分析及论文修订；receipt 在作者明确确认审阅完成后按其指示写入。
 - [ ] B.3 将旧运行结果表述更新为本次结果；仅更新事实，不替作者增加观点。
 - [ ] **新增：B.2 示例 3 的 “The complete table and revised interpretation were incorporated into the results section ...” 与当前稿不符，十五输入诊断表已删除。更新其输出说明和定位。**
+
+## 同日后续更正：来源内部规模观察
+
+按作者指正，6.2 节及结果小结将“每个来源”的表述改为明确列出的四个跨规模档来源：common、structural、geometric、seeded。targeted 只有同一规模档内的 128/129，虽然端点中位数在算术上略低，也不将其用于这条规模下降观察。原表格、图形、统计值和档案均不变。
+
+更正稿：[Wang_Thesis_Refined_Results_2026-11-02_r2.pdf](../../output/pdf/Wang_Thesis_Refined_Results_2026-11-02_r2.pdf)，仍为 **80 页**，旧稿未覆盖。编译无警告；只有物理第 48、51 页发生变化，两页已目视复查，其余 78 页渲染一致。附录 A、B 未改，附录 B 待办及暂不能发送导师的状态仍有效。核对见 [source_scope_correction.json](unified_refinement_20261102/source_scope_correction.json)。

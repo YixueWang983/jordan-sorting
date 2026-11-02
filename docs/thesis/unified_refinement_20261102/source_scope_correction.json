@@ -1,0 +1,55 @@
+{
+  "date": "2026-11-02",
+  "baseline": "46f4dd074ef7b9311c06a3d60e1096884a7df9f6",
+  "change": "Restrict the size-endpoint observation in Results 6.2 and its summary to the four sources spanning multiple size bands.",
+  "included_sources": [
+    "common",
+    "structural",
+    "geometric",
+    "seeded"
+  ],
+  "size_band_counts": {
+    "common": 5,
+    "targeted_split": 1,
+    "structural": 3,
+    "geometric": 5,
+    "seeded": 4
+  },
+  "excluded_from_this_observation": "targeted_split has only lengths 128 and 129, within one size band. All its data and tables remain included.",
+  "parent_build_report": "docs/thesis/unified_refinement_20261102/build_report.json",
+  "updated_source_sha256": {
+    "thesis/chapters/results.tex": "7fa90eeb46a2671e6290099b7b3a54c84ca9f867079f7592c5fba001296f2177"
+  },
+  "unchanged_parent_source_files": 50,
+  "appendix_A_and_B_unchanged": true,
+  "previous_pdf_unchanged": true,
+  "new_measurements_executed": false,
+  "pdf": {
+    "path": "output/pdf/Wang_Thesis_Refined_Results_2026-11-02_r2.pdf",
+    "pages": 80,
+    "sha256": "65f6612d7ee8600db5ab5ea3ac30bf7cd7e0c8d2fa827659795531c4aae1d464"
+  },
+  "compile": {
+    "engine": "LuaHBTeX 1.24.0 (TeX Live 2026)",
+    "bibliography": "Biber 2.22",
+    "command": "latexmk -norc -lualatex -outdir=build/refinement-20261102-r2 -interaction=nonstopmode -halt-on-error -file-line-error main.tex",
+    "working_directory": "thesis",
+    "warnings": 0,
+    "undefined_references": 0,
+    "overfull_boxes": 0,
+    "underfull_boxes": 0,
+    "log_sha256": {
+      "main.log": "5fd2bd0ef02644f6be51f1bc3cab632e149f29bae62e7df07e99dec3b7fb12e9",
+      "main.blg": "aaef85a99f85810e1449ce7db75cf55ad2833bef7ca6144eedbab3647f73b26e"
+    }
+  },
+  "visual_review": {
+    "all_pages_compared": 80,
+    "changed_pages_inspected": [
+      48,
+      51
+    ],
+    "unchanged_rendered_pages": 78
+  },
+  "ready_for_supervisor_circulation": false
+}
