@@ -156,7 +156,9 @@ orientation and endpoint clarifications, is the subject of
 \cref{chap:algorithm}.
 
 For the theoretical implementation, the 1990 paper proposes heterogeneous
-finger trees. It states constant amortized time for singleton-list creation
+finger trees. The paper omits a detailed description of this structure and
+refers to \textcite{tarjan1988triangulating} for it
+\parencite[p.~90]{fung1990simplified}. It states constant amortized time for singleton-list creation
 and boundary insertion, and a logarithmic-in-the-smaller-side amortized bound
 for splitting. A potential argument charges the split cost across the
 operation sequence, giving $O(m)$ total time for $m$ list operations and

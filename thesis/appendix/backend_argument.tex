@@ -12,6 +12,67 @@ The final cost statement uses unit-cost comparisons, machine-word operations
 and constant-size allocation, with expected dictionary access and amortized
 growth. Checked audits, replay and input certification are excluded.
 
+\section{Relation to the 1990 Paper}
+\label{sec:proof-relation}
+
+Fung et~al.\ state the correctness and cost of the simplified algorithm in
+compressed form. Their locality lemma assumes that the latest pair of the
+local family is a child; for a latest parent they note that one sibling list
+is used but give no corresponding re-entry lemma
+\parencite[p.~88]{fung1990simplified}. Correctness of the three steps is
+attributed briefly to this lemma and further properties of Jordan curves
+\parencite[p.~89]{fung1990simplified}. The heterogeneous finger tree is
+described only in outline, as a balanced search tree whose pointers along the
+two ribs to the first and last nodes go up instead of down; a detailed
+description is omitted with a reference to \textcite{tarjan1988triangulating}.
+The paper states constant amortized time for singleton creation and end
+insertion and $O(\log(\min\{k,\ell-k\}+2))$ amortized time for splitting a
+list of length~$\ell$ into parts of sizes $k$ and $\ell-k$, and a potential on
+list sizes gives $O(m)$ total time for $m$ list operations
+\parencite[pp.~90--91]{fung1990simplified}.
+
+The paper therefore fixes the outline of the structure and its operation
+bounds, but not a representation from which those bounds can be checked. The
+measured backend realizes the outline as a red--black tree with reversed ribs,
+endpoint fingers, header ownership and adoption of split outputs;
+\cref{sec:proof-representation,sec:proof-cost} show that this representation
+meets the stated bounds. The exact grouping invariant $G$ is maintained for
+every owner, including regions whose latest member is the finite parent;
+\cref{lem:proof-reentry} supplies the re-entry argument for that case.
+\Cref{tab:proof-relation} summarizes which parts are taken from the paper and
+which are added here.
+
+\begin{table}[H]
+\centering
+\caption{Arguments taken from Fung et al. (1990) and those added in this appendix.}
+\label{tab:proof-relation}
+\small
+\setstretch{1.05}
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.19\linewidth}
+                   >{\raggedright\arraybackslash}p{.39\linewidth}
+                   >{\raggedright\arraybackslash}p{\dimexpr.42\linewidth-4\tabcolsep\relax}@{}}
+\toprule
+\textbf{Topic} & \textbf{Fung et al. (1990)} & \textbf{This appendix} \\
+\midrule
+Locality & Lemma for a latest child; parent case noted without a lemma, p.~88
+  & Child case cited; finite-parent case proved (\cref{lem:proof-reentry}) \\
+\addlinespace
+Correctness and legal calls & Attributed briefly to locality and curve properties, p.~89
+  & Prefix induction with $G$ and ownership (\cref{lem:proof-locality}) \\
+\addlinespace
+Representation and operations & Balanced tree with upward-pointing ribs; details referred to Tarjan \& Van Wyk, p.~90
+  & Red--black representation $D$, insertion, join and split (\cref{lem:proof-insert,lem:proof-join,lem:proof-split}) \\
+\addlinespace
+Operation costs & $O(1)$ creation and insertion; $O(\log(\min\{k,\ell-k\}+2))$ split, p.~90
+  & Shown for this representation, including mixed histories (\cref{lem:proof-telescoping,lem:proof-finger,lem:proof-mixed}) \\
+\addlinespace
+Total cost & Potential on list sizes; $O(m)$ for $m$ operations, pp.~90--91
+  & Same approach, extended to core, ownership and output work (\cref{thm:proof-total}) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \section{Decoding and Preservation}
 \label{sec:proof-representation}
 
