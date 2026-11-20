@@ -170,6 +170,8 @@ Let $v$ be the predecessor of $z_{i-1}$. If $i$ is odd and $v=z_1$, replace
 $v$ by the predecessor of $z_1$. If the resulting neighbor is the negative
 sentinel, let $A_i$ be the dummy pair of the current family. Otherwise, let
 $A_i$ be the already processed same-family pair containing $v$.
+In \cref{fig:algorithm-step-example}(b), the predecessor of $z_7=3$ is
+$v=2$, the endpoint of $A_8=P_2$.
 
 \subsection{Step 2: Successor-Side Boundary}
 \label{sec:algorithm-step2}
@@ -178,6 +180,11 @@ Let $w$ be the successor of $z_{i-1}$. If $i$ is odd and $w=z_1$, replace
 $w$ by the successor of $z_1$. If the resulting neighbor is the positive
 sentinel, let $B_i$ be the current family dummy. Otherwise, let $B_i$ be the
 processed same-family pair containing $w$.
+In \cref{fig:algorithm-step-example}(b), the successor of $z_7=3$ is
+$w=4$, which selects the upper pair $B_8=P_6$. In the increasing case,
+$B_i$ identifies the sibling list to split: here $z_8=6$ cuts the list
+$[P_6,P_4]$ beginning at $B_8$. If $B_i$ encloses $z_{i-1}$, no split
+takes place.
 
 A processed point can belong to both an upper and a lower pair. The parity of
 $i$ selects the relevant incident pair without using a global rank map. The
@@ -201,6 +208,8 @@ If $A_i$ encloses $z_{i-1}$, then $N$ becomes its child in a new singleton
 sibling list. Otherwise, $A_i$ is the last item of its sibling list; $N$ is
 inserted immediately after $A_i$ and inherits the same parent. In either case,
 $N$ obtains exactly one parent and one sibling-list owner.
+In \cref{fig:algorithm-step-example}(c), boundary insertion appends
+$N=P_8$ to $[P_2]$ under the upper dummy root.
 
 \subsection{Step 3(b): Split Off Newly Enclosed Children}
 \label{sec:algorithm-step3b-increasing}
@@ -211,6 +220,8 @@ produces a left side and a right side. For a valid input, no pair may straddle
 the split value: both endpoints of each child lie on one side. The left side,
 whose pairs are newly enclosed by $N$, becomes a child list of $N$; the right
 side remains with the previous owner of $L$.
+In \cref{fig:algorithm-step-example}(c), $[P_6]$ becomes the child list of
+$N$, while $[P_4]$ stays with the dummy root.
 
 \subsection{Step 3(c): Insert the New Point}
 \label{sec:algorithm-step3c-increasing}
@@ -220,6 +231,22 @@ let $C$ be the rightmost child pair of $N$ and choose the geometric right
 endpoint $r(C)$ as the base anchor. After the possible odd-index adjustment
 in \cref{sec:algorithm-z1-anchor}, insert $z_i$ immediately after the output
 anchor.
+In \cref{fig:algorithm-step-example}(d), the right endpoint of $P_6$ is
+$5$, so $6$ enters $S_8$ immediately after $5$.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{step_walkthrough_example.pdf}
+  \caption[Boundary selection and insertion at iteration eight]{Iteration
+  $i=8$ on $(1,2,8,7,5,4,3,6)$. (a) The order and upper sibling lists
+  before insertion; the dashed point marks the pending value. (b) Steps~1
+  and~2 select $A_8$ and $B_8$ from the two neighbors of $z_7$.
+  (c) Steps~3(a) and~3(b) insert $P_8$ and split the list beginning at
+  $B_8$. (d) Step~3(c) inserts $z_8$ after its anchor. Numbers on the
+  axis are values; the row below gives their curve-order indices.
+  Even-indexed pairs arc above the axis and odd-indexed pairs below.}
+  \label{fig:algorithm-step-example}
+\end{figure}
 
 \section{Step 3: Decreasing Orientation}
 \label{sec:algorithm-step3-decreasing}
