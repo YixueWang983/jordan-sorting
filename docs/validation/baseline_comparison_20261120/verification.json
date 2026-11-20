@@ -1,0 +1,288 @@
+{
+  "by_n": {
+    "32": {
+      "ordinary_list": {
+        "us": 633.8538359375,
+        "comparisons_per_key": 24.578125
+      },
+      "heterogeneous_finger_uninstrumented": {
+        "us": 870.680328125,
+        "comparisons_per_key": 20.984375
+      },
+      "merge_sort": {
+        "us": 11.81200146484375,
+        "comparisons_per_key": 2.984375
+      },
+      "quick_sort": {
+        "us": 6.512761352539062,
+        "comparisons_per_key": 6.84375
+      },
+      "sorted": {
+        "us": 0.6079285888671875,
+        "comparisons_per_key": 3.609375
+      }
+    },
+    "33": {
+      "ordinary_list": {
+        "us": 524.4235078125,
+        "comparisons_per_key": 19.166666666666664
+      },
+      "heterogeneous_finger_uninstrumented": {
+        "us": 726.959,
+        "comparisons_per_key": 19.96969696969697
+      },
+      "merge_sort": {
+        "us": 12.070089111328125,
+        "comparisons_per_key": 2.9545454545454546
+      },
+      "quick_sort": {
+        "us": 6.210840942382813,
+        "comparisons_per_key": 6.363636363636363
+      },
+      "sorted": {
+        "us": 0.6181205062866211,
+        "comparisons_per_key": 3.696969696969697
+      }
+    },
+    "64": {
+      "ordinary_list": {
+        "us": 1326.72915625,
+        "comparisons_per_key": 29.1796875
+      },
+      "heterogeneous_finger_uninstrumented": {
+        "us": 1743.47009375,
+        "comparisons_per_key": 22.515625
+      },
+      "merge_sort": {
+        "us": 25.36443994140625,
+        "comparisons_per_key": 3.6015625
+      },
+      "quick_sort": {
+        "us": 14.117502685546874,
+        "comparisons_per_key": 8.484375
+      },
+      "sorted": {
+        "us": 1.2183113098144531,
+        "comparisons_per_key": 3.984375
+      }
+    },
+    "65": {
+      "ordinary_list": {
+        "us": 1129.059234375,
+        "comparisons_per_key": 20.153846153846153
+      },
+      "heterogeneous_finger_uninstrumented": {
+        "us": 1474.4453125,
+        "comparisons_per_key": 21.092307692307692
+      },
+      "merge_sort": {
+        "us": 24.80377197265625,
+        "comparisons_per_key": 3.3923076923076922
+      },
+      "quick_sort": {
+        "us": 13.186167236328124,
+        "comparisons_per_key": 7.876923076923077
+      },
+      "sorted": {
+        "us": 1.1701380615234376,
+        "comparisons_per_key": 3.7384615384615385
+      }
+    },
+    "70": {
+      "ordinary_list": {
+        "us": 1473.66146875,
+        "comparisons_per_key": 28.164285714285715
+      },
+      "heterogeneous_finger_uninstrumented": {
+        "us": 1923.204375,
+        "comparisons_per_key": 25.264285714285712
+      },
+      "merge_sort": {
+        "us": 28.8770341796875,
+        "comparisons_per_key": 3.864285714285714
+      },
+      "quick_sort": {
+        "us": 16.105926513671875,
+        "comparisons_per_key": 9.521428571428572
+      },
+      "sorted": {
+        "us": 1.3131370697021485,
+        "comparisons_per_key": 3.935714285714286
+      }
+    },
+    "128": {
+      "ordinary_list": {
+        "us": 2860.5,
+        "comparisons_per_key": 30.8515625
+      },
+      "heterogeneous_finger_uninstrumented": {
+        "us": 3536.92175,
+        "comparisons_per_key": 23.9375
+      },
+      "merge_sort": {
+        "us": 53.910806640625,
+        "comparisons_per_key": 4.203125
+      },
+      "quick_sort": {
+        "us": 30.6033935546875,
+        "comparisons_per_key": 9.8984375
+      },
+      "sorted": {
+        "us": 2.2442499389648436,
+        "comparisons_per_key": 4.1171875
+      }
+    },
+    "129": {
+      "ordinary_list": {
+        "us": 2199.489625,
+        "comparisons_per_key": 25.031007751937985
+      },
+      "heterogeneous_finger_uninstrumented": {
+        "us": 2935.218625,
+        "comparisons_per_key": 22.372093023255815
+      },
+      "merge_sort": {
+        "us": 53.177572265625,
+        "comparisons_per_key": 4.007751937984496
+      },
+      "quick_sort": {
+        "us": 25.510986328125,
+        "comparisons_per_key": 8.844961240310077
+      },
+      "sorted": {
+        "us": 1.3958587646484375,
+        "comparisons_per_key": 2.9147286821705425
+      }
+    },
+    "256": {
+      "ordinary_list": {
+        "us": 6372.958,
+        "comparisons_per_key": 48.96875
+      },
+      "heterogeneous_finger_uninstrumented": {
+        "us": 7696.7395,
+        "comparisons_per_key": 24.34375
+      },
+      "merge_sort": {
+        "us": 113.105796875,
+        "comparisons_per_key": 4.76953125
+      },
+      "quick_sort": {
+        "us": 70.19873046875,
+        "comparisons_per_key": 12.34375
+      },
+      "sorted": {
+        "us": 4.52423095703125,
+        "comparisons_per_key": 4.39453125
+      }
+    },
+    "257": {
+      "ordinary_list": {
+        "us": 6024.125,
+        "comparisons_per_key": 28.622568093385215
+      },
+      "heterogeneous_finger_uninstrumented": {
+        "us": 6028.2605,
+        "comparisons_per_key": 21.96887159533074
+      },
+      "merge_sort": {
+        "us": 109.73583984375,
+        "comparisons_per_key": 4.4319066147859925
+      },
+      "quick_sort": {
+        "us": 61.001544921875,
+        "comparisons_per_key": 10.750972762645915
+      },
+      "sorted": {
+        "us": 4.233342529296875,
+        "comparisons_per_key": 3.840466926070039
+      }
+    },
+    "512": {
+      "ordinary_list": {
+        "us": 15775.688,
+        "comparisons_per_key": 70.482421875
+      },
+      "heterogeneous_finger_uninstrumented": {
+        "us": 15110.8125,
+        "comparisons_per_key": 25.0234375
+      },
+      "merge_sort": {
+        "us": 241.4368515625,
+        "comparisons_per_key": 5.3203125
+      },
+      "quick_sort": {
+        "us": 160.5130234375,
+        "comparisons_per_key": 14.955078125
+      },
+      "sorted": {
+        "us": 8.82464599609375,
+        "comparisons_per_key": 4.458984375
+      }
+    },
+    "513": {
+      "ordinary_list": {
+        "us": 14513.3125,
+        "comparisons_per_key": 28.12475633528265
+      },
+      "heterogeneous_finger_uninstrumented": {
+        "us": 13887.0835,
+        "comparisons_per_key": 24.35672514619883
+      },
+      "merge_sort": {
+        "us": 245.4580078125,
+        "comparisons_per_key": 5.487329434697855
+      },
+      "quick_sort": {
+        "us": 134.67562109375,
+        "comparisons_per_key": 12.477582846003898
+      },
+      "sorted": {
+        "us": 9.085571533203124,
+        "comparisons_per_key": 4.448343079922028
+      }
+    }
+  },
+  "paired_slowdown_min_median_max": {
+    "ordinary_list": {
+      "merge_sort": [
+        36.6700498171447,
+        51.85851626868881,
+        73.3358579597773
+      ],
+      "quick_sort": [
+        49.48230223913232,
+        88.71364615337183,
+        130.67710345163903
+      ],
+      "sorted": [
+        682.6464420071295,
+        1342.9978307994481,
+        4657.351970108829
+      ]
+    },
+    "heterogeneous_finger_uninstrumented": {
+      "merge_sort": [
+        40.66192417255252,
+        63.21584616898298,
+        84.2794544545355
+      ],
+      "quick_sort": [
+        51.55157055144041,
+        110.13852893943377,
+        157.4839992756771
+      ],
+      "sorted": [
+        836.5829936426626,
+        1601.952873966327,
+        5854.119045449247
+      ]
+    }
+  },
+  "sorted_calls_checked": {
+    "candidate": 22165122,
+    "warmup": 7550,
+    "sample": 73898840
+  },
+  "tree_faster_than_list": 42
+}
