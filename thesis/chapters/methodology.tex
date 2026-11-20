@@ -222,11 +222,9 @@ sampling. Checks and evidence persistence occur outside the timed intervals.}
 \section{Comparison with General-Purpose Sorting}
 \label{sec:method-baselines}
 
-Following the supervisor's suggestion on 19 November 2026, a supplementary
-experiment compared the two Jordan backends with general-purpose sorts on the
-same \BaselineInputs{} inputs. Its protocol was committed before measurement
-(\texttt{03e87e1cb}). Both Jordan backends ran in minimal mode using the
-frozen source (\texttt{bca4c1c6}). The Python implementations of merge sort
+A supplementary experiment compared the two Jordan backends with general-purpose
+sorts on the same \BaselineInputs{} inputs. Its protocol was committed before
+measurement. Both Jordan backends ran in minimal mode using the frozen source. The Python implementations of merge sort
 and quicksort in \nolinkurl{src/baselines.py} were used as written. Merge sort
 recursively merges sorted halves. Quicksort takes the middle element of each
 subsequence as its pivot and partitions the elements into three groups:
