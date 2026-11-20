@@ -264,10 +264,12 @@ in the last transition, with exponent \BaselineListLast{}.
 \label{fig:baseline-growth}
 \end{figure}
 
-Over the full span, merge sort and quicksort grew by factors of
-\BaselineMergeGrowth{} and \BaselineQuickGrowth{}, between the linear and
-$n\log n$ reference curves. The built-in sort grew by a factor of
-\BaselineBuiltinGrowth{}, below the linear reference over the full span.
+Across the five size bands in \cref{fig:baseline-growth}, median sorting time
+grew by a factor of \BaselineTreeGrowth{} for the Jordan finger tree,
+\BaselineMergeGrowth{} for Python merge sort, and \BaselineQuickGrowth{} for
+Python quicksort. The finger tree thus showed slower growth than either Python
+baseline over the measured range, while CPython's built-in \texttt{sorted()}
+showed the slowest growth of all five methods (\BaselineBuiltinGrowth{}-fold).
 Using all inputs gave similar first-to-last factors for the tree
 (\BaselineTreeAllGrowth{} vs.\ \BaselineTreeGrowth{} in the fixed-source
 subset) and list (\BaselineListAllGrowth{} vs.\ \BaselineListGrowth{}).
