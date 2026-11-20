@@ -5,33 +5,56 @@
 \label{sec:introduction-motivation}
 \label{sec:introduction-scope}
 
-Jordan sorting recovers coordinate order from the traversal order of a simple
-curve's intersections with a line. The geometric restrictions permit
-linear-time algorithms \parencites{hoffmann1986sorting}{fung1990simplified}
-when their specialized dynamic-list operations meet the required cost bounds.
-The problem arises in clipping a simple
-polygon against a rectangular window: intersections encountered along the
-polygon boundary must also be ordered along the window's edges. Fung et al.\
-use Jordan sorting as a step in their polygon-clipping algorithm
-\parencite{fung1990simplified}.
+Sorting is one of the most basic problems in computing. For general inputs,
+comparison-based sorting of $n$ elements requires $\Omega(n\log n)$
+comparisons in the worst case; merge sort attains this bound, and randomized quicksort
+attains it in expectation \parencite{cormen2009introduction}. When the input
+has additional structure, sorting can be faster. Integer keys from a small
+range, for example, can be sorted in linear time by counting or radix sort
+\parencite{cormen2009introduction}.
 
-Replacing these structures with ordinary Python lists can preserve semantics
-while changing complexity. A structure with a better asymptotic bound may
-still run more slowly at practical input sizes. This thesis examines the
-relationship between cost bounds and observed runtime by combining algorithm
-reconstruction, cost analysis and measurement in an algorithm-engineering study
+Jordan sorting is such a special case. Its input lists the intersection
+points of a simple curve with a line in the order in which the curve meets
+them, and the task is to return their order along the line
+(\cref{fig:jordan-sorting-problem}). Because a simple curve cannot cross
+itself, not every order of the points can occur.
+\Textcite{hoffmann1986sorting} showed that this restriction suffices for
+sorting in linear time, and \textcite{fung1990simplified} later gave a
+simpler linear-time procedure.
+
+The problem arises in geometric algorithms that follow a polygon boundary but
+need the resulting points in another order. In clipping a simple polygon
+against a rectangular window, the intersections encountered along the polygon
+boundary must also be ordered along the window's edges; Fung et~al.\ use
+Jordan sorting as a step in their polygon-clipping algorithm
+\parencite{fung1990simplified}. An error-correcting form of the task appears
+in polygon triangulation \parencite{tarjan1988triangulating}, and a
+generalized form is used to triangulate collections of disjoint polygonal
+chains \parencite{baryehuda1994triangulating}.
+
+These linear-time algorithms are considerably more complicated than merge sort
+or quicksort. Their bounds rest on specialized dynamic lists: the 1986
+algorithm uses level-linked search trees, and the 1990 paper proposes
+heterogeneous finger trees that support insertion at either end in constant
+amortized time and splitting in amortized time logarithmic in the size of the
+smaller part. Such structures are intricate, and their asymptotic advantage
+need not appear at practical input sizes; \textcite{sojka1997simple}
+accordingly proposed simpler algorithms with weaker worst-case bounds,
+intended to be practical at moderate input sizes.
+
+This thesis implements the 1990 procedure and examines whether its
+specialized structure pays off in practice. The procedure is implemented as one
+Python core with two interchangeable backends for the sibling lists: ordinary
+Python lists, which keep the control flow but lose the linear bound, and a
+heterogeneous red--black finger tree, which supports it. The main experiment compares these backends directly.
+A supplementary experiment compares both with merge sort and quicksort
+implemented in Python, using CPython's built-in sort as a practical reference. The study combines algorithm reconstruction,
+cost analysis and measurement in the sense of algorithm engineering
 \parencites{sanders2009engineering}{mcgeoch2012guide}.
 
-Since the September progress report, which presented the ordinary-list
-implementation and its runtime baseline, the scope has expanded to include
-a finger-tree backend, its amortized analysis and a direct comparison of the
-two backends.
-
-Both backends share one Python core for the 1990 procedure. With either
-backend, the core maintains its own sorted output, pair forests and sibling
-ownership. Inputs are pre-certified valid Jordan sequences with distinct
-comparable values. Recognition, invalid-input behavior and geometric
-applications lie outside the study.
+With either backend, the core maintains its own sorted output, pair forests
+and sibling ownership. Inputs are pre-certified valid Jordan sequences with
+distinct comparable values. Recognition, invalid-input behavior and geometric applications also lie outside the study.
 
 \section{Research Questions}
 \label{sec:introduction-questions}
@@ -41,8 +64,9 @@ applications lie outside the study.
 implemented so that it computes the sorted order from its own maintained
 state, using either ordinary lists or a finger tree, while preserving the
 invariants of the pair hierarchy?
-\item \textbf{Observed runtime:} How do the two backends compare in running
-time on a fixed set of validated inputs under a paired measurement protocol?
+\item \textbf{Observed runtime:} On the same validated inputs, how do the
+running times of the two backends compare with each other and with Python
+implementations of merge sort and quicksort?
 \item \textbf{Structure and cost:} Which properties of the implemented
 operations yield the linear total-work bound, and how do the concrete
 operation costs relate to the measured runtime?
@@ -74,6 +98,8 @@ range \UnifiedMinimum{}--\UnifiedMaximum{}.
 Ratios decrease across the measured size bands. Within common, more heavily nested categories favor the tree more
 often. The heavy inputs have at most one split and no two-sided split, whereas
 the other sources extend coverage to interior and repeated splitting.
+In the supplementary experiment, both general-purpose Python algorithms
+finished sooner than either Jordan backend on every input.
 
 \section{Reading Guide}
 \label{sec:introduction-structure}
@@ -83,4 +109,4 @@ algorithm reconstruction and implementation. \Cref{chap:methodology,chap:results
 describe the experimental method, report the measurements and discuss their
 limits. \Cref{chap:conclusion} answers the research questions.
 \Cref{app:backend-argument} develops the proof, and
-\cref{app:claim-traceability} indexes its sources and supporting evidence.
+\Cref{app:claim-traceability} indexes its sources and supporting evidence.

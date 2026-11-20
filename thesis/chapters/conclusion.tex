@@ -23,11 +23,15 @@ support the reconstruction on the tested inputs without replacing its argument.
 
 \label{sec:conclusion-rq2}
 \textbf{RQ2: observed runtime.}
-The uninstrumented tree is faster on \UnifiedWins{} of \UnifiedN{} inputs;
+In the main experiment, the uninstrumented tree is faster on \UnifiedWins{} of \UnifiedN{} inputs;
 the ordinary list is faster on the remainder. The input-level tree/list ratio
 has median \UnifiedMedian{} and range \UnifiedMinimum{}--\UnifiedMaximum{}.
 The pooled median decreases across the measured size bands, and the common
 source's more heavily nested categories have lower ratios.
+In the supplementary session, Python merge sort and quicksort both beat
+the two Jordan backends on every input. For the tree, the median paired
+time ratios were \BaselineTreeMerge{} against merge sort and
+\BaselineTreeQuick{} against quicksort (\cref{tab:baseline-ratios}).
 
 \label{sec:conclusion-rq3}
 \textbf{RQ3: structure and cost.}
@@ -38,20 +42,51 @@ shared-core work. The linear total uses unit-cost comparisons and machine-word
 operations, expected dictionary lookup and amortized growth. Ordinary-list
 insertion copying alone has a quadratic lower bound.
 
-The five sources cover different splitting histories, including two-sided
-splits in targeted, structural, geometric and seeded inputs. Yet the strongest
-tree advantages occur among heavily nested common inputs with at most one
-split and no two-sided split. Within the shared targeted/balanced/skew
-construction, ratios vary little with the selected smaller-side parameter at
-a fixed length.
+The targeted, structural, geometric and seeded sources include two-sided
+splits. The largest tree advantages occur on heavily nested common inputs
+with at most one split and no two-sided split. Within the shared
+targeted/balanced/skew construction, ratios vary little with the selected
+smaller-side parameter at a fixed length. Complete-sort measurements do not
+identify which operations account for the tree's advantage.
+The ordinary backend's parent-chain check, whose cost grows with nesting
+depth, is one candidate (\cref{sec:limitations-timing-scopes}). How the proved
+operation costs relate to measured runtime remains partly open over this
+range (\cref{sec:limitations-timing-scopes}).
 
 \section{Contributions and Further Work}
 \label{sec:conclusion-contributions}
 \label{sec:conclusion-future-work}
 \label{sec:conclusion-closing}
 
-The thesis provides an implementation whose operations can be traced to the
-reconstruction and cost argument, together with reproducible measurements.
+\begin{itemize}[itemsep=.4\baselineskip]
+  \item \textbf{Executable reconstruction.} The shared core implements the
+  1990 algorithm with ordinary-list and finger-tree backends. It specifies
+  the odd-stage $z_1$ handling, geometric endpoint rules and exact sibling-group
+  invariant $G$ (\cref{chap:algorithm}).
+
+  \item \textbf{Finite-parent locality.} We extend the published latest-child
+  argument to the case where the latest member of an unchanged region is its
+  finite parent. The first re-entry then uses the gap immediately inward from
+  the parent's latest endpoint (\cref{lem:proof-reentry}).
+
+  \item \textbf{Linear work bound.} The source-level argument establishes
+  $O(n)$ expected/amortized work for the minimal core with the finger-tree
+  backend on valid inputs under the stated computation model. A potential on
+  tree nodes pays for repair propagation, and a potential on sibling-list
+  sizes pays the aggregate split costs (\cref{thm:proof-total}).
+
+  \item \textbf{Reproducible measurement.} The paired protocol qualifies
+  inputs before timing and archives the batch records. Independent validation
+  checks the saved outputs and recomputes the reported timing summaries
+  (\cref{sec:method-qualification,sec:method-evidence}).
+
+  \item \textbf{Observed runtime.} At every measured common-source length up
+  to $n=\UnifiedMaxN{}$, the median tree/list ratio is lower in the more deeply
+  nested categories. The tree's largest advantages occur in the heavy category,
+  where no input performs a two-sided split
+  (\cref{sec:results-structure,sec:results-nesting-by-length}).
+\end{itemize}
+
 Several extensions would test how far the observed trends carry. Generators
 that combine depth with long sibling lists, and application-derived inputs
 with large interior splits, would address structural gaps in the current
@@ -63,7 +98,18 @@ the narrowing of the tree/list ratio continues beyond $n=\UnifiedMaxN{}$.
 Intersection sequences from real polygon data would connect the measurements
 to the clipping application of Fung et al.\ Operation counts from the
 instrumented tree could describe differences in work mix and guide targeted
-measurements of candidate explanations. Independent review of the finite-parent locality extension and
+measurements of candidate explanations. An ordinary-list variant with an
+owner-only liveness check would separate representation-specific safety checks
+from list-operation costs.
+
+The two Jordan backends were timed on CPython.
+Repeating the comparison on PyPy would test how just-in-time compilation
+affects their relative speed and their performance against the Python
+baselines. Two further experiments could measure how these comparisons change when the core tree operations are
+implemented in C or Cython, or when node fields are stored in arrays to
+reduce the number of Python objects allocated.
+
+Independent review of the finite-parent locality extension and
 the mixed-operation potential argument would strengthen confidence in the
 cost analysis. Recognition, invalid-input behavior and error correction each
 require their own specification and evaluation.

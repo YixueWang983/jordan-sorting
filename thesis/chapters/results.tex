@@ -99,6 +99,43 @@ has $S_i\leq1$, and none has a two-sided split; \UnifiedHeavyZero{} have no
 split at all. Thus the advantage on these constructions does not require
 frequent splitting. For the inputs without splits, it arises within the
 remaining work of complete sorting.
+One part of that remaining work grows with nesting depth in the ordinary
+backend. Before each list creation, boundary insertion and transfer, its
+liveness check walks the owner's parent chain to the family dummy and scans
+the containing list at every ancestor (\cref{sec:implementation-complexity}).
+The tree performs no such walk. The complete-sort timings do not measure
+how much of the ratio this difference accounts for.
+
+\subsection{Nesting Categories by Length}
+\label{sec:results-nesting-by-length}
+
+The category medians in \cref{tab:results-nesting} pool all ten measured
+lengths. We also computed the median of the per-input ratios $r_i$ for
+each category at each exact length in the common source. At all ten
+lengths, the median is highest for strict-flat inputs, followed by low,
+medium and heavy nesting. \Cref{fig:results-nesting-by-length} shows the
+five even lengths. Each odd-length median is within 0.03 of its counterpart
+at the preceding even length.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.94\textwidth]{unified_common_nesting_by_length.pdf}
+\caption[Common-source ratios by nesting category and length]{Median
+tree/list ratio by nesting category at each even length in the common source.
+Each marker summarizes two strict-flat inputs or four inputs in its nesting
+category. Ratios below the dashed line favor the tree. This post hoc
+descriptive analysis uses per-input ratios from the formal archive (see
+\cref{sec:appendix-current-formal}).}
+\label{fig:results-nesting-by-length}
+\end{figure}
+
+Across the five even lengths, all four category medians decrease. The
+strict-flat median falls from 1.511 at $n=32$ to 1.261 at $n=512$. The
+heavy category has the largest drop, from 1.222 to 0.591 over the same
+lengths, despite a pooled median close to parity (0.986). Among the measured
+lengths, the heavy-category median first falls below 1 at $n=128$ and the
+medium-category median at $n=512$. The strict-flat and low-nesting medians
+stay above 1 at every measured length.
 
 \subsection{Structural Shapes}
 \label{sec:results-structural-extension}
@@ -138,7 +175,7 @@ ratio across this collection (\cref{fig:results-splits}(b)). An input with no
 performed split has $p_i=\mathrm{NA}$, not zero. The figure therefore omits
 \UnifiedNoSplit{} inputs from its horizontal axis while retaining them in
 all main timing summaries. Absolute split counts and smaller-side sizes are
-reported in \cref{app:results-supplement}.
+reported in \Cref{app:results-supplement}.
 
 \begin{figure}[htbp]
 \centering
@@ -158,8 +195,7 @@ source.}
 All five sources completed qualification and formal sampling in the second
 attempt. \Cref{tab:results-sources} reports their registration, deduplication
 and completion counts alongside their timing summaries, as required by the
-reporting protocol. Tree-faster inputs occur in common, geometric and seeded;
-none occurs in targeted or structural.
+reporting protocol.
 
 \begin{table}[htbp]
 \centering
@@ -178,13 +214,100 @@ Source & Reg. & Dup. & Can. & Qual. & Timed & Faster & Median & Range\\
 \end{tabular}
 \end{table}
 
+Of the \UnifiedWins{} inputs on which the tree is faster, 32 come from the
+common source, five from geometric and seven from seeded. The common cases
+comprise \UnifiedHeavyWins{} heavy-nesting and eight medium-nesting inputs
+(\cref{tab:results-nesting}).
+
+\begin{samepage}
+All 12 wins outside the common source fall in the largest measured length
+band (512/513), based on a post hoc breakdown of the archived ratios and
+input registry (\cref{sec:appendix-current-formal}). The five geometric
+wins all occur at $n=512$, with ratios from 0.956 to 0.999. Four fall in the
+near-tie band $0.98<r_i<1.02$ defined in \cref{sec:results-overall}. The
+seven seeded wins have ratios from 0.892 to 0.986 and all use the generator's
+gap-selection bias $b=0.25$. The list is faster on all 12 measured seeded
+inputs with $b=0.05$.\par
+\end{samepage}
+
 The predetermined all-input overview is retained in
-\cref{app:results-supplement}, together with the source-level split totals,
+\Cref{app:results-supplement}, together with the source-level split totals,
 smaller-side summaries and complete event-size frequency table. Those
 structural descriptions use the same qualified inputs as the timing tables.
 The underlying records and original four figures remain in the formal archive.
 
-\paragraph{Summary of Observations.}
+\section{Comparison with General-Purpose Sorting}
+\label{sec:results-baselines}
+
+On every one of the \BaselineInputs{} inputs, both Python baselines finished
+sooner than either Jordan backend. \Cref{tab:baseline-ratios} gives the
+magnitude of the difference. Each ratio compares two methods on the same
+input in the supplementary session. Absolute times for all five methods,
+including the built-in reference, appear in \cref{fig:baseline-runtime}.
+
+\begin{table}[htbp]
+\centering
+\caption{Median paired time ratios and counts of inputs on which the Jordan backend was faster. A ratio above one favors the general-purpose sort.}
+\label{tab:baseline-ratios}
+\begin{tabular}{lrrrr}
+\toprule
+& \multicolumn{2}{c}{Jordan / baseline time} & \multicolumn{2}{c}{Jordan faster (inputs)}\\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Jordan backend & Merge sort & Quicksort & Merge sort & Quicksort\\
+\midrule
+Ordinary list & \BaselineListMerge & \BaselineListQuick & \BaselineListMergeWins & \BaselineListQuickWins\\
+Finger tree & \BaselineTreeMerge & \BaselineTreeQuick & \BaselineTreeMergeWins & \BaselineTreeQuickWins\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Growth across size bands.}
+The common and geometric sources contribute \BaselineCommon{} and
+\BaselineGeometric{} inputs, respectively, to each band. Pooling them holds
+those source counts fixed. For each method we took the median across the
+\BaselinePerBand{} input-level medians in each band and divided by its
+first-band value (\cref{fig:baseline-growth}). Across the four adjacent
+transitions, the tree's empirical exponent ranged from \BaselineTreeMin{}
+to \BaselineTreeMax{}, the closest to one among the four Python
+implementations at each transition. The ordinary list grew most steeply
+in the last transition, with exponent \BaselineListLast{}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.97\linewidth]{baseline_growth.pdf}
+\caption[Relative growth across size bands]{Post hoc analysis of archived timings; no additional measurements were taken. Common and geometric have the same source counts in every band (\BaselineSubset{} inputs in total). Nominal lengths are the lower band endpoints. Panel (a) normalizes each method and each reference curve to the first band. Panel (b) shows $\log_2(T_{j+1}/T_j)$ for adjacent band medians; the horizontal lines mark linear and quadratic reference growth.}
+\label{fig:baseline-growth}
+\end{figure}
+
+Over the full span, merge sort and quicksort grew by factors of
+\BaselineMergeGrowth{} and \BaselineQuickGrowth{}, between the linear and
+$n\log n$ reference curves. The built-in sort grew by a factor of
+\BaselineBuiltinGrowth{}, below the linear reference over the full span.
+Using all inputs gave similar first-to-last factors for the tree
+(\BaselineTreeAllGrowth{} vs.\ \BaselineTreeGrowth{} in the fixed-source
+subset) and list (\BaselineListAllGrowth{} vs.\ \BaselineListGrowth{}).
+The largest change across methods was \BaselineMaxSensitivity{}\%.
+In the full set, source composition varies between bands.
+
+\paragraph{Key comparisons.}
+The ordinary list used more order comparisons per element than either
+Python baseline on every input. The tree used more than merge sort on
+every input and more than quicksort on \BaselineTreeMoreQuick{} inputs.
+On the remaining \BaselineTreeFewerQuick{}, it used fewer comparisons than
+quicksort and still took longer. The tree curve varies relatively little
+across measured lengths (\cref{fig:baseline-keys}). Its near-linear timing
+growth on the fixed-source subset is consistent with the cost analysis.
+At every measured input, however, the two Python baselines had lower
+complete-sort times.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.97\linewidth]{baseline_comparisons.pdf}
+\caption[Input-key comparisons per element]{For each input and method, the untimed count of input-key order comparisons is divided by input length. Points show medians over inputs of the same exact length from all sources. Neighboring lengths may contain different input families.}
+\label{fig:baseline-keys}
+\end{figure}
+
+\section{Summary of Observations}
 The tree is faster on \UnifiedWins{} of \UnifiedN{} inputs, with a median
 tree/list ratio of \UnifiedMedian{}. Median ratios fall across the measured
 size bands, and each of the four sources measured over several size bands
@@ -193,3 +316,5 @@ length than at its smallest. The tree's largest advantages occur on heavily
 nested inputs with almost no splitting. Neither the selected split parameter
 $k$ at a fixed length nor the two-sided split fraction shows a clear
 relationship with the complete-sort ratio.
+In the separate supplementary comparison, both Python general-purpose sorts
+were faster than either Jordan backend throughout the measured set.

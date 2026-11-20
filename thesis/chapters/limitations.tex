@@ -5,13 +5,23 @@
 \label{sec:limitations-scope}
 \label{sec:limitations-version}
 
-The results compare two concrete Python implementations: ordinary lists and
+The main results compare two concrete Python implementations: ordinary lists and
 the uninstrumented finger tree, both using the minimal sorting core. Source
 code, inputs and batch sizes stayed unchanged between preparation and the
 complete formal session. Earlier instrumented and rollback-enabled studies
 have different timing scopes and environments and are not pooled with these
 results. In the current implementation, an update failure may leave a partial
 state that must be discarded; invariants apply to completed updates.
+
+The supplementary comparison used textbook-style Python implementations of
+merge sort and quicksort without tuning them for these inputs. CPython's
+built-in sort runs in C and provides a practical reference. Input-key
+comparisons omit allocation, copying and the maintenance of pair forests,
+sibling lists and ownership. The timings cannot attribute the observed
+differences to any one of these costs. The post hoc growth curves pool two
+sources with fixed counts per band; individual inputs and their structures
+still vary. The findings describe the measured lengths up to
+$n=\BaselineMaxLength{}$ on one machine.
 
 \section{Mathematical Model and Backend Fidelity}
 \label{sec:limitations-backend}
@@ -81,11 +91,26 @@ above that range, or the same behavior for other generators.
 The timed call includes construction, the shared algorithm, output recovery
 and batching overhead. The backends retain different local checks,
 allocations and ownership work. The uninstrumented tree also binds methods
-when each instance is created. Complete-sort measurements do not isolate
+when each instance is created. A dedicated generated class would avoid this
+per-instance binding. The constructor microbenchmark in
+\cref{sec:method-implementations} provides context for its possible scale,
+but does not establish how removing it would affect the backend comparison.
+Complete-sort measurements do not isolate
 individual operation costs, including the cost of a split and the operations
-behind the tree's advantage on deeply nested inputs. Split fractions and
-sizes omit other parts of the work history, and operation counts describe the
-work mix without assigning runtime shares. The earlier instrumentation
+behind the tree's advantage on deeply nested inputs.
+
+A plausible contributor is the ordinary backend's parent-chain check. Its
+cost, $O(\sum_{a\in A}|L(a)|)$, remains in \texttt{minimal} and grows with the
+depth of the owner's ancestor chain, whereas the tree's ownership checks
+are bounded. The heavy-category advantage may therefore reflect this
+representation-specific check rather than the finger tree's split behaviour.
+Timing the ordinary backend with an owner-only check under the same protocol
+would test this.
+
+Split fractions and
+sizes omit other parts of the work history. Internal tree-operation counts, if collected
+for this purpose, could describe the work mix but would not by themselves
+establish runtime shares. The earlier instrumentation
 diagnostic likewise covers its selected inputs without assigning an additive
 share of total algorithm cost. The constructor microbenchmark describes its
 own fixed batch design, including automatic GC and object retention; its

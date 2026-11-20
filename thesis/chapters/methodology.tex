@@ -11,7 +11,7 @@ tree on \UnifiedN{} unique inputs from five sources. The input registry,
 exclusions, reporting rules and preparation stages were fixed before formal
 sampling. Both implementations use the same public Jordan sorting core.
 Equivalence checks, qualification and separate batch calibration precede
-measurement. The results use one complete session; the earlier failed
+measurement. The main results use one complete session; the earlier failed
 attempt and the decision to restart are disclosed below.
 
 \section{Inputs and Qualification}
@@ -78,8 +78,11 @@ removing observation statements and wrappers and replacing tracked field
 access with ordinary field access. Algorithmic checks and data-structure
 operations remain. Preparation and compilation occur once before timing.
 Each new tree instance binds the generated methods during its constructor,
-inside the timed sorting call. The instrumented tree remains available for
-operation counts and validation, outside the formal timing samples.
+inside the timed sorting call. The instrumented tree is excluded from the
+final timing experiments; its roles in this study are stated in
+\cref{sec:implementation-policies}. The main experiment reports complete-sort times.
+Measuring internal tree operations to characterize the work mix is left to future work
+(\cref{sec:conclusion-future-work}).
 
 A subsequent constructor-only microbenchmark on the same machine used fixed
 parameters: five warm-up pairs and fifty measured pairs, with 256 retained
@@ -205,7 +208,7 @@ respectively, in these repository directories:
 Their original records remain unchanged. The formal archive contains both attempts, the restart
 decision, validation reports and analysis; only its complete second attempt
 supplies the main results. Source versions for the earlier studies remain
-indexed in \cref{sec:appendix-revision-bindings}.
+indexed in \Cref{sec:appendix-revision-bindings}.
 
 \begin{figure}[htbp]
 \centering
@@ -215,6 +218,49 @@ comparison. The same predetermined inputs and per-input B reach formal
 sampling. Checks and evidence persistence occur outside the timed intervals.}
 \label{fig:method-formal-pipeline}
 \end{figure}
+
+\section{Comparison with General-Purpose Sorting}
+\label{sec:method-baselines}
+
+Following the supervisor's suggestion on 19 November 2026, a supplementary
+experiment compared the two Jordan backends with general-purpose sorts on the
+same \BaselineInputs{} inputs. Its protocol was committed before measurement
+(\texttt{03e87e1cb}). Both Jordan backends ran in minimal mode using the
+frozen source (\texttt{bca4c1c6}). The Python implementations of merge sort
+and quicksort in \nolinkurl{src/baselines.py} were used as written. Merge sort
+recursively merges sorted halves. Quicksort takes the middle element of each
+subsequence as its pivot and partitions the elements into three groups:
+smaller, equal and greater. CPython's built-in \texttt{sorted()} provides a
+practical reference using its adaptive Timsort implementation in C.
+
+Each input and method had its own batch size. Calibration tested successive
+powers of two and selected the first whose median over three batches reached
+\BaselineTargetMs{}~ms. The protocol raised the upper limit to
+$2^{\BaselineCapExponent}$ before measurement to accommodate fast calls on
+short inputs. The largest selected batch for either Jordan backend was
+\BaselineJordanMaxB{}. The timing boundary was the same as in the main
+experiment (\cref{sec:method-timing}). Correctness checks ran outside the
+timed interval.
+
+One separate CPython session interleaved all five methods. A fixed seed
+shuffled the entire input list. Each method received \BaselineWarmups{}
+warm-up calls per input, followed by \BaselineRounds{} measured batches;
+rotating the order put each method first \BaselineFirst{} times. The session
+lasted \BaselineMinutes{}~min \BaselineSeconds{}~s and yielded
+\BaselineSamples{} measured batches. All \BaselinePower{} pre- and
+post-input checks recorded AC power with low-power mode off. The main
+experiment retains its original measurements and summaries.
+
+In a separate untimed pass, each method sorted each input once with wrapped
+keys. The counter recorded calls to the four order relations ($<$, $\leq$,
+$>$, $\geq$), including any executed order comparison with a numeric
+sentinel. Equality tests, hashing and sentinel identity checks contributed
+nothing to the count. Time ratios were computed within each input from the
+median time per call over its batches, then summarized across inputs. The
+growth analysis in \cref{sec:results-baselines} was added after measurement
+using these archived batches. The preregistered analysis covered timings,
+key comparisons and size-band ratios. The raw records and independent checks
+are archived under \nolinkurl{docs/validation/baseline_comparison_20261120/}.
 
 \section{Historical Study: Separate Scope}
 \label{sec:method-protocol}
