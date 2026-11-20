@@ -191,7 +191,8 @@ $i$ selects the relevant incident pair without using a global rank map. The
 special treatment of $z_1$ is necessary because $z_1$ belongs to $P_2$ but to
 no lower-family pair. These two neighbor adjustments select family-tree
 boundaries; they are distinct from the output-anchor adjustment introduced in
-\cref{sec:algorithm-z1-anchor}.
+\cref{sec:algorithm-z1-anchor}. For a successor search that skips $z_1$, see
+\cref{fig:algorithm-z1-example}(b).
 
 \section{Step 3: Increasing Orientation}
 \label{sec:algorithm-step3-increasing}
@@ -369,6 +370,24 @@ selection and output-anchor correction must be modeled as separate stages.
   Because the odd-index condition $z_7<z_1<z_2$ holds, the output anchor is
   corrected to $z_1$ before $z_7$ is inserted.}
   \label{fig:step3c-z1-anchor}
+\end{figure}
+
+At $i=5$ on $(3,5,1,2,4)$, both corrections occur in the same increasing
+iteration (\cref{fig:algorithm-z1-example}). In Step~2 the successor of
+$z_4=2$ is $z_1=3$, so the search continues to $5$ and selects $B_5=P_3$.
+Since $P_3$ encloses $z_4$, the new pair becomes its child without a split.
+Step~3(c) then tests the base anchor independently: $a_5=2<z_1<z_5=4$,
+so it inserts $4$ immediately after $3$.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{z1_boundary_and_anchor_example.pdf}
+  \caption[Two $z_1$ corrections in one increasing iteration.]{Iteration $i=5$
+  on $(3,5,1,2,4)$. Panel (a) shows $S_4$ with $z_1$ marked by a square.
+  The two corrections occur at separate stages. In (b), Step~2 skips $z_1$
+  to find a lower-family boundary pair. In (c), Step~3(c) uses $z_1$ as
+  the output anchor for $z_5$.}
+  \label{fig:algorithm-z1-example}
 \end{figure}
 
 \section{Ownership Transfer and Failure Semantics}
