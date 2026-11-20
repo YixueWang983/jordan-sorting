@@ -240,26 +240,11 @@ The underlying records and original four figures remain in the formal archive.
 \label{sec:results-baselines}
 
 On every one of the \BaselineInputs{} inputs, both Python baselines finished
-sooner than either Jordan backend. \Cref{tab:baseline-ratios} gives the
-magnitude of the difference. Each ratio compares two methods on the same
-input in the supplementary session. Absolute times for all five methods,
-including the built-in reference, appear in \cref{fig:baseline-runtime}.
-
-\begin{table}[htbp]
-\centering
-\caption{Median paired time ratios and counts of inputs on which the Jordan backend was faster. A ratio above one favors the general-purpose sort.}
-\label{tab:baseline-ratios}
-\begin{tabular}{lrrrr}
-\toprule
-& \multicolumn{2}{c}{Jordan / baseline time} & \multicolumn{2}{c}{Jordan faster (inputs)}\\
-\cmidrule(lr){2-3}\cmidrule(lr){4-5}
-Jordan backend & Merge sort & Quicksort & Merge sort & Quicksort\\
-\midrule
-Ordinary list & \BaselineListMerge & \BaselineListQuick & \BaselineListMergeWins & \BaselineListQuickWins\\
-Finger tree & \BaselineTreeMerge & \BaselineTreeQuick & \BaselineTreeMergeWins & \BaselineTreeQuickWins\\
-\bottomrule
-\end{tabular}
-\end{table}
+sooner than either Jordan backend. The median paired time ratios for the
+ordinary list were \BaselineListMerge{} against merge sort and
+\BaselineListQuick{} against quicksort. For the finger tree, the corresponding
+ratios were \BaselineTreeMerge{} and \BaselineTreeQuick{}. Each ratio uses
+the two times for the same input in the supplementary session.
 
 \paragraph{Growth across size bands.}
 The common and geometric sources contribute \BaselineCommon{} and
@@ -274,7 +259,7 @@ in the last transition, with exponent \BaselineListLast{}.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=.97\linewidth]{baseline_growth.pdf}
+\includegraphics[width=\linewidth]{baseline_growth.pdf}
 \caption[Relative growth across size bands]{Post hoc analysis of archived timings; no additional measurements were taken. Common and geometric have the same source counts in every band (\BaselineSubset{} inputs in total). Nominal lengths are the lower band endpoints. Panel (a) normalizes each method and each reference curve to the first band. Panel (b) shows $\log_2(T_{j+1}/T_j)$ for adjacent band medians; the horizontal lines mark linear and quadratic reference growth.}
 \label{fig:baseline-growth}
 \end{figure}
@@ -294,18 +279,8 @@ The ordinary list used more order comparisons per element than either
 Python baseline on every input. The tree used more than merge sort on
 every input and more than quicksort on \BaselineTreeMoreQuick{} inputs.
 On the remaining \BaselineTreeFewerQuick{}, it used fewer comparisons than
-quicksort and still took longer. The tree curve varies relatively little
-across measured lengths (\cref{fig:baseline-keys}). Its near-linear timing
-growth on the fixed-source subset is consistent with the cost analysis.
-At every measured input, however, the two Python baselines had lower
-complete-sort times.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.97\linewidth]{baseline_comparisons.pdf}
-\caption[Input-key comparisons per element]{For each input and method, the untimed count of input-key order comparisons is divided by input length. Points show medians over inputs of the same exact length from all sources. Neighboring lengths may contain different input families.}
-\label{fig:baseline-keys}
-\end{figure}
+quicksort and still took longer. Thus the key comparison count alone cannot
+account for the observed ordering of running times.
 
 \section{Summary of Observations}
 The tree is faster on \UnifiedWins{} of \UnifiedN{} inputs, with a median

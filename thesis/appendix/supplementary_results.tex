@@ -5,8 +5,7 @@ This appendix retains the predetermined all-input overview and the full
 source-level structural descriptions. The main results contain the other
 three predetermined plots: ratios by length and the two split-related panels.
 These displays use the main experiment's complete formal attempt and its
-qualification evidence. The final section reports absolute times from the
-separate five-method comparison.
+qualification evidence.
 
 \begin{figure}[H]
 \centering
@@ -68,17 +67,3 @@ Smaller side & Common & Targeted & Structural & Geometric & Seeded\\
 \bottomrule
 \end{tabular}
 \end{table}
-
-\clearpage
-\section{Absolute Times for the General-Purpose Sorting Comparison}
-\label{sec:appendix-baseline-time}
-
-\Cref{fig:baseline-runtime} gives the absolute times underlying the
-supplementary comparison in \cref{sec:results-baselines}.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.98\linewidth]{baseline_runtime.pdf}
-\caption[Absolute time per sort in the supplementary comparison]{Five methods on the same \BaselineInputs{} inputs. Each batch duration is divided by its calibrated batch size. Each point is the median, at an exact input length, of the input-level medians over \BaselineRounds{} measured batches. Both axes use logarithmic scales. CPython's built-in \texttt{sorted()} is the C implementation used as a practical reference.}
-\label{fig:baseline-runtime}
-\end{figure}

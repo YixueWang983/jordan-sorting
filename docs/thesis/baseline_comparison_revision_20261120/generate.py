@@ -22,21 +22,14 @@ ARCHIVE = ROOT / "docs/validation/baseline_comparison_20261120"
 FIGURES = ROOT / "thesis/figures"
 BANDS = ((32, 33), (64, 70), (128, 129), (256, 257), (512, 513))
 NOMINAL = [low for low, high in BANDS]
-NAMES = ("Jordan list", "Jordan tree", "Merge sort", "Quicksort", "sorted() [C]")
-COLORS = ("#993d13", "#146a82", "#3f627b", "#7b5787", "#4c6836")
-MARKERS = ("o", "s", "^", "D", "x")
-
-
-def method_curves(ax, x, series):
-    for m, name, color, marker in zip(METHODS, NAMES, COLORS, MARKERS):
-        ax.plot(x, series[m], label=name, color=color, marker=marker, ms=4, lw=1.45)
-    ax.grid(axis="y", alpha=.18)
-    ax.spines[["top", "right"]].set_visible(False)
-
-
-def save(fig, filename):
-    fig.savefig(FIGURES / filename, metadata={"CreationDate": None, "ModDate": None})
-    plt.close(fig)
+# Legend order follows the comparison from the two Jordan backends to the baselines.
+STYLES = {
+    METHODS[1]: ("Jordan · finger tree", "#2876b5", "o"),
+    METHODS[0]: ("Jordan · Python lists", "#c65320", "s"),
+    METHODS[2]: ("Merge sort (Python)", "#288454", "^"),
+    METHODS[3]: ("Quicksort (Python)", "#704bc2", "v"),
+    METHODS[4]: ("sorted() (C, Timsort)", "#6c7f96", "D"),
+}
 
 
 def growth_curves(times, groups):
@@ -46,47 +39,46 @@ def growth_curves(times, groups):
 def growth_figure(series):
     normalized = {m: [t / vals[0] for t in vals] for m, vals in series.items()}
     slopes = {m: [math.log2(b/a) for a,b in zip(vals, vals[1:])] for m, vals in series.items()}
-    fig, (top, bottom) = plt.subplots(2, 1, figsize=(6.1, 5.3))
-    method_curves(top, NOMINAL, normalized)
-    fig.legend(*top.get_legend_handles_labels(), loc="upper center", ncol=5, frameon=False,
-               columnspacing=1, handlelength=1.5)
-    for fn, name, style in ((lambda n:n, "$n$", "--"), (lambda n:n*math.log2(n), "$n\\,\\log_2 n$", "-."),
-                            (lambda n:n*n, "$n^2$", ":")):
-        top.plot(NOMINAL, [fn(n)/fn(NOMINAL[0]) for n in NOMINAL], color="#555555",
-                 lw=1, ls=style, zorder=0, label=name)
-    handles, labels = top.get_legend_handles_labels()
-    top.legend(handles[-3:], labels[-3:], loc="upper left", ncol=3, frameon=False)
-    top.set(xscale="log", yscale="log", ylabel="Time / first-band time",
-            title="(a)  Growth relative to the first band")
-    top.set_xticks(NOMINAL, labels=[str(n) for n in NOMINAL], minor=False)
-    top.minorticks_off()
-    method_curves(bottom, list(range(4)), slopes)
-    for y in (1, 2):
-        bottom.axhline(y, color="#555555", ls="--", lw=.85, zorder=0)
-    bottom.set(xticks=range(4), xticklabels=[f"{a}–{b}" for a,b in zip(NOMINAL, NOMINAL[1:])],
-               yticks=[1,1.25,1.5,1.75,2], ylim=(.84,2.1), ylabel="Doubling exponent",
-               xlabel="Adjacent bands (nominal lengths)", title="(b)  Growth between adjacent bands")
-    fig.subplots_adjust(top=.865, bottom=.105, left=.12, right=.98, hspace=.55)
-    save(fig, "baseline_growth.pdf")
+    fig, (left, right) = plt.subplots(1, 2, figsize=(7.45, 3.42))
+    steps = range(len(NOMINAL) - 1)
+    for method, (label, color, marker) in STYLES.items():
+        style = dict(label=label, color=color, marker=marker, ms=3.8, lw=1.5)
+        left.plot(NOMINAL, normalized[method], **style)
+        right.plot(steps, slopes[method], **style)
+    for ax in (left, right):
+        ax.grid(alpha=.22, linewidth=.6)
+        ax.set_axisbelow(True)
+        ax.tick_params(labelsize=8)
+
+    left.set(xscale="log", yscale="log", xlim=(28, 690), ylim=(.82, 64),
+             xlabel="Nominal input length", ylabel="Time / median time at 32–33",
+             title="(a)  Growth of median sort time")
+    left.set_xticks(NOMINAL, labels=NOMINAL)
+    ticks = [1, 2, 4, 8, 16, 32, 64]
+    left.set_yticks(ticks, labels=ticks)
+    left.minorticks_off()
+    for fn, style in ((lambda n: n, "--"), (lambda n: n*math.log2(n), "--"),
+                      (lambda n: n*n, ":")):
+        left.plot(NOMINAL, [fn(n)/fn(NOMINAL[0]) for n in NOMINAL],
+                  color="#898989", lw=.9, ls=style, zorder=1)
+    for x, y, label in ((552, 14, "$n$"), (442, 36, "$n\\,\\log_2 n$"), (225, 53, "$n^2$")):
+        left.text(x, y, label, fontsize=7.4, color="#626262")
+    left.legend(loc="upper left", fontsize=7.1, frameon=False, handlelength=1.6,
+                borderaxespad=.35, labelspacing=.35)
+
+    right.set(xticks=list(steps), xticklabels=[f"{a}→{b}" for a,b in zip(NOMINAL, NOMINAL[1:])],
+              xlim=(-.18, 3.58), ylim=(.6, 2.2), yticks=[.6,.8,1,1.2,1.4,1.6,1.8,2,2.2],
+              xlabel="Nominal size step", ylabel="Doubling exponent",
+              title="(b)  Growth exponent per doubling")
+    for value, label in ((1, "linear"), (2, "quadratic")):
+        right.axhline(value, color="#757575", linestyle=":" if value == 2 else "--", lw=.85, zorder=1)
+        right.annotate(label, xy=(3.54, value), xytext=(0, 3),
+                       textcoords="offset points", ha="right",
+                       va="bottom", fontsize=7.2, color="#555555")
+    fig.subplots_adjust(left=.08, right=.985, bottom=.17, top=.905, wspace=.32)
+    fig.savefig(FIGURES / "baseline_growth.pdf", metadata={"CreationDate": None, "ModDate": None})
+    plt.close(fig)
     return normalized, slopes
-
-
-def exact_figure(cases, values, timing):
-    lengths = sorted({c["n"] for c in cases})
-    series = {m: [median(values[c["case_id"], m] / (1000 if timing else n)
-                         for c in cases if c["n"] == n) for n in lengths] for m in METHODS}
-    fig, ax = plt.subplots(figsize=(6.1, 3.2))
-    method_curves(ax, lengths, series)
-    ax.set_xscale("log", base=2)
-    ax.set_xticks(NOMINAL, labels=NOMINAL)
-    ax.set_xlabel("Input length")
-    if timing:
-        ax.set_yscale("log")
-    ax.set_ylabel("Time per sort (µs)" if timing else "Key comparisons per element")
-    fig.legend(*ax.get_legend_handles_labels(), loc="upper center", ncol=5, frameon=False,
-               columnspacing=1, handlelength=1.5)
-    fig.subplots_adjust(top=.86, bottom=.16, left=.115, right=.98)
-    save(fig, "baseline_runtime.pdf" if timing else "baseline_comparisons.pdf")
 
 
 def generate(raw):
@@ -111,8 +103,6 @@ def generate(raw):
         return growth_curves(times, [[c["case_id"] for c in group] for group in groups])
     norm, slopes = growth_figure(curves(subset))
     full = {m: vals[-1]/vals[0] for m,vals in curves(groups).items()}
-    exact_figure(cases, counts, False)
-    exact_figure(cases, times, True)
     warmups = kinds["warmup"] // len(times)
     batches = kinds["sample"] // len(times)
     macros = dict(Inputs=len(cases), MinLength=min(c["n"] for c in cases), MaxLength=max(c["n"] for c in cases),
