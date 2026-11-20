@@ -361,17 +361,6 @@ reflected sequence $(6,5,4,3,1,0,7)$ exercises
 \cref{eq:algorithm-z1-increasing}. These cases demonstrate why boundary
 selection and output-anchor correction must be modeled as separate stages.
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=.88\textwidth]{step3c_anchor_z1_anomaly.pdf}
-  \caption[Step 3(c) output-anchor correction for $z_1$.]{Local output-anchor
-  selection in decreasing Step~3(c) for the
-  prefix $(1,2,3,4,6,7,0)$. The ordinary geometric base anchor is $z_2$.
-  Because the odd-index condition $z_7<z_1<z_2$ holds, the output anchor is
-  corrected to $z_1$ before $z_7$ is inserted.}
-  \label{fig:step3c-z1-anchor}
-\end{figure}
-
 At $i=5$ on $(3,5,1,2,4)$, both corrections occur in the same increasing
 iteration (\cref{fig:algorithm-z1-example}). In Step~2 the successor of
 $z_4=2$ is $z_1=3$, so the search continues to $5$ and selects $B_5=P_3$.
