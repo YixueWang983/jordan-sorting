@@ -53,7 +53,7 @@
 
 \begin{frame}{Intersections arrive in curve order}
   \centering
-  \resizebox{!}{.67\paperheight}{\input{../thesis/figures/source/jordan_sorting_problem.tex}}
+  \resizebox{!}{.67\paperheight}{\input{figures/jordan_sorting_problem.tex}}
   \note{In polygon clipping, a boundary traversal encounters crossings in curve order. The clipping edge needs the same points ordered along the axis. Follow the arrows on the curve, then read the axis from left to right. General comparison sorting needs $\Omega(n\log n)$ comparisons in the worst case. A simple curve restricts the permutations that can occur.}
 \end{frame}
 
@@ -103,7 +103,7 @@
 \begin{frame}{Step 2. Which sibling list can split?}
   \only<1>{\stateview{\walkDiagram{1}}{Return to the previous crossing.}}
   \only<2>{\stateview{\walkDiagram{2}}{The successor selects $B_i$, the first pair in the candidate list.}}
-  \only<3>{\stateview{\walkDiagram{2}}{The dashed arc excludes the previous point. Split at the pending value.}}
+  \only<3>{\stateview{\walkDiagram{2}}{$B_8$ does not enclose $z_7$, so its list is split at $z_8=6$.}}
   \note<1>{Begin again at the old crossing, this time looking to the right in the sorted prefix.}
   \note<2>{The immediate successor is the left endpoint of the dashed upper arc. Following that incidence finds the first pair of the sibling list that may have to split. Parity tells us which incident arc to use.}
   \note<3>{Ask whether the dashed boundary encloses the previous point. If it did, the new pair would acquire no children. Here the previous point is outside. The successor selected the candidate list. The pending value determines where to partition it.}
@@ -170,7 +170,7 @@
 \end{frame}
 
 \begin{frame}{The tree/list gap narrows with length}
-  \centering\plotfigure{unified_ratio_by_n.pdf}{.60\paperheight}
+  \centering\plotfigure{figures/ratio_by_length.pdf}{.60\paperheight}
   \captionline{Pooled band medians\qquad $\UnifiedSmallBandMedian\;\longrightarrow\;\UnifiedLargeBandMedian$}
   \note{The pooled tree/list median falls from \UnifiedSmallBandMedian{} to \UnifiedLargeBandMedian{}. Each plotted line connects exact-length medians within a source. The source mix changes across pooled bands, so the decline alone cannot establish a crossover.}
 \end{frame}
@@ -182,9 +182,9 @@
 \end{frame}
 
 \begin{frame}{How fast do the sorting times grow?}
-  \centering\plotfigure{baseline_growth.pdf}{.58\paperheight}
+  \centering\plotfigure{figures/growth_curves.pdf}{.58\paperheight}
   \captionline{Python merge sort and quicksort still finished sooner on every input.}
-  \note{The supplementary session timed all methods on the same \BaselineInputs{} inputs. Both Python baselines beat both Jordan backends on every input. For growth, the post hoc subset keeps \BaselineCommon{} common and \BaselineGeometric{} geometric inputs per band. Normalize each method to its own first-band median. First-to-last factors are \BaselineTreeGrowth{} for the tree, \BaselineMergeGrowth{} for merge sort, \BaselineQuickGrowth{} for quicksort, \BaselineListGrowth{} for lists and \BaselineBuiltinGrowth{} for the built-in sort. The tree's adjacent-band exponents span \BaselineTreeMin{} to \BaselineTreeMax{}. These are measured growth factors over this range.}
+  \note{The supplementary session timed all methods on the same \BaselineInputs{} inputs. Both Python baselines beat both Jordan backends on every input. For growth, the post hoc subset keeps \BaselineCommon{} common and \BaselineGeometric{} geometric inputs per band. Normalize each method to its own first-band median. First-to-last factors are \BaselineTreeGrowth{} for the tree, \BaselineMergeGrowth{} for merge sort, \BaselineQuickGrowth{} for quicksort, \BaselineListGrowth{} for lists and \BaselineBuiltinGrowth{} for the built-in sort. The tree grew more slowly than both Python baselines over these measured lengths.}
 \end{frame}
 
 \begin{frame}{What the implementation proof adds}
@@ -206,13 +206,14 @@
   \term{Correctness}{Both backends maintain sorted prefixes.}
   \term{Cost}{The finger tree realizes linear expected/amortized work.}
   \term{Runtime}{Tree faster on \UnifiedWins{} of \UnifiedN{} inputs.}
+  \term{General-purpose sorts}{Merge sort and quicksort faster on every input; the tree's time grew more slowly.}
   \captionline{Does the gap keep narrowing beyond $n=\UnifiedMaxN$?}
-  \note{The reconstruction specifies the split list, transferred group and geometric anchor. The cost argument applies to the implemented tree in its stated model. The overall median tree/list ratio was \UnifiedMedian{}. Heavy nesting produced its strongest measured advantages, and its time grew more slowly than the Python baselines over this range. Measurements stop at length \UnifiedMaxN{} on a single CPython host with certified valid inputs. Larger application-derived inputs and targeted parent-chain measurements would test the trend and its cause.}
+  \note{The reconstruction specifies the split list, transferred group and geometric anchor. The cost argument applies to the implemented tree in its stated model. The overall median tree/list ratio was \UnifiedMedian{}. Heavy nesting produced its strongest measured advantages. Merge sort and quicksort finished sooner on every input, although tree time grew more slowly over the measured range. Measurements stop at length \UnifiedMaxN{} on a single CPython host with certified valid inputs. Larger application-derived inputs and targeted parent-chain measurements would test the trend and its cause.}
 \end{frame}
 
 \begin{frame}[plain]\relax
   \centering{\Huge\bfseries Questions?}
-  \note{Invite questions. The backup pages cover the reflected first-point correction, absolute timings, comparison counts, locality, amortization and qualification.}
+  \note{Invite questions. The backup pages cover the reflected first-point correction, absolute timings, growth exponents, comparison counts, locality, amortization and qualification.}
 \end{frame}
 
 \appendix
@@ -227,6 +228,11 @@
 \begin{frame}[noframenumbering]{Absolute time per sort}
   \centering\plotfigure{baseline_runtime.pdf}{.66\paperheight}
   \note{Read the vertical axis in microseconds per complete sort on a logarithmic scale. The supplementary session interleaved both Jordan backends, the Python baselines and the built-in sort. The median paired tree/merge and tree/quick time ratios were \BaselineTreeMerge{} and \BaselineTreeQuick{}. These are within-input ratios.}
+\end{frame}
+
+\begin{frame}[noframenumbering]{Growth exponent per doubling}
+  \centering\plotfigure{figures/growth_exponent.pdf}{.70\paperheight}
+  \note{For each method, take the base-two logarithm of the ratio of adjacent band medians in the same fixed-source subset as the growth curves. The tree's measured exponents span \BaselineTreeMin{} to \BaselineTreeMax{}. The dashed and dotted lines mark linear and quadratic growth, respectively.}
 \end{frame}
 
 \begin{frame}[noframenumbering]{Key comparisons per element}
