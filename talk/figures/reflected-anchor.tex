@@ -1,0 +1,31 @@
+% Adapted from thesis/figures/source/step3c_anchor_z1_anomaly.tex.
+\newcommand{\ordernode}[5][]{%
+  \node[box,minimum width=1.12cm,minimum height=.76cm,#1] (#2) at (#3) {#4\\[-2pt]\scriptsize #5};%
+}
+
+\begin{tikzpicture}[font=\small]
+  \node[anchor=east] at (1.02,2.18) {Before};
+  \foreach \label/\value [count=\i] in {z_1/1,z_2/2,z_3/3,z_4/4,z_5/6,z_6/7} {
+    \ordernode{a\i}{1.0+1.38*\i,2.18}{$\label$}{$\value$}
+    \ifnum\i>1
+      \draw[flow] (a\the\numexpr\i-1\relax.east) -- (a\i.west);
+    \fi
+  }
+  \draw[accent,thick] ($(a2.north west)+(0,.12)$)--($(a2.north east)+(0,.12)$)
+      node[midway,above]{base anchor};
+  \node[anchor=east] at (1.02,-.17) {After};
+  \foreach \label/\value [count=\i] in {z_7/0,z_1/1,z_2/2,z_3/3,z_4/4,z_5/6,z_6/7} {
+    \ifnum\i=1
+      \ordernode[draw=accent,fill=accent!8,minimum width=1.02cm]
+        {b\i}{.40+1.31*\i,-.17}{$\label$}{$\value$}
+    \else
+      \ordernode[minimum width=1.02cm]
+        {b\i}{.40+1.31*\i,-.17}{$\label$}{$\value$}
+    \fi
+    \ifnum\i>1
+      \draw[flow] (b\the\numexpr\i-1\relax.east) -- (b\i.west);
+    \fi
+  }
+  \draw[accent,thick] ($(b2.north west)+(0,.12)$)--($(b2.north east)+(0,.12)$)
+      node[midway,above]{corrected anchor};
+\end{tikzpicture}

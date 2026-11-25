@@ -18,3 +18,6 @@ results/runs/week10_contamination_full_20260728/*
 !results/runs/week10_contamination_full_20260728/environment.json
 !results/runs/week10_contamination_full_20260728/manifest.json
 !results/runs/week10_contamination_full_20260728/validation_report.json
+
+# Beamer compilation products
+/talk/build/

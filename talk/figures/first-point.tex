@@ -1,0 +1,44 @@
+% Adapted from thesis/figures/source/z1_boundary_and_anchor_example.tex.
+\newcommand{\firstArcs}[1]{%
+  \draw[black!45] (.58,0) -- (5.42,0);
+  \draw[old arc] (1,0) arc[start angle=180,end angle=0,x radius=.5,y radius=.55];
+  \draw[old arc] (3,0) arc[start angle=180,end angle=0,x radius=1,y radius=.77];
+  \draw[#1] (1,0) arc[start angle=180,end angle=360,x radius=2,y radius=.99];
+}
+% Keep the point indices in a separate row below the arcs.
+\newcommand{\firstPoints}[1]{%
+  \foreach \x/\idx in {1/3,2/4,3/1,5/2}{
+    \ifnum\x=3 \node[first point] (p3) at (3,0) {3};
+    \else \node[value] (p\x) at (\x,0) {\x}; \fi
+    \node at (\x,-1.33) {$z_{\idx}$};
+  }
+  \ifnum#1>0
+    \ifnum#1=1 \node[pending] at (4,0) {4};
+    \else \node[value] at (4,0) {4}; \fi
+    \node at (4,-1.33) {$z_5$};
+  \fi
+}
+
+\tikzset{first point/.style={value,rectangle,draw=black,thick,fill=softgray}}
+\newcommand{\firstDiagram}[1]{%
+  \begin{tikzpicture}[x=1.60cm,y=1.18cm,font=\small]
+    \path[use as bounding box] (.50,-1.63) rectangle (5.5,1.55);
+    \firstArcs{boundary A}
+    \ifnum#1=3
+      \draw[accent,very thick,densely dashed] (2,0) arc[start angle=180,end angle=360,x radius=1,y radius=.58];
+      \firstPoints{2}
+      \draw[accent flow] (p3.east)--(3.78,0);
+      \node[text=accent,above] at (3,.85) {$2<z_1<4$};
+    \else
+      \ifnum#1=2
+        \firstPoints{0}
+        \draw[flow] (p2.east)--(p3.west);
+        \draw[accent flow,dashed] (p3.east)--(p5.west);
+        \node[above,text=accent] at (4,.12) {skip};
+      \else
+        \firstPoints{1}
+      \fi
+      \node[fill=white,inner sep=1pt] at (3,-.78) {$P_3$};
+    \fi
+  \end{tikzpicture}%
+}

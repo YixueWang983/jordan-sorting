@@ -1,0 +1,256 @@
+% Build the projection and speaker views with make -C talk.
+\documentclass[aspectratio=169,12pt]{beamer}
+\usepackage{tikz,standalone,booktabs,array}
+\input{../thesis/figures/source/figure_style}
+\usefonttheme{professionalfonts}
+\usefonttheme{serif}
+\makeatletter
+\def\input@path{{../thesis/}}
+\makeatother
+\input{../thesis/config/metadata}
+\input{../thesis/generated/unified_numbers}
+\input{../thesis/generated/unified_refinement}
+\input{../thesis/generated/baseline_comparison}
+\pdfstringdefDisableCommands{\def\translate#1{#1}}
+\graphicspath{{../thesis/figures/}}
+\input{figures/walkthrough}
+\input{figures/first-point}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamersize{text margin left=9mm,text margin right=9mm}
+\setbeamercolor{normal text}{fg=black!90,bg=white}
+\setbeamercolor{structure}{fg=accent}
+\setbeamercolor{frametitle}{fg=black!90}
+\setbeamerfont{frametitle}{size=\LARGE,series=\bfseries}
+\setbeamertemplate{frametitle}{\vspace*{4mm}\insertframetitle\par}
+\setbeamertemplate{footline}{\hfill\color{black!55}\small\insertframenumber\hspace{9mm}\vspace{2mm}}
+\setbeamertemplate{itemize item}{\color{accent}\raisebox{.15ex}{\tiny$\blacktriangleright$}}
+\newcommand{\term}[2]{\par\textcolor{accent}{\bfseries #1}\quad #2\par\vspace{2.5mm}}
+\newcommand{\captionline}[1]{\par\vspace{2mm}{\large\color{accent}#1\par}}
+\newcommand{\plotfigure}[2]{\includegraphics[width=\linewidth,height=#2,keepaspectratio]{#1}}
+\newcommand{\stateview}[2]{\centering #1\par\vspace{3mm}\parbox[t][2.7\baselineskip][t]{\linewidth}{\centering\large #2}\par}
+\ifdefined\WithNotes
+  \setbeameroption{show notes on second screen=right}
+  \setbeamertemplate{note page}{\vspace*{7mm}{\large\bfseries\color{accent}Speaker notes}\par\vspace{3mm}\normalsize\raggedright\insertnote}
+\fi
+
+\title{\ThesisTitle}
+\author{\ThesisAuthor}
+\date{[Defence date]}
+
+\begin{document}
+\begin{frame}[plain]\relax
+  {\large\color{accent}Master's thesis defence\par}
+  \vspace{5mm}
+  {\fontsize{23}{26}\selectfont\bfseries\ThesisTitle\par}
+  \vspace{6mm}
+  {\Large\ThesisAuthor\par}
+  \vspace{2mm}
+  Supervisor: Prof.\ Dr.\ Wolfgang Mulzer\\
+  \UniversityName\hfill\insertdate
+  \note{Introduce yourself and acknowledge Professor Mulzer. Open with the geometric problem that motivates the algorithm.}
+\end{frame}
+
+\begin{frame}{Intersections arrive in curve order}
+  \centering
+  \resizebox{!}{.67\paperheight}{\input{../thesis/figures/source/jordan_sorting_problem.tex}}
+  \note{In polygon clipping, a boundary traversal encounters crossings in curve order. The clipping edge needs the same points ordered along the axis. Follow the arrows on the curve, then read the axis from left to right. General comparison sorting needs $\Omega(n\log n)$ comparisons in the worst case. A simple curve restricts the permutations that can occur.}
+\end{frame}
+
+\begin{frame}{Research questions}
+  \term{Correctness}{Can each backend recover every sorted prefix?}
+  \term{Runtime}{How do both backends compare with merge sort and quicksort?}
+  \term{Cost}{Which operations give linear total work?}
+  \note{Assume distinct, comparable coordinates and a certified Jordan input. Can the reconstructed procedure of Fung et al. recover the output from its own state? Compare both implementations on the same inputs, then bring in Python merge sort and quicksort. Finally, ask how far the operation bounds explain what the clock measures.}
+\end{frame}
+
+\begin{frame}{Contributions}
+  \begin{itemize}\setlength\itemsep{2.5mm}
+    \item Specified $z_1$ corrections, output anchors and exact grouping.
+    \item Two backends recover prefixes from their own state.
+    \item Paired timings on \UnifiedN{} inputs and growth against general-purpose sorts.
+    \item Finite-parent locality and a linear red--black cost bound.
+  \end{itemize}
+  \note{The reconstruction makes the first-point rules, output position and grouping precise. Both executable backends maintain their own state. A paired experiment on \UnifiedN{} inputs compares the backends, and a supplementary session compares growth with general-purpose sorts. The proof handles finite-parent re-entry and connects the implemented red--black representation to its linear total-work bound.}
+\end{frame}
+
+\begin{frame}{Why same-side intervals nest}
+  \stateview{\walkDiagram{0}}{Alternating arcs form two families. Within each, intervals are disjoint or nested.}
+  \note{Each arc joins consecutive crossings. With the first arc above the axis, even end indices belong to the upper family and odd end indices to the lower family. Trace the nested lower arcs. Interleaved endpoints on the same side would force two arcs to intersect. Each arc's smallest enclosing same-side arc is its parent. The outermost arcs share a dummy root.}
+\end{frame}
+
+\begin{frame}{What must survive each insertion?}
+  % Owner and children from fig:implementation-family-sibling-structure (a,b).
+  \centering
+  \begin{tikzpicture}[node distance=15mm and 20mm]
+    \node[accent box] (p) {Parent $P_4$};
+    \node[box,below left=of p] (a) {Sibling list $[P_2]$};
+    \node[box,below right=of p] (b) {Sibling list $[P_6]$};
+    \draw[flow] (p)--(a); \draw[flow] (p)--(b);
+  \end{tikzpicture}
+  \captionline{$S_k=\operatorname{sort}(z_1,\ldots,z_k)$}
+  One owner per child. A latest child's endpoint determines the cut.
+  \note{The prefix list contains exactly the processed points in increasing order. The family trees encode enclosure. Follow the arrows from the parent to its ordered groups of direct children. If the parent is the latest finite member, all its children form one group when nonempty. Otherwise the latest child's last crossing defines the cut into at most two nonempty groups.}
+\end{frame}
+
+\begin{frame}{Step 1. Find the predecessor-side boundary}
+  \only<1>{\stateview{\walkDiagram{0}}{Find the previous crossing in the sorted prefix.}}
+  \only<2>{\stateview{\walkDiagram{1}}{The predecessor leads to the incident upper pair $A_i$.}}
+  \note<1>{Read the row of axis values and the row of curve indices separately. The final crossing is still pending. Its pair will belong to the upper family. Start at the previous crossing, which is already in the prefix.}
+  \note<2>{Move one position left in that prefix. Follow the predecessor's incident upper arc. This is the insertion-side boundary. Keep it marked while we search in the opposite direction.}
+\end{frame}
+
+\begin{frame}{Step 2. Which sibling list can split?}
+  \only<1>{\stateview{\walkDiagram{1}}{Return to the previous crossing.}}
+  \only<2>{\stateview{\walkDiagram{2}}{The successor selects $B_i$, the first pair in the candidate list.}}
+  \only<3>{\stateview{\walkDiagram{2}}{The dashed arc excludes the previous point. Split at the pending value.}}
+  \note<1>{Begin again at the old crossing, this time looking to the right in the sorted prefix.}
+  \note<2>{The immediate successor is the left endpoint of the dashed upper arc. Following that incidence finds the first pair of the sibling list that may have to split. Parity tells us which incident arc to use.}
+  \note<3>{Ask whether the dashed boundary encloses the previous point. If it did, the new pair would acquire no children. Here the previous point is outside. The successor selected the candidate list. The pending value determines where to partition it.}
+\end{frame}
+
+\begin{frame}{Step 3(a--b). Insert and split}
+  \only<1>{\stateview{\walkDiagram{3}}{At the dummy root: $[P_2]\longrightarrow[P_2,N]$.}}
+  \only<2>{\stateview{\walkDiagram{4}}{$[P_6,P_4]\longrightarrow[P_6]\mid[P_4]$. The left group moves under $N$.}}
+  \only<3>{\stateview{\walkDiagram{4}}{$N$ owns $[P_6]$. The dummy retains $[P_4]$.}}
+  \note<1>{Follow the predecessor-side pair first. It does not enclose the previous crossing. Append the new pair at the end of its sibling list. It inherits the dummy as its parent.}
+  \note<2>{Turn to the list beginning at the dashed successor-side pair. Cut at the pending coordinate. An old pair straddling this cut would cross the new arc. The left group lies wholly inside the new interval and becomes its child list.}
+  \note<3>{Trace the upper arc to the right of the cut. It remains with the old owner. Check the endpoints against the new arc. The split conserves both old pairs, assigns each one owner and preserves their left-to-right order.}
+\end{frame}
+
+\begin{frame}{Step 3(c). Insert at the geometric anchor}
+  \only<1>{\stateview{\walkDiagram{5}}{Use the right endpoint of the rightmost child.}}
+  \only<2>{\stateview{\walkDiagram{6}}{Insert after the anchor. The prefix is sorted again.}}
+  \note<1>{Follow the new pair to its rightmost child, the dashed arc. Read its geometric right endpoint directly from the axis. With no children, the previous crossing would supply the base anchor.}
+  \note<2>{The arrow now links the anchor and the pending coordinate. Insert the point immediately after the anchor in the maintained list. Read the completed prefix from left to right.}
+\end{frame}
+
+\begin{frame}{Why skip $z_1$ and then use it as the anchor?}
+  \only<1>{\stateview{\firstDiagram{1}}{The square marks $z_1$. It has no incident lower pair.}}
+  \only<2>{\stateview{\firstDiagram{2}}{Skip $z_1$ during boundary search. The enclosing boundary makes a split unnecessary.}}
+  \only<3>{\stateview{\firstDiagram{3}}{Insert after $z_1$ because it lies between the base anchor and the pending value.}}
+  \note<1>{Switch to this odd iteration. The previous crossing has the square as its successor. The square is the first crossing of the curve and has only an upper incident pair.}
+  \note<2>{Continue to the next successor. Its incident lower pair encloses the previous point. The new pair becomes its child without a split and acquires no children of its own. Its base output anchor is therefore the previous point.}
+  \note<3>{Inserting at that base anchor would place the new value before the square, reversing their axis order. Test the output anchor separately. On this odd iteration the square lies strictly between the base anchor and the new value, so insert immediately after the square.}
+\end{frame}
+
+\begin{frame}{What a sibling split costs}
+  % Condensed fig:proof-split-flow, thesis/figures/source/heterogeneous_split_flow.tex.
+  \term{Python lists}{Scan, copy and rebind the transferred pairs.}
+  \begin{tikzpicture}[node distance=6mm and 5mm]
+    \node[accent box] (s) {Finger search};
+    \node[box,right=of s] (p) {Split and rejoin};
+    \node[box,right=of p] (a) {Adopt output headers};
+    \draw[flow] (s)--(p); \draw[flow] (p)--(a);
+  \end{tikzpicture}
+  \captionline{Tree split cost grows logarithmically with the smaller side.}
+  \note{Recall the newly enclosed child list. Ordinary lists scan and partition the input, materialize outputs and rebind ownership. Even end insertion copies existing IDs. On increasing inputs that copying alone can be quadratic. The red--black tree keeps endpoint fingers and stable handles. It splits along local paths and changes ownership through headers. Endpoint insertion has constant amortized cost. The smaller-side split bound includes a constant term even when one side is empty.}
+\end{frame}
+
+\begin{frame}{What does “uninstrumented” remove?}
+  \term{Before timing}{Generate ordinary field accesses. Remove observation wrappers.}
+  \term{Inside each sort}{Construct the backend, bind methods, sort, recover output.}
+  \term{After timing}{Check the output.}
+  \note{Both timed backends use minimal execution, disabling traces, selected counters and full post-split validation. Disabling detailed counting in the instrumented tree still intercepts field accesses. Generating the uninstrumented tree removes that machinery while retaining local algorithmic checks. Generation and compilation happen before timing. Per-instance method binding stays inside. Qualification compares both tree configurations on the registered inputs.}
+\end{frame}
+
+\begin{frame}{Paired timing on \UnifiedN{} certified inputs}
+  % Shortened from fig:method-formal-pipeline, current_experiment_pipeline.tex.
+  \centering
+  \begin{tikzpicture}[node distance=6mm and 7mm]
+    \node[box] (q) {Qualify prefixes};
+    \node[box,right=of q] (c) {Calibrate batches};
+    \node[accent box,right=of c] (t) {Time complete sorts};
+    \draw[flow] (q)--(c); \draw[accent flow] (c)--(t);
+  \end{tikzpicture}
+  \captionline{\UnifiedWarmups{} warm-ups, \UnifiedRounds{} measured batches per backend and input}
+  \vspace{2mm}
+  $r_i=\dfrac{\text{median tree time on input }i}{\text{median list time on input }i}$
+  \note{The \UnifiedN{} inputs come from common, targeted, structural, geometric and seeded sources. Before timing, compare the states after each prefix and verify outputs. Choose a common batch size for the backends on each input. Alternate first position over the \UnifiedRounds{} measured batches. All saved outputs in the completed formal attempt passed. Each input contributes a single ratio. A value below unity favors the tree.}
+\end{frame}
+
+\begin{frame}{The tree/list gap narrows with length}
+  \centering\plotfigure{unified_ratio_by_n.pdf}{.60\paperheight}
+  \captionline{Pooled band medians\qquad $\UnifiedSmallBandMedian\;\longrightarrow\;\UnifiedLargeBandMedian$}
+  \note{The pooled tree/list median falls from \UnifiedSmallBandMedian{} to \UnifiedLargeBandMedian{}. Each plotted line connects exact-length medians within a source. The source mix changes across pooled bands, so the decline alone cannot establish a crossover.}
+\end{frame}
+
+\begin{frame}{Heavy nesting favors the finger tree}
+  \centering\plotfigure{unified_common_nesting_by_length.pdf}{.55\paperheight}
+  \captionline{Tree faster on \UnifiedHeavyWins{} of \UnifiedHeavyN{} heavy inputs. None had a two-sided split.}
+  \note{Follow the heavy category across measured even lengths in the common source. Its median falls most sharply. The tree wins on \UnifiedHeavyWins{} of \UnifiedHeavyN{} heavy inputs, each with at most one split. The ordinary backend walks the owner's parent chain and scans sibling lists in liveness checks. Deeper nesting makes that a candidate cost. These complete-sort timings cannot isolate its contribution.}
+\end{frame}
+
+\begin{frame}{How fast do the sorting times grow?}
+  \centering\plotfigure{baseline_growth.pdf}{.58\paperheight}
+  \captionline{Python merge sort and quicksort still finished sooner on every input.}
+  \note{The supplementary session timed all methods on the same \BaselineInputs{} inputs. Both Python baselines beat both Jordan backends on every input. For growth, the post hoc subset keeps \BaselineCommon{} common and \BaselineGeometric{} geometric inputs per band. Normalize each method to its own first-band median. First-to-last factors are \BaselineTreeGrowth{} for the tree, \BaselineMergeGrowth{} for merge sort, \BaselineQuickGrowth{} for quicksort, \BaselineListGrowth{} for lists and \BaselineBuiltinGrowth{} for the built-in sort. The tree's adjacent-band exponents span \BaselineTreeMin{} to \BaselineTreeMax{}. These are measured growth factors over this range.}
+\end{frame}
+
+\begin{frame}{What the implementation proof adds}
+  % Three-row abridgement of tab:proof-relation, thesis/appendix/backend_argument.tex.
+  \renewcommand{\arraystretch}{1.50}
+  \begin{tabular}{@{}>{\raggedright\arraybackslash}p{.25\linewidth}>{\raggedright\arraybackslash}p{.27\linewidth}>{\raggedright\arraybackslash}p{.39\linewidth}@{}}
+    \toprule
+    & \textbf{Fung et al.} & \textbf{This thesis}\\
+    \midrule
+    Locality & Latest child & Finite-parent re-entry\\
+    Representation and operations & Upward ribs & Red--black repairs, mixed updates\\
+    Total cost & List-size potential & Core, ownership, output in $O(n)$\\
+    \bottomrule
+  \end{tabular}
+  \note{Fung et al. prove locality when a child is latest and mention the finite-parent case. The thesis proves that re-entry case and uses exact grouping and ownership in the prefix induction. The paper sketches upward ribs. Here the red--black representation is decoded and preserved by insert, join and split. A node potential pays for repairs across mixed updates. The paper's list-size potential then pays all smaller-side split charges. Including core, ownership and output gives linear expected/amortized work for the minimal tree under unit-cost comparisons and word operations, expected dictionary lookup and amortized growth.}
+\end{frame}
+
+\begin{frame}{Conclusions and limits}
+  \term{Correctness}{Both backends maintain sorted prefixes.}
+  \term{Cost}{The finger tree realizes linear expected/amortized work.}
+  \term{Runtime}{Tree faster on \UnifiedWins{} of \UnifiedN{} inputs.}
+  \captionline{Does the gap keep narrowing beyond $n=\UnifiedMaxN$?}
+  \note{The reconstruction specifies the split list, transferred group and geometric anchor. The cost argument applies to the implemented tree in its stated model. The overall median tree/list ratio was \UnifiedMedian{}. Heavy nesting produced its strongest measured advantages, and its time grew more slowly than the Python baselines over this range. Measurements stop at length \UnifiedMaxN{} on a single CPython host with certified valid inputs. Larger application-derived inputs and targeted parent-chain measurements would test the trend and its cause.}
+\end{frame}
+
+\begin{frame}[plain]\relax
+  \centering{\Huge\bfseries Questions?}
+  \note{Invite questions. The backup pages cover the reflected first-point correction, absolute timings, comparison counts, locality, amortization and qualification.}
+\end{frame}
+
+\appendix
+\setbeamertemplate{footline}{}
+
+\begin{frame}[noframenumbering]{The reflected $z_1$ correction}
+  \centering\input{figures/reflected-anchor}
+  \captionline{On this odd step, $z_i<z_1<a_i$. Insert before $z_1$.}
+  \note{The reflected step acquires the right split side and uses the left endpoint of the leftmost child when present. In the decreasing counterexample from the thesis, the incoming value is the new minimum. Its geometric base anchor lies to the right of the first crossing. Inserting immediately before the base anchor would leave that first crossing on the wrong side. The strict between-test moves the anchor to the first crossing. This is separate from skipping the first point during the lower-family search.}
+\end{frame}
+
+\begin{frame}[noframenumbering]{Absolute time per sort}
+  \centering\plotfigure{baseline_runtime.pdf}{.66\paperheight}
+  \note{Read the vertical axis in microseconds per complete sort on a logarithmic scale. The supplementary session interleaved both Jordan backends, the Python baselines and the built-in sort. The median paired tree/merge and tree/quick time ratios were \BaselineTreeMerge{} and \BaselineTreeQuick{}. These are within-input ratios.}
+\end{frame}
+
+\begin{frame}[noframenumbering]{Key comparisons per element}
+  \centering\plotfigure{baseline_comparisons.pdf}{.62\paperheight}
+  \captionline{On \BaselineTreeFewerQuick{} inputs, the tree made fewer comparisons than quicksort and still took longer.}
+  \note{The separate untimed pass wraps keys and counts executed order comparisons, including those with numeric sentinels. Equality tests and hashing are excluded. The tree used more comparisons than merge sort on every input and more than quicksort on \BaselineTreeMoreQuick{}. Counts alone cannot account for the timings.}
+\end{frame}
+
+\begin{frame}[noframenumbering]{Finite-parent re-entry and exact grouping}
+  \term{Hypothesis}{The finite parent is latest. Its region stays unchanged.}
+  \term{First re-entry}{Use the gap immediately inward from its latest endpoint.}
+  \note{Let the gap run from the parent's latest endpoint to the nearest child endpoint inward, or to the other parent endpoint when it has no child. A re-entry beyond that gap would give a crosscut which, together with the later curve portion, separates boundary points that the older simple curve still connects. The contradiction forces the inward gap and supports the exact grouping invariant.}
+\end{frame}
+
+\begin{frame}[noframenumbering]{How the two potentials pay for a run}
+  \term{Node potential}{Pays for red--black repair propagation across mixed insertions and splits.}
+  \term{List-size potential}{Pays the smaller-side split charges over the whole run.}
+  \note{The local argument gives constant amortized endpoint insertion and logarithmic-in-the-smaller-side amortized splitting. Applying the list-size potential across the legal operation history pays those split terms in aggregate. Bounded header updates and shared-core work preserve the linear expected/amortized total under the stated model.}
+\end{frame}
+
+\begin{frame}[noframenumbering]{Qualification and the timing boundary}
+  \term{Before}{Check tree equivalence, prefix states, replay and minimal output.}
+  \term{Timed}{Initialize, bind methods, sort, recover and collect output.}
+  \term{After}{Verify saved outputs and recompute summaries.}
+  \note{Checked instances advance through corresponding prefixes. Fresh checked replay and a fresh minimal call provide further checks. Expected answers are computed outside the sorting core. Explicit pre-batch collection precedes the interval, while automatic garbage collection stays enabled. Per-instance tree setup stays in the reported times. Archive validation independently checks outputs and summaries.}
+\end{frame}
+\end{document}
