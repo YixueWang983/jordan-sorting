@@ -1,6 +1,6 @@
 % Build the projection and speaker views with make -C talk.
 \documentclass[aspectratio=169,12pt]{beamer}
-\usepackage{tikz,standalone,booktabs,array}
+\usepackage{tikz,standalone,booktabs,tabularx}
 \input{../thesis/figures/source/figure_style}
 \usefonttheme{professionalfonts}
 \usefonttheme{serif}
@@ -154,6 +154,27 @@
   \note{Both timed backends use minimal execution, disabling traces, selected counters and full post-split validation. Disabling detailed counting in the instrumented tree still intercepts field accesses. Generating the uninstrumented tree removes that machinery while retaining local algorithmic checks. Generation and compilation happen before timing. Per-instance method binding stays inside. Qualification compares both tree configurations on the registered inputs.}
 \end{frame}
 
+\begin{frame}{Five input sources}
+  \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.13}
+  \begin{tabularx}{\linewidth}{@{}lr>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{.255\linewidth}@{}}
+    \toprule
+    \textbf{Source} & \textbf{Inputs} & \textbf{Construction} & \textbf{Purpose} \\
+    \midrule
+    Common & \UnifiedCommonN & Five length bands, four nesting levels (strict-flat to heavy) & Controlled nesting across sizes \\
+    Targeted & \UnifiedTargetedN & $n=128,129$, smaller side $k=3,7,19$ & Interior two-sided splits \\
+    Structural & \UnifiedStructuralN & Balanced, skew and repeated shapes at $n=128$--$513$ & Larger and repeated splits \\
+    Geometric & \UnifiedGeometricN & Random orthogonal polygons cut by a horizontal line & Application-like shapes \\
+    Seeded & \UnifiedSeededN & Random insertions into non-crossing gaps & Random valid sequences \\
+    \bottomrule
+  \end{tabularx}
+  \par\vspace{2mm}
+  {\normalsize\color{accent}Common has no two-sided splits; the other four sources exercise them.\par}
+  \note{Common varies nesting at each length, from strict-flat sequences to sequences with a heavily nested suffix. Targeted varies the smaller side of an interior split, while the repeated structural construction splits earlier outputs again. Geometric records intersections in boundary order after a horizontal line cuts a polygon grown from a random grid tree. Seeded builds a valid sequence by inserting points into gaps allowed by the noncrossing condition.}
+\end{frame}
+
 \begin{frame}{Paired timing on \UnifiedN{} certified inputs}
   % Shortened from fig:method-formal-pipeline, current_experiment_pipeline.tex.
   \centering
@@ -166,7 +187,7 @@
   \captionline{\UnifiedWarmups{} warm-ups, \UnifiedRounds{} measured batches per backend and input}
   \vspace{2mm}
   $r_i=\dfrac{\text{median tree time on input }i}{\text{median list time on input }i}$
-  \note{The \UnifiedN{} inputs come from common, targeted, structural, geometric and seeded sources. Before timing, compare the states after each prefix and verify outputs. Choose a common batch size for the backends on each input. Alternate first position over the \UnifiedRounds{} measured batches. All saved outputs in the completed formal attempt passed. Each input contributes a single ratio. A value below unity favors the tree.}
+  \note{Before timing, compare the states after each prefix and verify outputs. Choose a common batch size for the backends on each input. Alternate first position over the \UnifiedRounds{} measured batches. All saved outputs in the completed formal attempt passed. Each input contributes a single ratio. A value below unity favors the tree.}
 \end{frame}
 
 \begin{frame}{The tree/list gap narrows with length}

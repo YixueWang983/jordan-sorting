@@ -1,6 +1,6 @@
 # Sorting a Jordan sequence from curve order
 
-Master’s thesis defence in English for two reviewers in computational geometry and algorithms. The main talk runs **22:30**, including the title and handoff, leaving **2:30** in the 25-minute slot. Discussion follows. Page timings are speaking estimates. Figure and table paths are relative to the repository root. The numerical notes identify the thesis sources for values to quote.
+Master’s thesis defence in English for two reviewers in computational geometry and algorithms. The main talk runs **23:20**, including the title and handoff, leaving **1:40** in the 25-minute slot. Discussion follows. Page timings are speaking estimates. Figure and table paths are relative to the repository root. The numerical notes identify the thesis sources for values to quote.
 
 ## 1. Motivation and research questions · 3:30
 
@@ -138,11 +138,21 @@ Master’s thesis defence in English for two reviewers in computational geometry
 
 **Numbers** — None. Configuration and timing boundary follow `sec:implementation-policies` in `thesis/chapters/implementation.tex` and `sec:method-implementations` in `thesis/chapters/methodology.tex`.
 
-## 5. Experimental design and results · 4:50
+## 5. Experimental design and results · 5:40
 
-### 14. Measure complete sorts on the same certified inputs · 1:10
+### 14. Five input sources · 1:00
 
-- Start with 302 inputs from the common, targeted, structural, geometric and seeded sources. Before timing, qualify both backends against the expected order and check how their states evolve along each prefix.
+- Common varies nesting across length bands. Targeted controls the smaller side of an interior split. Structural includes balanced, skew and repeated splits.
+- Geometric records crossings of orthogonal polygons. Seeded generates valid sequences by inserting into non-crossing gaps.
+- Common has no two-sided splits; the other four sources exercise them.
+
+**Reuse** — Five-row table based on `sec:method-qualification` in `thesis/chapters/methodology.tex`. Two-sided split coverage is reported in `thesis/generated/unified_structure.tex`.
+
+**Numbers** — Source counts come from `\UnifiedCommonN`, `\UnifiedTargetedN`, `\UnifiedStructuralN`, `\UnifiedGeometricN` and `\UnifiedSeededN` in `thesis/generated/unified_numbers.tex`. Lengths, nesting levels and smaller-side parameters come from `sec:method-qualification`.
+
+### 15. Paired timing on 302 certified inputs · 1:00
+
+- Before timing, qualify both backends against the expected order and check how their states evolve along each prefix.
 - Calibrate a common batch size per input. Each backend receives 5 warm-ups and 20 measured batches, alternating first position. All saved outputs in the completed formal attempt passed comparison.
 - Give each input one vote. Divide its median tree time by its median list time. A ratio below 1 means the tree finished sooner.
 
@@ -150,7 +160,7 @@ Master’s thesis defence in English for two reviewers in computational geometry
 
 **Numbers** — `\UnifiedN`, `\UnifiedWarmups` and `\UnifiedRounds` in `thesis/generated/unified_numbers.tex`. The ratio is defined in `sec:method-aggregation`, `thesis/chapters/methodology.tex`.
 
-### 15. Ordinary lists usually finish sooner, but the gap narrows · 0:45
+### 16. Ordinary lists usually finish sooner, but the gap narrows · 0:45
 
 - Follow the plotted medians across source-specific lengths and point out the changing source mix.
 - Quote only the pooled smallest-to-largest band medians, 1.373 → 1.037. These summarize the bands across sources, whereas each line in the figure follows a single source.
@@ -159,7 +169,7 @@ Master’s thesis defence in English for two reviewers in computational geometry
 
 **Numbers** — `\UnifiedSmallBandMedian` and `\UnifiedLargeBandMedian` in `thesis/generated/unified_refinement.tex`, also reported in `\UnifiedSizesRows` in `thesis/generated/unified_sizes.tex`.
 
-### 16. The strongest tree advantage occurs with heavy nesting · 1:10
+### 17. The strongest tree advantage occurs with heavy nesting · 1:10
 
 - Read the heavy-nesting curve in the common source. Trace how its median tree/list ratio falls across the measured even lengths.
 - Of the 40 heavy inputs, 24 favor the tree. Each has at most one split, and none has a two-sided split. Frequent splitting cannot explain this group's advantage.
@@ -169,11 +179,11 @@ Master’s thesis defence in English for two reviewers in computational geometry
 
 **Numbers** — Lengths and medians in `sec:results-nesting-by-length`, split counts in `sec:results-structure`, both in `thesis/chapters/results.tex`. Heavy input and win counts are `\UnifiedHeavyN` and `\UnifiedHeavyWins` in `thesis/generated/unified_numbers.tex`.
 
-### 17. How fast do the general-purpose sorts grow? · 1:45
+### 18. How fast do the general-purpose sorts grow? · 1:45
 
 - First give the absolute result. In a separate session on the same 302 inputs, Python merge sort and quicksort each finished sooner than either Jordan backend on every input.
 - For growth, use the post hoc fixed-source comparison. Each size band contains 28 common and 20 geometric inputs. Normalize each method’s band median to its own first-band median. This lets us compare growth across the measured range.
-- In panel (a), median time grows **17.81×** for the finger tree, **20.36×** for Python merge sort, **22.25×** for Python quicksort and **26.71×** for the ordinary Jordan list. CPython’s built-in sort, the practical reference, grew **14.33×**.
+- Read the first-to-last factors in the legend (rounded to one decimal place). In the thesis, median time grows **17.81×** for the finger tree, **20.36×** for Python merge sort, **22.25×** for Python quicksort and **26.71×** for the ordinary Jordan list. CPython’s built-in sort, the practical reference, grew **14.33×**.
 - The tree’s time grew more slowly than either Python baseline over this range. A faster absolute tree time at larger sizes remains unobserved.
 
 **Reuse** — `fig:baseline-growth`, panel (a), redrawn for the main talk as `talk/figures/growth_curves.pdf` using the data and band medians from `docs/thesis/baseline_comparison_revision_20261120/generate.py`.
@@ -182,7 +192,7 @@ Master’s thesis defence in English for two reviewers in computational geometry
 
 ## 6. The proof and its relation to the 1990 paper · 1:45
 
-### 18. Which parts of the linear bound needed a new argument? · 1:45
+### 19. Which parts of the linear bound needed a new argument? · 1:45
 
 - **Locality and correctness.** Fung et al. give the latest-child locality lemma and note the finite-parent case. The thesis proves re-entry for the finite-parent case, then uses exact grouping and ownership in a prefix induction to justify each boundary call.
 - **Representation.** The paper outlines a balanced tree with upward-pointing ribs. The thesis shows how to decode the implemented red–black tree and preserve it through insertion, join and split. A node potential pays for repairs across mixed operation histories.
@@ -194,7 +204,7 @@ Master’s thesis defence in English for two reviewers in computational geometry
 
 ## 7. Conclusion and limits · 1:00
 
-### 19. What the reconstruction establishes, and what remains open · 0:55
+### 20. What the reconstruction establishes, and what remains open · 0:55
 
 - The reconstruction specifies which list to split and which coordinate anchors the output. Both backends recover the sorted prefix from that state. The tree realizes the linear work argument under the stated model.
 - The tree is faster on 44 of 302 inputs, with a median tree/list ratio of 1.257. The finger tree gains most on heavy nesting, and its measured growth is slower than that of Python merge sort and quicksort.
@@ -204,7 +214,7 @@ Master’s thesis defence in English for two reviewers in computational geometry
 
 **Numbers** — The win count, input count, median and maximum length are `\UnifiedWins`, `\UnifiedN`, `\UnifiedMedian` and `\UnifiedMaxN` in `thesis/generated/unified_numbers.tex`. Host and scope are in `sec:method-environment` and `sec:method-scope`, `thesis/chapters/methodology.tex`. The conclusions and proposed tests follow `thesis/chapters/conclusion.tex`.
 
-### 20. Questions? · 0:05
+### 21. Questions? · 0:05
 
 - Invite questions and leave this page on screen for discussion.
 - Use the appendix to revisit a worked example, measurement or proof detail on request.

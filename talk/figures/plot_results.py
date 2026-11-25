@@ -5,9 +5,11 @@ reads the manuscript's saved plotting rows. The growth plots share the
 manuscript's archive reader, band definitions and median calculation.
 """
 
+from decimal import Decimal, ROUND_HALF_UP
 import json
 import math
 from pathlib import Path
+import re
 from statistics import median
 import sys
 import tarfile
@@ -71,18 +73,36 @@ def fixed_source_times():
     return growth.growth_curves(times, groups)
 
 
+def published_growth_labels():
+    macro_names = {
+        "ordinary_list": "BaselineListGrowth",
+        "heterogeneous_finger_uninstrumented": "BaselineTreeGrowth",
+        "merge_sort": "BaselineMergeGrowth",
+        "quick_sort": "BaselineQuickGrowth",
+        "sorted": "BaselineBuiltinGrowth",
+    }
+    source = (ROOT / "thesis/generated/baseline_comparison.tex").read_text()
+    values = dict(re.findall(r"\\newcommand\{\\(\w+)\}\{([\d.]+)\}", source))
+    return {
+        method: Decimal(values[name]).quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+        for method, name in macro_names.items()
+    }
+
+
 def growth_figures():
     nominal = growth.NOMINAL
     steps = range(len(nominal) - 1)
     series = fixed_source_times()
+    factors = published_growth_labels()
     curve_fig, curve = plt.subplots(figsize=(6.8, 2.75), layout="constrained")
     exp_fig, exponent = plt.subplots(figsize=(6.8, 3.0), layout="constrained")
 
     for method, (label, color, marker) in growth.STYLES.items():
         times = series[method]
-        style = dict(label=label, color=color, marker=marker, ms=4.5, lw=1.5)
-        curve.plot(nominal, [t / times[0] for t in times], **style)
-        exponent.plot(steps, [math.log2(b / a) for a, b in zip(times, times[1:])], **style)
+        style = dict(color=color, marker=marker, ms=4.5, lw=1.5)
+        curve.plot(nominal, [t / times[0] for t in times],
+                   label=f"{label} ({factors[method]}×)", **style)
+        exponent.plot(steps, [math.log2(b / a) for a, b in zip(times, times[1:])], label=label, **style)
 
     for ax in (curve, exponent):
         ax.grid(alpha=.22, linewidth=.6)
